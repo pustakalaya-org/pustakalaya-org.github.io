@@ -1,0 +1,3472 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch20-iot-hardware-security.html">
+  
+  
+    <link rel="prev" href="ch19-secure-key-management.html">
+  
+  
+    <link rel="next" href="ch21-secure-elements-and-smart-cards.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>20. IoT Hardware Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#201-iot-threat-landscape" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              20. IoT Hardware Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#201-iot-threat-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 IoT Threat Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.1 IoT Threat Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2011-iot-device-classification-ietf-rfc-7228" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1.1 IoT Device Classification (IETF RFC 7228)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2012-iot-security-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1.2 IoT Security Challenges
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-iot-platform-security-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 IoT Platform Security Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#203-arm-trustzone-m-armv8-m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 ARM TrustZone-M (ARMv8-M)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.3 ARM TrustZone-M (ARMv8-M)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2031-sau-and-idau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.1 SAU and IDAU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2032-cmse-intrinsics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.2 CMSE Intrinsics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2033-sau-configuration-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.3 SAU Configuration Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2034-trustzone-m-memory-map-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.4 TrustZone-M Memory Map Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#204-psa-platform-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 PSA Platform Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#205-atecc608b-iot-cryptographic-coprocessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 ATECC608B IoT Cryptographic Coprocessor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#206-mcuboot-secure-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 MCUboot Secure Bootloader
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#207-suit-software-update-for-iot-rfc-9019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.7 SUIT: Software Update for IoT (RFC 9019)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#208-lorawan-11-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.8 LoRaWAN 1.1 Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#209-ascon-lightweight-cipher-nist-standard-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.9 ASCON Lightweight Cipher (NIST Standard 2023)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2010-dtls-13-and-edhoc-for-constrained-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.10 DTLS 1.3 and EDHOC for Constrained Devices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2011-tls-libraries-for-mcus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.11 TLS Libraries for MCUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2012-target-hardware-for-iot-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12 Target Hardware for IoT Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.12 Target Hardware for IoT Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20121-stm32l552-arm-cortex-m33-psa-level-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.1 STM32L552 (ARM Cortex-M33, PSA Level 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20122-nordic-nrf9160-lte-mnb-iot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.2 Nordic nRF9160 (LTE-M/NB-IoT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20123-nxp-lpc55s69-trustzone-m-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.3 NXP LPC55S69 (TrustZone-M + PUF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20124-silicon-labs-efr32mg21-secure-vault-psa-level-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.4 Silicon Labs EFR32MG21 (Secure Vault, PSA Level 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2013-fpga-and-asic-iot-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.13 FPGA and ASIC IoT Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2014-secure-provisioning-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.14 Secure Provisioning Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2015-iot-ota-update-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.15 IoT OTA Update Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2016-all-solutions-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.16 All Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2017-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.17 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch20-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20181-matter-1213-20232024-hardware-security-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.1 Matter 1.2/1.3 (2023–2024): Hardware Security Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20182-psa-certified-level-3-2023-new-evaluation-methodology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.2 PSA Certified Level 3 (2023): New Evaluation Methodology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20183-eu-cyber-resilience-act-cra-2024-iot-hardware-security-mandates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.3 EU Cyber Resilience Act (CRA 2024): IoT Hardware Security Mandates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20184-nist-ir-8259d-iot-device-cybersecurity-profile-for-enterprise-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.4 NIST IR 8259D: IoT Device Cybersecurity Profile for Enterprise (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20185-rp2350-raspberry-pi-pico-2-2024-dual-architecture-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.5 RP2350 (Raspberry Pi Pico 2, 2024): Dual-Architecture Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20186-esp32-s3-secure-boot-v2-and-flash-encryption-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.6 ESP32-S3 Secure Boot v2 and Flash Encryption Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20187-nordic-nrf9160nrf5340-psa-certified-certification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.7 Nordic nRF9160/nRF5340 PSA Certified Certification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#201-iot-threat-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 IoT Threat Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.1 IoT Threat Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2011-iot-device-classification-ietf-rfc-7228" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1.1 IoT Device Classification (IETF RFC 7228)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2012-iot-security-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1.2 IoT Security Challenges
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-iot-platform-security-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 IoT Platform Security Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#203-arm-trustzone-m-armv8-m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 ARM TrustZone-M (ARMv8-M)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.3 ARM TrustZone-M (ARMv8-M)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2031-sau-and-idau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.1 SAU and IDAU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2032-cmse-intrinsics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.2 CMSE Intrinsics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2033-sau-configuration-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.3 SAU Configuration Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2034-trustzone-m-memory-map-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3.4 TrustZone-M Memory Map Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#204-psa-platform-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 PSA Platform Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#205-atecc608b-iot-cryptographic-coprocessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 ATECC608B IoT Cryptographic Coprocessor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#206-mcuboot-secure-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 MCUboot Secure Bootloader
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#207-suit-software-update-for-iot-rfc-9019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.7 SUIT: Software Update for IoT (RFC 9019)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#208-lorawan-11-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.8 LoRaWAN 1.1 Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#209-ascon-lightweight-cipher-nist-standard-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.9 ASCON Lightweight Cipher (NIST Standard 2023)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2010-dtls-13-and-edhoc-for-constrained-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.10 DTLS 1.3 and EDHOC for Constrained Devices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2011-tls-libraries-for-mcus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.11 TLS Libraries for MCUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2012-target-hardware-for-iot-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12 Target Hardware for IoT Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.12 Target Hardware for IoT Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20121-stm32l552-arm-cortex-m33-psa-level-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.1 STM32L552 (ARM Cortex-M33, PSA Level 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20122-nordic-nrf9160-lte-mnb-iot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.2 Nordic nRF9160 (LTE-M/NB-IoT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20123-nxp-lpc55s69-trustzone-m-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.3 NXP LPC55S69 (TrustZone-M + PUF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20124-silicon-labs-efr32mg21-secure-vault-psa-level-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.12.4 Silicon Labs EFR32MG21 (Secure Vault, PSA Level 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2013-fpga-and-asic-iot-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.13 FPGA and ASIC IoT Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2014-secure-provisioning-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.14 Secure Provisioning Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2015-iot-ota-update-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.15 IoT OTA Update Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2016-all-solutions-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.16 All Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2017-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.17 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch20-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20181-matter-1213-20232024-hardware-security-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.1 Matter 1.2/1.3 (2023–2024): Hardware Security Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20182-psa-certified-level-3-2023-new-evaluation-methodology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.2 PSA Certified Level 3 (2023): New Evaluation Methodology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20183-eu-cyber-resilience-act-cra-2024-iot-hardware-security-mandates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.3 EU Cyber Resilience Act (CRA 2024): IoT Hardware Security Mandates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20184-nist-ir-8259d-iot-device-cybersecurity-profile-for-enterprise-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.4 NIST IR 8259D: IoT Device Cybersecurity Profile for Enterprise (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20185-rp2350-raspberry-pi-pico-2-2024-dual-architecture-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.5 RP2350 (Raspberry Pi Pico 2, 2024): Dual-Architecture Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20186-esp32-s3-secure-boot-v2-and-flash-encryption-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.6 ESP32-S3 Secure Boot v2 and Flash Encryption Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20187-nordic-nrf9160nrf5340-psa-certified-certification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.18.7 Nordic nRF9160/nRF5340 PSA Certified Certification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chap-iot-hardware-security">Chapter 20: IoT Hardware Security<a class="headerlink" href="#chap-iot-hardware-security" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> This chapter covers IoT hardware security: ARM TrustZone-M, PSA Certification, ATECC608B cryptographic coprocessor, MCUboot, SUIT (RFC 9019), LoRaWAN 1.1 security, ASCON (NIST 2023), DTLS 1.3, and EDHOC for constrained devices.</p>
+</div>
+<h2 id="201-iot-threat-landscape"><span class="secnum">20.1</span> IoT Threat Landscape<a class="headerlink" href="#201-iot-threat-landscape" title="Permanent link">&para;</a></h2>
+<p>The 2016 Mirai botnet infected 600,000+ IP cameras and home routers via default Telnet credentials, generating a 1.1 Tbps DDoS against Dyn DNS (October 21, 2016), taking down Twitter, Reddit, and GitHub. Shodan (<code>shodan.io</code>) continuously indexes millions of exposed IoT devices with no authentication. Mirai source release (October 2016) spawned: Satori, Reaper (2017), Moobot (2019)—all exploiting the same fundamental absence of device authentication and firmware update mechanisms.</p>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> NIST SP 800-213 mandates IoT devices must not use factory-default passwords</p>
+</div>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> shared across same-model units. This single requirement would prevent most IoT botnets.</p>
+</div>
+<h3 id="2011-iot-device-classification-ietf-rfc-7228"><span class="secnum">20.1.1</span> IoT Device Classification (IETF RFC 7228)<a class="headerlink" href="#2011-iot-device-classification-ietf-rfc-7228" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-iot-classes">
+<div class="tbl-caption"><strong>Table 20.1.</strong> IoT Device Resource Classes</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Class</strong></th>
+<th style="text-align: left;"><strong>RAM</strong></th>
+<th style="text-align: left;"><strong>Flash</strong></th>
+<th style="text-align: left;"><strong>Examples</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Class 0</td>
+<td style="text-align: left;">&lt;10 KB</td>
+<td style="text-align: left;">&lt;100 KB</td>
+<td style="text-align: left;">Passive sensors, RFID tags</td>
+</tr>
+<tr>
+<td style="text-align: left;">Class 1</td>
+<td style="text-align: left;"> 10 KB</td>
+<td style="text-align: left;"> 100 KB</td>
+<td style="text-align: left;">TI CC2530, ATmega328P</td>
+</tr>
+<tr>
+<td style="text-align: left;">Class 2</td>
+<td style="text-align: left;"> 50 KB</td>
+<td style="text-align: left;"> 250 KB</td>
+<td style="text-align: left;">Nordic nRF51822, CC1310</td>
+</tr>
+<tr>
+<td style="text-align: left;">Unconstrained</td>
+<td style="text-align: left;">256+ KB</td>
+<td style="text-align: left;">512+ KB</td>
+<td style="text-align: left;">STM32L5, ESP32, nRF9160</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="2012-iot-security-challenges"><span class="secnum">20.1.2</span> IoT Security Challenges<a class="headerlink" href="#2012-iot-security-challenges" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Resource constraints:</strong> 64 KB RAM, 256 KB flash—TLS 1.3 requires 50–100 KB RAM.</p>
+</li>
+<li>
+<p><strong>No display:</strong> Cannot present certificates or security warnings to users.</p>
+</li>
+<li>
+<p><strong>OTA complexity:</strong> Firmware updates must be authenticated, rollback-protected, atomic.</p>
+</li>
+<li>
+<p><strong>Long lifecycle:</strong> Industrial IoT operates 10–20 years, outliving cipher suites.</p>
+</li>
+<li>
+<p><strong>Physical access:</strong> Field devices expose JTAG, UART, and fault injection interfaces.</p>
+</li>
+<li>
+<p><strong>Supply chain:</strong> Counterfeit or trojanized hardware in OEM supply chains.</p>
+</li>
+</ul>
+<h2 id="202-iot-platform-security-comparison"><span class="secnum">20.2</span> IoT Platform Security Comparison<a class="headerlink" href="#202-iot-platform-security-comparison" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-iot-platform">
+<div class="tbl-caption"><strong>Table 20.2.</strong> IoT SoC Platform Security Features</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Core</strong></th>
+<th style="text-align: left;"><strong>TrustZone</strong></th>
+<th style="text-align: left;"><strong>MPU/PMP</strong></th>
+<th style="text-align: left;"><strong>Crypto HW</strong></th>
+<th style="text-align: left;"><strong>PSA Level</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Cortex-M0/M0+</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Not certified</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cortex-M23</td>
+<td style="text-align: left;">TrustZone-M (ARMv8-M.base)</td>
+<td style="text-align: left;">8 regions</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Level 1 possible</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cortex-M33</td>
+<td style="text-align: left;">TrustZone-M (ARMv8-M.main)</td>
+<td style="text-align: left;">16 regions</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Level 2 possible</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cortex-M55</td>
+<td style="text-align: left;">TrustZone-M + Helium</td>
+<td style="text-align: left;">16 regions</td>
+<td style="text-align: left;">Helium SIMD</td>
+<td style="text-align: left;">Level 2/3</td>
+</tr>
+<tr>
+<td style="text-align: left;">ESP32-S3</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">AES-128/256, SHA</td>
+<td style="text-align: left;">Not PSA</td>
+</tr>
+<tr>
+<td style="text-align: left;">RISC-V (SiFive E21)</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">PMP 8–64 regions</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Standard emerging</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="203-arm-trustzone-m-armv8-m"><span class="secnum">20.3</span> ARM TrustZone-M (ARMv8-M)<a class="headerlink" href="#203-arm-trustzone-m-armv8-m" title="Permanent link">&para;</a></h2>
+<p>TrustZone-M creates hardware-enforced isolation between Secure and Non-Secure worlds on Cortex-M23/M33/M55 without requiring a hypervisor. Managed by Trusted Firmware-M (TF-M).</p>
+<h3 id="2031-sau-and-idau"><span class="secnum">20.3.1</span> SAU and IDAU<a class="headerlink" href="#2031-sau-and-idau" title="Permanent link">&para;</a></h3>
+<p>The <strong>SAU</strong> (Security Attribution Unit) provides up to 8 programmable regions: Secure (S), Non-Secure (NS), or Non-Secure Callable (NSC). The <strong>IDAU</strong> (Implementation Defined Attribution Unit) is a fixed vendor hardware structure. Effective attribution: most restrictive of SAU and IDAU wins.</p>
+<ul>
+<li>
+<p><strong>Secure (S):</strong> Only Secure-state code can access. Contains TF-M, keys, secure SRAM.</p>
+</li>
+<li>
+<p><strong>Non-Secure (NS):</strong> Application code, accessible from both Secure and NS states.</p>
+</li>
+<li>
+<p><strong>NSC (Non-Secure Callable):</strong> Veneer functions with <code>SG</code> (Secure Gateway) instruction—the only legal NS-to-Secure entry point (trampoline pattern).</p>
+</li>
+</ul>
+<h3 id="2032-cmse-intrinsics"><span class="secnum">20.3.2</span> CMSE Intrinsics<a class="headerlink" href="#2032-cmse-intrinsics" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>#include &lt;arm_cmse.h&gt;
+#include "psa/crypto.h"
+
+__attribute__((cmse_nonsecure_entry))
+int32_t SE_GetRandom(uint8_t *ns_buf, uint32_t length) {
+    if (!cmse_check_address_range(ns_buf, length,
+            CMSE_MPU_READWRITE | CMSE_NONSECURE))
+        return PSA_ERROR_INVALID_ARGUMENT;
+    return (int32_t)psa_generate_random(ns_buf, length);
+}
+
+typedef int32_t (*SE_GetRandom_t)(uint8_t*, uint32_t)
+    __attribute__((cmse_nonsecure_call));
+SE_GetRandom_t fn = (SE_GetRandom_t)cmse_nsfptr_create(veneer_addr);
+fn(buffer, 32);  /* HW clears registers before crossing */
+</code></pre></div>
+<h3 id="2033-sau-configuration-code"><span class="secnum">20.3.3</span> SAU Configuration Code<a class="headerlink" href="#2033-sau-configuration-code" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>void SAU_Init(void) {
+    SAU-&gt;CTRL = 0;
+    SAU-&gt;RNR=0; SAU-&gt;RBAR=0x08010000U; SAU-&gt;RLAR=0x0807FFE0U|SAU_RLAR_ENABLE_Msk;
+    SAU-&gt;RNR=1; SAU-&gt;RBAR=0x0E000000U; SAU-&gt;RLAR=0x0E00FFE0U|SAU_RLAR_NSC_Msk|SAU_RLAR_ENABLE_Msk;
+    SAU-&gt;RNR=2; SAU-&gt;RBAR=0x20020000U; SAU-&gt;RLAR=0x2003FFE0U|SAU_RLAR_ENABLE_Msk;
+    SAU-&gt;CTRL = SAU_CTRL_ENABLE_Msk;
+    __DSB(); __ISB();
+}
+</code></pre></div>
+<h3 id="2034-trustzone-m-memory-map-diagram"><span class="secnum">20.3.4</span> TrustZone-M Memory Map Diagram<a class="headerlink" href="#2034-trustzone-m-memory-map-diagram" title="Permanent link">&para;</a></h3>
+<figure class="fig fig-diagram" id="fig-tz-m-map">
+<img class="tikz" src="img/tikz-1b79da339a94.svg" alt="ARM TrustZone-M memory map (STM32L552). SAU defines NS and NSC regions; remaining space is Secure by default. NS code enters Secure world only via NSC veneer using the SG instruction." loading="lazy">
+<figcaption><strong>Figure 20.1.</strong> ARM TrustZone-M memory map (STM32L552). SAU defines NS and NSC regions; remaining space is Secure by default. NS code enters Secure world only via NSC veneer using the <code>SG</code> instruction.</figcaption>
+</figure>
+
+<h2 id="204-psa-platform-security-architecture"><span class="secnum">20.4</span> PSA Platform Security Architecture<a class="headerlink" href="#204-psa-platform-security-architecture" title="Permanent link">&para;</a></h2>
+<p>ARM PSA defines threat modeling, hardware requirements, and certification for IoT devices.</p>
+<div class="tbl" id="tab-psa-levels">
+<div class="tbl-caption"><strong>Table 20.3.</strong> PSA Certified Security Levels</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Level</strong></th>
+<th style="text-align: left;"><strong>Requirements</strong></th>
+<th style="text-align: left;"><strong>Evaluation</strong></th>
+<th style="text-align: left;"><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Level 1</td>
+<td style="text-align: left;">Security questionnaire, design review</td>
+<td style="text-align: left;">Lab questionnaire</td>
+<td style="text-align: left;">Nordic nRF9160</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 2</td>
+<td style="text-align: left;">RoT isolation, secure boot, PSA Crypto</td>
+<td style="text-align: left;">Independent lab</td>
+<td style="text-align: left;">STM32L552, LPC55S69</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">Side-channel resistance, high-value assets</td>
+<td style="text-align: left;">Penetration test</td>
+<td style="text-align: left;">EFR32MG21 Secure Vault</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="language-text highlight"><pre><span></span><code>/* PSA Crypto API (TF-M Crypto partition, psa/crypto.h) */
+psa_key_attributes_t attr = PSA_KEY_ATTRIBUTES_INIT;
+psa_set_key_type(&amp;attr, PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1));
+psa_set_key_bits(&amp;attr, 256);
+psa_set_key_usage_flags(&amp;attr, PSA_KEY_USAGE_SIGN_HASH|PSA_KEY_USAGE_VERIFY_HASH);
+psa_set_key_algorithm(&amp;attr, PSA_ALG_ECDSA(PSA_ALG_SHA_256));
+psa_set_key_lifetime(&amp;attr, PSA_KEY_LIFETIME_PERSISTENT);
+psa_set_key_id(&amp;attr, 0x00000001U);
+psa_key_id_t key_id;
+psa_generate_key(&amp;attr, &amp;key_id);  /* private key stays in Secure world */
+
+/* PSA Initial Attestation -- EAT/CBOR/COSE_Sign1 token */
+uint8_t challenge[32], token[512]; size_t token_len;
+psa_initial_attest_get_token(challenge, 32, token, 512, &amp;token_len);
+
+/* PSA Protected Storage */
+psa_ps_set(0x00000001UL, cert_len, device_cert, PSA_STORAGE_FLAG_WRITE_ONCE);
+</code></pre></div>
+<h2 id="205-atecc608b-iot-cryptographic-coprocessor"><span class="secnum">20.5</span> ATECC608B IoT Cryptographic Coprocessor<a class="headerlink" href="#205-atecc608b-iot-cryptographic-coprocessor" title="Permanent link">&para;</a></h2>
+<p>Microchip ATECC608B (TDFN-8, I2C addr 0x60–0x6F configurable via fuses): ECC P-256 (ECDH + ECDSA), AES-128, SHA-256/HMAC, 16 key slots x 256-bit, per-slot access control, monotonic counters, NIST SP 800-90A TRNG.</p>
+<div class="language-text highlight"><pre><span></span><code>#include "cryptoauthlib.h"
+
+ATCAIfaceCfg cfg = cfg_ateccx08a_i2c_default;
+cfg.atcai2c.slave_address = 0xC0;  /* 0x60 &lt;&lt; 1 for I2C write addr */
+atcab_init(&amp;cfg);
+
+uint8_t pub_xy[64];  /* raw X||Y, P-256 */
+atcab_genkey(2, pub_xy);  /* generate ephemeral in slot 2 */
+
+uint8_t shared[32];
+atcab_ecdh(2, server_pubkey_xy, shared);  /* feed into HKDF */
+
+uint8_t digest[32], sig[64];
+atcab_sha(data, data_len, digest);
+atcab_sign(0, digest, sig);  /* slot 0: device identity (never exported) */
+
+bool ok;
+atcab_verify_extern(digest, partner_sig, ca_pubkey, &amp;ok);
+</code></pre></div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Lock ATECC608B Config Zone after provisioning. Slots: 0=device ECDSA (never exported), 1-3=ECDH ephemeral, 4-7=AES keys, 8-11=CA pubkeys, 14-15=monotonic counters.</p>
+</div>
+<h2 id="206-mcuboot-secure-bootloader"><span class="secnum">20.6</span> MCUboot Secure Bootloader<a class="headerlink" href="#206-mcuboot-secure-bootloader" title="Permanent link">&para;</a></h2>
+<p>MCUboot (<a href="https://github.com/mcu-tools/mcuboot">https://github.com/mcu-tools/mcuboot</a>) is the standard open-source bootloader for Zephyr RTOS, Apache Mynewt, NuttX, and ESP-IDF.</p>
+<ul>
+<li>
+<p><strong>Overwrite:</strong> Copy secondary to primary. Simple but no rollback.</p>
+</li>
+<li>
+<p><strong>Swap (move):</strong> Atomic sector-by-sector swap via scratch area. Rollback supported.</p>
+</li>
+<li>
+<p><strong>Direct-XIP:</strong> Execute in place from either slot. No copy needed.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># prj.conf: MCUboot with Ed25519 signing (Zephyr RTOS)
+CONFIG_MCUBOOT=y
+CONFIG_BOOT_SIGNATURE_TYPE_ED25519=y
+CONFIG_BOOT_SIGNATURE_KEY_FILE="keys/sign.pem"
+CONFIG_BOOT_MAX_IMG_SECTORS=256
+CONFIG_BOOT_SWAP_USING_MOVE=y
+
+# Key generation
+python -m imgtool keygen -k keys/sign.pem -t ed25519
+python -m imgtool getpub -k keys/sign.pem &gt; keys/sign_pub.c
+
+# Sign application image
+python -m imgtool sign
+    --key keys/sign.pem --header-size 0x200 --align 4
+    --version 1.2.0+0 --slot-size 0x67000
+    zephyr.bin  zephyr_signed.bin
+
+# Verify signed image offline
+python -m imgtool verify --key keys/sign_pub.pem zephyr_signed.bin
+</code></pre></div>
+<p>Image layout: [512B header | application code | TLV trailer]. TLV: HASH (SHA-256 of header+code), KEYHASH (SHA-256 of signing pubkey), SIG (Ed25519 signature of HASH). Trial boot: UNCONFIRMED until <code>boot_set_confirmed()</code> called.</p>
+<h2 id="207-suit-software-update-for-iot-rfc-9019"><span class="secnum">20.7</span> SUIT: Software Update for IoT (RFC 9019)<a class="headerlink" href="#207-suit-software-update-for-iot-rfc-9019" title="Permanent link">&para;</a></h2>
+<p>SUIT defines CBOR-encoded manifests with COSE authentication wrappers for IoT OTA.</p>
+<div class="language-text highlight"><pre><span></span><code># Python SUIT manifest generation (pip install suit-tool)
+import json, subprocess
+
+manifest = {
+    "manifest-version": 1,
+    "manifest-sequence-number": 42,  # anti-replay
+    "components": [{
+        "component-identifier": ["firmware"],
+        "install-digest": {
+            "algorithm-id": "sha-256",
+            "digest-bytes": "AABBCCDD..."},
+        "install-size": 131072,
+        "source-uri": "https://ota.example.com/fw_v2.bin"
+    }]
+}
+with open("manifest.json","w") as f: json.dump(manifest,f)
+subprocess.run(["suit-tool","create","-i","manifest.json","-o","manifest.suit"])
+subprocess.run(["suit-tool","sign","-m","manifest.suit","-k","p256.pem","-o","signed.suit"])
+</code></pre></div>
+<h2 id="208-lorawan-11-security"><span class="secnum">20.8</span> LoRaWAN 1.1 Security<a class="headerlink" href="#208-lorawan-11-security" title="Permanent link">&para;</a></h2>
+<p>LoRaWAN 1.1 uses dual-key architecture: AppKey (application root) and NwkKey (network root), separating application provider and network operator security domains.</p>
+<div class="tbl" id="tab-lorawan-keys">
+<div class="tbl-caption"><strong>Table 20.4.</strong> LoRaWAN 1.1 Session Key Derivation</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Key</strong></th>
+<th style="text-align: left;"><strong>Root Key</strong></th>
+<th style="text-align: left;"><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AppSKey</td>
+<td style="text-align: left;">AppKey + JoinNonce + NetID + DevNonce</td>
+<td style="text-align: left;">AES-128-CTR payload encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">FNwkSIntKey</td>
+<td style="text-align: left;">NwkKey + JoinNonce + ...</td>
+<td style="text-align: left;">Uplink MIC (AES-128-CMAC)</td>
+</tr>
+<tr>
+<td style="text-align: left;">SNwkSIntKey</td>
+<td style="text-align: left;">NwkKey + ...</td>
+<td style="text-align: left;">Downlink MIC</td>
+</tr>
+<tr>
+<td style="text-align: left;">NwkSEncKey</td>
+<td style="text-align: left;">NwkKey + ...</td>
+<td style="text-align: left;">FOpts MAC encryption</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="language-text highlight"><pre><span></span><code>from Crypto.Hash import CMAC
+from Crypto.Cipher import AES
+
+def lorawan_mic_uplink(FNwkSIntKey, DevAddr, FCnt, frame):
+    B0  = bytes([0x49])
+    B0 += (0).to_bytes(2, "little")      # ConfFCnt=0
+    B0 += bytes([0x00, 0x00])            # TxDr, TxCh
+    B0 += bytes([0x00])                  # Dir=0 (uplink)
+    B0 += DevAddr.to_bytes(4, "little")
+    B0 += FCnt.to_bytes(4, "little")
+    B0 += bytes([0x00])                  # padding
+    B0 += len(frame).to_bytes(1, "big")
+    c = CMAC.new(FNwkSIntKey, ciphermod=AES)
+    c.update(B0 + frame)
+    return c.digest()[:4]               # MIC = first 4 bytes
+</code></pre></div>
+<h2 id="209-ascon-lightweight-cipher-nist-standard-2023"><span class="secnum">20.9</span> ASCON Lightweight Cipher (NIST Standard 2023)<a class="headerlink" href="#209-ascon-lightweight-cipher-nist-standard-2023" title="Permanent link">&para;</a></h2>
+<p>ASCON (NIST IR 8454, August 2023) is the NIST lightweight cryptography standard. State: 320 bits (5 x 64-bit words). Rate: 64 bits (Ascon-128) / 128 bits (Ascon-128a). Key and nonce: 128 bits each. Tag: 128 bits. Hardware area: 2,300 GE vs AES 3,400 GE.</p>
+<div class="language-text highlight"><pre><span></span><code>def rotr64(x,n): return ((x&gt;&gt;n)|(x&lt;&lt;(64-n)))&amp;0xFFFFFFFFFFFFFFFF
+
+def ascon_permutation(S, rounds):
+    RC=[0xf0,0xe1,0xd2,0xc3,0xb4,0xa5,0x96,0x87,0x78,0x69,0x5a,0x4b]
+    for r in range(12-rounds,12):
+        S[2]^=RC[r]                    # add round constant
+        S[0]^=S[4]; S[4]^=S[3]; S[2]^=S[1]  # S-box layer
+        T=[(~S[i]&amp;0xFFFFFFFFFFFFFFFF)&amp;S[(i+1)
+        for i in range(5): S[i]^=T[(i+1)
+        S[1]^=S[0]; S[0]^=S[4]; S[3]^=S[2]; S[2]^=0xFFFFFFFFFFFFFFFF
+        S[0]^=rotr64(S[0],19)^rotr64(S[0],28)  # linear diffusion
+        S[1]^=rotr64(S[1],61)^rotr64(S[1],39)
+        S[2]^=rotr64(S[2],1)^rotr64(S[2],6)
+        S[3]^=rotr64(S[3],10)^rotr64(S[3],17)
+        S[4]^=rotr64(S[4],7)^rotr64(S[4],41)
+</code></pre></div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Ascon-128: 1.45 cycles/byte on Cortex-M3 SW vs 10+ for AES-CCM SW. For M0/M0+ without HW AES, Ascon is the preferred IoT cipher. Hardware GE: 2300 vs AES-128 at 3400.</p>
+</div>
+<h2 id="2010-dtls-13-and-edhoc-for-constrained-devices"><span class="secnum">20.10</span> DTLS 1.3 and EDHOC for Constrained Devices<a class="headerlink" href="#2010-dtls-13-and-edhoc-for-constrained-devices" title="Permanent link">&para;</a></h2>
+<p><strong>DTLS 1.3</strong> (RFC 9147) brings TLS 1.3 security to UDP-based IoT (CoAP). <strong>EDHOC</strong> (RFC 9528) provides a 3-message key exchange in 150–300 bytes.</p>
+<div class="tbl" id="tab-iot-proto">
+<div class="tbl-caption"><strong>Table 20.5.</strong> IoT Security Protocol Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Protocol</strong></th>
+<th style="text-align: left;"><strong>Handshake (bytes)</strong></th>
+<th style="text-align: left;"><strong>RAM (bytes)</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TLS 1.3 (mbedTLS 3.x)</td>
+<td style="text-align: left;"> 8<span>,</span>000</td>
+<td style="text-align: left;"> 50<span>,</span>000</td>
+<td style="text-align: left;">TCP; full stack</td>
+</tr>
+<tr>
+<td style="text-align: left;">DTLS 1.3 (wolfSSL)</td>
+<td style="text-align: left;"> 6<span>,</span>000</td>
+<td style="text-align: left;"> 35<span>,</span>000</td>
+<td style="text-align: left;">UDP; CoAP transport</td>
+</tr>
+<tr>
+<td style="text-align: left;">EDHOC + OSCORE (RFC 9528)</td>
+<td style="text-align: left;"> 150</td>
+<td style="text-align: left;"> 5<span>,</span>000</td>
+<td style="text-align: left;">Minimal 3-message DH</td>
+</tr>
+<tr>
+<td style="text-align: left;">PSK-DTLS 1.3</td>
+<td style="text-align: left;"> 1<span>,</span>200</td>
+<td style="text-align: left;"> 15<span>,</span>000</td>
+<td style="text-align: left;">Pre-shared key mode</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="2011-tls-libraries-for-mcus"><span class="secnum">20.11</span> TLS Libraries for MCUs<a class="headerlink" href="#2011-tls-libraries-for-mcus" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-tls-libs">
+<div class="tbl-caption"><strong>Table 20.6.</strong> Embedded TLS Library Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Library</strong></th>
+<th style="text-align: left;"><strong>Flash (KB)</strong></th>
+<th style="text-align: left;"><strong>RAM (KB)</strong></th>
+<th style="text-align: left;"><strong>License</strong></th>
+<th style="text-align: left;"><strong>HW Accel</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">mbedTLS 3.x</td>
+<td style="text-align: left;">60–150</td>
+<td style="text-align: left;">50–100</td>
+<td style="text-align: left;">Apache 2.0</td>
+<td style="text-align: left;">PSA Crypto API</td>
+</tr>
+<tr>
+<td style="text-align: left;">wolfSSL 5.x</td>
+<td style="text-align: left;">20–100</td>
+<td style="text-align: left;">12–50</td>
+<td style="text-align: left;">GPL/Commercial</td>
+<td style="text-align: left;">wolfCrypt drivers</td>
+</tr>
+<tr>
+<td style="text-align: left;">TinyCrypt</td>
+<td style="text-align: left;">6–20</td>
+<td style="text-align: left;">2–8</td>
+<td style="text-align: left;">BSD</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">BearSSL</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">6–20</td>
+<td style="text-align: left;">MIT</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="2012-target-hardware-for-iot-security"><span class="secnum">20.12</span> Target Hardware for IoT Security<a class="headerlink" href="#2012-target-hardware-for-iot-security" title="Permanent link">&para;</a></h2>
+<h3 id="20121-stm32l552-arm-cortex-m33-psa-level-2"><span class="secnum">20.12.1</span> STM32L552 (ARM Cortex-M33, PSA Level 2)<a class="headerlink" href="#20121-stm32l552-arm-cortex-m33-psa-level-2" title="Permanent link">&para;</a></h3>
+<p>STMicroelectronics STM32L552ZE: 110 MHz Cortex-M33 + TrustZone-M, FPU, MPU (16 regions). Memory: 512 KB dual-bank flash (configurable S/NS partition), 256 KB SRAM. Security: PKA (ECC P-256/P-521, RSA-4096), AES-256, SHA-256/384, HW RNG (NIST 800-90A), TAMP module (tamper detection), OTFDEC (on-the-fly AES decryption of NS flash). PSA Certified Level 2. Eval: NUCLEO-L552ZE-Q (&#36;5).</p>
+<h3 id="20122-nordic-nrf9160-lte-mnb-iot"><span class="secnum">20.12.2</span> Nordic nRF9160 (LTE-M/NB-IoT)<a class="headerlink" href="#20122-nordic-nrf9160-lte-mnb-iot" title="Permanent link">&para;</a></h3>
+<p>64 MHz Cortex-M33 + TrustZone-M. Integrated LTE-M/NB-IoT modem + GNSS SiP. 1 MB flash, 256 KB RAM. ARM CryptoCell-310 (AES-128, SHA-256, ECC P-256). PSA Certified Level 1. Eval: nRF9160 DK (&#36;9, Nordic Semiconductor).</p>
+<h3 id="20123-nxp-lpc55s69-trustzone-m-puf"><span class="secnum">20.12.3</span> NXP LPC55S69 (TrustZone-M + PUF)<a class="headerlink" href="#20123-nxp-lpc55s69-trustzone-m-puf" title="Permanent link">&para;</a></h3>
+<p>Dual Cortex-M33 at 150 MHz. 640 KB flash, 320 KB SRAM. CASPER coprocessor (RSA-4096, ECC P-256), PRINCE (AES-128 on-the-fly flash encryption), SRAM PUF (physically unclonable function for key derivation). PSA Certified Level 2. Eval: LPC55S69-EVK (&#36;2, NXP).</p>
+<h3 id="20124-silicon-labs-efr32mg21-secure-vault-psa-level-3"><span class="secnum">20.12.4</span> Silicon Labs EFR32MG21 (Secure Vault, PSA Level 3)<a class="headerlink" href="#20124-silicon-labs-efr32mg21-secure-vault-psa-level-3" title="Permanent link">&para;</a></h3>
+<p>80 MHz Cortex-M33, BLE 5.2 + IEEE 802.15.4 (Thread, Zigbee). Secure Vault: dedicated hardware security subsystem physically isolated from app core, DPA-resistant cryptographic engines, active anti-tamper mesh, key wrapping with device-unique master key generated from PUF at first boot. PSA Certified Level 3. Eval: BRD4181A radio board (&#36;5 with WSTK Starter Kit).</p>
+<h2 id="2013-fpga-and-asic-iot-security"><span class="secnum">20.13</span> FPGA and ASIC IoT Security<a class="headerlink" href="#2013-fpga-and-asic-iot-security" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-iot-fpga">
+<div class="tbl-caption"><strong>Table 20.7.</strong> IoT Security IP Cores on Xilinx Artix-7 XC7A35T</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>IP Core</strong></th>
+<th style="text-align: left;"><strong>LUTs</strong></th>
+<th style="text-align: left;"><strong>FFs</strong></th>
+<th style="text-align: left;"><strong>BRAMs</strong></th>
+<th style="text-align: left;"><strong>Freq (MHz)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AES-128 (encrypt only)</td>
+<td style="text-align: left;">820</td>
+<td style="text-align: left;">340</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">185</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES-256-GCM</td>
+<td style="text-align: left;">1<span>,</span>450</td>
+<td style="text-align: left;">680</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">155</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHA-256</td>
+<td style="text-align: left;">620</td>
+<td style="text-align: left;">280</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECDSA P-256</td>
+<td style="text-align: left;">8<span>,</span>200</td>
+<td style="text-align: left;">3<span>,</span>100</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">95</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ascon-128</td>
+<td style="text-align: left;">380</td>
+<td style="text-align: left;">220</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">250</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>Microchip SmartFusion2 (M2S090T): flash FPGA + ARM Cortex-M3 + CPE. SONOS flash process retains bitstream after power-off (unlike SRAM FPGAs needing external config). Lattice iCE40UP5K: &lt;75 uW standby, no built-in security; pair with ATECC608B.</p>
+<div class="tbl" id="tab-iot-asic">
+<div class="tbl-caption"><strong>Table 20.8.</strong> IoT Security ASIC Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Interface</strong></th>
+<th style="text-align: left;"><strong>Crypto</strong></th>
+<th style="text-align: left;"><strong>Cert</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">NXP EdgeLock SE050</td>
+<td style="text-align: left;">40 nm</td>
+<td style="text-align: left;">I2C/SPI</td>
+<td style="text-align: left;">ECC-521, RSA-4096, AES-256</td>
+<td style="text-align: left;">CC EAL6+</td>
+</tr>
+<tr>
+<td style="text-align: left;">STMicro STSAFE-A110</td>
+<td style="text-align: left;">40 nm</td>
+<td style="text-align: left;">I2C</td>
+<td style="text-align: left;">ECC P-256, AES-128</td>
+<td style="text-align: left;">CC EAL5+</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon OPTIGA Trust M</td>
+<td style="text-align: left;">40 nm</td>
+<td style="text-align: left;">I2C</td>
+<td style="text-align: left;">ECC P-256, RSA-2048</td>
+<td style="text-align: left;">CC EAL6+</td>
+</tr>
+<tr>
+<td style="text-align: left;">SL Secure Vault</td>
+<td style="text-align: left;">55 nm</td>
+<td style="text-align: left;">On-chip</td>
+<td style="text-align: left;">ECC, AES-256, DPA-resist</td>
+<td style="text-align: left;">PSA L3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon PSoC64</td>
+<td style="text-align: left;">40 nm</td>
+<td style="text-align: left;">On-chip</td>
+<td style="text-align: left;">Cortex-M4+M0+, AES</td>
+<td style="text-align: left;">PSA L2</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="2014-secure-provisioning-flow"><span class="secnum">20.14</span> Secure Provisioning Flow<a class="headerlink" href="#2014-secure-provisioning-flow" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>HSM key generation:</strong> Thales Luna or Utimaco HSM generates per-device ECC P-256 keypair.</p>
+</li>
+<li>
+<p><strong>Encrypted injection:</strong> ST STSDK or NXP SPSDK transfers key material over authenticated session.</p>
+</li>
+<li>
+<p><strong>Certificate enrollment:</strong> Device generates on-chip CSR; provisioning CA (in HSM) signs.</p>
+</li>
+<li>
+<p><strong>Cloud onboarding:</strong> AWS IoT Core DPS or Azure IoT Hub DPS validates cert on first connection.</p>
+</li>
+<li>
+<p><strong>Lifecycle lock:</strong> RDP Level 2 programmed, JTAG/SWD disabled permanently at end of manufacturing.</p>
+</li>
+</ol>
+<h2 id="2015-iot-ota-update-architecture"><span class="secnum">20.15</span> IoT OTA Update Architecture<a class="headerlink" href="#2015-iot-ota-update-architecture" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-iot-ota">
+<img class="tikz" src="img/tikz-d12ed44525d1.svg" alt="IoT OTA update: SUIT manifest (RFC 9019) carries SHA-256 hash and Ed25519 signature. MCUboot verifies before writing secondary slot. Trial boot with rollback prevents bricking." loading="lazy">
+<figcaption><strong>Figure 20.2.</strong> IoT OTA update: SUIT manifest (RFC 9019) carries SHA-256 hash and Ed25519 signature. MCUboot verifies before writing secondary slot. Trial boot with rollback prevents bricking.</figcaption>
+</figure>
+
+<h2 id="2016-all-solutions-comparison"><span class="secnum">20.16</span> All Solutions Comparison<a class="headerlink" href="#2016-all-solutions-comparison" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-iot-solutions">
+<div class="tbl-caption"><strong>Table 20.9.</strong> IoT Security Solutions</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+<th style="text-align: left;"><strong>Key Feature</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ARM TF-M + PSA Cert.</td>
+<td style="text-align: left;">Open+cert</td>
+<td style="text-align: left;">Cortex-M33/M23</td>
+<td style="text-align: left;">PSA APIs, TrustZone-M</td>
+</tr>
+<tr>
+<td style="text-align: left;">MCUboot</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Any Cortex-M</td>
+<td style="text-align: left;">Ed25519 sign, rollback</td>
+</tr>
+<tr>
+<td style="text-align: left;">SUIT manifest tool</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Any MCU</td>
+<td style="text-align: left;">RFC 9019, CBOR, COSE</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATECC608B</td>
+<td style="text-align: left;">Commercial chip</td>
+<td style="text-align: left;">I2C coprocessor</td>
+<td style="text-align: left;">ECC+AES+RNG, Microchip</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP EdgeLock SE050</td>
+<td style="text-align: left;">Commercial chip</td>
+<td style="text-align: left;">I2C/SPI</td>
+<td style="text-align: left;">CC EAL6+</td>
+</tr>
+<tr>
+<td style="text-align: left;">SL Secure Vault</td>
+<td style="text-align: left;">Commercial SoC</td>
+<td style="text-align: left;">EFR32 series</td>
+<td style="text-align: left;">PSA L3, DPA-resist</td>
+</tr>
+<tr>
+<td style="text-align: left;">STMicro STSAFE-A110</td>
+<td style="text-align: left;">Commercial chip</td>
+<td style="text-align: left;">I2C slave</td>
+<td style="text-align: left;">CC EAL5+</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon OPTIGA Trust M</td>
+<td style="text-align: left;">Commercial chip</td>
+<td style="text-align: left;">I2C slave</td>
+<td style="text-align: left;">CC EAL6+</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon PSoC64</td>
+<td style="text-align: left;">Commercial SoC</td>
+<td style="text-align: left;">Cortex-M4+M0+</td>
+<td style="text-align: left;">PSA Level 2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nordic nRF9160 TZ</td>
+<td style="text-align: left;">Commercial SoC</td>
+<td style="text-align: left;">LTE-M/NB-IoT</td>
+<td style="text-align: left;">CryptoCell-310</td>
+</tr>
+<tr>
+<td style="text-align: left;">wolfSSL 5.x</td>
+<td style="text-align: left;">Open-source lib</td>
+<td style="text-align: left;">Any MCU</td>
+<td style="text-align: left;">FIPS 140-3, dual-license</td>
+</tr>
+<tr>
+<td style="text-align: left;">mbedTLS 3.x</td>
+<td style="text-align: left;">Open-source lib</td>
+<td style="text-align: left;">Any MCU</td>
+<td style="text-align: left;">Apache 2.0, PSA Crypto</td>
+</tr>
+<tr>
+<td style="text-align: left;">TinyCrypt</td>
+<td style="text-align: left;">Open-source lib</td>
+<td style="text-align: left;">Cortex-M0+</td>
+<td style="text-align: left;">6–20 KB footprint</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenThread</td>
+<td style="text-align: left;">Open stack</td>
+<td style="text-align: left;">802.15.4 MCUs</td>
+<td style="text-align: left;">Thread Group, MeshCOP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Matter (CHIP 1.3)</td>
+<td style="text-align: left;">Open stack</td>
+<td style="text-align: left;">BLE/Thread/WiFi</td>
+<td style="text-align: left;">CSA, PASE/CASE</td>
+</tr>
+<tr>
+<td style="text-align: left;">AWS IoT Greengrass</td>
+<td style="text-align: left;">Cloud + edge</td>
+<td style="text-align: left;">Lambda on edge</td>
+<td style="text-align: left;">Mutual TLS, X.509</td>
+</tr>
+<tr>
+<td style="text-align: left;">Azure IoT Hub DPS</td>
+<td style="text-align: left;">Cloud provision</td>
+<td style="text-align: left;">Any device</td>
+<td style="text-align: left;">Zero-touch provisioning</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="2017-solved-problems"><span class="secnum">20.17</span> Solved Problems<a class="headerlink" href="#2017-solved-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TrustZone-M SAU Configuration for STM32L552</p>
+<p>Given STM32L552: Secure TF-M at 0x08000000–0x0800FFFF (64 KB), NSC veneer at 0x0E000000–0x0E00FFFF (64 KB), NS app at 0x08010000–0x0807FFFF (448 KB), NS SRAM at 0x20020000–0x2003FFFF (128 KB). Write the complete SAU configuration and verify access control. <strong>Solution:</strong> <strong>Step 1: Identify SAU entries.</strong></p>
+<p>SAU only marks NS and NSC regions; Secure is the default for all other space. Required: SAU[0]=NS flash, SAU[1]=NSC veneer, SAU[2]=NS SRAM.</p>
+<p><strong>Step 2: RBAR and RLAR values.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>SAU[0]: RBAR=0x08010000, RLAR=0x0807FFE0|0x01=0x0807FFE1  (NS, enable)
+SAU[1]: RBAR=0x0E000000, RLAR=0x0E00FFE0|0x03=0x0E00FFE3  (NSC, enable)
+SAU[2]: RBAR=0x20020000, RLAR=0x2003FFE0|0x01=0x2003FFE1  (NS, enable)
+</code></pre></div>
+<p><strong>Step 3: C implementation.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>void SAU_Init(void) {
+    SAU-&gt;CTRL=0;
+    SAU-&gt;RNR=0; SAU-&gt;RBAR=0x08010000U; SAU-&gt;RLAR=0x0807FFE1U;
+    SAU-&gt;RNR=1; SAU-&gt;RBAR=0x0E000000U; SAU-&gt;RLAR=0x0E00FFE3U;
+    SAU-&gt;RNR=2; SAU-&gt;RBAR=0x20020000U; SAU-&gt;RLAR=0x2003FFE1U;
+    SAU-&gt;CTRL=SAU_CTRL_ENABLE_Msk;
+    __DSB(); __ISB();
+}
+</code></pre></div>
+<p><strong>Step 4: Verification.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>NS -&gt; 0x08000000 (S TF-M): SecureFault
+NS -&gt; 0x0E000100 via SG:   Switch to Secure state (allowed)
+S  -&gt; 0x20020000 (NS SRAM): Allowed (Secure can access NS)
+NS -&gt; 0x20000000 (S SRAM): SecureFault
+</code></pre></div>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: LoRaWAN 1.1 MIC Verification Step-by-Step</p>
+<p>LoRaWAN 1.1 uplink: MHDR=0x40, DevAddr=0xABCD1234, FCnt=5, frame=[0x40,0x34,0x12,0xCD,0xAB,0x00,0x05,0x00]. FNwkSIntKey=16 zero bytes. Received MIC=0xAABBCCDD. Is the frame valid? <strong>Solution:</strong> <strong>Step 1: Construct B0 block (16 bytes).</strong></p>
+<div class="language-text highlight"><pre><span></span><code>B0[0]=0x49           block type indicator
+B0[1:2]=0x00 0x00    ConfFCnt=0 (unconfirmed uplink)
+B0[3]=0x00 TxDr=0, B0[4]=0x00 TxCh=0
+B0[5]=0x00           Dir=0 (uplink)
+B0[6:9]=34 12 CD AB  DevAddr little-endian
+B0[10:13]=05 00 00 00  FCnt=5 little-endian
+B0[14]=0x00          padding
+B0[15]=0x08          len(frame)=8 bytes
+</code></pre></div>
+<p><strong>Step 2: Compute AES-128-CMAC.</strong></p>
+<p>Input = B0 (16 bytes) || frame (8 bytes) = 24 bytes total. CMAC-AES-128(key=16x0x00, B0||frame). MIC = first 4 bytes of output.</p>
+<p><strong>Step 3: Compare.</strong></p>
+<p>Computed MIC differs from received 0xAABBCCDD. <strong>REJECT.</strong> Frame dropped silently (no error response, avoids oracle). Possible causes: wrong FNwkSIntKey, replay (FCnt mismatch), or payload tampering.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: MCUboot Image Signing and Verification Process</p>
+<p>Describe the complete MCUboot Ed25519 workflow: key generation, prj.conf configuration, imgtool invocation, image format, and boot-time verification including rollback protection. <strong>Solution:</strong> <strong>Step 1: Key generation.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>python -m imgtool keygen -k sign.pem -t ed25519
+python -m imgtool getpub -k sign.pem &gt; sign_pub.c
+# sign_pub.c compiled into MCUboot binary
+</code></pre></div>
+<p><strong>Step 2: prj.conf.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>CONFIG_BOOT_SIGNATURE_TYPE_ED25519=y
+CONFIG_BOOT_SIGNATURE_KEY_FILE="sign.pem"
+CONFIG_BOOT_SWAP_USING_MOVE=y
+</code></pre></div>
+<p><strong>Step 3: Sign image.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>python -m imgtool sign --key sign.pem --header-size 0x200 --align 4
+    --version 1.2.0+0 --slot-size 0x67000
+    zephyr.bin  zephyr_signed.bin
+# Layout: [512B header | app code | TLV: HASH+KEYHASH+SIG]
+</code></pre></div>
+<p><strong>Step 4: Boot-time verification.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>1. Check header magic (0x96F3B83D)
+2. SHA-256(header+app) vs TLV HASH entry
+3. Verify TLV SIG (Ed25519) vs embedded pubkey
+4. Check version &gt;= minimum (anti-rollback)
+5. Swap secondary-&gt;primary, set UNCONFIRMED, reboot
+6. App calls boot_set_confirmed() OR MCUboot reverts
+</code></pre></div>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: PSA Certified Level 2 Requirements for STM32L552</p>
+<p>A product team targets PSA Certified Level 2 on STM32L552. Map each mandatory PSA Level 2 requirement to the specific STM32L552 hardware or TF-M software feature that satisfies it. <strong>Solution:</strong> <strong>Requirement mapping:</strong></p>
+<ol>
+<li>
+<p><strong>Verified Boot (RQ_A_SECBOOT):</strong> MCUboot Ed25519. TZEN=1 option byte.</p>
+</li>
+<li>
+<p><strong>Crypto (RQ_A_CRYPTO):</strong> STM32L5 PKA+AES+SHA via TF-M Crypto partition PSA API.</p>
+</li>
+<li>
+<p><strong>Secure Storage (RQ_A_STORAGE):</strong> TF-M ITS (Secure SRAM) + TF-M PS (AES-256-GCM).</p>
+</li>
+<li>
+<p><strong>Attestation (RQ_A_ATTEST):</strong> TF-M Initial Attestation (EAT/CBOR/COSE_Sign1).</p>
+</li>
+<li>
+<p><strong>Isolation:</strong> SAU + IDAU + MPU via TF-M firmware configuration.</p>
+</li>
+<li>
+<p><strong>Lifecycle:</strong> STM32L5 RDP 0/1/2 + TF-M lifecycle CSR states.</p>
+</li>
+<li>
+<p><strong>Debug control:</strong> RDP Level 2 disables JTAG/SWD permanently.</p>
+</li>
+</ol>
+<p><strong>Certification:</strong> Submit to accredited lab (Riscure, Brightsight). Architecture review + TF-M source review + basic fault injection test. Certificate valid 3 years.</p>
+</div>
+<h2 id="sec-ch20-recent"><span class="secnum">20.18</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch20-recent" title="Permanent link">&para;</a></h2>
+<p>IoT hardware security has matured significantly, driven by new protocol standards, updated certification schemes, and major regulatory mandates.</p>
+<h3 id="20181-matter-1213-20232024-hardware-security-requirements"><span class="secnum">20.18.1</span> Matter 1.2/1.3 (2023–2024): Hardware Security Requirements<a class="headerlink" href="#20181-matter-1213-20232024-hardware-security-requirements" title="Permanent link">&para;</a></h3>
+<p>The Connectivity Standards Alliance (CSA) released Matter 1.2 (October 2023) and Matter 1.3 (May 2024), adding hardware security requirements beyond the original Matter 1.0 specification. Matter mandates a <strong>Device Attestation Certificate (DAC)</strong> stored in a Secure Element or equivalent tamper-resistant hardware; the DAC private key must be generated on-chip and never exported. The attestation flow uses CASE (Certificate-Authenticated Session Establishment) with ECDSA P-256, with the Device Attestation public key certified by the vendor’s Product Attestation Intermediate (PAI) certificate.</p>
+<p>Matter 1.2 added nine new device categories (refrigerators, robot vacuums, smoke detectors, etc.) and reinforced that each must carry a hardware-protected DAC. Matter 1.3 introduced <strong>Enhanced Setup Code</strong> for NFC-based commissioning and <strong>Device Energy Management</strong> (DEM) with security bindings to prevent unauthorised energy schedule modifications. Thread 1.3 (the underlying mesh protocol) now requires hardware-backed Operational Credentials.</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 20.10.</strong> Matter 1.3 hardware security requirements by credential type</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Matter Security Element</strong></th>
+<th style="text-align: left;"><strong>Hardware Requirement</strong></th>
+<th style="text-align: left;"><strong>Storage</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Device Attestation Certificate</td>
+<td style="text-align: left;">On-chip generation, no export</td>
+<td style="text-align: left;">SE / OTP</td>
+</tr>
+<tr>
+<td style="text-align: left;">DAC Private Key</td>
+<td style="text-align: left;">CC EAL5+ or equivalent</td>
+<td style="text-align: left;">SE NVM</td>
+</tr>
+<tr>
+<td style="text-align: left;">Node Operational Certificate</td>
+<td style="text-align: left;">Rotatable per fabric</td>
+<td style="text-align: left;">SE or PSA L2</td>
+</tr>
+<tr>
+<td style="text-align: left;">PASE Passcode</td>
+<td style="text-align: left;">Printed QR / NFC tag</td>
+<td style="text-align: left;">Non-secure storage OK</td>
+</tr>
+<tr>
+<td style="text-align: left;">CASE Session Keys</td>
+<td style="text-align: left;">Ephemeral (ECDH)</td>
+<td style="text-align: left;">Transient SRAM</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="20182-psa-certified-level-3-2023-new-evaluation-methodology"><span class="secnum">20.18.2</span> PSA Certified Level 3 (2023): New Evaluation Methodology<a class="headerlink" href="#20182-psa-certified-level-3-2023-new-evaluation-methodology" title="Permanent link">&para;</a></h3>
+<p>Arm PSA Certified Level 3 received a revised methodology in 2023, adding mandatory <strong>physical attack testing</strong> to the existing architectural and implementation reviews. Level 3 evaluations now require:</p>
+<ul>
+<li>
+<p>Resistance to non-invasive side-channel analysis (DPA, EM analysis) on cryptographic operations—the first PSA level to mandate physical testing.</p>
+</li>
+<li>
+<p>Resistance to fault injection attacks (voltage/clock glitching, laser FI) on security-critical code paths (PIN verification, boot verification).</p>
+</li>
+<li>
+<p>An independently accredited laboratory (e.g., Riscure, Brightsight, CESTI) must perform the penetration testing phase.</p>
+</li>
+</ul>
+<p>Silicon Labs EFR32MG21 Secure Vault High and Nordic nRF5340 achieved PSA Certified Level 3 under the revised methodology in 2023. The evaluation scope explicitly covers the secure enclave’s cryptographic engines and the secure boot chain.</p>
+<h3 id="20183-eu-cyber-resilience-act-cra-2024-iot-hardware-security-mandates"><span class="secnum">20.18.3</span> EU Cyber Resilience Act (CRA 2024): IoT Hardware Security Mandates<a class="headerlink" href="#20183-eu-cyber-resilience-act-cra-2024-iot-hardware-security-mandates" title="Permanent link">&para;</a></h3>
+<p>The EU Cyber Resilience Act was formally adopted in 2024 (Regulation 2024/2847), entering into force with a 36-month transition period. The CRA imposes mandatory cybersecurity requirements on all hardware and software products with digital elements sold in the EU. For IoT devices, the key hardware-level requirements include:</p>
+<ul>
+<li>
+<p><strong>Secure by default:</strong> No universal default passwords; credentials must be unique per device or generated on first use.</p>
+</li>
+<li>
+<p><strong>Unique device identity:</strong> Each device must have a hardware-rooted cryptographic identity (e.g., X.509 certificate backed by a secure element).</p>
+</li>
+<li>
+<p><strong>Secure update mechanism:</strong> OTA updates must be authenticated and integrity-checked; rollback to vulnerable firmware must be prevented.</p>
+</li>
+<li>
+<p><strong>Vulnerability disclosure:</strong> Manufacturers must report actively exploited vulnerabilities to ENISA within 24 hours.</p>
+</li>
+<li>
+<p><strong>Class I devices</strong> (standard IoT): Self-assessment conformity. <strong>Class II devices</strong> (critical, e.g., industrial gateways): Third-party conformity assessment mandatory.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> The CRA explicitly references ETSI EN 303 645 and NIST IR 8259 as candidate technical standards. IoT manufacturers targeting the EU market must align hardware designs with these requirements by 2027.</p>
+</div>
+<h3 id="20184-nist-ir-8259d-iot-device-cybersecurity-profile-for-enterprise-2023"><span class="secnum">20.18.4</span> NIST IR 8259D: IoT Device Cybersecurity Profile for Enterprise (2023)<a class="headerlink" href="#20184-nist-ir-8259d-iot-device-cybersecurity-profile-for-enterprise-2023" title="Permanent link">&para;</a></h3>
+<p>NIST IR 8259D (<em>Profile Using the IoT Core Baseline for the Industrial Internet of Things</em>) was published in 2023 as a companion to the foundational IR 8259A. It defines security capability baselines for enterprise IoT deployments, with hardware- specific requirements including:</p>
+<ul>
+<li>
+<p><strong>Device identity:</strong> Hardware-rooted unique identifier (UID) that is immutable and cryptographically bound to device certificates.</p>
+</li>
+<li>
+<p><strong>Cryptographic key protection:</strong> Private keys must reside in hardware- protected storage (HSM, SE, or TPM) inaccessible via software interfaces.</p>
+</li>
+<li>
+<p><strong>Physical access protection:</strong> Anti-tamper mechanisms that zeroize keys upon case opening (relevant for Class II industrial IoT).</p>
+</li>
+<li>
+<p><strong>Software update integrity:</strong> Hardware-verified signature check before any firmware is applied; rollback counter enforced in hardware.</p>
+</li>
+</ul>
+<h3 id="20185-rp2350-raspberry-pi-pico-2-2024-dual-architecture-security"><span class="secnum">20.18.5</span> RP2350 (Raspberry Pi Pico 2, 2024): Dual-Architecture Security<a class="headerlink" href="#20185-rp2350-raspberry-pi-pico-2-2024-dual-architecture-security" title="Permanent link">&para;</a></h3>
+<p>The RP2350 (announced August 2024) introduces a dual-architecture design: two ARM Cortex-M33 cores and two RISC-V Hazard3 cores (only one architecture active at a time, selected at boot). Security features represent a major step beyond the RP2040:</p>
+<ul>
+<li>
+<p><strong>ARM TrustZone-M:</strong> Full TrustZone-M support on the Cortex-M33 cores, enabling secure/normal world isolation as described in this chapter.</p>
+</li>
+<li>
+<p><strong>OTP (One-Time Programmable) memory:</strong> 4096 bits of on-chip OTP for key storage, boot configuration, and lock bits. The OTP includes an error correction code (ECC) engine.</p>
+</li>
+<li>
+<p><strong>Secure Boot:</strong> Hardware boot signature verification using an ECC P-256 key hash stored in OTP; unsigned firmware is rejected when secure boot is enabled.</p>
+</li>
+<li>
+<p><strong>GLITCH DETECTORS:</strong> Voltage glitch detection circuitry that triggers a system reset, mitigating fault injection attacks that were trivially effective on the RP2040.</p>
+</li>
+<li>
+<p><strong>RISC-V security:</strong> When booting in RISC-V mode (Hazard3 cores), the PMP (Physical Memory Protection) unit provides memory isolation analogous to TrustZone-M.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> RP2350’s dual-architecture capability enables interesting use cases: ARM Cortex-M33 with TrustZone-M can run the secure world, while RISC-V Hazard3 cores run the normal world application. The architecture selection is fixed at boot time by an OTP bit.</p>
+</div>
+<h3 id="20186-esp32-s3-secure-boot-v2-and-flash-encryption-improvements"><span class="secnum">20.18.6</span> ESP32-S3 Secure Boot v2 and Flash Encryption Improvements<a class="headerlink" href="#20186-esp32-s3-secure-boot-v2-and-flash-encryption-improvements" title="Permanent link">&para;</a></h3>
+<p>Espressif Systems updated the ESP32-S3 security subsystem in 2023 with Secure Boot v2 enhancements. Secure Boot v2 uses RSA-3072 with PSS padding (replacing the older ECDSA-based scheme) for firmware image verification, with the public key digest stored in eFuse. Up to three public keys can be enrolled simultaneously, enabling key rotation without hardware access: if a signing key is compromised, the corresponding eFuse digest bit is revoked, and the next enrolled key takes over. Flash encryption improvements include support for XTS-AES-256 (versus the previous XTS-AES-128), with the encryption key stored in a dedicated eFuse key block that is inaccessible after eFuse programming with the <code>DIS_DOWNLOAD_ICACHE</code> and <code>DIS_DOWNLOAD_DCACHE</code> fuses set.</p>
+<h3 id="20187-nordic-nrf9160nrf5340-psa-certified-certification"><span class="secnum">20.18.7</span> Nordic nRF9160/nRF5340 PSA Certified Certification<a class="headerlink" href="#20187-nordic-nrf9160nrf5340-psa-certified-certification" title="Permanent link">&para;</a></h3>
+<p>Nordic Semiconductor received PSA Certified Level 2 for the nRF9160 (LTE-M/NB-IoT SiP) and nRF5340 (dual Arm Cortex-M33 SoC) in 2023 under the revised PSA Certified Methodology v3.0. The nRF5340’s dual-core architecture—a 128 MHz application core (Cortex-M33) and a 64 MHz network core (Cortex-M33)—maps naturally to PSA’s isolation model: the application core runs TF-M (Trusted Firmware-M) in the secure world, while the network core handles radio protocol stacks in isolation. The CryptoCell-312 hardware cryptographic accelerator (AES-128, SHA-256, ECC P-256, TRNG) is accessible only from the secure world, satisfying the PSA Level 2 requirement for hardware-isolated cryptographic services.</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 20.11.</strong> Recent IoT platform security certifications (2023–2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>MCU</strong></th>
+<th style="text-align: left;"><strong>PSA Level</strong></th>
+<th style="text-align: left;"><strong>Key Security Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RP2350 (Pico 2, 2024)</td>
+<td style="text-align: left;">Dual Cortex-M33 + dual RISC-V</td>
+<td style="text-align: left;">Level 1 capable</td>
+<td style="text-align: left;">TrustZone-M, OTP, glitch detect</td>
+</tr>
+<tr>
+<td style="text-align: left;">ESP32-S3 (2023 update)</td>
+<td style="text-align: left;">Xtensa LX7</td>
+<td style="text-align: left;">Not PSA</td>
+<td style="text-align: left;">Secure Boot v2, XTS-AES-256</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nordic nRF5340</td>
+<td style="text-align: left;">Dual Cortex-M33</td>
+<td style="text-align: left;">Level 2</td>
+<td style="text-align: left;">CryptoCell-312, TF-M</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nordic nRF9160</td>
+<td style="text-align: left;">Cortex-M33</td>
+<td style="text-align: left;">Level 1</td>
+<td style="text-align: left;">CryptoCell-310, LTE-M</td>
+</tr>
+<tr>
+<td style="text-align: left;">SL EFR32MG21 Secure Vault</td>
+<td style="text-align: left;">Cortex-M33</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">DPA-resist, anti-tamper mesh</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p><strong>(MCQ)</strong> In ARM TrustZone-M NSC region, which instruction switches from Non-Secure to Secure state? (a) <code>BLX</code>, (b) <code>SG</code>, (c) <code>SMC</code>, (d) <code>SVC</code>.</p>
+</li>
+<li>
+<p><strong>(MCQ)</strong> LoRaWAN 1.1 encrypts the application payload using which session key? (a) NwkKey, (b) FNwkSIntKey, (c) AppSKey, (d) NwkSEncKey.</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> Explain the difference between SAU and IDAU in TrustZone-M. What is the effective attribution when SAU marks a region NS but IDAU marks it Secure?</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> Describe the MCUboot trial boot mechanism. What happens if the application never calls <code>boot_set_confirmed()</code> before the next watchdog reset?</p>
+</li>
+<li>
+<p><strong>(Design)</strong> Design a PSA-compliant secure provisioning flow for 100,000 IoT devices: HSM key generation, encrypted key injection, certificate enrollment, cloud zero-touch provisioning. Address security guarantees if a device is stolen during shipping.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> A LoRaWAN 1.0.x deployment uses a single AppKey. List the specific attacks this enables and explain how LoRaWAN 1.1 dual-key architecture closes each vulnerability.</p>
+</li>
+<li>
+<p><strong>(Coding)</strong> Write a C function with <code>cmse_nonsecure_entry</code> that validates an NS buffer, performs AES-256-GCM encryption via PSA Crypto API using persistent key ID 0x1, and writes ciphertext + 16-byte tag to the NS caller buffer.</p>
+</li>
+<li>
+<p><strong>(Coding)</strong> Write a Python script using cbor2 and pycose to generate a SUIT RFC 9019 manifest: firmware v2.1.0, SHA-256 image digest, sequence number 42, HTTPS fetch URI, COSE_Sign1 signed with ECDSA-P256.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> Design an ATECC608B (16 slots x 256-bit) slot assignment for a TLS 1.3 mutual-auth IoT client: device ECDSA identity key, ECDH ephemeral, CA public key, AES-128 session key, anti-replay counter. Specify read/write/auth policy for each slot.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> Compare Ascon-128 (10 cy/B SW) vs AES-128-CCM (55 cy/B SW) on a 16 MHz Cortex-M0+. Calculate CPU load for 100-byte CoAP payloads per second. At what frequency does AES-CCM exceed 80% CPU load?</p>
+</li>
+<li>
+<p><strong>(Research)</strong> EFR32MG21 Secure Vault achieves PSA Level 3 via DPA resistance. Explain: (a) what physical quantities DPA measures, (b) how hardware masking counters DPA, (c) why TrustZone-M isolation alone cannot achieve Level 3.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> Design a complete Matter 1.3 security architecture for a smart thermostat: DAC, PAI, CD, PASE commissioning, CASE session establishment, OTA with SUIT. Specify hardware for each element, factory provisioning flow, and security guarantee.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch19-secure-key-management.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 19. Secure Key Management">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                19. Secure Key Management
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch21-secure-elements-and-smart-cards.html" class="md-footer__link md-footer__link--next" aria-label="Next: 21. Secure Elements and Smart Cards">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                21. Secure Elements and Smart Cards
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

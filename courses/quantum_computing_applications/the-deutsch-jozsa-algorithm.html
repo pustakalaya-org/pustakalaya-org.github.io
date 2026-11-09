@@ -1,0 +1,2260 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/the-deutsch-jozsa-algorithm.html">
+  
+  
+    <link rel="prev" href="the-deutsch-algorithm.html">
+  
+  
+    <link rel="next" href="the-bernstein-vazirani-algorithm.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>13. The Deutsch–Jozsa Algorithm - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#131-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13. The Deutsch–Jozsa Algorithm
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#131-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#132-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 The Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 The Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classical-query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classical query complexity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum query complexity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#133-the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 The Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.3 The Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derivation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-two-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-decision-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The decision rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#134-constructing-oracles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Constructing Oracles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#135-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#136-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#137-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#131-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#132-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 The Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 The Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classical-query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classical query complexity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-query-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum query complexity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#133-the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 The Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.3 The Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#derivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derivation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-two-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-decision-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The decision rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#134-constructing-oracles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Constructing Oracles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#135-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#136-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#137-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-13-the-deutschjozsa-algorithm">Lesson 13: The Deutsch–Jozsa Algorithm<a class="headerlink" href="#lesson-13-the-deutschjozsa-algorithm" title="Permanent link">&para;</a></h1>
+<h2 id="131-learning-outcomes">13.1 Learning Outcomes<a class="headerlink" href="#131-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>State the <strong>Deutsch–Jozsa promise problem</strong> and the classical deterministic and randomised query bounds.</li>
+<li>Derive the algorithm in full using the <span class="arithmatex">\(n\)</span>-qubit Hadamard identity.</li>
+<li>Prove that <span class="arithmatex">\(\Pr[\text{all zeros}] = 1\)</span> for constant <span class="arithmatex">\(f\)</span> and <span class="arithmatex">\(0\)</span> for balanced <span class="arithmatex">\(f\)</span>.</li>
+<li>Explain the <strong>exponential separation</strong> and its important caveat (bounded-error randomised classical algorithms).</li>
+<li>Construct oracles for specific <span class="arithmatex">\(n\)</span>-bit functions.</li>
+</ol>
+<h2 id="132-the-problem">13.2 The Problem<a class="headerlink" href="#132-the-problem" title="Permanent link">&para;</a></h2>
+<p><strong>Promise problem.</strong> Given an oracle for <span class="arithmatex">\(f:\{0,1\}^n \to \{0,1\}\)</span> with the <strong>promise</strong> that <span class="arithmatex">\(f\)</span> is
+either</p>
+<ul>
+<li><strong>constant</strong> — <span class="arithmatex">\(f(x)\)</span> is the same for all <span class="arithmatex">\(2^n\)</span> inputs, or</li>
+<li><strong>balanced</strong> — <span class="arithmatex">\(f(x) = 0\)</span> for exactly <span class="arithmatex">\(2^{n-1}\)</span> inputs and <span class="arithmatex">\(1\)</span> for the other <span class="arithmatex">\(2^{n-1}\)</span>,</li>
+</ul>
+<p>decide which.</p>
+<p><strong>The word "promise" matters.</strong> Functions that are neither constant nor balanced (e.g. <span class="arithmatex">\(f\)</span> equal to
+1 on exactly one input) are excluded; the algorithm's behaviour on them is undefined. Promise
+problems are how most quantum speed-ups are stated.</p>
+<h3 id="classical-query-complexity">Classical query complexity<a class="headerlink" href="#classical-query-complexity" title="Permanent link">&para;</a></h3>
+<p><strong>Deterministic (worst case).</strong> Query distinct inputs one at a time.</p>
+<ul>
+<li>If two queries ever return <strong>different</strong> values ⟹ definitely balanced. Stop.</li>
+<li>If the first <span class="arithmatex">\(2^{n-1}\)</span> queries all return the same value, the function could still be balanced
+    (all the 1s hiding in the untouched half). One more query settles it.</li>
+</ul>
+<div class="arithmatex">\[ \boxed{\ \text{Deterministic classical: } 2^{n-1}+1 \text{ queries in the worst case}\ } \]</div>
+<p>For <span class="arithmatex">\(n = 50\)</span> that is <span class="arithmatex">\(563{,}949{,}953{,}421{,}313\)</span> queries — over <span class="arithmatex">\(5\times10^{14}\)</span>.</p>
+<p><strong>Randomised (bounded error).</strong> Query <span class="arithmatex">\(k\)</span> random distinct inputs. If <span class="arithmatex">\(f\)</span> is balanced, the chance
+that all <span class="arithmatex">\(k\)</span> agree is about <span class="arithmatex">\(2^{-(k-1)}\)</span>. Taking <span class="arithmatex">\(k = 21\)</span> gives error <span class="arithmatex">\(&lt; 10^{-6}\)</span>.</p>
+<div class="arithmatex">\[ \boxed{\ \text{Randomised classical: } O(1) \text{ queries for constant error}\ } \]</div>
+<p><strong>This caveat must be stated honestly.</strong> Deutsch–Jozsa gives an exponential separation against
+<em>deterministic exact</em> classical computation, but only a constant-factor separation against
+<em>randomised</em> classical computation. The first problem with an exponential separation even against
+randomised classical algorithms is <strong>Simon's problem</strong> (L15).</p>
+<h3 id="quantum-query-complexity">Quantum query complexity<a class="headerlink" href="#quantum-query-complexity" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ \text{Quantum: } 1 \text{ query, exact}\ } \]</div>
+<h2 id="133-the-algorithm">13.3 The Algorithm<a class="headerlink" href="#133-the-algorithm" title="Permanent link">&para;</a></h2>
+<h3 id="circuit">Circuit<a class="headerlink" href="#circuit" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>q0 ... q(n-1) : --[H]^n-------.------[H]^n----[M]^n--
+                              |
+                          [   U_f   ]
+                              |
+q_ancilla     : --[X]--[H]----'--------------------
+</code></pre></div>
+<h3 id="derivation">Derivation<a class="headerlink" href="#derivation" title="Permanent link">&para;</a></h3>
+<p><strong>Step 0.</strong></p>
+<div class="arithmatex">\[ |\psi_0\rangle = |0\rangle^{\otimes n}\otimes|1\rangle \]</div>
+<p><strong>Step 1 — Hadamards everywhere.</strong></p>
+<div class="arithmatex">\[ |\psi_1\rangle = \left(\frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}|x\rangle\right)\otimes|-\rangle \]</div>
+<p><strong>Step 2 — one oracle query (phase kick-back).</strong></p>
+<div class="arithmatex">\[ |\psi_2\rangle = \left(\frac{1}{\sqrt{2^n}}\sum_{x}(-1)^{f(x)}|x\rangle\right)\otimes|-\rangle \]</div>
+<p><strong>Step 3 — final Hadamards.</strong> Use the identity from L07:</p>
+<div class="arithmatex">\[ H^{\otimes n}|x\rangle = \frac{1}{\sqrt{2^n}}\sum_{y\in\{0,1\}^n}(-1)^{x\cdot y}|y\rangle,
+\qquad x\cdot y = \bigoplus_{j=1}^{n} x_j y_j . \]</div>
+<p>Therefore</p>
+<div class="arithmatex">\[ |\psi_3\rangle = \frac{1}{2^n}\sum_{y}\left[\sum_{x}(-1)^{f(x) + x\cdot y}\right]|y\rangle
+\ \otimes|-\rangle \]</div>
+<p><strong>Step 4 — measure the input register.</strong> The amplitude of the all-zeros string <span class="arithmatex">\(y = 0^n\)</span> is</p>
+<div class="arithmatex">\[ A_{0^n} = \frac{1}{2^n}\sum_{x}(-1)^{f(x)+ x\cdot 0} = \frac{1}{2^n}\sum_{x}(-1)^{f(x)} . \]</div>
+<h3 id="the-two-cases">The two cases<a class="headerlink" href="#the-two-cases" title="Permanent link">&para;</a></h3>
+<p><strong>Case A: <span class="arithmatex">\(f\)</span> constant.</strong> All <span class="arithmatex">\(2^n\)</span> terms equal <span class="arithmatex">\((-1)^{c}\)</span> where <span class="arithmatex">\(c = f(x)\)</span> is the constant value:</p>
+<div class="arithmatex">\[ A_{0^n} = \frac{1}{2^n}\cdot 2^n\,(-1)^{c} = \pm1
+\qquad\Longrightarrow\qquad \Pr[0^n] = |{\pm}1|^2 = 1 . \]</div>
+<p>Since the total probability is 1, <strong>every other amplitude is exactly zero.</strong> Perfect constructive
+interference on <span class="arithmatex">\(|0^n\rangle\)</span>, perfect destructive interference everywhere else.</p>
+<p><strong>Case B: <span class="arithmatex">\(f\)</span> balanced.</strong> Exactly half the terms are <span class="arithmatex">\(+1\)</span> and half are <span class="arithmatex">\(-1\)</span>:</p>
+<div class="arithmatex">\[ A_{0^n} = \frac{1}{2^n}\left[2^{n-1}(+1) + 2^{n-1}(-1)\right] = 0
+\qquad\Longrightarrow\qquad \Pr[0^n] = 0 . \]</div>
+<p><strong>Complete destructive interference</strong> on the all-zeros outcome.</p>
+<h3 id="the-decision-rule">The decision rule<a class="headerlink" href="#the-decision-rule" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ \text{Measure } 0^n \Rightarrow \textbf{constant};\qquad
+\text{measure anything else} \Rightarrow \textbf{balanced}\ } \]</div>
+<p>Deterministic, one query, no error. <span class="arithmatex">\(\blacksquare\)</span></p>
+<h2 id="134-constructing-oracles">13.4 Constructing Oracles<a class="headerlink" href="#134-constructing-oracles" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(f\)</span></th>
+<th>Type</th>
+<th>Circuit for <span class="arithmatex">\(U_f\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(f(x) = 0\)</span></td>
+<td>constant</td>
+<td>no gates</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f(x)=1\)</span></td>
+<td>constant</td>
+<td><span class="arithmatex">\(X\)</span> on the ancilla</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f(x) = x_k\)</span></td>
+<td>balanced</td>
+<td>CNOT from <span class="arithmatex">\(q_k\)</span> to the ancilla</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f(x)=x_1\oplus x_2\oplus\cdots\oplus x_n\)</span> (parity)</td>
+<td>balanced (<span class="arithmatex">\(n\ge1\)</span>)</td>
+<td>CNOT from <strong>every</strong> input qubit to the ancilla</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f(x) = a\cdot x\)</span> for <span class="arithmatex">\(a\ne 0\)</span></td>
+<td>balanced</td>
+<td>CNOT from each <span class="arithmatex">\(q_j\)</span> with <span class="arithmatex">\(a_j = 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f(x)= x_1 \wedge x_2\)</span></td>
+<td>neither</td>
+<td>Toffoli — <strong>violates the promise</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Useful fact.</strong> For <span class="arithmatex">\(f(x) = a\cdot x\)</span> (a linear function), Deutsch–Jozsa outputs the string <span class="arithmatex">\(a\)</span>
+itself — not merely "balanced". Proving this is the Bernstein–Vazirani algorithm (L14).</p>
+<h2 id="135-solved-problems">13.5 Solved Problems<a class="headerlink" href="#135-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-complete-trace-for-n-2-fx-x1-x2">Problem 1 — Complete trace for n = 2, f(x) = x₁ ⊕ x₂<a class="headerlink" href="#problem-1-complete-trace-for-n-2-fx-x1-x2" title="Permanent link">&para;</a></h4>
+<p><em>Run Deutsch–Jozsa on the 2-bit parity function and identify the measured string.</em></p>
+<p><strong>Solution.</strong>
+Truth table: <span class="arithmatex">\(f(00)=0\)</span>, <span class="arithmatex">\(f(01)=1\)</span>, <span class="arithmatex">\(f(10)=1\)</span>, <span class="arithmatex">\(f(11)=0\)</span> — two 0s and two 1s, so <strong>balanced</strong> ✓.</p>
+<p><strong>After Step 2:</strong></p>
+<div class="arithmatex">\[ \frac12\Big[(-1)^0|00\rangle + (-1)^1|01\rangle + (-1)^1|10\rangle + (-1)^0|11\rangle\Big] \]</div>
+<div class="arithmatex">\[ = \frac12\big(|00\rangle - |01\rangle - |10\rangle + |11\rangle\big) \]</div>
+<p>Factorise:</p>
+<div class="arithmatex">\[ = \frac{1}{\sqrt2}\big(|0\rangle - |1\rangle\big)\otimes\frac{1}{\sqrt2}\big(|0\rangle - |1\rangle\big)
+= |-\rangle\otimes|-\rangle \]</div>
+<p><strong>After Step 3:</strong> <span class="arithmatex">\(H|-\rangle = |1\rangle\)</span>, so</p>
+<div class="arithmatex">\[ |\psi_3\rangle = |11\rangle . \]</div>
+<p><strong>Measurement gives <span class="arithmatex">\(11\)</span></strong> with probability 1. Not <span class="arithmatex">\(00\)</span> ⟹ <strong>balanced</strong> ✓.</p>
+<p>Note the bonus: the output <span class="arithmatex">\(11\)</span> is exactly the string <span class="arithmatex">\(a = 11\)</span> defining <span class="arithmatex">\(f(x) = a\cdot x\)</span>.</p>
+<h4 id="problem-2-complete-trace-for-n-3-fx-x2">Problem 2 — Complete trace for n = 3, f(x) = x₂<a class="headerlink" href="#problem-2-complete-trace-for-n-3-fx-x2" title="Permanent link">&para;</a></h4>
+<p><em>Run the algorithm for <span class="arithmatex">\(f(x_1x_2x_3) = x_2\)</span> (oracle = CNOT from <span class="arithmatex">\(q_2\)</span> to the ancilla).</em></p>
+<p><strong>Solution.</strong>
+<span class="arithmatex">\(f\)</span> is balanced: it equals 0 on the four strings with <span class="arithmatex">\(x_2=0\)</span> and 1 on the four with <span class="arithmatex">\(x_2 = 1\)</span> ✓.</p>
+<p><strong>After Step 2:</strong></p>
+<div class="arithmatex">\[ \frac{1}{\sqrt8}\sum_{x}(-1)^{x_2}|x_1x_2x_3\rangle
+= \frac{1}{\sqrt2}\big(|0\rangle+|1\rangle\big)\otimes\frac{1}{\sqrt2}\big(|0\rangle - |1\rangle\big)
+\otimes\frac{1}{\sqrt2}\big(|0\rangle+|1\rangle\big) \]</div>
+<div class="arithmatex">\[ = |+\rangle|-\rangle|+\rangle \]</div>
+<p>The phase depends only on <span class="arithmatex">\(x_2\)</span>, so it attaches entirely to the middle qubit.</p>
+<p><strong>After Step 3:</strong> <span class="arithmatex">\(H|+\rangle = |0\rangle\)</span>, <span class="arithmatex">\(H|-\rangle=|1\rangle\)</span>:</p>
+<div class="arithmatex">\[ |\psi_3\rangle = |010\rangle \]</div>
+<p><strong>Measurement gives <span class="arithmatex">\(010\)</span></strong> — again exactly the mask <span class="arithmatex">\(a\)</span> with a 1 in position 2. Non-zero ⟹ balanced ✓.</p>
+<h4 id="problem-3-query-counts-and-the-honest-comparison">Problem 3 — Query counts and the honest comparison<a class="headerlink" href="#problem-3-query-counts-and-the-honest-comparison" title="Permanent link">&para;</a></h4>
+<p><em>For <span class="arithmatex">\(n = 40\)</span>: (a) worst-case deterministic classical queries; (b) randomised classical queries for
+error <span class="arithmatex">\(&lt; 10^{-9}\)</span>; (c) quantum queries. If a classical query takes 1 ns, how long is (a)?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a)</strong> <span class="arithmatex">\(2^{39} + 1 = 549{,}755{,}813{,}889 \approx 5.5\times10^{11}\)</span> queries.</p>
+<p>Time: <span class="arithmatex">\(5.5\times10^{11}\times10^{-9}\ \mathrm{s} = 550\ \mathrm{s} \approx \mathbf{9.2\ minutes}\)</span>.</p>
+<p><strong>(b)</strong> With <span class="arithmatex">\(k\)</span> random distinct queries, a balanced <span class="arithmatex">\(f\)</span> produces all-equal answers with probability
+about <span class="arithmatex">\(2^{-(k-1)}\)</span>. Require</p>
+<div class="arithmatex">\[ 2^{-(k-1)} &lt; 10^{-9} \ \Longrightarrow\ (k-1)\log_{10}2 &gt; 9
+\ \Longrightarrow\ k-1 &gt; 29.9 \ \Longrightarrow\ k = \mathbf{31}. \]</div>
+<p><strong>(c)</strong> <strong>1</strong> query.</p>
+<p><strong>Discussion.</strong> The honest comparison is 1 vs 31, not 1 vs <span class="arithmatex">\(5.5\times10^{11}\)</span>. Deutsch–Jozsa's
+exponential separation is against <em>exact deterministic</em> classical computation. It is nevertheless a
+landmark result: it was the first proof that quantum computers can be <strong>exponentially</strong> faster at
+<em>something</em>, and it introduced the superpose–kickback–interfere template that Simon and Shor turned
+into genuine, randomised-classical-beating speed-ups.</p>
+<h4 id="problem-4-amplitude-of-a-general-outcome">Problem 4 — Amplitude of a general outcome<a class="headerlink" href="#problem-4-amplitude-of-a-general-outcome" title="Permanent link">&para;</a></h4>
+<p><em>For balanced <span class="arithmatex">\(f\)</span> with <span class="arithmatex">\(n=2\)</span> and truth table <span class="arithmatex">\(f(00)=0, f(01)=0, f(10)=1, f(11)=1\)</span>, compute the
+amplitude of every basis state after Step 3.</em></p>
+<p><strong>Solution.</strong>
+Note <span class="arithmatex">\(f(x) = x_1\)</span>, so we expect the output <span class="arithmatex">\(10\)</span>.</p>
+<div class="arithmatex">\[ A_y = \frac14\sum_{x}(-1)^{f(x)+x\cdot y} \]</div>
+<p>Phases <span class="arithmatex">\((-1)^{f(x)}\)</span>: <span class="arithmatex">\((+1, +1, -1, -1)\)</span> for <span class="arithmatex">\(x = 00,01,10,11\)</span>.</p>
+<p><em>For <span class="arithmatex">\(y = 00\)</span>:</em> <span class="arithmatex">\(x\cdot y = 0\)</span> always.</p>
+<div class="arithmatex">\[ A_{00} = \tfrac14(1+1-1-1) = 0 \]</div>
+<p><em>For <span class="arithmatex">\(y = 01\)</span>:</em> <span class="arithmatex">\(x\cdot y = x_2\)</span>, giving signs <span class="arithmatex">\((+,-,+,-)\)</span>.</p>
+<div class="arithmatex">\[ A_{01} = \tfrac14\big[(+1)(+1) + (+1)(-1) + (-1)(+1) + (-1)(-1)\big] = \tfrac14(1-1-1+1) = 0 \]</div>
+<p><em>For <span class="arithmatex">\(y = 10\)</span>:</em> <span class="arithmatex">\(x\cdot y = x_1\)</span>, giving signs <span class="arithmatex">\((+,+,-,-)\)</span>.</p>
+<div class="arithmatex">\[ A_{10} = \tfrac14\big[(1)(1) + (1)(1) + (-1)(-1) + (-1)(-1)\big] = \tfrac14(1+1+1+1) = 1 \]</div>
+<p><em>For <span class="arithmatex">\(y = 11\)</span>:</em> <span class="arithmatex">\(x\cdot y = x_1\oplus x_2\)</span>, signs <span class="arithmatex">\((+,-,-,+)\)</span>.</p>
+<div class="arithmatex">\[ A_{11} = \tfrac14\big[(1)(1) + (1)(-1) + (-1)(-1) + (-1)(1)\big] = \tfrac14(1-1+1-1) = 0 \]</div>
+<p><strong>Summary:</strong> <span class="arithmatex">\(A_{10} = 1\)</span>, all others 0. <span class="arithmatex">\(\sum|A_y|^2 = 1\)</span> ✓. Measurement returns <span class="arithmatex">\(10\)</span>
+deterministically ⟹ balanced ✓.</p>
+<h4 id="problem-5-a-function-violating-the-promise">Problem 5 — A function violating the promise<a class="headerlink" href="#problem-5-a-function-violating-the-promise" title="Permanent link">&para;</a></h4>
+<p><em>Apply the algorithm to <span class="arithmatex">\(f:\{0,1\}^2\to\{0,1\}\)</span> with <span class="arithmatex">\(f(11) = 1\)</span> and <span class="arithmatex">\(f = 0\)</span> elsewhere (neither
+constant nor balanced). Compute the measurement distribution and interpret.</em></p>
+<p><strong>Solution.</strong>
+Phases: <span class="arithmatex">\((+1, +1, +1, -1)\)</span> for <span class="arithmatex">\(x = 00,01,10,11\)</span>.</p>
+<div class="arithmatex">\[ A_{00} = \tfrac14(1+1+1-1) = \tfrac12 \]</div>
+<div class="arithmatex">\[ A_{01} = \tfrac14\big[1 - 1 + 1 + 1\big] = \tfrac12 \]</div>
+<p>(signs for <span class="arithmatex">\(y=01\)</span>: <span class="arithmatex">\((+,-,+,-)\)</span>, applied to phases <span class="arithmatex">\((+,+,+,-)\)</span> gives <span class="arithmatex">\(+1,-1,+1,+1\)</span>.)</p>
+<div class="arithmatex">\[ A_{10} = \tfrac14\big[1+1-1+1\big] = \tfrac12 \]</div>
+<div class="arithmatex">\[ A_{11} = \tfrac14\big[1-1-1-1\big] = -\tfrac12 \]</div>
+<p><strong>Distribution:</strong> each outcome with probability <span class="arithmatex">\(\left(\frac12\right)^2 = \frac14\)</span>.</p>
+<p><strong>Interpretation.</strong> With probability <span class="arithmatex">\(\frac14\)</span> we measure <span class="arithmatex">\(00\)</span> and wrongly conclude "constant". The
+algorithm gives <strong>no guarantee</strong> outside its promise — which is the definition of a promise problem.</p>
+<p><em>This is a genuinely useful observation.</em> The amplitude <span class="arithmatex">\(A_{0^n} = \frac{1}{2^n}\sum_x(-1)^{f(x)}\)</span> is
+in general a <em>bias measure</em>: it equals <span class="arithmatex">\(1 - 2\cdot(\text{fraction of inputs where } f = 1)\)</span>. Here
+<span class="arithmatex">\(1 - 2\cdot\frac14 = \frac12\)</span> ✓. So the algorithm actually estimates the <strong>bias</strong> of <span class="arithmatex">\(f\)</span>; the
+constant/balanced decision is the special case where the bias is <span class="arithmatex">\(\pm1\)</span> or <span class="arithmatex">\(0\)</span>. This observation
+generalises into the <em>amplitude estimation</em> primitive used in Unit III.</p>
+<h2 id="136-practice-problems">13.6 Practice Problems<a class="headerlink" href="#136-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Trace the algorithm for <span class="arithmatex">\(n=2\)</span>, <span class="arithmatex">\(f(x) = 1\)</span> (constant). <strong>[Ans: measures <span class="arithmatex">\(00\)</span>]</strong></li>
+<li>Give the oracle circuit for <span class="arithmatex">\(f(x_1x_2x_3) = x_1\oplus x_3\)</span>, and predict the measured string. <strong>[Ans: 3 CNOTs from <span class="arithmatex">\(q_1,q_3\)</span>; measures <span class="arithmatex">\(101\)</span>]</strong></li>
+<li>For <span class="arithmatex">\(n=10\)</span>, how many worst-case deterministic classical queries? <strong>[Ans: 513]</strong></li>
+<li>Show that if <span class="arithmatex">\(f\)</span> is balanced then <span class="arithmatex">\(\sum_x(-1)^{f(x)} = 0\)</span> regardless of <em>which</em> half is 1.</li>
+<li>Prove that Deutsch–Jozsa with <span class="arithmatex">\(n=1\)</span> reduces exactly to the Deutsch algorithm.</li>
+<li>A function has <span class="arithmatex">\(f(x)=1\)</span> on <span class="arithmatex">\(\frac38\)</span> of inputs. What is <span class="arithmatex">\(\Pr[0^n]\)</span>? <strong>[Ans: <span class="arithmatex">\((1-2\cdot\frac38)^2 = \frac{1}{16}\)</span>]</strong></li>
+<li>Explain why Deutsch–Jozsa's separation is often called "unfair" and which algorithm repairs the unfairness.</li>
+</ol>
+<h2 id="137-summary">13.7 Summary<a class="headerlink" href="#137-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Promise problem:</strong> <span class="arithmatex">\(f\)</span> is constant or balanced; decide which.</li>
+<li><strong>Classical:</strong> <span class="arithmatex">\(2^{n-1}+1\)</span> deterministic worst-case queries, but only <span class="arithmatex">\(O(1)\)</span> randomised queries — state this caveat.</li>
+<li><strong>Quantum:</strong> <strong>1</strong> query, deterministic.</li>
+<li>Derivation: <span class="arithmatex">\(H^{\otimes n}\)</span> → phase kick-back → <span class="arithmatex">\(H^{\otimes n}\)</span>; the amplitude of <span class="arithmatex">\(0^n\)</span> is <span class="arithmatex">\(\frac{1}{2^n}\sum_x(-1)^{f(x)}\)</span>, which is <span class="arithmatex">\(\pm1\)</span> for constant and <span class="arithmatex">\(0\)</span> for balanced.</li>
+<li>Decision rule: <strong>all zeros ⟹ constant; anything else ⟹ balanced.</strong></li>
+<li>Outside the promise the algorithm still computes the <strong>bias</strong> of <span class="arithmatex">\(f\)</span> — a fact that generalises to amplitude estimation.</li>
+</ul>
+<p><strong>Next lesson:</strong> L14 — The Bernstein–Vazirani algorithm.</p>
+<p><strong>Practise now:</strong> <code>unit2-algorithms-lab.html</code> → <em>Deutsch–Jozsa</em> tab: choose <span class="arithmatex">\(n\)</span> up to 5, pick or
+randomise the oracle, and watch the amplitude bars collapse onto <span class="arithmatex">\(0^n\)</span> or spread away from it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="the-deutsch-algorithm.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 12. The Deutsch Algorithm">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                12. The Deutsch Algorithm
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-bernstein-vazirani-algorithm.html" class="md-footer__link md-footer__link--next" aria-label="Next: 14. The Bernstein–Vazirani Algorithm">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                14. The Bernstein–Vazirani Algorithm
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

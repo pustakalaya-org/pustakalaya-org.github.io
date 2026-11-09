@@ -1,0 +1,2632 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/introduction-to-quantum-machine-learning-and-data-encoding.html">
+  
+  
+    <link rel="prev" href="post-quantum-cryptography-kyber-and-quantum-resistant.html">
+  
+  
+    <link rel="next" href="quantum-kernel-methods-and-the-quantum-support-vector.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>26. Introduction to Quantum Machine Learning and Data Encoding - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#261-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              26. Introduction to Quantum Machine Learning and Data Encoding
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#261-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#262-what-is-quantum-machine-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.2 What Is Quantum Machine Learning?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.2 What Is Quantum Machine Learning?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-four-quadrants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four quadrants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-classical-data-is-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why classical data is a problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#263-data-encoding-quantum-feature-maps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.3 Data Encoding (Quantum Feature Maps)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.3 Data Encoding (Quantum Feature Maps)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basis-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basis encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amplitude-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amplitude encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#angle-encoding-the-practical-workhorse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Angle encoding (the practical workhorse)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#higher-order-zz-feature-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Higher-order / ZZ feature map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#264-parameterised-quantum-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.4 Parameterised Quantum Circuits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.4 Parameterised Quantum Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hybrid-training-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The hybrid training loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-ansatze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common ansätze
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#265-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#266-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#267-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#261-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#262-what-is-quantum-machine-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.2 What Is Quantum Machine Learning?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.2 What Is Quantum Machine Learning?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-four-quadrants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four quadrants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-classical-data-is-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why classical data is a problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#263-data-encoding-quantum-feature-maps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.3 Data Encoding (Quantum Feature Maps)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.3 Data Encoding (Quantum Feature Maps)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basis-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basis encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amplitude-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amplitude encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#angle-encoding-the-practical-workhorse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Angle encoding (the practical workhorse)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#higher-order-zz-feature-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Higher-order / ZZ feature map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#264-parameterised-quantum-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.4 Parameterised Quantum Circuits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="26.4 Parameterised Quantum Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hybrid-training-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The hybrid training loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-ansatze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common ansätze
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#265-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#266-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#267-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-26-introduction-to-quantum-machine-learning-and-data-encoding">Lesson 26: Introduction to Quantum Machine Learning and Data Encoding<a class="headerlink" href="#lesson-26-introduction-to-quantum-machine-learning-and-data-encoding" title="Permanent link">&para;</a></h1>
+<h2 id="261-learning-outcomes">26.1 Learning Outcomes<a class="headerlink" href="#261-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Classify QML into the <strong>four quadrants</strong> (CC, CQ, QC, QQ) and place any proposal in one.</li>
+<li>Describe and compare <strong>basis, amplitude, angle</strong> and <strong>higher-order</strong> encodings.</li>
+<li>Compute the qubit cost and circuit depth of each encoding.</li>
+<li>Define a <strong>feature map</strong> and explain why encoding <em>is</em> the feature map.</li>
+<li>Define a <strong>parameterised quantum circuit (PQC)</strong> and the hybrid training loop.</li>
+</ol>
+<h2 id="262-what-is-quantum-machine-learning">26.2 What Is Quantum Machine Learning?<a class="headerlink" href="#262-what-is-quantum-machine-learning" title="Permanent link">&para;</a></h2>
+<h3 id="the-four-quadrants">The four quadrants<a class="headerlink" href="#the-four-quadrants" title="Permanent link">&para;</a></h3>
+<p>Classify by the nature of the <strong>data</strong> and the nature of the <strong>processing device</strong>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>C</strong> data (classical)</th>
+<th><strong>Q</strong> data (quantum)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C</strong> algorithm (classical)</td>
+<td><strong>CC</strong> — ordinary ML</td>
+<td><strong>CQ</strong>...</td>
+</tr>
+<tr>
+<td><strong>Q</strong> algorithm (quantum)</td>
+<td><strong>QC</strong> — quantum algorithms on classical data</td>
+<td><strong>QQ</strong> — quantum algorithms on quantum data</td>
+</tr>
+</tbody>
+</table>
+<p>Standard naming (data first, device second):</p>
+<table>
+<thead>
+<tr>
+<th>Quadrant</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CC</strong></td>
+<td>classical data, classical computer</td>
+<td>ordinary machine learning; also <em>quantum-inspired</em> classical algorithms</td>
+</tr>
+<tr>
+<td><strong>CQ</strong></td>
+<td>classical data, quantum computer</td>
+<td>QSVM, VQC, QNN — <strong>most of this unit</strong></td>
+</tr>
+<tr>
+<td><strong>QC</strong></td>
+<td>quantum data, classical computer</td>
+<td>classical shadows, tomography, learning from measurement outcomes</td>
+</tr>
+<tr>
+<td><strong>QQ</strong></td>
+<td>quantum data, quantum computer</td>
+<td>learning phases of matter, quantum sensing, quantum autoencoders — <strong>most likely to give real advantage</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>The central strategic point.</strong> The <strong>CQ</strong> quadrant — running ML on classical data with a quantum
+computer — faces a severe bottleneck: getting classical data <em>into</em> the machine (L24's state
+preparation caveat, and Tang's dequantisation). The <strong>QQ</strong> quadrant, where data is already quantum,
+avoids the bottleneck entirely and is where most researchers now expect genuine advantage.
+Nonetheless, CQ is where the pedagogically important algorithms live, so it is where we spend Unit III.</p>
+</blockquote>
+<h3 id="why-classical-data-is-a-problem">Why classical data is a problem<a class="headerlink" href="#why-classical-data-is-a-problem" title="Permanent link">&para;</a></h3>
+<p>To load <span class="arithmatex">\(N\)</span> classical numbers into amplitudes you must specify <span class="arithmatex">\(N\)</span> amplitudes. Generic state
+preparation costs <span class="arithmatex">\(O(N)\)</span> gates — <strong>wiping out any <span class="arithmatex">\(O(\log N)\)</span> algorithmic advantage</strong>. Efficient
+loading requires either structure in the data or a qRAM that does not exist.</p>
+<p><strong>Consequence.</strong> Most modern QML work has abandoned the "exponential speed-up on big data" framing
+and focuses instead on:</p>
+<ul>
+<li><strong>expressivity</strong> — quantum models may represent function classes classically hard to represent;</li>
+<li><strong>generalisation</strong> — possibly better sample complexity on structured problems;</li>
+<li><strong>quantum data</strong> — the QQ quadrant.</li>
+</ul>
+<h2 id="263-data-encoding-quantum-feature-maps">26.3 Data Encoding (Quantum Feature Maps)<a class="headerlink" href="#263-data-encoding-quantum-feature-maps" title="Permanent link">&para;</a></h2>
+<p><strong>Definition (Encoding / feature map).</strong> An encoding is a map from a classical data point
+<span class="arithmatex">\(\vec x\in\mathbb{R}^{d}\)</span> to a quantum state:</p>
+<div class="arithmatex">\[ \vec x \ \longmapsto\ |\phi(\vec x)\rangle = U_{\phi}(\vec x)\,|0\rangle^{\otimes n} . \]</div>
+<blockquote>
+<p><strong>The encoding is not preprocessing — it <em>is</em> the model's feature map.</strong> The kernel it induces,
+<span class="arithmatex">\(k(\vec x,\vec x') = |\langle\phi(\vec x)|\phi(\vec x')\rangle|^2\)</span>, determines what the model can
+learn. Choosing the encoding is the most consequential design decision in QML, more so than the
+choice of ansatz.</p>
+</blockquote>
+<h3 id="basis-encoding">Basis encoding<a class="headerlink" href="#basis-encoding" title="Permanent link">&para;</a></h3>
+<p>Encode a binary string directly:</p>
+<div class="arithmatex">\[ \vec x = (1,0,1) \ \longmapsto\ |101\rangle \]</div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n = d\)</span> (one per bit)</td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><span class="arithmatex">\(O(1)\)</span> — just <span class="arithmatex">\(X\)</span> gates</td>
+</tr>
+<tr>
+<td>Data type</td>
+<td>binary only</td>
+</tr>
+<tr>
+<td>Use</td>
+<td>Grover-based search, oracles, arithmetic circuits</td>
+</tr>
+</tbody>
+</table>
+<p>Simple and exact, but wasteful: <span class="arithmatex">\(n\)</span> qubits store only <span class="arithmatex">\(n\)</span> bits, using none of the <span class="arithmatex">\(2^n\)</span>-dimensional
+space.</p>
+<h3 id="amplitude-encoding">Amplitude encoding<a class="headerlink" href="#amplitude-encoding" title="Permanent link">&para;</a></h3>
+<p>Encode a normalised vector into amplitudes:</p>
+<div class="arithmatex">\[ \vec x = (x_1,\dots,x_N) \ \longmapsto\ |\phi(\vec x)\rangle = \frac{1}{\|\vec x\|}\sum_{i=1}^{N}x_i\,|i\rangle \]</div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n = \lceil\log_2 N\rceil\)</span> — <strong>exponentially compact</strong></td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><span class="arithmatex">\(O(N)\)</span> in general — <strong>the bottleneck</strong></td>
+</tr>
+<tr>
+<td>Data type</td>
+<td>real or complex, must be normalised</td>
+</tr>
+<tr>
+<td>Use</td>
+<td>HHL, quantum PCA, qk-means</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The trade.</strong> 1024 features fit in 10 qubits — wonderful. But preparing the state takes <span class="arithmatex">\(O(1024)\)</span>
+gates — which is exactly the cost of just reading the data classically. <strong>Exponential space saving,
+no time saving.</strong></p>
+<p>Note also that normalisation <strong>destroys magnitude information</strong>; only the direction of <span class="arithmatex">\(\vec x\)</span>
+survives.</p>
+<h3 id="angle-encoding-the-practical-workhorse">Angle encoding (the practical workhorse)<a class="headerlink" href="#angle-encoding-the-practical-workhorse" title="Permanent link">&para;</a></h3>
+<p>Encode each feature as a rotation angle:</p>
+<div class="arithmatex">\[ |\phi(\vec x)\rangle = \bigotimes_{j=1}^{d} R_y(x_j)\,|0\rangle
+= \bigotimes_{j=1}^{d}\left(\cos\frac{x_j}{2}|0\rangle + \sin\frac{x_j}{2}|1\rangle\right) \]</div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n = d\)</span></td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><strong><span class="arithmatex">\(O(1)\)</span></strong> — one layer of rotations, all parallel</td>
+</tr>
+<tr>
+<td>Data type</td>
+<td>continuous real</td>
+</tr>
+<tr>
+<td>Use</td>
+<td><strong>VQC, QNN, QSVM — nearly all NISQ QML</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why it dominates NISQ work:</strong> constant depth, hardware-native gates, continuous data, and no
+normalisation constraint. Scale features to <span class="arithmatex">\([0,\pi]\)</span> (or <span class="arithmatex">\([-\pi,\pi]\)</span>) to use the full Bloch range
+without wrapping.</p>
+<h3 id="higher-order-zz-feature-map">Higher-order / ZZ feature map<a class="headerlink" href="#higher-order-zz-feature-map" title="Permanent link">&para;</a></h3>
+<p>Add entangling gates to encode <strong>feature interactions</strong>:</p>
+<div class="arithmatex">\[ U_{\phi}(\vec x) = \Big[U_{Z}(\vec x)\,H^{\otimes n}\Big]^{L},
+\qquad U_{Z}(\vec x) = \exp\left(i\sum_{S\subseteq[n]}\phi_S(\vec x)\prod_{j\in S}Z_j\right) \]</div>
+<p>with, in the standard Havlíček et al. (2019) choice,</p>
+<div class="arithmatex">\[ \phi_{\{j\}}(\vec x) = x_j, \qquad \phi_{\{j,k\}}(\vec x) = (\pi - x_j)(\pi - x_k) . \]</div>
+<p>The two-body terms create entanglement and encode products of features — the quantum analogue of
+polynomial kernel features.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n = d\)</span></td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><span class="arithmatex">\(O(d^2)\)</span> per repetition</td>
+</tr>
+<tr>
+<td>Use</td>
+<td>QSVM with the ZZ feature map (the standard Qiskit demonstration)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conjectured advantage.</strong> The kernel induced by the ZZ map with <span class="arithmatex">\(L\ge2\)</span> is believed hard to compute
+classically — this is the basis for claims of quantum kernel advantage. It is a <strong>conjecture</strong>, and
+Huang et al. (2021) showed that many such kernels are efficiently approximable classically. Present
+scientifically honest.</p>
+<h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Encoding</th>
+<th>Qubits for <span class="arithmatex">\(d\)</span> features</th>
+<th>Depth</th>
+<th>Data</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basis</td>
+<td><span class="arithmatex">\(d\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>binary</td>
+<td>oracle circuits</td>
+</tr>
+<tr>
+<td>Amplitude</td>
+<td><span class="arithmatex">\(\log_2 d\)</span></td>
+<td><span class="arithmatex">\(O(d)\)</span></td>
+<td>normalised real</td>
+<td>compact but slow to load</td>
+</tr>
+<tr>
+<td>Angle</td>
+<td><span class="arithmatex">\(d\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>real</td>
+<td><strong>NISQ default</strong></td>
+</tr>
+<tr>
+<td>ZZ / higher-order</td>
+<td><span class="arithmatex">\(d\)</span></td>
+<td><span class="arithmatex">\(O(d^2)\)</span></td>
+<td>real</td>
+<td>expressive, entangling</td>
+</tr>
+<tr>
+<td>Hamiltonian</td>
+<td>problem-dependent</td>
+<td>varies</td>
+<td>quantum</td>
+<td>QQ quadrant</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Repetition trick.</strong> Encoding the <em>same</em> feature several times (<span class="arithmatex">\(R_y(x)\)</span>, then later <span class="arithmatex">\(R_y(2x)\)</span>, …)
+generates higher Fourier frequencies. Schuld, Sweke and Meyer (2021) proved that a PQC computes a
+<strong>truncated Fourier series</strong> in the input, with the accessible frequency spectrum set by how often
+and with what scaling the data is re-uploaded. <strong>Data re-uploading is how you control model
+expressivity.</strong></p>
+<h2 id="264-parameterised-quantum-circuits">26.4 Parameterised Quantum Circuits<a class="headerlink" href="#264-parameterised-quantum-circuits" title="Permanent link">&para;</a></h2>
+<p><strong>Definition (PQC / ansatz).</strong> A circuit <span class="arithmatex">\(U(\vec\theta)\)</span> whose gates depend on trainable parameters
+<span class="arithmatex">\(\vec\theta\)</span>. The quantum model is</p>
+<div class="arithmatex">\[ f_{\vec\theta}(\vec x) = \big\langle 0\big|\,U_{\phi}^{\dagger}(\vec x)\,U^{\dagger}(\vec\theta)\,
+M\,U(\vec\theta)\,U_{\phi}(\vec x)\,\big|0\big\rangle \]</div>
+<p>where <span class="arithmatex">\(M\)</span> is a measured observable (usually <span class="arithmatex">\(Z_1\)</span> or a sum of Paulis).</p>
+<p><strong>Reading the formula.</strong> Encode <span class="arithmatex">\(\vec x\)</span>; process with a trainable unitary; measure an observable;
+the expectation value is the model output. It is a neural network in which the "layers" are unitaries
+and the "activation" comes from measurement.</p>
+<h3 id="the-hybrid-training-loop">The hybrid training loop<a class="headerlink" href="#the-hybrid-training-loop" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>repeat<span class="w"> </span><span class="k">until</span><span class="w"> </span>converged:
+<span class="w">    </span>QUANTUM<span class="w">   </span><span class="k">for</span><span class="w"> </span>each<span class="w"> </span>batch<span class="w"> </span>item<span class="w"> </span>x:
+<span class="w">                  </span>prepare<span class="w">  </span>U_phi<span class="o">(</span>x<span class="o">)</span><span class="p">|</span><span class="m">0</span>&gt;
+<span class="w">                  </span>apply<span class="w">    </span>U<span class="o">(</span>theta<span class="o">)</span>
+<span class="w">                  </span>measure<span class="w">  </span>&lt;M&gt;<span class="w">  </span>over<span class="w"> </span>many<span class="w"> </span>shots
+<span class="w">    </span>CLASSICAL<span class="w"> </span>compute<span class="w"> </span>loss<span class="w"> </span>L<span class="o">(</span>theta<span class="o">)</span>
+<span class="w">              </span>compute<span class="w"> </span>gradients<span class="w"> </span><span class="o">(</span>parameter-shift<span class="w"> </span>rule,<span class="w"> </span>L29<span class="o">)</span>
+<span class="w">              </span>update<span class="w"> </span>theta<span class="w">  </span>&lt;-<span class="w">  </span>theta<span class="w"> </span>-<span class="w"> </span>eta<span class="w"> </span>*<span class="w"> </span>grad<span class="w"> </span>L
+</code></pre></div>
+<p>The quantum device is a <strong>subroutine inside a classical optimiser</strong> — Adam, SPSA or COBYLA running
+on a laptop. This division of labour is what makes variational algorithms runnable on NISQ hardware:
+each circuit is shallow, and the classical optimiser absorbs the noise.</p>
+<h3 id="common-ansatze">Common ansätze<a class="headerlink" href="#common-ansatze" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Ansatz</th>
+<th>Structure</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hardware-efficient</strong></td>
+<td>layers of <span class="arithmatex">\(R_y R_z\)</span> + a ring of CNOTs</td>
+<td>matches device topology; prone to barren plateaus</td>
+</tr>
+<tr>
+<td><strong>Strongly entangling</strong></td>
+<td>rotations + all-to-all CNOTs</td>
+<td>expressive, deep</td>
+</tr>
+<tr>
+<td><strong>Problem-inspired (UCCSD)</strong></td>
+<td>derived from chemistry</td>
+<td>physically meaningful, deep</td>
+</tr>
+<tr>
+<td><strong>QAOA ansatz</strong></td>
+<td>alternating cost and mixer Hamiltonians</td>
+<td>for optimisation (L34)</td>
+</tr>
+<tr>
+<td><strong>Tree / QCNN</strong></td>
+<td>logarithmic depth, halving qubits</td>
+<td>avoids barren plateaus (L30)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="265-solved-problems">26.5 Solved Problems<a class="headerlink" href="#265-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-amplitude-encoding-a-data-vector">Problem 1 — Amplitude encoding a data vector<a class="headerlink" href="#problem-1-amplitude-encoding-a-data-vector" title="Permanent link">&para;</a></h4>
+<p><em>Encode <span class="arithmatex">\(\vec x = (1, 2, 3, 4)\)</span> by amplitude encoding. Give the state, the number of qubits, and
+state what information is lost.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Normalise.</strong></p>
+<div class="arithmatex">\[ \|\vec x\| = \sqrt{1+4+9+16} = \sqrt{30} = 5.4772 \]</div>
+<div class="arithmatex">\[ |\phi(\vec x)\rangle = \frac{1}{\sqrt{30}}\big(1|00\rangle + 2|01\rangle + 3|10\rangle + 4|11\rangle\big) \]</div>
+<div class="arithmatex">\[ = 0.1826|00\rangle + 0.3651|01\rangle + 0.5477|10\rangle + 0.7303|11\rangle \]</div>
+<p><em>Check:</em> <span class="arithmatex">\(0.0333+0.1333+0.3+0.5333 = 1\)</span> ✓.</p>
+<p><strong>Qubits:</strong> <span class="arithmatex">\(n = \log_2 4 = \mathbf{2}\)</span>.</p>
+<p><strong>Information lost:</strong> the <strong>magnitude</strong> <span class="arithmatex">\(\|\vec x\| = \sqrt{30}\)</span>. The vectors <span class="arithmatex">\((1,2,3,4)\)</span> and
+<span class="arithmatex">\((2,4,6,8)\)</span> produce <em>identical</em> states. If magnitude matters (as in regression on unnormalised
+targets), store <span class="arithmatex">\(\|\vec x\|\)</span> classically alongside, or append a padding component.</p>
+<p><strong>Measurement probabilities:</strong> <span class="arithmatex">\(\Pr[i] = x_i^2/30\)</span>, i.e. <span class="arithmatex">\((0.033, 0.133, 0.300, 0.533)\)</span> — note these
+are proportional to the <strong>squares</strong>, so measurement gives you <span class="arithmatex">\(x_i^2\)</span>, not <span class="arithmatex">\(x_i\)</span> (sign information
+also requires extra work).</p>
+<h4 id="problem-2-angle-encoding-and-the-induced-kernel">Problem 2 — Angle encoding and the induced kernel<a class="headerlink" href="#problem-2-angle-encoding-and-the-induced-kernel" title="Permanent link">&para;</a></h4>
+<p><em>Encode <span class="arithmatex">\(\vec x = (0.3, 1.2)\)</span> with <span class="arithmatex">\(R_y\)</span> angle encoding. Compute the state, then compute the kernel
+<span class="arithmatex">\(k(\vec x,\vec x')\)</span> with <span class="arithmatex">\(\vec x' = (0.5, 1.0)\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Encoding <span class="arithmatex">\(\vec x\)</span>.</strong></p>
+<div class="arithmatex">\[ R_y(0.3)|0\rangle = \cos(0.15)|0\rangle + \sin(0.15)|1\rangle = 0.98877|0\rangle + 0.14944|1\rangle \]</div>
+<div class="arithmatex">\[ R_y(1.2)|0\rangle = \cos(0.6)|0\rangle + \sin(0.6)|1\rangle = 0.82534|0\rangle + 0.56464|1\rangle \]</div>
+<div class="arithmatex">\[ |\phi(\vec x)\rangle = 0.81607|00\rangle + 0.55829|01\rangle + 0.12333|10\rangle + 0.08437|11\rangle \]</div>
+<p><strong>The kernel.</strong> For a product encoding the overlap factorises:</p>
+<div class="arithmatex">\[ \langle\phi(\vec x')|\phi(\vec x)\rangle = \prod_{j=1}^{d}\cos\left(\frac{x_j - x_j'}{2}\right) \]</div>
+<p><em>(using <span class="arithmatex">\(\cos\frac{a}{2}\cos\frac{b}{2} + \sin\frac{a}{2}\sin\frac{b}{2} = \cos\frac{a-b}{2}\)</span>).</em></p>
+<div class="arithmatex">\[ \langle\phi(\vec x')|\phi(\vec x)\rangle = \cos\left(\frac{0.3-0.5}{2}\right)\cos\left(\frac{1.2-1.0}{2}\right)
+= \cos(-0.1)\cos(0.1) \]</div>
+<div class="arithmatex">\[ = 0.995004\times0.995004 = 0.990025 \]</div>
+<div class="arithmatex">\[ k(\vec x,\vec x') = \big|\langle\phi(\vec x')|\phi(\vec x)\rangle\big|^2 = 0.980149 \]</div>
+<p><strong>Interpretation.</strong> The two points are close, so the kernel is near 1 — this encoding induces a
+<strong>cosine-product kernel</strong>, which is smooth and similar to an RBF kernel. Crucially, <strong>this kernel is
+trivially computable classically</strong>, so plain product angle encoding offers <em>no</em> quantum advantage.
+Advantage requires <strong>entangling</strong> feature maps (§2.4).</p>
+<h4 id="problem-3-resource-comparison-across-encodings">Problem 3 — Resource comparison across encodings<a class="headerlink" href="#problem-3-resource-comparison-across-encodings" title="Permanent link">&para;</a></h4>
+<p><em>A dataset has 1024 features. Compute qubits and encoding depth for basis, amplitude, angle and ZZ
+encoding. Which are feasible on a 100-qubit NISQ device?</em></p>
+<p><strong>Solution.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Encoding</th>
+<th>Qubits</th>
+<th>Depth</th>
+<th>Feasible on 100 qubits?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basis</td>
+<td>1024</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>✗ too many qubits</td>
+</tr>
+<tr>
+<td>Amplitude</td>
+<td><span class="arithmatex">\(\log_2 1024 = \mathbf{10}\)</span></td>
+<td><span class="arithmatex">\(O(1024)\)</span> ≈ 1000 gates</td>
+<td>✓ qubits, ✗ depth (too deep for NISQ)</td>
+</tr>
+<tr>
+<td>Angle</td>
+<td>1024</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>✗ too many qubits</td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>1024</td>
+<td><span class="arithmatex">\(O(1024^2) \approx 10^{6}\)</span></td>
+<td>✗ both</td>
+</tr>
+</tbody>
+</table>
+<p><strong>None is directly feasible.</strong></p>
+<p><strong>The practical answer: reduce dimensionality first.</strong> Apply classical PCA to compress 1024 features
+to, say, 8 principal components, then use angle encoding on 8 qubits with depth <span class="arithmatex">\(O(1)\)</span> — comfortably
+runnable.</p>
+<blockquote>
+<p><strong>This is standard practice in every published NISQ QML experiment</strong>, and it is worth stating
+plainly to students: the classical preprocessing usually does most of the work. It also explains
+why "quantum advantage on real datasets" claims must be scrutinised — if PCA reduces the data to 8
+dimensions, a classical model on those 8 dimensions is the honest baseline.</p>
+</blockquote>
+<h4 id="problem-4-data-re-uploading-and-fourier-frequencies">Problem 4 — Data re-uploading and Fourier frequencies<a class="headerlink" href="#problem-4-data-re-uploading-and-fourier-frequencies" title="Permanent link">&para;</a></h4>
+<p><em>A single-qubit circuit applies <span class="arithmatex">\(R_y(\theta_1)\)</span>, then <span class="arithmatex">\(R_z(x)\)</span>, then <span class="arithmatex">\(R_y(\theta_2)\)</span>, then <span class="arithmatex">\(R_z(x)\)</span>,
+then <span class="arithmatex">\(R_y(\theta_3)\)</span>, and measures <span class="arithmatex">\(\langle Z\rangle\)</span>. What frequencies in <span class="arithmatex">\(x\)</span> can the model
+express?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>The theorem (Schuld–Sweke–Meyer).</strong> A PQC in which the data-encoding gate <span class="arithmatex">\(R_z(x)\)</span> (generator <span class="arithmatex">\(Z\)</span>,
+eigenvalues <span class="arithmatex">\(\pm\frac12\)</span>) is repeated <span class="arithmatex">\(L\)</span> times computes</p>
+<div class="arithmatex">\[ f_{\vec\theta}(x) = \sum_{\omega\in\Omega} c_\omega(\vec\theta)\,e^{i\omega x} \]</div>
+<p>where the frequency set <span class="arithmatex">\(\Omega\)</span> consists of all sums and differences of the encoding generators'
+eigenvalue gaps.</p>
+<p><strong>Here <span class="arithmatex">\(L = 2\)</span>.</strong> Each <span class="arithmatex">\(R_z(x)\)</span> contributes a gap of <span class="arithmatex">\(\pm1\)</span>, so the accessible frequencies are</p>
+<div class="arithmatex">\[ \Omega = \{-2,\ -1,\ 0,\ +1,\ +2\} . \]</div>
+<div class="arithmatex">\[ f_{\vec\theta}(x) = a_0 + a_1\cos(x + \varphi_1) + a_2\cos(2x+\varphi_2) \]</div>
+<p>— a <strong>truncated Fourier series of degree 2</strong>. The trainable parameters <span class="arithmatex">\(\vec\theta\)</span> control the
+coefficients <span class="arithmatex">\(a_k\)</span> and phases <span class="arithmatex">\(\varphi_k\)</span>, but <strong>not</strong> which frequencies exist.</p>
+<p><strong>Design consequences.</strong></p>
+<ol>
+<li><strong>Repeating the encoding <span class="arithmatex">\(L\)</span> times gives frequencies up to <span class="arithmatex">\(L\)</span>.</strong> To fit a function with <span class="arithmatex">\(K\)</span>
+    frequency components you need <span class="arithmatex">\(L \ge K\)</span> encoding repetitions.</li>
+<li><strong>Scaling the input</strong> (<span class="arithmatex">\(R_z(\lambda x)\)</span>) shifts the spectrum, letting you reach higher frequencies
+    without more layers.</li>
+<li><strong>This is the cleanest statement of what a PQC can and cannot represent</strong> — a genuinely useful
+    design principle, and the quantum analogue of choosing the width of a neural network.</li>
+</ol>
+<p><em>Corollary:</em> a circuit that encodes <span class="arithmatex">\(x\)</span> only <strong>once</strong> can only produce <span class="arithmatex">\(a_0 + a_1\cos(x+\varphi)\)</span> —
+it cannot fit anything with a second harmonic, no matter how many trainable layers you add
+afterwards.</p>
+<h4 id="problem-5-designing-an-end-to-end-qml-pipeline">Problem 5 — Designing an end-to-end QML pipeline<a class="headerlink" href="#problem-5-designing-an-end-to-end-qml-pipeline" title="Permanent link">&para;</a></h4>
+<p><em>Design a complete QML pipeline to classify the Iris dataset (150 samples, 4 features, 3 classes) on
+a NISQ device. Specify every choice and give the honest classical baseline.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>1. Preprocessing (classical).</strong></p>
+<ul>
+<li>Standardise each feature to zero mean, unit variance.</li>
+<li>Rescale to <span class="arithmatex">\([0,\pi]\)</span> so angles use the full Bloch range without wrapping:
+    <span class="arithmatex">\(x'_j = \pi\,\frac{x_j - \min_j}{\max_j - \min_j}\)</span>.</li>
+<li>Split 80/20 train/test, stratified.</li>
+</ul>
+<p><strong>2. Encoding.</strong> Angle encoding with <span class="arithmatex">\(R_y\)</span> on <strong>4 qubits</strong> (one per feature), repeated <strong>twice</strong>
+(data re-uploading) so the model can express degree-2 Fourier components.</p>
+<p><strong>3. Ansatz.</strong> Hardware-efficient, 3 layers:</p>
+<div class="language-bash highlight"><pre><span></span><code>per<span class="w"> </span>layer:<span class="w">  </span>Ry<span class="o">(</span>theta_i<span class="o">)</span><span class="w"> </span>and<span class="w"> </span>Rz<span class="o">(</span>theta_i<span class="err">'</span><span class="o">)</span><span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span><span class="m">4</span><span class="w"> </span>qubits
+<span class="w">            </span><span class="k">then</span><span class="w"> </span>CNOTs<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>ring:<span class="w"> </span><span class="m">0</span>-&gt;1,<span class="w"> </span><span class="m">1</span>-&gt;2,<span class="w"> </span><span class="m">2</span>-&gt;3,<span class="w"> </span><span class="m">3</span>-&gt;0
+</code></pre></div>
+<p>Parameter count: <span class="arithmatex">\(3 \text{ layers} \times 4 \text{ qubits} \times 2 \text{ rotations} = \mathbf{24}\)</span>
+parameters.</p>
+<p><strong>4. Measurement and readout.</strong> Measure <span class="arithmatex">\(\langle Z_0\rangle\)</span>, <span class="arithmatex">\(\langle Z_1\rangle\)</span>, <span class="arithmatex">\(\langle Z_2\rangle\)</span>;
+apply a classical softmax over these three values to get class probabilities. (3 classes ⟶ 3
+outputs.)</p>
+<p><strong>5. Loss.</strong> Cross-entropy.</p>
+<p><strong>6. Optimiser.</strong> <strong>SPSA</strong> (Simultaneous Perturbation Stochastic Approximation) rather than Adam,
+because SPSA needs only 2 circuit evaluations per step regardless of parameter count and is robust
+to shot noise. Alternatively Adam with parameter-shift gradients (L29) if shot budget allows.</p>
+<p><strong>7. Shots.</strong> 1024 per expectation value. Per SPSA step: <span class="arithmatex">\(2 \times 3 \times \text{batch size}\)</span>
+circuit executions.</p>
+<p><strong>8. Total circuit depth.</strong> <span class="arithmatex">\(2\)</span> encoding layers + <span class="arithmatex">\(3\)</span> ansatz layers <span class="arithmatex">\(\approx 20\)</span> gates — comfortably
+within NISQ coherence.</p>
+<p><strong>The honest baseline.</strong> Logistic regression or an SVM on the same 4 features achieves <strong>96–98 %</strong>
+accuracy on Iris in milliseconds. A well-tuned VQC typically reaches <strong>90–96 %</strong> after minutes of
+quantum runtime.</p>
+<blockquote>
+<p><strong>State this to students explicitly.</strong> The purpose of this pipeline is to <em>learn the QML workflow</em>,
+not to beat scikit-learn. Iris is a pedagogical dataset; no NISQ QML experiment to date has
+demonstrated a practical advantage on a classical dataset of this kind. Understanding <em>why</em> — the
+data-loading bottleneck, barren plateaus (L29), and dequantisation (L24) — is more valuable than
+the accuracy number.</p>
+</blockquote>
+<h2 id="266-practice-problems">26.6 Practice Problems<a class="headerlink" href="#266-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Amplitude-encode <span class="arithmatex">\((3,4)\)</span>. Give the state and the qubit count. <strong>[Ans: <span class="arithmatex">\(0.6|0\rangle+0.8|1\rangle\)</span>; 1 qubit]</strong></li>
+<li>Angle-encode <span class="arithmatex">\(\vec x=(\pi/2, \pi)\)</span> with <span class="arithmatex">\(R_y\)</span>. Give the state. <strong>[Ans: <span class="arithmatex">\(|+\rangle\otimes|1\rangle\)</span>]</strong></li>
+<li>Compute <span class="arithmatex">\(k(\vec x,\vec x')\)</span> for <span class="arithmatex">\(\vec x = (0,0)\)</span>, <span class="arithmatex">\(\vec x' = (\pi,\pi)\)</span> with product angle encoding. <strong>[Ans: 0]</strong></li>
+<li>How many qubits to amplitude-encode a <span class="arithmatex">\(256\times256\)</span> image? <strong>[Ans: 16]</strong></li>
+<li>A PQC encodes <span class="arithmatex">\(x\)</span> three times via <span class="arithmatex">\(R_z(x)\)</span>. What is the frequency set? <strong>[Ans: <span class="arithmatex">\(\{-3,\dots,3\}\)</span>]</strong></li>
+<li>Count the parameters in a 5-layer hardware-efficient ansatz on 6 qubits with <span class="arithmatex">\(R_y,R_z\)</span> per qubit. <strong>[Ans: 60]</strong></li>
+<li>Explain why product angle encoding cannot give quantum advantage.</li>
+</ol>
+<h2 id="267-summary">26.7 Summary<a class="headerlink" href="#267-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>QML splits into <strong>CC / CQ / QC / QQ</strong>; the <strong>CQ</strong> quadrant (classical data on quantum hardware) suffers the data-loading bottleneck, while <strong>QQ</strong> is where genuine advantage is most expected.</li>
+<li><strong>Encoding is the feature map</strong> and determines the induced kernel <span class="arithmatex">\(k(\vec x,\vec x') = |\langle\phi(\vec x)|\phi(\vec x')\rangle|^2\)</span>.</li>
+<li><strong>Basis</strong> (<span class="arithmatex">\(d\)</span> qubits, <span class="arithmatex">\(O(1)\)</span> depth, binary), <strong>amplitude</strong> (<span class="arithmatex">\(\log d\)</span> qubits, <span class="arithmatex">\(O(d)\)</span> depth), <strong>angle</strong> (<span class="arithmatex">\(d\)</span> qubits, <span class="arithmatex">\(O(1)\)</span> depth — the NISQ default), <strong>ZZ/higher-order</strong> (entangling, conjectured hard to simulate).</li>
+<li>Amplitude encoding is exponentially compact in qubits but costs <span class="arithmatex">\(O(N)\)</span> gates to prepare — space saving, not time saving. It also discards magnitude.</li>
+<li>Product angle encoding gives a classically computable cosine kernel — <strong>entanglement in the feature map is necessary (though not sufficient) for advantage</strong>.</li>
+<li>A <strong>PQC</strong> computes <span class="arithmatex">\(f_{\vec\theta}(\vec x) = \langle 0|U_\phi^\dagger U^\dagger(\vec\theta)MU(\vec\theta)U_\phi|0\rangle\)</span>; <strong>data re-uploading <span class="arithmatex">\(L\)</span> times gives Fourier frequencies up to <span class="arithmatex">\(L\)</span></strong> — the cleanest handle on expressivity.</li>
+<li>Training is a <strong>hybrid loop</strong>: quantum circuits evaluate, a classical optimiser updates.</li>
+</ul>
+<p><strong>Next lesson:</strong> L27 — Quantum kernel methods and QSVM.</p>
+<p><strong>Practise now:</strong> <code>unit3-qml-lab.html</code> → <em>Encoding Explorer</em>: enter a data point, choose an encoding,
+and see the resulting state, Bloch vectors and the induced kernel matrix on a small dataset.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-footer__link md-footer__link--next" aria-label="Next: 27. Quantum Kernel Methods and the Quantum Support Vector Machine">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                27. Quantum Kernel Methods and the Quantum Support Vector Machine
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

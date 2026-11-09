@@ -1,0 +1,2566 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/quantum-boltzmann-machines.html">
+  
+  
+    <link rel="prev" href="quantum-k-means-clustering-and-the-swap-test.html">
+  
+  
+    <link rel="next" href="the-quantum-approximate-optimization-algorithm-qaoa.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>33. Quantum Boltzmann Machines - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#331-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              33. Quantum Boltzmann Machines
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#331-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#332-classical-boltzmann-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.2 Classical Boltzmann Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.2 Classical Boltzmann Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#energy-based-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Energy-based models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricted-boltzmann-machines-rbm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricted Boltzmann Machines (RBM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-training-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The training rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrastive-divergence-hinton-2002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrastive divergence (Hinton, 2002)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#333-quantum-boltzmann-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.3 Quantum Boltzmann Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.3 Quantum Boltzmann Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-quantum-gibbs-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The quantum Gibbs state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-the-transverse-field-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the transverse field matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-non-commutativity-obstacle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The non-commutativity obstacle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bound-based-training-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The bound-based training rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#334-sampling-where-the-quantum-computer-enters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.4 Sampling: Where the Quantum Computer Enters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.4 Sampling: Where the Quantum Computer Enters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-d-wave-route-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The D-Wave route in practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reported-results-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reported results, honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#335-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#336-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#337-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#331-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#332-classical-boltzmann-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.2 Classical Boltzmann Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.2 Classical Boltzmann Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#energy-based-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Energy-based models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricted-boltzmann-machines-rbm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricted Boltzmann Machines (RBM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-training-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The training rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrastive-divergence-hinton-2002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrastive divergence (Hinton, 2002)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#333-quantum-boltzmann-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.3 Quantum Boltzmann Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.3 Quantum Boltzmann Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-quantum-gibbs-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The quantum Gibbs state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-the-transverse-field-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the transverse field matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-non-commutativity-obstacle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The non-commutativity obstacle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bound-based-training-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The bound-based training rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#334-sampling-where-the-quantum-computer-enters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.4 Sampling: Where the Quantum Computer Enters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="33.4 Sampling: Where the Quantum Computer Enters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-d-wave-route-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The D-Wave route in practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reported-results-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reported results, honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#335-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#336-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#337-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-33-quantum-boltzmann-machines">Lesson 33: Quantum Boltzmann Machines<a class="headerlink" href="#lesson-33-quantum-boltzmann-machines" title="Permanent link">&para;</a></h1>
+<h2 id="331-learning-outcomes">33.1 Learning Outcomes<a class="headerlink" href="#331-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Recall the <strong>classical Boltzmann machine / RBM</strong>, its energy function and its training rule.</li>
+<li>Explain why classical training is hard (the intractable partition function) and how <strong>contrastive divergence</strong> works around it.</li>
+<li>Define the <strong>quantum Boltzmann machine</strong> with a transverse-field Hamiltonian.</li>
+<li>Derive the QBM gradient and explain the <strong>non-commutativity obstacle</strong>.</li>
+<li>Describe how <strong>quantum annealers</strong> are used to sample Boltzmann distributions, and assess the results honestly.</li>
+</ol>
+<h2 id="332-classical-boltzmann-machines">33.2 Classical Boltzmann Machines<a class="headerlink" href="#332-classical-boltzmann-machines" title="Permanent link">&para;</a></h2>
+<h3 id="energy-based-models">Energy-based models<a class="headerlink" href="#energy-based-models" title="Permanent link">&para;</a></h3>
+<p>A Boltzmann machine is a <strong>generative</strong> model: a stochastic network of binary units <span class="arithmatex">\(\vec v\)</span>
+(visible) and <span class="arithmatex">\(\vec h\)</span> (hidden) with energy</p>
+<div class="arithmatex">\[ E(\vec v,\vec h) = -\sum_i a_iv_i - \sum_j b_jh_j - \sum_{i,j} w_{ij}v_ih_j \]</div>
+<p>and probability given by the <strong>Boltzmann (Gibbs) distribution</strong></p>
+<div class="arithmatex">\[ P(\vec v,\vec h) = \frac{e^{-E(\vec v,\vec h)}}{Z},
+\qquad Z = \sum_{\vec v,\vec h} e^{-E(\vec v,\vec h)} . \]</div>
+<p><span class="arithmatex">\(Z\)</span> is the <strong>partition function</strong>. Low-energy configurations are more probable, so training amounts
+to shaping the energy landscape so that the data sits in the valleys.</p>
+<h3 id="restricted-boltzmann-machines-rbm">Restricted Boltzmann Machines (RBM)<a class="headerlink" href="#restricted-boltzmann-machines-rbm" title="Permanent link">&para;</a></h3>
+<p>Removing visible–visible and hidden–hidden connections leaves a bipartite graph, which makes the
+conditionals <strong>factorise</strong>:</p>
+<div class="arithmatex">\[ P(h_j = 1\mid\vec v) = \sigma\!\left(b_j + \sum_i w_{ij}v_i\right),
+\qquad P(v_i = 1\mid\vec h) = \sigma\!\left(a_i + \sum_j w_{ij}h_j\right) \]</div>
+<p>with <span class="arithmatex">\(\sigma(x) = \frac{1}{1+e^{-x}}\)</span>. This enables <strong>block Gibbs sampling</strong>: update all hidden
+units in parallel, then all visible units.</p>
+<h3 id="the-training-rule">The training rule<a class="headerlink" href="#the-training-rule" title="Permanent link">&para;</a></h3>
+<p>Maximise the log-likelihood <span class="arithmatex">\(\mathcal{L} = \sum_{\text{data}}\log P(\vec v)\)</span>. The gradient is</p>
+<div class="arithmatex">\[ \boxed{\ \frac{\partial\mathcal{L}}{\partial w_{ij}}
+= \underbrace{\big\langle v_ih_j\big\rangle_{\text{data}}}_{\text{positive phase}}
+- \underbrace{\big\langle v_ih_j\big\rangle_{\text{model}}}_{\text{negative phase}}\ } \]</div>
+<p><strong>The positive phase is easy</strong> — clamp <span class="arithmatex">\(\vec v\)</span> to a data point and sample <span class="arithmatex">\(\vec h\)</span>.</p>
+<p><strong>The negative phase is hard</strong> — it requires sampling from the model's own equilibrium
+distribution, which needs <span class="arithmatex">\(Z\)</span>, a sum over <span class="arithmatex">\(2^{n}\)</span> configurations.</p>
+<h3 id="contrastive-divergence-hinton-2002">Contrastive divergence (Hinton, 2002)<a class="headerlink" href="#contrastive-divergence-hinton-2002" title="Permanent link">&para;</a></h3>
+<p>Instead of running the Gibbs chain to equilibrium, run it for <strong><span class="arithmatex">\(k\)</span> steps</strong> (usually <span class="arithmatex">\(k=1\)</span>) starting
+from the data:</p>
+<div class="language-bash highlight"><pre><span></span><code><span class="nv">v0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>data<span class="w"> </span>point
+h0<span class="w"> </span>~<span class="w"> </span>P<span class="o">(</span>h<span class="w"> </span><span class="p">|</span><span class="w"> </span>v0<span class="o">)</span>
+v1<span class="w"> </span>~<span class="w"> </span>P<span class="o">(</span>v<span class="w"> </span><span class="p">|</span><span class="w"> </span>h0<span class="o">)</span>
+h1<span class="w"> </span>~<span class="w"> </span>P<span class="o">(</span>h<span class="w"> </span><span class="p">|</span><span class="w"> </span>v1<span class="o">)</span>
+grad<span class="w"> </span>w_ij<span class="w">  </span>~<span class="o">=</span><span class="w">  </span>v0_i<span class="w"> </span>h0_j<span class="w">  </span>-<span class="w">  </span>v1_i<span class="w"> </span>h1_j
+</code></pre></div>
+<p><strong>CD-1 is a biased approximation</strong> of the true gradient — it does not follow the gradient of any
+objective function exactly — yet it works remarkably well in practice, and it is what made deep
+belief networks feasible in 2006.</p>
+<blockquote>
+<p><strong>This is exactly the gap a quantum computer might fill.</strong> If a quantum device could sample the
+<em>true</em> Boltzmann distribution efficiently, the negative phase would be exact, removing CD's bias.</p>
+</blockquote>
+<h2 id="333-quantum-boltzmann-machines">33.3 Quantum Boltzmann Machines<a class="headerlink" href="#333-quantum-boltzmann-machines" title="Permanent link">&para;</a></h2>
+<h3 id="the-hamiltonian">The Hamiltonian<a class="headerlink" href="#the-hamiltonian" title="Permanent link">&para;</a></h3>
+<p>Replace the classical energy function with a <strong>quantum Hamiltonian</strong>. Amin et al. (<em>PRX</em>, 2018):</p>
+<div class="arithmatex">\[ \boxed{\ H = -\sum_i \Gamma_i\,\sigma^{x}_{i} \;-\; \sum_i b_i\,\sigma^{z}_{i}
+\;-\; \sum_{i&lt;j} w_{ij}\,\sigma^{z}_{i}\sigma^{z}_{j}\ } \]</div>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\sigma^z_i\)</span>, <span class="arithmatex">\(\sigma^z_i\sigma^z_j\)</span></td>
+<td>classical Ising energy — recovers the classical BM exactly</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma^x_i\)</span> (<strong>transverse field</strong>)</td>
+<td><strong>purely quantum</strong> — does not commute with <span class="arithmatex">\(\sigma^z\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-quantum-gibbs-state">The quantum Gibbs state<a class="headerlink" href="#the-quantum-gibbs-state" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \rho = \frac{e^{-H}}{Z}, \qquad Z = \mathrm{Tr}\big(e^{-H}\big) \]</div>
+<p>(Setting <span class="arithmatex">\(\beta = 1\)</span> by absorbing temperature into <span class="arithmatex">\(H\)</span>.) Measuring the visible qubits in the <span class="arithmatex">\(Z\)</span>
+basis gives</p>
+<div class="arithmatex">\[ P(\vec v) = \mathrm{Tr}\big(\Lambda_{\vec v}\,\rho\big),
+\qquad \Lambda_{\vec v} = |\vec v\rangle\langle\vec v|\otimes I_{\text{hidden}} . \]</div>
+<h3 id="why-the-transverse-field-matters">Why the transverse field matters<a class="headerlink" href="#why-the-transverse-field-matters" title="Permanent link">&para;</a></h3>
+<p><strong>If <span class="arithmatex">\(\Gamma_i = 0\)</span></strong>, <span class="arithmatex">\(H\)</span> is diagonal in the computational basis, <span class="arithmatex">\(\rho\)</span> is a classical Gibbs
+distribution, and the QBM <strong>is</strong> a classical BM. Nothing is gained.</p>
+<p><strong>If <span class="arithmatex">\(\Gamma_i \ne 0\)</span></strong>, then <span class="arithmatex">\([\sigma^x, \sigma^z] \ne 0\)</span>: the eigenstates of <span class="arithmatex">\(H\)</span> are <strong>superpositions</strong>
+of computational basis states, and <span class="arithmatex">\(\rho\)</span> has off-diagonal coherences. The model can then represent
+distributions no classical BM with the same connectivity can — this is the claimed expressivity
+advantage.</p>
+<h3 id="the-non-commutativity-obstacle">The non-commutativity obstacle<a class="headerlink" href="#the-non-commutativity-obstacle" title="Permanent link">&para;</a></h3>
+<p>The classical derivation used</p>
+<div class="arithmatex">\[ \frac{\partial}{\partial\theta}\log\mathrm{Tr}\,e^{-H} = -\left\langle \frac{\partial H}{\partial\theta}\right\rangle . \]</div>
+<p><strong>This step requires <span class="arithmatex">\(\left[H, \frac{\partial H}{\partial\theta}\right] = 0\)</span>.</strong> For the <span class="arithmatex">\(b_i\)</span> and
+<span class="arithmatex">\(w_{ij}\)</span> parameters (which multiply <span class="arithmatex">\(\sigma^z\)</span> terms) this fails once <span class="arithmatex">\(\Gamma\ne0\)</span>, and for
+<span class="arithmatex">\(\Gamma_i\)</span> itself it fails too. The correct expression involves the <strong>Kubo–Mori</strong> integral</p>
+<div class="arithmatex">\[ \frac{\partial}{\partial\theta}\,\mathrm{Tr}\big(e^{-H}\big)
+= -\int_{0}^{1}\mathrm{Tr}\left(e^{-sH}\,\frac{\partial H}{\partial\theta}\,e^{-(1-s)H}\right)ds \]</div>
+<p>which is <strong>not</strong> a simple expectation value and cannot be estimated by ordinary sampling.</p>
+<p><strong>Amin et al.'s workaround.</strong> Instead of maximising the log-likelihood, maximise a <strong>variational
+lower bound</strong> obtained from the Golden–Thompson inequality
+<span class="arithmatex">\(\mathrm{Tr}\,e^{A+B} \le \mathrm{Tr}\big(e^{A}e^{B}\big)\)</span>. The bound <em>is</em> differentiable by
+sampling, giving a trainable — if slightly weaker — objective.</p>
+<h3 id="the-bound-based-training-rule">The bound-based training rule<a class="headerlink" href="#the-bound-based-training-rule" title="Permanent link">&para;</a></h3>
+<p>For visible-only (or bound-restricted) parameters, the gradient recovers the familiar form:</p>
+<div class="arithmatex">\[ \frac{\partial\mathcal{L}_{\text{bound}}}{\partial w_{ij}}
+= \big\langle \sigma^z_i\sigma^z_j\big\rangle_{\text{data-clamped}}
+- \big\langle \sigma^z_i\sigma^z_j\big\rangle_{\text{model}} \]</div>
+<p>— structurally identical to the classical rule, but with expectations taken in the <strong>quantum</strong> Gibbs
+state.</p>
+<h2 id="334-sampling-where-the-quantum-computer-enters">33.4 Sampling: Where the Quantum Computer Enters<a class="headerlink" href="#334-sampling-where-the-quantum-computer-enters" title="Permanent link">&para;</a></h2>
+<p>Three routes to sampling from <span class="arithmatex">\(\rho = e^{-H}/Z\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Idea</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quantum annealing (D-Wave)</strong></td>
+<td>anneal slowly; the device equilibrates with its cryogenic environment and returns approximately Boltzmann samples</td>
+<td><strong>used in practice</strong>; effective temperature is uncontrolled</td>
+</tr>
+<tr>
+<td><strong>Gibbs state preparation</strong></td>
+<td>algorithms based on quantum phase estimation or quantum Metropolis</td>
+<td>fault-tolerant era only</td>
+</tr>
+<tr>
+<td><strong>Variational (VarQITE)</strong></td>
+<td>imaginary-time evolution with a parameterised circuit</td>
+<td>NISQ-compatible, approximate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-d-wave-route-in-practice">The D-Wave route in practice<a class="headerlink" href="#the-d-wave-route-in-practice" title="Permanent link">&para;</a></h3>
+<p>D-Wave hardware natively implements</p>
+<div class="arithmatex">\[ H(s) = A(s)\left(-\sum_i\sigma^x_i\right) + B(s)\left(\sum_i h_i\sigma^z_i + \sum_{i&lt;j}J_{ij}\sigma^z_i\sigma^z_j\right) \]</div>
+<p>which is exactly the QBM Hamiltonian form. <strong>Stopping the anneal early</strong> (a "reverse anneal" or a
+paused anneal) leaves a residual transverse field <span class="arithmatex">\(\Gamma \propto A(s)\)</span>, sampling from a <em>quantum</em>
+Boltzmann distribution.</p>
+<p><strong>Three practical problems.</strong></p>
+<ol>
+<li><strong>Unknown effective temperature.</strong> The device does not thermalise at the nominal fridge
+    temperature; <span class="arithmatex">\(\beta_{\text{eff}}\)</span> must be estimated per problem and drifts.</li>
+<li><strong>Limited connectivity.</strong> The Chimera/Pegasus/Zephyr graphs are sparse. Dense <span class="arithmatex">\(w_{ij}\)</span> requires
+    <strong>minor embedding</strong>, in which one logical qubit becomes a chain of physical qubits — inflating
+    qubit count and introducing chain-break errors.</li>
+<li><strong>Not truly thermal.</strong> Real annealers exhibit freeze-out: the distribution stops evolving partway
+    through the anneal, so the samples come from an intermediate, non-equilibrium distribution.</li>
+</ol>
+<h3 id="reported-results-honestly">Reported results, honestly<a class="headerlink" href="#reported-results-honestly" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Amin et al. (2018) trained small QBMs (fewer than 10 visible units) and found that a non-zero
+    transverse field gave <strong>better log-likelihood</strong> than the classical equivalent on synthetic data.</li>
+<li>Benedetti et al. (2017) trained an RBM on Bars-and-Stripes using a D-Wave sampler and matched
+    classical CD, having first calibrated <span class="arithmatex">\(\beta_{\text{eff}}\)</span> from the data.</li>
+<li><strong>No demonstration to date beats classical CD on a real-world dataset.</strong> The consistent finding is
+    parity, not advantage — with the quantum route far slower in wall-clock time.</li>
+</ul>
+<h2 id="335-solved-problems">33.5 Solved Problems<a class="headerlink" href="#335-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-boltzmann-probabilities-and-the-partition-function">Problem 1 — Boltzmann probabilities and the partition function<a class="headerlink" href="#problem-1-boltzmann-probabilities-and-the-partition-function" title="Permanent link">&para;</a></h4>
+<p><em>A 2-visible-unit BM has <span class="arithmatex">\(E(v_1,v_2) = -a_1v_1 - a_2v_2 - w\,v_1v_2\)</span> with <span class="arithmatex">\(a_1 = 0.5\)</span>, <span class="arithmatex">\(a_2 = -0.3\)</span>,
+<span class="arithmatex">\(w = 1.0\)</span>. Compute <span class="arithmatex">\(Z\)</span> and all four probabilities.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Energies.</strong></p>
+<div class="arithmatex">\[ E(0,0) = 0 \]</div>
+<div class="arithmatex">\[ E(1,0) = -0.5 \]</div>
+<div class="arithmatex">\[ E(0,1) = +0.3 \]</div>
+<div class="arithmatex">\[ E(1,1) = -0.5 + 0.3 - 1.0 = -1.2 \]</div>
+<p><strong>Boltzmann weights <span class="arithmatex">\(e^{-E}\)</span>.</strong></p>
+<div class="arithmatex">\[ e^{0} = 1.0000 \]</div>
+<div class="arithmatex">\[ e^{0.5} = 1.6487 \]</div>
+<div class="arithmatex">\[ e^{-0.3} = 0.7408 \]</div>
+<div class="arithmatex">\[ e^{1.2} = 3.3201 \]</div>
+<p><strong>Partition function.</strong></p>
+<div class="arithmatex">\[ Z = 1.0000 + 1.6487 + 0.7408 + 3.3201 = \mathbf{6.7097} \]</div>
+<p><strong>Probabilities.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\((v_1,v_2)\)</span></th>
+<th><span class="arithmatex">\(E\)</span></th>
+<th><span class="arithmatex">\(e^{-E}\)</span></th>
+<th><span class="arithmatex">\(P\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\((0,0)\)</span></td>
+<td>0</td>
+<td>1.0000</td>
+<td>0.1490</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,0)\)</span></td>
+<td><span class="arithmatex">\(-0.5\)</span></td>
+<td>1.6487</td>
+<td>0.2457</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,1)\)</span></td>
+<td><span class="arithmatex">\(+0.3\)</span></td>
+<td>0.7408</td>
+<td>0.1104</td>
+</tr>
+<tr>
+<td><strong><span class="arithmatex">\((1,1)\)</span></strong></td>
+<td><span class="arithmatex">\(\mathbf{-1.2}\)</span></td>
+<td>3.3201</td>
+<td><strong>0.4948</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Sum <span class="arithmatex">\(= 0.9999\)</span> ✓.</p>
+<p><strong>Interpretation.</strong> The positive coupling <span class="arithmatex">\(w = 1\)</span> makes <span class="arithmatex">\((1,1)\)</span> by far the most likely — the units are
+<strong>correlated</strong>. Note that <span class="arithmatex">\(Z\)</span> required summing <span class="arithmatex">\(2^{2} = 4\)</span> terms; for 100 units it would be <span class="arithmatex">\(2^{100}\)</span>
+terms, <strong>which is exactly why the negative phase is intractable.</strong></p>
+<h4 id="problem-2-one-step-of-contrastive-divergence">Problem 2 — One step of contrastive divergence<a class="headerlink" href="#problem-2-one-step-of-contrastive-divergence" title="Permanent link">&para;</a></h4>
+<p><em>An RBM has 2 visible and 1 hidden unit, <span class="arithmatex">\(w_{11} = 1.0\)</span>, <span class="arithmatex">\(w_{21} = -0.5\)</span>, <span class="arithmatex">\(a_1 = a_2 = 0\)</span>, <span class="arithmatex">\(b_1 = 0.2\)</span>.
+Perform one CD-1 step for the data point <span class="arithmatex">\(\vec v = (1,0)\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Positive phase — sample <span class="arithmatex">\(h\)</span> given <span class="arithmatex">\(\vec v_0 = (1,0)\)</span>.</strong></p>
+<div class="arithmatex">\[ P(h_1 = 1\mid\vec v_0) = \sigma\big(b_1 + w_{11}v_1 + w_{21}v_2\big) = \sigma(0.2 + 1.0 - 0) = \sigma(1.2) \]</div>
+<div class="arithmatex">\[ \sigma(1.2) = \frac{1}{1+e^{-1.2}} = \frac{1}{1+0.30119} = \mathbf{0.76852} \]</div>
+<p>Say the sample gives <span class="arithmatex">\(h_0 = 1\)</span>.</p>
+<p><strong>Positive-phase statistics.</strong></p>
+<div class="arithmatex">\[ \langle v_1h_1\rangle_{\text{data}} = 1\times1 = 1, \qquad \langle v_2h_1\rangle_{\text{data}} = 0\times1 = 0 \]</div>
+<p><strong>Negative phase — reconstruct <span class="arithmatex">\(\vec v_1\)</span> given <span class="arithmatex">\(h_0 = 1\)</span>.</strong></p>
+<div class="arithmatex">\[ P(v_1 = 1\mid h_0) = \sigma(a_1 + w_{11}h_1) = \sigma(1.0) = \frac{1}{1+e^{-1}} = \mathbf{0.73106} \]</div>
+<div class="arithmatex">\[ P(v_2 = 1\mid h_0) = \sigma(a_2 + w_{21}h_1) = \sigma(-0.5) = \frac{1}{1+e^{0.5}} = \mathbf{0.37754} \]</div>
+<p>Say the samples give <span class="arithmatex">\(\vec v_1 = (1, 0)\)</span>.</p>
+<p><strong>Re-sample <span class="arithmatex">\(h\)</span> given <span class="arithmatex">\(\vec v_1\)</span>.</strong> Identical to the positive phase: <span class="arithmatex">\(P = 0.76852\)</span>; say <span class="arithmatex">\(h_1 = 1\)</span>.</p>
+<p><strong>Negative-phase statistics.</strong></p>
+<div class="arithmatex">\[ \langle v_1h_1\rangle_{\text{model}} = 1, \qquad \langle v_2h_1\rangle_{\text{model}} = 0 \]</div>
+<p><strong>Gradients.</strong></p>
+<div class="arithmatex">\[ \Delta w_{11} \propto 1 - 1 = \mathbf{0}, \qquad \Delta w_{21} \propto 0 - 0 = \mathbf{0} \]</div>
+<p><strong>Interpretation.</strong> The reconstruction exactly matched the data, so there is nothing to learn from
+this sample — the model already assigns it high probability. This is the essence of CD:
+<strong>the gradient measures the discrepancy between the data and the model's reconstruction of it.</strong>
+When they agree, learning stops.</p>
+<p><em>(In practice one averages over a minibatch; single-sample gradients are extremely noisy, and the
+stochastic sampling means a different draw of <span class="arithmatex">\(\vec v_1\)</span> would have produced a non-zero gradient.)</em></p>
+<h4 id="problem-3-transverse-field-and-the-ground-state">Problem 3 — Transverse field and the ground state<a class="headerlink" href="#problem-3-transverse-field-and-the-ground-state" title="Permanent link">&para;</a></h4>
+<p><em>A single-qubit QBM has <span class="arithmatex">\(H = -\Gamma\sigma^x - b\sigma^z\)</span>. Compute the eigenvalues, the ground state,
+and <span class="arithmatex">\(\langle\sigma^z\rangle\)</span> in the Gibbs state, for <span class="arithmatex">\(\Gamma = 1\)</span>, <span class="arithmatex">\(b = 1\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ H = -\begin{pmatrix} b &amp; \Gamma\\ \Gamma &amp; -b\end{pmatrix}
+= -\begin{pmatrix}1 &amp; 1\\ 1 &amp; -1\end{pmatrix} \]</div>
+<p><strong>Eigenvalues.</strong> <span class="arithmatex">\(\det(H - \lambda I) = 0\)</span> gives <span class="arithmatex">\(\lambda^{2} - (\Gamma^{2}+b^{2}) = 0\)</span>:</p>
+<div class="arithmatex">\[ \lambda = \pm\sqrt{\Gamma^2 + b^2} = \pm\sqrt2 = \pm1.41421 \]</div>
+<p><strong>Ground state (<span class="arithmatex">\(\lambda_- = -\sqrt2\)</span>).</strong> Solve <span class="arithmatex">\((H + \sqrt2 I)|\psi\rangle = 0\)</span>:</p>
+<div class="arithmatex">\[ \begin{pmatrix}-1+\sqrt2 &amp; -1\\ -1 &amp; 1+\sqrt2\end{pmatrix}\begin{pmatrix}\alpha\\\beta\end{pmatrix} = 0 \]</div>
+<p>From the first row: <span class="arithmatex">\(\beta = (\sqrt2 - 1)\alpha = 0.41421\alpha\)</span>. Normalising:</p>
+<div class="arithmatex">\[ |\psi_0\rangle = \frac{1}{\sqrt{1+0.41421^{2}}}\begin{pmatrix}1\\ 0.41421\end{pmatrix}
+= \begin{pmatrix}0.92388\\ 0.38268\end{pmatrix} \]</div>
+<p><strong>A superposition</strong> of <span class="arithmatex">\(|0\rangle\)</span> and <span class="arithmatex">\(|1\rangle\)</span> — impossible for a classical BM, whose states are
+always definite bit strings.</p>
+<p><strong>Gibbs state at <span class="arithmatex">\(\beta = 1\)</span>.</strong> In the eigenbasis, <span class="arithmatex">\(\rho = \frac{1}{Z}\mathrm{diag}(e^{\sqrt2}, e^{-\sqrt2})\)</span>:</p>
+<div class="arithmatex">\[ Z = e^{1.41421} + e^{-1.41421} = 4.11325 + 0.24316 = 4.35637 \]</div>
+<div class="arithmatex">\[ p_- = \frac{4.11325}{4.35641} = 0.94419, \qquad p_+ = 0.05582 \]</div>
+<p><strong>Expectation of <span class="arithmatex">\(\sigma^z\)</span>.</strong> The excited state is orthogonal to <span class="arithmatex">\(|\psi_0\rangle\)</span>:
+<span class="arithmatex">\(|\psi_1\rangle = (-0.38268,\ 0.92388)^T\)</span>.</p>
+<div class="arithmatex">\[ \langle\psi_0|\sigma^z|\psi_0\rangle = 0.92388^2 - 0.38268^2 = 0.85355 - 0.14645 = 0.70711 \]</div>
+<div class="arithmatex">\[ \langle\psi_1|\sigma^z|\psi_1\rangle = 0.14645 - 0.85355 = -0.70711 \]</div>
+<div class="arithmatex">\[ \langle\sigma^z\rangle = 0.94419(0.70711) + 0.05582(-0.70711) = \mathbf{0.62819} \]</div>
+<p><strong>Compare the classical case (<span class="arithmatex">\(\Gamma = 0\)</span>).</strong> Then <span class="arithmatex">\(\langle\sigma^z\rangle = \tanh(b) = \tanh(1) = 0.76159\)</span>.</p>
+<div class="arithmatex">\[ \boxed{\ \text{The transverse field \emph{reduces} the magnetisation from } 0.762 \text{ to } 0.628.\ } \]</div>
+<p>This is <strong>quantum fluctuation</strong>: the <span class="arithmatex">\(\sigma^x\)</span> term drives transitions between <span class="arithmatex">\(|0\rangle\)</span> and
+<span class="arithmatex">\(|1\rangle\)</span>, partially destroying the <span class="arithmatex">\(z\)</span>-alignment. It is exactly the effect a QBM exploits — an
+extra, tunable source of "disorder" that has no classical analogue at the same temperature.</p>
+<h4 id="problem-4-partition-function-cost-and-why-sampling-is-needed">Problem 4 — Partition-function cost and why sampling is needed<a class="headerlink" href="#problem-4-partition-function-cost-and-why-sampling-is-needed" title="Permanent link">&para;</a></h4>
+<p><em>Compute the cost of evaluating <span class="arithmatex">\(Z\)</span> exactly for a fully connected BM with 20, 50 and 100 units. At
+<span class="arithmatex">\(10^{9}\)</span> terms/second, how long does each take?</em></p>
+<p><strong>Solution.</strong></p>
+<p><span class="arithmatex">\(Z = \sum_{\text{configs}} e^{-E}\)</span> has <span class="arithmatex">\(2^{n}\)</span> terms.</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(2^{n}\)</span></th>
+<th>Time at <span class="arithmatex">\(10^{9}\)</span>/s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td><span class="arithmatex">\(1.05\times10^{6}\)</span></td>
+<td><strong>1.0 ms</strong></td>
+</tr>
+<tr>
+<td>50</td>
+<td><span class="arithmatex">\(1.13\times10^{15}\)</span></td>
+<td><strong>13 days</strong></td>
+</tr>
+<tr>
+<td>100</td>
+<td><span class="arithmatex">\(1.27\times10^{30}\)</span></td>
+<td><span class="arithmatex">\(1.27\times10^{21}\)</span> s = <strong><span class="arithmatex">\(4\times10^{13}\)</span> years</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>At 100 units — a <em>tiny</em> model by modern standards — exact evaluation exceeds the age of the
+universe by a factor of 3000.</strong></p>
+<p><strong>Why sampling solves it.</strong> Estimating <span class="arithmatex">\(\langle v_ih_j\rangle_{\text{model}}\)</span> needs only samples from
+<span class="arithmatex">\(P\)</span>, not <span class="arithmatex">\(Z\)</span> itself. MCMC (Gibbs sampling) generates such samples with each step costing <span class="arithmatex">\(O(n^2)\)</span> —
+<strong>polynomial</strong>. The catch is <strong>mixing time</strong>: the chain may need exponentially many steps to reach
+equilibrium if the energy landscape has deep, separated valleys.</p>
+<p><strong>This is precisely the gap a quantum annealer targets.</strong> Instead of a random walk that must climb
+out of valleys, quantum tunnelling can pass <em>through</em> barriers, potentially mixing faster. Whether
+this yields a genuine speed-up on realistic landscapes remains the central open question of quantum
+annealing (L35).</p>
+<h4 id="problem-5-designing-a-qbm-experiment-on-hardware">Problem 5 — Designing a QBM experiment on hardware<a class="headerlink" href="#problem-5-designing-a-qbm-experiment-on-hardware" title="Permanent link">&para;</a></h4>
+<p><em>Design an experiment to test whether a QBM outperforms a classical RBM. Specify the dataset,
+architecture, hardware, controls and metrics — and predict the result.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Dataset.</strong> Bars-and-Stripes on a <span class="arithmatex">\(4\times4\)</span> grid: 16 visible units, 30 valid patterns out of
+<span class="arithmatex">\(2^{16} = 65536\)</span>. Small enough to compute the <strong>exact</strong> log-likelihood, which is essential for an
+honest comparison.</p>
+<p><strong>Architecture.</strong> 16 visible + 8 hidden units, fully connected between layers (RBM topology).
+Parameters: <span class="arithmatex">\(16\times8 + 16 + 8 = \mathbf{152}\)</span>.</p>
+<p><strong>Hardware.</strong> D-Wave Advantage. Minor embedding of a <span class="arithmatex">\(16\times8\)</span> bipartite graph onto the Pegasus
+topology requires chains of ~4 physical qubits per logical qubit, so about <strong>100 physical qubits</strong>.</p>
+<p><strong>The four arms of the experiment.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Arm</th>
+<th>Sampler</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Classical CD-1</td>
+<td>the standard baseline</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Classical Gibbs, 1000 steps</td>
+<td>the "exact-sampling" ceiling</td>
+</tr>
+<tr>
+<td>C</td>
+<td>D-Wave, <span class="arithmatex">\(\Gamma = 0\)</span> (full anneal)</td>
+<td>tests the <em>sampler</em>, not quantumness</td>
+</tr>
+<tr>
+<td>D</td>
+<td>D-Wave, <span class="arithmatex">\(\Gamma &gt; 0\)</span> (paused anneal)</td>
+<td>tests <strong>quantumness</strong> specifically</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Arms C and D are the crucial pair.</strong> Comparing D against C isolates the effect of the transverse
+field, controlling for everything else about the hardware.</p>
+<p><strong>Critical calibration.</strong> Estimate <span class="arithmatex">\(\beta_{\text{eff}}\)</span> for the annealer by fitting the observed
+energy histogram to a Boltzmann distribution. <strong>Without this, the comparison is meaningless</strong> —
+much of the early literature's apparent advantage came from an uncalibrated effective temperature.</p>
+<p><strong>Metrics.</strong></p>
+<ol>
+<li><strong>Exact log-likelihood</strong> on held-out data (computable at this size).</li>
+<li><strong>KL divergence</strong> between the model and the true BAS distribution.</li>
+<li><strong>Wall-clock time</strong> to reach a target log-likelihood — including embedding, programming and
+    readout overhead, not just anneal time.</li>
+<li><strong>Chain-break fraction</strong> — if above ~5 %, the embedding is unreliable and results are suspect.</li>
+</ol>
+<p><strong>Predicted outcome, stated in advance.</strong></p>
+<ul>
+<li>Arms A, B, C, D will reach <strong>comparable log-likelihoods</strong>, with B (exact Gibbs) marginally best.</li>
+<li>Arm D may show a <strong>small</strong> improvement over C, consistent with Amin et al.'s finding that a
+    transverse field helps modestly.</li>
+<li><strong>Arm A (classical CD-1) will win decisively on wall-clock time</strong>, by three to four orders of
+    magnitude, because a D-Wave call carries ~10 ms of programming and readout overhead per sample
+    batch while CD-1 runs in microseconds.</li>
+</ul>
+<p><strong>The honest conclusion to draw.</strong> QBMs are <strong>scientifically interesting</strong> — they demonstrate that a
+transverse field enriches the model class — but they are <strong>not yet practically competitive</strong>. The
+bottleneck is not the algorithm but the sampler: hardware overhead, uncontrolled effective
+temperature, limited connectivity and freeze-out. Designing the experiment with arms C and D, and
+calibrating <span class="arithmatex">\(\beta_{\text{eff}}\)</span>, is what separates a rigorous study from a press release.</p>
+<h2 id="336-practice-problems">33.6 Practice Problems<a class="headerlink" href="#336-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>For <span class="arithmatex">\(E(v) = -2v\)</span>, compute <span class="arithmatex">\(P(v=1)\)</span> with one binary unit. <strong>[Ans: <span class="arithmatex">\(e^2/(1+e^2) = 0.881\)</span>]</strong></li>
+<li>Compute <span class="arithmatex">\(\sigma(0.5)\)</span> and <span class="arithmatex">\(\sigma(-1.5)\)</span>. <strong>[Ans: 0.6225, 0.1824]</strong></li>
+<li>Find the eigenvalues of <span class="arithmatex">\(H = -\Gamma\sigma^x - b\sigma^z\)</span> for <span class="arithmatex">\(\Gamma = 0.5\)</span>, <span class="arithmatex">\(b = 2\)</span>. <strong>[Ans: <span class="arithmatex">\(\pm2.0616\)</span>]</strong></li>
+<li>Why does <span class="arithmatex">\([H,\partial H/\partial\theta]\ne0\)</span> break the classical gradient derivation?</li>
+<li>How many terms in <span class="arithmatex">\(Z\)</span> for a 30-unit BM? <strong>[Ans: <span class="arithmatex">\(1.07\times10^{9}\)</span>]</strong></li>
+<li>Compute <span class="arithmatex">\(\langle\sigma^z\rangle\)</span> for a classical BM with <span class="arithmatex">\(b=0.8\)</span>, <span class="arithmatex">\(\Gamma=0\)</span>. <strong>[Ans: <span class="arithmatex">\(\tanh 0.8 = 0.6640\)</span>]</strong></li>
+<li>Name three practical problems with using a D-Wave device as a Boltzmann sampler.</li>
+</ol>
+<h2 id="337-summary">33.7 Summary<a class="headerlink" href="#337-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A <strong>Boltzmann machine</strong> is an energy-based generative model with <span class="arithmatex">\(P \propto e^{-E}\)</span>; training needs <span class="arithmatex">\(\langle\cdot\rangle_{\text{data}} - \langle\cdot\rangle_{\text{model}}\)</span>, and the model term is intractable because <span class="arithmatex">\(Z\)</span> sums <span class="arithmatex">\(2^n\)</span> configurations.</li>
+<li><strong>Contrastive divergence</strong> replaces equilibrium sampling with a <span class="arithmatex">\(k\)</span>-step chain — biased, but effective.</li>
+<li>A <strong>QBM</strong> adds a <strong>transverse field</strong> <span class="arithmatex">\(-\Gamma\sum_i\sigma^x_i\)</span>, making <span class="arithmatex">\(H\)</span> non-diagonal so the Gibbs state <span class="arithmatex">\(\rho = e^{-H}/Z\)</span> carries coherences no classical BM can represent.</li>
+<li><strong>Non-commutativity</strong> breaks the standard gradient derivation; Amin et al. train a <strong>variational lower bound</strong> derived from the Golden–Thompson inequality instead.</li>
+<li><strong>Quantum annealers</strong> natively realise the QBM Hamiltonian and can be used as Boltzmann samplers, but suffer from unknown <span class="arithmatex">\(\beta_{\text{eff}}\)</span>, sparse connectivity requiring minor embedding, and freeze-out.</li>
+<li><strong>Honest status:</strong> a transverse field demonstrably enriches the model class on small synthetic problems, but no result beats classical CD on real data, and hardware overhead costs 3–4 orders of magnitude in wall-clock time.</li>
+</ul>
+<p><strong>Next lesson:</strong> L34 — The Quantum Approximate Optimization Algorithm (QAOA).</p>
+<p><strong>Practise now:</strong> <code>unit3-qml-lab.html</code> → <em>Boltzmann Lab</em>: set weights and biases, see the full energy
+table and Boltzmann distribution, sweep the transverse field <span class="arithmatex">\(\Gamma\)</span> and watch <span class="arithmatex">\(\langle\sigma^z\rangle\)</span>
+fall as quantum fluctuations grow.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 32. Quantum k-Means Clustering and the Swap Test">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                32. Quantum k-Means Clustering and the Swap Test
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-footer__link md-footer__link--next" aria-label="Next: 34. The Quantum Approximate Optimization Algorithm (QAOA)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                34. The Quantum Approximate Optimization Algorithm (QAOA)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

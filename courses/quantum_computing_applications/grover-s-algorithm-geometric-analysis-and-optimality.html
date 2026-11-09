@@ -1,0 +1,2445 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/grover-s-algorithm-geometric-analysis-and-optimality.html">
+  
+  
+    <link rel="prev" href="grover-s-algorithm-oracle-and-diffusion-operator.html">
+  
+  
+    <link rel="next" href="hash-preimage-attacks-with-grover-s-algorithm.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>22. Grover's Algorithm: Geometric Analysis and Optimality - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#221-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              22. Grover's Algorithm: Geometric Analysis and Optimality
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-the-two-dimensional-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 The Two-Dimensional Picture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.2 The Two-Dimensional Picture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-initial-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The initial angle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-each-iteration-rotates-by-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 Each Iteration Rotates by 2θ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.3 Each Iteration Rotates by 2θ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-reflections-make-a-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two reflections make a rotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-state-after-k-iterations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The state after k iterations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matrix-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matrix form
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-optimal-number-of-iterations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The Optimal Number of Iterations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The Optimal Number of Iterations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exact-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exact cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#over-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Over-rotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-optimality-the-bbbv-lower-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 Optimality: The BBBV Lower Bound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-amplitude-amplification-and-quantum-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Amplitude Amplification and Quantum Counting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.6 Amplitude Amplification and Quantum Counting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amplitude-amplification-brassard-hyer-mosca-tapp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amplitude amplification (Brassard, Høyer, Mosca, Tapp)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum counting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#228-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#229-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-the-two-dimensional-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 The Two-Dimensional Picture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.2 The Two-Dimensional Picture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-initial-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The initial angle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-each-iteration-rotates-by-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 Each Iteration Rotates by 2θ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.3 Each Iteration Rotates by 2θ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-reflections-make-a-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two reflections make a rotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-state-after-k-iterations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The state after k iterations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matrix-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matrix form
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-optimal-number-of-iterations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The Optimal Number of Iterations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The Optimal Number of Iterations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exact-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exact cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#over-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Over-rotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-optimality-the-bbbv-lower-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 Optimality: The BBBV Lower Bound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-amplitude-amplification-and-quantum-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Amplitude Amplification and Quantum Counting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.6 Amplitude Amplification and Quantum Counting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amplitude-amplification-brassard-hyer-mosca-tapp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amplitude amplification (Brassard, Høyer, Mosca, Tapp)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum counting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#228-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#229-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-22-grovers-algorithm-geometric-analysis-and-optimality">Lesson 22: Grover's Algorithm: Geometric Analysis and Optimality<a class="headerlink" href="#lesson-22-grovers-algorithm-geometric-analysis-and-optimality" title="Permanent link">&para;</a></h1>
+<h2 id="221-learning-outcomes">22.1 Learning Outcomes<a class="headerlink" href="#221-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Show that Grover's iteration is a <strong>rotation by <span class="arithmatex">\(2\theta\)</span></strong> in a two-dimensional plane.</li>
+<li>Derive <span class="arithmatex">\(\Pr[\text{success}] = \sin^2\big((2k+1)\theta\big)\)</span> and the optimal <span class="arithmatex">\(k\)</span>.</li>
+<li>Prove the <span class="arithmatex">\(\frac{\pi}{4}\sqrt{N}\)</span> formula and analyse over-rotation.</li>
+<li>State the <strong>BBBV optimality theorem</strong> and explain why <span class="arithmatex">\(\Theta(\sqrt N)\)</span> cannot be beaten.</li>
+<li>Generalise to <strong>amplitude amplification</strong> and quantum counting.</li>
+</ol>
+<h2 id="222-the-two-dimensional-picture">22.2 The Two-Dimensional Picture<a class="headerlink" href="#222-the-two-dimensional-picture" title="Permanent link">&para;</a></h2>
+<p>Grover's algorithm never leaves the plane spanned by</p>
+<div class="arithmatex">\[ |w\rangle \quad\text{and}\quad |w^\perp\rangle = \frac{1}{\sqrt{N-M}}\sum_{x \text{ unmarked}}|x\rangle . \]</div>
+<p><em>(For <span class="arithmatex">\(M\)</span> marked items, replace <span class="arithmatex">\(|w\rangle\)</span> by <span class="arithmatex">\(|w_{\text{all}}\rangle = \frac{1}{\sqrt M}\sum_{x\text{ marked}}|x\rangle\)</span>.)</em></p>
+<p>Both <span class="arithmatex">\(O_f\)</span> and <span class="arithmatex">\(D\)</span> map this plane to itself, and the initial state lies in it. So the entire
+algorithm is <strong>two-dimensional geometry</strong>, no matter how large <span class="arithmatex">\(N\)</span> is.</p>
+<h3 id="the-initial-angle">The initial angle<a class="headerlink" href="#the-initial-angle" title="Permanent link">&para;</a></h3>
+<p>Write the starting state as</p>
+<div class="arithmatex">\[ |\psi\rangle = \sin\theta\,|w_{\text{all}}\rangle + \cos\theta\,|w^\perp\rangle \]</div>
+<p>Matching amplitudes with <span class="arithmatex">\(|\psi\rangle = \frac{1}{\sqrt N}\sum_x|x\rangle\)</span>:</p>
+<div class="arithmatex">\[ \sin\theta = \sqrt{\frac{M}{N}}, \qquad \cos\theta = \sqrt{\frac{N-M}{N}} \]</div>
+<div class="arithmatex">\[ \boxed{\ \theta = \arcsin\sqrt{\frac{M}{N}}\ } \]</div>
+<p>For <span class="arithmatex">\(M=1\)</span> and large <span class="arithmatex">\(N\)</span>, <span class="arithmatex">\(\theta \approx \frac{1}{\sqrt N}\)</span> — a <em>tiny</em> angle. <span class="arithmatex">\(|\psi\rangle\)</span> starts
+almost entirely along <span class="arithmatex">\(|w^\perp\rangle\)</span>.</p>
+<h2 id="223-each-iteration-rotates-by-2">22.3 Each Iteration Rotates by 2θ<a class="headerlink" href="#223-each-iteration-rotates-by-2" title="Permanent link">&para;</a></h2>
+<h3 id="two-reflections-make-a-rotation">Two reflections make a rotation<a class="headerlink" href="#two-reflections-make-a-rotation" title="Permanent link">&para;</a></h3>
+<p><strong>The oracle</strong> <span class="arithmatex">\(O_f = I - 2|w_{\text{all}}\rangle\langle w_{\text{all}}|\)</span> is a <strong>reflection about the
+axis <span class="arithmatex">\(|w^\perp\rangle\)</span></strong>: it negates the <span class="arithmatex">\(|w_{\text{all}}\rangle\)</span> component.</p>
+<p>If the state is at angle <span class="arithmatex">\(\alpha\)</span> from <span class="arithmatex">\(|w^\perp\rangle\)</span>, after <span class="arithmatex">\(O_f\)</span> it is at angle <span class="arithmatex">\(-\alpha\)</span>.</p>
+<p><strong>The diffusion operator</strong> <span class="arithmatex">\(D = 2|\psi\rangle\langle\psi| - I\)</span> is a <strong>reflection about the axis
+<span class="arithmatex">\(|\psi\rangle\)</span></strong>, which sits at angle <span class="arithmatex">\(\theta\)</span>.</p>
+<p>If the state is at angle <span class="arithmatex">\(-\alpha\)</span>, reflecting about the line at angle <span class="arithmatex">\(\theta\)</span> takes it to
+<span class="arithmatex">\(2\theta - (-\alpha) = 2\theta + \alpha\)</span>.</p>
+<p><strong>Composition.</strong></p>
+<div class="arithmatex">\[ \alpha \ \xrightarrow{O_f}\ -\alpha \ \xrightarrow{D}\ \alpha + 2\theta \]</div>
+<div class="arithmatex">\[ \boxed{\ G = D\,O_f \text{ is a rotation by } +2\theta \text{ toward } |w_{\text{all}}\rangle\ } \]</div>
+<p><strong>Elementary geometry fact:</strong> the composition of two reflections about lines meeting at angle
+<span class="arithmatex">\(\theta\)</span> is a rotation by <span class="arithmatex">\(2\theta\)</span>. Grover's algorithm is that fact, applied <span class="arithmatex">\(k\)</span> times.</p>
+<h3 id="the-state-after-k-iterations">The state after k iterations<a class="headerlink" href="#the-state-after-k-iterations" title="Permanent link">&para;</a></h3>
+<p>Starting at angle <span class="arithmatex">\(\theta\)</span> and rotating <span class="arithmatex">\(k\)</span> times by <span class="arithmatex">\(2\theta\)</span>:</p>
+<div class="arithmatex">\[ \boxed{\ G^{k}|\psi\rangle = \sin\big((2k+1)\theta\big)\,|w_{\text{all}}\rangle
++ \cos\big((2k+1)\theta\big)\,|w^\perp\rangle\ } \]</div>
+<div class="arithmatex">\[ \boxed{\ \Pr[\text{success after } k \text{ iterations}] = \sin^2\big((2k+1)\theta\big)\ } \]</div>
+<h3 id="matrix-form">Matrix form<a class="headerlink" href="#matrix-form" title="Permanent link">&para;</a></h3>
+<p>In the ordered basis <span class="arithmatex">\(\{|w^\perp\rangle, |w_{\text{all}}\rangle\}\)</span>:</p>
+<div class="arithmatex">\[ G = \begin{pmatrix}\cos2\theta &amp; -\sin2\theta\\ \sin2\theta &amp; \cos2\theta\end{pmatrix} \]</div>
+<p>— literally a rotation matrix. Its eigenvalues are <span class="arithmatex">\(e^{\pm2i\theta}\)</span>, a fact used by <strong>quantum
+counting</strong> (§5).</p>
+<h2 id="224-the-optimal-number-of-iterations">22.4 The Optimal Number of Iterations<a class="headerlink" href="#224-the-optimal-number-of-iterations" title="Permanent link">&para;</a></h2>
+<p>We want <span class="arithmatex">\((2k+1)\theta = \frac{\pi}{2}\)</span> (pointing exactly at <span class="arithmatex">\(|w_{\text{all}}\rangle\)</span>):</p>
+<div class="arithmatex">\[ k = \frac{\pi}{4\theta} - \frac12 . \]</div>
+<p>Since <span class="arithmatex">\(k\)</span> must be an integer, take</p>
+<div class="arithmatex">\[ \boxed{\ k_{\text{opt}} = \left\lfloor \frac{\pi}{4\theta}\right\rfloor,
+\qquad \theta = \arcsin\sqrt{M/N}\ } \]</div>
+<p><strong>Large-<span class="arithmatex">\(N\)</span> approximation.</strong> For <span class="arithmatex">\(M \ll N\)</span>, <span class="arithmatex">\(\theta\approx\sqrt{M/N}\)</span>, so</p>
+<div class="arithmatex">\[ k_{\text{opt}} \approx \frac{\pi}{4}\sqrt{\frac{N}{M}}
+\qquad\text{and for } M=1: \qquad k_{\text{opt}} \approx \frac{\pi}{4}\sqrt N \approx 0.785\sqrt N . \]</div>
+<p><strong>Residual error.</strong> The rounding leaves an angular error of at most <span class="arithmatex">\(\theta\)</span>, so</p>
+<div class="arithmatex">\[ \Pr[\text{failure}] \le \sin^2\theta = \frac{M}{N} \ \longrightarrow\ 0 \ \text{as } N\to\infty . \]</div>
+<p>For <span class="arithmatex">\(N = 2^{20}\)</span>, <span class="arithmatex">\(M=1\)</span>: failure probability under <span class="arithmatex">\(10^{-6}\)</span>.</p>
+<h3 id="exact-cases">Exact cases<a class="headerlink" href="#exact-cases" title="Permanent link">&para;</a></h3>
+<p>Grover is <em>exact</em> whenever <span class="arithmatex">\(\frac{\pi}{4\theta} - \frac12\)</span> is an integer. The most useful instance is
+<span class="arithmatex">\(\theta = \frac{\pi}{6} = 30°\)</span>, i.e.</p>
+<div class="arithmatex">\[ \sin\theta = \frac12 \ \Longrightarrow\ \frac{M}{N} = \frac14 . \]</div>
+<p>Then <span class="arithmatex">\(k = 1\)</span> and <span class="arithmatex">\(\Pr = \sin^2(3\times30°) = \sin^2 90° = 1\)</span>. This explains the <span class="arithmatex">\(N=4, M=1\)</span> and
+<span class="arithmatex">\(N=16,M=4\)</span> results of L21.</p>
+<h3 id="over-rotation">Over-rotation<a class="headerlink" href="#over-rotation" title="Permanent link">&para;</a></h3>
+<p><span class="arithmatex">\(\Pr[\text{success}] = \sin^2((2k+1)\theta)\)</span> is <strong>periodic</strong>, with period <span class="arithmatex">\(\frac{\pi}{2\theta}\)</span> in <span class="arithmatex">\(k\)</span>.
+Running too long is genuinely harmful: at <span class="arithmatex">\((2k+1)\theta = \pi\)</span> the success probability is <strong>zero</strong>.</p>
+<blockquote>
+<p><strong>The counter-intuitive lesson.</strong> Unlike classical iterative algorithms, "run it longer to be
+safer" is <em>wrong</em> here. Grover must be stopped at a precisely computed moment. If <span class="arithmatex">\(M\)</span> is unknown,
+either estimate it first (quantum counting) or use the <strong>BBHT randomised strategy</strong>: repeatedly
+pick <span class="arithmatex">\(k\)</span> uniformly from <span class="arithmatex">\([0, m)\)</span> and grow <span class="arithmatex">\(m\)</span> by a factor of <span class="arithmatex">\(6/5\)</span> after each failure — this finds a
+solution in <span class="arithmatex">\(O(\sqrt{N/M})\)</span> expected queries without knowing <span class="arithmatex">\(M\)</span>.</p>
+</blockquote>
+<h2 id="225-optimality-the-bbbv-lower-bound">22.5 Optimality: The BBBV Lower Bound<a class="headerlink" href="#225-optimality-the-bbbv-lower-bound" title="Permanent link">&para;</a></h2>
+<p><strong>Theorem (Bennett, Bernstein, Brassard, Vazirani, 1997).</strong> Any quantum algorithm that solves
+unstructured search over <span class="arithmatex">\(N\)</span> items with bounded error requires <span class="arithmatex">\(\Omega(\sqrt N)\)</span> oracle queries.</p>
+<p><strong>Proof sketch (the hybrid argument).</strong> Run the algorithm with the <em>all-zero</em> oracle (no marked item)
+and track the total "query magnitude" each index <span class="arithmatex">\(x\)</span> receives across <span class="arithmatex">\(T\)</span> queries:</p>
+<div class="arithmatex">\[ \sum_{x} \sum_{t=1}^{T}\big\| \Pi_x|\psi_t\rangle \big\|^2 = T \]</div>
+<p>since each query step has unit norm. By pigeonhole, some index <span class="arithmatex">\(x^*\)</span> receives total magnitude at
+most <span class="arithmatex">\(T/N\)</span>. Now switch to the oracle marking <span class="arithmatex">\(x^*\)</span>. A hybrid argument bounds the change in the final
+state:</p>
+<div class="arithmatex">\[ \big\| |\psi_T^{(0)}\rangle - |\psi_T^{(x^*)}\rangle \big\| \le 2\sqrt{\frac{T^2}{N}} . \]</div>
+<p>To distinguish the two cases with constant probability, this must be <span class="arithmatex">\(\Omega(1)\)</span>, forcing</p>
+<div class="arithmatex">\[ T = \Omega(\sqrt N) . \qquad\blacksquare \]</div>
+<p><strong>Consequences.</strong></p>
+<ol>
+<li><strong>Grover is optimal</strong>, matching the lower bound up to a constant. There is no <span class="arithmatex">\(O(\log N)\)</span> or even
+    <span class="arithmatex">\(O(N^{1/3})\)</span> quantum search.</li>
+<li><strong>Quantum computers do not solve NP-complete problems efficiently by brute force.</strong> A SAT instance
+    with <span class="arithmatex">\(n\)</span> variables has <span class="arithmatex">\(2^n\)</span> assignments; Grover reduces <span class="arithmatex">\(2^n\)</span> to <span class="arithmatex">\(2^{n/2}\)</span> — still exponential.</li>
+<li><strong>Speed-ups need structure.</strong> Shor's exponential advantage comes from the <em>periodic</em> structure of
+    modular exponentiation. Unstructured problems admit only quadratic gains.</li>
+</ol>
+<h2 id="226-amplitude-amplification-and-quantum-counting">22.6 Amplitude Amplification and Quantum Counting<a class="headerlink" href="#226-amplitude-amplification-and-quantum-counting" title="Permanent link">&para;</a></h2>
+<h3 id="amplitude-amplification-brassard-hyer-mosca-tapp">Amplitude amplification (Brassard, Høyer, Mosca, Tapp)<a class="headerlink" href="#amplitude-amplification-brassard-hyer-mosca-tapp" title="Permanent link">&para;</a></h3>
+<p>Grover generalises far beyond search. Let <span class="arithmatex">\(\mathcal{A}\)</span> be <strong>any</strong> quantum algorithm (not just
+<span class="arithmatex">\(H^{\otimes n}\)</span>) that outputs a "good" answer with probability <span class="arithmatex">\(p = \sin^2\theta\)</span>. Define</p>
+<div class="arithmatex">\[ Q = -\mathcal{A}\,S_0\,\mathcal{A}^{-1}\,S_\chi \]</div>
+<p>where <span class="arithmatex">\(S_\chi\)</span> flips the phase of good states and <span class="arithmatex">\(S_0\)</span> flips the phase of everything except
+<span class="arithmatex">\(|0\rangle\)</span>. Then <span class="arithmatex">\(Q\)</span> rotates by <span class="arithmatex">\(2\theta\)</span> exactly as before, and</p>
+<div class="arithmatex">\[ O\!\left(\frac{1}{\sqrt p}\right) \ \text{repetitions suffice, versus } O\!\left(\frac1p\right)
+\ \text{classically.} \]</div>
+<p><strong>This is a quadratic speed-up for <em>any</em> randomised algorithm's success probability</strong>, and it is the
+form in which Grover appears inside larger algorithms: Monte Carlo estimation, minimum finding,
+collision finding, and QAOA warm-starting.</p>
+<h3 id="quantum-counting">Quantum counting<a class="headerlink" href="#quantum-counting" title="Permanent link">&para;</a></h3>
+<p>The eigenvalues of <span class="arithmatex">\(G\)</span> are <span class="arithmatex">\(e^{\pm 2i\theta}\)</span>. Applying <strong>quantum phase estimation</strong> (L19) to <span class="arithmatex">\(G\)</span>
+yields <span class="arithmatex">\(\theta\)</span>, and hence</p>
+<div class="arithmatex">\[ M = N\sin^2\theta . \]</div>
+<p>Cost: <span class="arithmatex">\(O(\sqrt N)\)</span> queries for a constant-factor estimate of <span class="arithmatex">\(M\)</span>. This solves the "unknown <span class="arithmatex">\(M\)</span>"
+problem and also gives <strong>quantum approximate counting</strong> — estimating the number of solutions to a
+constraint problem quadratically faster than classical sampling.</p>
+<h2 id="227-solved-problems">22.7 Solved Problems<a class="headerlink" href="#227-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-success-probability-as-a-function-of-k">Problem 1 — Success probability as a function of k<a class="headerlink" href="#problem-1-success-probability-as-a-function-of-k" title="Permanent link">&para;</a></h4>
+<p><em>For <span class="arithmatex">\(N = 1024\)</span>, <span class="arithmatex">\(M=1\)</span>: compute <span class="arithmatex">\(\theta\)</span>, <span class="arithmatex">\(k_{\text{opt}}\)</span>, and <span class="arithmatex">\(\Pr[\text{success}]\)</span> at
+<span class="arithmatex">\(k = 20, 25, 30, 50\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ \sin\theta = \sqrt{\tfrac{1}{1024}} = \tfrac{1}{32} = 0.03125
+\ \Longrightarrow\ \theta = 0.031255\ \mathrm{rad} = 1.7908° \]</div>
+<div class="arithmatex">\[ k_{\text{opt}} = \left\lfloor\frac{\pi}{4\theta}\right\rfloor
+= \left\lfloor\frac{0.785398}{0.031255}\right\rfloor = \lfloor 25.128\rfloor = \mathbf{25} \]</div>
+<p>Now evaluate <span class="arithmatex">\(\Pr = \sin^2((2k+1)\theta)\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(k\)</span></th>
+<th><span class="arithmatex">\((2k+1)\theta\)</span> (rad)</th>
+<th>degrees</th>
+<th><span class="arithmatex">\(\Pr\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td>1.2815</td>
+<td>73.4°</td>
+<td>0.9187</td>
+</tr>
+<tr>
+<td><strong>25</strong></td>
+<td><strong>1.5940</strong></td>
+<td><strong>91.3°</strong></td>
+<td><strong>0.99946</strong></td>
+</tr>
+<tr>
+<td>30</td>
+<td>1.9066</td>
+<td>109.2°</td>
+<td>0.8914</td>
+</tr>
+<tr>
+<td>50</td>
+<td>3.1568</td>
+<td>180.9°</td>
+<td>0.00023</td>
+</tr>
+</tbody>
+</table>
+<p><strong>At <span class="arithmatex">\(k=50\)</span> (double the optimum) the algorithm has rotated a full <span class="arithmatex">\(180°\)</span> and the success probability
+has collapsed to essentially zero.</strong> This is the clearest demonstration of why over-rotation matters.</p>
+<p><em>Classical comparison:</em> 512 queries expected. Quantum: <strong>25</strong>. Speed-up ≈ 20×.</p>
+<h4 id="problem-2-grover-for-aes-128-key-search">Problem 2 — Grover for AES-128 key search<a class="headerlink" href="#problem-2-grover-for-aes-128-key-search" title="Permanent link">&para;</a></h4>
+<p><em>Estimate the resources to find a 128-bit AES key by Grover search. Comment on the security
+implication.</em></p>
+<p><strong>Solution.</strong></p>
+<p><span class="arithmatex">\(N = 2^{128}\)</span>, <span class="arithmatex">\(M=1\)</span>.</p>
+<div class="arithmatex">\[ k_{\text{opt}} \approx \frac{\pi}{4}\sqrt{2^{128}} = \frac{\pi}{4}\times 2^{64}
+= 0.7854\times 1.8447\times10^{19} = \mathbf{1.449\times10^{19}} \ \text{iterations} \]</div>
+<p><strong>Each iteration requires two full AES evaluations</strong> (the encryption circuit and its inverse for
+uncomputation), each roughly <span class="arithmatex">\(10^4\)</span> quantum gates. So the total gate count is</p>
+<div class="arithmatex">\[ \approx 1.449\times10^{19}\times 2\times10^{4} = \mathbf{2.9\times10^{23}} \ \text{gates}. \]</div>
+<p>At an optimistic <span class="arithmatex">\(10^{9}\)</span> logical gates per second:</p>
+<div class="arithmatex">\[ t = 2.9\times10^{14}\ \mathrm{s} \approx \mathbf{9\ \text{million years}} . \]</div>
+<p><strong>Parallelisation does not rescue it.</strong> Splitting the search across <span class="arithmatex">\(P\)</span> quantum machines gives only a
+<span class="arithmatex">\(\sqrt P\)</span> improvement (each machine searches <span class="arithmatex">\(N/P\)</span> items in <span class="arithmatex">\(\sqrt{N/P}\)</span> steps). To finish in one
+year you would need <span class="arithmatex">\(P \approx (9\times10^{6})^2 = 8\times10^{13}\)</span> machines.</p>
+<p><strong>Security implication.</strong> AES-128 has an <em>effective</em> post-quantum security level of 64 bits — the
+standard statement — but the constant factors make even that unreachable in practice. <strong>The
+recommended mitigation is simply AES-256</strong>, which under Grover retains 128-bit effective security.
+NIST's post-quantum guidance formalises this: symmetric algorithms survive by <strong>doubling key
+lengths</strong>; public-key algorithms must be <strong>replaced entirely</strong>.</p>
+<h4 id="problem-3-rotation-angle-and-geometry-verified-numerically">Problem 3 — Rotation angle and geometry, verified numerically<a class="headerlink" href="#problem-3-rotation-angle-and-geometry-verified-numerically" title="Permanent link">&para;</a></h4>
+<p><em>For <span class="arithmatex">\(N=16\)</span>, <span class="arithmatex">\(M=1\)</span>: compute <span class="arithmatex">\(\theta\)</span> and verify <span class="arithmatex">\(\Pr[k]\)</span> for <span class="arithmatex">\(k=1,2,3\)</span> using both the geometric
+formula and the amplitude recursion.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ \sin\theta = \frac14 \Rightarrow \theta = 0.25268\ \mathrm{rad} = 14.478° \]</div>
+<p><strong>Geometric formula.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(k\)</span></th>
+<th><span class="arithmatex">\((2k+1)\theta\)</span></th>
+<th><span class="arithmatex">\(\Pr = \sin^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>14.478°</td>
+<td>0.0625</td>
+</tr>
+<tr>
+<td>1</td>
+<td>43.43°</td>
+<td>0.4727</td>
+</tr>
+<tr>
+<td>2</td>
+<td>72.39°</td>
+<td>0.9084</td>
+</tr>
+<tr>
+<td>3</td>
+<td>101.34°</td>
+<td>0.9613</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ k_{\text{opt}} = \left\lfloor\frac{\pi}{4\times0.25268}\right\rfloor = \lfloor3.108\rfloor = \mathbf{3} \]</div>
+<p><strong>Amplitude recursion check for <span class="arithmatex">\(k=1\)</span>.</strong> Initial <span class="arithmatex">\(\alpha = \frac14 = 0.25\)</span> for all 16 states.</p>
+<p><em>Oracle:</em> <span class="arithmatex">\(\alpha_w = -0.25\)</span>, others <span class="arithmatex">\(+0.25\)</span>.
+<em>Mean:</em> <span class="arithmatex">\(\bar\alpha = \frac{15(0.25) - 0.25}{16} = \frac{3.5}{16} = 0.21875\)</span>.
+<em>Diffusion:</em> <span class="arithmatex">\(\alpha_w = 2(0.21875) + 0.25 = 0.6875\)</span>.</p>
+<div class="arithmatex">\[ \Pr[w] = 0.6875^2 = 0.47266 \ \checkmark \]</div>
+<p>matching the geometric formula exactly. <strong>The two pictures — amplitude bookkeeping and plane
+rotation — are the same thing.</strong></p>
+<h4 id="problem-4-amplitude-amplification-of-a-weak-algorithm">Problem 4 — Amplitude amplification of a weak algorithm<a class="headerlink" href="#problem-4-amplitude-amplification-of-a-weak-algorithm" title="Permanent link">&para;</a></h4>
+<p><em>A heuristic quantum algorithm <span class="arithmatex">\(\mathcal{A}\)</span> finds a valid solution with probability <span class="arithmatex">\(p = 0.01\)</span>. How
+many repetitions are needed classically, and how many with amplitude amplification, to reach 99 %
+success?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Classical repetition.</strong> Failure per run <span class="arithmatex">\(= 0.99\)</span>:</p>
+<div class="arithmatex">\[ 0.99^{R} \le 0.01 \ \Longrightarrow\ R \ge \frac{\ln0.01}{\ln0.99} = \frac{-4.605}{-0.01005} = 458.2 \]</div>
+<div class="arithmatex">\[ R_{\text{classical}} = \mathbf{459} \ \text{runs of } \mathcal{A} . \]</div>
+<p><strong>Amplitude amplification.</strong> <span class="arithmatex">\(\sin\theta = \sqrt{p} = 0.1\)</span>, so <span class="arithmatex">\(\theta = 0.10017\)</span> rad.</p>
+<div class="arithmatex">\[ k_{\text{opt}} = \left\lfloor\frac{\pi}{4\theta}\right\rfloor
+= \left\lfloor\frac{0.7854}{0.10017}\right\rfloor = \lfloor7.84\rfloor = \mathbf{7} \]</div>
+<div class="arithmatex">\[ \Pr = \sin^2(15\times0.10017) = \sin^2(1.5026) = 0.99534 = \mathbf{99.5\%} \]</div>
+<p><strong>7 applications of <span class="arithmatex">\(\mathcal{A}\)</span> (plus 7 of <span class="arithmatex">\(\mathcal{A}^{-1}\)</span>) versus 459 classically</strong> — a
+<span class="arithmatex">\(\approx33\times\)</span> improvement, consistent with <span class="arithmatex">\(\sqrt{459/7}\approx 8\)</span> per the quadratic rule
+(the exact factor depends on the target confidence).</p>
+<p><em>Why this matters more than plain search.</em> Amplitude amplification applies to <strong>any</strong> subroutine with
+a checkable output — Monte Carlo integration, optimisation heuristics, sampling — making it one of
+the few broadly reusable quantum primitives.</p>
+<h4 id="problem-5-grover-with-an-imperfect-oracle">Problem 5 — Grover with an imperfect oracle<a class="headerlink" href="#problem-5-grover-with-an-imperfect-oracle" title="Permanent link">&para;</a></h4>
+<p><em>The oracle applies the correct phase with probability <span class="arithmatex">\(1-\eta\)</span> and does nothing with probability
+<span class="arithmatex">\(\eta\)</span> (a stochastic gate error). Estimate the largest <span class="arithmatex">\(N\)</span> for which Grover still works, given
+<span class="arithmatex">\(\eta = 10^{-4}\)</span>.</em></p>
+<p><strong>Solution.</strong>
+The algorithm requires <span class="arithmatex">\(k \approx \frac{\pi}{4}\sqrt N\)</span> oracle calls, all of which must succeed for
+the rotation to accumulate correctly. Ignoring partial recovery, the probability that every call is
+clean is</p>
+<div class="arithmatex">\[ (1-\eta)^{k} \approx e^{-\eta k} = \exp\!\left(-\eta\frac{\pi}{4}\sqrt N\right) . \]</div>
+<p>Require this to stay above, say, <span class="arithmatex">\(\frac12\)</span>:</p>
+<div class="arithmatex">\[ \eta\frac{\pi}{4}\sqrt N \le \ln 2 = 0.693 \]</div>
+<div class="arithmatex">\[ \sqrt N \le \frac{0.693 \times 4}{\pi \times 10^{-4}} = \frac{2.772}{3.1416\times10^{-4}} = 8824 \]</div>
+<div class="arithmatex">\[ N \le 7.8\times10^{7} \approx 2^{26} . \]</div>
+<p>So with a <span class="arithmatex">\(10^{-4}\)</span> oracle error rate, Grover works up to roughly <strong>26 qubits' worth of search
+space</strong> — and only if every other gate is perfect too.</p>
+<p><strong>Generalisation.</strong> Setting <span class="arithmatex">\(\eta\frac{\pi}{4}\sqrt N = O(1)\)</span> gives <span class="arithmatex">\(N = O(1/\eta^2)\)</span>: <strong>the largest
+searchable space scales as the inverse square of the error rate.</strong> Getting to a cryptographically
+relevant <span class="arithmatex">\(N = 2^{128}\)</span> would need <span class="arithmatex">\(\eta \lesssim 10^{-20}\)</span> — utterly impossible without full
+fault tolerance.</p>
+<p><strong>Conclusion.</strong> Grover is a <strong>fault-tolerant-era</strong> algorithm. NISQ demonstrations are limited to
+<span class="arithmatex">\(N \le 2^{5}\)</span> or so, and its quadratic speed-up is too shallow to pay for error-correction overhead
+in many practical settings — a point made forcefully by Babbush et al. (2021), who argue that
+quadratic speed-ups may never yield practical advantage once QEC costs are included.</p>
+<h2 id="228-practice-problems">22.8 Practice Problems<a class="headerlink" href="#228-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Compute <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(k_{\text{opt}}\)</span> for <span class="arithmatex">\(N = 10^{6}\)</span>, <span class="arithmatex">\(M=1\)</span>. <strong>[Ans: <span class="arithmatex">\(\theta\approx0.001\)</span> rad, <span class="arithmatex">\(k=785\)</span>]</strong></li>
+<li>For <span class="arithmatex">\(N=64\)</span>, <span class="arithmatex">\(M=4\)</span>: find <span class="arithmatex">\(k_{\text{opt}}\)</span> and the success probability. <strong>[Ans: <span class="arithmatex">\(\theta=30°\)</span>, <span class="arithmatex">\(k=1\)</span>, <span class="arithmatex">\(\Pr=1\)</span>]</strong></li>
+<li>Show that <span class="arithmatex">\(\Pr[\text{success}]=0\)</span> when <span class="arithmatex">\((2k+1)\theta = \pi\)</span>.</li>
+<li>Verify that <span class="arithmatex">\(G\)</span> has eigenvalues <span class="arithmatex">\(e^{\pm2i\theta}\)</span>.</li>
+<li>For <span class="arithmatex">\(p = 0.25\)</span>, how many amplitude-amplification rounds reach certainty? <strong>[Ans: 1]</strong></li>
+<li>Explain why <span class="arithmatex">\(\sqrt P\)</span> machines give only <span class="arithmatex">\(\sqrt P\)</span> speed-up in parallel Grover.</li>
+<li>State the BBBV theorem and one consequence for NP-complete problems.</li>
+</ol>
+<h2 id="229-summary">22.9 Summary<a class="headerlink" href="#229-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Grover's iteration <span class="arithmatex">\(G = D\,O_f\)</span> is the composition of two reflections, hence a <strong>rotation by <span class="arithmatex">\(2\theta\)</span></strong> in the <span class="arithmatex">\(\mathrm{span}\{|w\rangle,|w^\perp\rangle\}\)</span> plane, with <span class="arithmatex">\(\theta = \arcsin\sqrt{M/N}\)</span>.</li>
+<li><span class="arithmatex">\(\Pr[\text{success}] = \sin^2\big((2k+1)\theta\big)\)</span>; optimal <span class="arithmatex">\(k = \lfloor\pi/(4\theta)\rfloor \approx \frac{\pi}{4}\sqrt{N/M}\)</span>; residual failure <span class="arithmatex">\(\le M/N\)</span>.</li>
+<li>The probability <strong>oscillates</strong>: over-rotation drives it to zero. Use quantum counting or the BBHT strategy when <span class="arithmatex">\(M\)</span> is unknown.</li>
+<li><strong>BBBV theorem:</strong> <span class="arithmatex">\(\Omega(\sqrt N)\)</span> queries are necessary, so Grover is optimal and quantum computers do <strong>not</strong> brute-force NP-complete problems efficiently.</li>
+<li><strong>Amplitude amplification</strong> generalises Grover to any algorithm with success probability <span class="arithmatex">\(p\)</span>, needing <span class="arithmatex">\(O(1/\sqrt p)\)</span> instead of <span class="arithmatex">\(O(1/p)\)</span> repetitions.</li>
+<li>Practical reality: AES-128 needs <span class="arithmatex">\(1.4\times10^{19}\)</span> iterations (millions of years); Grover requires full fault tolerance, since the searchable space scales only as <span class="arithmatex">\(O(1/\eta^2)\)</span> in the error rate.</li>
+</ul>
+<p><strong>Next lesson:</strong> L23 — Grover applied to cryptography: hash preimage attacks.</p>
+<p><strong>Practise now:</strong> <code>unit2-algorithms-lab.html</code> → <em>Grover</em> tab: switch to the <strong>geometric view</strong> to
+watch the state vector rotate in the 2-D plane, and slide <span class="arithmatex">\(k\)</span> past the optimum to see the
+probability curve fall.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 21. Grover&#39;s Algorithm: Oracle and Diffusion Operator">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                21. Grover's Algorithm: Oracle and Diffusion Operator
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-footer__link md-footer__link--next" aria-label="Next: 23. Hash Preimage Attacks with Grover&#39;s Algorithm">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                23. Hash Preimage Attacks with Grover's Algorithm
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

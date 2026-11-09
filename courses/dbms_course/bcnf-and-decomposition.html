@@ -1,0 +1,1994 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/bcnf-and-decomposition.html">
+  
+  
+    <link rel="prev" href="normal-forms-1nf-2nf-3nf.html">
+  
+  
+    <link rel="next" href="lossless-join-and-dependency-preservation.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>22. BCNF and Decomposition - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#221-boyce-codd-normal-form" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              22. BCNF and Decomposition
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="bcnf-and-decomposition.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-boyce-codd-normal-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Boyce-Codd Normal Form
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.1 Boyce-Codd Normal Form">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-is-a-relation-in-3nf-but-not-bcnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When is a relation in 3NF but not BCNF?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-classic-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The classic example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redundancy-bcnf-is-objecting-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The redundancy BCNF is objecting to
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-the-bcnf-decomposition-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 The BCNF Decomposition Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.2 The BCNF Decomposition Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applying-it-to-teaching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying it to TEACHING
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-the-fundamental-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 The Fundamental Trade-off
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-3nf-synthesis-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The 3NF Synthesis Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The 3NF Synthesis Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-higher-normal-forms-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 Higher Normal Forms (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-boyce-codd-normal-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Boyce-Codd Normal Form
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.1 Boyce-Codd Normal Form">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-is-a-relation-in-3nf-but-not-bcnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When is a relation in 3NF but not BCNF?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-classic-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The classic example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redundancy-bcnf-is-objecting-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The redundancy BCNF is objecting to
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-the-bcnf-decomposition-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 The BCNF Decomposition Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.2 The BCNF Decomposition Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applying-it-to-teaching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying it to TEACHING
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-the-fundamental-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 The Fundamental Trade-off
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-3nf-synthesis-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The 3NF Synthesis Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The 3NF Synthesis Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-higher-normal-forms-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 Higher Normal Forms (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-22-bcnf-and-decomposition">Lesson 22: BCNF and Decomposition<a class="headerlink" href="#lesson-22-bcnf-and-decomposition" title="Permanent link">&para;</a></h1>
+<p><em>The strongest ordinary normal form, and what it costs</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 5:</strong> Database Design · 10 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 14.5, 15.1</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Define <strong>BCNF</strong> and test a relation for it.</li>
+<li>Explain exactly when a relation is in <strong>3NF but not BCNF</strong>.</li>
+<li>Apply the <strong>BCNF decomposition algorithm</strong>.</li>
+<li>Apply the <strong>3NF synthesis algorithm</strong>.</li>
+<li>State the trade-off: <strong>BCNF may sacrifice dependency preservation</strong>.</li>
+</ol>
+</div>
+<h2 id="221-boyce-codd-normal-form">22.1 Boyce-Codd Normal Form<a class="headerlink" href="#221-boyce-codd-normal-form" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">BCNF</p>
+<p>A relation <code>R</code> is in <strong>Boyce-Codd Normal Form</strong> if, for <strong>every</strong> non-trivial functional dependency <code>X → Y</code> that holds in <code>R</code>, <strong><code>X</code> is a superkey of <code>R</code></strong>.</p>
+<p>Equivalently: <strong>every determinant is a superkey.</strong></p>
+</div>
+<p>Compare the two definitions side by side; the difference is one clause.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>3NF (general definition)</th>
+<th>BCNF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>For every non-trivial <code>X → A</code></td>
+<td><code>X</code> is a superkey <strong>OR</strong> <code>A</code> is prime</td>
+<td><code>X</code> is a superkey</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">BCNF is 3NF with the escape clause removed</p>
+<p>3NF forgives a dependency whose determinant is not a superkey, <strong>provided the dependent attribute is prime</strong>. BCNF forgives nothing.</p>
+<p>Therefore <strong>every BCNF relation is in 3NF</strong>, but not conversely. BCNF is <em>strictly stronger</em>.</p>
+</div>
+<h3 id="when-is-a-relation-in-3nf-but-not-bcnf">When is a relation in 3NF but not BCNF?<a class="headerlink" href="#when-is-a-relation-in-3nf-but-not-bcnf" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">The three conditions, all required together</p>
+<p>A relation can be in 3NF but not BCNF only if <strong>all three</strong> hold:</p>
+<ol>
+<li>There are <strong>two or more candidate keys</strong>, and</li>
+<li>the candidate keys are <strong>composite</strong>, and</li>
+<li>the candidate keys <strong>overlap</strong> — they share at least one attribute.</li>
+</ol>
+<p>If a relation has only one candidate key, or its keys are single attributes and disjoint, <strong>3NF and BCNF coincide</strong>.</p>
+</div>
+<p>This is worth remembering, because it means BCNF violations are relatively <strong>rare</strong> in practice — most relations that reach 3NF are already in BCNF.</p>
+<h3 id="the-classic-example">The classic example<a class="headerlink" href="#the-classic-example" title="Permanent link">&para;</a></h3>
+<p><code>TEACHING( Student, Subject, Teacher )</code></p>
+<p>Business rules:</p>
+<ul>
+<li>Each <strong>teacher teaches exactly one subject</strong>: <code>Teacher → Subject</code></li>
+<li>For a given student and subject, there is exactly <strong>one teacher</strong>: <code>Student, Subject → Teacher</code></li>
+</ul>
+<p><strong>Candidate keys.</strong>
+<code>(Student, Subject)⁺</code> = <code>{Student, Subject, Teacher}</code> = R. Minimal (neither alone works). <strong>Candidate key.</strong>
+<code>(Student, Teacher)⁺</code> = <code>{Student, Teacher}</code> → (<code>Teacher → Subject</code>) <code>{Student, Teacher, Subject}</code> = R. Minimal. <strong>Candidate key.</strong></p>
+<p>Two candidate keys, both composite, <strong>overlapping on <code>Student</code></strong> — the three conditions are met.</p>
+<p><strong>Prime attributes:</strong> <code>Student</code>, <code>Subject</code>, <code>Teacher</code> — <em>all</em> of them. <strong>Non-prime:</strong> none.</p>
+<p><strong>In 3NF?</strong> <strong>Yes.</strong> Test each dependency:</p>
+<ul>
+<li><code>Student, Subject → Teacher</code>: determinant is a superkey. Passes.</li>
+<li><code>Teacher → Subject</code>: determinant is <strong>not</strong> a superkey (<code>Teacher⁺ = {Teacher, Subject} ≠ R</code>) — but <code>Subject</code> <strong>is prime</strong>, so the second condition rescues it. Passes.</li>
+</ul>
+<p>Since there are no non-prime attributes at all, no 2NF or 3NF violation is even possible.</p>
+<p><strong>In BCNF?</strong> <strong>No.</strong> <code>Teacher → Subject</code> has a determinant that is not a superkey, and BCNF has no escape clause.</p>
+<h3 id="the-redundancy-bcnf-is-objecting-to">The redundancy BCNF is objecting to<a class="headerlink" href="#the-redundancy-bcnf-is-objecting-to" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Student</th>
+<th>Subject</th>
+<th>Teacher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ankit</td>
+<td>Database</td>
+<td>Gupta</td>
+</tr>
+<tr>
+<td>Riya</td>
+<td>Database</td>
+<td>Gupta</td>
+</tr>
+<tr>
+<td>Sana</td>
+<td>Database</td>
+<td>Gupta</td>
+</tr>
+<tr>
+<td>Ankit</td>
+<td>Physics</td>
+<td>Rao</td>
+</tr>
+</tbody>
+</table>
+<p>The fact <em>"Gupta teaches Database"</em> is stored <strong>three times</strong>. All three anomalies follow:</p>
+<ul>
+<li><strong>Insertion:</strong> a newly appointed teacher cannot be recorded until some student is assigned to them (<code>Student</code> is part of every key and cannot be NULL).</li>
+<li><strong>Deletion:</strong> if the three Database students leave, the fact that Gupta teaches Database is lost.</li>
+<li><strong>Modification:</strong> if Gupta switches to Networks, three rows must change together.</li>
+</ul>
+<p>So a relation can be in 3NF and still suffer every classic anomaly. <strong>That is precisely why BCNF exists.</strong></p>
+<h2 id="222-the-bcnf-decomposition-algorithm">22.2 The BCNF Decomposition Algorithm<a class="headerlink" href="#222-the-bcnf-decomposition-algorithm" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Algorithm</p>
+<div class="language-text highlight"><pre><span></span><code>D := { R }
+while some relation Q in D is not in BCNF:
+    find a non-trivial FD  X -&gt; Y  in Q  where X is NOT a superkey of Q
+    replace Q in D by the two relations
+        Q1 = ( X ∪ Y )          -- the offending dependency, with X as its key
+        Q2 = ( Q − Y )          -- the rest, with X retained as a foreign key
+return D
+</code></pre></div>
+<p>Each step is <strong>guaranteed lossless</strong>, because the common attribute set is <code>X</code>, and <code>X</code> is the key of <code>Q1</code> (Lesson 5).</p>
+</div>
+<h3 id="applying-it-to-teaching">Applying it to <code>TEACHING</code><a class="headerlink" href="#applying-it-to-teaching" title="Permanent link">&para;</a></h3>
+<p>The violating dependency is <code>Teacher → Subject</code>. So <code>X = {Teacher}</code>, <code>Y = {Subject}</code>.</p>
+<ul>
+<li><code>Q1 = (Teacher, Subject)</code> — key <code>Teacher</code></li>
+<li><code>Q2 = (Student, Teacher)</code> — key <code>(Student, Teacher)</code></li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">TEACHES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Teacher</span><span class="p">,</span><span class="w"> </span><span class="n">Subject</span><span class="w"> </span><span class="p">)</span><span class="w">        </span><span class="c1">-- key Teacher</span>
+<span class="n">STUDIES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Student</span><span class="p">,</span><span class="w"> </span><span class="n">Teacher</span><span class="w"> </span><span class="p">)</span><span class="w">        </span><span class="c1">-- key (Student, Teacher)</span>
+</code></pre></div>
+<p><strong>Check <code>TEACHES</code>:</strong> the only determinant is <code>Teacher</code>, which is its key. <strong>BCNF.</strong>
+<strong>Check <code>STUDIES</code>:</strong> the only key is <code>(Student, Teacher)</code>; no smaller determinant exists. <strong>BCNF.</strong></p>
+<p><strong>Lossless?</strong> Common attribute is <code>Teacher</code>; <code>Teacher⁺ = {Teacher, Subject}</code> ⊇ <code>TEACHES</code>, so <code>Teacher</code> is a superkey of <code>TEACHES</code>. <strong>Yes, lossless.</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">The price: a lost dependency</p>
+<p>The original dependency <code>Student, Subject → Teacher</code> is <strong>no longer enforceable</strong>.</p>
+<p><code>Student</code> and <code>Subject</code> now live in <strong>different relations</strong>, so no constraint on either table can express the rule. Checking it requires <strong>joining</strong> <code>STUDIES</code> and <code>TEACHES</code> on every insert.</p>
+<p>Consequence — the following two rows are individually legal but jointly violate the business rule:</p>
+<table>
+<thead>
+<tr>
+<th>STUDIES</th>
+<th></th>
+<th></th>
+<th>TEACHES</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ankit</td>
+<td>Gupta</td>
+<td></td>
+<td>Gupta</td>
+<td>Database</td>
+</tr>
+<tr>
+<td>Ankit</td>
+<td>Sharma</td>
+<td></td>
+<td>Sharma</td>
+<td>Database</td>
+</tr>
+</tbody>
+</table>
+<p>Ankit now has <strong>two</strong> teachers for Database, which <code>Student, Subject → Teacher</code> forbade. Nothing in the decomposed schema prevents it.</p>
+<p><strong>This decomposition is lossless but NOT dependency preserving.</strong></p>
+</div>
+<h2 id="223-the-fundamental-trade-off">22.3 The Fundamental Trade-off<a class="headerlink" href="#223-the-fundamental-trade-off" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">The theorem to remember</p>
+<ul>
+<li>A <strong>lossless-join</strong> decomposition into <strong>BCNF</strong> relations <strong>always exists</strong>.</li>
+<li>A <strong>lossless-join and dependency-preserving</strong> decomposition into <strong>3NF</strong> relations <strong>always exists</strong>.</li>
+<li>A <strong>lossless-join and dependency-preserving</strong> decomposition into <strong>BCNF</strong> <strong>may not exist</strong>.</li>
+</ul>
+<p><code>TEACHING</code> is the standard witness for the third statement.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>                     lossless?      dependency        redundancy
+                                    preserving?       remaining?
+   3NF  synthesis      ALWAYS         ALWAYS           possibly some
+   BCNF decomposition  ALWAYS         NOT ALWAYS       none (from FDs)
+
+   You may have any two of {BCNF, lossless, dependency preserving},
+   but not always all three.  Lossless is never negotiable.
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Which should you choose?</p>
+<p><strong>Stay in 3NF</strong> when the lost dependency matters — when it is a rule the business genuinely needs enforced cheaply, and the residual redundancy is small and controlled.</p>
+<p><strong>Go to BCNF</strong> when the redundancy is large and the lost dependency is either unimportant or can be enforced in the application or by a trigger.</p>
+<p><strong>Never</strong> give up <strong>losslessness</strong> — a lossy decomposition corrupts the data itself, producing spurious tuples on reassembly. The other two properties are trade-offs; this one is a correctness requirement.</p>
+<p>In practice most designers <strong>stop at 3NF</strong> for transactional schemas, because dependency preservation is worth more than the last increment of redundancy, and because (as noted) most 3NF relations happen to be in BCNF anyway.</p>
+</div>
+<h2 id="224-the-3nf-synthesis-algorithm">22.4 The 3NF Synthesis Algorithm<a class="headerlink" href="#224-the-3nf-synthesis-algorithm" title="Permanent link">&para;</a></h2>
+<p>Rather than decomposing top-down, 3NF can be <strong>synthesised bottom-up from a minimal cover</strong> — and the result is guaranteed to be both lossless and dependency preserving.</p>
+<div class="admonition info">
+<p class="admonition-title">Algorithm (3NF synthesis)</p>
+<ol>
+<li>Compute a <strong>minimal cover</strong> <code>G</code> of <code>F</code> (Lesson 2).</li>
+<li>For each dependency <code>X → Y</code> in <code>G</code>, create a relation <code>(X ∪ Y)</code>. Merge relations whose determinants are identical.</li>
+<li>If <strong>no</strong> relation created so far contains a <strong>candidate key</strong> of <code>R</code>, add one more relation consisting of <strong>any candidate key</strong> of <code>R</code>. <em>(This step guarantees losslessness.)</em></li>
+<li>Remove any relation that is a <strong>subset</strong> of another.</li>
+</ol>
+</div>
+<h3 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h3>
+<p><code>R(A,B,C,D,E)</code> with <code>F = { A → BC, CD → E, B → D, E → A }</code>.</p>
+<p><strong>Step 1 — minimal cover.</strong> Split the right sides: <code>A → B</code>, <code>A → C</code>, <code>CD → E</code>, <code>B → D</code>, <code>E → A</code>. Check for extraneous left attributes in <code>CD → E</code>: is <code>C</code> extraneous? <code>D⁺ = {D}</code>, no. Is <code>D</code> extraneous? <code>C⁺ = {C}</code>, no. Check redundancy: removing any one of the five loses information (verify each with a closure). So the cover is already minimal:</p>
+<p><code>G = { A → B, A → C, CD → E, B → D, E → A }</code></p>
+<p><strong>Step 2 — one relation per dependency, merging equal determinants:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>R1 ( A, B, C )      from A → B and A → C merged
+R2 ( C, D, E )      from CD → E
+R3 ( B, D )         from B → D
+R4 ( E, A )         from E → A
+</code></pre></div>
+<p><strong>Step 3 — does any relation contain a candidate key?</strong> The candidate keys are <code>A</code>, <code>E</code>, <code>BC</code>, <code>CD</code> (computed in Lesson 2). <code>R1</code> contains <code>A</code>; <code>R2</code> contains <code>CD</code>; <code>R4</code> contains <code>E</code>. <strong>Yes</strong> — no extra relation is needed.</p>
+<p><strong>Step 4 — subset removal.</strong> None is a subset of another.</p>
+<p><strong>Result:</strong> <code>R1(A,B,C)</code>, <code>R2(C,D,E)</code>, <code>R3(B,D)</code>, <code>R4(E,A)</code> — all in 3NF, the decomposition <strong>lossless</strong> and <strong>dependency preserving</strong> by construction.</p>
+<div class="admonition warning">
+<p class="admonition-title">Step 3 is not optional</p>
+<p>Omit it and the decomposition may be <strong>lossy</strong>. Consider <code>R(A,B,C)</code> with the single dependency <code>A → B</code>. Step 2 gives only <code>R1(A,B)</code>; attribute <code>C</code> is lost entirely. Step 3 adds a candidate key relation <code>R2(A,C)</code>, restoring both <code>C</code> and losslessness.</p>
+</div>
+<h2 id="225-higher-normal-forms-brief">22.5 Higher Normal Forms (brief)<a class="headerlink" href="#225-higher-normal-forms-brief" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Beyond BCNF</p>
+<p><strong>4NF</strong> removes <strong>multivalued dependencies (MVDs)</strong>. <code>X ↠ Y</code> means that for each value of <code>X</code> there is a <em>set</em> of <code>Y</code> values independent of the other attributes. A relation is in 4NF if it is in BCNF and every non-trivial MVD has a superkey determinant.</p>
+<p><em>Example.</em> <code>EMP(Ename, {Project}, {Dependent})</code> where projects and dependants are independent. Storing both in one relation forces every combination to be listed — 3 projects × 2 dependants = 6 rows for facts that need 3 + 2 = 5. Split into <code>EMP_PROJECT</code> and <code>EMP_DEPENDENT</code>.</p>
+<p><strong>5NF (Project-Join Normal Form)</strong> removes <strong>join dependencies</strong> — cases where a relation must be decomposed into <em>three or more</em> fragments to remove redundancy, though no two-way decomposition suffices.</p>
+</div>
+<p>These are beyond the syllabus for this course, but a complete answer to <em>"list the normal forms"</em> should mention them.</p>
+<h2 id="226-solved-questions">22.6 Solved Questions<a class="headerlink" href="#226-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Define BCNF. How does it differ from 3NF? Under what conditions can a relation be in 3NF but not BCNF?</p>
+<p><strong>A.</strong> A relation is in <strong>BCNF</strong> if for every non-trivial FD <code>X → Y</code>, <strong><code>X</code> is a superkey</strong>.</p>
+<p><strong>Difference from 3NF.</strong> The general 3NF definition allows <code>X → A</code> when <code>X</code> is a superkey <strong>or</strong> <code>A</code> is prime. BCNF deletes the second alternative. So <strong>BCNF is 3NF with the escape clause removed</strong>, and is strictly stronger: every BCNF relation is in 3NF, but not conversely.</p>
+<p><strong>Conditions for 3NF-but-not-BCNF.</strong> All three must hold simultaneously:</p>
+<ol>
+<li>The relation has <strong>two or more candidate keys</strong>;</li>
+<li>the candidate keys are <strong>composite</strong>;</li>
+<li>the candidate keys <strong>overlap</strong> (share at least one attribute).</li>
+</ol>
+<p>If any fails, 3NF and BCNF coincide. Hence BCNF violations are relatively rare.</p>
+<p><strong>Why these conditions?</strong> A 3NF-but-not-BCNF violation needs a dependency <code>X → A</code> where <code>X</code> is not a superkey and <code>A</code> is <strong>prime</strong>. For <code>A</code> to be prime it must lie in some candidate key; for <code>X</code> to be a non-superkey determinant of a key attribute while the relation is still in 3NF, another candidate key must exist and share attributes with the first. <code>TEACHING(Student, Subject, Teacher)</code> with keys <code>(Student, Subject)</code> and <code>(Student, Teacher)</code> — overlapping on <code>Student</code> — is the canonical instance.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Show that <code>TEACHING(Student, Subject, Teacher)</code> with <code>Student,Subject → Teacher</code> and <code>Teacher → Subject</code> is in 3NF but not BCNF. Decompose it and state what is lost.</p>
+<p><strong>A.</strong></p>
+<p><strong>Candidate keys.</strong> <code>(Student, Subject)⁺ = R</code> and is minimal → candidate key. <code>(Student, Teacher)⁺</code> = <code>{Student, Teacher}</code> →(<code>Teacher → Subject</code>) <code>= R</code>, minimal → candidate key.
+<strong>Prime:</strong> all three attributes. <strong>Non-prime:</strong> none.</p>
+<p><strong>3NF — satisfied.</strong> With no non-prime attributes, no 2NF or 3NF violation is possible. Checking each FD by the general definition: <code>Student,Subject → Teacher</code> has a superkey determinant; <code>Teacher → Subject</code> has a non-superkey determinant but <code>Subject</code> is <strong>prime</strong>, so the second condition applies. <strong>In 3NF.</strong></p>
+<p><strong>BCNF — violated.</strong> <code>Teacher → Subject</code> has determinant <code>Teacher</code> with <code>Teacher⁺ = {Teacher, Subject} ≠ R</code>, so it is not a superkey, and BCNF permits no exception.</p>
+<p><strong>The redundancy.</strong> "Gupta teaches Database" is repeated once per student of Gupta, giving insertion, deletion and modification anomalies.</p>
+<p><strong>Decomposition</strong> on the violating dependency <code>X = {Teacher}</code>, <code>Y = {Subject}</code>:</p>
+<div class="language-text highlight"><pre><span></span><code>TEACHES ( Teacher, Subject )     key Teacher
+STUDIES ( Student, Teacher )     key (Student, Teacher)
+</code></pre></div>
+<p>Both are in BCNF: each relation's only determinant is its own key.</p>
+<p><strong>Lossless?</strong> Yes. Common attribute <code>Teacher</code>; <code>Teacher⁺ ⊇ TEACHES</code>, so the common attributes form a superkey of one fragment.</p>
+<p><strong>What is lost: the dependency <code>Student, Subject → Teacher</code>.</strong> <code>Student</code> and <code>Subject</code> now sit in different relations, so no single-table constraint can enforce it. Two individually legal rows — Ankit/Gupta in <code>STUDIES</code> and Ankit/Sharma in <code>STUDIES</code>, with both teachers teaching Database — jointly break the rule, and nothing detects it. Enforcement would require a join on every insert, or a trigger.</p>
+<p><strong>The decomposition is lossless but not dependency preserving</strong> — the standard illustration that BCNF and dependency preservation can be incompatible.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> State the BCNF decomposition algorithm and apply it to <code>R(A,B,C,D)</code> with <code>AB → CD</code> and <code>D → A</code>.</p>
+<p><strong>A.</strong> <em>(Algorithm as in Section 4.2.)</em></p>
+<p><strong>Candidate keys.</strong> <code>AB⁺</code> = <code>{A,B}</code> → <code>{A,B,C,D}</code> = R, minimal → candidate key. <code>BD⁺</code> = <code>{B,D}</code> →(<code>D→A</code>) <code>{A,B,D}</code> →(<code>AB→CD</code>) <code>{A,B,C,D}</code> = R; is it minimal? <code>B⁺ = {B}</code>, <code>D⁺ = {A,D}</code> — neither is R, so <strong><code>BD</code> is a candidate key</strong>.</p>
+<p><strong>Candidate keys: <code>AB</code>, <code>BD</code>.</strong> <strong>Prime:</strong> <code>A</code>, <code>B</code>, <code>D</code>. <strong>Non-prime:</strong> <code>C</code>.</p>
+<p><strong>3NF?</strong> <code>AB → CD</code> — superkey determinant, fine. <code>D → A</code> — <code>D⁺ = {A,D} ≠ R</code>, so not a superkey; but <code>A</code> is <strong>prime</strong>, so 3NF forgives it. <strong>In 3NF.</strong></p>
+<p><strong>BCNF?</strong> <code>D → A</code> has a non-superkey determinant. <strong>Violated.</strong></p>
+<p>(Note that this relation satisfies the three conditions: two candidate keys, both composite, overlapping on <code>B</code>.)</p>
+<p><strong>Decompose</strong> on <code>X = {D}</code>, <code>Y = {A}</code>:</p>
+<ul>
+<li><code>Q1 = X ∪ Y = (D, A)</code> — key <code>D</code></li>
+<li><code>Q2 = R − Y = (B, C, D)</code> — the rest, with <code>D</code> retained</li>
+</ul>
+<p><strong>Check <code>Q1(D, A)</code>:</strong> only determinant is <code>D</code>, its key. <strong>BCNF.</strong>
+<strong>Check <code>Q2(B, C, D)</code>:</strong> which dependencies hold here? Projecting <code>F</code> onto <code>{B,C,D}</code>: <code>BD⁺ = R</code>, so <code>BD → C</code> holds; nothing smaller determines anything. The only determinant is <code>BD</code>, the key. <strong>BCNF.</strong></p>
+<p><strong>Lossless?</strong> Common attribute <code>D</code>; <code>D⁺ = {A,D} ⊇ Q1</code>. <strong>Yes.</strong></p>
+<p><strong>Dependency preserving?</strong> <code>D → A</code> is checkable in <code>Q1</code>. <code>AB → CD</code> is <strong>not</strong> checkable — <code>A</code> is in <code>Q1</code>, <code>B</code> and <code>C</code> in <code>Q2</code>, and no fragment contains all of <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>. <strong>Not dependency preserving.</strong> Again the characteristic BCNF trade-off.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> State the 3NF synthesis algorithm and apply it to <code>R(A,B,C,D,E,F)</code> with <code>F = {A → BC, C → DE, E → F, F → A}</code>.</p>
+<p><strong>A.</strong> <em>(Algorithm as in Section 4.4.)</em></p>
+<p><strong>Step 1 — minimal cover.</strong> Split the right sides: <code>A → B</code>, <code>A → C</code>, <code>C → D</code>, <code>C → E</code>, <code>E → F</code>, <code>F → A</code>. Every left side is a single attribute, so none can be extraneous. Test redundancy: removing <code>A → B</code> leaves <code>A⁺</code> (under the rest) <code>= {A,C,D,E,F}</code> which excludes <code>B</code>, so keep it; similar checks retain all six. <strong>The cover is already minimal.</strong></p>
+<p><strong>Step 2 — one relation per dependency, merging identical determinants:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>R1 ( A, B, C )     from A → B and A → C
+R2 ( C, D, E )     from C → D and C → E
+R3 ( E, F )        from E → F
+R4 ( F, A )        from F → A
+</code></pre></div>
+<p><strong>Step 3 — does some relation contain a candidate key?</strong> Compute the keys. <code>A⁺</code> = <code>{A,B,C,D,E,F}</code> = R, so <code>A</code> is a candidate key. Likewise <code>C⁺</code> = <code>{C,D,E,F,A,B}</code> = R, <code>E⁺</code> = <code>{E,F,A,B,C,D}</code> = R, and <code>F⁺</code> = R. <strong>Candidate keys: <code>A</code>, <code>C</code>, <code>E</code>, <code>F</code></strong> (a cycle of determinants). <code>R1</code> contains <code>A</code>, so the condition is met — <strong>no extra relation needed</strong>.</p>
+<p><strong>Step 4 — subset removal.</strong> None is a subset of another.</p>
+<p><strong>Result:</strong> <code>R1(A,B,C)</code>, <code>R2(C,D,E)</code>, <code>R3(E,F)</code>, <code>R4(F,A)</code>.</p>
+<p><strong>Properties, guaranteed by construction:</strong> every relation is in <strong>3NF</strong>; the decomposition is <strong>dependency preserving</strong> (each dependency of the cover sits inside one relation); and it is <strong>lossless</strong> (a relation contains a candidate key).</p>
+<p><strong>Are they also in BCNF?</strong> <code>R1(A,B,C)</code>: the determinants holding here are <code>A</code> (its key) and <code>C</code>, and <code>C⁺ = R ⊇ R1</code>, so <code>C</code> is also a superkey of <code>R1</code>. Both determinants are superkeys — <strong>BCNF</strong>. Similar checks show the same for the others. Here 3NF synthesis happened to yield BCNF, which is common.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> State the trade-off between BCNF and dependency preservation. Which property must never be sacrificed, and why?</p>
+<p><strong>A.</strong> Three properties are wanted from a decomposition: it should be <strong>lossless</strong>, <strong>dependency preserving</strong>, and its fragments should be in as high a normal form as possible.</p>
+<p>The theorems:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Lossless?</th>
+<th>Dependency preserving?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3NF</strong></td>
+<td>always achievable</td>
+<td>always achievable</td>
+</tr>
+<tr>
+<td><strong>BCNF</strong></td>
+<td>always achievable</td>
+<td><strong>not always achievable</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>TEACHING(Student, Subject, Teacher)</code> is the standard witness for the negative result: any BCNF decomposition loses <code>Student, Subject → Teacher</code>.</p>
+<p><strong>Losslessness must never be sacrificed.</strong> The reason is a difference in kind, not degree:</p>
+<ul>
+<li>Losing a <strong>dependency</strong> costs <em>enforcement</em>: the constraint can still be checked, just more expensively — with a join, a trigger, or application code. The <strong>data remains correct</strong>, and the correct answer to every query is still obtainable.</li>
+<li>A <strong>lossy</strong> decomposition corrupts the <strong>data itself</strong>. Rejoining the fragments produces <strong>spurious tuples</strong> — rows that were never in the original relation and assert facts that are simply false. There is no way to tell the genuine rows from the invented ones, and no amount of later care recovers the lost information.</li>
+</ul>
+<p>So losslessness is a <strong>correctness requirement</strong>, while dependency preservation and normal form are <strong>engineering trade-offs</strong>.</p>
+<p><strong>Practical guidance.</strong> Decompose to 3NF by synthesis, which gives all three properties whenever they are jointly achievable. Then check whether the result is already in BCNF — usually it is. If it is not, weigh the residual redundancy against the cost of enforcing the lost dependency, and choose deliberately. Most transactional schemas stop at 3NF.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Give the sequence of all normal forms with a one-line criterion for each, and state which anomaly each removes.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Normal form</th>
+<th>Criterion</th>
+<th>Removes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1NF</strong></td>
+<td>All attribute values are <strong>atomic</strong>; no repeating groups, composite or multivalued attributes</td>
+<td>Non-relational structure; makes querying possible at all</td>
+</tr>
+<tr>
+<td><strong>2NF</strong></td>
+<td>1NF, and no <strong>non-prime</strong> attribute is <strong>partially</strong> dependent on a candidate key</td>
+<td>Redundancy from attributes belonging to <em>part</em> of a composite key</td>
+</tr>
+<tr>
+<td><strong>3NF</strong></td>
+<td>2NF, and for every non-trivial <code>X → A</code>, <code>X</code> is a superkey <strong>or</strong> <code>A</code> is prime</td>
+<td>Redundancy from <strong>transitive</strong> dependencies — facts about a second entity</td>
+</tr>
+<tr>
+<td><strong>BCNF</strong></td>
+<td>Every determinant is a <strong>superkey</strong> (no exceptions)</td>
+<td>The remaining redundancy from FDs, where the dependent attribute is prime</td>
+</tr>
+<tr>
+<td><strong>4NF</strong></td>
+<td>BCNF, and every non-trivial <strong>multivalued dependency</strong> has a superkey determinant</td>
+<td>Redundancy from <strong>independent</strong> multivalued facts stored together</td>
+</tr>
+<tr>
+<td><strong>5NF / PJNF</strong></td>
+<td>Every <strong>join dependency</strong> is implied by the candidate keys</td>
+<td>Redundancy removable only by decomposing into three or more relations</td>
+</tr>
+</tbody>
+</table>
+<p>Each form is <strong>strictly stronger</strong> than its predecessor: 5NF ⊂ 4NF ⊂ BCNF ⊂ 3NF ⊂ 2NF ⊂ 1NF.</p>
+<p><strong>The unifying idea</strong> is the one from Unit 3, Lesson 1: a relation should describe <strong>one kind of thing</strong>. Each normal form detects a different way in which a second kind of fact has crept in — via part of a key (2NF), via another non-prime attribute (3NF), via a prime attribute (BCNF), or via an independent multivalued fact (4NF).</p>
+<p>For this syllabus, 1NF to BCNF are examinable; 4NF and 5NF should be known by name and criterion.</p>
+</div>
+<h2 id="227-exercises">22.7 Exercises<a class="headerlink" href="#227-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Define BCNF in one sentence.</li>
+<li>State the difference between 3NF and BCNF precisely.</li>
+<li>Give the three conditions under which a relation can be in 3NF but not BCNF.</li>
+<li>Which decomposition target always allows dependency preservation?</li>
+<li>Why must losslessness never be sacrificed?</li>
+<li>What does step 3 of the 3NF synthesis algorithm guarantee?</li>
+<li>What does 4NF remove?</li>
+</ol>
+<p><strong>B. Test and decompose</strong></p>
+<p>For each: find all candidate keys, determine the highest normal form, and if it is not in BCNF, decompose. State whether your decomposition preserves dependencies.</p>
+<ol>
+<li><code>R(A,B,C)</code> with <code>AB → C</code>, <code>C → A</code>.</li>
+<li><code>R(A,B,C,D)</code> with <code>A → BCD</code>, <code>BC → AD</code>, <code>D → B</code>.</li>
+<li><code>R(A,B,C,D)</code> with <code>AB → C</code>, <code>C → D</code>, <code>D → A</code>.</li>
+<li><code>R(A,B,C,D,E)</code> with <code>AB → CDE</code>, <code>E → AB</code>.</li>
+<li><code>ADDRESS(Street, City, State, PIN)</code> with <code>Street,City,State → PIN</code> and <code>PIN → City,State</code>.</li>
+<li><code>ENROL(Student, Course, Instructor)</code> where each instructor teaches one course, and a student takes each course from one instructor.</li>
+<li><code>SUPPLY(Supplier, Part, City)</code> where each supplier is in one city, and only one supplier of a given part is in a given city.</li>
+</ol>
+<p><strong>C. Synthesis</strong></p>
+<ol>
+<li>Apply the 3NF synthesis algorithm to <code>R(A,B,C,D,E)</code> with <code>F = {AB → C, C → D, D → E, E → A}</code>.</li>
+<li>Apply it to <code>R(A,B,C,D,E,G)</code> with <code>F = {A → BC, CD → E, B → D, E → A, G → A}</code>.</li>
+<li>Show, with an example, why omitting step 3 of the synthesis algorithm can produce a lossy decomposition.</li>
+</ol>
+<p><strong>D. Analysis</strong></p>
+<ol>
+<li>Prove that every BCNF relation is in 3NF.</li>
+<li>Prove that a relation with exactly two attributes is always in BCNF.</li>
+<li>Prove that a relation with a single candidate key is in BCNF if and only if it is in 3NF.</li>
+<li>For <code>TEACHING</code>, construct explicit rows in the decomposed schema that jointly violate <code>Student,Subject → Teacher</code> while each table is individually valid. Then write the SQL query a trigger would need in order to detect the violation.</li>
+<li>A designer refuses to go beyond 3NF, saying "BCNF costs a lost dependency". Under what circumstances is this reasoning correct, and under what circumstances is it wrong?</li>
+<li>Give a relation in BCNF that still exhibits redundancy. Which normal form addresses it?</li>
+<li>Explain why most relations that reach 3NF are already in BCNF, referring to the three conditions.</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li>Every 3NF relation is in BCNF.</li>
+<li>Every BCNF relation is in 3NF.</li>
+<li>A lossless BCNF decomposition always exists.</li>
+<li>A dependency-preserving BCNF decomposition always exists.</li>
+<li>A relation with one candidate key that is in 3NF is in BCNF.</li>
+<li>Losing a dependency corrupts the data.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>False.</strong> <code>TEACHING(Student, Subject, Teacher)</code> is the standard counter-example.</li>
+<li><strong>True.</strong> BCNF's condition implies 3NF's first alternative, so 3NF is automatically satisfied.</li>
+<li><strong>True.</strong> The decomposition algorithm splits on <code>X → Y</code> into <code>(X ∪ Y)</code> and <code>(R − Y)</code>, whose common attributes <code>X</code> form a key of the first — always lossless.</li>
+<li><strong>False.</strong> This is exactly what <code>TEACHING</code> disproves.</li>
+<li><strong>True.</strong> With one candidate key the three conditions for a 3NF-but-not-BCNF violation cannot be met, so the two forms coincide.</li>
+<li><strong>False.</strong> It costs <strong>enforcement</strong> — the rule needs a join or a trigger — but the stored data remains correct. Only a <strong>lossy</strong> decomposition corrupts data, by producing spurious tuples.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li><strong>BCNF: every determinant is a superkey.</strong> It is 3NF with the "or <code>A</code> is prime" escape clause removed, and is strictly stronger.</li>
+<li>A relation is in <strong>3NF but not BCNF</strong> only when it has <strong>two or more overlapping composite candidate keys</strong> — so BCNF violations are uncommon.</li>
+<li>The <strong>BCNF decomposition algorithm</strong> splits on a violating <code>X → Y</code> into <code>(X ∪ Y)</code> and <code>(R − Y)</code>; every step is <strong>lossless</strong>.</li>
+<li>The <strong>3NF synthesis algorithm</strong> builds one relation per dependency of a <strong>minimal cover</strong>, plus a candidate-key relation if needed — always lossless <strong>and</strong> dependency preserving.</li>
+<li><strong>Trade-off:</strong> lossless BCNF always exists; lossless <em>and</em> dependency-preserving BCNF may not. <strong>Never sacrifice losslessness</strong> — it corrupts data, whereas a lost dependency merely costs enforcement.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="normal-forms-1nf-2nf-3nf.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 21. Normal Forms: 1NF, 2NF, 3NF">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                21. Normal Forms: 1NF, 2NF, 3NF
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="lossless-join-and-dependency-preservation.html" class="md-footer__link md-footer__link--next" aria-label="Next: 23. Lossless Join and Dependency Preservation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                23. Lossless Join and Dependency Preservation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

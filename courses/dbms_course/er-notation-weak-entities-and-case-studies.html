@@ -1,0 +1,2428 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/er-notation-weak-entities-and-case-studies.html">
+  
+  
+    <link rel="prev" href="relationships-relationship-types-and-constraints.html">
+  
+  
+    <link rel="next" href="update-anomalies-and-the-relational-data-model.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>8. ER Notation, Weak Entities and Case Studies - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#81-the-complete-chen-notation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8. ER Notation, Weak Entities and Case Studies
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#81-the-complete-chen-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 The Complete Chen Notation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82-a-seven-step-design-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 A Seven-Step Design Procedure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#83-case-study-1-the-college-database-our-running-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Case Study 1 — The College Database (our running example)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3 Case Study 1 — The College Database (our running example)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shorthand-form-useful-in-examinations-when-space-is-short" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shorthand form (useful in examinations when space is short)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#84-case-study-2-the-company-database-the-textbook-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Case Study 2 — The COMPANY Database (the textbook standard)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.4 Case Study 2 — The COMPANY Database (the textbook standard)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-diagram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-constraints-in-min-max-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural constraints in (min, max) form
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#85-case-study-3-a-hospital-database-with-a-weak-entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 Case Study 3 — A Hospital Database (with a weak entity)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.5 Case Study 3 — A Hospital Database (with a weak entity)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis-and-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis and diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#86-design-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.6 Design Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.6 Design Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-fan-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fan trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-chasm-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The chasm trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#87-a-glimpse-of-the-eer-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.7 A Glimpse of the EER Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#88-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.8 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#89-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.9 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#81-the-complete-chen-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 The Complete Chen Notation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82-a-seven-step-design-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 A Seven-Step Design Procedure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#83-case-study-1-the-college-database-our-running-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Case Study 1 — The College Database (our running example)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3 Case Study 1 — The College Database (our running example)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shorthand-form-useful-in-examinations-when-space-is-short" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shorthand form (useful in examinations when space is short)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#84-case-study-2-the-company-database-the-textbook-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Case Study 2 — The COMPANY Database (the textbook standard)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.4 Case Study 2 — The COMPANY Database (the textbook standard)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-diagram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-constraints-in-min-max-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural constraints in (min, max) form
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#85-case-study-3-a-hospital-database-with-a-weak-entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 Case Study 3 — A Hospital Database (with a weak entity)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.5 Case Study 3 — A Hospital Database (with a weak entity)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis-and-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis and diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#86-design-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.6 Design Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.6 Design Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-fan-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The fan trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-chasm-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The chasm trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#87-a-glimpse-of-the-eer-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.7 A Glimpse of the EER Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#88-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.8 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#89-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.9 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-8-er-notation-weak-entities-and-case-studies">Lesson 8: ER Notation, Weak Entities and Case Studies<a class="headerlink" href="#lesson-8-er-notation-weak-entities-and-case-studies" title="Permanent link">&para;</a></h1>
+<p><em>Putting it all together — three complete designs, drawn step by step</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 2:</strong> Entity Relationship Modelling · 7 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 3.7, 3.8, 4.1–4.4</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Reproduce the <strong>complete Chen notation</strong> from memory.</li>
+<li>Draw a full ER diagram for a described mini-world, with all constraints.</li>
+<li>Apply a repeatable <strong>seven-step design procedure</strong>.</li>
+<li>Recognise and resolve the standard <strong>design traps</strong> (fan trap, chasm trap).</li>
+<li>Read the <strong>EER</strong> extensions: specialisation, generalisation, inheritance.</li>
+</ol>
+</div>
+<h2 id="81-the-complete-chen-notation">8.1 The Complete Chen Notation<a class="headerlink" href="#81-the-complete-chen-notation" title="Permanent link">&para;</a></h2>
+<p>Memorise this table. Every examination question on Unit 2 uses it.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rectangle</strong></td>
+<td>Entity type (strong / regular)</td>
+</tr>
+<tr>
+<td><strong>Double rectangle</strong></td>
+<td><strong>Weak</strong> entity type</td>
+</tr>
+<tr>
+<td><strong>Diamond</strong></td>
+<td>Relationship type</td>
+</tr>
+<tr>
+<td><strong>Double diamond</strong></td>
+<td><strong>Identifying</strong> relationship (of a weak entity type)</td>
+</tr>
+<tr>
+<td><strong>Ellipse</strong></td>
+<td>Attribute</td>
+</tr>
+<tr>
+<td><strong>Ellipse with child ellipses</strong></td>
+<td><strong>Composite</strong> attribute</td>
+</tr>
+<tr>
+<td><strong>Double ellipse</strong></td>
+<td><strong>Multivalued</strong> attribute</td>
+</tr>
+<tr>
+<td><strong>Dashed ellipse</strong></td>
+<td><strong>Derived</strong> attribute</td>
+</tr>
+<tr>
+<td><strong>Underlined</strong> name</td>
+<td><strong>Key</strong> attribute</td>
+</tr>
+<tr>
+<td><strong>Dash-underlined</strong> name</td>
+<td><strong>Partial key</strong> of a weak entity type</td>
+</tr>
+<tr>
+<td><strong>Single line</strong></td>
+<td>Partial participation</td>
+</tr>
+<tr>
+<td><strong>Double line</strong></td>
+<td><strong>Total</strong> participation (existence dependency)</td>
+</tr>
+<tr>
+<td><code>1</code>, <code>N</code>, <code>M</code> on a line</td>
+<td>Cardinality ratio</td>
+</tr>
+<tr>
+<td><code>(min, max)</code> on a line</td>
+<td>Structural constraint, both bounds at once</td>
+</tr>
+<tr>
+<td>Label on a line</td>
+<td><strong>Role name</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="language-text highlight"><pre><span></span><code>   ============ THE COMPLETE NOTATION AT A GLANCE ============
+
+    +--------+        +==========+        (  Attr  )    (( Multi ))
+    | ENTITY |        ||  WEAK  ||        simple        multivalued
+    +--------+        +==========+
+
+     /------\          /========\       , - - - - .     ( Comp. )
+    &lt; RELSHP &gt;        &lt;&lt; IDENTIF.&gt;&gt;      ( Derived )      /      \
+     \------/          \========/        ` - - - - '  (P1)      (P2)
+
+    ---- single line = PARTIAL participation
+    ==== double line = TOTAL participation
+     1 / N / M  = cardinality        (min,max) = structural constraint
+    ___________ underline = key      - - - - -  dash = partial key
+</code></pre></div>
+<h2 id="82-a-seven-step-design-procedure">8.2 A Seven-Step Design Procedure<a class="headerlink" href="#82-a-seven-step-design-procedure" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Procedure</p>
+<ol>
+<li><strong>Identify entity types.</strong> Underline nouns; keep those with properties of their own (Lesson 1).</li>
+<li><strong>Identify relationship types.</strong> Verbs connecting two entity types.</li>
+<li><strong>Attach attributes</strong> to entity types and to relationship types (Lesson 2 test).</li>
+<li><strong>Determine keys.</strong> Underline. Any entity type with no key of its own is <strong>weak</strong> — find its owner, its identifying relationship, and its partial key.</li>
+<li><strong>Determine cardinality ratios</strong>, using the two-question method.</li>
+<li><strong>Determine participation constraints</strong>, side by side.</li>
+<li><strong>Review:</strong> read the diagram back in English, sentence by sentence, and check every sentence against the requirements.</li>
+</ol>
+</div>
+<p>Step 7 is the one students skip and the one that finds the errors. Read <em>"Every student must be admitted to at least one course, and may be admitted to many"</em> aloud, and ask the registrar whether it is true.</p>
+<h2 id="83-case-study-1-the-college-database-our-running-example">8.3 Case Study 1 — The College Database (our running example)<a class="headerlink" href="#83-case-study-1-the-college-database-our-running-example" title="Permanent link">&para;</a></h2>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>The college keeps records of its <strong>students</strong>: roll number (unique), name, and date of birth. It offers <strong>courses</strong>, each with an identifier (unique), name, total seats, duration, a course type that is either <em>Fulltime</em> or <em>Parttime</em>, and a teacher-in-charge. A student may take <strong>admission</strong> in any number of courses, and the date of admission is recorded; every student must be admitted to at least one course, but a newly created course may have no students. The college also runs <strong>societies</strong>, each with an identifier (unique), name, mentor and total seats. Students <strong>enrol</strong> in societies and the date of enrolment is recorded; enrolment is optional on both sides.</p>
+</blockquote>
+<h3 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h3>
+<p><strong>Steps 1–2.</strong> Entity types: <code>STUDENT</code>, <code>COURSE</code>, <code>SOCIETY</code>. Relationship types: <code>TAKES_ADMISSION</code> (student–course), <code>ENROLS_IN</code> (student–society).</p>
+<p><strong>Step 3.</strong> Attributes as listed; <code>Dateofadmission</code> belongs to <code>TAKES_ADMISSION</code> and <code>Dateofenrolment</code> to <code>ENROLS_IN</code>, because each is determined only by the <em>pair</em> (Lesson 3).</p>
+<p><strong>Step 4.</strong> Keys: <code>Rollno</code>, <code>SID</code>, <code>SocID</code>. All three entity types are <strong>strong</strong>.</p>
+<p><strong>Step 5.</strong> Cardinalities. <em>One student, how many courses?</em> many. <em>One course, how many students?</em> many &rarr; <strong>M:N</strong>. Similarly <code>ENROLS_IN</code> is <strong>M:N</strong>.</p>
+<p><strong>Step 6.</strong> Participation. <code>STUDENT</code> in <code>TAKES_ADMISSION</code>: <strong>total</strong> (stated). <code>COURSE</code>: <strong>partial</strong> (stated). Both sides of <code>ENROLS_IN</code>: <strong>partial</strong>.</p>
+<p><strong>Step 7.</strong> Read back: <em>"Every student is admitted to at least one course and may be admitted to many. A course may have no students, or many. A student may join any number of societies, or none. A society may have no members, or many."</em> This matches the requirements.</p>
+<h3 id="the-diagram">The diagram<a class="headerlink" href="#the-diagram" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>   (Rollno)      (Name)   (Dateofbirth)      (SID)   (Cname) (TotalSeats)
+   underlined       |          |            underlined   |         |
+        \           |          |                  \      |        /
+         +----------+----------+                   +-----+-------+
+         |                                         |             |
+    +----+--------+     M   /----------------\  N  +-------------+---+
+    |   STUDENT   |=========&lt; TAKES_ADMISSION  &gt;---|      COURSE     |
+    +----+--------+         \-------+--------/     +----+--------+---+
+         |  total                   |                   |        |
+         |                  (Dateofadmission)      (Duration) (Coursetype)
+         |  M                                              (TeacherInCharge)
+         |
+    /----+---------\
+   &lt;    ENROLS_IN    &gt;----(Dateofenrolment)
+    \----+---------/
+         |  N
+    +----+--------+
+    |   SOCIETY   |----(SocID underlined)----(Socname)----(Mentor)
+    +-------------+----(TotalSeats)
+
+   LEGEND: ==== total participation ;  ---- partial participation
+</code></pre></div>
+<p><em>Figure 4.1 — ER diagram for the college database.</em></p>
+<h3 id="shorthand-form-useful-in-examinations-when-space-is-short">Shorthand form (useful in examinations when space is short)<a class="headerlink" href="#shorthand-form-useful-in-examinations-when-space-is-short" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>STUDENT ( Rollno, Name, Dateofbirth )                       [key: Rollno]
+COURSE  ( SID, Cname, TotalSeats, Duration,
+          Coursetype, TeacherInCharge )                     [key: SID]
+SOCIETY ( SocID, Socname, Mentor, TotalSeats )              [key: SocID]
+
+TAKES_ADMISSION ( STUDENT (1,N) , COURSE (0,N) )   attribute: Dateofadmission
+ENROLS_IN       ( STUDENT (0,N) , SOCIETY (0,N) )  attribute: Dateofenrolment
+</code></pre></div>
+<p>This diagram maps directly to the tables used in the practical component; the mapping is done formally in Unit 5, Lesson 1.</p>
+<h2 id="84-case-study-2-the-company-database-the-textbook-standard">8.4 Case Study 2 — The COMPANY Database (the textbook standard)<a class="headerlink" href="#84-case-study-2-the-company-database-the-textbook-standard" title="Permanent link">&para;</a></h2>
+<p>This is Elmasri and Navathe's canonical example, and it appears in examinations year after year because it exercises <strong>every</strong> notational feature.</p>
+<h3 id="requirements_1">Requirements<a class="headerlink" href="#requirements_1" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>The company is organised into <strong>departments</strong>. Each department has a unique name, a unique number, and several locations. A department is managed by one employee; the date on which that employee began managing is recorded. Each department <strong>controls</strong> a number of <strong>projects</strong>; each project has a unique name, a unique number and a single location. The company stores each <strong>employee's</strong> social security number (unique), name, address, salary, sex and birth date. Every employee is assigned to exactly one department but may <strong>work on</strong> several projects, which need not be controlled by the same department; the number of hours per week an employee works on each project is recorded. Each employee has a direct <strong>supervisor</strong>, who is another employee. Employees have <strong>dependants</strong> for insurance purposes; for each dependant the first name, sex, birth date and relationship to the employee are recorded. A dependant's first name is unique only within that employee's family.</p>
+</blockquote>
+<h3 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Decision</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEPARTMENT</code></td>
+<td>Strong entity type</td>
+<td>Two keys: <code>Dname</code>, <code>Dnumber</code> — both underlined; choose <code>Dnumber</code> as primary.</td>
+</tr>
+<tr>
+<td><code>Dlocations</code></td>
+<td><strong>Multivalued</strong> attribute of <code>DEPARTMENT</code></td>
+<td>"several locations". Double ellipse.</td>
+</tr>
+<tr>
+<td><code>NumberOfEmployees</code></td>
+<td><strong>Derived</strong> attribute</td>
+<td>Countable from <code>WORKS_FOR</code>. Dashed ellipse.</td>
+</tr>
+<tr>
+<td><code>PROJECT</code></td>
+<td>Strong entity type</td>
+<td>Keys <code>Pname</code>, <code>Pnumber</code>; <code>Plocation</code> is single-valued.</td>
+</tr>
+<tr>
+<td><code>EMPLOYEE</code></td>
+<td>Strong entity type</td>
+<td>Key <code>Ssn</code>. <code>Name</code> is composite; <code>Age</code> derived from <code>Bdate</code>.</td>
+</tr>
+<tr>
+<td><code>DEPENDENT</code></td>
+<td><strong>Weak</strong> entity type</td>
+<td><em>"unique only within that employee's family"</em> — no key of its own. Owner <code>EMPLOYEE</code>, partial key <code>DependentName</code>.</td>
+</tr>
+<tr>
+<td><code>MANAGES</code></td>
+<td>1:1, attribute <code>StartDate</code></td>
+<td>One employee manages at most one department; a department has exactly one manager.</td>
+</tr>
+<tr>
+<td><code>WORKS_FOR</code></td>
+<td>1:N</td>
+<td>Employee assigned to <strong>exactly one</strong> department; department has many employees.</td>
+</tr>
+<tr>
+<td><code>CONTROLS</code></td>
+<td>1:N</td>
+<td>Department controls many projects; a project is controlled by one department.</td>
+</tr>
+<tr>
+<td><code>WORKS_ON</code></td>
+<td><strong>M:N</strong>, attribute <code>Hours</code></td>
+<td>Employee works on several projects; a project has several employees. <code>Hours</code> is determined only by the pair.</td>
+</tr>
+<tr>
+<td><code>SUPERVISION</code></td>
+<td><strong>Recursive</strong> 1:N, roles <em>supervisor</em> / <em>supervisee</em></td>
+<td>The supervisor is another employee.</td>
+</tr>
+<tr>
+<td><code>DEPENDENTS_OF</code></td>
+<td><strong>Identifying</strong> relationship, 1:N, double diamond</td>
+<td>Weak entity's identification.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-diagram_1">The diagram<a class="headerlink" href="#the-diagram_1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>                        ((Dlocations))   , -Number- .
+   (Dname)  (Dnumber)         |          (OfEmployees)   &lt;- derived
+       \      |               |           ` - - - - '
+        \     |               |                |
+      +--+----+---------------+----------------+--+
+      |             DEPARTMENT                    |
+      +--+------------+-------------------+-------+
+         |            |                   |
+    1    |            | 1                 | 1
+   /-----+----\   /---+----\         /----+-----\
+  &lt;  MANAGES   &gt; &lt; WORKS_FOR&gt;       &lt;  CONTROLS  &gt;
+   \-----+----/   \---+----/         \----+-----/
+    (StartDate)       |  N                | N
+         | 1          |                   |
+      +--+------------+---+          +----+------+
+      |    EMPLOYEE       |          |  PROJECT  |
+      +--+---+--------+---+          +----+------+
+         |   |        |   \               | N
+   total |   |        |    \    M    /----+-----\
+         |   |    (Ssn)     +-------&lt;  WORKS_ON  &gt;
+         |   |   underlined          \----+-----/
+         |   |    (Name comp.)            |
+         |   |    (Address)          (Hours)
+         |   |    (Salary)(Sex)(Bdate)
+         |   |
+         |   +---- SUPERVISION (recursive 1:N)
+         |          supervisor (0,1) / supervisee (0,N)
+         |
+    /====+=======\   1
+   &lt;&lt; DEPENDENTS_OF &gt;&gt;      double diamond = identifying
+    \=============/
+         || N   (total participation, double line)
+   +=====++======+
+   ||  DEPENDENT ||        double rectangle = weak
+   +=============+
+    DependentName (partial key, dashed underline)
+    Sex, Bdate, Relationship
+</code></pre></div>
+<p><em>Figure 4.2 — ER diagram for the COMPANY database.</em></p>
+<h3 id="structural-constraints-in-min-max-form">Structural constraints in (min, max) form<a class="headerlink" href="#structural-constraints-in-min-max-form" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Left entity</th>
+<th>(min,max)</th>
+<th>Right entity</th>
+<th>(min,max)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MANAGES</code></td>
+<td>EMPLOYEE</td>
+<td>(0,1)</td>
+<td>DEPARTMENT</td>
+<td>(1,1)</td>
+</tr>
+<tr>
+<td><code>WORKS_FOR</code></td>
+<td>EMPLOYEE</td>
+<td>(1,1)</td>
+<td>DEPARTMENT</td>
+<td>(1,N)</td>
+</tr>
+<tr>
+<td><code>CONTROLS</code></td>
+<td>DEPARTMENT</td>
+<td>(0,N)</td>
+<td>PROJECT</td>
+<td>(1,1)</td>
+</tr>
+<tr>
+<td><code>WORKS_ON</code></td>
+<td>EMPLOYEE</td>
+<td>(1,N)</td>
+<td>PROJECT</td>
+<td>(1,N)</td>
+</tr>
+<tr>
+<td><code>SUPERVISION</code></td>
+<td>EMPLOYEE (supervisor)</td>
+<td>(0,N)</td>
+<td>EMPLOYEE (supervisee)</td>
+<td>(0,1)</td>
+</tr>
+<tr>
+<td><code>DEPENDENTS_OF</code></td>
+<td>EMPLOYEE</td>
+<td>(0,N)</td>
+<td>DEPENDENT</td>
+<td>(1,1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="85-case-study-3-a-hospital-database-with-a-weak-entity">8.5 Case Study 3 — A Hospital Database (with a weak entity)<a class="headerlink" href="#85-case-study-3-a-hospital-database-with-a-weak-entity" title="Permanent link">&para;</a></h2>
+<h3 id="requirements_2">Requirements<a class="headerlink" href="#requirements_2" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>A hospital has <strong>wards</strong>, each with a unique ward number, a name and a capacity. Each ward contains <strong>beds</strong> numbered 1 upwards <em>within that ward</em>. <strong>Patients</strong> have a unique registration number, name and date of birth. A patient occupies at most one bed at a time; a bed may be empty. <strong>Doctors</strong> have a unique employee code, name and one or more specialisations. A doctor <strong>treats</strong> many patients and a patient may be treated by several doctors; the date of first consultation is recorded for each doctor-patient pair.</p>
+</blockquote>
+<h3 id="analysis-and-diagram">Analysis and diagram<a class="headerlink" href="#analysis-and-diagram" title="Permanent link">&para;</a></h3>
+<p><code>BED</code> is <strong>weak</strong>: bed number 1 exists in every ward, so <code>BedNo</code> alone identifies nothing. Owner <code>WARD</code>, identifying relationship <code>CONTAINS</code>, partial key <code>BedNo</code>, full key (<code>WardNo</code>, <code>BedNo</code>).</p>
+<p><code>Specialisation</code> is <strong>multivalued</strong> on <code>DOCTOR</code>. <code>TREATS</code> is <strong>M:N</strong> with relationship attribute <code>FirstConsultDate</code>. <code>OCCUPIES</code> is <strong>1:1</strong> — a patient occupies at most one bed <code>(0,1)</code>, and a bed holds at most one patient <code>(0,1)</code>.</p>
+<div class="language-text highlight"><pre><span></span><code>   (WardNo)  (Name)  (Capacity)
+   underlined  |       |
+         \     |      /
+        +-+----+-----+-+
+        |     WARD      |
+        +-------+-------+
+                || 1        double diamond = identifying relationship
+          /=====++======\
+         &lt;&lt;   CONTAINS   &gt;&gt;
+          \=====++======/
+                || N   total participation
+          +=====++=====+
+          ||    BED    ||       weak entity type
+          +============+
+            BedNo (partial key, dashed underline)
+                |  (0,1)
+          /-----+------\
+         &lt;   OCCUPIES    &gt;      1:1
+          \-----+------/
+                |  (0,1)
+        +-------+--------+                     ((Specialisation))
+        |    PATIENT     |                             |
+        +-------+--------+                     +-------+--------+
+         RegNo (underlined)          M          |     DOCTOR     |
+         Name, Dateofbirth   /---------------\  |  EmpCode (key) |
+                |  N        &lt;     TREATS       &gt;-+     Name       |
+                +-----------&gt;\---------+-----/  +----------------+
+                              (FirstConsultDate)
+</code></pre></div>
+<p><em>Figure 4.3 — Hospital ER diagram with a weak entity type.</em></p>
+<h2 id="86-design-traps">8.6 Design Traps<a class="headerlink" href="#86-design-traps" title="Permanent link">&para;</a></h2>
+<p>Two classic errors produce diagrams that <em>look</em> right and <em>are</em> wrong. Both arise from careless use of 1:N relationships.</p>
+<h3 id="the-fan-trap">The fan trap<a class="headerlink" href="#the-fan-trap" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Fan trap</p>
+<p>Occurs when two or more <strong>1:N relationships fan out from the same entity type</strong>, and the path between the outer entity types is therefore <strong>ambiguous</strong>.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>   BAD:
+        +----------+  1   /--------\  N  +----------+
+        | DIVISION |------&lt; OPERATES&gt;----|  BRANCH  |
+        +----+-----+      \--------/     +----------+
+             | 1
+        /----+----\
+       &lt;   HAS      &gt;
+        \----+----/
+             | N
+        +----+-----+
+        |  STAFF   |
+
+   Question: which branch does a member of staff work at?
+   UNANSWERABLE. Staff hangs off DIVISION, and a division has
+   many branches, so the path staff -&gt; division -&gt; branch fans
+   out to every branch of the division.
+
+   FIX: re-route the relationship so the path is unambiguous.
+
+        +----------+  1  /--------\  N  +--------+ 1 /-----\ N +-------+
+        | DIVISION |-----&lt;OPERATES &gt;----| BRANCH |---&lt; HAS &gt;---| STAFF |
+        +----------+     \--------/     +--------+   \-----/   +-------+
+
+   Now: staff -&gt; branch -&gt; division is a single unambiguous path.
+</code></pre></div>
+<h3 id="the-chasm-trap">The chasm trap<a class="headerlink" href="#the-chasm-trap" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Chasm trap</p>
+<p>Occurs when a path exists between entity types, but some instances cannot be connected because of a <strong>partial participation</strong> somewhere along the path.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>   +--------+ 1 /-----\ N +-------+ 1 /--------\ N +----------+
+   | BRANCH |---&lt; HAS &gt;---| STAFF |---&lt; OVERSEES&gt;---| PROPERTY |
+   +--------+   \-----/   +-------+   \--------/    +----------+
+                                          ^
+                          PARTIAL participation of PROPERTY:
+                          a property may not yet be assigned
+                          to any member of staff.
+
+   Question: which branch is property PG4 registered at?
+   UNANSWERABLE for unassigned properties -- the path is broken
+   at the chasm.
+
+   FIX: add the missing direct relationship.
+
+   +--------+ 1  /---------\  N  +----------+
+   | BRANCH |----&lt; ADVERTISES&gt;---| PROPERTY |
+   +--------+    \---------/     +----------+
+</code></pre></div>
+<p><strong>How to detect both traps:</strong> after drawing, take every pair of entity types that users ask questions about, and check that a <strong>single unambiguous, unbroken</strong> path connects them. This is Step 7 of the procedure.</p>
+<h2 id="87-a-glimpse-of-the-eer-model">8.7 A Glimpse of the EER Model<a class="headerlink" href="#87-a-glimpse-of-the-eer-model" title="Permanent link">&para;</a></h2>
+<p>The basic ER model cannot express <em>"a postgraduate student is a kind of student"</em>. The <strong>Enhanced (Extended) ER model</strong> adds three concepts.</p>
+<div class="admonition info">
+<p class="admonition-title">EER concepts</p>
+<p><strong>Specialisation</strong> — defining a set of <strong>subclasses</strong> of an entity type (the <strong>superclass</strong>) on the basis of some distinguishing characteristic. <code>STUDENT</code> specialises into <code>UG_STUDENT</code> and <code>PG_STUDENT</code>.</p>
+<p><strong>Generalisation</strong> — the reverse process: noticing that <code>CAR</code> and <code>TRUCK</code> share attributes and creating the superclass <code>VEHICLE</code>.</p>
+<p><strong>Attribute inheritance</strong> — a subclass entity inherits <strong>all</strong> attributes of its superclass, and participates in all its relationships. <code>PG_STUDENT</code> inherits <code>Rollno</code>, <code>Name</code>, <code>Dateofbirth</code> and adds <code>ThesisTitle</code>, <code>Supervisor</code>.</p>
+</div>
+<p><strong>Notation:</strong> a circle with a subset symbol on each line from the circle to the subclass.</p>
+<div class="language-text highlight"><pre><span></span><code>                +-------------+
+                |   STUDENT   |     superclass
+                +------+------+
+                       |
+                     ( d )        d = DISJOINT  (o = overlapping)
+                    /  |  \
+                  U    |    U       U = subset symbol
+                 /     |     \
+        +--------+  +--+---+  +---------+
+        |   UG   |  |  PG  |  | DIPLOMA |    subclasses
+        +--------+  +------+  +---------+
+        ThesisTitle on PG only; all three inherit Rollno,
+        Name, Dateofbirth from STUDENT.
+</code></pre></div>
+<p><strong>Two constraints on a specialisation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Constraint</th>
+<th>Values</th>
+<th>Meaning</th>
+<th>Notation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Disjointness</strong></td>
+<td><strong>disjoint (d)</strong> / <strong>overlapping (o)</strong></td>
+<td>Can an entity belong to more than one subclass?</td>
+<td>letter in the circle</td>
+</tr>
+<tr>
+<td><strong>Completeness</strong></td>
+<td><strong>total</strong> / <strong>partial</strong></td>
+<td>Must every superclass entity belong to some subclass?</td>
+<td>double / single line from superclass to circle</td>
+</tr>
+</tbody>
+</table>
+<p>A student is either UG or PG but not both, so the specialisation is <strong>disjoint</strong>; if every student must be one of the three, it is also <strong>total</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Scope note</p>
+<p>The syllabus for this course lists the basic ER model. EER is included here so that you recognise the notation if it appears, and because specialisation is the correct answer to the "too many NULLs" design smell of Lesson 2. Examination questions will concentrate on the basic model.</p>
+</div>
+<h2 id="88-solved-questions">8.8 Solved Questions<a class="headerlink" href="#88-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Draw a complete ER diagram for the college database and list every business rule it asserts.</p>
+<p><strong>A.</strong> <em>(Diagram: reproduce Figure 4.1.)</em></p>
+<p>Business rules asserted:</p>
+<ol>
+<li>Every student is uniquely identified by <code>Rollno</code>; every course by <code>SID</code>; every society by <code>SocID</code>.</li>
+<li>A student may take admission in <strong>many</strong> courses, and a course may admit <strong>many</strong> students (M:N).</li>
+<li><strong>Every</strong> student must be admitted to at least one course (double line on <code>STUDENT</code>).</li>
+<li>A course <strong>may</strong> exist with no students admitted (single line on <code>COURSE</code>) — necessary, since a course must be created before anyone can join it.</li>
+<li>For each (student, course) pair a <strong>single</strong> date of admission is recorded.</li>
+<li>A student may enrol in <strong>many</strong> societies and a society may have <strong>many</strong> members (M:N).</li>
+<li>Enrolment in a society is <strong>optional</strong> on both sides: a student need join no society, and a new society may have no members.</li>
+<li>For each (student, society) pair a <strong>single</strong> date of enrolment is recorded.</li>
+<li><code>Coursetype</code> is restricted to <em>Fulltime</em> or <em>Parttime</em> — this is a <strong>domain constraint</strong> which the ER diagram cannot show; it must be recorded in the accompanying documentation and enforced later by a <code>CHECK</code> constraint.</li>
+</ol>
+<p>Point 9 illustrates an important limitation: the ER diagram captures structure and cardinality, but not arbitrary business rules.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Draw the ER diagram for the COMPANY database, marking all constraints.</p>
+<p><strong>A.</strong> <em>(Diagram: reproduce Figure 4.2; constraints as in the (min, max) table of Section 4.4.)</em></p>
+<p>The features that make this the standard examination example:</p>
+<ul>
+<li><strong>Two candidate keys</strong> on <code>DEPARTMENT</code> (<code>Dname</code>, <code>Dnumber</code>) and on <code>PROJECT</code> — both underlined.</li>
+<li>A <strong>multivalued</strong> attribute <code>Dlocations</code> (double ellipse).</li>
+<li>A <strong>derived</strong> attribute <code>NumberOfEmployees</code> (dashed ellipse).</li>
+<li>A <strong>composite</strong> attribute <code>Name(Fname, Minit, Lname)</code> on <code>EMPLOYEE</code>.</li>
+<li>A <strong>1:1</strong> relationship <code>MANAGES</code> carrying its own attribute <code>StartDate</code>, with <code>DEPARTMENT</code> total <code>(1,1)</code> and <code>EMPLOYEE</code> partial <code>(0,1)</code>.</li>
+<li>Two <strong>1:N</strong> relationships, <code>WORKS_FOR</code> and <code>CONTROLS</code>, each with total participation on the N side.</li>
+<li>An <strong>M:N</strong> relationship <code>WORKS_ON</code> with the relationship attribute <code>Hours</code> — which cannot be migrated to either entity type.</li>
+<li>A <strong>recursive 1:N</strong> relationship <code>SUPERVISION</code> with role names <em>supervisor</em> <code>(0,N)</code> and <em>supervisee</em> <code>(0,1)</code>.</li>
+<li>A <strong>weak</strong> entity type <code>DEPENDENT</code> (double rectangle) with partial key <code>DependentName</code> (dashed underline), identified through the <strong>double-diamond</strong> relationship <code>DEPENDENTS_OF</code>, with total participation (double line) on the weak side.</li>
+</ul>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> What is a fan trap? Give an example and its correction.</p>
+<p><strong>A.</strong> A <strong>fan trap</strong> occurs when two or more <strong>1:N relationships radiate ("fan out") from the same entity type</strong>, so that the path between two of the outer entity types is <strong>ambiguous</strong> and a legitimate question cannot be answered.</p>
+<p><strong>Example.</strong> <code>DIVISION</code> 1:N <code>BRANCH</code> and <code>DIVISION</code> 1:N <code>STAFF</code>. Both <code>BRANCH</code> and <code>STAFF</code> hang off <code>DIVISION</code>. Now ask: <em>"At which branch does staff member S05 work?"</em> We can find S05's division, but that division operates several branches, and nothing in the model says which. The relationships fan out and the answer is indeterminate.</p>
+<p><strong>Correction.</strong> Restructure so that the path is unique, by re-routing the relationship through the intermediate entity type:</p>
+<div class="language-text highlight"><pre><span></span><code>DIVISION --1-- &lt;OPERATES&gt; --N-- BRANCH --1-- &lt;HAS&gt; --N-- STAFF
+</code></pre></div>
+<p>Now each staff member belongs to exactly one branch, and each branch to exactly one division, so <em>"which branch?"</em> and <em>"which division?"</em> both have unique answers. No information is lost — the division of a staff member is still derivable, by following the path.</p>
+<p><strong>Detection.</strong> After drawing, list the questions users actually ask, and for each check that a single unambiguous path connects the entity types involved. A fan trap is the case where the path exists but is <em>not unique</em>; the <strong>chasm trap</strong> is the case where the path exists but is <em>broken</em> by a partial participation.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Model this: <em>"A library has books; each book has an ISBN, title and several authors. The library holds several physical copies of each book, numbered 1, 2, 3 within the title. Members borrow copies; the issue date and due date are recorded. A member may borrow many copies over time and a copy may be borrowed by many members over time."</em></p>
+<p><strong>A.</strong></p>
+<p><strong>Entity types.</strong> <code>BOOK</code> (strong, key <code>ISBN</code>), <code>COPY</code> (<strong>weak</strong> — copy number restarts at 1 for each title, so owner <code>BOOK</code>, partial key <code>CopyNo</code>, full key (<code>ISBN</code>, <code>CopyNo</code>)), <code>MEMBER</code> (strong, key <code>MemberID</code>).</p>
+<p><strong>Attributes.</strong> <code>BOOK</code>: <code>ISBN</code> (key), <code>Title</code>, <code>{Author}</code> (<strong>multivalued</strong> — "several authors"). <code>COPY</code>: <code>CopyNo</code> (partial key), <code>Status</code>. <code>MEMBER</code>: <code>MemberID</code> (key), <code>Name</code>, <code>Address</code>.</p>
+<p><strong>Relationships.</strong> <code>HAS_COPY</code> — <strong>identifying</strong>, double diamond, <code>BOOK</code> 1 : <code>COPY</code> N, total on <code>COPY</code>. <code>BORROWS</code> — <strong>M:N</strong> over time, with relationship attributes <code>IssueDate</code> and <code>DueDate</code>.</p>
+<div class="language-text highlight"><pre><span></span><code>    (ISBN)  (Title)   ((Author))
+   underlined  |          |
+        \      |         /
+       +-+-----+--------+-+
+       |       BOOK        |
+       +---------+---------+
+                 || 1
+          /======++=======\
+         &lt;&lt;    HAS_COPY     &gt;&gt;
+          \======++=======/
+                 || N  total
+          +======++======+
+          ||     COPY    ||
+          +==============+
+           CopyNo (partial key, dashed)
+                  |  M
+           /------+-------\
+          &lt;    BORROWS      &gt;----(IssueDate)
+           \------+-------/ \----(DueDate)
+                  |  N
+          +-------+--------+
+          |     MEMBER     |
+          +----------------+
+           MemberID (key), Name, Address
+</code></pre></div>
+<p><strong>Note on the M:N choice.</strong> <code>BORROWS</code> is M:N <em>because we keep history</em>: the same copy is borrowed by many members over time. If only the <em>current</em> loan were stored, it would be 1:N (a copy is on loan to at most one member) with <code>(0,1)</code> on the copy side.</p>
+<p><strong>Note on the key of BORROWS.</strong> Since a member may borrow the <em>same</em> copy more than once over the years, the pair (<code>MemberID</code>, <code>ISBN</code>, <code>CopyNo</code>) is not unique; <code>IssueDate</code> must be added to the key. This is a good illustration of why Step 7 — reading the diagram back — matters.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Explain specialisation, generalisation and attribute inheritance. When would you specialise an entity type?</p>
+<p><strong>A.</strong> <strong>Specialisation</strong> is the process of defining a set of <strong>subclasses</strong> of an entity type, called the <strong>superclass</strong>, on the basis of some distinguishing characteristic. From <code>EMPLOYEE</code> one may specialise <code>SECRETARY</code>, <code>ENGINEER</code> and <code>TECHNICIAN</code> by job type. It is a <strong>top-down</strong> refinement.</p>
+<p><strong>Generalisation</strong> is the reverse, <strong>bottom-up</strong> process: recognising that <code>CAR</code> and <code>TRUCK</code> share <code>VehicleID</code>, <code>Price</code> and <code>LicensePlate</code>, and creating the superclass <code>VEHICLE</code> to hold the common attributes.</p>
+<p><strong>Attribute inheritance</strong> is the property that a subclass entity possesses <strong>all</strong> the attributes of its superclass in addition to its own, and participates in all the superclass's relationships. An <code>ENGINEER</code> entity has <code>Ssn</code>, <code>Name</code> and <code>Salary</code> inherited from <code>EMPLOYEE</code>, plus <code>EngType</code> of its own; and being an <code>EMPLOYEE</code>, it also participates in <code>WORKS_FOR</code>.</p>
+<p>Two constraints apply: <strong>disjointness</strong> — <em>disjoint</em> (d) if an entity may belong to at most one subclass, <em>overlapping</em> (o) if it may belong to several — and <strong>completeness</strong> — <em>total</em> (double line) if every superclass entity must belong to some subclass, <em>partial</em> (single line) otherwise.</p>
+<p><strong>When to specialise.</strong> Three signals:</p>
+<ol>
+<li>Certain attributes apply to <strong>only some</strong> entities of the type — the "too many NULLs" smell. If <code>ThesisTitle</code> is NULL for every undergraduate, specialise.</li>
+<li>Some <strong>relationships</strong> apply to only some entities. If only postgraduates participate in <code>SUPERVISED_BY</code>, specialise.</li>
+<li>The subclasses are <strong>meaningful to the users</strong> and are named in the requirements.</li>
+</ol>
+<p>If none of these holds, do not specialise: an unnecessary hierarchy adds joins and complexity for nothing.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> State four limitations of the ER model.</p>
+<p><strong>A.</strong></p>
+<ol>
+<li>
+<p><strong>It cannot express arbitrary business rules.</strong> <em>"Coursetype must be Fulltime or Parttime"</em>, <em>"a department head must be a professor of that department"</em>, <em>"salary must not exceed the manager's salary"</em> — none can be drawn. They must be documented separately and enforced later with <code>CHECK</code> constraints, assertions or triggers.</p>
+</li>
+<li>
+<p><strong>It has no standard notation.</strong> Chen, Crow's Foot, UML and (min,max) all differ, and textbooks disagree on where to write cardinality labels. Diagrams must therefore carry a legend, and answers must state the convention used.</p>
+</li>
+<li>
+<p><strong>The basic model lacks abstraction mechanisms.</strong> It has no specialisation, generalisation, inheritance, categories or aggregation — which is precisely why the <strong>EER</strong> model was introduced.</p>
+</li>
+<li>
+<p><strong>Some constraints are inexpressible even in principle.</strong> Higher-degree constraints across several relationships, temporal constraints ("a student may not be admitted to two full-time courses simultaneously"), and cycles in recursive relationships cannot be captured.</p>
+</li>
+</ol>
+<p>Two further limitations worth mentioning: there is <strong>no operational component</strong> — the ER model describes structure but supplies no query language, so it must be mapped to the relational model before data can be manipulated; and <strong>large diagrams become unreadable</strong>, so practical designs need modularisation into subject-area views.</p>
+</div>
+<h2 id="89-exercises">8.9 Exercises<a class="headerlink" href="#89-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Draw the symbol for each of: weak entity type, identifying relationship, derived attribute, multivalued attribute, total participation, partial key.</li>
+<li>State the seven steps of the design procedure.</li>
+<li>What is a fan trap? What is a chasm trap?</li>
+<li>Define specialisation and generalisation.</li>
+<li>What are the two constraints on a specialisation?</li>
+<li>Give two limitations of the ER model.</li>
+</ol>
+<p><strong>B. Long answer</strong></p>
+<ol>
+<li>Explain the complete Chen notation with a diagram illustrating every symbol.</li>
+<li>Draw and explain the ER diagram for the COMPANY database, listing every constraint in (min, max) form.</li>
+<li>Explain fan and chasm traps with examples and corrections, and describe how to detect them systematically.</li>
+<li>Explain specialisation, generalisation, attribute inheritance, and the disjointness and completeness constraints, with a diagram.</li>
+</ol>
+<p><strong>C. Design problems — draw the complete ER diagram for each</strong></p>
+<ol>
+<li>
+<p><strong>Airline reservation.</strong> Flights have a unique number, origin, destination and departure time. A flight has legs numbered 1, 2, 3 within it. Aircraft have registration numbers and models. Passengers have a unique ID and name, and book seats on flights, with a booking date and seat number. One aircraft is assigned to each flight; an aircraft serves many flights.</p>
+</li>
+<li>
+<p><strong>Bank.</strong> Branches have a unique code, name and address. Customers have a unique ID, name and several phone numbers. Accounts have a unique number, type and balance, and belong to exactly one branch. A customer may hold several accounts and an account may be jointly held. Transactions on an account are numbered 1 upward within that account, and record a date, type and amount. Every account must have at least one holder.</p>
+</li>
+<li>
+<p><strong>University examination system.</strong> Students, courses, examinations, question papers, invigilators and rooms. Decide the entity types yourself, justify each decision, and mark every constraint. Identify at least one weak entity type.</p>
+</li>
+<li>
+<p><strong>Online shopping.</strong> Customers, products, orders, order lines, payments and suppliers. A product may be supplied by several suppliers at different prices. An order contains several products with quantities. State clearly which attributes belong to relationships.</p>
+</li>
+</ol>
+<p><strong>D. Analytical</strong></p>
+<ol>
+<li>
+<p>For the diagram of Figure 4.1, state what would change if: (a) a student were allowed at most one course; (b) every course had to have at least one student; (c) the college began storing each teacher's phone number and department.</p>
+</li>
+<li>
+<p>A designer draws <code>DEPARTMENT 1 --- &lt;HAS&gt; --- N EMPLOYEE</code> and <code>DEPARTMENT 1 --- &lt;OWNS&gt; --- N PROJECT</code>, and then asks "which project does employee E works on?". Name the trap, explain why it fails, and give two possible corrections with their different meanings.</p>
+</li>
+<li>
+<p>In the COMPANY database, argue whether <code>DEPENDENT</code> could be made a strong entity type. What would have to change, and what would be gained and lost?</p>
+</li>
+<li>
+<p>Convert the entire COMPANY diagram from Chen cardinality labels to (min, max) notation, and verify each pair by reading it aloud in English.</p>
+</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li>Every ER diagram maps to exactly one relational schema.</li>
+<li>A weak entity type may have a multivalued attribute.</li>
+<li>In a specialisation, subclasses inherit relationships as well as attributes.</li>
+<li>A fan trap is caused by an M:N relationship.</li>
+<li>The ER model can express the rule "salary must be positive".</li>
+<li>A double diamond always connects to a double rectangle.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>False.</strong> The mapping algorithm allows choices — for a 1:1 relationship, which side receives the foreign key; whether to merge a subclass into its superclass. Several correct relational schemas may result.</li>
+<li><strong>True.</strong> Weakness concerns only identification; a weak entity type may have any kind of attribute.</li>
+<li><strong>True.</strong> A subclass entity <strong>is</strong> a superclass entity, so it participates in all the superclass's relationships as well as inheriting its attributes.</li>
+<li><strong>False.</strong> A fan trap arises from two or more <strong>1:N</strong> relationships fanning out from the same entity type.</li>
+<li><strong>False.</strong> Domain and value constraints cannot be drawn; they are documented separately and enforced by <code>CHECK</code> constraints after mapping.</li>
+<li><strong>True.</strong> A double diamond is an <strong>identifying</strong> relationship, which by definition identifies a <strong>weak</strong> entity type, drawn as a double rectangle.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>The <strong>Chen notation</strong> table is the vocabulary of Unit 2; reproduce it from memory.</li>
+<li>The <strong>seven-step procedure</strong> ends with reading the diagram back in English — the step that catches the errors.</li>
+<li>Three worked case studies: <strong>college</strong> (M:N with relationship attributes), <strong>COMPANY</strong> (every feature, including a weak entity, a recursive relationship and a 1:1 with an attribute), and <strong>hospital</strong> (weak entity plus multivalued attribute).</li>
+<li>Watch for the <strong>fan trap</strong> (ambiguous path from fanned-out 1:N relationships) and the <strong>chasm trap</strong> (path broken by partial participation).</li>
+<li><strong>EER</strong> adds specialisation, generalisation and inheritance, with <strong>disjointness</strong> and <strong>completeness</strong> constraints.</li>
+<li>The ER model cannot express arbitrary business rules; document them separately.</li>
+</ul>
+</div>
+<p><em>End of Unit 2. Next: Unit 3, Lesson 1 — Update Anomalies and the Relational Data Model.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="relationships-relationship-types-and-constraints.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 7. Relationships, Relationship Types and Constraints">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                7. Relationships, Relationship Types and Constraints
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="update-anomalies-and-the-relational-data-model.html" class="md-footer__link md-footer__link--next" aria-label="Next: 9. Update Anomalies and the Relational Data Model">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                9. Update Anomalies and the Relational Data Model
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

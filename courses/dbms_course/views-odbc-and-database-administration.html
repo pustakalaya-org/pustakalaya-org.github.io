@@ -1,0 +1,2285 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/views-odbc-and-database-administration.html">
+  
+  
+    <link rel="prev" href="joins-subqueries-and-set-operations.html">
+  
+  
+    <link rel="next" href="er-to-relational-mapping.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>18. Views, ODBC and Database Administration - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#181-views" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              18. Views, ODBC and Database Administration
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#181-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.1 Views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-using-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating and using views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managing-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-four-purposes-of-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four purposes of views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatable-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updatable views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-check-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WITH CHECK OPTION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-vs-materialised-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual vs materialised views
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#182-odbc-jdbc-and-application-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 ODBC, JDBC and Application Connectivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2 ODBC, JDBC and Application Connectivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-five-steps-of-database-programming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five steps of database programming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql-connectorpython" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MySQL Connector/Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#183-database-administration-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 Database Administration Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.3 Database Administration Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GRANT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REVOKE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#184-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#185-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#181-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.1 Views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-using-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating and using views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managing-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-four-purposes-of-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four purposes of views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatable-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updatable views
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-check-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WITH CHECK OPTION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-vs-materialised-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual vs materialised views
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#182-odbc-jdbc-and-application-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 ODBC, JDBC and Application Connectivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2 ODBC, JDBC and Application Connectivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-five-steps-of-database-programming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five steps of database programming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql-connectorpython" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MySQL Connector/Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#183-database-administration-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 Database Administration Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.3 Database Administration Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GRANT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REVOKE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#184-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#185-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-18-views-odbc-and-database-administration">Lesson 18: Views, ODBC and Database Administration<a class="headerlink" href="#lesson-18-views-odbc-and-database-administration" title="Permanent link">&para;</a></h1>
+<p><em>Virtual tables, application access, users, roles and privileges</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 4:</strong> Structured Query Language · 12 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 7.3, 30.1 · Krogh, MySQL Connector/Python Revealed</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Create, query, update and drop <strong>views</strong>, and state their four purposes.</li>
+<li>Determine whether a view is <strong>updatable</strong>, and use <code>WITH CHECK OPTION</code>.</li>
+<li>Distinguish <strong>virtual</strong> from <strong>materialised</strong> views.</li>
+<li>Explain <strong>ODBC/JDBC</strong> and connect to a database from Python.</li>
+<li>Write the basic <strong>DBA commands</strong>: <code>CREATE USER</code>, <code>CREATE ROLE</code>, <code>GRANT</code>, <code>REVOKE</code>, <code>CREATE INDEX</code>.</li>
+</ol>
+</div>
+<h2 id="181-views">18.1 Views<a class="headerlink" href="#181-views" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">View</p>
+<p>A <strong>virtual table</strong> derived from one or more base tables (or other views) by a stored query. A standard view <strong>stores no data</strong> — only its <em>definition</em> is kept in the catalog, and the query is executed whenever the view is referenced.</p>
+<p>A view is precisely the <strong>external schema</strong> of the three-schema architecture (Unit 1, Lesson 3).</p>
+</div>
+<h3 id="creating-and-using-views">Creating and using views<a class="headerlink" href="#creating-and-using-views" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">StudentCourses</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">;</span>
+
+<span class="c1">-- Query it exactly like a table</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">StudentCourses</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Syllabus Q21</strong> — a view tracking course names with the total number of students enrolled:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w">                </span><span class="k">AS</span><span class="w"> </span><span class="n">TotalEnrolled</span><span class="p">,</span>
+<span class="w">         </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Vacant</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">TotalEnrolled</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p>The <code>LEFT JOIN</code> and <code>COUNT(a.Rollno)</code> are both required so that a course with no students shows <strong>0</strong>, not disappearing (Lesson 4).</p>
+<h3 id="managing-views">Managing views<a class="headerlink" href="#managing-views" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">...;</span><span class="w">   </span><span class="c1">-- redefine</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">...;</span><span class="w">               </span><span class="c1">-- MySQL</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="p">;</span><span class="w">                    </span><span class="c1">-- remove definition only</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="p">;</span><span class="w">                       </span><span class="c1">-- inspect</span>
+</code></pre></div>
+<p>Dropping a view removes only its definition; the base tables are untouched.</p>
+<h3 id="the-four-purposes-of-views">The four purposes of views<a class="headerlink" href="#the-four-purposes-of-views" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Why views exist</p>
+<p><strong>1. Simplification.</strong> A five-table join with grouping becomes <code>SELECT * FROM CourseEnrolment</code>. Complexity is written once and reused.</p>
+<p><strong>2. Security.</strong> Grant access to the view and withhold it from the base table; the user then sees only the rows and columns the view exposes.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">PublicStudent</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="n">PublicStudent</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+<span class="c1">-- The clerk can never see Dateofbirth or Mobile.</span>
+</code></pre></div>
+<p><strong>3. Logical data independence.</strong> When a base table is decomposed, a view with the old name and columns preserves the old interface for existing applications (Unit 1, Lesson 3).</p>
+<p><strong>4. Presentation.</strong> Rename columns, compute derived values, apply formatting — each user group gets the shape it wants over one consistent base.</p>
+</div>
+<h3 id="updatable-views">Updatable views<a class="headerlink" href="#updatable-views" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">When can you INSERT, UPDATE or DELETE through a view?</p>
+<p>A view is <strong>updatable</strong> only if the DBMS can unambiguously map each change to exactly one row of exactly one base table. A view is generally <strong>not</strong> updatable if it contains any of:</p>
+<ul>
+<li><code>DISTINCT</code></li>
+<li><code>GROUP BY</code> or <code>HAVING</code></li>
+<li>an <strong>aggregate function</strong> (<code>COUNT</code>, <code>SUM</code>, ...)</li>
+<li><code>UNION</code>, <code>INTERSECT</code>, <code>EXCEPT</code></li>
+<li>a <strong>join</strong> across several tables (restricted; some systems allow updates affecting one table only)</li>
+<li>a subquery referring to the same table in the <code>SELECT</code> list</li>
+</ul>
+<p><strong><code>CourseEnrolment</code> is not updatable</strong> — it aggregates. There is no single base row corresponding to <code>TotalEnrolled = 2</code>, and no meaning to setting it to 3.</p>
+<p><strong><code>PublicStudent</code> is updatable</strong> — a simple projection of one table, so each view row corresponds to exactly one <code>STUDENT</code> row. Note, however, that an <code>INSERT</code> through it supplies no <code>Dateofbirth</code>, so the omitted column must be nullable or have a default.</p>
+</div>
+<h3 id="with-check-option">WITH CHECK OPTION<a class="headerlink" href="#with-check-option" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">FulltimeCourses</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Fulltime'</span>
+<span class="k">WITH</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="k">OPTION</span><span class="p">;</span>
+
+<span class="c1">-- Rejected: the new row would not satisfy the view's WHERE clause</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">FulltimeCourses</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'DP01'</span><span class="p">,</span><span class="s1">'Diploma'</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'Parttime'</span><span class="p">,</span><span class="s1">'X'</span><span class="p">);</span>
+</code></pre></div>
+<p>Without <code>WITH CHECK OPTION</code> the insert <strong>succeeds</strong>, but the new row <strong>immediately vanishes from the view</strong> — it is in the base table yet outside the view's condition. <code>WITH CHECK OPTION</code> forbids inserts and updates that would push a row out of the view.</p>
+<h3 id="virtual-vs-materialised-views">Virtual vs materialised views<a class="headerlink" href="#virtual-vs-materialised-views" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Virtual view (standard)</th>
+<th>Materialised view</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stores data</td>
+<td><strong>No</strong> — only the definition</td>
+<td><strong>Yes</strong> — results are stored</td>
+</tr>
+<tr>
+<td>Freshness</td>
+<td><strong>Always current</strong></td>
+<td>Stale until refreshed</td>
+</tr>
+<tr>
+<td>Query cost</td>
+<td>Re-executes each time</td>
+<td><strong>Fast</strong> — a simple table read</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>None</td>
+<td>Full result size</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>All systems</td>
+<td>Oracle, PostgreSQL; MySQL has <strong>no</strong> native support</td>
+</tr>
+</tbody>
+</table>
+<p>A materialised view is <strong>controlled redundancy</strong> (Unit 1, Lesson 1) — deliberate duplication that the DBMS keeps synchronised. In MySQL it is simulated with a real table refreshed by a scheduled event or triggers.</p>
+<h2 id="182-odbc-jdbc-and-application-connectivity">18.2 ODBC, JDBC and Application Connectivity<a class="headerlink" href="#182-odbc-jdbc-and-application-connectivity" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Call-Level Interfaces</p>
+<p><strong>ODBC</strong> (Open Database Connectivity) — a standard <strong>C-based API</strong> letting an application talk to <em>any</em> DBMS through a <strong>driver</strong>. The application is written once against the ODBC API; swapping the driver swaps the database.</p>
+<p><strong>JDBC</strong> (Java Database Connectivity) — the same idea for Java.</p>
+<p><strong>Native connectors</strong> — language-specific libraries such as <strong>MySQL Connector/Python</strong>, <code>psycopg2</code>, or PHP's PDO. Faster and more idiomatic than ODBC, but tied to one DBMS.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>   APPLICATION  (Python / Java / C)
+        |
+        |  standard API calls
+        v
+   +----------------------+
+   |  ODBC / JDBC Driver  |     &lt;-- swap this to change DBMS
+   |       Manager        |
+   +----+------+-----+----+
+        |      |     |
+    +---v--+ +-v---+ +v-----+
+    |MySQL | |Oracle| |Postgres|   driver per DBMS
+    |driver| |driver| | driver |
+    +---+--+ +--+--+ +---+----+
+        |       |        |
+     [MySQL] [Oracle] [PostgreSQL]
+
+   The application code does not change when the database does.
+</code></pre></div>
+<p><em>Figure 6.1 — ODBC insulates the application from the DBMS.</em></p>
+<h3 id="the-five-steps-of-database-programming">The five steps of database programming<a class="headerlink" href="#the-five-steps-of-database-programming" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Connect</strong> — establish a session, supplying host, database, user and password.</li>
+<li><strong>Create a cursor</strong> — the object that executes statements and holds results.</li>
+<li><strong>Execute</strong> — run SQL, with <strong>parameters</strong> where values are involved.</li>
+<li><strong>Fetch</strong> — retrieve result rows.</li>
+<li><strong>Close</strong> — release the cursor and connection; <code>commit</code> first if data changed.</li>
+</ol>
+<h3 id="mysql-connectorpython">MySQL Connector/Python<a class="headerlink" href="#mysql-connectorpython" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">mysql.connector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mysql.connector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Error</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+        <span class="n">host</span><span class="o">=</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">'college'</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="s1">'appuser'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">'secret'</span><span class="p">)</span>
+
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+    <span class="c1"># --- SELECT with a bound parameter -------------------------------</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="s2">"""SELECT s.Name, c.Cname</span>
+<span class="s2">             FROM   STUDENT s</span>
+<span class="s2">             JOIN   ADMISSION a ON s.Rollno = a.Rollno</span>
+<span class="s2">             JOIN   COURSE    c ON a.SID    = c.SID</span>
+<span class="s2">             WHERE  c.Coursetype = </span><span class="si">%s</span><span class="s2">"""</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="s1">'Parttime'</span><span class="p">,))</span>          <span class="c1"># note the tuple</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cname</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">25</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">cname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># --- INSERT, then COMMIT ------------------------------------------</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO STUDENT (Rollno, Name, Dateofbirth) VALUES (</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)"</span><span class="p">,</span>
+                <span class="p">(</span><span class="s1">'X4001'</span><span class="p">,</span> <span class="s1">'Neha Joshi'</span><span class="p">,</span> <span class="s1">'2003-06-21'</span><span class="p">))</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>                            <span class="c1"># nothing is permanent until this</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">rowcount</span><span class="p">,</span> <span class="s2">"row inserted"</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Database error:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>                      <span class="c1"># undo on failure</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">'cur'</span>  <span class="ow">in</span> <span class="nb">dir</span><span class="p">():</span> <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span> <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Never build SQL by string concatenation</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># CATASTROPHIC -- SQL injection</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM STUDENT WHERE Rollno = '"</span> <span class="o">+</span> <span class="n">user_input</span> <span class="o">+</span> <span class="s2">"'"</span><span class="p">)</span>
+</code></pre></div>
+<p>If the user types <code>X2019'; DROP TABLE STUDENT; --</code>, the concatenated string becomes two statements and the table is destroyed.</p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># SAFE -- parameterised</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM STUDENT WHERE Rollno = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="p">(</span><span class="n">user_input</span><span class="p">,))</span>
+</code></pre></div>
+<p>With a <strong>bound parameter</strong> the value is sent to the server <em>separately</em> from the statement text, so it can never be parsed as SQL. It is a data value, whatever characters it contains. This is not merely good style — it is the single most important security practice in database programming.</p>
+</div>
+<p><strong>Useful cursor methods:</strong> <code>fetchone()</code>, <code>fetchall()</code>, <code>fetchmany(n)</code>, <code>executemany(sql, list_of_tuples)</code> for bulk inserts, and <code>cursor(dictionary=True)</code> to receive rows as dictionaries.</p>
+<h2 id="183-database-administration-commands">18.3 Database Administration Commands<a class="headerlink" href="#183-database-administration-commands" title="Permanent link">&para;</a></h2>
+<p>This section covers <strong>syllabus practical part II</strong>: create user, create role, grant privileges to a role, revoke privileges from a role, create index.</p>
+<h3 id="users">Users<a class="headerlink" href="#users" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="w">  </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'StrongPass#1'</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="w">        </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'AnotherPass#2'</span><span class="p">;</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'NewPass#3'</span><span class="p">;</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="k">User</span><span class="p">,</span><span class="w"> </span><span class="k">Host</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="k">user</span><span class="p">;</span>
+</code></pre></div>
+<p>A MySQL account is <code>'username'@'host'</code>: <code>'clerk'@'localhost'</code> may connect only from the server machine, <code>'analyst'@'%'</code> from anywhere. <strong>Restrict the host</strong> — it is a second factor of access control.</p>
+<h3 id="privileges">Privileges<a class="headerlink" href="#privileges" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Privilege</th>
+<th>Permits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SELECT</code></td>
+<td>Reading</td>
+</tr>
+<tr>
+<td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
+<td>Modifying data</td>
+</tr>
+<tr>
+<td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></td>
+<td>Modifying the schema</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>Creating and dropping indexes</td>
+</tr>
+<tr>
+<td><code>CREATE VIEW</code>, <code>SHOW VIEW</code></td>
+<td>Managing views</td>
+</tr>
+<tr>
+<td><code>EXECUTE</code></td>
+<td>Running stored procedures</td>
+</tr>
+<tr>
+<td><code>GRANT OPTION</code></td>
+<td>Passing privileges on to others</td>
+</tr>
+<tr>
+<td><code>ALL PRIVILEGES</code></td>
+<td>Everything</td>
+</tr>
+</tbody>
+</table>
+<h3 id="grant">GRANT<a class="headerlink" href="#grant" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Whole database</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="c1">-- One table</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="n">COURSE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+
+<span class="c1">-- SPECIFIC COLUMNS -- the finest granularity, and the point of DBMS security</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="n">STUDENT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="c1">-- On a view, to expose a filtered slice</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+
+<span class="c1">-- With the power to re-grant</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'hod'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">OPTION</span><span class="p">;</span>
+
+<span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="n">GRANTS</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+</code></pre></div>
+<p>Column-level grants are what a file system cannot do (Unit 1, Lesson 1): the clerk reads a student's name but never their date of birth.</p>
+<h3 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Role</p>
+<p>A <strong>named collection of privileges</strong>. Privileges are granted to the role once, and the role is granted to users. Adding a new clerk becomes one statement instead of twenty, and changing what clerks may do updates every clerk at once.</p>
+</div>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="s1">'reader'</span><span class="p">,</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">,</span><span class="w"> </span><span class="s1">'course_admin'</span><span class="p">;</span>
+
+<span class="c1">-- Grant privileges TO the role</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w">                         </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'reader'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w">         </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w">                 </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'course_admin'</span><span class="p">;</span>
+
+<span class="c1">-- Grant the role TO users</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="s1">'reader'</span><span class="w">     </span><span class="k">TO</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="c1">-- Activate (MySQL roles must be activated)</span>
+<span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="k">SHOW</span><span class="w"> </span><span class="n">GRANTS</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="revoke">REVOKE<a class="headerlink" href="#revoke" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">REVOKE</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">,</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">OPTION</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'hod'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span><span class="w">   </span><span class="c1">-- from a role: affects every member</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span><span class="w">   </span><span class="c1">-- take the role away from one user</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span>
+</code></pre></div>
+<p>Revoking from a <strong>role</strong> instantly affects every user holding it — the reason roles are preferred to per-user grants.</p>
+<div class="admonition tip">
+<p class="admonition-title">The principle of least privilege</p>
+<p>Grant each account the <strong>minimum</strong> privileges needed for its job, and no more.</p>
+<p>An application that only reads reports needs <code>SELECT</code> alone. A web front end needs <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> on specific tables — never <code>DROP</code>, and never on <code>mysql.*</code>. If the application account cannot drop tables, an SQL-injection flaw cannot drop tables either. Security is layered: parameterised queries <strong>and</strong> restricted privileges.</p>
+</div>
+<h3 id="indexes">Indexes<a class="headerlink" href="#indexes" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Index</p>
+<p>An auxiliary access structure that speeds up retrieval on the indexed column(s), at the cost of extra storage and slower writes. Creating one is an <strong>internal-level</strong> change and is invisible to queries — physical data independence (Unit 1, Lesson 3). The structures themselves are Unit 6.</p>
+</div>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_student_name</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Name</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_course_type</span><span class="w">   </span><span class="k">ON</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">Coursetype</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_adm_sid_date</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">ADMISSION</span><span class="p">(</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="n">Dateofadmission</span><span class="p">);</span><span class="w">  </span><span class="c1">-- composite</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_course_cname</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">Cname</span><span class="p">);</span>
+
+<span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">;</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_student_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">;</span>
+
+<span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Ankit Sharma'</span><span class="p">;</span><span class="w">   </span><span class="c1">-- did it get used?</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">When an index helps, and when it hurts</p>
+<p><strong>Index a column that is</strong> frequently in <code>WHERE</code>, used as a join key, frequently in <code>ORDER BY</code>/<code>GROUP BY</code>, or highly <strong>selective</strong> (many distinct values).</p>
+<p><strong>Do not index</strong> a column with very few distinct values (a two-valued <code>Coursetype</code> on a small table — a scan is cheaper), a table that is tiny, or a column that is rarely queried.</p>
+<p><strong>The cost:</strong> every <code>INSERT</code>, <code>UPDATE</code> and <code>DELETE</code> must also maintain <strong>every</strong> index on the table. A table with eight indexes has slow writes. Indexes also consume storage.</p>
+<p><strong>Composite index column order matters.</strong> An index on <code>(SID, Dateofadmission)</code> serves <code>WHERE SID=...</code> and <code>WHERE SID=... AND Dateofadmission=...</code>, but <strong>not</strong> <code>WHERE Dateofadmission=...</code> alone — a B+-tree is ordered by leading prefix.</p>
+<p>Primary keys and <code>UNIQUE</code> constraints are indexed <strong>automatically</strong>; do not duplicate them.</p>
+</div>
+<h2 id="184-solved-questions">18.4 Solved Questions<a class="headerlink" href="#184-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> What is a view? State four purposes, and explain how a view relates to the three-schema architecture.</p>
+<p><strong>A.</strong> A <strong>view</strong> is a virtual table defined by a stored query over base tables. A standard view stores <strong>no data</strong>; only its definition is held in the catalog, and the query runs whenever the view is referenced.</p>
+<p><strong>Four purposes:</strong></p>
+<ol>
+<li><strong>Simplification.</strong> A complex multi-table join with grouping is written once and thereafter referenced as a single name, so application code and ad-hoc queries stay short and correct.</li>
+<li><strong>Security.</strong> Granting <code>SELECT</code> on a view while withholding it on the base table exposes exactly the rows and columns the view selects. A clerk given <code>PublicStudent(Rollno, Name)</code> can never reach <code>Dateofbirth</code>.</li>
+<li><strong>Logical data independence.</strong> After a base table is decomposed by normalisation, a view carrying the old name and columns preserves the interface, so existing applications continue to run unchanged.</li>
+<li><strong>Presentation.</strong> Columns can be renamed, values computed and rows filtered so that each user group sees the shape it finds natural, over one consistent underlying design.</li>
+</ol>
+<p><strong>Relation to the three-schema architecture.</strong> A view <strong>is</strong> an <strong>external schema</strong>. The base tables are the conceptual schema; the view definitions stored in the catalog constitute the <strong>external/conceptual mapping</strong>; and the DBMS uses that mapping to rewrite a query on the view into a query on base tables. Views are therefore the concrete SQL realisation of the external level.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> When is a view updatable? Give an updatable and a non-updatable view over the college database, with reasons. What does <code>WITH CHECK OPTION</code> do?</p>
+<p><strong>A.</strong> A view is <strong>updatable</strong> when the DBMS can map each modification to exactly <strong>one row of exactly one base table</strong> unambiguously. A view is generally not updatable if it contains <code>DISTINCT</code>, <code>GROUP BY</code>, <code>HAVING</code>, an aggregate function, a set operation, or (with restrictions) a multi-table join.</p>
+<p><strong>Updatable:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">PublicStudent</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">PublicStudent</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Ankit K. Sharma'</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'X2019'</span><span class="p">;</span><span class="w">   </span><span class="c1">-- works</span>
+</code></pre></div>
+It is a simple projection of one table; each view row corresponds to exactly one <code>STUDENT</code> row, identified by the primary key. (An <code>INSERT</code> through it supplies no <code>Dateofbirth</code>, so that column must be nullable or defaulted.)</p>
+<p><strong>Not updatable:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CourseEnrolment</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TotalEnrolled</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<code>UPDATE CourseEnrolment SET TotalEnrolled = 5 WHERE SID='CS01';</code> is <strong>meaningless</strong>. <code>TotalEnrolled</code> is computed from many <code>ADMISSION</code> rows; setting it to 5 would require inventing three admissions, and the system cannot know which students to invent. There is no single base row to change.</p>
+<p><strong><code>WITH CHECK OPTION</code></strong> ensures that any row inserted or updated through the view still <strong>satisfies the view's <code>WHERE</code> clause</strong>. Without it:</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">FulltimeCourses</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Fulltime'</span><span class="p">;</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">FulltimeCourses</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'DP01'</span><span class="p">,</span><span class="s1">'Diploma'</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'Parttime'</span><span class="p">,</span><span class="s1">'X'</span><span class="p">);</span>
+</code></pre></div>
+The insert <strong>succeeds</strong> — the row lands in <code>COURSE</code> — but immediately <strong>disappears from the view</strong>, because it is not full-time. The user inserted a row through a view and then could not see it, which is confusing and usually a bug. Adding <code>WITH CHECK OPTION</code> rejects such an insert outright.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Distinguish virtual from materialised views. When is each appropriate?</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Virtual view</th>
+<th>Materialised view</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What is stored</td>
+<td>The <strong>definition</strong> only</td>
+<td>The <strong>result data</strong></td>
+</tr>
+<tr>
+<td>Freshness</td>
+<td><strong>Always current</strong> — recomputed on reference</td>
+<td><strong>Stale</strong> between refreshes</td>
+</tr>
+<tr>
+<td>Query cost</td>
+<td>The full underlying query, every time</td>
+<td>A simple table read — <strong>fast</strong></td>
+</tr>
+<tr>
+<td>Storage cost</td>
+<td>None</td>
+<td>The full result</td>
+</tr>
+<tr>
+<td>Write cost on base tables</td>
+<td>None</td>
+<td>Refresh work, or trigger maintenance</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>All SQL systems</td>
+<td>Oracle, PostgreSQL; <strong>not</strong> native in MySQL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use a virtual view when</strong> correctness must be absolute and up to the second — an account balance, a seat-availability check, anything a transaction depends on — or when the underlying query is cheap. This is the default choice.</p>
+<p><strong>Use a materialised view when</strong> the underlying query is expensive (aggregation over millions of rows), it is queried far more often than the base data changes, and <strong>some staleness is acceptable</strong> — the classic case being an overnight-refreshed reporting or dashboard summary.</p>
+<p>A materialised view is <strong>controlled redundancy</strong> in the sense of Unit 1, Lesson 1: the data is deliberately duplicated, and the duplication is acceptable precisely because the system, not the application programmer, is responsible for keeping it in step.</p>
+<p>In MySQL, which has no native support, the pattern is simulated by creating a real table and refreshing it with a scheduled <code>EVENT</code> or by triggers on the base tables.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> What is ODBC? Explain its architecture and write a Python program that connects to the college database and lists part-time students.</p>
+<p><strong>A.</strong> <strong>ODBC (Open Database Connectivity)</strong> is a standard C-based API through which an application can access <strong>any</strong> DBMS. The application is written once against the ODBC calls; a <strong>driver</strong> specific to each DBMS translates them into that product's native protocol. <strong>JDBC</strong> is the Java equivalent.</p>
+<p><strong>Architecture</strong> <em>(Figure 6.1)</em>: application &rarr; ODBC API &rarr; Driver Manager &rarr; DBMS-specific driver &rarr; DBMS. Because the driver is the only DBMS-aware component, changing from MySQL to Oracle means changing the driver and the connection string — not the application code. This is <strong>portability at the application level</strong>, complementing the data independence the DBMS provides internally.</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">mysql.connector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mysql.connector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Error</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">cur</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">'college'</span><span class="p">,</span>
+                                   <span class="n">user</span><span class="o">=</span><span class="s1">'appuser'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">'secret'</span><span class="p">)</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""SELECT DISTINCT s.Rollno, s.Name</span>
+<span class="s2">                   FROM   STUDENT s</span>
+<span class="s2">                   JOIN   ADMISSION a ON s.Rollno = a.Rollno</span>
+<span class="s2">                   JOIN   COURSE    c ON a.SID    = c.SID</span>
+<span class="s2">                   WHERE  c.Coursetype = </span><span class="si">%s</span>
+<span class="s2">                   ORDER BY s.Rollno"""</span><span class="p">,</span> <span class="p">(</span><span class="s1">'Parttime'</span><span class="p">,))</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="si">}</span><span class="s2"> part-time students</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">rollno</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">rollno</span><span class="si">:</span><span class="s2">8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Database error:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cur</span><span class="p">:</span>  <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">conn</span> <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span> <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Three points of technique.</strong> The value <code>'Parttime'</code> is passed as a <strong>bound parameter</strong> (<code>%s</code> with a tuple), never concatenated — this is the defence against SQL injection. The <code>finally</code> block closes the cursor and connection whether or not an error occurred, so connections are not leaked. And <code>DISTINCT</code> prevents a student admitted to two part-time courses appearing twice.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Write the SQL for syllabus practical part II: create a user, create a role, grant privileges to the role, revoke privileges from the role, and create an index. Explain each.</p>
+<p><strong>A.</strong></p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 1. CREATE USER</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'StrongPass#1'</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="w">       </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'AnotherPass#2'</span><span class="p">;</span>
+</code></pre></div>
+A MySQL account is the pair <code>'user'@'host'</code>. <code>'clerk'@'localhost'</code> may connect only from the server machine; <code>'analyst'@'%'</code> from any host. Restricting the host is a genuine second layer of access control.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 2. CREATE ROLE</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">,</span><span class="w"> </span><span class="s1">'reader'</span><span class="p">;</span>
+</code></pre></div>
+A role is a <strong>named collection of privileges</strong>, so that privileges are maintained per <em>job function</em> rather than per person.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 3. GRANT PRIVILEGES TO A ROLE</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w">                 </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'reader'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">)</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="n">STUDENT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'reader'</span><span class="p">;</span>
+
+<span class="c1">-- assign roles to users, then activate</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="s1">'reader'</span><span class="w">     </span><span class="k">TO</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+<span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'clerk'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">,</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+</code></pre></div>
+The column-level grant is the point of DBMS security: the reader sees a student's roll number and name but never their date of birth — a distinction no file permission can express.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 4. REVOKE PRIVILEGES FROM A ROLE</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">college</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'data_entry'</span><span class="p">;</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="s1">'reader'</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="s1">'analyst'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+</code></pre></div>
+Revoking from the <strong>role</strong> instantly affects <strong>every</strong> user holding it — one statement instead of one per user. That is the operational argument for roles.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 5. CREATE INDEX</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_student_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Name</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_adm_sid</span><span class="w">      </span><span class="k">ON</span><span class="w"> </span><span class="n">ADMISSION</span><span class="p">(</span><span class="n">SID</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_course_cname</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">Cname</span><span class="p">);</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">;</span>
+</code></pre></div>
+Indexes speed up <code>WHERE</code>, join and <code>ORDER BY</code> operations at the cost of storage and slower writes. Creating one changes only the <strong>internal schema</strong>, so no query or application needs to change — physical data independence.</p>
+<p>Verify with <code>SHOW GRANTS FOR 'clerk'@'localhost';</code> and <code>EXPLAIN SELECT ...</code> respectively.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> What is SQL injection? Show a vulnerable and a safe version, and state two defences beyond parameterisation.</p>
+<p><strong>A.</strong> <strong>SQL injection</strong> is an attack in which user-supplied input is concatenated into a SQL statement, so that characters in the input are parsed as <strong>SQL syntax</strong> rather than treated as a <strong>data value</strong>. The attacker thereby rewrites the query.</p>
+<p><strong>Vulnerable:</strong>
+<div class="language-python highlight"><pre><span></span><code><span class="n">rollno</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"Roll number: "</span><span class="p">)</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM STUDENT WHERE Rollno = '"</span> <span class="o">+</span> <span class="n">rollno</span> <span class="o">+</span> <span class="s2">"'"</span><span class="p">)</span>
+</code></pre></div>
+Entering <code>X2019' OR '1'='1</code> produces <code>WHERE Rollno = 'X2019' OR '1'='1'</code>, which is true for every row — the entire table is disclosed. Entering <code>X2019'; DROP TABLE STUDENT; --</code> submits a second statement and destroys the table.</p>
+<p><strong>Safe:</strong>
+<div class="language-python highlight"><pre><span></span><code><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM STUDENT WHERE Rollno = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="p">(</span><span class="n">rollno</span><span class="p">,))</span>
+</code></pre></div>
+The statement text and the value travel to the server <strong>separately</strong>. The server parses the statement once, then binds the value into a placeholder, so the value can never become syntax — whatever characters it contains.</p>
+<p><strong>Two further defences (security must be layered):</strong></p>
+<ol>
+<li>
+<p><strong>Least privilege.</strong> Grant the application account only what it needs — <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> on specific tables, never <code>DROP</code>, never <code>ALL PRIVILEGES</code>, never access to <code>mysql.*</code>. Then even a successful injection cannot drop a table, because the account is not permitted to.</p>
+</li>
+<li>
+<p><strong>Views as a security boundary.</strong> Grant the application access to views rather than base tables, so that even a fully compromised query can reach only the rows and columns the view exposes. Combine with column-level grants.</p>
+</li>
+</ol>
+<p>A useful third measure is <strong>input validation</strong> — rejecting a roll number that does not match the expected pattern — but it must be treated as defence in depth, never as a substitute for parameterisation.</p>
+</div>
+<h2 id="185-exercises">18.5 Exercises<a class="headerlink" href="#185-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>What is a view, and what does it store?</li>
+<li>Name four purposes of views.</li>
+<li>Give three constructs that make a view non-updatable.</li>
+<li>What does <code>WITH CHECK OPTION</code> prevent?</li>
+<li>Distinguish virtual from materialised views.</li>
+<li>Expand ODBC and JDBC.</li>
+<li>Why is a role preferable to per-user grants?</li>
+<li>Name two costs of creating an index.</li>
+</ol>
+<p><strong>B. Write the SQL</strong></p>
+<ol>
+<li>A view showing each student with their society names.</li>
+<li>A view of courses that are more than 80 per cent full.</li>
+<li>A view exposing only <code>Rollno</code> and <code>Name</code> from <code>STUDENT</code>, and grant it to a new user.</li>
+<li>A view of part-time courses that rejects inserts of full-time courses.</li>
+<li>Create users <code>librarian</code> and <code>auditor</code> with appropriate hosts.</li>
+<li>Create roles <code>readonly</code>, <code>dataentry</code> and <code>dbadmin</code>, grant sensible privileges to each, and assign them.</li>
+<li>Revoke <code>DELETE</code> from <code>dataentry</code> and explain who is affected.</li>
+<li>Create indexes you consider justified on the college schema, with a one-line justification for each.</li>
+<li>Grant a user the right to read only <code>Name</code> and <code>Coursetype</code>, not <code>TotalSeats</code>.</li>
+</ol>
+<p><strong>C. Python</strong></p>
+<ol>
+<li>Write a program that connects to <code>college</code> and prints every course with its enrolment count.</li>
+<li>Write a program that inserts a new student, taking values from the user safely.</li>
+<li>Write a program using <code>executemany</code> to insert five courses in one call.</li>
+<li>Modify (19) so that a failed insert rolls back and reports the error.</li>
+</ol>
+<p><strong>D. Analytical</strong></p>
+<ol>
+<li>Explain why <code>CourseEnrolment</code> cannot be updated, and describe what the DBMS would have to invent to allow it.</li>
+<li>A view is granted to a user who lacks access to the base tables. Explain exactly how the DBMS authorises the query.</li>
+<li>Argue for and against materialised views for a daily management dashboard.</li>
+<li>A table has indexes on eight columns and inserts have become slow. Explain the cause and propose a method for deciding which to drop.</li>
+<li>Explain why an index on <code>(SID, Dateofadmission)</code> does not help <code>WHERE Dateofadmission = '2019-07-15'</code>.</li>
+<li>Describe a complete defence-in-depth strategy against SQL injection for a college web application, naming at least four distinct measures.</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li>A view stores a copy of the data.</li>
+<li>Dropping a view deletes the base table rows.</li>
+<li>All views are updatable.</li>
+<li>MySQL supports materialised views natively.</li>
+<li>Column-level <code>GRANT</code> is possible.</li>
+<li>Creating an index changes the conceptual schema.</li>
+<li>Parameterised queries prevent SQL injection.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>False.</strong> A standard view stores only its definition; the data is computed on reference. Only a <em>materialised</em> view stores data.</li>
+<li><strong>False.</strong> <code>DROP VIEW</code> removes the definition only; base tables are untouched.</li>
+<li><strong>False.</strong> Views with aggregation, <code>GROUP BY</code>, <code>DISTINCT</code>, set operations, or (with restrictions) joins are not updatable.</li>
+<li><strong>False.</strong> Oracle and PostgreSQL do; in MySQL they are simulated with a table plus a scheduled refresh.</li>
+<li><strong>True.</strong> <code>GRANT SELECT (Rollno, Name) ON STUDENT TO ...</code> — a granularity no file permission can express.</li>
+<li><strong>False.</strong> An index is an <strong>internal</strong>-level structure. The conceptual schema is unchanged — this is physical data independence.</li>
+<li><strong>True.</strong> The value is transmitted separately from the statement text, so it can never be parsed as SQL. It should still be combined with least privilege.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>A <strong>view</strong> is a virtual table — the SQL realisation of the <strong>external schema</strong>. Purposes: simplification, security, logical data independence, presentation.</li>
+<li>A view is <strong>updatable</strong> only if each row maps to one base row; aggregation, <code>GROUP BY</code>, <code>DISTINCT</code> and set operations prevent it. <code>WITH CHECK OPTION</code> stops rows escaping the view.</li>
+<li><strong>Materialised</strong> views trade freshness for speed; MySQL has none natively.</li>
+<li><strong>ODBC/JDBC</strong> insulate the application from the DBMS. Always use <strong>bound parameters</strong> — never string concatenation.</li>
+<li>DBA commands: <code>CREATE USER</code>, <code>CREATE ROLE</code>, <code>GRANT</code> (including <strong>column-level</strong>), <code>REVOKE</code>, <code>CREATE INDEX</code>. Apply the <strong>principle of least privilege</strong>.</li>
+<li>Index selectively: indexes speed reads and slow writes, and a composite index only serves its <strong>leading prefix</strong>.</li>
+</ul>
+</div>
+<p><em>End of Unit 4. Next: Unit 5, Lesson 1 — Mapping an ER Model to a Relational Database.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="joins-subqueries-and-set-operations.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 17. Joins, Subqueries and Set Operations">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                17. Joins, Subqueries and Set Operations
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="er-to-relational-mapping.html" class="md-footer__link md-footer__link--next" aria-label="Next: 19. ER-to-Relational Mapping">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                19. ER-to-Relational Mapping
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

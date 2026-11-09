@@ -1,0 +1,3903 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch13-anti-tamper-technologies.html">
+  
+  
+    <link rel="prev" href="ch12-memory-security.html">
+  
+  
+    <link rel="next" href="ch14-hardware-attestation.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>13. Anti-Tamper Technologies - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-tamper-threats" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13. Anti-Tamper Technologies
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-threats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Anti-Tamper Threat Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.1 Anti-Tamper Threat Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1311-attack-categories-by-invasiveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1.1 Attack Categories by Invasiveness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1312-tamper-response-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1.2 Tamper Response Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Tamper Detection Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 Tamper Detection Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1321-active-tamper-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2.1 Active Tamper Mesh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1322-environmental-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2.2 Environmental Tamper Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-key-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Secure Key Storage and Zeroization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.3 Secure Key Storage and Zeroization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1331-bbram-battery-backed-sram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.1 BBRAM (Battery-Backed SRAM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1332-efuse-key-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.2 eFUSE Key Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1333-zeroization-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.3 Zeroization Circuits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tempest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 TEMPEST and Electromagnetic Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 TEMPEST and Electromagnetic Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1341-tempest-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.1 TEMPEST Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1342-compromising-emanation-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.2 Compromising Emanation Sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1343-shielding-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.3 Shielding Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-potting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 Physical Encapsulation and Potting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.5 Physical Encapsulation and Potting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1351-potting-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5.1 Potting Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pci-pts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 PCI PTS HSM Security Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.6 PCI PTS HSM Security Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1361-pci-pts-physical-security-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.1 PCI PTS Physical Security Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1362-pci-pts-level-3-requirements-pos-terminals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.2 PCI PTS Level 3 Requirements (POS Terminals)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1363-hardware-security-modules-hsms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.3 Hardware Security Modules (HSMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tikz-tamper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 TikZ Diagrams: Anti-Tamper Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.7 TikZ Diagrams: Anti-Tamper Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1371-active-tamper-mesh-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7.1 Active Tamper Mesh Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1372-pci-pts-zeroization-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7.2 PCI PTS Zeroization State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-supply-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8 Supply Chain Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.8 Supply Chain Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1381-hardware-trojan-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.1 Hardware Trojan Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1382-component-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.2 Component Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1383-sae-as5553-and-as6081-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.3 SAE AS5553 and AS6081 Compliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.9 Solutions Comparison Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10 FPGA and ASIC Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.10 FPGA and ASIC Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13101-fpga-tamper-detection-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10.1 FPGA Tamper Detection Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13102-asic-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10.2 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.11 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch13-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.12 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13121-pci-pts-6x-20232024-updated-point-of-interaction-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.1 PCI PTS 6.x (2023–2024): Updated Point-of-Interaction Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13122-physical-unclonable-functions-for-tamper-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.2 Physical Unclonable Functions for Tamper Evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13123-lattice-machxo3d-dedicated-security-controller-with-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.3 Lattice MachXO3D: Dedicated Security Controller with Tamper Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13124-microchip-cec1736-t2-style-security-for-windows-laptops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.4 Microchip CEC1736: T2-Style Security for Windows Laptops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13125-pcie-cmaspdm-component-measurement-and-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.5 PCIe CMA/SPDM: Component Measurement and Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13126-eu-cyber-resilience-act-cra-2024-tamper-requirements-for-connected-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.6 EU Cyber Resilience Act (CRA 2024): Tamper Requirements for Connected Products
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-threats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Anti-Tamper Threat Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.1 Anti-Tamper Threat Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1311-attack-categories-by-invasiveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1.1 Attack Categories by Invasiveness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1312-tamper-response-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1.2 Tamper Response Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Tamper Detection Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 Tamper Detection Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1321-active-tamper-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2.1 Active Tamper Mesh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1322-environmental-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2.2 Environmental Tamper Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-key-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Secure Key Storage and Zeroization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.3 Secure Key Storage and Zeroization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1331-bbram-battery-backed-sram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.1 BBRAM (Battery-Backed SRAM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1332-efuse-key-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.2 eFUSE Key Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1333-zeroization-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3.3 Zeroization Circuits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tempest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 TEMPEST and Electromagnetic Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 TEMPEST and Electromagnetic Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1341-tempest-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.1 TEMPEST Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1342-compromising-emanation-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.2 Compromising Emanation Sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1343-shielding-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4.3 Shielding Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-potting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 Physical Encapsulation and Potting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.5 Physical Encapsulation and Potting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1351-potting-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5.1 Potting Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pci-pts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 PCI PTS HSM Security Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.6 PCI PTS HSM Security Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1361-pci-pts-physical-security-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.1 PCI PTS Physical Security Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1362-pci-pts-level-3-requirements-pos-terminals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.2 PCI PTS Level 3 Requirements (POS Terminals)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1363-hardware-security-modules-hsms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6.3 Hardware Security Modules (HSMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tikz-tamper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 TikZ Diagrams: Anti-Tamper Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.7 TikZ Diagrams: Anti-Tamper Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1371-active-tamper-mesh-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7.1 Active Tamper Mesh Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1372-pci-pts-zeroization-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7.2 PCI PTS Zeroization State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-supply-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8 Supply Chain Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.8 Supply Chain Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1381-hardware-trojan-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.1 Hardware Trojan Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1382-component-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.2 Component Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1383-sae-as5553-and-as6081-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8.3 SAE AS5553 and AS6081 Compliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.9 Solutions Comparison Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10 FPGA and ASIC Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.10 FPGA and ASIC Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13101-fpga-tamper-detection-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10.1 FPGA Tamper Detection Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13102-asic-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.10.2 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tamper-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.11 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch13-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.12 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13121-pci-pts-6x-20232024-updated-point-of-interaction-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.1 PCI PTS 6.x (2023–2024): Updated Point-of-Interaction Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13122-physical-unclonable-functions-for-tamper-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.2 Physical Unclonable Functions for Tamper Evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13123-lattice-machxo3d-dedicated-security-controller-with-tamper-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.3 Lattice MachXO3D: Dedicated Security Controller with Tamper Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13124-microchip-cec1736-t2-style-security-for-windows-laptops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.4 Microchip CEC1736: T2-Style Security for Windows Laptops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13125-pcie-cmaspdm-component-measurement-and-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.5 PCIe CMA/SPDM: Component Measurement and Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13126-eu-cyber-resilience-act-cra-2024-tamper-requirements-for-connected-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.12.6 EU Cyber Resilience Act (CRA 2024): Tamper Requirements for Connected Products
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-anti-tamper">Chapter 13: Anti-Tamper Technologies<a class="headerlink" href="#ch-anti-tamper" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Physical security of hardware is the last line of defense against an adversary with hands-on access. Anti-tamper technologies span active mesh sensors, environmental detectors, secure key storage with zeroization, TEMPEST emission controls, and supply chain integrity mechanisms. This chapter covers: the complete anti-tamper threat model; PCI PTS HSM requirements; active and passive tamper detection; BBRAM and eFUSE secure key storage; TEMPEST/EMSEC standards (NSTISSAM, NATO SDIP-27); potting and encapsulation; zeroization circuits; and case studies on Maxim DS3641 and Microsemi SmartFusion2.</p>
+</div>
+<h2 id="sec-tamper-threats"><span class="secnum">13.1</span> Anti-Tamper Threat Model<a class="headerlink" href="#sec-tamper-threats" title="Permanent link">&para;</a></h2>
+<p>Anti-tamper (AT) encompasses all mechanisms that detect, respond to, or prevent unauthorized physical access to a hardware system. DoD MIL-HDBK-1195 and SAE AS5553 define the threat hierarchy from passive observation to active invasive attack.</p>
+<h3 id="1311-attack-categories-by-invasiveness"><span class="secnum">13.1.1</span> Attack Categories by Invasiveness<a class="headerlink" href="#1311-attack-categories-by-invasiveness" title="Permanent link">&para;</a></h3>
+<p><strong>Non-Invasive</strong>: Side-channel analysis (power, EM, timing), TEMPEST emanation capture, and optical inspection. Countermeasures include shielding, power filtering, and randomized clocking.</p>
+<p><strong>Semi-Invasive</strong>: Backside probing through thinned substrate, laser fault injection, and X-ray analysis of internal structures.</p>
+<p><strong>Invasive</strong>: Full decapping and die exposure. Microprobing of internal buses, FIB circuit edit, and SEM analysis. These attacks require laboratory equipment costing &#36;500K–&#36;5M and significant expertise.</p>
+<p><strong>Supply Chain</strong>: Counterfeit components (SAE AS6081), hardware Trojans inserted during fabrication or assembly, and grey market devices with unknown provenance. DARPA SHIELD program addresses this via anti-counterfeit dielets.</p>
+<h3 id="1312-tamper-response-hierarchy"><span class="secnum">13.1.2</span> Tamper Response Hierarchy<a class="headerlink" href="#1312-tamper-response-hierarchy" title="Permanent link">&para;</a></h3>
+<p>Anti-tamper systems implement graduated response:</p>
+<ol>
+<li>
+<p><strong>Detect</strong>: Environmental sensors identify anomalous conditions</p>
+</li>
+<li>
+<p><strong>Alert</strong>: Out-of-band notification to monitoring system</p>
+</li>
+<li>
+<p><strong>Erase</strong>: Zeroize cryptographic keys and sensitive data</p>
+</li>
+<li>
+<p><strong>Disable</strong>: Render device non-functional</p>
+</li>
+<li>
+<p><strong>Destroy</strong>: Physical destruction of sensitive components</p>
+</li>
+</ol>
+<h2 id="sec-tamper-detection"><span class="secnum">13.2</span> Tamper Detection Mechanisms<a class="headerlink" href="#sec-tamper-detection" title="Permanent link">&para;</a></h2>
+<h3 id="1321-active-tamper-mesh"><span class="secnum">13.2.1</span> Active Tamper Mesh<a class="headerlink" href="#1321-active-tamper-mesh" title="Permanent link">&para;</a></h3>
+<p>An active tamper mesh is a fine conductive grid (typically 25–50 <span class="arithmatex">\(\mu\)</span>m pitch copper traces) routed in a serpentine pattern over the entire PCB surface. A monitoring ASIC continuously drives a pseudo-random bit stream through the mesh and verifies the returned pattern.</p>
+<p>Key specifications for PCI PTS-compliant implementations:</p>
+<ul>
+<li>
+<p>Trace width: 75 <span class="arithmatex">\(\mu\)</span>m minimum to prevent bridging</p>
+</li>
+<li>
+<p>Trace spacing: 75 <span class="arithmatex">\(\mu\)</span>m minimum to prevent probing between traces</p>
+</li>
+<li>
+<p>Pattern update rate: <span class="arithmatex">\(\geq 1\)</span> kHz</p>
+</li>
+<li>
+<p>Detection latency: <span class="arithmatex">\(\leq 100\)</span> <span class="arithmatex">\(\mu\)</span>s from breach to zeroization</p>
+</li>
+<li>
+<p>Battery-backed tamper detect power: <span class="arithmatex">\(&lt; 5\,\mu\)</span>W</p>
+</li>
+</ul>
+<p>Commercial implementations:</p>
+<ul>
+<li>
+<p><strong>Maxim DS3641</strong>: Dual-port tamper detection IC, 3.0–3.6 V, 32-byte secure SRAM with instant zeroization, I2C interface</p>
+</li>
+<li>
+<p><strong>Maxim DS3640</strong>: Tamper-detect/zeroize for flash, external mesh connectors, SPI interface</p>
+</li>
+<li>
+<p><strong>NXP SE050</strong>: Secure element, CC EAL 6+, I2C/SPI, 50 KB flash</p>
+</li>
+<li>
+<p><strong>Microchip ATECC608B</strong>: CryptoAuthentication, SHA-256 MAC, active tamper pin, -40 to +85<span class="arithmatex">\(^\circ\)</span>C</p>
+</li>
+</ul>
+<h3 id="1322-environmental-tamper-detection"><span class="secnum">13.2.2</span> Environmental Tamper Detection<a class="headerlink" href="#1322-environmental-tamper-detection" title="Permanent link">&para;</a></h3>
+<p>Environmental sensors detect physical attack precursors:</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Sensor Type</strong></th>
+<th style="text-align: left;"><strong>Range</strong></th>
+<th style="text-align: left;"><strong>Threshold</strong></th>
+<th style="text-align: left;"><strong>Attack Prevented</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Temperature</td>
+<td style="text-align: left;"><span class="math inline">\(-40\)</span> to <span class="math inline">\(+85\)</span> <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;{-20}\)</span> or <span class="math inline">\(&gt;{60}\)</span> <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;">Cold boot, soldering</td>
+</tr>
+<tr>
+<td style="text-align: left;">Voltage</td>
+<td style="text-align: left;">VCC <span class="math inline">\(\pm 10\%\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 2.7\)</span> V or <span class="math inline">\(&gt; 3.6\)</span> V</td>
+<td style="text-align: left;">Power glitching</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frequency</td>
+<td style="text-align: left;">1–100 MHz</td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 0.5\)</span> MHz or <span class="math inline">\(&gt; 120\)</span> MHz</td>
+<td style="text-align: left;">Clock glitching</td>
+</tr>
+<tr>
+<td style="text-align: left;">Light</td>
+<td style="text-align: left;">Photodiode</td>
+<td style="text-align: left;">Any light on die</td>
+<td style="text-align: left;">Decapping, laser</td>
+</tr>
+<tr>
+<td style="text-align: left;">Acceleration</td>
+<td style="text-align: left;">3-axis MEMS</td>
+<td style="text-align: left;"><span class="math inline">\(&gt; 50\)</span> g peak</td>
+<td style="text-align: left;">Drill, saw, hammer</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pressure</td>
+<td style="text-align: left;">Barometric</td>
+<td style="text-align: left;"><span class="math inline">\(&gt; 20\%\)</span> change</td>
+<td style="text-align: left;">Vacuum chamber</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> False positive rates must be carefully characterized. A tamper sensor that triggers during normal shipping vibration causes denial-of-service. PCI PTS 6.0 requires false positive analysis under ASTM D4169 and ISTA 2A.</p>
+</div>
+<h2 id="sec-key-storage"><span class="secnum">13.3</span> Secure Key Storage and Zeroization<a class="headerlink" href="#sec-key-storage" title="Permanent link">&para;</a></h2>
+<h3 id="1331-bbram-battery-backed-sram"><span class="secnum">13.3.1</span> BBRAM (Battery-Backed SRAM)<a class="headerlink" href="#1331-bbram-battery-backed-sram" title="Permanent link">&para;</a></h3>
+<p>BBRAM stores cryptographic keys in volatile SRAM cells powered by a lithium coin cell (CR2032, 225 mAh, 3 V). Disconnecting power or triggering a tamper event instantly erases the key by cutting battery power to the SRAM array.</p>
+<p><strong>BBRAM on Xilinx/AMD Devices</strong>: The Xilinx 7-series, UltraScale, and UltraScale+ FPGAs provide 256 bits of BBRAM (32 bytes) for AES-256 key storage. The BBRAM key register is accessible only during configuration. The Xilinx KEY_CLEAR pin or a tamper detection event can zeroize BBRAM in under 100 ns.</p>
+<div class="language-text highlight"><pre><span></span><code># Vivado: Write AES key to BBRAM (requires JTAG)
+write_cfgmem -format BIN -interface BPIx16 -size 128 -file key.nky
+program_hw_cfgmem -hw_cfgmem [get_hw_cfgmems] -bitfile key.nky
+</code></pre></div>
+<p><strong>Intel Stratix 10 BBRAM</strong>: 256-bit BBRAM protected by the Intel Secure Device Manager (SDM) – an ARM Cortex-M3 security processor. The BBRAM is only readable by the SDM during bitstream decryption; never exposed to fabric.</p>
+<h3 id="1332-efuse-key-storage"><span class="secnum">13.3.2</span> eFUSE Key Storage<a class="headerlink" href="#1332-efuse-key-storage" title="Permanent link">&para;</a></h3>
+<p>eFUSEs provide permanent key storage. Once programmed, the key is retained through power cycles and tamper events (at the cost of irrevocability).</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Bits</strong></th>
+<th style="text-align: left;"><strong>Readback</strong></th>
+<th style="text-align: left;"><strong>Zeroize</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx 7-series</td>
+<td style="text-align: left;">BBRAM</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">No (WO)</td>
+<td style="text-align: left;">Power cut</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx 7-series</td>
+<td style="text-align: left;">eFUSE</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">No (WO)</td>
+<td style="text-align: left;">None (OTP)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx UltraScale+</td>
+<td style="text-align: left;">BBRAM</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">No (WO)</td>
+<td style="text-align: left;">Power cut</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx UltraScale+</td>
+<td style="text-align: left;">eFUSE</td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">No (WO)</td>
+<td style="text-align: left;">None (OTP)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Stratix 10</td>
+<td style="text-align: left;">BBRAM</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">SDM only</td>
+<td style="text-align: left;">Power cut</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Stratix 10</td>
+<td style="text-align: left;">eFUSE</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">SDM only</td>
+<td style="text-align: left;">None (OTP)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice MachXO3D</td>
+<td style="text-align: left;">Flash</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Flash erase</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsemi PolarFire</td>
+<td style="text-align: left;">sNVM</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Zeroize cmd</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="1333-zeroization-circuits"><span class="secnum">13.3.3</span> Zeroization Circuits<a class="headerlink" href="#1333-zeroization-circuits" title="Permanent link">&para;</a></h3>
+<p>Zeroization is the process of overwriting all sensitive data in response to a tamper event. FIPS 140-3 Level 3 and PCI PTS 5.x require zeroization to complete within a defined time bound.</p>
+<p>Zeroization design requirements:</p>
+<ol>
+<li>
+<p><strong>Speed</strong>: Target completion in <span class="arithmatex">\(&lt; 1\)</span> ms for 256-bit keys</p>
+</li>
+<li>
+<p><strong>Completeness</strong>: All copies of sensitive data must be erased, including pipeline stages, cache copies, and DMA buffers</p>
+</li>
+<li>
+<p><strong>Verification</strong>: Post-zeroization readback must confirm all bits zero</p>
+</li>
+<li>
+<p><strong>Fail-Safe Trigger</strong>: The trigger circuit must be tamper-resistant</p>
+</li>
+</ol>
+<p>Xilinx UltraScale+ zeroization XDC constraints:</p>
+<div class="language-text highlight"><pre><span></span><code>set_property BITSTREAM.CONFIG.OVERTEMPSHUTDOWN ENABLE [current_design]
+set_property BITSTREAM.ENCRYPTION.ENCRYPT YES [current_design]
+set_property BITSTREAM.ENCRYPTION.ENCRYPTKEYSELECT BBRAM [current_design]
+</code></pre></div>
+<h2 id="sec-tempest"><span class="secnum">13.4</span> TEMPEST and Electromagnetic Security<a class="headerlink" href="#sec-tempest" title="Permanent link">&para;</a></h2>
+<p>TEMPEST (Telecommunications Electronics Material Protected from Emanating Spurious Transmissions) covers techniques to suppress compromising electromagnetic emanations from electronic equipment.</p>
+<h3 id="1341-tempest-standards"><span class="secnum">13.4.1</span> TEMPEST Standards<a class="headerlink" href="#1341-tempest-standards" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>NSTISSAM TEMPEST/1-92</strong>: US classified standard for RED/BLACK separation. Three levels: Level I (maximum shielding), Level II (moderate), Level III (minimum for controlled areas)</p>
+</li>
+<li>
+<p><strong>NATO SDIP-27 Level A</strong>: Equivalent to NSTISSAM Level I, for hostile environments (embassies, forward operating bases)</p>
+</li>
+<li>
+<p><strong>NATO SDIP-27 Level B</strong>: Moderate shielding, controlled zones</p>
+</li>
+<li>
+<p><strong>NATO SDIP-27 Level C</strong>: Zone 3, zoned building environments</p>
+</li>
+<li>
+<p><strong>IEC 60950/62368</strong>: Commercial EMC standards (not TEMPEST-grade)</p>
+</li>
+</ul>
+<h3 id="1342-compromising-emanation-sources"><span class="secnum">13.4.2</span> Compromising Emanation Sources<a class="headerlink" href="#1342-compromising-emanation-sources" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Video signals</strong>: Van Eck phreaking reconstructs screen content from CRT/LCD horizontal sync emissions (range: up to 1 km)</p>
+</li>
+<li>
+<p><strong>Keyboard emissions</strong>: Each keystroke produces a characteristic RF signature; recovered at 20 m with simple loop antenna</p>
+</li>
+<li>
+<p><strong>Processor bus emissions</strong>: Address/data bus transitions leak computation patterns; AES operations identified at over 10 m range</p>
+</li>
+<li>
+<p><strong>Power supply conducted emissions</strong>: Switching noise propagates to building wiring</p>
+</li>
+</ul>
+<h3 id="1343-shielding-design"><span class="secnum">13.4.3</span> Shielding Design<a class="headerlink" href="#1343-shielding-design" title="Permanent link">&para;</a></h3>
+<p>Faraday cage effectiveness measured in dB attenuation:</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Enclosure</strong></th>
+<th style="text-align: left;"><strong>Material</strong></th>
+<th style="text-align: left;"><strong>1 MHz</strong></th>
+<th style="text-align: left;"><strong>100 MHz</strong></th>
+<th style="text-align: left;"><strong>1 GHz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Sheet steel (1 mm)</td>
+<td style="text-align: left;">Cold-rolled steel</td>
+<td style="text-align: left;">120 dB</td>
+<td style="text-align: left;">80 dB</td>
+<td style="text-align: left;">60 dB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aluminum (0.1 mm)</td>
+<td style="text-align: left;">5052 alloy</td>
+<td style="text-align: left;">100 dB</td>
+<td style="text-align: left;">70 dB</td>
+<td style="text-align: left;">45 dB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Copper mesh (100/in)</td>
+<td style="text-align: left;">Copper</td>
+<td style="text-align: left;">80 dB</td>
+<td style="text-align: left;">60 dB</td>
+<td style="text-align: left;">40 dB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Conductive foam</td>
+<td style="text-align: left;">Carbon-loaded</td>
+<td style="text-align: left;">20 dB</td>
+<td style="text-align: left;">15 dB</td>
+<td style="text-align: left;">10 dB</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCB ground plane</td>
+<td style="text-align: left;">35 <span class="math inline">\(\mu\)</span>m Cu</td>
+<td style="text-align: left;">40 dB</td>
+<td style="text-align: left;">30 dB</td>
+<td style="text-align: left;">20 dB</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Shielding effectiveness degrades at seams and apertures. A 10 cm slot antenna at 1 GHz resonates and reduces shielding from 80 dB to below 20 dB. All panel joints must use EMI gaskets (Spira-Shield, Laird Ecoflex 60) with contact resistance below 50 m<span class="arithmatex">\(\Omega\)</span> and contact spacing <span class="arithmatex">\(\leq\)</span>10 mm.</p>
+</div>
+<h2 id="sec-potting"><span class="secnum">13.5</span> Physical Encapsulation and Potting<a class="headerlink" href="#sec-potting" title="Permanent link">&para;</a></h2>
+<p>Physical encapsulation (potting) fills the space around sensitive electronics with a hardened material that makes physical access destructive.</p>
+<h3 id="1351-potting-materials"><span class="secnum">13.5.1</span> Potting Materials<a class="headerlink" href="#1351-potting-materials" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Material</strong></th>
+<th style="text-align: left;"><strong>Hardness</strong></th>
+<th style="text-align: left;"><strong>Removal</strong></th>
+<th style="text-align: left;"><strong>Security Level</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Epoxy (hard)</td>
+<td style="text-align: left;">Shore D 80-90</td>
+<td style="text-align: left;">Destructive</td>
+<td style="text-align: left;">High</td>
+</tr>
+<tr>
+<td style="text-align: left;">Polyurethane</td>
+<td style="text-align: left;">Shore A 50-90</td>
+<td style="text-align: left;">Semi-destructive</td>
+<td style="text-align: left;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;">Silicone</td>
+<td style="text-align: left;">Shore A 10-60</td>
+<td style="text-align: left;">Non-destructive</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Filled epoxy</td>
+<td style="text-align: left;">Shore D 90+</td>
+<td style="text-align: left;">Highly destructive</td>
+<td style="text-align: left;">Very High</td>
+</tr>
+<tr>
+<td style="text-align: left;">Conductive epoxy</td>
+<td style="text-align: left;">Shore D 70-80</td>
+<td style="text-align: left;">Destructive + shorts</td>
+<td style="text-align: left;">Very High</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Hard Epoxy Potting</strong>: Epoxy-filled modules prevent drilling and microprobing. The 2010 Verizon PCI Report documented successful hot solvent attacks (MEK, acetone) on polyurethane-potted POS terminals within 4 hours. Hard epoxy requires mechanical removal that typically destroys the PCB.</p>
+<p><strong>Conductive Mesh in Epoxy</strong>: Embedding a conductive mesh within the epoxy layer creates an active tamper detection layer that is physically inseparable from the protection mechanism.</p>
+<p><strong>Self-Destructing Circuits</strong>: Some high-security designs (NSA Type 1 cryptographic equipment) embed thermite or pyrotechnic charges that physically destroy the crypto module on tamper detection. DoD TEMPEST Type 1 devices must meet MIL-STD-461G for emissions.</p>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> Potting reduces thermal dissipation. An encapsulated PCB with 3 W total power in hard epoxy can reach 40<span class="arithmatex">\(^\circ\)</span>C above ambient. Thermal modeling (ANSYS Icepak or FloTHERM) is required for high-power designs.</p>
+</div>
+<h2 id="sec-pci-pts"><span class="secnum">13.6</span> PCI PTS HSM Security Requirements<a class="headerlink" href="#sec-pci-pts" title="Permanent link">&para;</a></h2>
+<p>The PCI PIN Transaction Security (PTS) Hardware Security Module standard defines physical security requirements for HSMs used in payment systems. PCI PTS HSM v3.0 (2016) and v4.0 (2020) define five security levels.</p>
+<h3 id="1361-pci-pts-physical-security-levels"><span class="secnum">13.6.1</span> PCI PTS Physical Security Levels<a class="headerlink" href="#1361-pci-pts-physical-security-levels" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Level</strong></th>
+<th style="text-align: left;"><strong>Requirements</strong></th>
+<th style="text-align: left;"><strong>Attack Resistance</strong></th>
+<th style="text-align: left;"><strong>Typical Use</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Level 1</td>
+<td style="text-align: left;">Basic electronic security</td>
+<td style="text-align: left;">Semi-invasive</td>
+<td style="text-align: left;">Low-value ATM</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 2</td>
+<td style="text-align: left;">Tamper evidence, seals</td>
+<td style="text-align: left;">Non-invasive attacks</td>
+<td style="text-align: left;">ATM, kiosk</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">Active tamper detect, zeroize</td>
+<td style="text-align: left;">All non-invasive</td>
+<td style="text-align: left;">POS terminal</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 4</td>
+<td style="text-align: left;">Environmental monitoring</td>
+<td style="text-align: left;">Invasive (basic)</td>
+<td style="text-align: left;">Bank HSM</td>
+</tr>
+<tr>
+<td style="text-align: left;">Level 5</td>
+<td style="text-align: left;">Full invasive resistance</td>
+<td style="text-align: left;">All attack categories</td>
+<td style="text-align: left;">High-value HSM</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="1362-pci-pts-level-3-requirements-pos-terminals"><span class="secnum">13.6.2</span> PCI PTS Level 3 Requirements (POS Terminals)<a class="headerlink" href="#1362-pci-pts-level-3-requirements-pos-terminals" title="Permanent link">&para;</a></h3>
+<p>PCI PTS 6.0 Level 3 minimum requirements:</p>
+<ul>
+<li>
+<p>Tamper-evident seals on all external access points</p>
+</li>
+<li>
+<p>Active tamper detection: voltage, frequency, temperature</p>
+</li>
+<li>
+<p>Immediate zeroization of all cardholder data and PIN keys</p>
+</li>
+<li>
+<p>Battery backup: tamper detection active for <span class="arithmatex">\(\geq 90\)</span> days</p>
+</li>
+<li>
+<p>No exposed test points accessible from exterior</p>
+</li>
+<li>
+<p>Keypad: anti-sniffing (key signatures indistinguishable)</p>
+</li>
+<li>
+<p>DUKPT (ANSI X9.24-1) key management for PIN encryption</p>
+</li>
+</ul>
+<h3 id="1363-hardware-security-modules-hsms"><span class="secnum">13.6.3</span> Hardware Security Modules (HSMs)<a class="headerlink" href="#1363-hardware-security-modules-hsms" title="Permanent link">&para;</a></h3>
+<p>Commercial HSMs certified to PCI PTS and FIPS 140-3:</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: left;"><strong>FIPS Level</strong></th>
+<th style="text-align: left;"><strong>PCI PTS</strong></th>
+<th style="text-align: left;"><strong>Throughput</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Thales Luna Network HSM 7</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">20<span>,</span>000 RSA-2048 ops/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thales payShield 10K</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">PTS HSM v3</td>
+<td style="text-align: left;">2<span>,</span>000 3DES ops/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">Entrust nShield Connect XC</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">20<span>,</span>000 RSA ops/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBM 4769 PCIe HSM</td>
+<td style="text-align: left;">Level 4</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">5<span>,</span>000 ECC P-256 ops/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">Utimaco Se Series</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">PTS HSM v2</td>
+<td style="text-align: left;">10<span>,</span>000 AES-256 ops/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">Marvell LiquidSecurity</td>
+<td style="text-align: left;">Level 3</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">100<span>,</span>000 RSA ops/s</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-tikz-tamper"><span class="secnum">13.7</span> TikZ Diagrams: Anti-Tamper Architecture<a class="headerlink" href="#sec-tikz-tamper" title="Permanent link">&para;</a></h2>
+<h3 id="1371-active-tamper-mesh-architecture"><span class="secnum">13.7.1</span> Active Tamper Mesh Architecture<a class="headerlink" href="#1371-active-tamper-mesh-architecture" title="Permanent link">&para;</a></h3>
+<figure class="fig fig-diagram" id="fig-tamper-arch">
+<img class="tikz" src="img/tikz-7fbc9c685426.svg" alt="Active tamper detection architecture. Sensors feed a dedicated tamper controller that drives zeroization, BBRAM erasure, and alerts." loading="lazy">
+<figcaption><strong>Figure 13.1.</strong> Active tamper detection architecture. Sensors feed a dedicated tamper controller that drives zeroization, BBRAM erasure, and alerts.</figcaption>
+</figure>
+
+<h3 id="1372-pci-pts-zeroization-state-machine"><span class="secnum">13.7.2</span> PCI PTS Zeroization State Machine<a class="headerlink" href="#1372-pci-pts-zeroization-state-machine" title="Permanent link">&para;</a></h3>
+<figure class="fig fig-diagram" id="fig-zero-state">
+<img class="tikz" src="img/tikz-c7ded2238f95.svg" alt="Zeroization state machine. Tamper detection triggers immediate irreversible zeroization within 100 \mus. Maintenance mode requires authenticated entry." loading="lazy">
+<figcaption><strong>Figure 13.2.</strong> Zeroization state machine. Tamper detection triggers immediate irreversible zeroization within 100 <span class="math inline">\(\mu\)</span>s. Maintenance mode requires authenticated entry.</figcaption>
+</figure>
+
+<h2 id="sec-supply-chain"><span class="secnum">13.8</span> Supply Chain Security<a class="headerlink" href="#sec-supply-chain" title="Permanent link">&para;</a></h2>
+<h3 id="1381-hardware-trojan-detection"><span class="secnum">13.8.1</span> Hardware Trojan Detection<a class="headerlink" href="#1381-hardware-trojan-detection" title="Permanent link">&para;</a></h3>
+<p>Hardware Trojans (HTs) are malicious modifications inserted during IC design, fabrication, or assembly. The DARPA TRUST program (2007–2012) demonstrated the feasibility of inserting undetectable Trojans in commercial foundries.</p>
+<p>Detection approaches:</p>
+<ul>
+<li>
+<p><strong>Side-channel fingerprinting</strong>: Power traces from a trusted golden reference compared to test devices (sensitivity: <span class="arithmatex">\(&lt; 0.1\%\)</span> power change)</p>
+</li>
+<li>
+<p><strong>Optical inspection</strong>: High-resolution SEM/TEM image comparison against design database (requires decapping, cost: &#36;5K–&#36;50K per device)</p>
+</li>
+<li>
+<p><strong>X-ray tomography</strong>: Non-destructive 3D imaging of internal structures (Zeiss Xradia, 0.7 <span class="arithmatex">\(\mu\)</span>m resolution, cost: &#36;200–&#36;500 per device)</p>
+</li>
+<li>
+<p><strong>Logic testing</strong>: Functional testing with rare-event activation patterns; limited coverage for Trojans with long trigger sequences</p>
+</li>
+<li>
+<p><strong>Formal verification</strong>: RTL-to-netlist equivalence checking (Synopsys Formality, Cadence JasperGold) – detects post-synthesis insertion</p>
+</li>
+</ul>
+<h3 id="1382-component-authentication"><span class="secnum">13.8.2</span> Component Authentication<a class="headerlink" href="#1382-component-authentication" title="Permanent link">&para;</a></h3>
+<p>Electronic component authentication technologies:</p>
+<ul>
+<li>
+<p><strong>DARPA SHIELD</strong>: Anti-counterfeit dielets (100 <span class="arithmatex">\(\mu\)</span>m <span class="arithmatex">\(\times\)</span> 100 <span class="arithmatex">\(\mu\)</span>m) with unique ID and RF readout, embedded in PCB via pick-and-place</p>
+</li>
+<li>
+<p><strong>Microchip ATECC608B</strong>: IC-level authentication via ECDSA P-256, used in Apple AirTag, AWS Greengrass devices</p>
+</li>
+<li>
+<p><strong>NXP NAG531</strong>: NFC authentication tag with AES-128 mutual auth, ISO 15693 compliant, 1,024-bit EEPROM</p>
+</li>
+<li>
+<p><strong>Cisco TAm</strong>: Trust Anchor module in Cisco ASR/ISR routers, RSA-2048 device identity with secure boot chain</p>
+</li>
+</ul>
+<h3 id="1383-sae-as5553-and-as6081-compliance"><span class="secnum">13.8.3</span> SAE AS5553 and AS6081 Compliance<a class="headerlink" href="#1383-sae-as5553-and-as6081-compliance" title="Permanent link">&para;</a></h3>
+<p><strong>SAE AS5553</strong> (Fraudulent/Counterfeit Electronic Parts) requires:</p>
+<ol>
+<li>
+<p>Procurement only from authorized distributors (OCDs)</p>
+</li>
+<li>
+<p>Certificate of Conformance (CoC) with each shipment</p>
+</li>
+<li>
+<p>Risk-based inspection plan for suspect lots</p>
+</li>
+<li>
+<p>Reporting of confirmed counterfeits to ERAI and GIDEP databases</p>
+</li>
+</ol>
+<p><strong>SAE AS6081</strong> (Counterfeit Electronic Parts Detection) specifies physical and electrical tests:</p>
+<ul>
+<li>
+<p>Visual inspection under 10x–40x magnification</p>
+</li>
+<li>
+<p>Solderability testing (J-STD-002)</p>
+</li>
+<li>
+<p>X-ray fluorescence (XRF) for lead content</p>
+</li>
+<li>
+<p>Decapsulation and die marking verification</p>
+</li>
+<li>
+<p>Parametric electrical testing vs. datasheet</p>
+</li>
+</ul>
+<h2 id="sec-tamper-solutions"><span class="secnum">13.9</span> Solutions Comparison Table<a class="headerlink" href="#sec-tamper-solutions" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Cert</strong></th>
+<th style="text-align: left;"><strong>Cost</strong></th>
+<th style="text-align: left;"><strong>Response</strong></th>
+<th style="text-align: left;"><strong>Use Case</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Maxim DS3641</td>
+<td style="text-align: left;">Active mesh IC</td>
+<td style="text-align: left;">FIPS 140-3 L2</td>
+<td style="text-align: left;">$5</td>
+<td style="text-align: left;">100 <span class="math inline">\(\mu\)</span>s</td>
+<td style="text-align: left;">POS, ATM</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP SE050</td>
+<td style="text-align: left;">Secure element</td>
+<td style="text-align: left;">CC EAL6+</td>
+<td style="text-align: left;">$3</td>
+<td style="text-align: left;">1 ms</td>
+<td style="text-align: left;">IoT, mobile</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microchip ATECC608B</td>
+<td style="text-align: left;">Auth IC</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">$0.70</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">Component auth</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thales Luna HSM 7</td>
+<td style="text-align: left;">Network HSM</td>
+<td style="text-align: left;">FIPS 140-3 L3</td>
+<td style="text-align: left;">$40K</td>
+<td style="text-align: left;">10 ms</td>
+<td style="text-align: left;">Cloud PKI</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBM 4769 PCIe</td>
+<td style="text-align: left;">PCIe HSM</td>
+<td style="text-align: left;">FIPS 140-4 L4</td>
+<td style="text-align: left;">$10K</td>
+<td style="text-align: left;">1 ms</td>
+<td style="text-align: left;">Banking, HFT</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsemi SF2</td>
+<td style="text-align: left;">FPGA+MCU</td>
+<td style="text-align: left;">FIPS 140-2 L3</td>
+<td style="text-align: left;">$50</td>
+<td style="text-align: left;">500 <span class="math inline">\(\mu\)</span>s</td>
+<td style="text-align: left;">Defense</td>
+</tr>
+<tr>
+<td style="text-align: left;">Open FPGA mesh</td>
+<td style="text-align: left;">DIY open</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">PCB cost</td>
+<td style="text-align: left;">1 ms</td>
+<td style="text-align: left;">Research</td>
+</tr>
+<tr>
+<td style="text-align: left;">PyNaCl+TPM</td>
+<td style="text-align: left;">SW+HW</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">$2 (TPM)</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Embedded</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-tamper-fpga"><span class="secnum">13.10</span> FPGA and ASIC Implementation<a class="headerlink" href="#sec-tamper-fpga" title="Permanent link">&para;</a></h2>
+<h3 id="13101-fpga-tamper-detection-core"><span class="secnum">13.10.1</span> FPGA Tamper Detection Core<a class="headerlink" href="#13101-fpga-tamper-detection-core" title="Permanent link">&para;</a></h3>
+<p>An FPGA-based tamper detection core on Xilinx UltraScale+ (XCKU035):</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Module</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>MHz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Mesh PRBS generator</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mesh pattern checker</td>
+<td style="text-align: right;">380</td>
+<td style="text-align: right;">480</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Env. sensor interface</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zeroize controller</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">640</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES key RAM</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alert/log subsystem</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">125</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><strong>2<span>,</span>016</strong></td>
+<td style="text-align: right;"><strong>2<span>,</span>608</strong></td>
+<td style="text-align: right;"><strong>4</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+<td style="text-align: right;"><strong>125</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="13102-asic-implementation"><span class="secnum">13.10.2</span> ASIC Implementation<a class="headerlink" href="#13102-asic-implementation" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>TSMC 65 nm</strong></th>
+<th style="text-align: left;"><strong>TSMC 28 nm</strong></th>
+<th style="text-align: left;"><strong>GF 14 nm</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Core area</td>
+<td style="text-align: left;">0.15 mm<span class="math inline">\(^2\)</span></td>
+<td style="text-align: left;">0.045 mm<span class="math inline">\(^2\)</span></td>
+<td style="text-align: left;">0.018 mm<span class="math inline">\(^2\)</span></td>
+<td style="text-align: left;">Excl. I/O</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active power</td>
+<td style="text-align: left;">2.5 mW</td>
+<td style="text-align: left;">0.8 mW</td>
+<td style="text-align: left;">0.3 mW</td>
+<td style="text-align: left;">at 100 MHz</td>
+</tr>
+<tr>
+<td style="text-align: left;">Standby power</td>
+<td style="text-align: left;">50 <span class="math inline">\(\mu\)</span>W</td>
+<td style="text-align: left;">15 <span class="math inline">\(\mu\)</span>W</td>
+<td style="text-align: left;">5 <span class="math inline">\(\mu\)</span>W</td>
+<td style="text-align: left;">Battery mode</td>
+</tr>
+<tr>
+<td style="text-align: left;">PRBS period</td>
+<td style="text-align: left;">2<span class="math inline">\(^{31}\)</span>-1</td>
+<td style="text-align: left;">2<span class="math inline">\(^{31}\)</span>-1</td>
+<td style="text-align: left;">2<span class="math inline">\(^{31}\)</span>-1</td>
+<td style="text-align: left;">LFSR-31</td>
+</tr>
+<tr>
+<td style="text-align: left;">Detection latency</td>
+<td style="text-align: left;">10 <span class="math inline">\(\mu\)</span>s</td>
+<td style="text-align: left;">5 <span class="math inline">\(\mu\)</span>s</td>
+<td style="text-align: left;">2 <span class="math inline">\(\mu\)</span>s</td>
+<td style="text-align: left;">Sensor to zeroize</td>
+</tr>
+<tr>
+<td style="text-align: left;">Operating range</td>
+<td style="text-align: left;">-40 to 85 <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;">-55 to 125 <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;">-55 to 125 <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-tamper-solved"><span class="secnum">13.11</span> Solved Problems<a class="headerlink" href="#sec-tamper-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Active Tamper Mesh PRBS Sequence Length</p>
+<p>An active tamper mesh uses a Linear Feedback Shift Register (LFSR) to generate the pseudo-random bit sequence driven through the mesh. The LFSR has 32 stages with feedback polynomial <span class="arithmatex">\(x^{32} + x^{22} + x^2 + x + 1\)</span> (primitive polynomial). The mesh drive frequency is 10 kHz.</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>Calculate the PRBS sequence length (period).</p>
+</li>
+<li>
+<p>Calculate the time for one complete PRBS cycle at 10 kHz.</p>
+</li>
+<li>
+<p>If an attacker can probe the mesh and read 32 consecutive bits, can they predict the next bit? Explain.</p>
+</li>
+<li>
+<p>What is the probability of an attacker guessing the correct next bit without probing?</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): PRBS Sequence Length</strong></p>
+<p>For an <span class="arithmatex">\(n\)</span>-stage LFSR with a primitive feedback polynomial, the sequence length is:</p>
+<div class="arithmatex">\[L = 2^n - 1\]</div>
+<p>For <span class="arithmatex">\(n = 32\)</span>: <span class="arithmatex">\(L = 2^{32} - 1 = 4{,}294{,}967{,}295 \approx 4.3 \times 10^9\)</span> bits</p>
+<p><strong>Part (b): Time for One PRBS Cycle</strong></p>
+<p>At drive frequency <span class="arithmatex">\(f = 10\)</span> kHz, each bit period is <span class="arithmatex">\(T = 1/f = 100\,\mu\)</span>s.</p>
+<div class="arithmatex">\[T_{cycle} = L \times T = (2^{32} - 1) \times 100\,\mu\text{s}\]</div>
+<div class="arithmatex">\[= 4{,}294{,}967{,}295 \times 10^{-4}\,\text{s} \approx 429{,}497\,\text{s} \approx 4.97\,\text{days}\]</div>
+<p>One complete PRBS cycle takes approximately 5 days at 10 kHz.</p>
+<p><strong>Part (c): Prediction from 32 Consecutive Bits</strong></p>
+<p>YES – an attacker who reads 32 consecutive LFSR output bits can fully reconstruct the LFSR state (since the LFSR has 32 stages, 32 output bits reveal the complete state vector). Knowing the primitive polynomial and state, the attacker can predict all future output bits deterministically.</p>
+<p>Defense: Use a cryptographic PRNG (AES-CTR or HMAC-DRBG) instead of a plain LFSR. The LFSR alone provides sequence variety, not unpredictability. Commercial implementations like Maxim DS3641 use cryptographic MACs to generate the mesh pattern.</p>
+<p><strong>Part (d): Guessing Without Probing</strong></p>
+<p>Without probing, the attacker must guess the current LFSR state. Probability of guessing the next bit correctly: <span class="arithmatex">\(P = 1/2 = 0.5\)</span> (50%).</p>
+<p>This is why mesh integrity is verified by comparing the sent pattern with the received pattern – a cut or short circuit causes pattern mismatch with probability approaching 1 after a few clock cycles.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TEMPEST Shielding Effectiveness Calculation</p>
+<p>A TEMPEST evaluation engineer must shield a crypto module radiating at 100 MHz with 60 dBmV/m field strength at 1 meter. The target environment is NATO SDIP-27 Level B, which requires the radiated emission to be below -40 dBmV/m at 1 meter (a limit of 0.01 mV/m).</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>Calculate the required shielding effectiveness (SE) in dB.</p>
+</li>
+<li>
+<p>Select an appropriate enclosure material from the table in this chapter.</p>
+</li>
+<li>
+<p>Calculate the minimum steel wall thickness needed to achieve 80 dB SE at 100 MHz using the skin depth formula.</p>
+</li>
+<li>
+<p>Identify two design weaknesses that could reduce the achieved SE.</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): Required SE</strong></p>
+<p>Unshielded emission: <span class="arithmatex">\(E_{out} = +60\)</span> dBmV/m at 1 m Required limit: <span class="arithmatex">\(E_{limit} = -40\)</span> dBmV/m at 1 m</p>
+<div class="arithmatex">\[SE_{required} = E_{out} - E_{limit} = 60 - (-40) = 100\,\text{dB}\]</div>
+<p><strong>Part (b): Material Selection</strong></p>
+<p>From the shielding table in this chapter, at 100 MHz:</p>
+<ul>
+<li>
+<p>Sheet steel (1 mm): 80 dB – insufficient (need 100 dB)</p>
+</li>
+<li>
+<p>Cold-rolled steel (2 mm): approximately 86 dB – still insufficient</p>
+</li>
+<li>
+<p>Double-walled steel (2x 1 mm with air gap): approximately 100 dB</p>
+</li>
+<li>
+<p>Solution: 2 mm cold-rolled steel with copper tape at all seams</p>
+</li>
+</ul>
+<p>Select: double-walled steel construction with 5 mm air gap + EMI gaskets.</p>
+<p><strong>Part (c): Skin Depth for 80 dB SE</strong></p>
+<p>The skin depth of cold-rolled steel (<span class="arithmatex">\(\mu_r = 1000\)</span>, <span class="arithmatex">\(\sigma = 1.0 \times 10^6\)</span> S/m):</p>
+<div class="arithmatex">\[\delta = \sqrt{\frac{2}{\omega \mu_0 \mu_r \sigma}}\]</div>
+<div class="arithmatex">\[\omega = 2\pi \times 100 \times 10^6 = 6.28 \times 10^8\,\text{rad/s}\]</div>
+<div class="arithmatex">\[\delta = \sqrt{\frac{2}{6.28 \times 10^8 \times 4\pi \times 10^{-7} \times 1000 \times 10^6}}\]</div>
+<div class="arithmatex">\[\delta \approx \sqrt{\frac{2}{7.9 \times 10^8}} \approx 1.59\,\mu\text{m}\]</div>
+<p>SE in dB from absorptive loss for a wall of thickness <span class="arithmatex">\(t\)</span>:</p>
+<div class="arithmatex">\[SE_{absorb} = 20 \log_{10}(e^{t/\delta}) = 8.686 \cdot t/\delta\,\text{dB}\]</div>
+<p>For <span class="arithmatex">\(SE = 80\)</span> dB: <span class="arithmatex">\(t = 80 \times \delta / 8.686 = 80 \times 1.59\,\mu\text{m} / 8.686\)</span></p>
+<div class="arithmatex">\[t \approx 14.6\,\mu\text{m}\]</div>
+<p>This is the skin depth contribution alone. In practice, 0.5–1 mm steel is used for structural rigidity, providing far more than the theoretical minimum. The actual SE is limited by apertures and seams, not material thickness.</p>
+<p><strong>Part (d): Design Weaknesses</strong></p>
+<ol>
+<li>
+<p><strong>Apertures</strong>: Ventilation holes, cable entry points, and display windows act as slot antennas. A 3 cm slot resonates at <span class="arithmatex">\(\approx 5\)</span> GHz but attenuates poorly at 100 MHz unless honeycombed waveguide attenuators are used.</p>
+</li>
+<li>
+<p><strong>Seam conductivity</strong>: Poor electrical contact at enclosure seams creates slot leakage. Unpainted seams with spring-loaded EMI gaskets (Spira-Shield) are required; painted surfaces add insulating resistance that degrades SE by 20–40 dB.</p>
+</li>
+</ol>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: PCI PTS Battery Life for Tamper Detection</p>
+<p>A POS terminal uses a CR2032 coin cell (nominal capacity 235 mAh, 3 V) to power the tamper detection circuit in standby mode. The circuit draws:</p>
+<ul>
+<li>
+<p>Tamper controller (Maxim DS3641): 1.5 <span class="arithmatex">\(\mu\)</span>A at 3.0 V</p>
+</li>
+<li>
+<p>Real-time clock (DS3231): 0.84 <span class="arithmatex">\(\mu\)</span>A at 3.3 V</p>
+</li>
+<li>
+<p>Active mesh driver: 2.0 <span class="arithmatex">\(\mu\)</span>A at 3.0 V</p>
+</li>
+</ul>
+<p>PCI PTS requires <span class="arithmatex">\(\geq 90\)</span> days of battery-backed operation.</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>Calculate total standby current.</p>
+</li>
+<li>
+<p>Calculate expected battery life in days.</p>
+</li>
+<li>
+<p>Determine if PCI PTS requirement is met.</p>
+</li>
+<li>
+<p>Identify factors that reduce actual battery life below calculated value.</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): Total Standby Current</strong></p>
+<div class="arithmatex">\[I_{total} = I_{ctrl} + I_{RTC} + I_{mesh} = 1.5 + 0.84 + 2.0 = 4.34\,\mu\text{A}\]</div>
+<p><strong>Part (b): Battery Life</strong></p>
+<p>Battery capacity: <span class="arithmatex">\(C = 235\)</span> mAh <span class="arithmatex">\(= 235{,}000\,\mu\)</span>Ah</p>
+<div class="arithmatex">\[t_{life} = \frac{C}{I_{total}} = \frac{235{,}000\,\mu\text{Ah}}{4.34\,\mu\text{A}} = 54{,}147\,\text{h}\]</div>
+<div class="arithmatex">\[= 54{,}147 / 24 = 2{,}256\,\text{days} \approx 6.2\,\text{years}\]</div>
+<p><strong>Part (c): PCI PTS Compliance</strong></p>
+<p><span class="arithmatex">\(2{,}256\)</span> days <span class="arithmatex">\(\gg 90\)</span> days. The requirement is met with a safety factor of approximately <span class="arithmatex">\(2256 / 90 \approx 25\times\)</span>. In practice, a 20% derating for self-discharge and temperature effects reduces this to <span class="arithmatex">\(\approx 4.9\)</span> years.</p>
+<p><strong>Part (d): Real-World Reduction Factors</strong></p>
+<ol>
+<li>
+<p><strong>Self-discharge</strong>: CR2032 self-discharges at 1–5% per year at room temperature, reducing effective capacity</p>
+</li>
+<li>
+<p><strong>Temperature</strong>: Battery capacity decreases 30% at <span class="arithmatex">\(-20\)</span> <span class="arithmatex">\(^\circ\)</span>C, critical for outdoor ATM deployments</p>
+</li>
+<li>
+<p><strong>Leakage currents</strong>: PCB leakage across solder mask can add 1–5 <span class="arithmatex">\(\mu\)</span>A of parasitic load, doubling the drain current</p>
+</li>
+<li>
+<p><strong>Battery aging</strong>: Internal resistance increases over time, reducing usable capacity (typically 20% loss over 5 years)</p>
+</li>
+</ol>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Microsemi SmartFusion2 Anti-Tamper Configuration</p>
+<p>The Microsemi SmartFusion2 M2S060 SoC integrates a Cortex-M3, FPGA fabric, and a dedicated Security Processing System (SPS). Configure the M2S060 for a tamper-resistant design that meets FIPS 140-2 Level 3.</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>List the M2S060 tamper detection channels available.</p>
+</li>
+<li>
+<p>Specify the key hierarchy for the M2S060 user design.</p>
+</li>
+<li>
+<p>Describe the anti-tamper configuration procedure using Libero SoC.</p>
+</li>
+<li>
+<p>Identify what happens to the M2S060 upon tamper detection.</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): M2S060 Tamper Detection Channels</strong></p>
+<p>The SmartFusion2 SPS provides these tamper channels:</p>
+<ul>
+<li>
+<p>AT0–AT3: Four bidirectional active tamper pins (configurable as mesh)</p>
+</li>
+<li>
+<p>Temperature sensor: Internal <span class="arithmatex">\(\pm 2\)</span> <span class="arithmatex">\(^\circ\)</span>C accuracy, range: -55 to +125 <span class="arithmatex">\(^\circ\)</span>C</p>
+</li>
+<li>
+<p>Voltage monitor: VCC3V3 and VCC1V5 rails monitored</p>
+</li>
+<li>
+<p>JTAG lockout: Permanent disable via security policy register</p>
+</li>
+<li>
+<p>Flash write protect: sNVM regions separately lockable</p>
+</li>
+</ul>
+<p><strong>Part (b): Key Hierarchy</strong></p>
+<p>SmartFusion2 key hierarchy:</p>
+<ol>
+<li>
+<p><strong>Device Master Key (DMK)</strong>: Factory-programmed in sNVM, unique per device</p>
+</li>
+<li>
+<p><strong>User Key 0/1</strong>: User-programmable AES-256 keys in sNVM, encrypted by DMK</p>
+</li>
+<li>
+<p><strong>Fabric bitstream key</strong>: AES-256 key for bitstream decryption, wrapped by User Key 0</p>
+</li>
+<li>
+<p><strong>Application keys</strong>: Derived by Cortex-M3 application using HMAC-SHA256 keyed by User Key 1</p>
+</li>
+</ol>
+<p><strong>Part (c): Libero SoC Configuration</strong></p>
+<div class="language-text highlight"><pre><span></span><code>// In Libero SoC Design Canvas:
+// 1. Open FlashPoint -&gt; Security Policy Manager
+// 2. Enable Anti-Tamper channels AT0-AT3
+// 3. Set tamper response: ZEROIZE_PLAINTEXT_KEY
+// 4. Configure active tamper frequency: 1 kHz
+// 5. Enable temperature and voltage monitoring
+// 6. Lock JTAG: Set JTAG_DISABLE bit in SPM
+// 7. Program via FlashPoint with secure boot flow
+</code></pre></div>
+<p><strong>Part (d): Tamper Response</strong></p>
+<p>Upon tamper detection, the SmartFusion2 SPS:</p>
+<ol>
+<li>
+<p>Immediately zeroizes all User Keys in sNVM (within 1 <span class="arithmatex">\(\mu\)</span>s)</p>
+</li>
+<li>
+<p>Clears the FPGA fabric configuration (bitstream purged from SRAM)</p>
+</li>
+<li>
+<p>Generates a tamper event log entry with timestamp (RTC value)</p>
+</li>
+<li>
+<p>Asserts TAMPER_OUT pin to alert external monitoring system</p>
+</li>
+<li>
+<p>Halts the Cortex-M3 core and enters lockout state</p>
+</li>
+<li>
+<p>Requires factory re-provisioning to restore functionality</p>
+</li>
+</ol>
+</div>
+<h2 id="sec-ch13-recent"><span class="secnum">13.12</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch13-recent" title="Permanent link">&para;</a></h2>
+<p>Anti-tamper technology has been shaped since 2023 by the PCI PTS 6.x revision, the deployment of PUF-based tamper evidence, two new security controller ICs (Lattice MachXO3D and Microchip CEC1736), the PCIe CMA/SPDM component authentication standard, and the EU Cyber Resilience Act (CRA).</p>
+<h3 id="13121-pci-pts-6x-20232024-updated-point-of-interaction-requirements"><span class="secnum">13.12.1</span> PCI PTS 6.x (2023–2024): Updated Point-of-Interaction Requirements<a class="headerlink" href="#13121-pci-pts-6x-20232024-updated-point-of-interaction-requirements" title="Permanent link">&para;</a></h3>
+<p>PCI SSC released PTS POI version 6.0 in 2023 and version 6.1 in early 2024, introducing significant changes to physical security requirements for point-of-interaction (POI) devices:</p>
+<div class="tbl" id="tab-pci-pts6">
+<div class="tbl-caption"><strong>Table 13.1.</strong> PCI PTS 6.x key changes vs. PTS 5.x</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Area</strong></th>
+<th style="text-align: left;"><strong>PTS 5.x</strong></th>
+<th style="text-align: left;"><strong>PTS 6.x</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Cryptographic algorithms</td>
+<td style="text-align: left;">3DES / AES-128 acceptable</td>
+<td style="text-align: left;"><strong>AES-128 minimum; 3DES prohibited for new designs</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">DUKPT key derivation</td>
+<td style="text-align: left;">ANSI X9.24-1 (3DES DUKPT)</td>
+<td style="text-align: left;"><strong>AES DUKPT (ANSI X9.24-3) mandatory for new certs</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Firmware update auth</td>
+<td style="text-align: left;">Vendor-defined</td>
+<td style="text-align: left;"><strong>Cryptographic signature mandatory</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Anti-removal evidence</td>
+<td style="text-align: left;">Tamper-evident labels</td>
+<td style="text-align: left;"><strong>Active mesh + label combination required at Level 3+</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Remote attestation</td>
+<td style="text-align: left;">Not addressed</td>
+<td style="text-align: left;"><strong>Optional SPDM attestation for managed POI</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Environmental sensors</td>
+<td style="text-align: left;">Temperature + voltage</td>
+<td style="text-align: left;">Adds <strong>accelerometer</strong> mandatory for mobile POS</td>
+</tr>
+<tr>
+<td style="text-align: left;">False positive testing</td>
+<td style="text-align: left;">ASTM D4169</td>
+<td style="text-align: left;">ASTM D4169 <strong>+ ISO 11607-1 for medical environment</strong></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> PTS 5.x certifications expire on their original expiry dates; products must be re-certified under PTS 6.x for new deployments starting January 2025. The 3DES prohibition removes a significant cryptographic weakness exploited in DUKPT attacks demonstrated at DEF CON 30 (2022).</p>
+</div>
+<p>The AES DUKPT specification (ANSI X9.24-3) uses a 128-bit or 256-bit initial key ID and an AES-CMAC-based key derivation function, replacing the triple-DES CBC MAC used in legacy DUKPT. Hardware implementations require SHE- or EVITA-class AES engines rather than legacy 3DES co-processors.</p>
+<h3 id="13122-physical-unclonable-functions-for-tamper-evidence"><span class="secnum">13.12.2</span> Physical Unclonable Functions for Tamper Evidence<a class="headerlink" href="#13122-physical-unclonable-functions-for-tamper-evidence" title="Permanent link">&para;</a></h3>
+<p>PUFs are increasingly used not only for key generation (as covered earlier in this book) but as <em>tamper evidence</em> mechanisms – the physical change caused by an invasive attack measurably alters the PUF response, providing a detectable integrity signal:</p>
+<ul>
+<li>
+<p><strong>Coating PUF (Fraunhofer AISEC, 2023):</strong> A dielectric coating doped with random metallic particles is applied over the die. Capacitive sensing detects the unique particle distribution. Any mechanical removal of the coating changes the dielectric constant by <span class="arithmatex">\(&gt;\)</span>5%, producing a PUF response that differs from the enrolled value by <span class="arithmatex">\(&gt;\)</span>30% of bits – far outside the error-correction window.</p>
+</li>
+<li>
+<p><strong>Optical PUF (2024 deployment):</strong> Laser-scanned speckle pattern of a glitter-embedded resin layer. Used by payment terminal OEMs as a low-cost tamper-evident seal with digital verification via a smartphone camera and server-side PUF template database.</p>
+</li>
+<li>
+<p><strong>SRAM PUF degradation monitoring:</strong> The temporal drift of an SRAM PUF response (increasing BER over time) can distinguish normal ageing from anomalous bit-flip patterns caused by ion-beam circuit editing (FIB) or electron-beam inspection.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Coating PUFs provide a cost-effective complement to active tamper meshes for high-volume consumer POS devices where the active mesh BOM cost (&#36;2–5 per terminal) is significant. A coating PUF with a 128-bit enrolled response adds under &#36;0.10 BOM cost while providing semi-invasive tamper evidence.</p>
+</div>
+<h3 id="13123-lattice-machxo3d-dedicated-security-controller-with-tamper-detection"><span class="secnum">13.12.3</span> Lattice MachXO3D: Dedicated Security Controller with Tamper Detection<a class="headerlink" href="#13123-lattice-machxo3d-dedicated-security-controller-with-tamper-detection" title="Permanent link">&para;</a></h3>
+<p>Lattice Semiconductor MachXO3D (2022 hardware, Sentry 2.x firmware 2023) is a flash-based FPGA with an integrated security controller purpose-built for platform firmware resilience (NIST SP 800-193):</p>
+<div class="tbl" id="tab-machxo3d">
+<div class="tbl-caption"><strong>Table 13.2.</strong> Lattice MachXO3D tamper detection capabilities</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Implementation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">External tamper pins</td>
+<td style="text-align: left;">4 bidirectional active tamper pins (AT0–AT3)</td>
+</tr>
+<tr>
+<td style="text-align: left;">SPI flash monitoring</td>
+<td style="text-align: left;">Inline CRC monitoring of attached SPI flash with golden-copy restore</td>
+</tr>
+<tr>
+<td style="text-align: left;">I2C/SMBUS monitoring</td>
+<td style="text-align: left;">On-the-fly CMAC verification of BMC firmware blocks</td>
+</tr>
+<tr>
+<td style="text-align: left;">Environmental sensors</td>
+<td style="text-align: left;">Internal temperature (<span class="math inline">\(\pm\)</span>2<span class="math inline">\(^\circ\)</span>C) and VCC (<span class="math inline">\(\pm\)</span>2%) monitors</td>
+</tr>
+<tr>
+<td style="text-align: left;">Key storage</td>
+<td style="text-align: left;">256-bit AES key in on-die embedded flash (EFB), hardware-encrypted</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zeroization latency</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>10 <span class="math inline">\(\mu\)</span>s on tamper event</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure boot role</td>
+<td style="text-align: left;">Protects BIOS/UEFI SPI flash before host CPU activates</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>MachXO3D Sentry implements three firmware resilience roles: (1) <strong>Protection</strong> – authenticate the main platform BIOS from SPI flash before releasing the host CPU from reset; (2) <strong>Detection</strong> – continuously verify SPI flash contents at 128 KB/s via background CRC while the system runs; (3) <strong>Recovery</strong> – restore the golden BIOS from a protected MachXO3D-internal copy if corruption is detected, within 200 ms.</p>
+<h3 id="13124-microchip-cec1736-t2-style-security-for-windows-laptops"><span class="secnum">13.12.4</span> Microchip CEC1736: T2-Style Security for Windows Laptops<a class="headerlink" href="#13124-microchip-cec1736-t2-style-security-for-windows-laptops" title="Permanent link">&para;</a></h3>
+<p>Microchip CEC1736 (2023) is an ARM Cortex-M4F-based embedded controller providing Apple T2-equivalent platform security for Windows OEM laptops (HP Elite, Lenovo ThinkPad security module in 2024):</p>
+<ul>
+<li>
+<p><strong>Secure boot chain:</strong> Immutable boot ROM verifies the CEC1736 firmware image (ECDSA-P384) before executing; the CEC1736 then verifies the UEFI BIOS SPI flash using AES-256-GCM before asserting host power-on.</p>
+</li>
+<li>
+<p><strong>Tamper detection:</strong> Six dedicated tamper pins with configurable active or passive detection; on-chip accelerometer (<span class="arithmatex">\(\pm\)</span>8 g) detects chassis intrusion; temperature (<span class="arithmatex">\(-40\)</span> to <span class="arithmatex">\(+125\)</span> <span class="arithmatex">\(^\circ\)</span>C) and voltage monitoring.</p>
+</li>
+<li>
+<p><strong>Sealed key storage:</strong> 256-bit device-unique key in internal OTP, used to seal BitLocker Volume Master Key (VMK) for Windows 11 Device Encryption without a discrete TPM.</p>
+</li>
+<li>
+<p><strong>Crypto:</strong> AES-256-GCM/CBC, SHA-384/512, ECDSA-P384, ECDH-P384, HMAC-SHA384. Hardware TRNG (ring-oscillator, AIS-31 PTG.2).</p>
+</li>
+<li>
+<p><strong>Integration:</strong> Connected to the host via eSPI (eSPI 1.0 EC-Host protocol), replacing legacy LPC. Supports Intel PMC (Platform Management Controller) protocol for power sequencing.</p>
+</li>
+</ul>
+<h3 id="13125-pcie-cmaspdm-component-measurement-and-authentication"><span class="secnum">13.12.5</span> PCIe CMA/SPDM: Component Measurement and Authentication<a class="headerlink" href="#13125-pcie-cmaspdm-component-measurement-and-authentication" title="Permanent link">&para;</a></h3>
+<p>PCIe CMA (Component Measurement and Authentication, PCI-SIG ECN 2022, deployed silicon 2023–2024) integrates SPDM 1.3 as a normative PCIe feature for tamper detection at the component level:</p>
+<ul>
+<li>
+<p><strong>CMA-SPDM flow:</strong> At PCIe link training, the root complex sends a <span class="smallcaps">GET_DIGESTS</span> request to the endpoint. The endpoint returns a SHA-384 digest of its firmware measurement, signed with an ECDSA-P384 device key endorsed by the manufacturer.</p>
+</li>
+<li>
+<p><strong>Tamper detection use case:</strong> A BMC or security agent continuously issues <span class="smallcaps">GET_MEASUREMENTS</span> to all managed PCIe devices. Any firmware modification (Trojaned NIC, compromised NVMe controller) alters the measurement, triggering an alert.</p>
+</li>
+<li>
+<p><strong>Hardware support:</strong> NVIDIA Hopper H100 (2023), Intel Sapphire Rapids HBM (2023), Samsung PM9A3 NVMe (2024) ship with CMA-SPDM responder firmware.</p>
+</li>
+<li>
+<p><strong>Anti-tamper value:</strong> CMA/SPDM provides <em>runtime</em> firmware integrity checking, complementing power-on secure boot and detecting attacks that modify device firmware after initial boot verification.</p>
+</li>
+</ul>
+<h3 id="13126-eu-cyber-resilience-act-cra-2024-tamper-requirements-for-connected-products"><span class="secnum">13.12.6</span> EU Cyber Resilience Act (CRA 2024): Tamper Requirements for Connected Products<a class="headerlink" href="#13126-eu-cyber-resilience-act-cra-2024-tamper-requirements-for-connected-products" title="Permanent link">&para;</a></h3>
+<p>The EU Cyber Resilience Act (Regulation (EU) 2024/2847, entered into force October 2024, compliance required by October 2027) establishes mandatory cybersecurity requirements for all products with digital elements sold in the EU:</p>
+<div class="tbl" id="tab-eu-cra">
+<div class="tbl-caption"><strong>Table 13.3.</strong> EU CRA requirements relevant to anti-tamper hardware</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>CRA Requirement</strong></th>
+<th style="text-align: left;"><strong>Anti-tamper implementation implication</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Secure by default (Annex I.I.2)</td>
+<td style="text-align: left;">Tamper-evident seals or active detection mandatory for Class II products</td>
+</tr>
+<tr>
+<td style="text-align: left;">No known vulnerabilities at release</td>
+<td style="text-align: left;">Supply-chain component authentication required (CMA/SPDM, AS6081)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure update mechanism</td>
+<td style="text-align: left;">Signed firmware + rollback counter; hardware enforcement preferred</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data minimisation</td>
+<td style="text-align: left;">Secure delete / zeroization on end-of-life; hardware zeroize circuit required</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vulnerability disclosure (90 days)</td>
+<td style="text-align: left;">Coordinated disclosure applies to hardware tamper-detection firmware</td>
+</tr>
+<tr>
+<td style="text-align: left;">Important product class (Class II)</td>
+<td style="text-align: left;">HSMs, routers, smart meters, industrial controllers – requires third-party audit</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>Class I products (the majority of IoT devices) must self-assess against the CRA Essential Requirements. Class II products (routers, HSMs, industrial controllers, smart meters) require conformity assessment by a notified body. Hardware anti-tamper features satisfying PCI PTS 6.x or FIPS 140-3 Level 3 physical security requirements are accepted as evidence of CRA Annex I Part I compliance for tamper-detection requirements.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p><strong>(MCQ)</strong> Which standard defines physical security requirements for PIN Transaction Security Hardware Security Modules? (a) FIPS 140-3 (b) PCI PTS (c) Common Criteria EAL6 (d) ISO 27001</p>
+</li>
+<li>
+<p><strong>(MCQ)</strong> A CR2032 battery (235 mAh) powers a tamper circuit drawing 4.7 <span class="arithmatex">\(\mu\)</span>A. Approximately how many days of operation does it provide? (a) 90 days (b) 500 days (c) 2,100 days (d) 5 days</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> Explain the difference between tamper-evident and tamper-resistant designs. Give one example of each used in commercial payment terminals.</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> An LFSR with <span class="arithmatex">\(n = 24\)</span> stages uses a primitive feedback polynomial. Calculate: (a) the PRBS sequence length, (b) the time to complete one cycle at 10 kHz drive frequency.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> Design an active tamper mesh system for an HSM PCB. Specify: (1) trace geometry (width, spacing, layers), (2) PRBS generator type and period, (3) monitoring IC selection, (4) battery backup design, and (5) zeroization response circuit.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> Review the TEMPEST requirements for NATO SDIP-27 Level A. A crypto module emits 80 dBmV/m at 1 MHz from its power supply traces. The Level A limit is <span class="arithmatex">\(-60\)</span> dBmV/m. Calculate the required SE and specify the shielding approach.</p>
+</li>
+<li>
+<p><strong>(Coding)</strong> Write a C function that implements a 32-bit LFSR using the primitive polynomial <span class="arithmatex">\(x^{32} + x^{22} + x^2 + x + 1\)</span>. The function should: (1) accept the current state as input, (2) compute the feedback bit, (3) shift the register, and (4) return the new state.</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> The Maxim DS3641 tamper IC supports two external tamper pins (TP1, TP2). Describe how to connect a dual-layer active mesh to these pins. How are the two mesh layers logically combined in the tamper detection logic?</p>
+</li>
+<li>
+<p><strong>(Research)</strong> Compare three commercial HSMs (Thales Luna, IBM 4769, Entrust nShield) across: FIPS 140-3 level, PCI HSM certification, key capacity, RSA-2048 throughput, and price. Discuss which is most appropriate for a high-volume payment processing system.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> SAE AS6081 requires physical inspection of suspected counterfeit components. List five specific tests from AS6081 with: (1) test purpose, (2) equipment required, (3) pass/fail criterion, and (4) the specific counterfeit indicator each test detects.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> A defense contractor must protect a cryptographic module stored in an aircraft avionics bay. The module must: survive 50 g shock, operate at -55 to +125 <span class="arithmatex">\(^\circ\)</span>C, meet MIL-HDBK-1195 Anti-Tamper Level II, and zeroize in <span class="arithmatex">\(&lt; 1\)</span> ms. Design the tamper detection architecture.</p>
+</li>
+<li>
+<p><strong>(Capstone)</strong> Analyze the security of the Microsemi SmartFusion2 M2S090 for a FIPS 140-2 Level 3 application. Cover: (1) physical tamper detection channels and response, (2) key storage in sNVM and protection, (3) JTAG and debug interface lockout procedure, (4) bitstream encryption and authentication, and (5) limitations compared to a dedicated HSM IC.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch12-memory-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 12. Memory Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                12. Memory Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch14-hardware-attestation.html" class="md-footer__link md-footer__link--next" aria-label="Next: 14. Hardware Attestation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                14. Hardware Attestation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

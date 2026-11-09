@@ -1,0 +1,3473 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/computing/datacenters/power-infrastructure.html">
+  
+  
+    <link rel="prev" href="data-centre-foundations.html">
+  
+  
+    <link rel="next" href="cooling-thermal-management.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>2. Power Infrastructure - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#21-electricity-basics-for-data-centres" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. Power Infrastructure
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Data Centres</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-centre-foundations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Data Centre Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Power Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="power-infrastructure.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Power Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#21-electricity-basics-for-data-centres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Electricity Basics for Data Centres
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Electricity Basics for Data Centres">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-three-phase-power-and-the-80-rule-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Three-phase power and the 80% rule in Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-the-utility-grid-substations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 The Utility Grid &amp; Substations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 The Utility Grid &amp; Substations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-why-grids-use-high-voltage-line-current-for-the-same-100-mw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Why grids use high voltage: line current for the same 100 MW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-medium-low-voltage-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Medium &amp; Low-Voltage Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Medium &amp; Low-Voltage Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-transformer-full-load-current-on-the-low-voltage-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Transformer full-load current on the low-voltage side
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-uninterruptible-power-supplies-ups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Uninterruptible Power Supplies (UPS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Uninterruptible Power Supplies (UPS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-annual-cost-of-ups-losses-double-conversion-vs-eco-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Annual cost of UPS losses: double conversion vs eco-mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-batteries-energy-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Batteries &amp; Energy Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Batteries &amp; Energy Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-rough-ups-battery-runtime-estimate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Rough UPS battery runtime estimate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-generators-fuel-transfer-switching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Generators, Fuel &amp; Transfer Switching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 Generators, Fuel &amp; Transfer Switching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-generator-fuel-burn-and-on-site-autonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Generator fuel burn and on-site autonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-power-distribution-to-the-rack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Power Distribution to the Rack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7 Power Distribution to the Rack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-an-ab-rack-pair-stays-safe-if-one-side-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check an A/B rack pair stays safe if one side fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-power-redundancy-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Power Redundancy Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.8 Power Redundancy Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-usable-capacity-and-loading-for-common-redundancy-schemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Usable capacity and loading for common redundancy schemes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-power-density-ai-era-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Power Density &amp; AI-Era Power
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.9 Power Density &amp; AI-Era Power">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-current-needed-for-a-1-mw-rack-at-different-dc-voltages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Current needed for a 1 MW rack at different DC voltages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-grounding-bonding-surge-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.10 Grounding, Bonding &amp; Surge Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.10 Grounding, Bonding &amp; Surge Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-simple-earth-loop-check-will-a-breaker-trip-fast-enough-tn-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Simple earth-loop check: will a breaker trip fast enough? (TN system)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#211-on-site-generation-storage-nuclear-deals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.11 On-Site Generation, Storage &amp; Nuclear Deals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.11 On-Site Generation, Storage &amp; Nuclear Deals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-battery-energy-needed-to-ride-through-an-ai-load-swing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Battery energy needed to ride through an AI load swing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#212-grid-constraints-connection-queues-flexibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.12 Grid Constraints, Connection Queues &amp; Flexibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.12 Grid Constraints, Connection Queues &amp; Flexibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-how-much-a-few-hours-of-flexibility-matters-over-a-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: How much a few hours of flexibility matters over a year
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#213-electrical-safety-arc-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.13 Electrical Safety &amp; Arc Flash
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.13 Electrical Safety &amp; Arc Flash">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-sample-loto-checklist-for-a-rack-pdu-feeder-training-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Sample LOTO checklist for a rack PDU feeder (training example)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cooling-thermal-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Cooling & Thermal Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="building-racks-cabling-fire-physical-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Building, Racks, Cabling, Fire & Physical Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="it-networking-ai-clusters-inside-the-data-centre.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. IT, Networking & AI Clusters Inside the Data Centre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Operations & Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sustainability-standards-certification-regulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Sustainability, Standards, Certification & Regulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="industry-players-careers-learning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Industry, Players, Careers & Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-data-centre-student-should-master.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Data Centre Student Should Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#21-electricity-basics-for-data-centres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Electricity Basics for Data Centres
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Electricity Basics for Data Centres">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-three-phase-power-and-the-80-rule-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Three-phase power and the 80% rule in Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-the-utility-grid-substations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 The Utility Grid &amp; Substations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 The Utility Grid &amp; Substations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-why-grids-use-high-voltage-line-current-for-the-same-100-mw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Why grids use high voltage: line current for the same 100 MW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-medium-low-voltage-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Medium &amp; Low-Voltage Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Medium &amp; Low-Voltage Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-transformer-full-load-current-on-the-low-voltage-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Transformer full-load current on the low-voltage side
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-uninterruptible-power-supplies-ups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Uninterruptible Power Supplies (UPS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Uninterruptible Power Supplies (UPS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-annual-cost-of-ups-losses-double-conversion-vs-eco-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Annual cost of UPS losses: double conversion vs eco-mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-batteries-energy-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Batteries &amp; Energy Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Batteries &amp; Energy Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-rough-ups-battery-runtime-estimate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Rough UPS battery runtime estimate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-generators-fuel-transfer-switching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Generators, Fuel &amp; Transfer Switching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 Generators, Fuel &amp; Transfer Switching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-generator-fuel-burn-and-on-site-autonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Generator fuel burn and on-site autonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-power-distribution-to-the-rack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Power Distribution to the Rack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7 Power Distribution to the Rack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-an-ab-rack-pair-stays-safe-if-one-side-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check an A/B rack pair stays safe if one side fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-power-redundancy-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Power Redundancy Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.8 Power Redundancy Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-usable-capacity-and-loading-for-common-redundancy-schemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Usable capacity and loading for common redundancy schemes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-power-density-ai-era-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Power Density &amp; AI-Era Power
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.9 Power Density &amp; AI-Era Power">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-current-needed-for-a-1-mw-rack-at-different-dc-voltages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Current needed for a 1 MW rack at different DC voltages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-grounding-bonding-surge-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.10 Grounding, Bonding &amp; Surge Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.10 Grounding, Bonding &amp; Surge Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-simple-earth-loop-check-will-a-breaker-trip-fast-enough-tn-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Simple earth-loop check: will a breaker trip fast enough? (TN system)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#211-on-site-generation-storage-nuclear-deals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.11 On-Site Generation, Storage &amp; Nuclear Deals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.11 On-Site Generation, Storage &amp; Nuclear Deals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-battery-energy-needed-to-ride-through-an-ai-load-swing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Battery energy needed to ride through an AI load swing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#212-grid-constraints-connection-queues-flexibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.12 Grid Constraints, Connection Queues &amp; Flexibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.12 Grid Constraints, Connection Queues &amp; Flexibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-how-much-a-few-hours-of-flexibility-matters-over-a-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: How much a few hours of flexibility matters over a year
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#213-electrical-safety-arc-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.13 Electrical Safety &amp; Arc Flash
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.13 Electrical Safety &amp; Arc Flash">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-sample-loto-checklist-for-a-rack-pdu-feeder-training-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Sample LOTO checklist for a rack PDU feeder (training example)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-2-power-infrastructure">Chapter 2: Power Infrastructure<a class="headerlink" href="#chapter-2-power-infrastructure" title="Permanent link">&para;</a></h1>
+<p>Power is the lifeblood of every data centre: if it stops for even a fraction of a second, servers crash. This chapter follows electricity from the grid and on-site substation through transformers, switchgear, UPS systems, batteries and generators all the way to the power supply inside each server. It explains redundancy, the huge new demands of AI racks, how sites connect to strained grids and buy nuclear power, and the safety rules that keep technicians alive.</p>
+<h2 id="21-electricity-basics-for-data-centres">2.1 Electricity Basics for Data Centres<a class="headerlink" href="#21-electricity-basics-for-data-centres" title="Permanent link">&para;</a></h2>
+<p>Electricity is the flow of tiny charged particles through a wire, and a data centre is basically a machine that turns huge amounts of it into computing (and heat). Voltage is the 'push', current is the 'flow', and power is how much work they do together each second. A few simple formulas let you work out how big every cable, breaker and generator needs to be.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-01-electricity-basics-for-data-centres.svg" alt="Worked example: a 17.5 kW rack at 415 V three-phase and PF 0.95 needs a 32 A circuit." loading="lazy">
+<figcaption><strong>Sizing a rack circuit, step by step.</strong> Worked example: a 17.5 kW rack at 415 V three-phase and PF 0.95 needs a 32 A circuit.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Think of a garden hose: voltage is the water pressure, current is how many litres flow per second, and power is how hard the jet can push a toy boat across the pond.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Priya, a new technician at the fictional Northgate Data, is asked whether a 415 V three-phase, 32 A rack feed can carry a 20 kW AI server rack. She calculates √3 × 415 × 32 × 0.95 ≈ 21.9 kW at full rating. Because circuits should normally run at no more than 80% of their rating, the safe limit is about 17.5 kW, so she flags that the rack needs two feeds or a 63 A circuit.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Voltage (V) pushes current (A) through a circuit; the electrical resistance or load decides how much current flows.</li>
+<li>Real power in watts (W) does useful work; apparent power in volt-amperes (VA) is what the cables and transformers must carry.</li>
+<li>Power factor (PF) = W ÷ VA; modern server power supplies have a PF close to 1.0.</li>
+<li>Most data-centre power is three-phase AC, which delivers more power per copper conductor than single-phase.</li>
+<li>Electronics turn AC into DC inside their power supplies, creating harmonics that the electrical design must cope with.</li>
+<li>Every watt the IT equipment uses ends up as heat that the cooling system must remove.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Electrical engineers, critical facilities technicians, data-centre designers and capacity planners use these basics every day.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the three-phase power formula P = √3 × V(line-to-line) × I × PF; it appears in almost every data-centre interview and sizing question.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Three-phase power is P = √3 × V(line-to-line) × I × PF, single-phase is P = V × I × PF; at 415 V each ampere of three-phase current carries about 0.72 kW at unity PF.</li>
+<li>Cable and breaker sizing considers continuous current, ambient temperature, cable grouping, voltage drop and prospective fault current, using tables in IEC 60364-5-52 or NEC Article 310.</li>
+<li>Switch-mode power supplies draw current in pulses, creating odd harmonics; triplen harmonics (3rd, 9th, 15th) add up in the neutral, which can then carry more current than a phase.</li>
+<li>Server power supplies use active power-factor correction to meet harmonic limits such as IEC 61000-3-2, so modern IT loads distort the supply far less than early-2000s equipment.</li>
+<li>Test instruments carry IEC 61010 measurement categories (CAT II-IV) for transient energy; switchboard work needs CAT III or CAT IV meters, never cheap household testers.</li>
+<li>Engineers start every task at the single-line diagram, which shows every source that can feed a point, including UPS batteries and generator backfeeds that may keep a circuit live.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Forgetting power factor: sizing in kW but buying a UPS rated in kVA can leave it short of real capacity.</li>
+<li>Loading a breaker to 100% continuously: plan for 80% unless the assembly is specifically rated for 100% continuous duty.</li>
+<li>Assuming an open breaker means a dead circuit: always test for absence of voltage, because other sources may backfeed.</li>
+</ul>
+</div>
+<h3 id="try-it-three-phase-power-and-the-80-rule-in-python">Try it: Three-phase power and the 80% rule in Python<a class="headerlink" href="#try-it-three-phase-power-and-the-80-rule-in-python" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">v_ll</span> <span class="o">=</span> <span class="mi">415</span>      <span class="c1"># line-to-line volts (UK/EU hyperscale style)</span>
+<span class="n">amps</span> <span class="o">=</span> <span class="mi">32</span>       <span class="c1"># breaker rating per phase</span>
+<span class="n">pf</span> <span class="o">=</span> <span class="mf">0.95</span>       <span class="c1"># power factor</span>
+
+<span class="n">kw_full</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_ll</span> <span class="o">*</span> <span class="n">amps</span> <span class="o">*</span> <span class="n">pf</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">kw_safe</span> <span class="o">=</span> <span class="n">kw_full</span> <span class="o">*</span> <span class="mf">0.8</span>   <span class="c1"># continuous-load derating</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Full rating: </span><span class="si">{</span><span class="n">kw_full</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kW, safe continuous: </span><span class="si">{</span><span class="n">kw_safe</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kW"</span><span class="p">)</span>
+<span class="c1"># Full rating: 21.9 kW, safe continuous: 17.5 kW</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Real, reactive and apparent power</strong><br><em>IEEE Std 1459; IEC 60050 · Concept · Current · Electrical</em></td>
+<td>Real power (kW) does work, reactive power (kVAR) shuttles back and forth, and apparent power (kVA) combines both and loads the cables.</td>
+<td>A 1,000 kVA transformer feeding a load at power factor 0.9 can deliver about 900 kW of real power.</td>
+</tr>
+<tr>
+<td><strong>Power factor and PFC</strong><br><em>IEEE Std 1459; IEC 61000-3-2 · Metric · Current · Electrical</em></td>
+<td>The ratio of kW to kVA; server power supplies use active power-factor correction to stay around 0.95-0.99 at normal loads.</td>
+<td>A rack at PF 0.98 draws only about 2% more current than a purely resistive load of the same kW.</td>
+</tr>
+<tr>
+<td><strong>Leading power factor</strong><br><em>Generator and UPS manufacturers' capability curves · Concept · Current · Electrical</em></td>
+<td>Lightly loaded IT power supplies can look slightly capacitive (leading PF), which some generators and UPS units handle poorly.</td>
+<td>During commissioning a generator's voltage control struggles while carrying a lightly loaded hall with a leading power factor.</td>
+</tr>
+<tr>
+<td><strong>Line vs phase voltage</strong><br><em>IEC 60038; ANSI C84.1 · Concept · Current · Electrical</em></td>
+<td>In three-phase systems line-to-line voltage is √3 times line-to-neutral: 400/230 V, 415/240 V, 480/277 V and 208/120 V.</td>
+<td>A 415 V three-phase rack PDU gives 240 V at each outlet wired line-to-neutral.</td>
+</tr>
+<tr>
+<td><strong>Phase balancing</strong><br><em>Electrical design and DCIM practice · Practice · Current · Electrical</em></td>
+<td>Spreading single-phase loads evenly across the three phases so no phase overloads and neutral current stays low.</td>
+<td>A technician moves two servers from L1 to L3 after the rack PDU shows 14 A, 6 A and 5 A.</td>
+</tr>
+<tr>
+<td><strong>Frequency (Hz)</strong><br><em>IEC 60196 · Concept · Current · Electrical</em></td>
+<td>How many times per second AC reverses; 50 Hz in Europe and most of Asia, 60 Hz in the Americas.</td>
+<td>Generators must hold frequency steady, or UPS systems will refuse to synchronise to their output.</td>
+</tr>
+<tr>
+<td><strong>Harmonics and THD</strong><br><em>IEEE 519; IEC 61000-3-12 · Concept · Current · Electrical</em></td>
+<td>Distorted currents from electronic loads, measured as total harmonic distortion; triplen harmonics add in neutrals and can overheat neutrals and transformers.</td>
+<td>An engineer adds harmonic filters after measuring 25% current THD on a panel feeding older single-phase servers.</td>
+</tr>
+<tr>
+<td><strong>Ohm's law and power formula</strong><br><em>Basic electrical theory · Concept · Current · Electrical</em></td>
+<td>V = I × R links voltage, current and resistance; P = V × I × PF gives single-phase power.</td>
+<td>A 230 V circuit feeding a 2.3 kW load at unity PF draws 10 A.</td>
+</tr>
+<tr>
+<td><strong>Continuous-load derating (80% rule)</strong><br><em>NFPA 70 (NEC) Article 210/215 · Practice · Current · Electrical</em></td>
+<td>Circuits feeding loads running three hours or more are normally loaded to no more than 80% of breaker rating.</td>
+<td>A 30 A circuit is planned for a 24 A maximum continuous rack load.</td>
+</tr>
+<tr>
+<td><strong>Voltage drop</strong><br><em>IEC 60364-5-52; NEC informational notes (3% / 5%) · Concept · Current · Electrical</em></td>
+<td>Voltage lost along a cable because of its resistance; long or undersized runs leave equipment with too little voltage.</td>
+<td>A 60 m rack feed is upsized one cable size to keep voltage drop under 3%.</td>
+</tr>
+<tr>
+<td><strong>Inrush current</strong><br><em>Equipment datasheets; breaker trip curves · Concept · Current · Electrical</em></td>
+<td>A brief surge, often several times normal current, when transformers or power supplies are first energised.</td>
+<td>After maintenance, racks are powered on in stages so combined inrush does not trip the upstream breaker.</td>
+</tr>
+<tr>
+<td><strong>Single-line diagram (SLD)</strong><br><em>IEEE 315 / IEC 60617 graphical symbols · Document · Current · Electrical</em></td>
+<td>A simplified drawing of every source, transformer, breaker and feeder from grid to rack; the map for all electrical work.</td>
+<td>Before switching, an engineer traces the A-side path on the SLD and matches every breaker label on site.</td>
+</tr>
+<tr>
+<td><strong>Clamp meter and multimeter</strong><br><em>Fluke, Megger, Hioki and others; IEC 61010 CAT ratings · Tool · Current · Electrical</em></td>
+<td>Clamp meters measure current without breaking the circuit; multimeters measure voltage and resistance; both are rated by measurement category.</td>
+<td>A CAT III 1000 V clamp meter checks phase currents on a rack feed before new servers are added.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="22-the-utility-grid-substations">2.2 The Utility Grid &amp; Substations<a class="headerlink" href="#22-the-utility-grid-substations" title="Permanent link">&para;</a></h2>
+<p>Power stations make electricity far away, and the grid carries it at very high voltage over long distances, then steps it down in substations before it reaches users. Big data centres need so much power that they often have their own substation on site, fed by one or more high-voltage lines. Getting that connection is now one of the hardest and slowest parts of building a data centre.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-02-the-utility-grid-substations.svg" alt="Voltage is stepped down at each tier; big campuses connect high up the chain with their own substation." loading="lazy">
+<figcaption><strong>From power station to building.</strong> Voltage is stepped down at each tier; big campuses connect high up the chain with their own substation.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The grid is like a river system: huge rivers (transmission lines) carry water across the country, and dams and locks (substations) lower the level so smaller canals can deliver it to each town.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Riverbend Cloud campus plans 300 MW of IT load. The local utility agrees to build two 230 kV lines from different directions into a new on-site substation with three 100 MVA transformers stepping down to 34.5 kV. Each data hall gets two medium-voltage feeds, so the loss of one line or one transformer does not stop the campus. The connection takes four years, longer than building the halls themselves.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Power stations generate electricity, which is stepped up to high voltage (for example 132-400 kV) for efficient long-distance transmission.</li>
+<li>Transmission lines carry power to grid substations, where transformers step it down to sub-transmission or distribution voltages.</li>
+<li>Large campuses take power directly at high voltage into an on-site substation owned by the utility or the operator.</li>
+<li>Two independent utility feeds from different substations or lines protect against a single line failure.</li>
+<li>Medium-voltage cables then distribute power around the campus to each building's transformers and switchgear.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Utility engineers, grid planners, data-centre power engineers and site-selection teams work on grid connections and substations.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the voltage classes: low voltage up to 1 kV AC, medium voltage roughly 1-35 kV, high voltage above that (exact boundaries differ by country and standard).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Grids transmit at high voltage because losses scale with current squared: 100 MW at 400 kV needs about 144 A per phase, versus about 5,250 A at 11 kV.</li>
+<li>Utilities plan to N-1 security, so the network survives losing any single line or transformer; large customers often fund extra circuits to obtain genuinely dual supplies.</li>
+<li>Large campuses commonly take 115-345 kV in North America or 110-400 kV in Europe into a dedicated substation, then distribute on site at medium voltage such as 33 kV or 34.5 kV.</li>
+<li>Large power transformers are custom-built, can weigh over 100 tonnes and have had multi-year lead times, so spares and standardised designs reduce restoration risk.</li>
+<li>Grid codes increasingly treat very large data-centre loads like power plants, requiring voltage and frequency ride-through, ramp-rate limits and data sharing with the grid operator.</li>
+<li>Protection relays, often communicating over IEC 61850, clear grid faults in tens of milliseconds; the data centre's UPS must still ride through the voltage dip a remote fault causes.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming two incoming cables are independent: check they come from different substations along different routes.</li>
+<li>Underestimating connection timelines: grid studies, upgrades and transformer deliveries can take longer than building the halls.</li>
+<li>Expecting the utility to guarantee uptime: outages and voltage dips are normal grid events, which is why UPS and generators exist.</li>
+</ul>
+</div>
+<h3 id="try-it-why-grids-use-high-voltage-line-current-for-the-same-100-mw">Try it: Why grids use high voltage: line current for the same 100 MW<a class="headerlink" href="#try-it-why-grids-use-high-voltage-line-current-for-the-same-100-mw" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="n">power_w</span> <span class="o">=</span> <span class="mf">100e6</span>
+<span class="k">for</span> <span class="n">kv</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">400</span><span class="p">):</span>
+    <span class="n">amps</span> <span class="o">=</span> <span class="n">power_w</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">kv</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">kv</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2"> kV -&gt; </span><span class="si">{</span><span class="n">amps</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> A per phase"</span><span class="p">)</span>
+<span class="c1"># Higher voltage = less current = thinner cables and lower losses (I²R)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_1">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transmission network</strong><br><em>TSOs / ISOs (e.g. PJM, ERCOT, National Grid, EirGrid) · System · Current · Electrical</em></td>
+<td>The high-voltage backbone (typically 110-765 kV) that moves bulk power from generators to regional substations.</td>
+<td>A 400 kV overhead line carries power from a coastal wind farm to a city 200 km away.</td>
+</tr>
+<tr>
+<td><strong>Distribution network</strong><br><em>Utilities / DSOs / DNOs · System · Current · Electrical</em></td>
+<td>Lower-voltage networks that take power from grid substations to streets, factories and smaller data centres.</td>
+<td>A 5 MW edge data centre connects to the local 11 kV distribution network.</td>
+</tr>
+<tr>
+<td><strong>Voltage classes (LV, MV, HV, EHV)</strong><br><em>IEC 60038; ANSI C84.1 · Standard · Current · Electrical</em></td>
+<td>Bands of voltage used to classify equipment; LV is up to 1 kV AC, MV up to roughly 35 kV, HV above.</td>
+<td>A campus takes 132 kV (HV), distributes at 33 kV (MV) and feeds servers at 415 V (LV).</td>
+</tr>
+<tr>
+<td><strong>On-site substation</strong><br><em>Utility or owner, designed to IEEE / IEC standards · Facility · Current · Electrical</em></td>
+<td>A fenced yard or building with high-voltage breakers and transformers that steps grid power down for the campus.</td>
+<td>A hyperscale campus builds a 230/34.5 kV substation inside its perimeter fence.</td>
+</tr>
+<tr>
+<td><strong>Power transformer (HV/MV)</strong><br><em>IEC 60076; IEEE C57 · Equipment · Current · Electrical</em></td>
+<td>A very large oil-filled transformer, often 50-200 MVA, stepping transmission voltage down to medium voltage.</td>
+<td>Lead times for large power transformers stretched to two to four years during the 2020s demand boom.</td>
+</tr>
+<tr>
+<td><strong>Dual utility feeds</strong><br><em>Uptime Institute / TIA-942 design guidance · Practice · Current · Electrical</em></td>
+<td>Two separate incoming supplies, ideally from different grid substations, so one line fault does not cut power.</td>
+<td>Harbourline Colo's site has feeds from north and south substations on separate routes.</td>
+</tr>
+<tr>
+<td><strong>Gas-insulated switchgear (GIS)</strong><br><em>IEC 62271-203; Siemens Energy, Hitachi Energy, GE Vernova · Equipment · Current · Electrical</em></td>
+<td>Compact high-voltage switchgear sealed in insulating gas, using far less space than open-air equipment.</td>
+<td>A city-centre data centre uses indoor 132 kV GIS because there is no room for an outdoor yard.</td>
+</tr>
+<tr>
+<td><strong>SF6 alternatives</strong><br><em>EU F-gas Regulation (EU) 2024/573 · Technology · Emerging · Sustainability</em></td>
+<td>New insulating gases and vacuum technology replacing SF6, a very potent greenhouse gas used in switchgear.</td>
+<td>A European operator specifies SF6-free medium-voltage switchgear to meet F-gas phase-out rules.</td>
+</tr>
+<tr>
+<td><strong>Interconnection agreement</strong><br><em>Utility / grid operator · Document · Current · Business</em></td>
+<td>The contract setting how much capacity a site may draw, when it connects, and who pays for grid upgrades.</td>
+<td>Riverbend Cloud signs an agreement for 150 MW in 2027 rising to 300 MW in 2029.</td>
+</tr>
+<tr>
+<td><strong>Grid operators (TSO / ISO / RTO)</strong><br><em>e.g. PJM, ERCOT, CAISO, NESO (Great Britain), EirGrid · Organisation · Current · Business</em></td>
+<td>Organisations that balance supply and demand in real time and plan transmission for a region.</td>
+<td>In Texas, ERCOT studies every large data-centre load before it can connect.</td>
+</tr>
+<tr>
+<td><strong>Revenue metering</strong><br><em>Utility; IEC 62053 / ANSI C12 · Equipment · Current · Business</em></td>
+<td>High-accuracy meters at the point of supply that measure energy for billing.</td>
+<td>Monthly bills for a 40 MW site are based on the utility meter at the substation.</td>
+</tr>
+<tr>
+<td><strong>Fault ride-through</strong><br><em>Grid codes; NERC guidance · Concept · Emerging · Electrical</em></td>
+<td>Staying connected through short grid voltage dips instead of disconnecting; now being requested from large data-centre loads.</td>
+<td>A utility asks a new AI campus to prove its UPS will not drop off the grid during a 100 ms dip.</td>
+</tr>
+<tr>
+<td><strong>Utility SCADA and protection</strong><br><em>Utility; IEC 61850 · System · Current · Electrical</em></td>
+<td>Remote monitoring, control and protective relays that isolate faults on the grid within fractions of a second.</td>
+<td>A relay trips a faulty 132 kV line in 80 ms while the campus's second feed carries on.</td>
+</tr>
+<tr>
+<td><strong>N-1 contingency</strong><br><em>NERC TPL planning standards; national grid codes (e.g. GB SQSS) · Concept · Current · Electrical</em></td>
+<td>Planning rule that the network keeps supplying load after losing any one element, such as a line or transformer.</td>
+<td>A substation with three 100 MVA transformers serves only about 200 MVA of firm load, keeping one in reserve.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="23-medium-low-voltage-distribution">2.3 Medium &amp; Low-Voltage Distribution<a class="headerlink" href="#23-medium-low-voltage-distribution" title="Permanent link">&para;</a></h2>
+<p>Inside the site, power travels at medium voltage to transformers near each building, which step it down to the low voltage that equipment uses. Switchgear and circuit breakers act as giant, smart switches and fuses that can turn sections on or off and cut power instantly if something goes wrong. This is the 'grey space' backbone that everything else hangs from.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-03-medium-low-voltage-distribution.svg" alt="Breakers get smaller at every stage, and only the one nearest a fault should trip." loading="lazy">
+<figcaption><strong>Medium voltage down to the rack.</strong> Breakers get smaller at every stage, and only the one nearest a fault should trip.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a home's fuse box scaled up a thousand times: one main switch feeding many smaller switches, each protecting one branch of the house.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At the fictional Lakeside DC in Frankfurt, two 20 kV ring main units feed four 2,500 kVA cast-resin transformers that step down to 400 V. Each transformer feeds a main low-voltage switchboard with air circuit breakers. During a fault on one outgoing cable, the nearest MCCB trips within milliseconds while the upstream breakers stay closed, so only one PDU loses power and its racks switch to their B feed.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Medium-voltage cables bring power to ring main units or MV switchgear at each building.</li>
+<li>Transformers step the voltage down to low voltage, for example 480 V in the US or 400 V in Europe.</li>
+<li>Main LV switchboards with air circuit breakers distribute power to UPS systems, cooling plant and building services.</li>
+<li>Protection relays and breaker trip units detect overloads and short circuits and open the right breaker.</li>
+<li>A coordination study makes sure the breaker nearest a fault trips first (selectivity), limiting the outage.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Electrical engineers, switchgear technicians, commissioning agents and critical facilities engineers design, test and maintain this equipment.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Learn the common voltages: US 480/277 V and 208/120 V, Europe 400/230 V, and 415/240 V used by many hyperscale designs.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Transformer impedance, often around 5-6% for large distribution units, limits fault current; a lower-impedance or larger transformer raises the kA rating needed downstream.</li>
+<li>Selective coordination uses time-current curves: downstream devices trip faster, upstream ones wait slightly longer, and a study checks every pair for overlaps across the system.</li>
+<li>Drawout air circuit breakers can be racked to test or disconnected positions, giving a visible isolation point and allowing quick replacement from a spare.</li>
+<li>Main-tie-main boards let either of two transformers feed both bus sections through a tie breaker, so one transformer can be maintained while loads stay energised.</li>
+<li>Equipment must be rated for the prospective short-circuit current at its location, calculated with IEC 60909 or IEEE methods and updated whenever the system changes.</li>
+<li>EU Ecodesign rules (Regulation 548/2014, amended by 2019/1783) set minimum efficiency levels for power transformers, pushing designs toward lower-loss cores and windings.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Fitting a bigger transformer without rechecking fault levels: downstream breakers may no longer interrupt faults safely.</li>
+<li>Changing trip settings without a coordination study, so a minor rack fault can trip a main board.</li>
+<li>Installing oil-filled transformers indoors without fire separation and oil containment.</li>
+</ul>
+</div>
+<h3 id="try-it-transformer-full-load-current-on-the-low-voltage-side">Try it: Transformer full-load current on the low-voltage side<a class="headerlink" href="#try-it-transformer-full-load-current-on-the-low-voltage-side" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="n">kva</span> <span class="o">=</span> <span class="mi">2500</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mi">480</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">kva</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">kva</span><span class="si">}</span><span class="s2"> kVA at </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> V -&gt; </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> A per phase"</span><span class="p">)</span>
+<span class="c1"># 2500 kVA at 400 V -&gt; 3,608 A : that is why LV busbars are so large</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_2">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Oil-filled transformer</strong><br><em>IEC 60076; IEEE C57.12 · Equipment · Current · Electrical</em></td>
+<td>Transformer cooled and insulated by mineral or ester oil; efficient and long-lived, usually installed outdoors with oil containment.</td>
+<td>A campus uses outdoor 3 MVA oil-filled units on concrete pads with bunds to catch any leaks.</td>
+</tr>
+<tr>
+<td><strong>Dry-type (cast-resin) transformer</strong><br><em>IEC 60076-11; IEEE C57.12.01 · Equipment · Current · Electrical</em></td>
+<td>Transformer with windings sealed in resin and cooled by air; safer indoors because there is no oil fire risk.</td>
+<td>A city data centre installs indoor 2,000 kVA cast-resin transformers next to its switchboards.</td>
+</tr>
+<tr>
+<td><strong>K-rated transformer</strong><br><em>UL 1561 / UL 1562; IEEE C57.110 · Equipment · Current · Electrical</em></td>
+<td>A transformer built to tolerate the extra heating caused by harmonic currents from electronic loads.</td>
+<td>An older facility uses K-13 rated transformers in its PDUs feeding hundreds of single-phase servers.</td>
+</tr>
+<tr>
+<td><strong>Medium-voltage switchgear</strong><br><em>IEC 62271-200; IEEE C37.20.2 · Equipment · Current · Electrical</em></td>
+<td>Metal-enclosed cabinets with vacuum circuit breakers that switch and protect circuits typically between 1 and 36 kV.</td>
+<td>A 20 kV switchboard lets engineers isolate one transformer for maintenance without affecting others.</td>
+</tr>
+<tr>
+<td><strong>Ring main unit (RMU)</strong><br><em>IEC 62271-200; ABB, Schneider Electric, Siemens, Eaton · Equipment · Current · Electrical</em></td>
+<td>Compact MV switchgear on a cable ring, so a building can be fed from either direction.</td>
+<td>If one 11 kV cable in the ring is damaged, the RMU is reconfigured to feed from the other side.</td>
+</tr>
+<tr>
+<td><strong>Main LV switchboard</strong><br><em>IEC 61439-2; UL 891 / UL 1558 · Equipment · Current · Electrical</em></td>
+<td>The main low-voltage distribution assembly after the transformer, feeding UPS, mechanical plant and building loads.</td>
+<td>Each 400 V main switchboard has a 4,000 A incomer and twelve outgoing breakers.</td>
+</tr>
+<tr>
+<td><strong>Air circuit breaker (ACB)</strong><br><em>IEC 60947-2; UL 1066 · Component · Current · Electrical</em></td>
+<td>A large breaker, typically 800-6,300 A, used as switchboard incomers and big feeders, often drawout for maintenance.</td>
+<td>A technician racks out a 3,200 A ACB to test its trip unit during an annual shutdown.</td>
+</tr>
+<tr>
+<td><strong>Moulded-case circuit breaker (MCCB)</strong><br><em>IEC 60947-2; UL 489 · Component · Current · Electrical</em></td>
+<td>A medium breaker in a plastic case, typically up to about 1,600 A, protecting feeders to PDUs and panels.</td>
+<td>A 250 A MCCB protects the feeder from the UPS output board to a floor PDU.</td>
+</tr>
+<tr>
+<td><strong>Miniature circuit breaker (MCB)</strong><br><em>IEC 60898-1; UL 489 · Component · Current · Electrical</em></td>
+<td>A small breaker, usually up to 125 A, protecting final circuits such as individual rack feeds.</td>
+<td>Each rack whip in a European RPP is protected by a 32 A three-pole MCB.</td>
+</tr>
+<tr>
+<td><strong>Protection relay</strong><br><em>IEC 60255; IEEE C37.90; SEL, ABB, Siemens, Schneider · Component · Current · Electrical</em></td>
+<td>An electronic device that measures current and voltage and tells breakers to trip on overloads, faults or earth leakage.</td>
+<td>A relay on the MV feeder trips the breaker after detecting an earth fault on a transformer cable.</td>
+</tr>
+<tr>
+<td><strong>Selective coordination</strong><br><em>NFPA 70 (NEC) 700.32/708.54; IEEE 242 (Buff Book) · Practice · Current · Electrical</em></td>
+<td>Setting breakers so only the one nearest a fault opens, keeping the rest of the system running.</td>
+<td>A coordination study adjusts ACB delays so a rack fault never trips the main switchboard.</td>
+</tr>
+<tr>
+<td><strong>Short-circuit rating</strong><br><em>IEC 60909; IEEE 551 (Violet Book) · Metric · Current · Electrical</em></td>
+<td>The maximum fault current equipment can safely withstand or interrupt, expressed in kA.</td>
+<td>Switchboards fed by large transformers may need 65 kA or 100 kA rated breakers.</td>
+</tr>
+<tr>
+<td><strong>Common LV voltages</strong><br><em>ANSI C84.1; IEC 60038 · Concept · Current · Electrical</em></td>
+<td>US sites typically use 480/277 V and 208/120 V; Europe uses 400/230 V; many hyperscalers use 415/240 V.</td>
+<td>A US colo feeds racks at 208 V three-phase, while its UK sister site uses 400/230 V.</td>
+</tr>
+<tr>
+<td><strong>Electrical power monitoring system (EPMS)</strong><br><em>Schneider Electric EcoStruxure, Siemens, Eaton, ABB · Software · Current · Operations</em></td>
+<td>Software and meters that record voltages, currents, breaker states and power quality across the electrical system.</td>
+<td>EPMS alarms show a breaker trip and capture the waveform so engineers can find the cause.</td>
+</tr>
+<tr>
+<td><strong>Main-tie-main switchboard</strong><br><em>Common LV/MV design (IEC 61439; UL 891) · Equipment · Current · Electrical</em></td>
+<td>Two incoming transformers with a normally open tie breaker, letting either source feed both halves of the board.</td>
+<td>Transformer T1 is serviced while the tie breaker closes and T2 carries both bus sections.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="24-uninterruptible-power-supplies-ups">2.4 Uninterruptible Power Supplies (UPS)<a class="headerlink" href="#24-uninterruptible-power-supplies-ups" title="Permanent link">&para;</a></h2>
+<p>A UPS sits between the mains supply and the IT equipment and keeps power flowing, without even a flicker, when the grid fails. It uses stored energy (usually batteries, sometimes a spinning flywheel) to bridge the gap until generators start, typically in 10-15 seconds. Many UPS designs also clean up the power, removing spikes, dips and noise.</p>
+<p><strong>The three UPS types (IEC 62040-3)</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Standby (VFD)</th>
+<th>Line-interactive (VI)</th>
+<th>Double conversion (VFI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal path</strong></td>
+<td>Mains straight to load</td>
+<td>Mains via regulating transformer</td>
+<td>Rectifier → DC → inverter</td>
+</tr>
+<tr>
+<td><strong>On mains failure</strong></td>
+<td>Brief transfer (ms)</td>
+<td>Brief transfer (ms)</td>
+<td>Zero break</td>
+</tr>
+<tr>
+<td><strong>Conditioning</strong></td>
+<td>Minimal</td>
+<td>Voltage regulation</td>
+<td>Full isolation from mains</td>
+</tr>
+<tr>
+<td><strong>Typical size</strong></td>
+<td>Under a few kVA</td>
+<td>Small, rack-mount</td>
+<td>10 kVA to multi-MW</td>
+</tr>
+<tr>
+<td><strong>Typical use</strong></td>
+<td>Home and desktop</td>
+<td>Branch office, edge rack</td>
+<td>Data halls</td>
+</tr>
+</tbody>
+</table>
+<p><em>Only double conversion gives zero transfer time and full isolation, which is why data halls use it.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A UPS is like a bridge over a river: the grid is the road on one bank, the generator the road on the other, and the UPS lets traffic cross the gap without stopping.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At the fictional Meadowbank colo, a storm causes a utility outage at 2:14 a.m. The double-conversion UPS instantly switches to battery with zero break, carrying 1.2 MW. The generators start in 9 seconds, the ATS transfers after a short stabilisation delay, and the UPS returns to normal operation drawing from the generators; the batteries used about 40 seconds of their 8-minute autonomy.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Normal mode: incoming AC is converted (rectified) to DC, which charges the batteries and feeds an inverter.</li>
+<li>The inverter creates clean new AC for the IT load, isolating it from grid disturbances (double conversion).</li>
+<li>If the input fails, the batteries already connected to the DC bus keep the inverter running with no break.</li>
+<li>When generators or the grid return, the rectifier takes over and recharges the batteries.</li>
+<li>If the UPS itself has a problem, a static bypass switches the load straight to the input supply in milliseconds.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Critical facilities engineers, UPS field service engineers and electrical designers specify, maintain and test UPS systems.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the IEC 62040-3 classes: VFI (double-conversion online), VI (line-interactive) and VFD (standby/offline).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>IEC 62040-3 codes such as VFI-SS-111 describe input dependency (VFI, VI or VFD), output waveform in normal and battery modes, and dynamic output performance during load and mode changes.</li>
+<li>IT power supplies ride through very short interruptions: the ITI (CBEMA) curve expects equipment to tolerate total loss of voltage for about 20 ms, far shorter than a generator start.</li>
+<li>Modern transformerless double-conversion modules reach roughly 96-97% efficiency, while eco or energy-saver modes reach about 99% by running on bypass with the inverter ready to take over.</li>
+<li>UPS systems are sized for the critical load plus redundancy, with battery autonomy usually 5-10 minutes at full load and margin for end-of-life battery capacity.</li>
+<li>An external maintenance bypass wrapped around the whole UPS system is essential for concurrent maintainability, letting engineers isolate every module without dropping load.</li>
+<li>Some hyperscale designs replace central UPS with in-rack battery backup units or distributed UPS, accepting shorter runtimes in exchange for fewer conversion losses.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming every UPS is double conversion: small standby and line-interactive units have a transfer gap some equipment cannot tolerate.</li>
+<li>Operating a maintenance bypass out of sequence: one wrong step can drop the load, so always follow the MOP.</li>
+<li>Loading a redundant module group beyond its N capacity, so one module failure overloads the rest.</li>
+</ul>
+</div>
+<h3 id="try-it-annual-cost-of-ups-losses-double-conversion-vs-eco-mode">Try it: Annual cost of UPS losses: double conversion vs eco-mode<a class="headerlink" href="#try-it-annual-cost-of-ups-losses-double-conversion-vs-eco-mode" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">load_kw</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">price_per_kwh</span> <span class="o">=</span> <span class="mf">0.15</span>   <span class="c1"># currency units</span>
+<span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">eff</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"double conversion"</span><span class="p">,</span> <span class="mf">0.965</span><span class="p">),</span> <span class="p">(</span><span class="s2">"eco-mode"</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)):</span>
+    <span class="n">loss_kw</span> <span class="o">=</span> <span class="n">load_kw</span> <span class="o">/</span> <span class="n">eff</span> <span class="o">-</span> <span class="n">load_kw</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">loss_kw</span> <span class="o">*</span> <span class="mi">8760</span> <span class="o">*</span> <span class="n">price_per_kwh</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mode</span><span class="si">:</span><span class="s2">18</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">loss_kw</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2"> kW lost, about </span><span class="si">{</span><span class="n">cost</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> per year"</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_3">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Double-conversion online UPS</strong><br><em>IEC 62040-3 (VFI class) · Equipment · Current · Electrical</em></td>
+<td>Converts AC to DC and back again continuously, giving the load clean power and zero transfer time on mains failure.</td>
+<td>Almost every enterprise and colocation data hall runs on double-conversion UPS modules.</td>
+</tr>
+<tr>
+<td><strong>Line-interactive UPS</strong><br><em>IEC 62040-3 (VI class) · Equipment · Current · Electrical</em></td>
+<td>Feeds the load from the mains through a regulating transformer and switches to its inverter when mains fail.</td>
+<td>A small branch-office comms rack uses a 3 kVA line-interactive UPS.</td>
+</tr>
+<tr>
+<td><strong>Standby (offline) UPS</strong><br><em>IEC 62040-3 (VFD class) · Equipment · Current · Electrical</em></td>
+<td>Passes mains straight through and only starts its inverter during an outage, with a brief transfer time.</td>
+<td>A home router and PC sit on a cheap 600 VA standby UPS.</td>
+</tr>
+<tr>
+<td><strong>IEC 62040-3</strong><br><em>IEC (edition 3.0, 2021) · Standard · Current · Electrical</em></td>
+<td>International standard defining UPS performance and test methods, including the VFI, VI and VFD classes.</td>
+<td>A tender requires 'VFI-SS-111' classification, meaning double conversion with best output performance.</td>
+</tr>
+<tr>
+<td><strong>Eco-mode</strong><br><em>UPS manufacturers; IEC 62040-3 · Practice · Current · Sustainability</em></td>
+<td>Runs the load on the bypass path while the inverter waits, raising efficiency to about 99% at slightly more risk.</td>
+<td>An operator enables eco-mode on non-critical halls, saving hundreds of thousands in energy each year.</td>
+</tr>
+<tr>
+<td><strong>Modular UPS</strong><br><em>Schneider Electric, Vertiv, Eaton, ABB, Huawei and others · Equipment · Current · Electrical</em></td>
+<td>A UPS frame filled with hot-swappable power modules, so capacity and redundancy grow by adding modules.</td>
+<td>A 1.2 MW frame starts with six 200 kW modules and adds a seventh for N+1.</td>
+</tr>
+<tr>
+<td><strong>Static bypass</strong><br><em>IEC 62040-3 · Component · Current · Electrical</em></td>
+<td>An electronic switch that moves the load directly to the input supply in milliseconds if the inverter fails or is overloaded.</td>
+<td>A server inrush overload causes the UPS to transfer to static bypass, then return automatically.</td>
+</tr>
+<tr>
+<td><strong>Maintenance bypass</strong><br><em>UPS and switchgear manufacturers · Component · Current · Electrical</em></td>
+<td>A manual switch path that lets engineers fully isolate a UPS for repair while the load stays powered.</td>
+<td>Following a MOP, the engineer closes the maintenance bypass before replacing a UPS capacitor bank.</td>
+</tr>
+<tr>
+<td><strong>Rotary UPS / DRUPS</strong><br><em>Hitec Power Protection, Piller, Euro-Diesel · Equipment · Current · Electrical</em></td>
+<td>A motor-generator with a flywheel coupled to a diesel engine, giving ride-through and backup without large battery rooms.</td>
+<td>A Dutch colo uses diesel rotary UPS units that combine UPS and generator in one machine.</td>
+</tr>
+<tr>
+<td><strong>Flywheel UPS</strong><br><em>Piller, Vertiv and others · Equipment · Current · Electrical</em></td>
+<td>Stores energy in a spinning wheel instead of batteries, giving roughly 15-60 seconds of ride-through.</td>
+<td>A flywheel provides 20 seconds of bridging, enough for generators to start and stabilise.</td>
+</tr>
+<tr>
+<td><strong>Autonomy (runtime)</strong><br><em>UPS design practice · Metric · Current · Electrical</em></td>
+<td>How long the stored energy can carry the full load; data centres commonly design for about 5-10 minutes.</td>
+<td>An operator chooses 6 minutes of battery autonomy at full design load, plus ageing margin.</td>
+</tr>
+<tr>
+<td><strong>UPS efficiency</strong><br><em>IEC 62040-3; EU Code of Conduct on AC UPS · Metric · Current · Sustainability</em></td>
+<td>Output power divided by input power; modern double-conversion units reach roughly 96-97.5%.</td>
+<td>Improving efficiency from 94% to 97% on a 2 MW load saves around 65 kW of losses.</td>
+</tr>
+<tr>
+<td><strong>Major UPS vendors</strong><br><em>Schneider Electric, Vertiv, Eaton, ABB, Huawei, Socomec, Mitsubishi Electric · Company · Current · Business</em></td>
+<td>Leading manufacturers of large three-phase UPS systems for data centres.</td>
+<td>Vertiv sells the Liebert range; Schneider Electric sells the Galaxy range.</td>
+</tr>
+<tr>
+<td><strong>ITI (CBEMA) curve</strong><br><em>Information Technology Industry Council (ITIC); originally CBEMA · Standard · Current · Electrical</em></td>
+<td>A chart of voltage dips, interruptions and surges that IT power supplies should tolerate without malfunction.</td>
+<td>A 10 ms total loss of voltage falls inside the curve, so a correctly designed server should keep running.</td>
+</tr>
+<tr>
+<td><strong>Power quality events</strong><br><em>IEEE 1159; EN 50160 · Concept · Current · Electrical</em></td>
+<td>Sags, swells, transients, interruptions and harmonics that a UPS must filter out or ride through.</td>
+<td>The EPMS logs a 120 ms voltage sag from a distant grid fault; the UPS briefly ran on battery.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="25-batteries-energy-storage">2.5 Batteries &amp; Energy Storage<a class="headerlink" href="#25-batteries-energy-storage" title="Permanent link">&para;</a></h2>
+<p>Batteries are the energy store behind most UPS systems, holding enough power for a few minutes until generators take over. Older sites use lead-acid batteries; newer ones increasingly use lithium-ion, which is smaller, lighter and lasts longer but needs careful fire-risk management. Batteries are also one of the most common causes of UPS failures, so they are watched closely.</p>
+<p><strong>UPS battery chemistries</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>VRLA lead-acid</th>
+<th>Lithium-ion LFP</th>
+<th>Lithium-ion NMC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Design life</strong></td>
+<td>~5-10 years</td>
+<td>~15 years</td>
+<td>~10-15 years</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>Largest, heaviest</td>
+<td>Much smaller, lighter</td>
+<td>Smallest, lightest</td>
+</tr>
+<tr>
+<td><strong>Thermal runaway</strong></td>
+<td>Low (vents hydrogen)</td>
+<td>Lower than NMC</td>
+<td>Highest of the three</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>Add-on block monitoring</td>
+<td>Built-in BMS</td>
+<td>Built-in BMS</td>
+</tr>
+<tr>
+<td><strong>Trend</strong></td>
+<td>Large installed base</td>
+<td>Increasingly the default</td>
+<td>Less common in new UPS</td>
+</tr>
+</tbody>
+</table>
+<p><em>Lithium saves space and lasts longer, but every chemistry needs monitoring and fire-code compliance.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A UPS battery string is like a car's spare fuel can: you hope never to need it, but you check it regularly, because finding it empty in an emergency is the worst moment to learn.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Orchard Data replaces 640 VRLA lead-acid blocks with lithium iron phosphate cabinets. The battery room footprint drops by about 60%, and the design life rises from about 5 years to 15. The new system has a battery management system that reports every cell's voltage and temperature, and the room is fitted with gas detection and protection designed to NFPA 855.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Batteries are wired in series 'strings' to reach the UPS DC bus voltage, often several hundred volts.</li>
+<li>Several strings in parallel provide the energy needed for the required runtime and add redundancy.</li>
+<li>Monitoring systems track voltage, internal resistance and temperature of each block or cell.</li>
+<li>Temperature control matters: lead-acid life roughly halves for every 8-10 °C above 25 °C.</li>
+<li>Fire codes set rules on spacing, ventilation, detection and suppression for large battery systems.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Critical facilities technicians, battery service engineers, fire-safety engineers and UPS specialists work with data-centre batteries.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember the chemistry trade-off: LFP is safer and longer-lasting, NMC is more energy-dense; both need thermal-runaway protection.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Lead-acid UPS batteries are sized from makers' constant-power discharge tables to an end voltage, typically about 1.67-1.75 V per cell for short UPS runtimes.</li>
+<li>Available capacity depends on discharge rate and temperature: a battery delivers less energy at a five-minute rate than at a ten-hour rate, so amp-hour ratings alone mislead.</li>
+<li>Lead-acid life falls sharply with heat; a common rule is about half the life lost for every 8-10 °C sustained above 25 °C, so battery rooms are kept cool.</li>
+<li>Lithium systems carry a built-in BMS, and codes such as NFPA 855 and the International Fire Code set quantity limits, separation and detection, informed by UL 9540A test results.</li>
+<li>Internal resistance (ohmic) trending spots weakening blocks between discharge tests; a value rising well above its baseline triggers investigation or replacement.</li>
+<li>Strings are normally replaced as a set near 80% capacity, because mixing new and aged blocks causes imbalance and early failures.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Confusing a lithium battery's BMS with the building management system: same acronym, completely different jobs.</li>
+<li>Judging health by float voltage alone: a block can look normal yet fail under load; trend resistance and discharge test.</li>
+<li>Letting battery rooms run warm to save cooling energy, which shortens lead-acid life dramatically.</li>
+</ul>
+</div>
+<h3 id="try-it-rough-ups-battery-runtime-estimate">Try it: Rough UPS battery runtime estimate<a class="headerlink" href="#try-it-rough-ups-battery-runtime-estimate" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">load_kw</span> <span class="o">=</span> <span class="mi">800</span>          <span class="c1"># IT load on the UPS</span>
+<span class="n">inverter_eff</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">usable_kwh</span> <span class="o">=</span> <span class="mi">120</span>       <span class="c1"># usable battery energy at this discharge rate</span>
+<span class="n">ageing_margin</span> <span class="o">=</span> <span class="mf">0.8</span>    <span class="c1"># plan for end-of-life capacity</span>
+
+<span class="n">minutes</span> <span class="o">=</span> <span class="n">usable_kwh</span> <span class="o">*</span> <span class="n">ageing_margin</span> <span class="o">/</span> <span class="p">(</span><span class="n">load_kw</span> <span class="o">/</span> <span class="n">inverter_eff</span><span class="p">)</span> <span class="o">*</span> <span class="mi">60</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Estimated runtime: </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> minutes"</span><span class="p">)</span>
+<span class="c1"># Real sizing uses the maker's constant-power discharge tables</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_4">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VRLA battery</strong><br><em>IEC 60896-21/22; IEEE 1188 · Component · Current · Electrical</em></td>
+<td>Valve-regulated lead-acid battery, sealed and maintenance-free; the traditional UPS battery with a design life of about 5-10 years.</td>
+<td>Rows of 12 V VRLA blocks on steel racks feed a 500 kVA UPS.</td>
+</tr>
+<tr>
+<td><strong>Flooded (wet-cell) lead-acid</strong><br><em>IEC 60896-11; IEEE 450 · Component · Legacy · Electrical</em></td>
+<td>Open lead-acid cells with liquid electrolyte that need topping up and ventilation; very long life but bulky.</td>
+<td>A telecom exchange still runs flooded cells that technicians inspect and water each quarter.</td>
+</tr>
+<tr>
+<td><strong>Lithium iron phosphate (LFP)</strong><br><em>UL 1973; IEC 62619 · Component · Current · Electrical</em></td>
+<td>Lithium-ion chemistry with good thermal stability and long cycle life; increasingly the default for new UPS batteries.</td>
+<td>A colo specifies LFP cabinets for a 15-year life and a smaller battery room.</td>
+</tr>
+<tr>
+<td><strong>Lithium NMC</strong><br><em>UL 1973; IEC 62619 · Component · Current · Electrical</em></td>
+<td>Nickel-manganese-cobalt lithium-ion chemistry with high energy density but higher thermal-runaway risk than LFP.</td>
+<td>Some early lithium UPS cabinets used NMC cells to save floor space.</td>
+</tr>
+<tr>
+<td><strong>Nickel-zinc battery</strong><br><em>ZincFive · Component · Emerging · Electrical</em></td>
+<td>Water-based chemistry with high power density for short runtimes and no thermal runaway in the lithium sense.</td>
+<td>An operator pilots nickel-zinc cabinets for one-minute ride-through on a high-density hall.</td>
+</tr>
+<tr>
+<td><strong>Supercapacitor</strong><br><em>Various manufacturers · Component · Emerging · Electrical</em></td>
+<td>Stores energy electrostatically; delivers very fast bursts for seconds, useful for smoothing rapid AI load swings.</td>
+<td>A rack power shelf includes capacitor storage to absorb GPU power spikes lasting milliseconds.</td>
+</tr>
+<tr>
+<td><strong>Battery monitoring system</strong><br><em>Vertiv, Eaton, Schneider Electric, specialist vendors · System · Current · Operations</em></td>
+<td>Sensors on every battery block or cell reporting voltage, internal resistance and temperature to spot failing units early.</td>
+<td>Monitoring flags one block with rising resistance, and it is replaced before an outage.</td>
+</tr>
+<tr>
+<td><strong>Battery management system (BMS)</strong><br><em>Lithium battery manufacturers; UL 1973 · System · Current · Electrical</em></td>
+<td>Electronics built into lithium batteries that balance cells and disconnect them if limits are exceeded.</td>
+<td>The BMS opens a contactor when a module overheats, isolating it from the string.</td>
+</tr>
+<tr>
+<td><strong>Thermal runaway</strong><br><em>UL 9540A; NFPA 855 · Concept · Current · Facilities</em></td>
+<td>A self-heating chain reaction in a cell that can release flammable gas and spread fire to neighbouring cells.</td>
+<td>Fire engineers use UL 9540A test data to set spacing between lithium cabinets.</td>
+</tr>
+<tr>
+<td><strong>NFPA 855</strong><br><em>National Fire Protection Association · Standard · Current · Facilities</em></td>
+<td>US standard for installing stationary energy storage systems, covering size limits, spacing, detection and suppression.</td>
+<td>A fire marshal checks the lithium UPS room against NFPA 855 before approving occupancy.</td>
+</tr>
+<tr>
+<td><strong>UL 9540 / UL 9540A</strong><br><em>UL Solutions · Standard · Current · Facilities</em></td>
+<td>UL 9540 certifies energy storage systems; UL 9540A is the test method for thermal-runaway fire propagation.</td>
+<td>A vendor shares UL 9540A results showing fire did not spread between modules.</td>
+</tr>
+<tr>
+<td><strong>Battery string</strong><br><em>IEEE 485 (lead-acid sizing) · Concept · Current · Electrical</em></td>
+<td>Batteries connected in series to reach the required DC voltage; several strings run in parallel.</td>
+<td>A UPS uses four parallel strings of forty 12 V blocks each.</td>
+</tr>
+<tr>
+<td><strong>Battery end-of-life</strong><br><em>IEEE 1188; IEEE 450 · Concept · Current · Operations</em></td>
+<td>A battery is typically considered at end of life when its capacity falls to about 80% of rated.</td>
+<td>Discharge testing shows 78% capacity, so the string is scheduled for replacement.</td>
+</tr>
+<tr>
+<td><strong>Discharge (capacity) test</strong><br><em>IEEE 450 (vented lead-acid); IEEE 1188 (VRLA) · Procedure · Current · Operations</em></td>
+<td>Discharging a string at a controlled rate to measure its real capacity against rating; the definitive battery health check.</td>
+<td>A string tested at its 15-minute rate lasts 13 minutes, showing roughly 87% capacity.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="26-generators-fuel-transfer-switching">2.6 Generators, Fuel &amp; Transfer Switching<a class="headerlink" href="#26-generators-fuel-transfer-switching" title="Permanent link">&para;</a></h2>
+<p>Standby generators are big engines, usually diesel, that make electricity when the grid fails and can run for days if fuel is delivered. Transfer switches decide which source feeds the building and move the load between them automatically. Together with the UPS, they make sure a utility outage never reaches the servers.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-06-generators-fuel-transfer-switching.svg" alt="The UPS covers the first seconds; generators carry the site until the grid is stable again." loading="lazy">
+<figcaption><strong>A utility outage, second by second.</strong> The UPS covers the first seconds; generators carry the site until the grid is stable again.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>If the UPS is a sprinter that covers the first few seconds, the generator is the marathon runner who takes over and keeps going as long as you keep feeding it.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Granite Peak data centre has eight 2.5 MW diesel generators in N+1 with 48 hours of fuel on site. During a monthly test, the generators start, synchronise on the paralleling switchgear and carry the building for an hour. A fuel polishing system cleans the 200,000 litres of stored diesel, and an annual load-bank test runs each engine at full load for four hours to prevent wet stacking.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The ATS or switchgear controls detect a utility failure or out-of-tolerance voltage.</li>
+<li>Generators receive a start signal and reach speed and voltage, typically within about 10 seconds.</li>
+<li>In paralleled systems, generators synchronise onto a common bus before taking load.</li>
+<li>Transfer switches move the load to generator power; the UPS bridges the gap from batteries.</li>
+<li>When the utility is stable again, the load transfers back and generators cool down before stopping.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Generator technicians, critical facilities engineers, fuel suppliers and environmental permit specialists work on standby power.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the ratings: emergency standby, prime and continuous under ISO 8528-1, and that data-centre ratings allow unlimited hours at a set average load when the grid is down.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>NFPA 110 classifies emergency power systems by Type (seconds to restore power, e.g. Type 10) and Class (hours of fuel at rated load, e.g. Class 48), common language in US specifications.</li>
+<li>On-site fuel autonomy targets commonly range from 24 to 72 hours, backed by priority refuelling contracts with more than one supplier for long grid outages.</li>
+<li>Running diesels lightly loaded causes wet stacking, unburnt fuel building up in the exhaust; testing at meaningful load and annual load-bank runs prevent it.</li>
+<li>ISO 8528-5 performance classes (G1-G4) set how far voltage and frequency may deviate during load steps; data-centre specifications usually call for the tighter classes.</li>
+<li>Large campuses parallel generators onto MV buses such as 11 kV or 13.8 kV to share load, add redundancy and maintain one machine while others run.</li>
+<li>Air permits often cap annual testing hours and set emission limits; HVO fuel and gas engines are adopted partly to cut emissions and local opposition.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Testing generators without load: no-load runs prove little and cause wet stacking; use building load or load banks.</li>
+<li>Neglecting fuel quality: contaminated diesel is a classic cause of generator failure during long outages.</li>
+<li>Forgetting the mechanical plant: if cooling is not on generator-backed power, IT overheats even though servers stay powered.</li>
+</ul>
+</div>
+<h3 id="try-it-generator-fuel-burn-and-on-site-autonomy">Try it: Generator fuel burn and on-site autonomy<a class="headerlink" href="#try-it-generator-fuel-burn-and-on-site-autonomy" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">gens</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">load_kw_each</span> <span class="o">=</span> <span class="mi">1800</span>        <span class="c1"># average load per running generator</span>
+<span class="n">litres_per_kwh</span> <span class="o">=</span> <span class="mf">0.27</span>      <span class="c1"># rough diesel figure near full load; check the datasheet</span>
+<span class="n">stored_litres</span> <span class="o">=</span> <span class="mi">200_000</span>
+
+<span class="n">burn_l_per_h</span> <span class="o">=</span> <span class="n">gens</span> <span class="o">*</span> <span class="n">load_kw_each</span> <span class="o">*</span> <span class="n">litres_per_kwh</span>
+<span class="n">hours</span> <span class="o">=</span> <span class="n">stored_litres</span> <span class="o">/</span> <span class="n">burn_l_per_h</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Burn: </span><span class="si">{</span><span class="n">burn_l_per_h</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> L/h, autonomy: </span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> hours"</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_5">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Diesel standby generator</strong><br><em>Caterpillar, Cummins, Rolls-Royce mtu, Kohler (Rehlko), Mitsubishi Heavy Industries · Equipment · Current · Electrical</em></td>
+<td>Diesel engine coupled to an alternator, typically 1-3.5 MW per unit in large data centres.</td>
+<td>A 50 MW campus installs twenty-four 2.5 MW generators in enclosures on its yard.</td>
+</tr>
+<tr>
+<td><strong>ISO 8528-1 ratings</strong><br><em>ISO 8528-1:2018 · Standard · Current · Electrical</em></td>
+<td>Defines generator ratings such as emergency standby (ESP), prime (PRP), continuous (COP) and data-centre power (DCP).</td>
+<td>A specification asks for DCP-rated generators rather than standby-only ratings.</td>
+</tr>
+<tr>
+<td><strong>Data-centre continuous / power rating</strong><br><em>ISO 8528-1:2018 (DCP); manufacturers' DCC ratings · Concept · Current · Electrical</em></td>
+<td>A rating allowing unlimited running hours at a stated load while the utility is unavailable, matching data-centre needs.</td>
+<td>Cummins and others publish data-centre ratings so a site can run generators through week-long grid outages.</td>
+</tr>
+<tr>
+<td><strong>HVO renewable diesel</strong><br><em>EN 15940 paraffinic diesel · Material · Current · Sustainability</em></td>
+<td>Hydrotreated vegetable oil, a drop-in diesel replacement made from waste fats and oils, cutting lifecycle carbon emissions.</td>
+<td>A UK colo switches its generator fuel from fossil diesel to HVO without engine changes.</td>
+</tr>
+<tr>
+<td><strong>Natural gas generator</strong><br><em>Caterpillar, Cummins, INNIO Jenbacher, Wärtsilä · Equipment · Current · Electrical</em></td>
+<td>Engine fuelled by pipeline gas; cleaner exhaust than diesel but slower to accept large load steps.</td>
+<td>A campus uses gas engines for long-duration backup and diesel units for fast start.</td>
+</tr>
+<tr>
+<td><strong>Fuel storage (day tanks and bulk tanks)</strong><br><em>NFPA 30 / NFPA 110; local codes · Equipment · Current · Facilities</em></td>
+<td>Bulk tanks hold days of fuel; small day tanks next to each engine feed it directly.</td>
+<td>A site stores 48 hours of fuel in underground bulk tanks plus a 2-hour day tank per generator.</td>
+</tr>
+<tr>
+<td><strong>Fuel polishing</strong><br><em>Fuel maintenance practice; ASTM D975 / EN 590 fuel specs · Procedure · Current · Operations</em></td>
+<td>Circulating and filtering stored diesel to remove water, sludge and microbial growth that could clog engines.</td>
+<td>A polishing skid runs weekly, and quarterly fuel samples are lab-tested.</td>
+</tr>
+<tr>
+<td><strong>Load bank testing</strong><br><em>NFPA 110; manufacturer guidance · Procedure · Current · Operations</em></td>
+<td>Running generators at high load on resistive banks to prove capacity and burn off deposits from light running ('wet stacking').</td>
+<td>Each generator runs four hours at 100% on a trailer-mounted load bank every year.</td>
+</tr>
+<tr>
+<td><strong>EPA Tier 2 / Tier 4 emissions</strong><br><em>US EPA 40 CFR Part 60 Subpart IIII; Part 1039 · Regulation · Current · Sustainability</em></td>
+<td>US engine emission limits; emergency-only engines commonly meet Tier 2, while non-emergency use usually needs Tier 4 aftertreatment.</td>
+<td>A Virginia site's air permit limits each emergency generator's testing hours per year.</td>
+</tr>
+<tr>
+<td><strong>Automatic transfer switch (ATS)</strong><br><em>UL 1008; IEC 60947-6-1 · Equipment · Current · Electrical</em></td>
+<td>Automatically moves a load from utility to generator supply and back, typically in seconds.</td>
+<td>When the grid fails, the ATS switches the mechanical plant to the generator bus.</td>
+</tr>
+<tr>
+<td><strong>Open vs closed transition</strong><br><em>UL 1008; utility interconnection rules · Concept · Current · Electrical</em></td>
+<td>Open transition breaks one source before making the other; closed transition briefly parallels both for a seamless return.</td>
+<td>A closed-transition retransfer avoids a second blip when the site returns to grid power.</td>
+</tr>
+<tr>
+<td><strong>Static transfer switch (STS)</strong><br><em>IEC 62310; UL 1008 · Equipment · Current · Electrical</em></td>
+<td>Electronic switch using thyristors to move a load between two live sources within about a quarter cycle.</td>
+<td>An STS feeds single-corded network gear from either the A or B UPS.</td>
+</tr>
+<tr>
+<td><strong>Paralleling switchgear</strong><br><em>Eaton, ASCO (Schneider Electric), Russelectric (Siemens), ABB · Equipment · Current · Electrical</em></td>
+<td>Switchgear and controls that synchronise several generators onto one bus and share load between them.</td>
+<td>Eight generators parallel onto a 13.8 kV bus, shedding one if load is low.</td>
+</tr>
+<tr>
+<td><strong>Generator step-load acceptance</strong><br><em>ISO 8528-5 · Metric · Current · Electrical</em></td>
+<td>How much sudden load a generator can accept without voltage and frequency dipping too far.</td>
+<td>A gas engine accepting only 25% steps needs UPS load ramping to avoid stalling.</td>
+</tr>
+<tr>
+<td><strong>NFPA 110</strong><br><em>National Fire Protection Association · Standard · Current · Electrical</em></td>
+<td>US standard for emergency and standby power systems, defining Type (start time), Class (runtime) and testing requirements.</td>
+<td>A specification calls for a Type 10, Class 48 system: power within 10 seconds and 48 hours of fuel.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="27-power-distribution-to-the-rack">2.7 Power Distribution to the Rack<a class="headerlink" href="#27-power-distribution-to-the-rack" title="Permanent link">&para;</a></h2>
+<p>After the UPS, power still has to reach hundreds of racks and thousands of servers. It travels through floor-standing power distribution units, panels or overhead busbars, then flexible cables ('whips') into the power strips inside each rack. Most servers have two power supplies plugged into two separate feeds, A and B, so losing one feed does not switch them off.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-07-power-distribution-to-the-rack.svg" alt="Either path alone can carry the server, so one side can be maintained or fail without downtime." loading="lazy">
+<figcaption><strong>A and B feeds to a dual-corded server.</strong> Either path alone can carry the server, so one side can be maintained or fail without downtime.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a city's water mains: big pipes under the main road (busway), smaller pipes down each street (whips) and finally the taps in each kitchen (rack PDU outlets).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At the fictional Bluewater Colo, each row has two overhead busways, one from UPS A and one from UPS B. When a customer moves in, a technician clicks a plug-in tap-off unit onto each busway and drops a 32 A three-phase whip into the rack. Each rack has two switched, metered rack PDUs, and every dual-corded server plugs one supply into each, so a busway shutdown for maintenance causes no downtime.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>UPS output feeds floor PDUs (often with a transformer) or overhead busway running along each row.</li>
+<li>Remote power panels or busway tap-off boxes provide individually protected circuits for each rack.</li>
+<li>A whip (flexible cable with an industrial connector) runs from the breaker to the rack.</li>
+<li>Rack PDUs distribute power to IEC C13 or C19 outlets and can meter or switch each one.</li>
+<li>Dual-corded servers draw from both A and B rack PDUs, sharing the load and surviving the loss of either.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Data-centre technicians, installation electricians, colocation customer engineers and capacity planners handle rack power daily.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Size A/B pairs so either feed alone can carry the whole rack within its 80% limit, which means about 40% per side in normal running.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Typical rack feed sizes: 230 V 32 A single-phase ≈ 7.4 kVA; 400 V 32 A three-phase ≈ 22 kVA; 208 V 30 A three-phase ≈ 10.8 kVA, all before the 80% continuous derating.</li>
+<li>Each feed of an A/B pair normally carries half the rack but must carry it all alone, so with the 80% rule each side is planned at no more than about 40% in normal running.</li>
+<li>Busway tap-off boxes carry their own breakers and often metering, and many systems allow them to be added while the busway stays live, speeding changes.</li>
+<li>Intelligent rack PDUs report inlet, phase or outlet power over SNMP, Modbus or web APIs into DCIM, supporting capacity planning, customer billing and remote power cycling.</li>
+<li>Denser racks move to 415 V or 480 V three-phase feeds and 60-63 A circuits, or to OCP-style power shelves feeding a DC busbar instead of many individual cords.</li>
+<li>US floor PDUs often step 480 V down to 208/120 V; distributing at 415/240 V removes that transformer stage and its losses.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Plugging both power supplies into the same rack PDU: the server then has no feed redundancy at all.</li>
+<li>Loading each side of an A/B pair above about 40%: if one feed fails, the survivor exceeds its limit and may trip.</li>
+<li>Ignoring phase balance on three-phase rack PDUs, which strands capacity on one phase while another overloads.</li>
+</ul>
+</div>
+<h3 id="try-it-check-an-ab-rack-pair-stays-safe-if-one-side-fails">Try it: Check an A/B rack pair stays safe if one side fails<a class="headerlink" href="#try-it-check-an-ab-rack-pair-stays-safe-if-one-side-fails" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">rack_load_kw</span> <span class="o">=</span> <span class="mf">14.0</span>
+<span class="n">pdu_capacity_kw</span> <span class="o">=</span> <span class="mf">22.0</span>     <span class="c1"># e.g. 400 V, 32 A three-phase</span>
+<span class="n">safe_limit</span> <span class="o">=</span> <span class="n">pdu_capacity_kw</span> <span class="o">*</span> <span class="mf">0.8</span>
+
+<span class="n">normal_each</span> <span class="o">=</span> <span class="n">rack_load_kw</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Normal: </span><span class="si">{</span><span class="n">normal_each</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kW per side"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"One side fails -&gt;"</span><span class="p">,</span> <span class="n">rack_load_kw</span><span class="p">,</span> <span class="s2">"kW on survivor;"</span><span class="p">,</span>
+      <span class="s2">"OK"</span> <span class="k">if</span> <span class="n">rack_load_kw</span> <span class="o">&lt;=</span> <span class="n">safe_limit</span> <span class="k">else</span> <span class="s2">"OVERLOAD RISK"</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_6">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Floor-standing PDU</strong><br><em>Vertiv, Schneider Electric, Eaton · Equipment · Current · Electrical</em></td>
+<td>A cabinet in the data hall, often with an isolation transformer, that steps voltage and feeds many rack circuits.</td>
+<td>A 300 kVA PDU converts 480 V to 208/120 V and feeds 84 rack breakers.</td>
+</tr>
+<tr>
+<td><strong>Remote power panel (RPP)</strong><br><em>Vertiv, Schneider Electric, Eaton · Equipment · Current · Electrical</em></td>
+<td>A slim cabinet of branch breakers placed near racks, fed from a PDU, to shorten cable runs.</td>
+<td>Two RPPs at the end of each row supply all 20 racks in that row.</td>
+</tr>
+<tr>
+<td><strong>Overhead busway</strong><br><em>Legrand (Starline), Vertiv, Schneider Electric, Siemens, Eaton · System · Current · Electrical</em></td>
+<td>Enclosed overhead busbars running along a row; plug-in tap-off units feed racks without new cabling.</td>
+<td>Adding a rack takes minutes: clip a tap-off box onto the busway and connect the whip.</td>
+</tr>
+<tr>
+<td><strong>Whip</strong><br><em>Installation practice; NFPA 70 / IEC 60364 · Component · Current · Electrical</em></td>
+<td>A flexible pre-made power cable with a connector, linking a breaker or busway tap-off to a rack PDU.</td>
+<td>A 3 m whip with an IEC 60309 32 A plug drops from the busway to the rack top.</td>
+</tr>
+<tr>
+<td><strong>Basic and metered rack PDU</strong><br><em>APC (Schneider Electric), Vertiv Geist, Raritan and Server Technology (Legrand), Eaton · Equipment · Current · IT</em></td>
+<td>Basic PDUs simply distribute power; metered PDUs also display or report total current so you can avoid overloads.</td>
+<td>A technician reads 11 A on the metered PDU's display before adding a new server.</td>
+</tr>
+<tr>
+<td><strong>Switched and intelligent rack PDU</strong><br><em>APC (Schneider Electric), Vertiv Geist, Raritan, Server Technology, Eaton · Equipment · Current · IT</em></td>
+<td>Networked PDUs that measure each outlet and can switch outlets on or off remotely via web, SNMP or Redfish.</td>
+<td>An engineer remotely power-cycles a hung server through the PDU's web interface.</td>
+</tr>
+<tr>
+<td><strong>IEC 60320 C13/C14</strong><br><em>IEC 60320-1 · Standard · Current · IT</em></td>
+<td>The common server power connector pair rated 10 A (15 A in North America); C13 on the cord, C14 on the device.</td>
+<td>A 1U server's power cord has a C13 connector plugging into the PSU's C14 inlet.</td>
+</tr>
+<tr>
+<td><strong>IEC 60320 C19/C20</strong><br><em>IEC 60320-1 · Standard · Current · IT</em></td>
+<td>Larger 16 A (20 A in North America) connector pair used by high-power servers, GPU systems and switches.</td>
+<td>A GPU server's 3 kW power supplies use C19/C20 cords.</td>
+</tr>
+<tr>
+<td><strong>IEC 60309 industrial connectors</strong><br><em>IEC 60309-1/-2 · Standard · Current · Electrical</em></td>
+<td>Colour-coded industrial plugs; blue for about 230 V and red for 400 V three-phase, in 16, 32, 63 and 125 A sizes.</td>
+<td>European racks are fed by red 5-pin 32 A IEC 60309 plugs.</td>
+</tr>
+<tr>
+<td><strong>NEMA L6-30 / L21-30</strong><br><em>NEMA WD 6 · Standard · Current · Electrical</em></td>
+<td>North American twist-lock plugs: L6-30 is 250 V single-phase 30 A; L21-30 is 120/208 V three-phase 30 A.</td>
+<td>A US colo offers customers either L6-30 or L21-30 whips per rack.</td>
+</tr>
+<tr>
+<td><strong>A/B feeds and dual-corded equipment</strong><br><em>Uptime Institute; TIA-942 · Practice · Current · Electrical</em></td>
+<td>Two independent power paths to each rack; servers with two power supplies connect one to each.</td>
+<td>When UPS A is shut down for maintenance, every server keeps running on its B supply.</td>
+</tr>
+<tr>
+<td><strong>Rack-mount ATS</strong><br><em>APC (Schneider Electric), Vertiv, Eaton · Equipment · Current · IT</em></td>
+<td>A small transfer switch in the rack letting single-corded equipment use both A and B feeds.</td>
+<td>An old single-PSU firewall is plugged into a rack ATS fed by both PDUs.</td>
+</tr>
+<tr>
+<td><strong>80 PLUS efficiency levels</strong><br><em>CLEAResult 80 PLUS programme · Certification · Current · Sustainability</em></td>
+<td>Certifies power supply efficiency at several loads, from Bronze through Gold and Platinum up to Titanium.</td>
+<td>Titanium server PSUs reach roughly 96% efficiency at half load.</td>
+</tr>
+<tr>
+<td><strong>CRPS / M-CRPS power supply</strong><br><em>Intel CRPS; OCP M-CRPS specification · Standard · Current · IT</em></td>
+<td>Common Redundant Power Supply form factor, letting hot-swappable server PSUs from different makers fit the same slot.</td>
+<td>A server supports two 2,400 W M-CRPS units in a 1+1 redundant pair.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="28-power-redundancy-architectures">2.8 Power Redundancy Architectures<a class="headerlink" href="#28-power-redundancy-architectures" title="Permanent link">&para;</a></h2>
+<p>Redundancy means having more equipment or more paths than you strictly need, so a breakdown or a planned repair does not stop the servers. Designers describe it with simple codes such as N, N+1 and 2N, where N is the amount needed to carry the load. More redundancy means higher reliability but also higher cost and more equipment sitting partly idle.</p>
+<p><strong>Three ways to protect a 3 MW load</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>N+1 (4 × 1 MW)</th>
+<th>2N (2 × 3 MW)</th>
+<th>Distributed 4N/3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Installed UPS</strong></td>
+<td>4 MW</td>
+<td>6 MW</td>
+<td>4 MW</td>
+</tr>
+<tr>
+<td><strong>Max normal loading</strong></td>
+<td>75%</td>
+<td>50%</td>
+<td>75% per system</td>
+</tr>
+<tr>
+<td><strong>Survives</strong></td>
+<td>One module failure</td>
+<td>Loss of a whole system</td>
+<td>Loss of any one system</td>
+</tr>
+<tr>
+<td><strong>Separate paths</strong></td>
+<td>No, single path</td>
+<td>Yes, A and B</td>
+<td>Yes, spread over four</td>
+</tr>
+<tr>
+<td><strong>Relative cost</strong></td>
+<td>Lowest</td>
+<td>Highest</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<p><em>More installed capacity buys more resilience but lowers normal loading and raises cost.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A family with three people and three umbrellas is N; keep one spare umbrella and you are N+1; give everyone two complete sets in two different cupboards and you are 2N.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Summit Hosting needs 3 MW of UPS capacity. With N+1 it installs four 1 MW modules on one system. A bank customer demands 2N, so Summit builds two fully separate 3 MW systems (A and B), using 6 MW of UPS for 3 MW of load. For a large AI hall it instead chooses distributed redundancy 4N/3: four 1 MW systems each loaded to 750 kW, so any one can fail and the other three absorb its load.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Work out N: the capacity needed to carry the full design IT load.</li>
+<li>Choose spare components (N+1, N+2) to survive equipment failure or maintenance on one unit.</li>
+<li>Choose spare paths (2N, distributed redundant) to survive failure of a whole system, switchboard or cable.</li>
+<li>Check concurrent maintainability: every component can be shut down for maintenance without dropping IT load.</li>
+<li>Check fault tolerance (for Tier IV): any single failure is automatically isolated without affecting IT.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Data-centre designers, reliability engineers, Uptime Institute accredited professionals and colocation sales engineers use these terms constantly.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>N+1 adds spare components; 2N duplicates the whole path; a design can be N+1 on generators but 2N on UPS, so always ask 'redundant for which system?'.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Notation applies per subsystem: a site might have dual utility feeds, N+1 generators, 2N UPS and N+1 chillers, and its overall resilience is limited by the weakest of them.</li>
+<li>Distributed redundant schemes (3N/2, 4N/3) run each system more heavily than 2N, saving cost and losses, but need careful load placement so a failure redistributes as intended.</li>
+<li>Block-redundant 'catcher' designs use static or automatic transfer switches to move a failed block's load onto a shared reserve system, popular in large colocation halls.</li>
+<li>Reliability engineers use reliability block diagrams, FMEA and fault-tree analysis to find single points of failure and common-cause risks before anything is built.</li>
+<li>Concurrent maintainability needs every component and path to be removable for planned work; fault tolerance also needs automatic response to failures and physical compartmentalisation.</li>
+<li>Redundancy has costs beyond capital: lower normal loading reduces efficiency, and more complex switching creates more chances for operator error.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Calling a design 2N when both systems share a switchboard, control system or fuel supply.</li>
+<li>Letting load grow until 'N+1' silently becomes N, because the spare unit is now needed to carry the load.</li>
+<li>Assuming more redundancy is always better: complex switching adds failure modes and operator-error risk.</li>
+</ul>
+</div>
+<h3 id="try-it-usable-capacity-and-loading-for-common-redundancy-schemes">Try it: Usable capacity and loading for common redundancy schemes<a class="headerlink" href="#try-it-usable-capacity-and-loading-for-common-redundancy-schemes" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>unit_mw = 1.0
+schemes = {
+    "N+1 (4 units, need 3)": (4, 3),
+    "2N (2 systems of 3)": (6, 3),
+    "Distributed 4N/3": (4, 3),
+    "Distributed 3N/2": (3, 2),
+}
+for name, (installed, usable) in schemes.items():
+    print(f"{name:24} installed {installed*unit_mw:.0f} MW, usable {usable*unit_mw:.0f} MW, "
+          f"max normal loading {usable/installed:.0%}")
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_7">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Component vs path redundancy</strong><br><em>Uptime Institute Tier Standard; TIA-942 · Concept · Current · Electrical</em></td>
+<td>Component redundancy adds spare units on one path (N+1); path redundancy duplicates the distribution route itself (2N).</td>
+<td>A spare UPS module covers a module fault, but only a second path survives a failed switchboard.</td>
+</tr>
+<tr>
+<td><strong>Redundancy by subsystem</strong><br><em>Basis of design documents · Practice · Current · Electrical</em></td>
+<td>Redundancy is specified separately for utility feeds, generators, UPS, distribution and cooling; the weakest subsystem sets overall resilience.</td>
+<td>A basis of design lists dual utility feeds, N+1 generators, 2N UPS, N+1 chillers and A/B rack feeds.</td>
+</tr>
+<tr>
+<td><strong>Maximum normal loading</strong><br><em>Redundancy design practice · Metric · Current · Electrical</em></td>
+<td>The highest share of installed capacity usable in normal running while still surviving a failure: 50% for 2N, 75% for 4N/3.</td>
+<td>An operator caps each system of a 3N/2 design at 67%, so any two can carry the full load.</td>
+</tr>
+<tr>
+<td><strong>2N+1</strong><br><em>Uptime Institute; TIA-942 · Concept · Current · Electrical</em></td>
+<td>Two complete systems, each with its own spare unit, surviving maintenance and a failure at the same time.</td>
+<td>A trading firm's 2N+1 UPS design keeps running even with one module down in each system.</td>
+</tr>
+<tr>
+<td><strong>Distributed redundant (catcher-less)</strong><br><em>Common hyperscale/colo design practice · Concept · Current · Electrical</em></td>
+<td>Three or more systems, each loaded below full, so the others share the load if one fails (e.g. 4N/3, 3N/2).</td>
+<td>In a 4N/3 design each system runs at 75%, and up to 100% after a failure.</td>
+</tr>
+<tr>
+<td><strong>Block redundant (catcher)</strong><br><em>Common colo design practice · Concept · Current · Electrical</em></td>
+<td>Several active blocks plus one reserve 'catcher' block that picks up any failed block via transfer switches.</td>
+<td>Four 2 MW blocks share one 2 MW catcher connected through static transfer switches.</td>
+</tr>
+<tr>
+<td><strong>Isolated redundant</strong><br><em>UPS design practice · Concept · Current · Electrical</em></td>
+<td>A reserve UPS feeds the bypass inputs of the primary UPS modules, taking over if one fails.</td>
+<td>A mid-size enterprise site uses one isolated-redundant reserve module behind three primaries.</td>
+</tr>
+<tr>
+<td><strong>System plus system</strong><br><em>Uptime Institute; TIA-942 · Concept · Current · Electrical</em></td>
+<td>Another name for 2N-style designs with two fully separate distribution systems from source to rack.</td>
+<td>A system-plus-system design has two separate electrical rooms, each with its own UPS and switchgear.</td>
+</tr>
+<tr>
+<td><strong>Concurrent maintainability</strong><br><em>Uptime Institute Tier III · Concept · Current · Operations</em></td>
+<td>Any component or path can be taken out for planned work without shutting down IT equipment.</td>
+<td>Engineers service UPS B while all IT runs on UPS A, with no customer impact.</td>
+</tr>
+<tr>
+<td><strong>Fault tolerance</strong><br><em>Uptime Institute Tier IV · Concept · Current · Electrical</em></td>
+<td>Survives any single unplanned failure automatically, without human action and without IT impact.</td>
+<td>A breaker fault on side A is isolated automatically, and side B carries all IT load with no operator action.</td>
+</tr>
+<tr>
+<td><strong>Common-cause failure</strong><br><em>Reliability engineering; IEC 61508 terminology · Concept · Current · Operations</em></td>
+<td>One cause disabling several 'redundant' parts at once, such as a shared control cable, contaminated fuel or a faulty firmware update.</td>
+<td>An audit finds both UPS systems share one control cable, a hidden common-cause risk.</td>
+</tr>
+<tr>
+<td><strong>FMEA and fault-tree analysis</strong><br><em>IEC 60812 (FMEA); IEC 61025 (fault tree analysis) · Procedure · Current · Operations</em></td>
+<td>Structured methods listing how each component can fail, the effect on IT load, and which combinations cause an outage.</td>
+<td>An FMEA workshop finds one control power supply feeding both generator paralleling panels.</td>
+</tr>
+<tr>
+<td><strong>A/B load imbalance</strong><br><em>Capacity management practice · Concept · Current · Operations</em></td>
+<td>Uneven loading between A and B feeds, often from single-corded kit or mis-plugged servers, which limits usable capacity on the busier side.</td>
+<td>A hall has 2 MW of UPS left, but uneven A/B loading means only 1.6 MW can safely be sold.</td>
+</tr>
+<tr>
+<td><strong>Compartmentalisation</strong><br><em>Uptime Institute Tier IV requirement · Practice · Current · Facilities</em></td>
+<td>Physically separating redundant systems and their pathways in fire-rated rooms or routes so one fire, flood or leak cannot affect both.</td>
+<td>A and B UPS rooms sit on opposite sides of the building with separate cable routes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="29-power-density-ai-era-power">2.9 Power Density &amp; AI-Era Power<a class="headerlink" href="#29-power-density-ai-era-power" title="Permanent link">&para;</a></h2>
+<p>AI servers packed with GPUs draw far more power per rack than ordinary servers, so power systems are being redesigned around them. A traditional rack might use 5-10 kW; a modern AI rack can use well over 100 kW, and future racks are planned near 1 MW. AI training also makes power demand jump up and down very quickly, which stresses UPS systems, generators and the grid.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-09-power-density-ai-era-power.svg" alt="AI pushed rack power up more than tenfold in a few years, and vendors now target 1 MW racks." loading="lazy">
+<figcaption><strong>Power per rack, then and next.</strong> AI pushed rack power up more than tenfold in a few years, and vendors now target 1 MW racks.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Moving from normal racks to AI racks is like replacing a street of houses with a row of steelworks: the same street now needs thicker cables, bigger substations and a way to handle sudden surges.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Vantage Ridge AI campus plans halls of liquid-cooled racks drawing about 130 kW each. A 1,000-rack hall needs 130 MW of IT power, more than an entire traditional campus. During training, all GPUs pause together at checkpoints, so hall load can swing by tens of megawatts within a second. The design team adds rack-level energy storage and asks the GPU software team to enable power-smoothing settings.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Higher rack power means much higher current, so designers raise voltage to keep cable sizes manageable.</li>
+<li>Inside racks, power shelves convert AC to around 48-54 V DC busbars feeding server trays.</li>
+<li>Next-generation designs move AC-to-DC conversion out of the rack into sidecars or the facility (±400 V or 800 V DC).</li>
+<li>Energy storage at rack, row or facility level smooths sub-second AI load swings.</li>
+<li>Liquid cooling is required because air cannot remove heat at 100 kW+ per rack (see the cooling chapter).</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>AI infrastructure architects, hyperscale power engineers, GPU cluster operators and equipment vendors work on high-density power.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Be ready to explain why voltage rises as density rises: for the same power, doubling voltage halves current, and cable losses fall to a quarter.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Current scales with power: a 130 kW rack at 415 V three-phase draws about 180 A at unity power factor, far beyond one 32 A or 63 A feed, so racks take several feeds or busway connections.</li>
+<li>NVIDIA says its 800 V DC architecture supports racks from about 100 kW to over 1 MW, with full-scale production aligned to its Kyber rack-scale systems in 2027.</li>
+<li>At 54 V a 1 MW rack would need roughly 18,500 A of busbar current, so conversion moves to sidecar racks or facility-level DC to cut copper and conversion stages.</li>
+<li>Synchronised GPU work causes large, fast power swings at job starts and checkpoints; mitigations include rack energy storage, software ramp controls and GPU power caps.</li>
+<li>OCP's Mt Diablo work, backed by Meta, Microsoft and Google, moves power conversion into a separate ±400 V DC sidecar so the IT rack holds more accelerators.</li>
+<li>Higher-voltage DC brings new safety demands: DC arcs have no natural current zero to extinguish them, so breakers, connectors and training must be specified for DC faults.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Planning AI halls on average density: a few 130 kW racks beside 10 kW racks need point capacity, not averages.</li>
+<li>Ignoring load dynamics: UPS, generators and the grid connection must handle rapid swings, not just peak kW.</li>
+<li>Assuming 800 V DC is plug-and-play today: it is emerging, with standards and products still maturing.</li>
+</ul>
+</div>
+<h3 id="try-it-current-needed-for-a-1-mw-rack-at-different-dc-voltages">Try it: Current needed for a 1 MW rack at different DC voltages<a class="headerlink" href="#try-it-current-needed-for-a-1-mw-rack-at-different-dc-voltages" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">rack_w</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+<span class="k">for</span> <span class="n">volts</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">800</span><span class="p">):</span>
+    <span class="n">amps</span> <span class="o">=</span> <span class="n">rack_w</span> <span class="o">/</span> <span class="n">volts</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">volts</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2"> V DC -&gt; </span><span class="si">{</span><span class="n">amps</span><span class="si">:</span><span class="s2">&gt;8,.0f</span><span class="si">}</span><span class="s2"> A"</span><span class="p">)</span>
+<span class="c1"># 54 V needs about 18,500 A: impractical busbars, hence 800 V DC plans</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_8">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data hall power density</strong><br><em>Design practice; industry surveys · Metric · Current · Electrical</em></td>
+<td>Power per floor area or per hall; AI halls pack many more megawatts into the same floor space than older halls.</td>
+<td>A hall once sized for 2 MW of 5 kW racks is rebuilt to host 10 MW of liquid-cooled AI racks.</td>
+</tr>
+<tr>
+<td><strong>NVIDIA DGX H100</strong><br><em>NVIDIA · Product · Current · IT</em></td>
+<td>Eight-GPU server with a maximum power of about 10.2 kW; four per rack meant roughly 40 kW racks.</td>
+<td>A university fits only two DGX H100 systems per rack because its hall is limited to 25 kW.</td>
+</tr>
+<tr>
+<td><strong>Rack power shelves (NVL72-class)</strong><br><em>NVIDIA MGX and OCP ORv3-based rack designs · Equipment · Current · Electrical</em></td>
+<td>Shelves of hot-swappable rectifiers in each 120-140 kW AI rack convert AC feeds to low-voltage DC (around 48-54 V) on a busbar.</td>
+<td>A technician hot-swaps a failed rectifier in one shelf while the GB200 NVL72 rack keeps training.</td>
+</tr>
+<tr>
+<td><strong>1 MW-class racks</strong><br><em>NVIDIA Kyber roadmap; OCP Mt Diablo · Concept · Emerging · Electrical</em></td>
+<td>Future AI racks planned to draw hundreds of kilowatts up to around 1 MW, needing new power architectures.</td>
+<td>Designers reserve floor space beside each AI rack for a separate power sidecar.</td>
+</tr>
+<tr>
+<td><strong>AI training load swings</strong><br><em>Grid operators; GPU vendors; hyperscalers · Concept · Emerging · Electrical</em></td>
+<td>Synchronised GPUs ramp power up and down together, causing fast, large swings that can disturb generators and grids.</td>
+<td>A 50 MW cluster drops to 15 MW during checkpointing, then jumps back within a second.</td>
+</tr>
+<tr>
+<td><strong>Power smoothing</strong><br><em>NVIDIA (GB300 platform), hyperscalers · Technology · Emerging · Electrical</em></td>
+<td>Using energy storage, power caps and controlled ramp rates to flatten GPU power swings before they reach the grid.</td>
+<td>Operators enable smoothing so a training job ramps over seconds instead of milliseconds.</td>
+</tr>
+<tr>
+<td><strong>NVIDIA 800 V DC architecture</strong><br><em>NVIDIA with partners incl. Eaton, Schneider Electric, Vertiv, Infineon · Technology · Emerging · Electrical</em></td>
+<td>Announced May 2025: facility-level 800 V DC distribution for 1 MW-class racks, targeted for 2027 Kyber systems.</td>
+<td>NVIDIA says 800 V DC lets the same conductors carry far more power and cuts copper use.</td>
+</tr>
+<tr>
+<td><strong>±400 V DC and Mt Diablo</strong><br><em>Open Compute Project (Meta, Microsoft, Google) · Standard · Emerging · Electrical</em></td>
+<td>OCP effort to standardise a ±400 V DC 'sidecar' power rack separate from the IT rack, supporting up to about 1 MW per rack.</td>
+<td>Google described ±400 V DC at the April 2025 OCP EMEA Summit, reusing electric-vehicle components.</td>
+</tr>
+<tr>
+<td><strong>Sidecar power rack</strong><br><em>OCP Mt Diablo; hyperscale designs · Equipment · Emerging · Electrical</em></td>
+<td>A separate rack next to the IT rack holding power conversion and storage, freeing IT rack space for GPUs.</td>
+<td>Each pair of AI racks shares a sidecar converting AC to ±400 V DC.</td>
+</tr>
+<tr>
+<td><strong>OCP Open Rack V3 (48 V busbar)</strong><br><em>Open Compute Project · Standard · Current · IT</em></td>
+<td>Open rack standard with power shelves converting AC to about 48-54 V DC on a vertical busbar feeding servers.</td>
+<td>Server trays slide into the rack and clip directly onto the rear 48 V busbar, with no power cords.</td>
+</tr>
+<tr>
+<td><strong>Battery backup unit (BBU) shelf</strong><br><em>OCP Open Rack; hyperscale designs · Equipment · Current · Electrical</em></td>
+<td>Lithium battery modules inside the rack, giving short ride-through instead of, or alongside, a central UPS.</td>
+<td>A hyperscaler's rack uses BBU shelves to ride through the seconds until generators pick up the load.</td>
+</tr>
+<tr>
+<td><strong>Solid-state transformer (SST)</strong><br><em>Research groups, start-ups and major electrical vendors · Technology · Emerging · Electrical</em></td>
+<td>Power-electronic transformer converting medium-voltage AC directly to DC or LV, much smaller than a conventional transformer.</td>
+<td>Engineers evaluate SSTs to feed 800 V DC directly from the 13.8 kV supply.</td>
+</tr>
+<tr>
+<td><strong>GPU power capping</strong><br><em>nvidia-smi; DCGM; server BMC · Practice · Current · IT</em></td>
+<td>Limiting maximum power per GPU or server to fit power budgets, trading some performance.</td>
+<td>An operator caps GPUs at 85% power to fit 20% more servers in the same feed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="210-grounding-bonding-surge-protection">2.10 Grounding, Bonding &amp; Surge Protection<a class="headerlink" href="#210-grounding-bonding-surge-protection" title="Permanent link">&para;</a></h2>
+<p>Grounding (earthing) connects the electrical system to the earth, and bonding connects all metal parts together so they stay at the same voltage. Together they protect people from electric shock, let breakers trip quickly on faults and reduce electrical noise that can upset sensitive electronics. Lightning protection and surge protectors stop sudden voltage spikes from damaging equipment.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-10-grounding-bonding-surge-protection.svg" alt="One continuous, low-impedance bonding network keeps every metal part at the same potential." loading="lazy">
+<figcaption><strong>From earth electrode to equipment.</strong> One continuous, low-impedance bonding network keeps every metal part at the same potential.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Bonding is like tying all the boats in a harbour together: when a wave comes, they all rise and fall together, so nobody gets crushed between two boats at different heights.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At the fictional Pinewood Data, a technician touching two racks on different circuits feels a small tingle. An investigation finds one rack was never bonded to the room's bonding network. After connecting it with a green-and-yellow bonding conductor to the row's bonding busbar, the voltage difference measures near zero. The team then adds rack bonding to its installation checklist.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>An earth electrode system (rods, rings or mesh) connects the site's electrical system to the ground.</li>
+<li>The main earthing terminal or primary bonding busbar links incoming services, structural steel and electrical earth.</li>
+<li>Bonding conductors connect racks, cable trays, pipes and raised floor pedestals to a common bonding network.</li>
+<li>Surge protective devices divert voltage spikes from lightning or switching to earth.</li>
+<li>Engineers test earth resistance and continuity regularly and after any building works.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Electrical engineers, telecommunications installers, lightning-protection specialists and commissioning engineers handle grounding and bonding.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember the difference: grounding/earthing connects to the earth; bonding connects metal parts to each other. Both matter for safety.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>IEC earthing codes use letters: the first (T or I) gives the source's relation to earth, the second (T or N) the exposed parts, and -S, -C or -C-S whether neutral and protective conductors are separate or combined.</li>
+<li>Fast fault clearing needs a low earth fault loop impedance: the lower Zs, the higher the fault current and the sooner the breaker's instantaneous trip operates.</li>
+<li>TIA-607 defines the telecom bonding hierarchy (PBB, TBB, SBB) and requires bonding conductors to be correctly sized, labelled and routed as directly as possible.</li>
+<li>Surge protection is layered: Type 1 SPDs at the service entrance for lightning currents, Type 2 at distribution boards and Type 3 close to sensitive equipment.</li>
+<li>Earth electrode resistance is measured by fall-of-potential or clamp-on methods; targets of a few ohms are common, but local codes and the design set the requirement.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Installing a separate 'clean' earth rod for IT equipment: unbonded earths create dangerous voltage differences and breach wiring codes.</li>
+<li>Bonding racks through painted surfaces without proper lugs or jumpers, leaving high-resistance connections.</li>
+<li>Treating grounding as a one-off job: alterations, corrosion and new racks require periodic continuity and resistance testing.</li>
+</ul>
+</div>
+<h3 id="try-it-simple-earth-loop-check-will-a-breaker-trip-fast-enough-tn-system">Try it: Simple earth-loop check: will a breaker trip fast enough? (TN system)<a class="headerlink" href="#try-it-simple-earth-loop-check-will-a-breaker-trip-fast-enough-tn-system" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">u0</span> <span class="o">=</span> <span class="mi">230</span>            <span class="c1"># nominal voltage to earth (V)</span>
+<span class="n">zs</span> <span class="o">=</span> <span class="mf">0.8</span>            <span class="c1"># measured earth fault loop impedance (ohms)</span>
+<span class="n">fault_a</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">/</span> <span class="n">zs</span>
+<span class="n">mcb_instant_trip</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">32</span>   <span class="c1"># Type B 32 A MCB trips instantly at 3-5 x In</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Fault current </span><span class="si">{</span><span class="n">fault_a</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> A -&gt;"</span><span class="p">,</span> <span class="s2">"trips fast"</span> <span class="k">if</span> <span class="n">fault_a</span> <span class="o">&gt;=</span> <span class="n">mcb_instant_trip</span> <span class="k">else</span> <span class="s2">"TOO SLOW: investigate"</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_9">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Grounding (earthing)</strong><br><em>IEC 60364-5-54; NFPA 70 Article 250 · Concept · Current · Electrical</em></td>
+<td>Connecting the electrical system to the earth to stabilise voltage and give fault current a safe return path.</td>
+<td>A site's earth ring around the building connects to the transformer neutral.</td>
+</tr>
+<tr>
+<td><strong>Equipotential bonding</strong><br><em>IEC 60364-4-41; BS 7671 · Concept · Current · Electrical</em></td>
+<td>Connecting all exposed metal parts together so a person cannot touch two parts at dangerously different voltages.</td>
+<td>Water pipes, cable trays and racks are bonded to the main earthing terminal.</td>
+</tr>
+<tr>
+<td><strong>TN-S earthing system</strong><br><em>IEC 60364-1 · Concept · Current · Electrical</em></td>
+<td>A system with separate neutral and protective earth conductors throughout; preferred in data centres for low electrical noise.</td>
+<td>A UK data centre uses TN-S from its own transformer, keeping neutral and earth apart.</td>
+</tr>
+<tr>
+<td><strong>TN-C-S, TT and IT systems</strong><br><em>IEC 60364-1 · Concept · Current · Electrical</em></td>
+<td>Other earthing arrangements: combined neutral-earth upstream (TN-C-S), local earth rod (TT) or isolated supply (IT).</td>
+<td>A small edge site on a TT supply uses RCDs because earth fault currents are low.</td>
+</tr>
+<tr>
+<td><strong>Mesh bonding network (Mesh-BN)</strong><br><em>ITU-T K.27; EN 50310 · Concept · Current · Electrical</em></td>
+<td>A grid of bonding conductors under or above the racks so all equipment shares a low-impedance common reference.</td>
+<td>Copper conductors in a 1.2 m grid under the raised floor bond every rack and pedestal.</td>
+</tr>
+<tr>
+<td><strong>Signal reference grid (SRG)</strong><br><em>IEEE 1100 (Emerald Book) · Concept · Legacy · Electrical</em></td>
+<td>A copper grid under raised floors meant to give electronics a common low-noise reference; now usually part of a mesh-BN.</td>
+<td>A 1990s mainframe room still has its original copper-strip SRG under the floor.</td>
+</tr>
+<tr>
+<td><strong>ANSI/TIA-607 bonding standard</strong><br><em>Telecommunications Industry Association (TIA-607 series) · Standard · Current · IT</em></td>
+<td>Specifies telecommunications bonding and grounding in buildings, including the PBB, SBB and bonding conductors.</td>
+<td>A cabling contractor follows TIA-607 when bonding racks to the telecom bonding backbone.</td>
+</tr>
+<tr>
+<td><strong>Primary / secondary bonding busbar (PBB / SBB)</strong><br><em>ANSI/TIA-607 · Component · Current · IT</em></td>
+<td>Copper busbars that collect bonding conductors; PBB (formerly TMGB) at the main room, SBBs on floors or rows.</td>
+<td>Each row's SBB connects back to the PBB near the building entrance.</td>
+</tr>
+<tr>
+<td><strong>IEEE 1100 (Emerald Book)</strong><br><em>IEEE · Standard · Legacy · Electrical</em></td>
+<td>Classic IEEE recommended practice for powering and grounding sensitive electronic equipment; older but still widely referenced.</td>
+<td>Engineers still quote the Emerald Book when explaining isolated grounds and noise.</td>
+</tr>
+<tr>
+<td><strong>Lightning protection system (IEC 62305)</strong><br><em>IEC 62305 series · Standard · Current · Facilities</em></td>
+<td>Risk assessment and design of air terminals, down conductors and earthing to protect buildings from lightning.</td>
+<td>A risk assessment under IEC 62305-2 sets Lightning Protection Level II for a coastal data centre.</td>
+</tr>
+<tr>
+<td><strong>Surge protective device (SPD)</strong><br><em>IEC 61643-11; UL 1449 · Equipment · Current · Electrical</em></td>
+<td>Device that diverts voltage spikes to earth, installed at main boards, sub-boards and sometimes rack level.</td>
+<td>A Type 1 SPD at the main switchboard protects against lightning-induced surges on the incoming supply.</td>
+</tr>
+<tr>
+<td><strong>Earth resistance testing</strong><br><em>IEEE 81; BS 7430 · Procedure · Current · Operations</em></td>
+<td>Measuring the resistance of the earth electrode system, often by the fall-of-potential method.</td>
+<td>An annual test shows 1.8 ohms, within the design target of 5 ohms or less.</td>
+</tr>
+<tr>
+<td><strong>Electrostatic discharge (ESD) control</strong><br><em>IEC 61340-5-1; ANSI/ESD S20.20 · Practice · Current · IT</em></td>
+<td>Wrist straps, grounded mats and procedures that stop static shocks damaging electronic components.</td>
+<td>A technician clips an ESD wrist strap to the rack frame before replacing a memory module.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="211-on-site-generation-storage-nuclear-deals">2.11 On-Site Generation, Storage &amp; Nuclear Deals<a class="headerlink" href="#211-on-site-generation-storage-nuclear-deals" title="Permanent link">&para;</a></h2>
+<p>Because grids in many places cannot supply new data centres fast enough, operators increasingly make or store some of their own power. Options include large battery systems, fuel cells, gas turbines and engines, solar panels and long-term contracts with nuclear power plants, including new small reactors. Some of these replace backup diesel; others provide everyday 'prime' power.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-11-on-site-generation-storage-nuclear-deals.svg" alt="The controller balances on-site sources, storage, grid supply and load, and can island the campus." loading="lazy">
+<figcaption><strong>A campus microgrid.</strong> The controller balances on-site sources, storage, grid supply and load, and can island the campus.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a restaurant that cannot get a bigger gas supply from the street, so it adds its own solar panels, a battery and a contract with a farm for guaranteed deliveries.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Prairie Compute campus is told the grid can supply only 100 MW until 2030, but it wants 300 MW by 2028. It installs 150 MW of gas reciprocating engines as an on-site 'bridge', a 100 MWh battery to handle AI load swings and provide grid services, and signs a long-term agreement for output from a future small modular reactor. Once the grid upgrade arrives, the engines become backup and peak-shaving plant.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Assess the gap between the power the grid can deliver, and when, versus the campus demand.</li>
+<li>Choose on-site options: batteries, fuel cells, engines or turbines, solar, or a combination as a microgrid.</li>
+<li>Obtain air permits, gas supply and grid-connection agreements for any on-site generation.</li>
+<li>Sign long-term power purchase agreements (PPAs) for clean firm power such as nuclear or geothermal.</li>
+<li>Control everything with a microgrid controller that balances sources, storage and load.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Energy procurement teams, power-plant engineers, project developers and sustainability managers at hyperscalers and developers work on these deals.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Distinguish behind-the-meter supply (power plant feeds the site directly) from front-of-meter supply (power flows over the grid, usually under a PPA).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Bridge power lets AI campuses energise years before a full grid connection, but brings fuel supply, air permits, emissions and reliability planning that utilities normally handle.</li>
+<li>Prime power differs from standby: plant running continuously needs spare units for maintenance (for example N+2 engines), good fuel efficiency and long-term fuel contracts.</li>
+<li>Large batteries respond within milliseconds to seconds, smoothing AI load swings and earning frequency-response revenue, while engines and turbines cover longer durations.</li>
+<li>Nuclear deals take several forms: buying output from operating plants, restarting retired reactors, funding uprates, and offtake agreements for small modular reactors expected in the 2030s.</li>
+<li>Clean-energy claims differ: annual matching buys enough renewable energy over a year, while 24/7 carbon-free energy matches every hour, which is much harder and is targeted by Google and others.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming on-site solar can run a data centre: roof arrays supply only a few percent of a large site's constant load.</li>
+<li>Treating a PPA as physical supply: most PPAs are financial contracts, and the site still draws power from the grid.</li>
+<li>Underestimating permitting: on-site gas generation needs air permits, pipeline capacity and community acceptance.</li>
+</ul>
+</div>
+<h3 id="try-it-battery-energy-needed-to-ride-through-an-ai-load-swing">Try it: Battery energy needed to ride through an AI load swing<a class="headerlink" href="#try-it-battery-energy-needed-to-ride-through-an-ai-load-swing" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">swing_mw</span> <span class="o">=</span> <span class="mi">40</span>        <span class="c1"># sudden drop or rise in cluster load</span>
+<span class="n">duration_s</span> <span class="o">=</span> <span class="mi">5</span>       <span class="c1"># seconds the battery must cover while generators ramp</span>
+<span class="n">energy_mwh</span> <span class="o">=</span> <span class="n">swing_mw</span> <span class="o">*</span> <span class="n">duration_s</span> <span class="o">/</span> <span class="mi">3600</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Energy: </span><span class="si">{</span><span class="n">energy_mwh</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kWh"</span><span class="p">)</span>
+<span class="c1"># Tiny energy, huge power: this is a job for fast batteries or capacitors</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_10">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Battery energy storage system (BESS)</strong><br><em>Tesla, Fluence, Wärtsilä and others; NFPA 855 · System · Current · Electrical</em></td>
+<td>Large lithium battery installations storing megawatt-hours, used for backup, smoothing load and earning money from grid services.</td>
+<td>A campus installs a 50 MW / 100 MWh BESS that also bids into the frequency-response market.</td>
+</tr>
+<tr>
+<td><strong>Grid-interactive UPS</strong><br><em>Eaton, Schneider Electric, Vertiv; Microsoft pilot in Dublin · Technology · Emerging · Electrical</em></td>
+<td>Using UPS batteries to support grid frequency when not needed for backup, earning revenue and helping renewables.</td>
+<td>Microsoft trialled grid services from UPS batteries at a Dublin data centre with Eaton and Enel X.</td>
+</tr>
+<tr>
+<td><strong>Solid oxide fuel cell (SOFC)</strong><br><em>Bloom Energy · Equipment · Current · Electrical</em></td>
+<td>Generates electricity electrochemically from natural gas or hydrogen without combustion, with low local emissions and quiet operation.</td>
+<td>A data-centre developer deploys fuel cells as prime power while waiting years for a grid connection.</td>
+</tr>
+<tr>
+<td><strong>Hydrogen PEM fuel cell</strong><br><em>Plug Power, Ballard and others · Equipment · Emerging · Sustainability</em></td>
+<td>Fuel cells running on hydrogen, piloted as zero-emission replacements for diesel backup generators.</td>
+<td>Microsoft tested a 3 MW hydrogen fuel cell system as a diesel-generator alternative in 2022.</td>
+</tr>
+<tr>
+<td><strong>On-site gas turbines and engines</strong><br><em>GE Vernova, Siemens Energy, Caterpillar, Wärtsilä, Jenbacher · Equipment · Current · Electrical</em></td>
+<td>Natural-gas generation built at the campus to supply prime power when the grid cannot deliver enough capacity.</td>
+<td>Several US AI campuses added on-site gas generation in 2024-2026 to start operating before grid upgrades.</td>
+</tr>
+<tr>
+<td><strong>On-site solar PV</strong><br><em>Various · Technology · Current · Sustainability</em></td>
+<td>Solar panels on roofs or nearby land; usually supplies only a small fraction of a data centre's constant demand.</td>
+<td>A 2 MW rooftop array covers about 3% of a 20 MW site's annual energy.</td>
+</tr>
+<tr>
+<td><strong>Microgrid</strong><br><em>IEEE 2030.7 / 2030.8 · System · Emerging · Electrical</em></td>
+<td>A local network of generation, storage and loads that can run connected to the grid or independently ('islanded').</td>
+<td>Prairie Compute's controller islands the campus during a grid emergency and runs on engines and batteries.</td>
+</tr>
+<tr>
+<td><strong>Small modular reactor (SMR)</strong><br><em>IAEA definition; X-energy, Kairos Power, NuScale, TerraPower, Oklo and others · Technology · Emerging · Sustainability</em></td>
+<td>Nuclear reactors up to about 300 MW electrical, factory-built in modules; first commercial units for data centres expected around 2030.</td>
+<td>A hyperscaler signs a PPA for output from SMRs planned for the early 2030s.</td>
+</tr>
+<tr>
+<td><strong>Microsoft–Constellation (Crane restart)</strong><br><em>Constellation Energy; Microsoft · Market · Current · Business</em></td>
+<td>2024 20-year agreement to restart Three Mile Island Unit 1, renamed Crane Clean Energy Center, targeted around 2027.</td>
+<td>The reactor's roughly 0.8 GW output is matched to Microsoft's consumption on the PJM grid.</td>
+</tr>
+<tr>
+<td><strong>Amazon–Talen (Susquehanna)</strong><br><em>Talen Energy; Amazon Web Services · Market · Current · Business</em></td>
+<td>AWS bought a data-centre campus next to Susquehanna nuclear plant in 2024; a 2025 deal supplies up to 1.92 GW through 2042.</td>
+<td>After regulators rejected expanding the behind-the-meter link, the deal was restructured to supply power via the grid.</td>
+</tr>
+<tr>
+<td><strong>Amazon–X-energy</strong><br><em>X-energy; Amazon; Energy Northwest · Market · Emerging · Business</em></td>
+<td>Amazon invested in X-energy in 2024, aiming at about 5 GW of Xe-100 small reactors by the late 2030s.</td>
+<td>The first Xe-100 units are planned in Washington State with Energy Northwest.</td>
+</tr>
+<tr>
+<td><strong>Google–Kairos Power</strong><br><em>Kairos Power; Google; TVA · Market · Emerging · Business</em></td>
+<td>2024 agreement for up to 500 MW of advanced reactors by 2035; first unit Hermes 2 (50 MW) supplies TVA's grid.</td>
+<td>TVA signed a PPA in 2025 for Hermes 2 output supporting Google data centres in Tennessee and Alabama.</td>
+</tr>
+<tr>
+<td><strong>Meta nuclear agreements</strong><br><em>Constellation, Vistra, TerraPower, Oklo; Meta · Market · Emerging · Business</em></td>
+<td>Clinton plant deal (2025) plus January 2026 deals with Vistra, TerraPower and Oklo, together up to about 6.6 GW by 2035.</td>
+<td>The deals mix existing reactors, uprates and new advanced reactors planned for the 2030s.</td>
+</tr>
+<tr>
+<td><strong>Behind-the-meter vs front-of-meter</strong><br><em>Utility and FERC terminology · Concept · Current · Business</em></td>
+<td>Behind-the-meter power feeds the site directly; front-of-meter power is delivered over the public grid.</td>
+<td>A campus beside a power plant may connect directly, avoiding some grid charges but raising fairness debates.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="212-grid-constraints-connection-queues-flexibility">2.12 Grid Constraints, Connection Queues &amp; Flexibility<a class="headerlink" href="#212-grid-constraints-connection-queues-flexibility" title="Permanent link">&para;</a></h2>
+<p>In many regions the biggest obstacle to building a data centre is no longer land or money but getting enough electricity from the grid. New large loads must wait in queues while utilities build lines and substations, and regulators are writing new rules so other customers do not pay for data-centre growth. Data centres that can reduce their demand when the grid is stressed may connect faster.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-12-grid-constraints-connection-queues.svg" alt="Each stage can take months or years; flexibility can shorten the wait." loading="lazy">
+<figcaption><strong>Getting a large-load connection.</strong> Each stage can take months or years; flexibility can shorten the wait.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a popular restaurant with a long waiting list: you can wait for a table, bring your own picnic (on-site power), or agree to give up your seat at the busiest hour in exchange for getting in sooner.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Coastline DC asks its utility for 200 MW. The utility replies that firm capacity is available only from 2031, but 80 MW could be offered from 2027 if the site agrees to cut load by up to half on a few dozen hours per year. Coastline accepts, schedules AI training jobs to pause during grid alerts and runs its generators on those hours within its permit limits.</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The developer submits a load request with size, timing and location to the utility or grid operator.</li>
+<li>Engineers study whether lines, substations and generation can serve the new load safely.</li>
+<li>The developer may have to pay for upgrades, sign minimum-payment contracts or accept a phased ramp.</li>
+<li>Flexible connections allow earlier connection in return for reducing load during grid stress.</li>
+<li>Grid operators set technical rules (ride-through, ramp rates) so large loads do not destabilise the grid.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Site-selection teams, energy and regulatory affairs managers, utility planners and policymakers work on grid access.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>In interviews, show you know that power availability now drives site selection, and name one example such as Northern Virginia, Dublin or the US demand-response deals.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Utilities increasingly require large loads to post collateral, sign long minimum-demand contracts and fund upgrades, so other customers are not left paying if speculative projects never appear.</li>
+<li>LBNL estimated US data centres used about 176 TWh, 4.4% of US electricity, in 2023, with a 2028 range of roughly 6.7-12%, showing how uncertain load forecasts are.</li>
+<li>Flexible connections exploit the fact that grids are stressed for relatively few hours; curtailing a few dozen hours a year can release capacity that would otherwise take years to build.</li>
+<li>After the July 2024 event in which about 1,500 MW of data-centre load dropped to backup at once, NERC began work on ride-through expectations for large loads.</li>
+<li>Queue reforms are moving from first-come, first-served toward readiness-based processing, and some regions steer developers to less congested zones with faster connections.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming a connection request reserves power: studies, payments and milestones decide whether capacity is actually granted.</li>
+<li>Promising flexibility the site cannot deliver: curtailment needs real load shifting, on-site generation or storage, and tested procedures.</li>
+<li>Ignoring rising capacity and network charges, which can change project economics as much as the energy price.</li>
+</ul>
+</div>
+<h3 id="try-it-how-much-a-few-hours-of-flexibility-matters-over-a-year">Try it: How much a few hours of flexibility matters over a year<a class="headerlink" href="#try-it-how-much-a-few-hours-of-flexibility-matters-over-a-year" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">hours_per_year</span> <span class="o">=</span> <span class="mi">8760</span>
+<span class="n">curtail_hours</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">load_mw</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">cut_fraction</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">lost_mwh</span> <span class="o">=</span> <span class="n">curtail_hours</span> <span class="o">*</span> <span class="n">load_mw</span> <span class="o">*</span> <span class="n">cut_fraction</span>
+<span class="n">total_mwh</span> <span class="o">=</span> <span class="n">hours_per_year</span> <span class="o">*</span> <span class="n">load_mw</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Energy given up: </span><span class="si">{</span><span class="n">lost_mwh</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2"> MWh = </span><span class="si">{</span><span class="n">lost_mwh</span><span class="o">/</span><span class="n">total_mwh</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> of the year"</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_11">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interconnection / connection queue</strong><br><em>Utilities and grid operators (PJM, ERCOT, EirGrid, NESO) · Concept · Current · Business</em></td>
+<td>The ordered list of projects waiting for studies and grid connections; waits for large loads can run several years.</td>
+<td>A developer secures land in 2025 but its grid connection date is 2030.</td>
+</tr>
+<tr>
+<td><strong>Large-load tariff</strong><br><em>State and national utility regulators · Regulation · Current · Business</em></td>
+<td>Special rates and contract terms for very large customers, often with long terms and minimum payments.</td>
+<td>A data centre must pay for most of its reserved capacity even if it uses less.</td>
+</tr>
+<tr>
+<td><strong>AEP Ohio data-centre tariff</strong><br><em>Public Utilities Commission of Ohio (2025) · Regulation · Current · Business</em></td>
+<td>Approved in 2025: new large data centres pay for a high minimum share (about 85%) of contracted demand for many years.</td>
+<td>The rules aim to deter speculative requests that would leave other customers paying for unused grid upgrades.</td>
+</tr>
+<tr>
+<td><strong>Northern Virginia / Dominion constraints</strong><br><em>Dominion Energy; Virginia SCC; PJM · Market · Current · Business</em></td>
+<td>The world's largest data-centre market faces transmission limits, with long waits for new connections and new large-load rate rules.</td>
+<td>Developers move to other Virginia counties and states because Loudoun connections take years.</td>
+</tr>
+<tr>
+<td><strong>Ireland / Dublin grid constraints</strong><br><em>EirGrid; Commission for Regulation of Utilities (CRU) · Market · Current · Business</em></td>
+<td>Data centres use over a fifth of Ireland's metered electricity; Dublin connections are tightly limited, and new policy expects on-site dispatchable supply.</td>
+<td>A new Irish project proposes on-site gas generation and batteries to win a connection offer.</td>
+</tr>
+<tr>
+<td><strong>Demand response</strong><br><em>Grid operators and utilities · Practice · Current · Operations</em></td>
+<td>Reducing or shifting electricity use when the grid is stressed, usually in return for payments or faster connection.</td>
+<td>A colo runs generators for two hours during a heatwave alert, earning demand-response payments.</td>
+</tr>
+<tr>
+<td><strong>Google demand-response agreements</strong><br><em>Google; Indiana Michigan Power; TVA (2025) · Market · Current · Business</em></td>
+<td>Google agreed in 2025 to shift or reduce machine-learning workloads at some data centres during grid stress.</td>
+<td>During a grid event, non-urgent AI training jobs pause or move to other regions.</td>
+</tr>
+<tr>
+<td><strong>Flexible / non-firm connection</strong><br><em>Utilities; Texas SB 6 (2025); EU and UK grid reforms · Concept · Emerging · Business</em></td>
+<td>Connecting sooner on condition that the load can be curtailed when the network is constrained.</td>
+<td>Texas rules let the grid operator curtail very large loads in emergencies.</td>
+</tr>
+<tr>
+<td><strong>NERC large-load loss event (July 2024)</strong><br><em>NERC Incident Review · Incident · Current · Electrical</em></td>
+<td>A 230 kV line fault caused about 1,500 MW of data-centre load to switch to backup at once in a data-centre-dense area.</td>
+<td>Grid frequency and voltage rose; operators adjusted equipment, and NERC began studying large-load ride-through.</td>
+</tr>
+<tr>
+<td><strong>Capacity market</strong><br><em>PJM, ISO-NE, NYISO; GB Capacity Market · Market · Current · Business</em></td>
+<td>A market paying generators to be available in future years; data-centre demand growth has pushed some prices to records.</td>
+<td>PJM capacity prices jumped in 2024-2025 auctions, partly due to forecast data-centre load.</td>
+</tr>
+<tr>
+<td><strong>US data-centre load forecast (LBNL 2024)</strong><br><em>Lawrence Berkeley National Laboratory for the US DOE (December 2024) · Resource · Current · Sustainability</em></td>
+<td>Estimated US data centres used about 176 TWh (4.4% of US electricity) in 2023, possibly 6.7-12% by 2028.</td>
+<td>Utilities and regulators cite the 325-580 TWh range for 2028 when planning new generation and transmission.</td>
+</tr>
+<tr>
+<td><strong>Co-location at power plants</strong><br><em>FERC; PJM · Concept · Current · Business</em></td>
+<td>Placing a data centre next to a generator and taking power directly; regulators debate who pays for grid services.</td>
+<td>FERC has been reviewing rules for large loads co-located at PJM power plants.</td>
+</tr>
+<tr>
+<td><strong>Grid congestion zones</strong><br><em>Grid operators (e.g. Netherlands, West London, Frankfurt) · Concept · Current · Business</em></td>
+<td>Areas where the network is full, delaying new connections for data centres, housing and industry alike.</td>
+<td>A developer in a congested Dutch region is offered a connection only in the 2030s.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="213-electrical-safety-arc-flash">2.13 Electrical Safety &amp; Arc Flash<a class="headerlink" href="#213-electrical-safety-arc-flash" title="Permanent link">&para;</a></h2>
+<p>Data-centre electrical systems carry enough energy to kill instantly through shock or through an arc flash, an explosion of heat and light when electricity jumps through the air. Safe work relies on switching equipment off and locking it, wearing the right protective clothing, and following written procedures. Only trained, authorised people may work on or near live equipment.</p>
+<figure class="fig fig-diagram">
+<img src="img/02-13-electrical-safety-arc-flash.svg" alt="Never skip the test-before-touch steps: an isolated circuit is not dead until proven." loading="lazy">
+<figcaption><strong>Lockout/tagout and proving dead.</strong> Never skip the test-before-touch steps: an isolated circuit is not dead until proven.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Working near live switchgear is like working beside a hot oven door that can blow open: you keep your distance, wear oven gloves rated for the heat, and switch it off whenever you can.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>A breaker at the fictional Eastgate DC needs replacing. The arc-flash label shows 18 cal/cm² at 450 mm, so the engineer plans to de-energise the board instead. Following the MOP, she opens and racks out the upstream breaker, applies her personal lock and tag, tests for absence of voltage with a proven tester, and only then starts work. The whole team signs the permit before re-energising.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Plan the work with a MOP and identify all energy sources, including UPS batteries and generator backfeeds.</li>
+<li>De-energise where possible: isolate, lock and tag every source (LOTO).</li>
+<li>Test for absence of voltage with a tester checked on a known live source before and after.</li>
+<li>If live work is truly unavoidable, obtain an energised electrical work permit and wear PPE matched to the incident energy.</li>
+<li>Respect approach boundaries, use insulated tools, and keep unqualified people outside the arc-flash boundary.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every critical facilities technician, electrician, contractor and supervisor in a data centre must follow these rules from day one.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>The safest arc-flash PPE is a de-energised circuit; NFPA 70E requires an electrically safe work condition unless de-energising is infeasible or creates greater hazards.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>NFPA 70E requires an arc-flash risk assessment; incident energy is calculated with IEEE 1584-2018 models using fault current, clearing time, voltage, electrode configuration and working distance.</li>
+<li>Clearing time drives incident energy roughly in proportion: halving how long the arc lasts roughly halves the energy, which is why fast protection and maintenance switches matter.</li>
+<li>NEC 240.87 requires an arc energy reduction method, such as a maintenance switch or differential relaying, where a breaker's trip setting can be 1,200 A or higher.</li>
+<li>Remote racking devices and infrared windows let workers rack breakers or scan connections from outside the arc-flash boundary, removing people from the most dangerous position.</li>
+<li>Arc-flash labels show nominal voltage, arc-flash boundary and incident energy or PPE category; NFPA 70E requires the assessment to be reviewed after changes and at least every five years.</li>
+<li>UK law under the Electricity at Work Regulations makes dead working the default; live work needs justification that working dead is unreasonable, plus suitable precautions.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Trusting that an open breaker means a dead circuit: always test, because UPS output, batteries or generators may backfeed.</li>
+<li>Wearing PPE rated below the label's incident energy, or skipping face and hand protection for a 'quick' task.</li>
+<li>Sharing one lock among a team: every worker applies a personal lock so nobody can re-energise while others are exposed.</li>
+</ul>
+</div>
+<h3 id="try-it-sample-loto-checklist-for-a-rack-pdu-feeder-training-example">Try it: Sample LOTO checklist for a rack PDU feeder (training example)<a class="headerlink" href="#try-it-sample-loto-checklist-for-a-rack-pdu-feeder-training-example" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>LOTO-RPP-B07 (training example, not a real site procedure)
+[ ] MOP approved and change ticket open
+[ ] Customer and NOC notified; A-side load verified below 80%
+[ ] Identify breaker RPP-B07 CB-12 on single-line diagram
+[ ] Open breaker, apply personal lock + danger tag
+[ ] Verify tester on known live source
+[ ] Test for absence of voltage (all phases, phase-earth)
+[ ] Re-verify tester on known live source
+[ ] Work complete: remove tools, count people, remove locks, restore, record
+</code></pre></div>
+<h4 id="key-equipment-standards-metrics-vendors-tools_12">Key equipment, standards, metrics, vendors &amp; tools<a class="headerlink" href="#key-equipment-standards-metrics-vendors-tools_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arc flash</strong><br><em>NFPA 70E; IEEE 1584 · Concept · Current · Electrical</em></td>
+<td>An electrical explosion through air producing intense heat, light, pressure and molten metal; can cause severe burns at metres.</td>
+<td>Dropping a tool across live busbars in a switchboard can trigger an arc flash.</td>
+</tr>
+<tr>
+<td><strong>NFPA 70E</strong><br><em>National Fire Protection Association (revised every three years) · Standard · Current · Electrical</em></td>
+<td>US standard for electrical safety in the workplace: safe work conditions, risk assessment, PPE and training.</td>
+<td>A colo's electrical safety programme is written around NFPA 70E requirements.</td>
+</tr>
+<tr>
+<td><strong>IEEE 1584</strong><br><em>IEEE 1584-2018 · Standard · Current · Electrical</em></td>
+<td>The guide for calculating arc-flash incident energy and arc-flash boundaries for electrical equipment.</td>
+<td>An engineering firm uses IEEE 1584-2018 models in software to produce labels for every panel.</td>
+</tr>
+<tr>
+<td><strong>Incident energy (cal/cm²)</strong><br><em>IEEE 1584; NFPA 70E · Metric · Current · Electrical</em></td>
+<td>Heat energy reaching a worker's face and chest at a set distance during an arc flash; 1.2 cal/cm² can cause second-degree burns.</td>
+<td>A label shows 8.4 cal/cm² at 455 mm, so PPE rated at least 8.4 cal/cm² is required.</td>
+</tr>
+<tr>
+<td><strong>Arc-flash PPE categories</strong><br><em>NFPA 70E Article 130 · Standard · Current · Electrical</em></td>
+<td>Four PPE categories with minimum arc ratings of 4, 8, 25 and 40 cal/cm².</td>
+<td>Opening a 480 V panelboard may need Category 2 PPE under the table method: arc-rated clothing, face shield and balaclava.</td>
+</tr>
+<tr>
+<td><strong>Approach boundaries</strong><br><em>NFPA 70E · Concept · Current · Electrical</em></td>
+<td>Distances from live parts: arc-flash boundary, limited approach boundary and restricted approach boundary.</td>
+<td>Unqualified visitors must stay outside the limited approach boundary unless escorted.</td>
+</tr>
+<tr>
+<td><strong>Lockout/tagout (LOTO)</strong><br><em>OSHA 29 CFR 1910.147; NFPA 70E Article 120 · Procedure · Current · Operations</em></td>
+<td>Isolating energy sources and applying personal locks and tags so equipment cannot be re-energised during work.</td>
+<td>Each worker places their own lock on the group lockbox before work starts.</td>
+</tr>
+<tr>
+<td><strong>Energised electrical work permit</strong><br><em>NFPA 70E 130.2 · Document · Current · Operations</em></td>
+<td>Written justification and approval required before working on live parts, listing hazards, PPE and controls.</td>
+<td>A permit is signed by the site manager for live infrared scanning inside a switchboard.</td>
+</tr>
+<tr>
+<td><strong>Qualified person</strong><br><em>NFPA 70E; OSHA · Role · Current · Operations</em></td>
+<td>Someone trained and competent to recognise and avoid electrical hazards for specific equipment and tasks.</td>
+<td>Only qualified electricians may open panels; general technicians may only operate switches from outside.</td>
+</tr>
+<tr>
+<td><strong>Infrared thermography</strong><br><em>NFPA 70B; ISO 18436-7 thermographer certification · Procedure · Current · Operations</em></td>
+<td>Scanning energised connections with a thermal camera, ideally through IR windows, to find hot joints while limiting arc-flash exposure.</td>
+<td>A scan finds a busbar joint 40 °C hotter than its neighbours, and it is re-torqued during a shutdown.</td>
+</tr>
+<tr>
+<td><strong>NFPA 70B</strong><br><em>National Fire Protection Association (2023 edition onward) · Standard · Current · Operations</em></td>
+<td>Electrical maintenance standard (mandatory language since 2023); well-maintained breakers clear faults as designed, keeping arc-flash energy at its calculated level.</td>
+<td>A site sets breaker testing and thermography intervals from NFPA 70B equipment condition ratings.</td>
+</tr>
+<tr>
+<td><strong>NEC (NFPA 70) Article 645</strong><br><em>National Fire Protection Association · Regulation · Current · Electrical</em></td>
+<td>US electrical code article for information technology equipment rooms, including disconnect and cabling rules.</td>
+<td>An inspector checks the IT room emergency power-off and cable installation against Article 645.</td>
+</tr>
+<tr>
+<td><strong>IEC 60364 / BS 7671</strong><br><em>IEC; IET and BSI (UK Wiring Regulations) · Regulation · Current · Electrical</em></td>
+<td>International low-voltage installation rules (IEC 60364) and the UK national version (BS 7671).</td>
+<td>A UK electrician certifies new rack circuits with test results recorded under BS 7671.</td>
+</tr>
+<tr>
+<td><strong>Electricity at Work Regulations 1989</strong><br><em>UK Health and Safety Executive · Regulation · Current · Electrical</em></td>
+<td>UK law requiring electrical systems be safe and live work only when justified, with suitable precautions.</td>
+<td>A UK operator refuses live busbar work because de-energising is reasonably practicable.</td>
+</tr>
+<tr>
+<td><strong>Arc energy reduction (NEC 240.87)</strong><br><em>NFPA 70 (NEC) 240.87 · Practice · Current · Electrical</em></td>
+<td>Methods such as maintenance switches or differential relaying, required for breakers that can be set to 1,200 A or more.</td>
+<td>Before racking a breaker, the technician switches on the maintenance mode so the upstream breaker would clear a fault faster.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="data-centre-foundations.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1. Data Centre Foundations">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                1. Data Centre Foundations
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="cooling-thermal-management.html" class="md-footer__link md-footer__link--next" aria-label="Next: 3. Cooling &amp; Thermal Management">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                3. Cooling & Thermal Management
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

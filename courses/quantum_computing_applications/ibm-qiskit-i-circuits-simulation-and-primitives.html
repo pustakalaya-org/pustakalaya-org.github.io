@@ -1,0 +1,2599 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/ibm-qiskit-i-circuits-simulation-and-primitives.html">
+  
+  
+    <link rel="prev" href="the-quantum-software-landscape.html">
+  
+  
+    <link rel="next" href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>37. IBM Qiskit I: Circuits, Simulation and Primitives - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#371-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              37. IBM Qiskit I: Circuits, Simulation and Primitives
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#371-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#372-installation-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.2 Installation and Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#373-building-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.3 Building Circuits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="37.3 Building Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-endianness-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The endianness trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#374-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.4 Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="37.4 Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exact-statevector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exact statevector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shot-based-sampling-with-the-sampler-primitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shot-based sampling with the Sampler primitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expectation-values-with-the-estimator-primitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expectation values with the Estimator primitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#density-matrix-simulation-with-noise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Density-matrix simulation with noise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#375-visualisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.5 Visualisation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#376-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#377-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#378-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#371-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#372-installation-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.2 Installation and Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#373-building-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.3 Building Circuits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="37.3 Building Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-endianness-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The endianness trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#374-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.4 Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="37.4 Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exact-statevector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exact statevector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shot-based-sampling-with-the-sampler-primitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shot-based sampling with the Sampler primitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expectation-values-with-the-estimator-primitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expectation values with the Estimator primitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#density-matrix-simulation-with-noise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Density-matrix simulation with noise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#375-visualisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.5 Visualisation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#376-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#377-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#378-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-37-ibm-qiskit-i-circuits-simulation-and-primitives">Lesson 37: IBM Qiskit I: Circuits, Simulation and Primitives<a class="headerlink" href="#lesson-37-ibm-qiskit-i-circuits-simulation-and-primitives" title="Permanent link">&para;</a></h1>
+<h2 id="371-learning-outcomes">37.1 Learning Outcomes<a class="headerlink" href="#371-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Install Qiskit and construct circuits with <code>QuantumCircuit</code>.</li>
+<li>Apply all standard gates and read Qiskit's <strong>little-endian bit ordering</strong> correctly.</li>
+<li>Use the <strong>Sampler</strong> and <strong>Estimator</strong> primitives.</li>
+<li>Run statevector and shot-based simulations and interpret the results.</li>
+<li>Visualise circuits, histograms, Bloch spheres and state vectors.</li>
+</ol>
+<h2 id="372-installation-and-setup">37.2 Installation and Setup<a class="headerlink" href="#372-installation-and-setup" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>qiskit<span class="w"> </span>qiskit-aer<span class="w"> </span>qiskit-ibm-runtime
+pip<span class="w"> </span>install<span class="w"> </span>matplotlib<span class="w"> </span>pylatexenc<span class="w">     </span><span class="c1"># for circuit drawing</span>
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qiskit</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>          <span class="c1"># 1.x or 2.x</span>
+</code></pre></div>
+<p><strong>Version warning.</strong> Qiskit 1.0 (2024) removed <code>execute()</code>, <code>BasicAer</code> and <code>qiskit.providers.aer</code>.
+Tutorials written before 2024 will not run. The current pattern is <strong>primitives</strong> (<code>Sampler</code>,
+<code>Estimator</code>), which is what this lesson teaches.</p>
+<h2 id="373-building-circuits">37.3 Building Circuits<a class="headerlink" href="#373-building-circuits" title="Permanent link">&para;</a></h2>
+<h3 id="the-basics">The basics<a class="headerlink" href="#the-basics" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>      <span class="c1"># 3 qubits, 3 classical bits</span>
+
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>                        <span class="c1"># Hadamard on qubit 0</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                    <span class="c1"># CNOT: control 0, target 1</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>                    <span class="c1"># CNOT: control 0, target 2</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">())</span>
+</code></pre></div>
+<p>Output:</p>
+<div class="language-text highlight"><pre><span></span><code>     ┌───┐          ┌─┐
+q_0: ┤ H ├──■────■──┤M├──────
+     └───┘┌─┴─┐  │  └╥┘┌─┐
+q_1: ─────┤ X ├──┼───╫─┤M├───
+          └───┘┌─┴─┐ ║ └╥┘┌─┐
+q_2: ──────────┤ X ├─╫──╫─┤M├
+               └───┘ ║  ║ └╥┘
+c: 3/════════════════╩══╩══╩═
+                     0  1  2
+</code></pre></div>
+<h3 id="gate-reference">Gate reference<a class="headerlink" href="#gate-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Qiskit call</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(X, Y, Z\)</span></td>
+<td><code>qc.x(0)</code>, <code>qc.y(0)</code>, <code>qc.z(0)</code></td>
+<td>Paulis</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(H\)</span></td>
+<td><code>qc.h(0)</code></td>
+<td>Hadamard</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S, S^\dagger\)</span></td>
+<td><code>qc.s(0)</code>, <code>qc.sdg(0)</code></td>
+<td>phase</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(T, T^\dagger\)</span></td>
+<td><code>qc.t(0)</code>, <code>qc.tdg(0)</code></td>
+<td><span class="arithmatex">\(\pi/4\)</span> phase</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(R_x,R_y,R_z\)</span></td>
+<td><code>qc.rx(theta,0)</code> etc.</td>
+<td>rotations</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P(\lambda)\)</span></td>
+<td><code>qc.p(lam, 0)</code></td>
+<td>phase gate</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(U(\theta,\phi,\lambda)\)</span></td>
+<td><code>qc.u(th, ph, lam, 0)</code></td>
+<td>general</td>
+</tr>
+<tr>
+<td>CNOT</td>
+<td><code>qc.cx(0,1)</code></td>
+<td>control, target</td>
+</tr>
+<tr>
+<td>CZ</td>
+<td><code>qc.cz(0,1)</code></td>
+<td>symmetric</td>
+</tr>
+<tr>
+<td>SWAP</td>
+<td><code>qc.swap(0,1)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Toffoli</td>
+<td><code>qc.ccx(0,1,2)</code></td>
+<td>two controls</td>
+</tr>
+<tr>
+<td>Controlled-<span class="arithmatex">\(U\)</span></td>
+<td><code>qc.cu(...)</code>, <code>qc.crx(...)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Barrier</td>
+<td><code>qc.barrier()</code></td>
+<td>blocks optimisation across it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-endianness-trap">The endianness trap<a class="headerlink" href="#the-endianness-trap" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Qiskit uses little-endian ordering.</strong> The state <span class="arithmatex">\(|q_2q_1q_0\rangle\)</span> is written with <strong>qubit 0 on
+the right</strong>. A measured bitstring <code>'011'</code> means <span class="arithmatex">\(q_2 = 0\)</span>, <span class="arithmatex">\(q_1 = 1\)</span>, <span class="arithmatex">\(q_0 = 1\)</span>.</p>
+</blockquote>
+<p><strong>Concrete example.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># flip qubit 0 only</span>
+<span class="c1"># Statevector is |01&gt; in Qiskit's notation -- NOT |10&gt;</span>
+</code></pre></div>
+<p>This differs from the textbook convention used in Units I–III of this course, where <span class="arithmatex">\(|q_0q_1\rangle\)</span>
+has qubit 0 on the left. <strong>When comparing hand calculations with Qiskit output, reverse the
+bitstring.</strong></p>
+<p>To match the textbook convention, use <code>qc.reverse_bits()</code> before measuring, or read results with
+<code>key[::-1]</code>.</p>
+<h2 id="374-simulation">37.4 Simulation<a class="headerlink" href="#374-simulation" title="Permanent link">&para;</a></h2>
+<h3 id="exact-statevector">Exact statevector<a class="headerlink" href="#exact-statevector" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statevector</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">sv</span> <span class="o">=</span> <span class="n">Statevector</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sv</span><span class="p">)</span>
+<span class="c1"># Statevector([0.70710678+0.j, 0.+0.j, 0.+0.j, 0.70710678+0.j], dims=(2,2))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sv</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">())</span>
+<span class="c1"># {'00': 0.5, '11': 0.5}</span>
+</code></pre></div>
+<h3 id="shot-based-sampling-with-the-sampler-primitive">Shot-based sampling with the Sampler primitive<a class="headerlink" href="#shot-based-sampling-with-the-sampler-primitive" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span> <span class="k">as</span> <span class="n">Sampler</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+<span class="c1"># {'00': 2043, '11': 2053}   -- approximately 50/50 with shot noise</span>
+</code></pre></div>
+<h3 id="expectation-values-with-the-estimator-primitive">Expectation values with the Estimator primitive<a class="headerlink" href="#expectation-values-with-the-estimator-primitive" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">EstimatorV2</span> <span class="k">as</span> <span class="n">Estimator</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                                 <span class="c1"># NOTE: no measurement instruction</span>
+
+<span class="n">observable</span> <span class="o">=</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">"ZZ"</span><span class="p">)</span>            <span class="c1"># Z (x) Z</span>
+
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">Estimator</span><span class="p">()</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observable</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span><span class="p">)</span>
+<span class="c1"># 1.0   -- the Bell state |Phi+&gt; is a +1 eigenstate of ZZ</span>
+</code></pre></div>
+<p><strong>Sampler versus Estimator — the distinction students must internalise.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sampler</th>
+<th>Estimator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Returns</td>
+<td>bitstring counts / probabilities</td>
+<td>expectation value <span class="arithmatex">\(\langle O\rangle\)</span></td>
+</tr>
+<tr>
+<td>Circuit must</td>
+<td><strong>include</strong> <code>measure</code></td>
+<td><strong>exclude</strong> <code>measure</code></td>
+</tr>
+<tr>
+<td>Used by</td>
+<td>Grover, Shor, sampling algorithms</td>
+<td>VQE, QAOA, QML</td>
+</tr>
+<tr>
+<td>Error mitigation</td>
+<td>limited</td>
+<td><strong>built in</strong> (ZNE, PEC, twirling)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="density-matrix-simulation-with-noise">Density-matrix simulation with noise<a class="headerlink" href="#density-matrix-simulation-with-noise" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.noise</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoiseModel</span><span class="p">,</span> <span class="n">depolarizing_error</span>
+
+<span class="n">noise</span> <span class="o">=</span> <span class="n">NoiseModel</span><span class="p">()</span>
+<span class="n">noise</span><span class="o">.</span><span class="n">add_all_qubit_quantum_error</span><span class="p">(</span><span class="n">depolarizing_error</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[</span><span class="s1">'h'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">])</span>
+<span class="n">noise</span><span class="o">.</span><span class="n">add_all_qubit_quantum_error</span><span class="p">(</span><span class="n">depolarizing_error</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="s1">'cx'</span><span class="p">])</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="p">(</span><span class="n">noise_model</span><span class="o">=</span><span class="n">noise</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get_counts</span><span class="p">())</span>
+<span class="c1"># {'00': 1980, '01': 60, '10': 55, '11': 2001}</span>
+<span class="c1">#  -- '01' and '10' now appear: these are noise-induced errors</span>
+</code></pre></div>
+<h2 id="375-visualisation">37.5 Visualisation<a class="headerlink" href="#375-visualisation" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">plot_histogram</span><span class="p">,</span> <span class="n">plot_bloch_multivector</span><span class="p">,</span>
+                                  <span class="n">plot_state_city</span><span class="p">)</span>
+
+<span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">'mpl'</span><span class="p">)</span>                       <span class="c1"># publication-quality circuit diagram</span>
+<span class="n">plot_histogram</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>               <span class="c1"># measurement outcomes</span>
+<span class="n">plot_bloch_multivector</span><span class="p">(</span><span class="n">sv</span><span class="p">)</span>           <span class="c1"># Bloch sphere per qubit</span>
+<span class="n">plot_state_city</span><span class="p">(</span><span class="n">sv</span><span class="p">)</span>                  <span class="c1"># real/imaginary amplitude bars</span>
+</code></pre></div>
+<p><strong>Note on <code>plot_bloch_multivector</code>.</strong> It shows the <strong>reduced</strong> state of each qubit. For an entangled
+state such as <span class="arithmatex">\(|\Phi^+\rangle\)</span>, both Bloch vectors sit at the <strong>origin</strong> (<span class="arithmatex">\(\rho_A = I/2\)</span>, L08) — a
+striking and pedagogically valuable visualisation of the fact that entanglement information lives in
+the correlations, not in the parts.</p>
+<h2 id="376-solved-problems">37.6 Solved Problems<a class="headerlink" href="#376-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-bell-state-with-full-analysis">Problem 1 — Bell state with full analysis<a class="headerlink" href="#problem-1-bell-state-with-full-analysis" title="Permanent link">&para;</a></h4>
+<p><em>Write Qiskit code to create <span class="arithmatex">\(|\Phi^+\rangle\)</span>, print the statevector, sample 8192 shots, and verify
+the result statistically.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statevector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span> <span class="k">as</span> <span class="n">Sampler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># --- exact statevector ---</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">Statevector</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Statevector:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">sv</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [0.7071+0.j  0.+0.j  0.+0.j  0.7071+0.j]</span>
+
+<span class="c1"># --- shot-based sampling ---</span>
+<span class="n">qc_m</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">qc_m</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc_m</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">8192</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meas</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Typical output:</strong> <code>{'00': 4103, '11': 4089}</code>.</p>
+<p><strong>Statistical verification.</strong> Expected count for each outcome: <span class="arithmatex">\(8192\times0.5 = 4096\)</span>.</p>
+<p>Standard deviation of a binomial count:</p>
+<div class="arithmatex">\[ \sigma = \sqrt{N p(1-p)} = \sqrt{8192\times0.5\times0.5} = \sqrt{2048} = 45.25 \]</div>
+<p>Observed deviation: <span class="arithmatex">\(|4103 - 4096| = 7\)</span>, i.e. <span class="arithmatex">\(\frac{7}{45.25} = 0.15\sigma\)</span> — <strong>entirely consistent
+with the prediction.</strong></p>
+<p><strong>A <span class="arithmatex">\(\chi^2\)</span> goodness-of-fit test.</strong></p>
+<div class="arithmatex">\[ \chi^{2} = \frac{(4103-4096)^{2}}{4096} + \frac{(4089-4096)^{2}}{4096} = 0.012 + 0.012 = 0.024 \]</div>
+<p>With 1 degree of freedom, the critical value at 5 % is 3.84. Since <span class="arithmatex">\(0.024 \ll 3.84\)</span>, we do not reject
+the hypothesis of a fair 50/50 distribution ✓.</p>
+<p><strong>Key observation:</strong> <code>01</code> and <code>10</code> have count <strong>zero</strong>, confirming perfect correlation — the
+signature of the Bell state.</p>
+<h4 id="problem-2-endianness-demonstrated-concretely">Problem 2 — Endianness, demonstrated concretely<a class="headerlink" href="#problem-2-endianness-demonstrated-concretely" title="Permanent link">&para;</a></h4>
+<p><em>Create a 3-qubit circuit applying <span class="arithmatex">\(X\)</span> to qubit 0 only. Predict the Qiskit output and the textbook
+notation, and show how to convert between them.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>                       <span class="c1"># flip ONLY qubit 0</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div>
+<p><strong>Qiskit output:</strong> <code>{'001': 1024}</code></p>
+<p><strong>Reading it.</strong> Qiskit prints <span class="arithmatex">\(c_2c_1c_0\)</span>, so <code>'001'</code> means <span class="arithmatex">\(c_2=0\)</span>, <span class="arithmatex">\(c_1=0\)</span>, <span class="arithmatex">\(c_0 = 1\)</span> — qubit 0 is
+in state 1 ✓, qubits 1 and 2 are in state 0 ✓.</p>
+<p><strong>Textbook notation</strong> (this course, <span class="arithmatex">\(|q_0q_1q_2\rangle\)</span>): the state is <span class="arithmatex">\(|100\rangle\)</span>.</p>
+<div class="arithmatex">\[ \boxed{\ \text{Qiskit } \texttt{'001'} \ \equiv\ \text{textbook } |100\rangle\ } \]</div>
+<p><strong>Two ways to convert.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># Method 1: reverse the key when reading results</span>
+<span class="n">counts_fixed</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="c1"># {'100': 1024}</span>
+
+<span class="c1"># Method 2: reverse the circuit's bit order before measuring</span>
+<span class="n">qc_fixed</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">reverse_bits</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Why it matters, concretely.</strong> Consider Deutsch–Jozsa (L13) with the balanced function
+<span class="arithmatex">\(f(x) = x_2\)</span> (middle qubit). The hand calculation predicts the outcome <span class="arithmatex">\(|010\rangle\)</span>. Qiskit will
+report <code>'010'</code> — which happens to be a palindrome, so it looks correct. But for <span class="arithmatex">\(f(x) = x_1\)</span> the hand
+calculation gives <span class="arithmatex">\(|100\rangle\)</span> while <strong>Qiskit reports <code>'001'</code></strong> — and a student who does not know
+about endianness will conclude their algorithm is broken.</p>
+<div class="arithmatex">\[ \boxed{\ \text{Always verify endianness on a deliberately asymmetric test case before trusting results.}\ } \]</div>
+<h4 id="problem-3-implementing-deutschjozsa-in-qiskit">Problem 3 — Implementing Deutsch–Jozsa in Qiskit<a class="headerlink" href="#problem-3-implementing-deutschjozsa-in-qiskit" title="Permanent link">&para;</a></h4>
+<p><em>Write a complete, reusable Deutsch–Jozsa implementation and verify it on a constant and a balanced
+oracle.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span> <span class="k">as</span> <span class="n">Sampler</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">deutsch_jozsa</span><span class="p">(</span><span class="n">oracle</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""oracle: a QuantumCircuit on n+1 qubits implementing U_f."""</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># 1. ancilla to |1&gt;, then Hadamards everywhere -&gt; |+...+&gt;|-&gt;</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+
+    <span class="c1"># 2. one oracle query (phase kick-back)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">oracle</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+
+    <span class="c1"># 3. interfere and measure</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">qc</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># --- constant oracle: f(x) = 1  -&gt;  X on the ancilla ---</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">const</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># --- balanced oracle: f(x) = x0 XOR x2 ---</span>
+<span class="n">bal</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">bal</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">bal</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">oracle</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">const</span><span class="p">),</span> <span class="p">(</span><span class="s2">"balanced"</span><span class="p">,</span> <span class="n">bal</span><span class="p">)]:</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">deutsch_jozsa</span><span class="p">(</span><span class="n">oracle</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+    <span class="n">outcome</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+    <span class="n">verdict</span> <span class="o">=</span> <span class="s2">"CONSTANT"</span> <span class="k">if</span> <span class="n">outcome</span> <span class="o">==</span> <span class="s2">"0"</span> <span class="o">*</span> <span class="n">n</span> <span class="k">else</span> <span class="s2">"BALANCED"</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">9s</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">counts</span><span class="si">}</span><span class="s2">  =&gt;  </span><span class="si">{</span><span class="n">verdict</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Output.</strong></p>
+<div class="language-bash highlight"><pre><span></span><code>constant<span class="w">  </span>-&gt;<span class="w"> </span><span class="o">{</span><span class="s1">'000'</span>:<span class="w"> </span><span class="m">1024</span><span class="o">}</span><span class="w">  </span><span class="o">=</span>&gt;<span class="w">  </span>CONSTANT
+balanced<span class="w">  </span>-&gt;<span class="w"> </span><span class="o">{</span><span class="s1">'101'</span>:<span class="w"> </span><span class="m">1024</span><span class="o">}</span><span class="w">  </span><span class="o">=</span>&gt;<span class="w">  </span>BALANCED
+</code></pre></div>
+<p><strong>Verification against theory.</strong></p>
+<ul>
+<li><strong>Constant:</strong> all-zeros with probability 1 ✓ (L13, Case A).</li>
+<li><strong>Balanced:</strong> <code>'101'</code> — reading Qiskit's little-endian order, <span class="arithmatex">\(c_0=1\)</span>, <span class="arithmatex">\(c_1=0\)</span>, <span class="arithmatex">\(c_2=1\)</span>, i.e. the
+    mask <span class="arithmatex">\(a\)</span> has 1s in positions 0 and 2. Since <span class="arithmatex">\(f(x) = x_0\oplus x_2\)</span>, this is exactly right ✓ (and it
+    is also the Bernstein–Vazirani answer, L14).</li>
+</ul>
+<p><strong>Both results are deterministic</strong> — 1024/1024 shots — as the theory predicts, because this is a
+noiseless simulation.</p>
+<h4 id="problem-4-estimating-an-expectation-value-and-comparing-shot-budgets">Problem 4 — Estimating an expectation value and comparing shot budgets<a class="headerlink" href="#problem-4-estimating-an-expectation-value-and-comparing-shot-budgets" title="Permanent link">&para;</a></h4>
+<p><em>Use the Estimator to compute <span class="arithmatex">\(\langle Z_0\rangle\)</span>, <span class="arithmatex">\(\langle X_0\rangle\)</span> and <span class="arithmatex">\(\langle Z_0Z_1\rangle\)</span>
+for the state <span class="arithmatex">\(R_y(\pi/3)|0\rangle \otimes |0\rangle\)</span>, and compare exact values with shot-based
+estimates at 100 and 10 000 shots.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span><span class="p">,</span> <span class="n">Statevector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">EstimatorV2</span> <span class="k">as</span> <span class="n">Estimator</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">obs</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">"IZ"</span><span class="p">),</span>   <span class="c1"># Z on qubit 0 (little-endian: rightmost)</span>
+       <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">"IX"</span><span class="p">),</span>   <span class="c1"># X on qubit 0</span>
+       <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">"ZZ"</span><span class="p">)]</span>
+
+<span class="c1"># exact</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">Statevector</span><span class="p">(</span><span class="n">qc</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">obs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">sv</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">o</span><span class="p">)))</span>
+</code></pre></div>
+<p><strong>Exact values.</strong> The state is <span class="arithmatex">\(\cos\frac{\pi}{6}|0\rangle + \sin\frac{\pi}{6}|1\rangle\)</span> on qubit 0:</p>
+<div class="arithmatex">\[ \langle Z_0\rangle = \cos^{2}\tfrac{\pi}{6} - \sin^{2}\tfrac{\pi}{6} = \cos\tfrac{\pi}{3} = \mathbf{0.5} \]</div>
+<div class="arithmatex">\[ \langle X_0\rangle = 2\cos\tfrac{\pi}{6}\sin\tfrac{\pi}{6} = \sin\tfrac{\pi}{3} = \mathbf{0.8660} \]</div>
+<div class="arithmatex">\[ \langle Z_0Z_1\rangle = \langle Z_0\rangle\langle Z_1\rangle = 0.5\times1 = \mathbf{0.5} \]</div>
+<p><em>(qubit 1 is untouched, so <span class="arithmatex">\(\langle Z_1\rangle = 1\)</span>, and the state is a product state.)</em></p>
+<p><strong>Shot-based estimates.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Observable</th>
+<th>Exact</th>
+<th>100 shots</th>
+<th>10 000 shots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\langle Z_0\rangle\)</span></td>
+<td>0.5000</td>
+<td>0.44</td>
+<td>0.4972</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\langle X_0\rangle\)</span></td>
+<td>0.8660</td>
+<td>0.82</td>
+<td>0.8654</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\langle Z_0Z_1\rangle\)</span></td>
+<td>0.5000</td>
+<td>0.56</td>
+<td>0.5034</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Error analysis.</strong> For a <span class="arithmatex">\(\pm1\)</span>-valued observable with <span class="arithmatex">\(\langle O\rangle = \mu\)</span>:</p>
+<div class="arithmatex">\[ \mathrm{Var}(O) = 1 - \mu^{2}, \qquad \mathrm{SE} = \sqrt{\frac{1-\mu^{2}}{S}} \]</div>
+<p>For <span class="arithmatex">\(\langle Z_0\rangle = 0.5\)</span>:</p>
+<div class="arithmatex">\[ \mathrm{SE}_{100} = \sqrt{\frac{0.75}{100}} = \mathbf{0.0866},
+\qquad \mathrm{SE}_{10000} = \sqrt{\frac{0.75}{10000}} = \mathbf{0.00866} \]</div>
+<p>Observed errors (<span class="arithmatex">\(0.06\)</span> and <span class="arithmatex">\(0.0028\)</span>) fall comfortably within one standard error ✓.</p>
+<p><strong>The <span class="arithmatex">\(1/\sqrt S\)</span> rule.</strong> 100× more shots gives 10× better precision. <strong>This is the fundamental
+economics of every variational algorithm</strong> (L28–L29): to get one more decimal digit you pay 100× more
+runtime.</p>
+<p><em>Note also that <span class="arithmatex">\(\langle X_0\rangle\)</span> has the smallest error at fixed <span class="arithmatex">\(S\)</span>, because
+<span class="arithmatex">\(1 - 0.866^2 = 0.25\)</span> is smaller — observables with expectation near <span class="arithmatex">\(\pm1\)</span> are cheaper to estimate.</em></p>
+<h4 id="problem-5-building-and-analysing-a-grover-circuit">Problem 5 — Building and analysing a Grover circuit<a class="headerlink" href="#problem-5-building-and-analysing-a-grover-circuit" title="Permanent link">&para;</a></h4>
+<p><em>Implement Grover's algorithm in Qiskit for <span class="arithmatex">\(n=3\)</span> with marked state <span class="arithmatex">\(|101\rangle\)</span>, run the optimal
+number of iterations, and analyse the resulting distribution.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">SamplerV2</span> <span class="k">as</span> <span class="n">Sampler</span>
+
+<span class="n">n</span><span class="p">,</span> <span class="n">marked</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'101'</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">oracle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">marked</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Phase-flip the marked basis state (marked given in Qiskit bit order)."""</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">zeros</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">marked</span><span class="p">))</span> <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="s1">'0'</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">zeros</span><span class="p">:</span> <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">zeros</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">mcx</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>     <span class="c1"># multi-controlled X = C^{n-1}Z conjugated</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">zeros</span><span class="p">:</span> <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">zeros</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qc</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">diffuser</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">));</span> <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="n">qc</span><span class="o">.</span><span class="n">mcx</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">));</span> <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">qc</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">)))</span>      <span class="c1"># = 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"optimal iterations:"</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">oracle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">marked</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">diffuser</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="n">Sampler</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">qc</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">kv</span><span class="p">:</span> <span class="o">-</span><span class="n">kv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</code></pre></div>
+<p><strong>Output.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>optimal iterations: 2
+[('101', 3872), ('000', 33), ('001', 31), ('010', 34),
+ ('011', 32), ('100', 31), ('110', 32), ('111', 31)]
+</code></pre></div>
+<p><strong>Analysis.</strong></p>
+<div class="arithmatex">\[ \Pr[\text{marked}] = \frac{3872}{4096} = \mathbf{0.9453} \]</div>
+<p><strong>Compare with theory</strong> (L21, Problem 2): <span class="arithmatex">\(\Pr = 0.9453\)</span> for <span class="arithmatex">\(N=8\)</span>, <span class="arithmatex">\(M=1\)</span>, <span class="arithmatex">\(k=2\)</span> ✓ — agreement to
+four decimal places.</p>
+<p><strong>Each unmarked state.</strong></p>
+<div class="arithmatex">\[ \Pr[\text{each unmarked}] = \frac{1 - 0.9453}{7} = \frac{0.0547}{7} = 0.00781 \]</div>
+<p>Expected count: <span class="arithmatex">\(4096\times0.00781 = 32.0\)</span>. Observed counts range 31–34 ✓, all within
+<span class="arithmatex">\(\sigma = \sqrt{4096\times0.0078\times0.992} = 5.6\)</span>.</p>
+<p><strong>Resource check.</strong></p>
+<ul>
+<li>Circuit depth: 2 iterations × (oracle + diffuser) ≈ 30 gates.</li>
+<li>The <code>mcx</code> on 3 qubits decomposes into <strong>6 CNOTs</strong>, so the total is ~24 CNOTs.</li>
+<li>On real hardware at CNOT error <span class="arithmatex">\(10^{-2}\)</span>: fidelity <span class="arithmatex">\(\approx 0.99^{24} = 0.79\)</span> — the marked-state
+    probability would fall to roughly <span class="arithmatex">\(0.79\times0.945 + 0.21\times0.125 \approx 0.77\)</span>.</li>
+</ul>
+<p><strong>Exercise for the student:</strong> re-run with <code>k=3</code> and confirm the probability <em>drops</em> to 0.33, the
+over-rotation predicted in L21 Problem 3.</p>
+<h2 id="377-practice-problems">37.7 Practice Problems<a class="headerlink" href="#377-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Write Qiskit code for the GHZ state on 4 qubits and predict the counts.</li>
+<li>What does Qiskit report for a circuit applying <span class="arithmatex">\(X\)</span> to qubit 2 of 3? <strong>[Ans: <code>'100'</code>]</strong></li>
+<li>Use the Estimator to find <span class="arithmatex">\(\langle X\rangle\)</span> for <span class="arithmatex">\(|+\rangle\)</span>. <strong>[Ans: 1.0]</strong></li>
+<li>How many shots for <span class="arithmatex">\(\mathrm{SE} \le 0.01\)</span> on an observable with <span class="arithmatex">\(\langle O\rangle = 0\)</span>? <strong>[Ans: 10 000]</strong></li>
+<li>Implement Bernstein–Vazirani for <span class="arithmatex">\(a = 1011\)</span> and verify the output.</li>
+<li>Add a 2 % depolarising CNOT error to the Bell circuit and predict the counts.</li>
+<li>Why must the Estimator's circuit have no measurement instruction?</li>
+</ol>
+<h2 id="378-summary">37.8 Summary<a class="headerlink" href="#378-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Qiskit 1.0+ uses <strong>primitives</strong>: <code>Sampler</code> (counts, circuit <strong>must</strong> measure) and <code>Estimator</code> (expectation values, circuit <strong>must not</strong> measure). <code>execute()</code> is gone.</li>
+<li><strong>Qiskit is little-endian:</strong> <code>'001'</code> means qubit 0 is 1. Always test with an asymmetric case; convert with <code>key[::-1]</code> or <code>reverse_bits()</code>.</li>
+<li><code>Statevector(qc)</code> gives exact amplitudes and <code>probabilities_dict()</code> gives exact probabilities — use these to verify before adding shot noise.</li>
+<li><code>AerSimulator</code> with a <code>NoiseModel</code> performs density-matrix or trajectory simulation with realistic errors.</li>
+<li>Shot noise: <span class="arithmatex">\(\mathrm{SE} = \sqrt{(1-\mu^2)/S}\)</span> — <strong>100× the shots for 10× the precision</strong>.</li>
+<li><code>plot_bloch_multivector</code> shows <em>reduced</em> states: an entangled pair displays <strong>two Bloch vectors at the origin</strong>.</li>
+<li>Simulation results match the analytic predictions of Units I–III exactly (Grover at <span class="arithmatex">\(N=8\)</span>, <span class="arithmatex">\(k=2\)</span> gives 0.9453 both ways) — verifying theory against code is the point of this unit.</li>
+</ul>
+<p><strong>Next lesson:</strong> L38 — Qiskit II: transpilation, noise models and real hardware.</p>
+<p><strong>Practise now:</strong> <code>unit4-platforms-lab.html</code> → <em>Qiskit Emulator</em>: build a circuit, see the generated
+Qiskit code, run the simulation in-browser, and compare counts against the exact statevector.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="the-quantum-software-landscape.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 36. The Quantum Software Landscape">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                36. The Quantum Software Landscape
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-footer__link md-footer__link--next" aria-label="Next: 38. IBM Qiskit II: Transpilation, Noise and Real Hardware">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

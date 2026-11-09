@@ -1,0 +1,2550 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/the-quantum-approximate-optimization-algorithm-qaoa.html">
+  
+  
+    <link rel="prev" href="quantum-boltzmann-machines.html">
+  
+  
+    <link rel="next" href="quantum-annealing-and-the-adiabatic-model.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>34. The Quantum Approximate Optimization Algorithm (QAOA) - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#341-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              34. The Quantum Approximate Optimization Algorithm (QAOA)
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#341-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#342-from-combinatorial-problems-to-ising-hamiltonians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2 From Combinatorial Problems to Ising Hamiltonians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.2 From Combinatorial Problems to Ising Hamiltonians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qubo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUBO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qubo-to-ising" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUBO to Ising
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-max-cut-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Max-Cut example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#343-the-qaoa-ansatz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3 The QAOA Ansatz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.3 The QAOA Ansatz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-hamiltonians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Hamiltonians
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-the-unitaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing the unitaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#344-theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.4 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-adiabatic-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The adiabatic connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-locality-obstruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The locality obstruction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#345-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#346-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#347-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#341-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#342-from-combinatorial-problems-to-ising-hamiltonians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2 From Combinatorial Problems to Ising Hamiltonians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.2 From Combinatorial Problems to Ising Hamiltonians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qubo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUBO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qubo-to-ising" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUBO to Ising
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-max-cut-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Max-Cut example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#343-the-qaoa-ansatz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3 The QAOA Ansatz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.3 The QAOA Ansatz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-hamiltonians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Hamiltonians
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-the-unitaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing the unitaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#344-theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.4 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-adiabatic-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The adiabatic connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-locality-obstruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The locality obstruction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#345-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#346-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#347-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-34-the-quantum-approximate-optimization-algorithm-qaoa">Lesson 34: The Quantum Approximate Optimization Algorithm (QAOA)<a class="headerlink" href="#lesson-34-the-quantum-approximate-optimization-algorithm-qaoa" title="Permanent link">&para;</a></h1>
+<h2 id="341-learning-outcomes">34.1 Learning Outcomes<a class="headerlink" href="#341-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Convert a combinatorial problem to <strong>QUBO</strong> and then to an <strong>Ising Hamiltonian</strong>.</li>
+<li>Construct the QAOA <strong>cost</strong> and <strong>mixer</strong> unitaries and the full <span class="arithmatex">\(p\)</span>-layer ansatz.</li>
+<li>Derive the QAOA circuit for <strong>Max-Cut</strong> and compute the <span class="arithmatex">\(p=1\)</span> expectation analytically.</li>
+<li>State the <strong>approximation ratio</strong> results and the <span class="arithmatex">\(p\to\infty\)</span> limit.</li>
+<li>Assess QAOA's practical status honestly against classical heuristics.</li>
+</ol>
+<h2 id="342-from-combinatorial-problems-to-ising-hamiltonians">34.2 From Combinatorial Problems to Ising Hamiltonians<a class="headerlink" href="#342-from-combinatorial-problems-to-ising-hamiltonians" title="Permanent link">&para;</a></h2>
+<h3 id="qubo">QUBO<a class="headerlink" href="#qubo" title="Permanent link">&para;</a></h3>
+<p><strong>Definition.</strong> A <strong>Quadratic Unconstrained Binary Optimization</strong> problem is</p>
+<div class="arithmatex">\[ \min_{\vec x\in\{0,1\}^{n}} \ \vec x^{T}Q\vec x
+= \min_{\vec x}\ \sum_{i}Q_{ii}x_i + \sum_{i&lt;j}Q_{ij}x_ix_j \]</div>
+<p>QUBO is <strong>NP-hard</strong> and remarkably universal — Max-Cut, graph colouring, the travelling salesman
+problem, portfolio optimisation, number partitioning and set cover all reduce to it.</p>
+<p><strong>Handling constraints.</strong> A constraint <span class="arithmatex">\(\sum_i x_i = k\)</span> becomes a penalty term
+<span class="arithmatex">\(\lambda\big(\sum_ix_i - k\big)^{2}\)</span> added to the objective, with <span class="arithmatex">\(\lambda\)</span> large enough that
+violating the constraint always costs more than any gain elsewhere.</p>
+<h3 id="qubo-to-ising">QUBO to Ising<a class="headerlink" href="#qubo-to-ising" title="Permanent link">&para;</a></h3>
+<p>Substitute <span class="arithmatex">\(x_i = \frac{1 - z_i}{2}\)</span> with <span class="arithmatex">\(z_i \in \{-1,+1\}\)</span>:</p>
+<div class="arithmatex">\[ \boxed{\ x_i \in\{0,1\} \ \longleftrightarrow\ z_i = 1-2x_i \in\{+1,-1\}\ } \]</div>
+<p>The objective becomes the <strong>Ising energy</strong></p>
+<div class="arithmatex">\[ H_{C} = \sum_{i}h_i\,Z_i + \sum_{i&lt;j}J_{ij}\,Z_iZ_j + \text{const} \]</div>
+<p>where <span class="arithmatex">\(Z_i\)</span> is the Pauli-<span class="arithmatex">\(Z\)</span> on qubit <span class="arithmatex">\(i\)</span>. Note that <span class="arithmatex">\(H_C\)</span> is <strong>diagonal</strong> in the computational
+basis: <span class="arithmatex">\(H_C|\vec z\rangle = C(\vec z)\,|\vec z\rangle\)</span>, where <span class="arithmatex">\(C(\vec z)\)</span> is the classical cost of
+the bitstring. <strong>Minimising a combinatorial objective = finding the ground state of <span class="arithmatex">\(H_C\)</span>.</strong></p>
+<h3 id="the-max-cut-example">The Max-Cut example<a class="headerlink" href="#the-max-cut-example" title="Permanent link">&para;</a></h3>
+<p><strong>Problem.</strong> Given a graph <span class="arithmatex">\(G = (V,E)\)</span>, partition <span class="arithmatex">\(V\)</span> into two sets to maximise the number of edges
+crossing the cut.</p>
+<p>Assign <span class="arithmatex">\(z_i = +1\)</span> or <span class="arithmatex">\(-1\)</span> by which side vertex <span class="arithmatex">\(i\)</span> is on. An edge <span class="arithmatex">\((i,j)\)</span> is cut iff <span class="arithmatex">\(z_i \ne z_j\)</span>,
+i.e. iff <span class="arithmatex">\(z_iz_j = -1\)</span>. So</p>
+<div class="arithmatex">\[ \text{cut value} = \sum_{(i,j)\in E}\frac{1 - z_iz_j}{2} \]</div>
+<div class="arithmatex">\[ \boxed{\ H_{C} = \sum_{(i,j)\in E}\frac{1}{2}\big(I - Z_iZ_j\big),
+\qquad \langle H_C\rangle = \text{expected number of cut edges}\ } \]</div>
+<p>We <strong>maximise</strong> <span class="arithmatex">\(\langle H_C\rangle\)</span> (equivalently minimise <span class="arithmatex">\(\sum_{(i,j)}Z_iZ_j\)</span>).</p>
+<h2 id="343-the-qaoa-ansatz">34.3 The QAOA Ansatz<a class="headerlink" href="#343-the-qaoa-ansatz" title="Permanent link">&para;</a></h2>
+<p>Farhi, Goldstone and Gutmann (2014).</p>
+<h3 id="two-hamiltonians">Two Hamiltonians<a class="headerlink" href="#two-hamiltonians" title="Permanent link">&para;</a></h3>
+<p><strong>Cost Hamiltonian</strong> <span class="arithmatex">\(H_C\)</span> — encodes the problem, diagonal.</p>
+<p><strong>Mixer Hamiltonian</strong></p>
+<div class="arithmatex">\[ H_{B} = \sum_{i=1}^{n} X_i \]</div>
+<p>— off-diagonal; it drives transitions between bitstrings, allowing the state to explore.</p>
+<p><strong>They do not commute:</strong> <span class="arithmatex">\([H_C, H_B]\ne0\)</span>. This is essential — if they commuted the algorithm would
+be classical.</p>
+<h3 id="the-circuit">The circuit<a class="headerlink" href="#the-circuit" title="Permanent link">&para;</a></h3>
+<p><strong>Initial state:</strong> the uniform superposition, which is the ground state of <span class="arithmatex">\(-H_B\)</span>:</p>
+<div class="arithmatex">\[ |s\rangle = |+\rangle^{\otimes n} = \frac{1}{\sqrt{2^{n}}}\sum_{\vec z}|\vec z\rangle \]</div>
+<p><strong>Alternate <span class="arithmatex">\(p\)</span> times:</strong></p>
+<div class="arithmatex">\[ \boxed{\ |\vec\gamma,\vec\beta\rangle
+= e^{-i\beta_p H_B}e^{-i\gamma_p H_C}\cdots e^{-i\beta_1H_B}e^{-i\gamma_1H_C}\,|s\rangle\ } \]</div>
+<p><span class="arithmatex">\(2p\)</span> parameters: <span class="arithmatex">\(\vec\gamma = (\gamma_1,\dots,\gamma_p)\)</span>, <span class="arithmatex">\(\vec\beta = (\beta_1,\dots,\beta_p)\)</span>.</p>
+<p><strong>Objective:</strong></p>
+<div class="arithmatex">\[ F_p(\vec\gamma,\vec\beta) = \big\langle\vec\gamma,\vec\beta\big|H_C\big|\vec\gamma,\vec\beta\big\rangle
+\ \longrightarrow\ \text{maximise over } (\vec\gamma,\vec\beta) \]</div>
+<p><strong>Then measure</strong> in the computational basis; the measured bitstring is the candidate solution.</p>
+<h3 id="implementing-the-unitaries">Implementing the unitaries<a class="headerlink" href="#implementing-the-unitaries" title="Permanent link">&para;</a></h3>
+<p><strong>Cost unitary.</strong> Because <span class="arithmatex">\(H_C\)</span> is a sum of commuting <span class="arithmatex">\(Z_iZ_j\)</span> terms:</p>
+<div class="arithmatex">\[ e^{-i\gamma H_C} = \prod_{(i,j)\in E} e^{-i\gamma Z_iZ_j/2}\cdot(\text{global phase}) \]</div>
+<p>Each <span class="arithmatex">\(e^{-i\theta Z_iZ_j/2}\)</span> is realised as</p>
+<div class="language-text highlight"><pre><span></span><code>q_i --*----------------*--
+      |                |
+q_j --[X]--[Rz(theta)]--[X]--
+</code></pre></div>
+<p>i.e. <strong>CNOT, <span class="arithmatex">\(R_z(\theta)\)</span>, CNOT</strong> — two CNOTs and one rotation per edge.</p>
+<p><strong>Mixer unitary.</strong> <span class="arithmatex">\(H_B\)</span> is a sum of single-qubit <span class="arithmatex">\(X\)</span>'s, so</p>
+<div class="arithmatex">\[ e^{-i\beta H_B} = \prod_{i=1}^{n} R_x(2\beta_i) \]</div>
+<p>— one <span class="arithmatex">\(R_x\)</span> per qubit, all in parallel.</p>
+<p><strong>Total resources:</strong> <span class="arithmatex">\(p\,(2|E| + n)\)</span> gates, depth <span class="arithmatex">\(O(p\cdot|E|/n)\)</span> if edges are parallelised.</p>
+<h3 id="full-circuit">Full circuit<a class="headerlink" href="#full-circuit" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>q0 --[H]--+--------------+--[Rx(2b1)]--+---------------+--[Rx(2b2)]-- ...  [M]
+          |  exp(-i g1 Hc) |            | exp(-i g2 Hc) |
+q1 --[H]--+--------------+--[Rx(2b1)]--+---------------+--[Rx(2b2)]-- ...  [M]
+          |              |            |               |
+q2 --[H]--+--------------+--[Rx(2b1)]--+---------------+--[Rx(2b2)]-- ...  [M]
+
+          \_______ layer 1 _______/    \_______ layer 2 _______/
+</code></pre></div>
+<h2 id="344-theory">34.4 Theory<a class="headerlink" href="#344-theory" title="Permanent link">&para;</a></h2>
+<h3 id="the-adiabatic-connection">The adiabatic connection<a class="headerlink" href="#the-adiabatic-connection" title="Permanent link">&para;</a></h3>
+<p>QAOA is a <strong>Trotterised approximation to adiabatic evolution</strong>. The adiabatic algorithm evolves under</p>
+<div class="arithmatex">\[ H(t) = \Big(1 - \tfrac{t}{T}\Big)H_B + \tfrac{t}{T}H_C \]</div>
+<p>slowly from the ground state of <span class="arithmatex">\(H_B\)</span> to that of <span class="arithmatex">\(H_C\)</span>. Trotterising this evolution into <span class="arithmatex">\(p\)</span> steps
+gives exactly the QAOA form. Hence:</p>
+<div class="arithmatex">\[ \boxed{\ \lim_{p\to\infty}\max_{\vec\gamma,\vec\beta}F_p = C_{\max}\ } \]</div>
+<p><strong>QAOA is exact in the limit <span class="arithmatex">\(p\to\infty\)</span>.</strong> The question is how large <span class="arithmatex">\(p\)</span> must be — and this is
+where the practical difficulty lies.</p>
+<h3 id="known-results">Known results<a class="headerlink" href="#known-results" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Statement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Farhi et al. (2014)</td>
+<td><span class="arithmatex">\(p=1\)</span> QAOA on 3-regular graphs guarantees approximation ratio <span class="arithmatex">\(\ge 0.6924\)</span></td>
+</tr>
+<tr>
+<td>Goemans–Williamson (classical SDP)</td>
+<td>guarantees <span class="arithmatex">\(\ge 0.8785\)</span> — <strong>better than <span class="arithmatex">\(p=1\)</span> QAOA</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(p=2\)</span> on 3-regular</td>
+<td><span class="arithmatex">\(\ge 0.7559\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(p=11\)</span> on 3-regular</td>
+<td><span class="arithmatex">\(\approx0.8785\)</span> — only here does QAOA <strong>match</strong> GW</td>
+</tr>
+<tr>
+<td>Farhi–Harrow (2016)</td>
+<td>QAOA at <span class="arithmatex">\(p=1\)</span> already gives <strong>sampling</strong> hard for classical computers, though the <em>optimisation quality</em> is modest</td>
+</tr>
+<tr>
+<td>Bravyi et al. (2020)</td>
+<td>for bounded-degree graphs, low-<span class="arithmatex">\(p\)</span> QAOA is provably <strong>limited</strong> by locality — it cannot see beyond distance <span class="arithmatex">\(p\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-locality-obstruction">The locality obstruction<a class="headerlink" href="#the-locality-obstruction" title="Permanent link">&para;</a></h3>
+<p>At depth <span class="arithmatex">\(p\)</span>, each qubit's final state depends only on the subgraph within <strong>distance <span class="arithmatex">\(p\)</span></strong> of that
+qubit (a lightcone argument). For a graph with <span class="arithmatex">\(n\)</span> vertices and good expansion, a constant <span class="arithmatex">\(p\)</span> sees
+only a vanishing local neighbourhood, so QAOA <strong>cannot detect global structure</strong>. This is
+Bravyi–Kliesch–Koenig–Tang's "obstacle to variational quantum advantage" and it explains why
+constant-depth QAOA underperforms classical algorithms on many families.</p>
+<h2 id="345-solved-problems">34.5 Solved Problems<a class="headerlink" href="#345-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-building-the-ising-hamiltonian-for-a-triangle">Problem 1 — Building the Ising Hamiltonian for a triangle<a class="headerlink" href="#problem-1-building-the-ising-hamiltonian-for-a-triangle" title="Permanent link">&para;</a></h4>
+<p><em>For the triangle graph <span class="arithmatex">\(K_3\)</span> with vertices <span class="arithmatex">\(\{0,1,2\}\)</span> and all three edges, write <span class="arithmatex">\(H_C\)</span>, list all 8
+bitstrings with their cut values, and identify the optimum.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ H_C = \frac12\big[(I - Z_0Z_1) + (I - Z_1Z_2) + (I - Z_0Z_2)\big]
+= \frac32 I - \frac12\big(Z_0Z_1 + Z_1Z_2 + Z_0Z_2\big) \]</div>
+<p><strong>Enumerate</strong> (using <span class="arithmatex">\(z_i = +1\)</span> for bit 0, <span class="arithmatex">\(-1\)</span> for bit 1; cut edges = pairs with different bits):</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(\lvert z_0z_1z_2\rangle\)</span></th>
+<th>Partition</th>
+<th>Cut edges</th>
+<th>Cut value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(000\)</span></td>
+<td><span class="arithmatex">\(\{0,1,2\}\mid\emptyset\)</span></td>
+<td>none</td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(001\)</span></td>
+<td><span class="arithmatex">\(\{0,1\}\mid\{2\}\)</span></td>
+<td>(0,2),(1,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(010\)</span></td>
+<td><span class="arithmatex">\(\{0,2\}\mid\{1\}\)</span></td>
+<td>(0,1),(1,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(011\)</span></td>
+<td><span class="arithmatex">\(\{0\}\mid\{1,2\}\)</span></td>
+<td>(0,1),(0,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(100\)</span></td>
+<td><span class="arithmatex">\(\{1,2\}\mid\{0\}\)</span></td>
+<td>(0,1),(0,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(101\)</span></td>
+<td><span class="arithmatex">\(\{1\}\mid\{0,2\}\)</span></td>
+<td>(0,1),(1,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(110\)</span></td>
+<td><span class="arithmatex">\(\{2\}\mid\{0,1\}\)</span></td>
+<td>(0,2),(1,2)</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(111\)</span></td>
+<td><span class="arithmatex">\(\emptyset\mid\{0,1,2\}\)</span></td>
+<td>none</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ C_{\max} = \mathbf{2} \]</div>
+<p><strong>Note:</strong> <span class="arithmatex">\(K_3\)</span> is an odd cycle, so it is <strong>not bipartite</strong> — you cannot cut all 3 edges. Six of the
+eight bitstrings achieve the optimum, so <strong>random guessing already gives</strong> <span class="arithmatex">\(\frac{6}{8}\times2 + \frac28\times0 = 1.5\)</span>,
+an approximation ratio of <span class="arithmatex">\(\frac{1.5}{2} = 0.75\)</span>. <strong>Any proposed algorithm must beat 0.75 on this
+instance to be doing anything at all</strong> — a useful sanity check students should always compute first.</p>
+<h4 id="problem-2-qaoa-p1-on-a-single-edge-computed-exactly">Problem 2 — QAOA p=1 on a single edge, computed exactly<a class="headerlink" href="#problem-2-qaoa-p1-on-a-single-edge-computed-exactly" title="Permanent link">&para;</a></h4>
+<p><em>Compute <span class="arithmatex">\(F_1(\gamma,\beta)\)</span> for a 2-vertex graph with one edge, and find the optimal parameters.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ H_C = \frac12\big(I - Z_0Z_1\big) \]</div>
+<p><strong>Step 1.</strong> <span class="arithmatex">\(|s\rangle = |{+}{+}\rangle = \frac12(|00\rangle+|01\rangle+|10\rangle+|11\rangle)\)</span>.</p>
+<p><strong>Step 2 — cost unitary.</strong> <span class="arithmatex">\(e^{-i\gamma H_C}\)</span> is diagonal, applying phase <span class="arithmatex">\(e^{-i\gamma C(\vec z)}\)</span>
+where <span class="arithmatex">\(C = 1\)</span> for <span class="arithmatex">\(\{01,10\}\)</span> and <span class="arithmatex">\(C=0\)</span> for <span class="arithmatex">\(\{00,11\}\)</span>:</p>
+<div class="arithmatex">\[ \frac12\Big(|00\rangle + e^{-i\gamma}|01\rangle + e^{-i\gamma}|10\rangle + |11\rangle\Big) \]</div>
+<p><strong>Step 3 — mixer.</strong> Apply <span class="arithmatex">\(R_x(2\beta)^{\otimes2}\)</span>.</p>
+<p><strong>Step 4 — evaluate <span class="arithmatex">\(F_1 = \langle H_C\rangle\)</span>.</strong> Since <span class="arithmatex">\(H_C = \frac12(I - Z_0Z_1)\)</span>, we need
+<span class="arithmatex">\(\langle Z_0Z_1\rangle\)</span> in the final state. Work in the Heisenberg picture:</p>
+<div class="arithmatex">\[ \langle Z_0Z_1\rangle = \big\langle s\big| U_C^{\dagger}U_B^{\dagger}\,Z_0Z_1\,U_BU_C\big|s\big\rangle \]</div>
+<p><strong>Conjugate by the mixer.</strong> <span class="arithmatex">\(U_B = e^{-i\beta(X_0+X_1)}\)</span> rotates <span class="arithmatex">\(Z\)</span> about the <span class="arithmatex">\(x\)</span>-axis:</p>
+<div class="arithmatex">\[ U_B^{\dagger}Z_iU_B = \cos(2\beta)\,Z_i - \sin(2\beta)\,Y_i \]</div>
+<p>so that</p>
+<div class="arithmatex">\[ U_B^\dagger Z_0Z_1U_B = \big(\cos2\beta\,Z_0 - \sin2\beta\,Y_0\big)\big(\cos2\beta\,Z_1 - \sin2\beta\,Y_1\big) . \]</div>
+<p><strong>Conjugate by the cost unitary</strong> <span class="arithmatex">\(U_C = e^{-i\gamma(I-Z_0Z_1)/2}\)</span> and take the expectation in
+<span class="arithmatex">\(|{+}{+}\rangle\)</span>, where <span class="arithmatex">\(\langle X_i\rangle = 1\)</span> and <span class="arithmatex">\(\langle Y_i\rangle = \langle Z_i\rangle = 0\)</span>.
+Only terms reducing to products of <span class="arithmatex">\(X\)</span>'s or the identity survive; the <span class="arithmatex">\(Z_0Z_1\)</span> and <span class="arithmatex">\(Y_0Y_1\)</span>
+cross-terms combine into a single sinusoid, giving</p>
+<div class="arithmatex">\[ \langle Z_0Z_1\rangle = -\sin(4\beta)\sin(\gamma) \]</div>
+<p>and therefore</p>
+<div class="arithmatex">\[ \boxed{\ F_1(\gamma,\beta) = \frac{1}{2}\Big(1 + \sin(4\beta)\sin(\gamma)\Big)\ } \]</div>
+<p><em>(Verify numerically: at <span class="arithmatex">\(\gamma = 1.0\)</span>, <span class="arithmatex">\(\beta = 0.3\)</span> both the exact <span class="arithmatex">\(4\times4\)</span> simulation and this
+formula give <span class="arithmatex">\(F_1 = 0.892142\)</span>.)</em></p>
+<p><strong>Maximise.</strong> Both factors reach 1 when</p>
+<div class="arithmatex">\[ \sin(4\beta) = 1 \Rightarrow \beta = \frac{\pi}{8}, \qquad
+\sin\gamma = 1 \Rightarrow \gamma = \frac{\pi}{2} \]</div>
+<div class="arithmatex">\[ F_1^{\max} = \frac{1}{2}(1+1) = \mathbf{1} = C_{\max} \]</div>
+<p><strong>QAOA at <span class="arithmatex">\(p=1\)</span> solves the single-edge problem exactly</strong> (the graph is bipartite and trivially small).
+Random guessing gives <span class="arithmatex">\(F = 0.5\)</span>, so QAOA doubles it.</p>
+<h4 id="problem-3-formulating-a-constrained-problem-as-qubo">Problem 3 — Formulating a constrained problem as QUBO<a class="headerlink" href="#problem-3-formulating-a-constrained-problem-as-qubo" title="Permanent link">&para;</a></h4>
+<p><em>Formulate "select exactly 2 items from 4 to maximise total value <span class="arithmatex">\(\vec v = (3,5,2,7)\)</span>" as a QUBO,
+then convert to Ising.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Objective (to maximise).</strong> <span class="arithmatex">\(\sum_i v_ix_i\)</span>. Convert to a minimisation: minimise <span class="arithmatex">\(-\sum_iv_ix_i\)</span>.</p>
+<p><strong>Constraint.</strong> <span class="arithmatex">\(\sum_i x_i = 2\)</span>. Add the penalty <span class="arithmatex">\(\lambda\big(\sum_ix_i - 2\big)^{2}\)</span>.</p>
+<div class="arithmatex">\[ \text{minimise}\quad f(\vec x) = -\sum_{i=1}^{4}v_ix_i + \lambda\Big(\sum_ix_i - 2\Big)^{2} \]</div>
+<p><strong>Choosing <span class="arithmatex">\(\lambda\)</span>.</strong> It must exceed the largest possible gain from violating the constraint. Adding
+a third item gains at most <span class="arithmatex">\(\max v_i = 7\)</span> while the penalty rises from 0 to <span class="arithmatex">\(\lambda\)</span>. So
+<span class="arithmatex">\(\lambda &gt; 7\)</span>; take <span class="arithmatex">\(\lambda = 10\)</span>.</p>
+<p><strong>Expand the penalty</strong> using <span class="arithmatex">\(x_i^{2} = x_i\)</span> (binary):</p>
+<div class="arithmatex">\[ \Big(\sum_ix_i - 2\Big)^{2} = \sum_ix_i^2 + 2\sum_{i&lt;j}x_ix_j - 4\sum_ix_i + 4
+= 2\sum_{i&lt;j}x_ix_j - 3\sum_ix_i + 4 \]</div>
+<div class="arithmatex">\[ f(\vec x) = \sum_i(-v_i - 30)x_i + 20\sum_{i&lt;j}x_ix_j + 40 \]</div>
+<p><strong>QUBO matrix</strong> (with <span class="arithmatex">\(\lambda = 10\)</span>):</p>
+<div class="arithmatex">\[ Q_{ii} = -v_i - 30 = (-33,\ -35,\ -32,\ -37), \qquad Q_{ij} = 20 \ (i&lt;j) \]</div>
+<p><strong>Verify the optimum.</strong> The best pair is items 2 and 4 (<span class="arithmatex">\(v = 5+7 = 12\)</span>):</p>
+<div class="arithmatex">\[ f = (-35) + (-37) + 20 + 40 = \mathbf{-12} \ \checkmark \]</div>
+<p>Check a 3-item selection <span class="arithmatex">\(\{1,2,4\}\)</span> (<span class="arithmatex">\(v = 15\)</span>):</p>
+<div class="arithmatex">\[ f = -33-35-37 + 20\times3 + 40 = -105 + 60 + 40 = \mathbf{-5} \]</div>
+<p><span class="arithmatex">\(-5 &gt; -12\)</span>, so the constraint is correctly enforced ✓ — the higher-value but infeasible selection is
+penalised into a worse objective.</p>
+<p><strong>Convert to Ising</strong> with <span class="arithmatex">\(x_i = \frac{1-z_i}{2}\)</span>:</p>
+<div class="arithmatex">\[ \sum_i Q_{ii}x_i = \sum_i Q_{ii}\frac{1-z_i}{2} = \frac12\sum_iQ_{ii} - \frac12\sum_iQ_{ii}z_i \]</div>
+<div class="arithmatex">\[ \sum_{i&lt;j}Q_{ij}x_ix_j = \sum_{i&lt;j}\frac{Q_{ij}}{4}\big(1 - z_i - z_j + z_iz_j\big) \]</div>
+<p>Collecting terms gives</p>
+<div class="arithmatex">\[ h_i = -\frac{Q_{ii}}{2} - \frac{1}{4}\sum_{j\ne i}Q_{ij}, \qquad J_{ij} = \frac{Q_{ij}}{4} = 5 . \]</div>
+<p>For <span class="arithmatex">\(i=1\)</span>: <span class="arithmatex">\(h_1 = 16.5 - \frac{60}{4} = 16.5 - 15 = 1.5\)</span>. Similarly
+<span class="arithmatex">\(\vec h = (1.5,\ 2.5,\ 1.0,\ 3.5)\)</span>.</p>
+<div class="arithmatex">\[ H_C = \sum_i h_iZ_i + 5\sum_{i&lt;j}Z_iZ_j + \text{const} \]</div>
+<p><strong>Four qubits, ready for QAOA.</strong></p>
+<h4 id="problem-4-approximation-ratio-and-resource-estimate">Problem 4 — Approximation ratio and resource estimate<a class="headerlink" href="#problem-4-approximation-ratio-and-resource-estimate" title="Permanent link">&para;</a></h4>
+<p><em>A Max-Cut instance on a 3-regular graph with 100 vertices. Compute the number of edges, gates per
+QAOA layer, and total gates for <span class="arithmatex">\(p=1,3,11\)</span>. Compare quality with Goemans–Williamson.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Edges.</strong> 3-regular means every vertex has degree 3:</p>
+<div class="arithmatex">\[ |E| = \frac{3\times100}{2} = \mathbf{150} \]</div>
+<p><strong>Gates per layer.</strong></p>
+<div class="arithmatex">\[ \underbrace{2\times150}_{\text{CNOTs}} + \underbrace{150}_{R_z} + \underbrace{100}_{R_x}
+= \mathbf{550\ \text{gates}} \]</div>
+<p><strong>Totals.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(p\)</span></th>
+<th>Gates</th>
+<th>CNOTs</th>
+<th>Approx. ratio</th>
+<th>Fidelity at <span class="arithmatex">\(\epsilon_{\text{CX}}=10^{-3}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>650</td>
+<td>300</td>
+<td>0.6924</td>
+<td><span class="arithmatex">\((0.999)^{300} = 0.741\)</span></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1750</td>
+<td>900</td>
+<td>~0.79</td>
+<td><span class="arithmatex">\((0.999)^{900} = 0.406\)</span></td>
+</tr>
+<tr>
+<td>11</td>
+<td>6150</td>
+<td>3300</td>
+<td>0.8785</td>
+<td><span class="arithmatex">\((0.999)^{3300} = 0.037\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><em>(Adding 100 Hadamards for state preparation.)</em></p>
+<p><strong>The comparison that matters.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Guarantee</th>
+<th>Runtime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random assignment</td>
+<td>0.5</td>
+<td>instant</td>
+</tr>
+<tr>
+<td>Greedy</td>
+<td>~0.5</td>
+<td><span class="arithmatex">\(O(\lvert E\rvert)\)</span></td>
+</tr>
+<tr>
+<td><strong>Goemans–Williamson SDP</strong></td>
+<td><strong>0.8785</strong></td>
+<td>polynomial, seconds</td>
+</tr>
+<tr>
+<td>QAOA <span class="arithmatex">\(p=1\)</span></td>
+<td>0.6924</td>
+<td>~<span class="arithmatex">\(10^{5}\)</span> shots</td>
+</tr>
+<tr>
+<td>QAOA <span class="arithmatex">\(p=11\)</span></td>
+<td>0.8785</td>
+<td>~<span class="arithmatex">\(10^{5}\)</span> shots, <strong>3.7 % circuit fidelity</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \text{To \emph{match} GW, QAOA needs } p=11, \text{ at which point noise destroys the state.}\ } \]</div>
+<p><strong>Conclusion.</strong> For 3-regular Max-Cut, <strong>QAOA is not competitive on current hardware</strong>. Its interest
+lies in problem families where no good classical approximation exists, in warm-started variants, and
+in the <span class="arithmatex">\(p\to\infty\)</span> theoretical guarantee.</p>
+<h4 id="problem-5-warm-starting-and-the-parameter-transfer-trick">Problem 5 — Warm-starting and the parameter-transfer trick<a class="headerlink" href="#problem-5-warm-starting-and-the-parameter-transfer-trick" title="Permanent link">&para;</a></h4>
+<p><em>QAOA parameter optimisation is expensive and non-convex. Describe two techniques that mitigate this
+and estimate their savings.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Technique 1: Parameter transfer (parameter concentration).</strong></p>
+<p><strong>Observation</strong> (Brandao et al., 2018; Streif–Leib, 2019). For a <em>fixed problem family</em> (say
+3-regular Max-Cut), the optimal <span class="arithmatex">\((\vec\gamma^{*},\vec\beta^{*})\)</span> <strong>concentrate</strong>: they are nearly the
+same for different random instances of the same size, and vary only slowly with <span class="arithmatex">\(n\)</span>.</p>
+<p><strong>Procedure.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>1. Classically simulate a SMALL instance (n = 10-16) and optimise fully
+2. Reuse (gamma*, beta*) directly on LARGE instances -- no optimisation at all
+3. Optionally fine-tune with a handful of steps
+</code></pre></div>
+<p><strong>Savings.</strong> Full optimisation at <span class="arithmatex">\(p=3\)</span> (6 parameters) with SPSA typically needs ~200 steps × 2
+evaluations × <span class="arithmatex">\(10^{4}\)</span> shots <span class="arithmatex">\(= 4\times10^{6}\)</span> shots. Parameter transfer needs <strong>one</strong> circuit
+evaluation of <span class="arithmatex">\(10^{4}\)</span> shots.</p>
+<div class="arithmatex">\[ \text{Saving} \approx \mathbf{400\times} \]</div>
+<p><strong>Technique 2: Warm-start QAOA (Egger, Mareček, Woerner, 2021).</strong></p>
+<p>Instead of starting from <span class="arithmatex">\(|+\rangle^{\otimes n}\)</span> (a completely uninformed state), start from a state
+biased toward a <strong>classical approximate solution</strong>.</p>
+<div class="language-text highlight"><pre><span></span><code>1. Solve the SDP relaxation (Goemans-Williamson) classically -&gt; fractional c_i in [0,1]
+2. Initialise each qubit at angle theta_i = 2*arcsin(sqrt(c_i)) instead of |+&gt;
+3. Replace the standard mixer with one whose ground state is that warm-start state
+4. Run QAOA -- it now IMPROVES on GW rather than starting from scratch
+</code></pre></div>
+<p><strong>Why the mixer must change.</strong> The standard <span class="arithmatex">\(H_B = \sum X_i\)</span> has <span class="arithmatex">\(|+\rangle^{\otimes n}\)</span> as its
+ground state; with a different initial state the adiabatic argument breaks. The warm-start mixer is
+constructed so the new initial state <em>is</em> its ground state, restoring the guarantee.</p>
+<p><strong>Result.</strong> Warm-started QAOA at <span class="arithmatex">\(p=1\)</span> <strong>inherits the GW guarantee of 0.8785</strong> and improves on it
+monotonically with <span class="arithmatex">\(p\)</span> — instead of <em>starting</em> at 0.6924 and needing <span class="arithmatex">\(p=11\)</span> just to catch up.</p>
+<div class="arithmatex">\[ \boxed{\ \text{Warm-starting turns QAOA from a competitor into an \emph{improver} of classical methods.}\ } \]</div>
+<p><strong>Combined recipe for practice.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>1. Solve the SDP relaxation classically           -&gt; warm start + a baseline guarantee
+2. Transfer parameters from a small simulated instance -&gt; no expensive optimisation
+3. Run shallow QAOA (p = 1-3) on hardware         -&gt; stays within coherence
+4. Post-process: take the best measured bitstring, apply classical local search
+</code></pre></div>
+<p>Step 4 matters more than students expect: <strong>QAOA returns a distribution, and taking the best of many
+samples plus a greedy local-search polish routinely beats the raw expectation value.</strong></p>
+<h2 id="346-practice-problems">34.6 Practice Problems<a class="headerlink" href="#346-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Write <span class="arithmatex">\(H_C\)</span> for a 4-cycle graph <span class="arithmatex">\(C_4\)</span> and give <span class="arithmatex">\(C_{\max}\)</span>. <strong>[Ans: <span class="arithmatex">\(C_{\max}=4\)</span>; bipartite]</strong></li>
+<li>Convert <span class="arithmatex">\(\min\ 3x_1 + 2x_2 - 4x_1x_2\)</span> to Ising form.</li>
+<li>How many gates per QAOA layer for a complete graph <span class="arithmatex">\(K_6\)</span>? <strong>[Ans: <span class="arithmatex">\(2\times15+15+6 = 51\)</span>]</strong></li>
+<li>For <span class="arithmatex">\(F_1 = \frac12(1+\sin4\beta\sin\gamma)\)</span>, find all optima in <span class="arithmatex">\([0,\pi]^2\)</span>.</li>
+<li>Compute the random-guess approximation ratio for Max-Cut on any graph. <strong>[Ans: 0.5]</strong></li>
+<li>Why must <span class="arithmatex">\(\lambda\)</span> exceed the maximum objective gain in a penalty formulation?</li>
+<li>Explain the locality obstruction in three sentences.</li>
+</ol>
+<h2 id="347-summary">34.7 Summary<a class="headerlink" href="#347-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>QUBO ↔ Ising</strong> via <span class="arithmatex">\(x_i = \frac{1-z_i}{2}\)</span>; constraints become quadratic penalties with <span class="arithmatex">\(\lambda\)</span> larger than the maximum gain from violating them.</li>
+<li><strong>Max-Cut:</strong> <span class="arithmatex">\(H_C = \sum_{(i,j)\in E}\frac12(I - Z_iZ_j)\)</span>; <span class="arithmatex">\(\langle H_C\rangle\)</span> is the expected number of cut edges.</li>
+<li><strong>QAOA ansatz:</strong> alternate <span class="arithmatex">\(e^{-i\gamma_kH_C}\)</span> (CNOT–<span class="arithmatex">\(R_z\)</span>–CNOT per edge) and <span class="arithmatex">\(e^{-i\beta_kH_B}\)</span> (<span class="arithmatex">\(R_x\)</span> per qubit), starting from <span class="arithmatex">\(|+\rangle^{\otimes n}\)</span>; optimise <span class="arithmatex">\(2p\)</span> parameters classically.</li>
+<li>QAOA is a <strong>Trotterised adiabatic evolution</strong>, exact as <span class="arithmatex">\(p\to\infty\)</span>.</li>
+<li><strong>Honest status:</strong> <span class="arithmatex">\(p=1\)</span> guarantees 0.6924 on 3-regular Max-Cut versus <strong>0.8785 for the classical Goemans–Williamson SDP</strong>; matching GW needs <span class="arithmatex">\(p=11\)</span>, at which depth NISQ fidelity collapses. Constant-depth QAOA is provably limited by <strong>locality</strong>.</li>
+<li><strong>Practical mitigations:</strong> <strong>parameter transfer</strong> (optimal angles concentrate across instances — ~400× cheaper) and <strong>warm-starting</strong> from the SDP solution (inherits the 0.8785 guarantee and improves on it), plus classical local-search post-processing.</li>
+</ul>
+<p><strong>Next lesson:</strong> L35 — Quantum annealing and the adiabatic model.</p>
+<p><strong>Practise now:</strong> <code>unit3-qml-lab.html</code> → <em>QAOA Lab</em>: draw a graph, set <span class="arithmatex">\(p\)</span>, sweep <span class="arithmatex">\((\gamma,\beta)\)</span> over
+a heat map of <span class="arithmatex">\(F_p\)</span>, and compare the sampled cut distribution against the brute-force optimum.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="quantum-boltzmann-machines.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 33. Quantum Boltzmann Machines">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                33. Quantum Boltzmann Machines
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-footer__link md-footer__link--next" aria-label="Next: 35. Quantum Annealing and the Adiabatic Model">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                35. Quantum Annealing and the Adiabatic Model
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

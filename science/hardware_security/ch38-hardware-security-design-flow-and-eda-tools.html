@@ -1,0 +1,3175 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch38-hardware-security-design-flow-and-eda-tools.html">
+  
+  
+    <link rel="prev" href="ch37-confidential-computing-hardware.html">
+  
+  
+    <link rel="next" href="ch39-chiplet-and-heterogeneous-integration-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>38. Hardware Security Design Flow and EDA Tools - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-hw-threat-model" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              38. Hardware Security Design Flow and EDA Tools
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hw-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.1 Threat Modelling for Hardware
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.1 Threat Modelling for Hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3811-security-asset-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.1.1 Security Asset Identification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-secure-rtl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2 Secure RTL Design Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.2 Secure RTL Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3821-principle-of-least-privilege-in-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.1 Principle of Least Privilege in Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3822-constant-time-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.2 Constant-Time Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3823-secure-state-machine-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.3 Secure State Machine Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-eda-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3 EDA Tools for Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.3 EDA Tools for Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3831-simulation-and-functional-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.1 Simulation and Functional Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3832-formal-verification-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.2 Formal Verification Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3833-security-specific-eda-information-flow-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.3 Security-Specific EDA: Information Flow Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3834-physical-design-and-drclvs-security-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.4 Physical Design and DRC/LVS Security Checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-dfs-sca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4 Side-Channel Analysis in Design Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.4 Side-Channel Analysis in Design Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3841-pre-silicon-power-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4.1 Pre-Silicon Power Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3842-automated-masking-insertion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4.2 Automated Masking Insertion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-dfs-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5 Fault Injection Analysis in Design Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.5 Fault Injection Analysis in Design Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3851-fault-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5.1 Fault Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3852-fipac-fault-injection-protected-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5.2 FIPAC: Fault-Injection Protected Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.6 FPGA Prototyping for Security Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tapeout-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.7 Chip Tapeout Security Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-research-to-silicon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8 Creating New Hardware Security Technologies: Research-to-Silicon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.8 Creating New Hardware Security Technologies: Research-to-Silicon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3881-step-1-security-architecture-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.1 Step 1 – Security Architecture Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3882-step-2-rtl-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.2 Step 2 – RTL Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3883-step-3-security-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.3 Step 3 – Security Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3884-step-4-physical-design-for-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.4 Step 4 – Physical Design for Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3885-step-5-silicon-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.5 Step 5 – Silicon Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-open-hw-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.9 Open-Source Hardware Security Platforms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch38-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#38101-ai-assisted-security-property-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.1 AI-Assisted Security Property Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38102-open-source-eda-security-flow-maturity-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.2 Open-Source EDA Security Flow Maturity (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38103-amaranth-hdl-and-security-oriented-hdls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.3 Amaranth HDL and Security-Oriented HDLs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38104-nist-pqc-hardware-implementation-guidance-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.4 NIST PQC Hardware Implementation Guidance (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38105-eu-cyber-resilience-act-hardware-design-obligations-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.5 EU Cyber Resilience Act: Hardware Design Obligations (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hw-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.1 Threat Modelling for Hardware
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.1 Threat Modelling for Hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3811-security-asset-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.1.1 Security Asset Identification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-secure-rtl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2 Secure RTL Design Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.2 Secure RTL Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3821-principle-of-least-privilege-in-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.1 Principle of Least Privilege in Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3822-constant-time-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.2 Constant-Time Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3823-secure-state-machine-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.2.3 Secure State Machine Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-eda-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3 EDA Tools for Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.3 EDA Tools for Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3831-simulation-and-functional-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.1 Simulation and Functional Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3832-formal-verification-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.2 Formal Verification Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3833-security-specific-eda-information-flow-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.3 Security-Specific EDA: Information Flow Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3834-physical-design-and-drclvs-security-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.3.4 Physical Design and DRC/LVS Security Checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-dfs-sca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4 Side-Channel Analysis in Design Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.4 Side-Channel Analysis in Design Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3841-pre-silicon-power-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4.1 Pre-Silicon Power Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3842-automated-masking-insertion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.4.2 Automated Masking Insertion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-dfs-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5 Fault Injection Analysis in Design Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.5 Fault Injection Analysis in Design Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3851-fault-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5.1 Fault Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3852-fipac-fault-injection-protected-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.5.2 FIPAC: Fault-Injection Protected Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.6 FPGA Prototyping for Security Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tapeout-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.7 Chip Tapeout Security Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-research-to-silicon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8 Creating New Hardware Security Technologies: Research-to-Silicon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.8 Creating New Hardware Security Technologies: Research-to-Silicon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3881-step-1-security-architecture-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.1 Step 1 – Security Architecture Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3882-step-2-rtl-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.2 Step 2 – RTL Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3883-step-3-security-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.3 Step 3 – Security Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3884-step-4-physical-design-for-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.4 Step 4 – Physical Design for Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3885-step-5-silicon-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.8.5 Step 5 – Silicon Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-open-hw-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.9 Open-Source Hardware Security Platforms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch38-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="38.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#38101-ai-assisted-security-property-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.1 AI-Assisted Security Property Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38102-open-source-eda-security-flow-maturity-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.2 Open-Source EDA Security Flow Maturity (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38103-amaranth-hdl-and-security-oriented-hdls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.3 Amaranth HDL and Security-Oriented HDLs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38104-nist-pqc-hardware-implementation-guidance-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.4 NIST PQC Hardware Implementation Guidance (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38105-eu-cyber-resilience-act-hardware-design-obligations-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38.10.5 EU Cyber Resilience Act: Hardware Design Obligations (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-design-flow">Chapter 38: Hardware Security Design Flow and EDA Tools<a class="headerlink" href="#ch-design-flow" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Designing <em>secure</em> hardware requires more than correct functionality. Security must be designed in from the first RTL line, verified at every step of the EDA flow, and validated against physical attacks before tape-out. This chapter covers the complete design-for-security (DFS) flow from specification to silicon.</p>
+</div>
+<p>The hardware security design flow integrates three disciplines: (1) secure architecture definition, (2) formal and simulation verification of security properties, and (3) physical security validation against side-channel and fault attacks. This chapter provides the methodology and tools to build new secure hardware technologies from scratch.</p>
+<h2 id="sec-hw-threat-model"><span class="secnum">38.1</span> Threat Modelling for Hardware<a class="headerlink" href="#sec-hw-threat-model" title="Permanent link">&para;</a></h2>
+<p>Before any RTL is written, a hardware threat model must be established. The standard methodology is <strong>STRIDE-HW</strong> (adapted from Microsoft STRIDE for hardware assets):</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Threat</strong></th>
+<th style="text-align: left;"><strong>Hardware Example</strong></th>
+<th style="text-align: left;"><strong>Countermeasure</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Spoofing</td>
+<td style="text-align: left;">Cloned device presenting false identity</td>
+<td style="text-align: left;">PUF-based device ID, X.509 provisioning</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tampering</td>
+<td style="text-align: left;">Glitch attack on secure boot</td>
+<td style="text-align: left;">Voltage/clock monitors, ECC on config</td>
+</tr>
+<tr>
+<td style="text-align: left;">Repudiation</td>
+<td style="text-align: left;">No audit trail in secure enclave</td>
+<td style="text-align: left;">Monotonic counters, TPM event log</td>
+</tr>
+<tr>
+<td style="text-align: left;">Information Disclosure</td>
+<td style="text-align: left;">Side-channel key leakage</td>
+<td style="text-align: left;">Masking, hiding, constant-time logic</td>
+</tr>
+<tr>
+<td style="text-align: left;">Denial of Service</td>
+<td style="text-align: left;">Fault injection disabling security</td>
+<td style="text-align: left;">Redundant checks, watchdog timers</td>
+</tr>
+<tr>
+<td style="text-align: left;">Elevation of Privilege</td>
+<td style="text-align: left;">Bypassing privilege fence</td>
+<td style="text-align: left;">PMP/MPU hardware enforcement</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Use the <strong>MITRE ATT&amp;CK for ICS / Hardware</strong> framework alongside STRIDE. Map each hardware component (SoC bus, debug port, crypto engine) to relevant attack techniques.</p>
+</div>
+<h3 id="3811-security-asset-identification"><span class="secnum">38.1.1</span> Security Asset Identification<a class="headerlink" href="#3811-security-asset-identification" title="Permanent link">&para;</a></h3>
+<p>A security asset is anything that must be protected. Examples:</p>
+<ul>
+<li>
+<p>Root keys (Device Identity Key, Attestation Key)</p>
+</li>
+<li>
+<p>Secure boot measurement registers</p>
+</li>
+<li>
+<p>Privilege level state machines (e.g., bus master ID)</p>
+</li>
+<li>
+<p>Monotonic counters (anti-replay)</p>
+</li>
+<li>
+<p>Debug enable/disable fuses (OTP)</p>
+</li>
+</ul>
+<h2 id="sec-secure-rtl"><span class="secnum">38.2</span> Secure RTL Design Principles<a class="headerlink" href="#sec-secure-rtl" title="Permanent link">&para;</a></h2>
+<h3 id="3821-principle-of-least-privilege-in-hardware"><span class="secnum">38.2.1</span> Principle of Least Privilege in Hardware<a class="headerlink" href="#3821-principle-of-least-privilege-in-hardware" title="Permanent link">&para;</a></h3>
+<p>Every bus master (CPU, DMA, debug interface) should be granted the minimum privilege needed. Use a hardware <strong>memory protection unit (MPU)</strong> or <strong>bus firewall</strong> to enforce access control:</p>
+<div class="language-SystemVerilog highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">bus_firewall</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">rnw</span><span class="p">,</span><span class="w">        </span><span class="c1">// 1=read, 0=write</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w">  </span><span class="n">master_id</span><span class="p">,</span><span class="w">  </span><span class="c1">// 0=CPU, 1=DMA, 2=Debug</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w">        </span><span class="n">valid</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w">        </span><span class="n">grant</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w">        </span><span class="n">deny_irq</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// Key RAM: 0x4000_0000 -- 0x4000_0FFF</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">KEY_RAM_LO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">32'h4000_0000</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">KEY_RAM_HI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">32'h4000_0FFF</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">DEBUG_ID</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">4'd2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always_comb</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">grant</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">deny_irq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">valid</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">            </span><span class="p">(</span><span class="n">addr</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">KEY_RAM_LO</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">KEY_RAM_HI</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">            </span><span class="p">(</span><span class="n">master_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DEBUG_ID</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">grant</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span><span class="w">   </span><span class="c1">// Block debug access to key RAM</span>
+<span class="w">            </span><span class="n">deny_irq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span><span class="w">   </span><span class="c1">// Raise security interrupt</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="3822-constant-time-hardware"><span class="secnum">38.2.2</span> Constant-Time Hardware<a class="headerlink" href="#3822-constant-time-hardware" title="Permanent link">&para;</a></h3>
+<p>Hardware is inherently data-dependent in timing unless explicit measures are taken. Secure hardware design rules:</p>
+<ol>
+<li>
+<p><strong>No secret-dependent branches</strong>: Multiplexers, not if-else trees driven by key bits</p>
+</li>
+<li>
+<p><strong>No secret-dependent memory accesses</strong>: Use dual-port RAM with pre-fetching all candidates, or bitsliced implementations</p>
+</li>
+<li>
+<p><strong>Fixed latency pipelines</strong>: All operations complete in the same number of clock cycles regardless of input</p>
+</li>
+</ol>
+<div class="language-SystemVerilog highlight"><pre><span></span><code><span class="c1">// BAD: data-dependent multiplexer select creates power side-channel</span>
+<span class="c1">// if (key_bit) result = a; else result = b;</span>
+
+<span class="c1">// GOOD: constant-time select using Boolean logic</span>
+<span class="k">module</span><span class="w"> </span><span class="n">ct_select</span><span class="w"> </span><span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w">          </span><span class="n">sel</span><span class="p">,</span><span class="w">      </span><span class="c1">// secret bit</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="n">W</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w">  </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="n">W</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w">  </span><span class="n">result</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// Both paths evaluated; select bit determines output</span>
+<span class="w">    </span><span class="c1">// Power consumption identical regardless of sel value</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">({</span><span class="n">W</span><span class="p">{</span><span class="n">sel</span><span class="p">}}</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">({</span><span class="n">W</span><span class="p">{</span><span class="o">~</span><span class="n">sel</span><span class="p">}}</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="3823-secure-state-machine-design"><span class="secnum">38.2.3</span> Secure State Machine Design<a class="headerlink" href="#3823-secure-state-machine-design" title="Permanent link">&para;</a></h3>
+<p>Security-critical FSMs must be:</p>
+<ul>
+<li>
+<p><strong>One-hot encoded</strong> to detect glitch-induced invalid states</p>
+</li>
+<li>
+<p><strong>Hamming-distance hardened</strong>: secure states differ by <span class="arithmatex">\(\geq\)</span>3 bits from all other states</p>
+</li>
+<li>
+<p><strong>Error-detecting</strong>: any undefined state immediately triggers a security alert and zeroization</p>
+</li>
+</ul>
+<div class="language-SystemVerilog highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ST_IDLE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mb">5'b00001</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ST_AUTH</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mb">5'b00010</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ST_ACTIVE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mb">5'b00100</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ST_LOCK</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mb">5'b01000</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ST_ZEROIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">5'b10000</span>
+<span class="p">}</span><span class="w"> </span><span class="n">secure_state_t</span><span class="p">;</span>
+
+<span class="n">secure_state_t</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">ST_IDLE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+
+<span class="c1">// Illegal state detector</span>
+<span class="k">always_comb</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ST_IDLE</span><span class="w">   </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ST_AUTH</span><span class="w">  </span><span class="o">&amp;&amp;</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ST_ACTIVE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ST_LOCK</span><span class="w">  </span><span class="o">&amp;&amp;</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ST_ZEROIZE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="c1">// Glitch or fault injection detected</span>
+<span class="w">        </span><span class="n">security_alert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_ZEROIZE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<h2 id="sec-eda-tools"><span class="secnum">38.3</span> EDA Tools for Hardware Security<a class="headerlink" href="#sec-eda-tools" title="Permanent link">&para;</a></h2>
+<h3 id="3831-simulation-and-functional-verification"><span class="secnum">38.3.1</span> Simulation and Functional Verification<a class="headerlink" href="#3831-simulation-and-functional-verification" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tool</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Security Use</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">VCS</td>
+<td style="text-align: left;">Synopsys</td>
+<td style="text-align: left;">RTL simulation; SystemVerilog Assertions (SVA) for security</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xcelium</td>
+<td style="text-align: left;">Cadence</td>
+<td style="text-align: left;">Mixed-signal simulation; fault injection modelling</td>
+</tr>
+<tr>
+<td style="text-align: left;">ModelSim/Questa</td>
+<td style="text-align: left;">Siemens EDA</td>
+<td style="text-align: left;">UVM testbench; security regression tests</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verilator</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">Fast cycle-accurate simulation; used in OpenTitan</td>
+</tr>
+<tr>
+<td style="text-align: left;">GHDL + cocotb</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">VHDL/Verilog co-simulation; Python testbenches</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="3832-formal-verification-tools"><span class="secnum">38.3.2</span> Formal Verification Tools<a class="headerlink" href="#3832-formal-verification-tools" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tool</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Security Use</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">JasperGold Security Path Verification (SPV)</td>
+<td style="text-align: left;">Cadence</td>
+<td style="text-align: left;">Proves no information flow from secret assets to observables</td>
+</tr>
+<tr>
+<td style="text-align: left;">VC Formal</td>
+<td style="text-align: left;">Synopsys</td>
+<td style="text-align: left;">Bounded model checking; unreachable state proofs</td>
+</tr>
+<tr>
+<td style="text-align: left;">OneSpin 360 DV-Verify</td>
+<td style="text-align: left;">OneSpin (Siemens)</td>
+<td style="text-align: left;">Data integrity, privilege separation proofs</td>
+</tr>
+<tr>
+<td style="text-align: left;">SymbiYosys (sby)</td>
+<td style="text-align: left;">YosysHQ</td>
+<td style="text-align: left;">Open-source formal; BMC + k-induction</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tabby CAD Suite</td>
+<td style="text-align: left;">YosysHQ</td>
+<td style="text-align: left;">Commercial SymbiYosys; Yosys synthesis + formal</td>
+</tr>
+<tr>
+<td style="text-align: left;">CBMC</td>
+<td style="text-align: left;">TU Delft</td>
+<td style="text-align: left;">C model checking for firmware security</td>
+</tr>
+<tr>
+<td style="text-align: left;">Isabelle/HOL</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">Theorem proving; seL4, CHERI proofs</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="3833-security-specific-eda-information-flow-tracking"><span class="secnum">38.3.3</span> Security-Specific EDA: Information Flow Tracking<a class="headerlink" href="#3833-security-specific-eda-information-flow-tracking" title="Permanent link">&para;</a></h3>
+<p><strong>Information Flow Tracking (IFT)</strong> is the most important security analysis in hardware EDA. It answers: <em>Can a secret input ever affect an observable output?</em></p>
+<p>Tools:</p>
+<ul>
+<li>
+<p><strong>Cadence JasperGold SPV</strong>: Formally proves non-interference between tainted (secret) signals and outputs</p>
+</li>
+<li>
+<p><strong>GLIFT (Gate-Level IFT)</strong>: Computes a shadow logic per gate to track information propagation</p>
+</li>
+<li>
+<p><strong>Maki</strong>: Open-source hardware IFT tool (MIT, 2022)</p>
+</li>
+<li>
+<p><strong>SecVerilog</strong>: Type-system for Verilog enforcing information-flow security at synthesis time (Cornell 2015, still used in 2024)</p>
+</li>
+</ul>
+<div class="language-SystemVerilog highlight"><pre><span></span><code><span class="c1">// JasperGold-style SVA property</span>
+<span class="c1">// Mark key_reg as secret (tainted) source</span>
+<span class="c1">// Assert: encrypted_out has no direct information flow from key_reg</span>
+<span class="c1">// This uses SPV "taint source" / "taint sink" methodology</span>
+
+<span class="c1">// Taint source declaration (in JasperGold SPV script):</span>
+<span class="c1">//   taint_source key_reg -type secret</span>
+
+<span class="c1">// Taint sink check:</span>
+<span class="c1">//   taint_check plaintext_bus_out -expect no_taint</span>
+
+<span class="c1">// Equivalent SVA non-interference property:</span>
+<span class="k">property</span><span class="w"> </span><span class="n">key_noninterference</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// For all pairs of runs differing only in key_reg,</span>
+<span class="w">    </span><span class="c1">// the plaintext_bus_out must be equal</span>
+<span class="w">    </span><span class="c1">// (expressed as a 2-safety property in SPV)</span>
+<span class="w">    </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">disable</span><span class="w"> </span><span class="k">iff</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">    </span><span class="o">!</span><span class="p">$</span><span class="n">changed</span><span class="p">(</span><span class="n">key_reg</span><span class="p">)</span><span class="w"> </span><span class="o">|-&gt;</span><span class="w"> </span><span class="o">!</span><span class="p">$</span><span class="n">changed</span><span class="p">(</span><span class="n">plaintext_bus_out</span><span class="p">);</span>
+<span class="k">endproperty</span>
+<span class="k">assert</span><span class="w"> </span><span class="k">property</span><span class="w"> </span><span class="p">(</span><span class="n">key_noninterference</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="3834-physical-design-and-drclvs-security-checks"><span class="secnum">38.3.4</span> Physical Design and DRC/LVS Security Checks<a class="headerlink" href="#3834-physical-design-and-drclvs-security-checks" title="Permanent link">&para;</a></h3>
+<p>Security-aware physical design requires additional checks beyond standard DRC/LVS:</p>
+<ul>
+<li>
+<p><strong>Power mesh isolation</strong>: Separate power domains for secure and non-secure logic to prevent power side-channel cross-domain leakage</p>
+</li>
+<li>
+<p><strong>Shielded routing</strong>: Critical signal nets (key buses, secure boot signals) routed on metal layers shielded above and below with ground planes</p>
+</li>
+<li>
+<p><strong>Active shield mesh</strong>: Top-level metal mesh connected to tamper detection logic; any cut triggers zeroization</p>
+</li>
+<li>
+<p><strong>Fill cell security</strong>: Unused silicon area filled with active (not just filler) standard cells to prevent FIB circuit edit</p>
+</li>
+</ul>
+<h2 id="sec-dfs-sca"><span class="secnum">38.4</span> Side-Channel Analysis in Design Flow<a class="headerlink" href="#sec-dfs-sca" title="Permanent link">&para;</a></h2>
+<h3 id="3841-pre-silicon-power-analysis"><span class="secnum">38.4.1</span> Pre-Silicon Power Analysis<a class="headerlink" href="#3841-pre-silicon-power-analysis" title="Permanent link">&para;</a></h3>
+<dl>
+<dt>TVLA at RTL</dt>
+<dd>Run Test Vector Leakage Assessment on gate-level simulations using annotated switching activity (VCD/SAIF files). Tool: Cadence Conformal Equality Checker with power annotation.</dd>
+<dt>ELMO (Estimated Leakage for Microcontrollers)</dt>
+<dd>Power leakage model for Cortex-M0/M3 cores; available on GitHub. Predicts DPA success rate before silicon.</dd>
+<dt>Gate-Level Power Simulation</dt>
+<dd>Synopsys PrimeTime PX: annotate switching activity from simulation, compute per-cell power, detect high-leakage cells in crypto datapaths.</dd>
+</dl>
+<h3 id="3842-automated-masking-insertion"><span class="secnum">38.4.2</span> Automated Masking Insertion<a class="headerlink" href="#3842-automated-masking-insertion" title="Permanent link">&para;</a></h3>
+<p>Manual masking of AES S-boxes is error-prone. Automated tools:</p>
+<ul>
+<li>
+<p><strong>SILVER</strong> (Ruhr University Bochum): Formal verification of masked implementations; checks d-probing security</p>
+</li>
+<li>
+<p><strong>maskVerif</strong>: Verifies that a masked circuit is <span class="arithmatex">\(t\)</span>-probing secure</p>
+</li>
+<li>
+<p><strong>AGEMA</strong> (2022): Automated Generation of Masked Implementations; synthesises a masked AES from unmasked RTL</p>
+</li>
+</ul>
+<h2 id="sec-dfs-fault"><span class="secnum">38.5</span> Fault Injection Analysis in Design Flow<a class="headerlink" href="#sec-dfs-fault" title="Permanent link">&para;</a></h2>
+<h3 id="3851-fault-models"><span class="secnum">38.5.1</span> Fault Models<a class="headerlink" href="#3851-fault-models" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Fault Model</strong></th>
+<th style="text-align: left;"><strong>Physical Attack</strong></th>
+<th style="text-align: left;"><strong>Design Countermeasure</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Bit-flip</td>
+<td style="text-align: left;">Laser fault injection, EM glitch</td>
+<td style="text-align: left;">ECC on registers; dual-rail logic</td>
+</tr>
+<tr>
+<td style="text-align: left;">Stuck-at-0/1</td>
+<td style="text-align: left;">Power glitch</td>
+<td style="text-align: left;">Temporal redundancy (double compute)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Transient clock</td>
+<td style="text-align: left;">Clock glitch</td>
+<td style="text-align: left;">Clock monitor + anomaly detector</td>
+</tr>
+<tr>
+<td style="text-align: left;">Instruction skip</td>
+<td style="text-align: left;">Laser on pipeline</td>
+<td style="text-align: left;">Redundant PC check; hash of instruction stream</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="3852-fipac-fault-injection-protected-architecture"><span class="secnum">38.5.2</span> FIPAC: Fault-Injection Protected Architecture<a class="headerlink" href="#3852-fipac-fault-injection-protected-architecture" title="Permanent link">&para;</a></h3>
+<p>FIPAC (TU Graz 2022) instruments an RISC-V binary at compile time to detect instruction-skip attacks. It inserts a <em>signature</em> (XOR of instruction addresses) updated at every basic block and verified at branches.</p>
+<div class="language-c highlight"><pre><span></span><code><span class="cm">/* Signature variable in dedicated register (e.g., t6 on RISC-V) */</span>
+<span class="k">extern</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">__signature</span><span class="p">;</span>
+
+<span class="cm">/* Macro inserted by FIPAC pass at each basic block entry */</span>
+<span class="cp">#define FIPAC_UPDATE(expected_sig) \</span>
+<span class="cp">    if (__signature != (expected_sig)) { security_fault(); }</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">secure_check</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FIPAC_UPDATE</span><span class="p">(</span><span class="mh">0xDEAD1234UL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SECRET_MAGIC</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">FIPAC_UPDATE</span><span class="p">(</span><span class="mh">0xBEEF5678UL</span><span class="p">);</span>
+<span class="w">        </span><span class="n">grant_access</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">FIPAC_UPDATE</span><span class="p">(</span><span class="mh">0xCAFE9ABCUL</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="sec-fpga-prototype"><span class="secnum">38.6</span> FPGA Prototyping for Security Validation<a class="headerlink" href="#sec-fpga-prototype" title="Permanent link">&para;</a></h2>
+<p>FPGA prototyping is essential for pre-silicon security validation:</p>
+<ol>
+<li>
+<p>Implement the design on a ChipWhisperer-compatible target (CW305 Artix-7)</p>
+</li>
+<li>
+<p>Run TVLA test campaigns: 100K–1M traces for t-test leakage detection</p>
+</li>
+<li>
+<p>Perform laser fault injection using a focused ion beam station or ChipSHOUTER platform</p>
+</li>
+<li>
+<p>Iterate on masking/hiding countermeasures before tape-out</p>
+</li>
+</ol>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> FPGA power side-channels differ from ASIC due to the routing fabric. An FPGA implementation that passes TVLA may still leak on ASIC due to different parasitic capacitances. Always validate on the final ASIC process node.</p>
+</div>
+<h2 id="sec-tapeout-checklist"><span class="secnum">38.7</span> Chip Tapeout Security Checklist<a class="headerlink" href="#sec-tapeout-checklist" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Security Check</strong></th>
+<th style="text-align: left;"><strong>Stage</strong></th>
+<th style="text-align: left;"><strong>Responsible Tool/Method</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Threat model complete, all assets identified</td>
+<td style="text-align: left;">Pre-RTL</td>
+<td style="text-align: left;">Architecture review</td>
+</tr>
+<tr>
+<td style="text-align: left;">Formal non-interference (IFT) proof</td>
+<td style="text-align: left;">RTL</td>
+<td style="text-align: left;">JasperGold SPV / GLIFT</td>
+</tr>
+<tr>
+<td style="text-align: left;">Constant-time datapath verified</td>
+<td style="text-align: left;">RTL</td>
+<td style="text-align: left;">SILVER / maskVerif</td>
+</tr>
+<tr>
+<td style="text-align: left;">FSM illegal-state detection</td>
+<td style="text-align: left;">RTL</td>
+<td style="text-align: left;">Formal reachability check</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bus firewall policy complete</td>
+<td style="text-align: left;">Gate-level</td>
+<td style="text-align: left;">Simulation + formal</td>
+</tr>
+<tr>
+<td style="text-align: left;">TVLA <span class="math inline">\(t &lt; 4.5\)</span> (no leakage)</td>
+<td style="text-align: left;">Gate-level</td>
+<td style="text-align: left;">PrimeTime PX + TVLA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fault injection coverage <span class="math inline">\(&gt; 95\%\)</span></td>
+<td style="text-align: left;">Gate-level</td>
+<td style="text-align: left;">FIPAC / FiSim</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active shield mesh routed</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">Custom DRC deck</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shielded routing on key buses</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">Custom DRC</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fill cells: no FIB-exposed polysilicon</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">DRC layer check</td>
+</tr>
+<tr>
+<td style="text-align: left;">OTP fuse programming verified</td>
+<td style="text-align: left;">Functional</td>
+<td style="text-align: left;">ATE test vector</td>
+</tr>
+<tr>
+<td style="text-align: left;">Debug interface disabled in production</td>
+<td style="text-align: left;">Functional</td>
+<td style="text-align: left;">ATE fuse readback</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-research-to-silicon"><span class="secnum">38.8</span> Creating New Hardware Security Technologies: Research-to-Silicon<a class="headerlink" href="#sec-research-to-silicon" title="Permanent link">&para;</a></h2>
+<p>This section provides the complete flow for developing a novel hardware security primitive from concept to tape-out:</p>
+<h3 id="3881-step-1-security-architecture-definition"><span class="secnum">38.8.1</span> Step 1 – Security Architecture Definition<a class="headerlink" href="#3881-step-1-security-architecture-definition" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Define the security goal (e.g., “prevent software from reading attestation keys even with kernel-level compromise”)</p>
+</li>
+<li>
+<p>Enumerate assets and adversary capabilities (hardware attacker, software attacker, insider threat)</p>
+</li>
+<li>
+<p>Choose a hardware primitive (PUF, crypto engine, TEE, RoT)</p>
+</li>
+<li>
+<p>Design the <strong>trust boundary</strong>: what is inside vs. outside the HW security perimeter</p>
+</li>
+</ol>
+<h3 id="3882-step-2-rtl-implementation"><span class="secnum">38.8.2</span> Step 2 – RTL Implementation<a class="headerlink" href="#3882-step-2-rtl-implementation" title="Permanent link">&para;</a></h3>
+<p>Tools and languages:</p>
+<ul>
+<li>
+<p><strong>SystemVerilog</strong> or <strong>VHDL</strong> for register-transfer level</p>
+</li>
+<li>
+<p><strong>Chisel</strong> (Scala-based HDL): used in RISC-V ecosystem, OpenTitan</p>
+</li>
+<li>
+<p><strong>Amaranth</strong> (Python HDL): increasingly popular for security research</p>
+</li>
+<li>
+<p><strong>CIRCT</strong>: MLIR-based hardware compiler; enables formal IR for security</p>
+</li>
+</ul>
+<h3 id="3883-step-3-security-verification"><span class="secnum">38.8.3</span> Step 3 – Security Verification<a class="headerlink" href="#3883-step-3-security-verification" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Write security assertions (SVA properties) for every security invariant</p>
+</li>
+<li>
+<p>Run formal proof (SymbiYosys or JasperGold)</p>
+</li>
+<li>
+<p>Perform IFT analysis (GLIFT or JasperGold SPV)</p>
+</li>
+<li>
+<p>Verify masking correctness (SILVER/maskVerif)</p>
+</li>
+<li>
+<p>FPGA prototype + TVLA</p>
+</li>
+</ol>
+<h3 id="3884-step-4-physical-design-for-security"><span class="secnum">38.8.4</span> Step 4 – Physical Design for Security<a class="headerlink" href="#3884-step-4-physical-design-for-security" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Synthesis (Synopsys DC / Cadence Genus / Yosys)</p>
+</li>
+<li>
+<p>Power domain planning: isolate sensitive logic</p>
+</li>
+<li>
+<p>Place and Route (Cadence Innovus / Synopsys ICC2)</p>
+</li>
+<li>
+<p>Apply shielding and active mesh</p>
+</li>
+<li>
+<p>Run security DRC checks</p>
+</li>
+</ol>
+<h3 id="3885-step-5-silicon-validation"><span class="secnum">38.8.5</span> Step 5 – Silicon Validation<a class="headerlink" href="#3885-step-5-silicon-validation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>ATE (Automatic Test Equipment): Teradyne UltraFlex or Advantest T2000</p>
+</li>
+<li>
+<p>Side-channel lab: ChipWhisperer, Langer probe, oscilloscope</p>
+</li>
+<li>
+<p>Physical penetration testing: FIB, X-ray tomography, laser fault injection</p>
+</li>
+<li>
+<p>Common Criteria evaluation (CC EAL4+ or EAL6+)</p>
+</li>
+</ol>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> The full research-to-silicon timeline for a novel security primitive: architecture (2–4 months), RTL + verification (4–8 months), physical design (3–6 months), tape-out, manufacturing, and validation (6–12 months). Total: 15–30 months and &#36;1M–&#36;50M depending on process node.</p>
+</div>
+<h2 id="sec-open-hw-platforms"><span class="secnum">38.9</span> Open-Source Hardware Security Platforms<a class="headerlink" href="#sec-open-hw-platforms" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>Language</strong></th>
+<th style="text-align: left;"><strong>Security Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">OpenTitan</td>
+<td style="text-align: left;">SystemVerilog + Chisel</td>
+<td style="text-align: left;">Full RoT: AES, SHA-3, KMAC, OTBN, PUF, key manager, alert handler, life cycle controller</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBEX</td>
+<td style="text-align: left;">SystemVerilog</td>
+<td style="text-align: left;">RISC-V RV32IMC; PMP, M-mode; TrustZone-M inspired</td>
+</tr>
+<tr>
+<td style="text-align: left;">CVA6 (Ariane)</td>
+<td style="text-align: left;">SystemVerilog</td>
+<td style="text-align: left;">64-bit RV64GC; physical memory protection</td>
+</tr>
+<tr>
+<td style="text-align: left;">Titan M2 RTL</td>
+<td style="text-align: left;">N/A (proprietary)</td>
+<td style="text-align: left;">Reference for Google Pixel embedded security</td>
+</tr>
+<tr>
+<td style="text-align: left;">HACL*</td>
+<td style="text-align: left;">F* + C</td>
+<td style="text-align: left;">Formally verified crypto library; EverCrypt</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sail RISC-V</td>
+<td style="text-align: left;">Sail ISA</td>
+<td style="text-align: left;">Formal specification; generate RTL and simulators</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-ch38-recent"><span class="secnum">38.10</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch38-recent" title="Permanent link">&para;</a></h2>
+<p>The hardware security design flow has seen significant advances in AI-assisted verification, open-source EDA tooling, and new security-specific HDLs since 2023.</p>
+<h3 id="38101-ai-assisted-security-property-generation"><span class="secnum">38.10.1</span> AI-Assisted Security Property Generation<a class="headerlink" href="#38101-ai-assisted-security-property-generation" title="Permanent link">&para;</a></h3>
+<p>Manual writing of security assertions is the primary bottleneck in formal verification. New AI tools are changing this:</p>
+<ul>
+<li>
+<p><strong>Cadence JasperGold PropGen (2024):</strong> LLM-assisted SVA property suggestion. Given an RTL module and natural-language security description (“key register must not flow to unencrypted output”), PropGen suggests candidate SVA properties. Engineers report 40–60% reduction in property authoring time for crypto datapaths.</p>
+</li>
+<li>
+<p><strong>Synopsys VC Formal AI (2024):</strong> Automated counterexample-guided abstraction refinement (CEGAR) with ML-driven witness generation; reduces state explosion in large bus fabric formal proofs.</p>
+</li>
+<li>
+<p><strong>AutoSVA (2023, Stanford):</strong> Open-source LLM-to-SVA pipeline; generates assume/assert pairs from Verilog comments using GPT-4.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> AI-generated assertions must be reviewed by a security engineer. LLMs can generate syntactically correct but semantically wrong properties — asserting the <em>negation</em> of a security invariant compiles and runs fine but provides zero protection.</p>
+</div>
+<h3 id="38102-open-source-eda-security-flow-maturity-2024"><span class="secnum">38.10.2</span> Open-Source EDA Security Flow Maturity (2024)<a class="headerlink" href="#38102-open-source-eda-security-flow-maturity-2024" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tool</strong></th>
+<th style="text-align: left;"><strong>Version</strong></th>
+<th style="text-align: left;"><strong>2024 Security Advances</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Yosys</td>
+<td style="text-align: left;">0.40 (2024)</td>
+<td style="text-align: left;">Formal IFT plugin (GLIFT); improved synthesis for security-hardened netlists</td>
+</tr>
+<tr>
+<td style="text-align: left;">SymbiYosys</td>
+<td style="text-align: left;">0.12 (2024)</td>
+<td style="text-align: left;">BMC + k-induction + PDR in single run; cover statements for security reachability</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verilator</td>
+<td style="text-align: left;">5.x (2024)</td>
+<td style="text-align: left;">Timing-accurate simulation; SVA assertion support; security lint rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenROAD</td>
+<td style="text-align: left;">2024.x</td>
+<td style="text-align: left;">Open-source P&amp;R; shielding-aware routing plugin (UMich, 2024)</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenTitan</td>
+<td style="text-align: left;">Earl Grey (2024)</td>
+<td style="text-align: left;">First open-source silicon security chip; full RTL + formal + DV suite public</td>
+</tr>
+<tr>
+<td style="text-align: left;">CIRCT</td>
+<td style="text-align: left;">1.x (2024)</td>
+<td style="text-align: left;">MLIR hardware IR; enables formal security analysis on hardware IR nodes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="38103-amaranth-hdl-and-security-oriented-hdls"><span class="secnum">38.10.3</span> Amaranth HDL and Security-Oriented HDLs<a class="headerlink" href="#38103-amaranth-hdl-and-security-oriented-hdls" title="Permanent link">&para;</a></h3>
+<p><strong>Amaranth</strong> (formerly nMigen, Python-based HDL) has gained adoption in security research due to its expressive type system and Python ecosystem integration:</p>
+<ul>
+<li>
+<p><strong>Signal typing:</strong> Amaranth’s <code>Shape</code> system makes bit-width mismatches a compile-time error — eliminating a class of security bugs from implicit truncation</p>
+</li>
+<li>
+<p><strong>SoC integration:</strong> Amaranth SoC library builds bus fabrics with explicit memory-map access control, making bus firewall policy part of the HDL source rather than a separate document</p>
+</li>
+<li>
+<p>Used in production: VexRiscv security extensions, LUNA USB security core</p>
+</li>
+</ul>
+<h3 id="38104-nist-pqc-hardware-implementation-guidance-2024"><span class="secnum">38.10.4</span> NIST PQC Hardware Implementation Guidance (2024)<a class="headerlink" href="#38104-nist-pqc-hardware-implementation-guidance-2024" title="Permanent link">&para;</a></h3>
+<p>Following FIPS 203/204/205/206 finalization (August 2024), NIST published <strong>SP 800-235</strong> (draft, late 2024): <em>Guidelines for Migrating to Post-Quantum Cryptographic Standards</em>, which includes hardware-specific guidance:</p>
+<ul>
+<li>
+<p>Side-channel requirements for NTT butterfly units in ML-KEM hardware</p>
+</li>
+<li>
+<p>Masking requirements: minimum 2-share masking for key generation path</p>
+</li>
+<li>
+<p>ATE test vector requirements for PQC co-processors</p>
+</li>
+<li>
+<p>Formal verification coverage requirements for PQC state machines</p>
+</li>
+</ul>
+<h3 id="38105-eu-cyber-resilience-act-hardware-design-obligations-2024"><span class="secnum">38.10.5</span> EU Cyber Resilience Act: Hardware Design Obligations (2024)<a class="headerlink" href="#38105-eu-cyber-resilience-act-hardware-design-obligations-2024" title="Permanent link">&para;</a></h3>
+<p>The EU CRA (effective October 2024, compliance deadline October 2027) imposes design-process requirements directly relevant to this chapter:</p>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>CRA Requirement</strong></th>
+<th style="text-align: left;"><strong>Design Flow Implication</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Security by design (Art. 13)</td>
+<td style="text-align: left;">Threat model documented before RTL; security properties must be traceable to implementation</td>
+</tr>
+<tr>
+<td style="text-align: left;">No known exploitable vulnerabilities</td>
+<td style="text-align: left;">Formal verification of critical security properties required for Class II products</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure development process</td>
+<td style="text-align: left;">IEC 62443-4-1 or ISO/IEC 27034 SDL compliance; design review artifacts retained for 10 years</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vulnerability disclosure</td>
+<td style="text-align: left;">CVE assignment process must be established before product ships; hardware CVEs now tracked in NVD</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>A designer uses <code>if (key_bit) result = A; else result = B;</code> in Verilog. Explain why this creates a power side-channel and rewrite it using constant-time techniques.</p>
+</li>
+<li>
+<p>Write an SVA property that asserts a 32-bit register <code>secret_key</code> never appears on a 32-bit AHB data bus <code>ahb_hrdata</code> in an unencrypted form. (Hint: use an information-flow tracking approach.)</p>
+</li>
+<li>
+<p>A one-hot FSM has 5 states (5 bits). An attacker glitches the device, flipping 2 bits simultaneously. Which resulting states are illegal? How would you detect them?</p>
+</li>
+<li>
+<p>Explain why a masked AES implementation must be formally verified with SILVER or maskVerif in addition to passing simulation tests.</p>
+</li>
+<li>
+<p>Design a bus firewall table for a SoC with: CPU (master 0), DMA (master 1), Debug (master 2); secure ROM (0x0000–0x7FFF), key RAM (0x8000–0x8FFF), peripheral AHB (0xA000–0xFFFF). Which accesses should be blocked?</p>
+</li>
+<li>
+<p>What is the difference between TVLA at RTL level and post-silicon TVLA? Why might a design pass RTL TVLA but fail post-silicon?</p>
+</li>
+<li>
+<p>Describe the complete EDA tool chain to take a new PUF circuit design from SystemVerilog RTL to a TSMC 7nm GDSII ready for tape-out, noting which security-specific checks are required at each step.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch37-confidential-computing-hardware.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 37. Confidential Computing Hardware">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                37. Confidential Computing Hardware
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 39. Chiplet and Heterogeneous Integration Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                39. Chiplet and Heterogeneous Integration Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

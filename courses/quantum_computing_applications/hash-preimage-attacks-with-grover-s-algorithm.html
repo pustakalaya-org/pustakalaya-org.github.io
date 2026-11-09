@@ -1,0 +1,2449 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/hash-preimage-attacks-with-grover-s-algorithm.html">
+  
+  
+    <link rel="prev" href="grover-s-algorithm-geometric-analysis-and-optimality.html">
+  
+  
+    <link rel="next" href="the-harrow-hassidim-lloyd-hhl-algorithm.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>23. Hash Preimage Attacks with Grover's Algorithm - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#231-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              23. Hash Preimage Attacks with Grover's Algorithm
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#231-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#232-cryptographic-hash-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2 Cryptographic Hash Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#233-grover-preimage-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3 Grover Preimage Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.3 Grover Preimage Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#framing-it-as-unstructured-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framing it as unstructured search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-oracle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the oracle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#234-quantum-security-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4 Quantum Security Levels
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#235-collision-search-grover-vs-bht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5 Collision Search: Grover vs BHT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.5 Collision Search: Grover vs BHT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-bht-algorithm-brassardhyertapp-1997" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The BHT algorithm (Brassard–Høyer–Tapp, 1997)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-bht-is-not-a-practical-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why BHT is not a practical threat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-the-real-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of the real threat model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#236-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#237-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#238-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#231-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#232-cryptographic-hash-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2 Cryptographic Hash Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#233-grover-preimage-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3 Grover Preimage Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.3 Grover Preimage Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#framing-it-as-unstructured-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framing it as unstructured search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-oracle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the oracle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#234-quantum-security-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4 Quantum Security Levels
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#235-collision-search-grover-vs-bht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5 Collision Search: Grover vs BHT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.5 Collision Search: Grover vs BHT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-bht-algorithm-brassardhyertapp-1997" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The BHT algorithm (Brassard–Høyer–Tapp, 1997)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-bht-is-not-a-practical-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why BHT is not a practical threat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-the-real-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of the real threat model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#236-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#237-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#238-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-23-hash-preimage-attacks-with-grovers-algorithm">Lesson 23: Hash Preimage Attacks with Grover's Algorithm<a class="headerlink" href="#lesson-23-hash-preimage-attacks-with-grovers-algorithm" title="Permanent link">&para;</a></h1>
+<h2 id="231-learning-outcomes">23.1 Learning Outcomes<a class="headerlink" href="#231-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Define <strong>preimage, second-preimage</strong> and <strong>collision</strong> resistance and give their classical security levels.</li>
+<li>Construct a Grover oracle for a <strong>hash preimage</strong> search.</li>
+<li>Compute quantum security levels for hash functions and symmetric ciphers.</li>
+<li>Compare <strong>Grover</strong> and <strong>BHT</strong> collision search and explain why BHT is rarely practical.</li>
+<li>State and justify the <strong>"double the key/output length"</strong> rule and its limitations.</li>
+</ol>
+<h2 id="232-cryptographic-hash-functions">23.2 Cryptographic Hash Functions<a class="headerlink" href="#232-cryptographic-hash-functions" title="Permanent link">&para;</a></h2>
+<p><strong>Definition.</strong> A cryptographic hash function <span class="arithmatex">\(H:\{0,1\}^{*}\to\{0,1\}^{m}\)</span> maps arbitrary-length
+input to an <span class="arithmatex">\(m\)</span>-bit digest, and should satisfy:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Requirement</th>
+<th>Classical cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Preimage resistance</strong></td>
+<td>given <span class="arithmatex">\(y\)</span>, hard to find <span class="arithmatex">\(x\)</span> with <span class="arithmatex">\(H(x)=y\)</span></td>
+<td><span class="arithmatex">\(2^{m}\)</span></td>
+</tr>
+<tr>
+<td><strong>Second-preimage resistance</strong></td>
+<td>given <span class="arithmatex">\(x_1\)</span>, hard to find <span class="arithmatex">\(x_2\ne x_1\)</span> with <span class="arithmatex">\(H(x_2)=H(x_1)\)</span></td>
+<td><span class="arithmatex">\(2^{m}\)</span></td>
+</tr>
+<tr>
+<td><strong>Collision resistance</strong></td>
+<td>hard to find any <span class="arithmatex">\(x_1\ne x_2\)</span> with <span class="arithmatex">\(H(x_1)=H(x_2)\)</span></td>
+<td><span class="arithmatex">\(2^{m/2}\)</span> (birthday)</td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="arithmatex">\(2^{m/2}\)</span> birthday bound is why SHA-256 offers "128-bit collision resistance" and why digest
+lengths are chosen at twice the desired security level even classically.</p>
+<p><strong>Where hashes are used:</strong> digital signatures, password storage, blockchain proof-of-work,
+message authentication (HMAC), commitment schemes, key derivation.</p>
+<h2 id="233-grover-preimage-attack">23.3 Grover Preimage Attack<a class="headerlink" href="#233-grover-preimage-attack" title="Permanent link">&para;</a></h2>
+<h3 id="framing-it-as-unstructured-search">Framing it as unstructured search<a class="headerlink" href="#framing-it-as-unstructured-search" title="Permanent link">&para;</a></h3>
+<p>Given a target digest <span class="arithmatex">\(y\)</span>, define</p>
+<div class="arithmatex">\[ f(x) = \begin{cases}1 &amp; H(x) = y\\ 0 &amp; \text{otherwise}\end{cases} \]</div>
+<p>Searching over <span class="arithmatex">\(x\in\{0,1\}^{n}\)</span> (an <span class="arithmatex">\(n\)</span>-bit input space) is exactly Grover's unstructured search
+with <span class="arithmatex">\(N = 2^n\)</span>.</p>
+<div class="arithmatex">\[ \text{Classical: } O(2^{n}) \qquad \text{Grover: } O(2^{n/2}) \]</div>
+<p><strong>Effective security is halved</strong>: an <span class="arithmatex">\(m\)</span>-bit hash gives <span class="arithmatex">\(m/2\)</span> bits of quantum preimage security.</p>
+<h3 id="building-the-oracle">Building the oracle<a class="headerlink" href="#building-the-oracle" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>|x&gt; (n qubits)  --[  H_circuit  ]--*--[ H_circuit^-1 ]--   (uncomputed)
+                                   |
+|0&gt; (m qubits)  --[   digest    ]--|-------------------
+                                   |
+|-&gt; ancilla     -------------------[X]------------------  &lt;- phase kickback
+</code></pre></div>
+<p>Concretely:</p>
+<ol>
+<li><strong>Compute</strong> the digest reversibly: <span class="arithmatex">\(|x\rangle|0^m\rangle \to |x\rangle|H(x)\rangle\)</span>.</li>
+<li><strong>Compare</strong> with the target <span class="arithmatex">\(y\)</span>: apply <span class="arithmatex">\(X\)</span> gates on the digest bits where <span class="arithmatex">\(y_j = 0\)</span>, then a
+    multi-controlled <span class="arithmatex">\(Z\)</span> (or a multi-controlled <span class="arithmatex">\(X\)</span> onto the <span class="arithmatex">\(|-\rangle\)</span> ancilla), then undo the <span class="arithmatex">\(X\)</span>
+    gates. This flips the phase precisely when <span class="arithmatex">\(H(x) = y\)</span>.</li>
+<li><strong>Uncompute</strong> the digest by running the hash circuit in reverse, restoring <span class="arithmatex">\(|x\rangle|0^m\rangle\)</span>.</li>
+</ol>
+<p><strong>Uncomputation is mandatory.</strong> A leftover digest register stays entangled with <span class="arithmatex">\(|x\rangle\)</span> and
+destroys the interference the diffusion operator depends on (L11 §5).</p>
+<p><strong>Cost.</strong> The oracle costs <strong>two full hash evaluations</strong> (compute + uncompute) plus the comparator.
+Reversible SHA-256 circuits have been estimated at <span class="arithmatex">\(\approx 5\times10^{5}\)</span> Toffoli gates each.</p>
+<h2 id="234-quantum-security-levels">23.4 Quantum Security Levels<a class="headerlink" href="#234-quantum-security-levels" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Classical security</th>
+<th>Grover security</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHA-256 preimage</td>
+<td>256 bits</td>
+<td><strong>128 bits</strong></td>
+<td>safe</td>
+</tr>
+<tr>
+<td>SHA-256 collision</td>
+<td>128 bits</td>
+<td>128 bits (BHT: 85)</td>
+<td>safe</td>
+</tr>
+<tr>
+<td>SHA-1 preimage</td>
+<td>160 bits</td>
+<td><strong>80 bits</strong></td>
+<td>already broken classically for collisions</td>
+</tr>
+<tr>
+<td>SHA3-512 preimage</td>
+<td>512 bits</td>
+<td><strong>256 bits</strong></td>
+<td>very safe</td>
+</tr>
+<tr>
+<td>AES-128 key search</td>
+<td>128 bits</td>
+<td><strong>64 bits</strong></td>
+<td>deprecated for post-quantum</td>
+</tr>
+<tr>
+<td>AES-256 key search</td>
+<td>256 bits</td>
+<td><strong>128 bits</strong></td>
+<td>recommended</td>
+</tr>
+<tr>
+<td>3DES (112-bit)</td>
+<td>112 bits</td>
+<td><strong>56 bits</strong></td>
+<td>broken</td>
+</tr>
+</tbody>
+</table>
+<p><strong>NIST post-quantum security categories</strong> (used to grade PQC candidates):</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>"At least as hard as..."</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>AES-128 key search (Grover)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SHA-256 collision search</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AES-192 key search</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SHA-384 collision search</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AES-256 key search</td>
+</tr>
+</tbody>
+</table>
+<h2 id="235-collision-search-grover-vs-bht">23.5 Collision Search: Grover vs BHT<a class="headerlink" href="#235-collision-search-grover-vs-bht" title="Permanent link">&para;</a></h2>
+<h3 id="the-bht-algorithm-brassardhyertapp-1997">The BHT algorithm (Brassard–Høyer–Tapp, 1997)<a class="headerlink" href="#the-bht-algorithm-brassardhyertapp-1997" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Classically compute and store <span class="arithmatex">\(H(x_i)\)</span> for <span class="arithmatex">\(k\)</span> random inputs — a sorted table.</li>
+<li>Use <strong>Grover</strong> to search the remaining <span class="arithmatex">\(2^m - k\)</span> inputs for one whose digest is in the table.
+    The "marked" fraction is <span class="arithmatex">\(k/2^m\)</span>, so Grover needs <span class="arithmatex">\(O(\sqrt{2^m/k})\)</span> queries.</li>
+<li>Total cost <span class="arithmatex">\(\approx k + \sqrt{2^m/k}\)</span>, minimised at <span class="arithmatex">\(k = 2^{m/3}\)</span>, giving</li>
+</ol>
+<div class="arithmatex">\[ O\!\left(2^{m/3}\right) \ \text{queries and } O\!\left(2^{m/3}\right) \ \textbf{quantum-accessible memory} . \]</div>
+<p>For SHA-256: <span class="arithmatex">\(2^{85}\)</span> instead of <span class="arithmatex">\(2^{128}\)</span>.</p>
+<h3 id="why-bht-is-not-a-practical-threat">Why BHT is not a practical threat<a class="headerlink" href="#why-bht-is-not-a-practical-threat" title="Permanent link">&para;</a></h3>
+<p><strong>The memory requirement is fatal.</strong> <span class="arithmatex">\(2^{85}\)</span> entries of 32 bytes is</p>
+<div class="arithmatex">\[ 2^{85}\times32 = 2^{90} \ \text{bytes} \approx 1.2\times10^{27}\ \text{bytes} = 10^{15}\ \text{exabytes} . \]</div>
+<p>Total world data storage is on the order of <span class="arithmatex">\(10^{2}\)</span> zettabytes (<span class="arithmatex">\(10^{23}\)</span> bytes) — BHT needs about
+<span class="arithmatex">\(10^{4}\)</span> times that, in <strong>quantum-random-access memory</strong>, which does not exist even in prototype form.</p>
+<p><strong>The parallel-hardware comparison.</strong> Bernstein (2009) showed that when you account for the <em>cost of
+memory access</em> (which grows with the square root of memory size in any physically realisable 2-D
+layout), classical parallel rho-based collision search with the same hardware budget <strong>matches or
+beats</strong> BHT. The practical consensus:</p>
+<blockquote>
+<p><strong>Collision resistance is NOT effectively halved by quantum computers.</strong> Only <strong>preimage</strong>
+resistance is. Digest lengths chosen for classical collision resistance remain adequate.</p>
+</blockquote>
+<h3 id="summary-of-the-real-threat-model">Summary of the real threat model<a class="headerlink" href="#summary-of-the-real-threat-model" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Attack</th>
+<th>Classical</th>
+<th>Quantum (realistic)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preimage on <span class="arithmatex">\(m\)</span>-bit hash</td>
+<td><span class="arithmatex">\(2^m\)</span></td>
+<td><span class="arithmatex">\(2^{m/2}\)</span> (Grover) — <strong>genuine halving</strong></td>
+</tr>
+<tr>
+<td>Collision on <span class="arithmatex">\(m\)</span>-bit hash</td>
+<td><span class="arithmatex">\(2^{m/2}\)</span></td>
+<td><span class="arithmatex">\(\approx2^{m/2}\)</span> — <strong>no practical gain</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(k\)</span>-bit symmetric key</td>
+<td><span class="arithmatex">\(2^k\)</span></td>
+<td><span class="arithmatex">\(2^{k/2}\)</span> (Grover) — <strong>genuine halving</strong></td>
+</tr>
+<tr>
+<td>RSA / ECC</td>
+<td>sub-exponential</td>
+<td><strong>polynomial</strong> (Shor) — <strong>catastrophic</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="236-solved-problems">23.6 Solved Problems<a class="headerlink" href="#236-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-grover-iterations-and-runtime-for-a-sha-256-preimage">Problem 1 — Grover iterations and runtime for a SHA-256 preimage<a class="headerlink" href="#problem-1-grover-iterations-and-runtime-for-a-sha-256-preimage" title="Permanent link">&para;</a></h4>
+<p><em>Compute the number of Grover iterations, total gate count and runtime for a SHA-256 preimage
+attack, assuming <span class="arithmatex">\(10^{9}\)</span> logical gates per second and <span class="arithmatex">\(5\times10^{5}\)</span> Toffoli gates per hash
+evaluation.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Iterations.</strong> <span class="arithmatex">\(N = 2^{256}\)</span>, <span class="arithmatex">\(M=1\)</span>:</p>
+<div class="arithmatex">\[ k = \frac{\pi}{4}\sqrt{2^{256}} = \frac{\pi}{4}\times2^{128}
+= 0.7854\times3.403\times10^{38} = \mathbf{2.67\times10^{38}} \]</div>
+<p><strong>Gates.</strong> Each iteration = 2 hash evaluations + diffusion:</p>
+<div class="arithmatex">\[ 2\times5\times10^{5} = 10^{6} \ \text{gates per iteration} \]</div>
+<div class="arithmatex">\[ \text{Total} = 2.67\times10^{38}\times10^{6} = \mathbf{2.67\times10^{44}} \ \text{gates} \]</div>
+<p><strong>Runtime.</strong></p>
+<div class="arithmatex">\[ t = \frac{2.67\times10^{44}}{10^{9}} = 2.67\times10^{35}\ \mathrm{s}
+= \mathbf{8.5\times10^{27}\ \text{years}} \]</div>
+<p><strong>Comparison.</strong> The age of the universe is <span class="arithmatex">\(1.4\times10^{10}\)</span> years. This attack would take
+<span class="arithmatex">\(6\times10^{17}\)</span> times longer.</p>
+<div class="arithmatex">\[ \boxed{\text{SHA-256 preimage resistance is completely safe against Grover.}} \]</div>
+<h4 id="problem-2-bitcoin-proof-of-work-under-grover">Problem 2 — Bitcoin proof-of-work under Grover<a class="headerlink" href="#problem-2-bitcoin-proof-of-work-under-grover" title="Permanent link">&para;</a></h4>
+<p><em>Bitcoin mining searches for a nonce such that <span class="arithmatex">\(\mathrm{SHA256}^2(\text{block}) &lt; T\)</span>, where the
+target <span class="arithmatex">\(T\)</span> makes the success probability about <span class="arithmatex">\(2^{-76}\)</span> per attempt. Compare classical and Grover
+mining.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Classical.</strong> Expected attempts <span class="arithmatex">\(= 2^{76} = 7.6\times10^{22}\)</span>. The Bitcoin network computes
+<span class="arithmatex">\(\approx 6\times10^{20}\)</span> hashes/second, so a block takes</p>
+<div class="arithmatex">\[ \frac{7.6\times10^{22}}{6\times10^{20}} \approx 127\ \mathrm{s} \approx \text{10 minutes for one miner's share} . \]</div>
+<p><strong>Grover.</strong> The search space per block is <span class="arithmatex">\(2^{76}\)</span> effectively, so</p>
+<div class="arithmatex">\[ k = \frac{\pi}{4}\sqrt{2^{76}} = 0.7854\times2^{38} = 2.2\times10^{11} \ \text{iterations} . \]</div>
+<p>At <span class="arithmatex">\(10^{6}\)</span> gates per iteration and <span class="arithmatex">\(10^{9}\)</span> gates/s:</p>
+<div class="arithmatex">\[ t = \frac{2.2\times10^{11}\times10^{6}}{10^{9}} = 2.2\times10^{8}\ \mathrm{s} \approx \mathbf{7\ \text{years per block}} \]</div>
+<p><strong>A quantum miner would be catastrophically slower than existing ASICs</strong>, which perform <span class="arithmatex">\(\sim10^{14}\)</span>
+hashes/second each at negligible energy per hash.</p>
+<p><strong>Three structural reasons Grover does not threaten Bitcoin:</strong></p>
+<ol>
+<li><strong>Grover is inherently sequential.</strong> Its iterations cannot be parallelised beyond a <span class="arithmatex">\(\sqrt P\)</span>
+    gain, whereas classical mining parallelises perfectly (<span class="arithmatex">\(P\)</span> machines give <span class="arithmatex">\(P\times\)</span> speed).</li>
+<li><strong>Logical gate speed is <span class="arithmatex">\(\sim10^{6}\)</span> times slower</strong> than an ASIC hash pipeline, because of
+    error-correction cycles.</li>
+<li><strong>Difficulty adjusts.</strong> Even a quantum advantage would simply raise the difficulty.</li>
+</ol>
+<p><em>The real quantum threat to Bitcoin is Shor breaking </em><em>ECDSA</em><em> signatures — exposing coins whose
+public keys are revealed on-chain — not Grover breaking the proof-of-work.</em></p>
+<h4 id="problem-3-choosing-a-hash-length-for-a-30-year-secret">Problem 3 — Choosing a hash length for a 30-year secret<a class="headerlink" href="#problem-3-choosing-a-hash-length-for-a-30-year-secret" title="Permanent link">&para;</a></h4>
+<p>*A document must remain secure until 2060. Assume large fault-tolerant quantum computers exist by</p>
+<ol>
+<li>What digest length gives at least 128-bit post-quantum preimage security, and what symmetric
+key length?*</li>
+</ol>
+<p><strong>Solution.</strong></p>
+<p><strong>Hash.</strong> Grover halves preimage security:</p>
+<div class="arithmatex">\[ \text{quantum security} = \frac{m}{2} \ge 128 \ \Longrightarrow\ m \ge 256 . \]</div>
+<div class="arithmatex">\[ \boxed{\text{Use SHA-256 or better; SHA-384 for margin.}} \]</div>
+<p><strong>Symmetric key.</strong></p>
+<div class="arithmatex">\[ \frac{k}{2} \ge 128 \ \Longrightarrow\ k \ge 256 . \]</div>
+<div class="arithmatex">\[ \boxed{\text{Use AES-256 (not AES-128).}} \]</div>
+<p><strong>Public key.</strong> Neither doubling nor any key-size increase helps against Shor. Must migrate to
+<strong>ML-KEM-1024</strong> (key encapsulation) and <strong>ML-DSA-87</strong> or <strong>SLH-DSA</strong> (signatures) — see L25.</p>
+<p><strong>Complete 2060-safe profile:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Symmetric encryption</td>
+<td>AES-256-GCM</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>SHA-384 or SHA3-384</td>
+</tr>
+<tr>
+<td>Key exchange</td>
+<td>ML-KEM-1024, ideally <strong>hybridised</strong> with X25519</td>
+</tr>
+<tr>
+<td>Signatures</td>
+<td>ML-DSA-87 or SLH-DSA-SHA2-256s</td>
+</tr>
+</tbody>
+</table>
+<p><em>Hybrid mode</em> (classical + post-quantum combined) is the current best practice: it is secure if
+<em>either</em> component holds, protecting against both quantum attacks and undiscovered flaws in the new
+lattice schemes.</p>
+<h4 id="problem-4-second-preimage-vs-collision-cost-worked">Problem 4 — Second preimage vs collision cost, worked<a class="headerlink" href="#problem-4-second-preimage-vs-collision-cost-worked" title="Permanent link">&para;</a></h4>
+<p><em>For a 128-bit hash, compute classical and quantum costs for (a) preimage, (b) collision by
+birthday, (c) collision by BHT. State the memory needed in each case.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a) Preimage.</strong></p>
+<div class="arithmatex">\[ \text{Classical: } 2^{128} = 3.4\times10^{38} \ \text{evaluations, } O(1) \text{ memory} \]</div>
+<div class="arithmatex">\[ \text{Grover: } \tfrac{\pi}{4}2^{64} = 1.4\times10^{19} \ \text{iterations, } O(1) \text{ memory} \]</div>
+<p><strong>(b) Collision, classical birthday.</strong></p>
+<div class="arithmatex">\[ 2^{64} = 1.8\times10^{19} \ \text{evaluations} \]</div>
+<p>Naive memory <span class="arithmatex">\(2^{64}\times16\)</span> bytes <span class="arithmatex">\(= 3\times10^{20}\)</span> bytes — but <strong>Pollard's rho / van
+Oorschot–Wiener</strong> achieves the same time with <span class="arithmatex">\(O(1)\)</span> memory using distinguished points, and
+parallelises perfectly.</p>
+<p><strong>(c) Collision, BHT.</strong></p>
+<div class="arithmatex">\[ 2^{128/3} = 2^{42.7} = 7\times10^{12} \ \text{queries} \]</div>
+<p>but requires <span class="arithmatex">\(2^{42.7}\)</span> entries of <strong>qRAM</strong>:</p>
+<div class="arithmatex">\[ 7\times10^{12}\times16 \ \text{bytes} = 1.1\times10^{14}\ \text{bytes} = 110\ \mathrm{TB} \]</div>
+<p>of quantum-accessible memory with <span class="arithmatex">\(O(1)\)</span> access — hardware that does not exist.</p>
+<p><strong>Verdict table.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attack</th>
+<th>Time</th>
+<th>Memory</th>
+<th>Feasible?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classical preimage</td>
+<td><span class="arithmatex">\(3.4\times10^{38}\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>no</td>
+</tr>
+<tr>
+<td>Grover preimage</td>
+<td><span class="arithmatex">\(1.4\times10^{19}\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td>borderline, far future</td>
+</tr>
+<tr>
+<td>Classical collision (rho)</td>
+<td><span class="arithmatex">\(1.8\times10^{19}\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><strong>borderline — this is the real threat</strong></td>
+</tr>
+<tr>
+<td>BHT collision</td>
+<td><span class="arithmatex">\(7\times10^{12}\)</span></td>
+<td>110 TB qRAM</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The lesson:</strong> for a 128-bit hash, the <em>classical</em> birthday attack is already the binding
+constraint. Quantum computing changes little. <strong>This is why MD5 (128-bit) is deprecated for
+collision resistance today, for entirely classical reasons.</strong></p>
+<h4 id="problem-5-designing-a-grover-attack-on-a-password-hash">Problem 5 — Designing a Grover attack on a password hash<a class="headerlink" href="#problem-5-designing-a-grover-attack-on-a-password-hash" title="Permanent link">&para;</a></h4>
+<p><em>A system stores <span class="arithmatex">\(\mathrm{SHA256}(\text{password})\)</span>. Passwords are 8 characters from a 95-character
+printable set. Compare classical and Grover attacks, and evaluate the effect of adding a
+key-stretching function with <span class="arithmatex">\(10^{5}\)</span> iterations (PBKDF2).</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Search space.</strong></p>
+<div class="arithmatex">\[ N = 95^{8} = 6.63\times10^{15} \approx 2^{52.6} \]</div>
+<p><strong>Classical.</strong> Expected <span class="arithmatex">\(\frac{N}{2} = 3.3\times10^{15}\)</span> hashes. A GPU rig at <span class="arithmatex">\(10^{10}\)</span> SHA-256/s:</p>
+<div class="arithmatex">\[ t = \frac{3.3\times10^{15}}{10^{10}} = 3.3\times10^{5}\ \mathrm{s} \approx \mathbf{3.8\ \text{days}} \]</div>
+<p><strong>Grover.</strong></p>
+<div class="arithmatex">\[ k = \frac{\pi}{4}\sqrt{6.63\times10^{15}} = 0.7854\times8.14\times10^{7} = 6.4\times10^{7}
+\ \text{iterations} \]</div>
+<p>At <span class="arithmatex">\(10^{6}\)</span> gates per iteration and <span class="arithmatex">\(10^{9}\)</span> logical gates/s:</p>
+<div class="arithmatex">\[ t = \frac{6.4\times10^{7}\times10^{6}}{10^{9}} = 6.4\times10^{4}\ \mathrm{s}
+\approx \mathbf{17.8\ \text{hours}} \]</div>
+<p><strong>Only about 5× faster than the classical GPU rig</strong>, despite the quadratic asymptotic advantage —
+because logical quantum gates are so much slower than classical ones. The constant factors dominate
+at these scales.</p>
+<p><strong>With PBKDF2 (<span class="arithmatex">\(10^{5}\)</span> iterations).</strong> Every hash evaluation becomes <span class="arithmatex">\(10^{5}\)</span> times more expensive,
+for both attackers:</p>
+<div class="arithmatex">\[ t_{\text{classical}} = 3.8 \times 10^{5} \ \text{days} = \mathbf{1041\ \text{years}} \]</div>
+<div class="arithmatex">\[ t_{\text{quantum}} = 17.8\times10^{5}\ \text{hours} = \mathbf{203\ \text{years}} \]</div>
+<p><strong>Conclusions.</strong></p>
+<ol>
+<li><strong>Key stretching is effective against both classical and quantum attackers</strong> — it multiplies both
+    costs by the same factor.</li>
+<li>Grover's quadratic gain is real but modest here; <strong>the classical constant-factor advantage of
+    ASICs/GPUs largely offsets it.</strong></li>
+<li><strong>The best defence is entropy.</strong> Moving to a 16-character password gives <span class="arithmatex">\(N = 95^{16} = 2^{105}\)</span>,
+    so Grover needs <span class="arithmatex">\(2^{52.5}\)</span> iterations — over <span class="arithmatex">\(10^{9}\)</span> years at the assumed rate.</li>
+</ol>
+<p><em>Practical recommendation:</em> long passphrases + a memory-hard KDF (Argon2id, scrypt). Memory-hard
+functions are particularly good anti-quantum defences, since qRAM is the scarcest quantum resource.</p>
+<h2 id="237-practice-problems">23.7 Practice Problems<a class="headerlink" href="#237-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Grover security level of SHA-512 preimage? <strong>[Ans: 256 bits]</strong></li>
+<li>Iterations to find a SHA-1 (160-bit) preimage with Grover? <strong>[Ans: <span class="arithmatex">\(\approx8.6\times10^{23}\)</span>]</strong></li>
+<li>Why must the hash circuit be uncomputed inside the Grover oracle?</li>
+<li>BHT query count and memory for a 192-bit hash. <strong>[Ans: <span class="arithmatex">\(2^{64}\)</span> queries, <span class="arithmatex">\(\sim2^{64}\)</span> qRAM entries]</strong></li>
+<li>A 6-character password from 62 symbols: Grover iterations? <strong>[Ans: <span class="arithmatex">\(N=5.7\times10^{10}\)</span>, <span class="arithmatex">\(k\approx1.9\times10^5\)</span>]</strong></li>
+<li>Explain why doubling the key length restores security against Grover but not against Shor.</li>
+<li>Which NIST security category does AES-192 define? <strong>[Ans: category 3]</strong></li>
+</ol>
+<h2 id="238-summary">23.8 Summary<a class="headerlink" href="#238-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Hash properties: <strong>preimage</strong> and <strong>second preimage</strong> cost <span class="arithmatex">\(2^m\)</span> classically; <strong>collisions</strong> cost <span class="arithmatex">\(2^{m/2}\)</span> (birthday).</li>
+<li>A Grover preimage attack needs <span class="arithmatex">\(O(2^{m/2})\)</span> queries — the oracle computes the hash, compares with the target via a multi-controlled phase flip, then <strong>uncomputes</strong>.</li>
+<li><strong>Preimage security is genuinely halved</strong> by Grover: SHA-256 → 128 bits, AES-128 → 64 bits, AES-256 → 128 bits.</li>
+<li><strong>Collision security is not meaningfully reduced in practice:</strong> BHT's <span class="arithmatex">\(2^{m/3}\)</span> needs <span class="arithmatex">\(2^{m/3}\)</span> qRAM, which is infeasible; classical parallel rho matches it at equal hardware cost.</li>
+<li>Constant factors matter: logical quantum gates are <span class="arithmatex">\(\sim10^{6}\)</span> times slower than ASIC operations, so Grover's asymptotic edge often evaporates at practical sizes (Bitcoin mining, password cracking).</li>
+<li><strong>The rule:</strong> double symmetric keys and digest lengths (AES-256, SHA-384); <strong>replace</strong> public-key algorithms entirely.</li>
+</ul>
+<p><strong>Next lesson:</strong> L24 — The HHL algorithm for linear systems.</p>
+<p><strong>Practise now:</strong> <code>unit2-algorithms-lab.html</code> → <em>Crypto Security Calculator</em>: enter key/digest
+lengths and gate speeds to compute classical and Grover attack times side by side.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 22. Grover&#39;s Algorithm: Geometric Analysis and Optimality">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                22. Grover's Algorithm: Geometric Analysis and Optimality
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-footer__link md-footer__link--next" aria-label="Next: 24. The Harrow–Hassidim–Lloyd (HHL) Algorithm">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

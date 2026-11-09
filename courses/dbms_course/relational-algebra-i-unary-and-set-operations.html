@@ -1,0 +1,2396 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/relational-algebra-i-unary-and-set-operations.html">
+  
+  
+    <link rel="prev" href="keys-and-relational-integrity-constraints.html">
+  
+  
+    <link rel="next" href="relational-algebra-ii-joins-division-and-aggregation.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>11. Relational Algebra I: Unary and Set Operations - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#111-what-relational-algebra-is" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              11. Relational Algebra I: Unary and Set Operations
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#111-what-relational-algebra-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 What Relational Algebra Is
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.1 What Relational Algebra Is">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-the-running-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 The Running Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-select-choosing-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 SELECT (σ) — choosing rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114-project-choosing-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 PROJECT (π) — choosing columns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115-rename-changing-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 RENAME (ρ) — changing names
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.5 RENAME (ρ) — changing names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequential-notation-the-practical-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential notation — the practical alternative
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116-set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 Set Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 Set Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#union-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Union compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNION (∪)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intersection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INTERSECTION (∩)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SET DIFFERENCE (−)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cartesian-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CARTESIAN PRODUCT (×)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117-query-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 Query Trees
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#118-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#119-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.9 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#111-what-relational-algebra-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 What Relational Algebra Is
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.1 What Relational Algebra Is">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-the-running-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 The Running Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-select-choosing-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 SELECT (σ) — choosing rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114-project-choosing-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 PROJECT (π) — choosing columns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115-rename-changing-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 RENAME (ρ) — changing names
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.5 RENAME (ρ) — changing names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequential-notation-the-practical-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential notation — the practical alternative
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116-set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 Set Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 Set Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#union-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Union compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNION (∪)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intersection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INTERSECTION (∩)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SET DIFFERENCE (−)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cartesian-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CARTESIAN PRODUCT (×)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117-query-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 Query Trees
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#118-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#119-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.9 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-11-relational-algebra-i-unary-and-set-operations">Lesson 11: Relational Algebra I: Unary and Set Operations<a class="headerlink" href="#lesson-11-relational-algebra-i-unary-and-set-operations" title="Permanent link">&para;</a></h1>
+<p><em>Unary operations and set operations</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 3:</strong> Relational Data Model · 7 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 8.1, 8.2</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Explain what relational algebra is and why the <strong>closure property</strong> matters.</li>
+<li>Apply <strong>SELECT (σ)</strong>, <strong>PROJECT (π)</strong> and <strong>RENAME (ρ)</strong> correctly.</li>
+<li>Apply the set operations <strong>∪, ∩, −, ×</strong> and state the <strong>union compatibility</strong> requirement.</li>
+<li>Write <strong>nested</strong> and <strong>sequential</strong> expressions, and build query trees.</li>
+<li>Predict the exact <strong>cardinality and degree</strong> of every intermediate result.</li>
+</ol>
+</div>
+<h2 id="111-what-relational-algebra-is">11.1 What Relational Algebra Is<a class="headerlink" href="#111-what-relational-algebra-is" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Relational algebra</p>
+<p>A <strong>formal language</strong> for the relational model, consisting of a set of <strong>operations</strong> that take one or two relations as input and produce a <strong>new relation</strong> as output.</p>
+</div>
+<p>Three properties make it important:</p>
+<p><strong>1. It is closed.</strong> Every operation returns a <em>relation</em>, so the output of one operation can be the input of the next. This is the <strong>closure property</strong>, and it is what allows arbitrarily complex expressions to be built.</p>
+<p><strong>2. It is procedural.</strong> An expression specifies not only <em>what</em> is wanted but an <em>order</em> of operations — unlike SQL, which is declarative. This is exactly why it matters practically: <strong>the DBMS query optimiser translates SQL into relational algebra</strong>, then rewrites the algebra into a cheaper but equivalent expression. Understanding algebra is understanding what the optimiser does.</p>
+<p><strong>3. It defines the yardstick of expressive power.</strong> A query language is called <strong>relationally complete</strong> if it can express every relational-algebra query. SQL is relationally complete (and more).</p>
+<div class="admonition tip">
+<p class="admonition-title">Why study it if we have SQL?</p>
+<p>Because it is the <em>semantics</em> of SQL. Every <code>SELECT</code> statement is compiled into an algebra expression. Query optimisation, the theory of query equivalence, and the definition of relational completeness are all stated in algebra. It is also far more precise than English for stating exactly what a query means.</p>
+</div>
+<h3 id="the-operations">The operations<a class="headerlink" href="#the-operations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Operation</th>
+<th>Symbol</th>
+<th>Arity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unary</strong></td>
+<td>SELECT</td>
+<td><strong>σ</strong> (sigma)</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>PROJECT</td>
+<td><strong>π</strong> (pi)</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>RENAME</td>
+<td><strong>ρ</strong> (rho)</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Set</strong></td>
+<td>UNION</td>
+<td><strong>∪</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td>INTERSECTION</td>
+<td><strong>∩</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td>SET DIFFERENCE (MINUS)</td>
+<td><strong>−</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td>CARTESIAN PRODUCT</td>
+<td><strong>×</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Join</strong> <em>(Lesson 4)</em></td>
+<td>JOIN, DIVISION</td>
+<td>⋈, ÷</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">The complete (minimal) set</p>
+<p><code>{ σ, π, ∪, −, × }</code> is a <strong>complete set</strong>: every other relational-algebra operation can be expressed in terms of these five. For instance <code>R ∩ S = R − (R − S)</code> and <code>R ⋈ S = σ&lt;sub&gt;condition&lt;/sub&gt;(R × S)</code>.</p>
+<p>The other operations exist for <strong>convenience and efficiency</strong>, not for expressive power.</p>
+</div>
+<h2 id="112-the-running-example">11.2 The Running Example<a class="headerlink" href="#112-the-running-example" title="Permanent link">&para;</a></h2>
+<p>Use these three relations throughout.</p>
+<p><strong>STUDENT</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>Name</th>
+<th>Dateofbirth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>Ankit Sharma</td>
+<td>2001-03-14</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>Riya Verma</td>
+<td>2002-05-11</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>Sana Iqbal</td>
+<td>2001-11-02</td>
+</tr>
+<tr>
+<td>Z2049</td>
+<td>Arjun Nair</td>
+<td>2003-01-25</td>
+</tr>
+<tr>
+<td>X3001</td>
+<td>Aditi Rao</td>
+<td>2001-07-09</td>
+</tr>
+</tbody>
+</table>
+<p><strong>COURSE</strong></p>
+<table>
+<thead>
+<tr>
+<th>SID</th>
+<th>Cname</th>
+<th>TotalSeats</th>
+<th>Duration</th>
+<th>Coursetype</th>
+<th>TeacherInCharge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CS01</td>
+<td>Computer Science</td>
+<td>60</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>R. K. Gupta</td>
+</tr>
+<tr>
+<td>CH01</td>
+<td>Chemistry</td>
+<td>45</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>S. Menon</td>
+</tr>
+<tr>
+<td>MA02</td>
+<td>Mathematics</td>
+<td>50</td>
+<td>3</td>
+<td>Parttime</td>
+<td>A. Gupta</td>
+</tr>
+<tr>
+<td>EN03</td>
+<td>English</td>
+<td>40</td>
+<td>3</td>
+<td>Parttime</td>
+<td>P. Das</td>
+</tr>
+<tr>
+<td>PH01</td>
+<td>Physics</td>
+<td>40</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>V. Rao</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ADMISSION</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>SID</th>
+<th>Dateofadmission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>CS01</td>
+<td>2019-07-15</td>
+</tr>
+<tr>
+<td>X2019</td>
+<td>MA02</td>
+<td>2019-08-01</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>CS01</td>
+<td>2019-07-16</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>CH01</td>
+<td>2019-07-18</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>EN03</td>
+<td>2019-08-05</td>
+</tr>
+<tr>
+<td>X3001</td>
+<td>MA02</td>
+<td>2019-07-20</td>
+</tr>
+</tbody>
+</table>
+<p>Note that <code>Z2049 Arjun Nair</code> has <strong>no admission</strong> — this makes several later examples interesting. <code>PH01 Physics</code> has <strong>no students</strong>.</p>
+<h2 id="113-select-choosing-rows">11.3 SELECT (σ) — choosing rows<a class="headerlink" href="#113-select-choosing-rows" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">SELECT</p>
+<p><code>σ&lt;sub&gt;&amp;lt;condition&amp;gt;&lt;/sub&gt;(R)</code></p>
+<p>Returns the set of tuples of <code>R</code> that <strong>satisfy</strong> the condition. It is a <strong>horizontal</strong> partition — it chooses <em>rows</em>.</p>
+<ul>
+<li>The result has the <strong>same degree</strong> as <code>R</code> (same attributes).</li>
+<li><code>0 ≤ |σ&lt;sub&gt;c&lt;/sub&gt;(R)| ≤ |R|</code>.</li>
+<li>The condition is a Boolean expression over <code>&lt;attribute&gt; &lt;comparison&gt; &lt;constant-or-attribute&gt;</code>, combined with <strong>AND (∧)</strong>, <strong>OR (∨)</strong>, <strong>NOT (¬)</strong>.</li>
+<li>Comparison operators: <code>=, ≠, &lt;, ≤, &gt;, ≥</code>.</li>
+<li>SELECT is <strong>commutative</strong>: <code>σ&lt;sub&gt;c1&lt;/sub&gt;(σ&lt;sub&gt;c2&lt;/sub&gt;(R)) = σ&lt;sub&gt;c2&lt;/sub&gt;(σ&lt;sub&gt;c1&lt;/sub&gt;(R)) = σ&lt;sub&gt;c1 ∧ c2&lt;/sub&gt;(R)</code>.</li>
+</ul>
+</div>
+<p><strong>Example 1.</strong> All full-time courses.</p>
+<p><code>σ&lt;sub&gt;Coursetype = 'Fulltime'&lt;/sub&gt;(COURSE)</code></p>
+<table>
+<thead>
+<tr>
+<th>SID</th>
+<th>Cname</th>
+<th>TotalSeats</th>
+<th>Duration</th>
+<th>Coursetype</th>
+<th>TeacherInCharge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CS01</td>
+<td>Computer Science</td>
+<td>60</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>R. K. Gupta</td>
+</tr>
+<tr>
+<td>CH01</td>
+<td>Chemistry</td>
+<td>45</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>S. Menon</td>
+</tr>
+<tr>
+<td>PH01</td>
+<td>Physics</td>
+<td>40</td>
+<td>3</td>
+<td>Fulltime</td>
+<td>V. Rao</td>
+</tr>
+</tbody>
+</table>
+<p>Degree 6, cardinality 3.</p>
+<p><strong>Example 2.</strong> Full-time courses with more than 40 seats.</p>
+<p><code>σ&lt;sub&gt;Coursetype = 'Fulltime' ∧ TotalSeats &gt; 40&lt;/sub&gt;(COURSE)</code> → <code>CS01</code>, <code>CH01</code>. Cardinality 2.</p>
+<p><strong>Example 3.</strong> Courses that are part-time <strong>or</strong> have fewer than 45 seats.</p>
+<p><code>σ&lt;sub&gt;Coursetype = 'Parttime' ∨ TotalSeats &lt; 45&lt;/sub&gt;(COURSE)</code> → <code>MA02</code>, <code>EN03</code>, <code>PH01</code>. Cardinality 3.</p>
+<div class="admonition warning">
+<p class="admonition-title">The commonest error</p>
+<p>Writing <code>σ&lt;sub&gt;Cname = 'Computer Science' ∧ Cname = 'Chemistry'&lt;/sub&gt;(COURSE)</code> to get both courses. This returns <strong>zero</strong> tuples: the condition is evaluated <strong>one tuple at a time</strong>, and no single course is called both things. The correct operator is <strong>∨</strong>.</p>
+<p>Say it aloud as <em>"for each row, is it true that..."</em> and the error becomes obvious.</p>
+</div>
+<h2 id="114-project-choosing-columns">11.4 PROJECT (π) — choosing columns<a class="headerlink" href="#114-project-choosing-columns" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">PROJECT</p>
+<p><code>π&lt;sub&gt;&amp;lt;attribute list&amp;gt;&lt;/sub&gt;(R)</code></p>
+<p>Returns a relation containing only the listed attributes, <strong>in the listed order</strong>, with <strong>duplicate tuples removed</strong>. It is a <strong>vertical</strong> partition — it chooses <em>columns</em>.</p>
+<ul>
+<li>Degree = number of attributes in the list.</li>
+<li><code>|π&lt;sub&gt;L&lt;/sub&gt;(R)| ≤ |R|</code>, with <strong>equality if and only if <code>L</code> contains a superkey</strong> of <code>R</code>.</li>
+<li>PROJECT is <strong>not commutative</strong>: <code>π&lt;sub&gt;L1&lt;/sub&gt;(π&lt;sub&gt;L2&lt;/sub&gt;(R))</code> is valid only if <code>L1 ⊆ L2</code>, and then equals <code>π&lt;sub&gt;L1&lt;/sub&gt;(R)</code>.</li>
+</ul>
+</div>
+<p><strong>Example 4.</strong> Names and types of all courses.</p>
+<p><code>π&lt;sub&gt;Cname, Coursetype&lt;/sub&gt;(COURSE)</code></p>
+<table>
+<thead>
+<tr>
+<th>Cname</th>
+<th>Coursetype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Computer Science</td>
+<td>Fulltime</td>
+</tr>
+<tr>
+<td>Chemistry</td>
+<td>Fulltime</td>
+</tr>
+<tr>
+<td>Mathematics</td>
+<td>Parttime</td>
+</tr>
+<tr>
+<td>English</td>
+<td>Parttime</td>
+</tr>
+<tr>
+<td>Physics</td>
+<td>Fulltime</td>
+</tr>
+</tbody>
+</table>
+<p>Degree 2, cardinality 5.</p>
+<p><strong>Example 5 — duplicate elimination.</strong> <code>π&lt;sub&gt;Coursetype&lt;/sub&gt;(COURSE)</code></p>
+<table>
+<thead>
+<tr>
+<th>Coursetype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fulltime</td>
+</tr>
+<tr>
+<td>Parttime</td>
+</tr>
+</tbody>
+</table>
+<p>Cardinality <strong>2</strong>, not 5. PROJECT returns a <strong>set</strong>, so <code>Fulltime</code> (which occurred three times) appears once.</p>
+<div class="admonition warning">
+<p class="admonition-title">PROJECT vs SQL SELECT</p>
+<p>Relational algebra PROJECT <strong>always</strong> removes duplicates, because a relation is a set.</p>
+<p>SQL's <code>SELECT Coursetype FROM COURSE</code> returns <strong>five</strong> rows, because SQL tables are multisets. To match the algebra you must write <code>SELECT DISTINCT Coursetype FROM COURSE</code>.</p>
+<p><strong>π corresponds to <code>SELECT DISTINCT</code>, not to <code>SELECT</code>.</strong> This is a very common examination point.</p>
+</div>
+<p><strong>Example 6 — no duplicates removed.</strong> <code>π&lt;sub&gt;SID, Cname&lt;/sub&gt;(COURSE)</code> has cardinality <strong>5</strong>, because the list contains <code>SID</code>, which is a key. Whenever the projection list contains a superkey, no duplicates can arise.</p>
+<h2 id="115-rename-changing-names">11.5 RENAME (ρ) — changing names<a class="headerlink" href="#115-rename-changing-names" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">RENAME</p>
+<p>Three forms:</p>
+<p><code>ρ&lt;sub&gt;S&lt;/sub&gt;(R)</code> — rename the relation to <code>S</code>, keeping attribute names.
+<code>ρ&lt;sub&gt;(B1, B2, ..., Bn)&lt;/sub&gt;(R)</code> — rename the attributes to <code>B1 ... Bn</code>, keeping the relation name.
+<code>ρ&lt;sub&gt;S(B1, ..., Bn)&lt;/sub&gt;(R)</code> — rename both.</p>
+</div>
+<p>RENAME exists for two essential purposes:</p>
+<ol>
+<li><strong>Self-joins and self-products.</strong> <code>EMPLOYEE × EMPLOYEE</code> is ambiguous — which <code>Ssn</code> is which? Renaming one copy disambiguates.</li>
+<li><strong>Resolving name clashes</strong> before a set operation that requires union compatibility.</li>
+</ol>
+<p><strong>Example 7.</strong> <code>ρ&lt;sub&gt;SUPERVISOR(SupSsn, SupName, SupSalary)&lt;/sub&gt;(EMPLOYEE)</code> produces a copy of <code>EMPLOYEE</code> under a new name with new attribute names, usable alongside the original.</p>
+<h3 id="sequential-notation-the-practical-alternative">Sequential notation — the practical alternative<a class="headerlink" href="#sequential-notation-the-practical-alternative" title="Permanent link">&para;</a></h3>
+<p>Rather than nesting deeply, name each intermediate result:</p>
+<div class="language-text highlight"><pre><span></span><code>FULLTIME     ← σ Coursetype='Fulltime' (COURSE)
+BIG_FULLTIME ← σ TotalSeats&gt;40 (FULLTIME)
+RESULT       ← π Cname (BIG_FULLTIME)
+</code></pre></div>
+<p>This is equivalent to <code>π&lt;sub&gt;Cname&lt;/sub&gt;(σ&lt;sub&gt;Coursetype='Fulltime' ∧ TotalSeats&gt;40&lt;/sub&gt;(COURSE))</code> and is far easier to read, check and mark. <strong>Use it in examinations for any query needing more than two operations.</strong></p>
+<h2 id="116-set-operations">11.6 Set Operations<a class="headerlink" href="#116-set-operations" title="Permanent link">&para;</a></h2>
+<h3 id="union-compatibility">Union compatibility<a class="headerlink" href="#union-compatibility" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Union compatibility (type compatibility)</p>
+<p>Two relations <code>R(A1,...,An)</code> and <code>S(B1,...,Bm)</code> are <strong>union compatible</strong> if:</p>
+<ol>
+<li>They have the <strong>same degree</strong>: <code>n = m</code>.</li>
+<li>Corresponding attributes have the <strong>same domain</strong>: <code>dom(Ai) = dom(Bi)</code> for all <code>i</code>.</li>
+</ol>
+<p>Attribute <em>names</em> need not match; by convention the result takes the names from the <strong>first</strong> relation.</p>
+<p><strong>∪, ∩ and − all require union compatibility. × does not.</strong></p>
+</div>
+<p>For the examples, let:</p>
+<ul>
+<li><code>CS_STUDENTS ← π&lt;sub&gt;Rollno&lt;/sub&gt;(σ&lt;sub&gt;SID='CS01'&lt;/sub&gt;(ADMISSION))</code> = {X2019, X2020}</li>
+<li><code>MA_STUDENTS ← π&lt;sub&gt;Rollno&lt;/sub&gt;(σ&lt;sub&gt;SID='MA02'&lt;/sub&gt;(ADMISSION))</code> = {X2019, X3001}</li>
+</ul>
+<h3 id="union">UNION (∪)<a class="headerlink" href="#union" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">UNION</p>
+<p><code>R ∪ S</code> = all tuples that are in <code>R</code>, or in <code>S</code>, or in both. <strong>Duplicates are removed.</strong></p>
+<p><code>max(|R|, |S|) ≤ |R ∪ S| ≤ |R| + |S|</code>. Commutative and associative.</p>
+</div>
+<p><strong>Example 8.</strong> Students in Computer Science <strong>or</strong> Mathematics.</p>
+<p><code>CS_STUDENTS ∪ MA_STUDENTS</code> = {X2019, X2020, X3001}. Cardinality <strong>3</strong>, not 4 — <code>X2019</code> appears in both and is counted once.</p>
+<h3 id="intersection">INTERSECTION (∩)<a class="headerlink" href="#intersection" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">INTERSECTION</p>
+<p><code>R ∩ S</code> = tuples in <strong>both</strong>. <code>0 ≤ |R ∩ S| ≤ min(|R|, |S|)</code>. Commutative and associative.</p>
+<p>Not primitive: <code>R ∩ S = R − (R − S)</code>.</p>
+</div>
+<p><strong>Example 9.</strong> Students in Computer Science <strong>and</strong> Mathematics.</p>
+<p><code>CS_STUDENTS ∩ MA_STUDENTS</code> = {X2019}. Cardinality 1.</p>
+<div class="admonition tip">
+<p class="admonition-title">'and' in English is usually ∩, not ∧</p>
+<p><em>"Students taking CS01 </em><em>and</em><em> MA02"</em> cannot be <code>σ&lt;sub&gt;SID='CS01' ∧ SID='MA02'&lt;/sub&gt;(ADMISSION)</code>, which returns nothing (Section 3.3). The two facts live in <strong>different tuples</strong>, so they must be combined by <strong>intersecting two sets of roll numbers</strong>.</p>
+<p><strong>Rule:</strong> when "and" applies to two facts about the <em>same entity</em> recorded in <em>different rows</em>, use <strong>∩</strong> (or a join). Use <strong>∧</strong> only when both conditions apply to the <em>same row</em>.</p>
+</div>
+<h3 id="set-difference">SET DIFFERENCE (−)<a class="headerlink" href="#set-difference" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">SET DIFFERENCE</p>
+<p><code>R − S</code> = tuples in <code>R</code> that are <strong>not</strong> in <code>S</code>. <strong>Not commutative</strong>: <code>R − S ≠ S − R</code>.</p>
+<p><code>0 ≤ |R − S| ≤ |R|</code>.</p>
+</div>
+<p><strong>Example 10.</strong> Students in Computer Science but <strong>not</strong> Mathematics.</p>
+<p><code>CS_STUDENTS − MA_STUDENTS</code> = {X2020}.</p>
+<p><code>MA_STUDENTS − CS_STUDENTS</code> = {X3001} — a different answer, confirming non-commutativity.</p>
+<p><strong>Example 11 — the important pattern.</strong> Students admitted to <strong>no</strong> course.</p>
+<div class="language-text highlight"><pre><span></span><code>ALL_STUDENTS ← π Rollno (STUDENT)              = {X2019,X2020,Z1188,Z2049,X3001}
+ADMITTED     ← π Rollno (ADMISSION)            = {X2019,X2020,Z1188,X3001}
+RESULT       ← ALL_STUDENTS − ADMITTED         = {Z2049}
+</code></pre></div>
+<p>Then <code>π&lt;sub&gt;Name&lt;/sub&gt;(STUDENT ⋈ RESULT)</code> gives <em>Arjun Nair</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">The universal 'NOT / NONE' pattern</p>
+<p>Any query of the form <em>"find X that has </em><em>no</em><em> Y"</em> or <em>"...that is </em><em>not</em><em> related to..."</em> is answered by <strong>set difference</strong>:</p>
+<p><strong>(all X) − (X that do have Y)</strong></p>
+<p>Compute the positive set first, then subtract it from the universe. This pattern appears in almost every examination.</p>
+</div>
+<h3 id="cartesian-product">CARTESIAN PRODUCT (×)<a class="headerlink" href="#cartesian-product" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">CARTESIAN PRODUCT (CROSS PRODUCT / CROSS JOIN)</p>
+<p><code>R(A1,...,An) × S(B1,...,Bm)</code> produces a relation <code>Q(A1,...,An,B1,...,Bm)</code> containing <strong>every combination</strong> of a tuple of <code>R</code> with a tuple of <code>S</code>.</p>
+<ul>
+<li><strong>Degree</strong> = <code>n + m</code> (degrees add).</li>
+<li><strong>Cardinality</strong> = <code>|R| × |S|</code> (cardinalities multiply).</li>
+<li><strong>Union compatibility is not required.</strong></li>
+<li>Commutative and associative up to attribute order.</li>
+</ul>
+</div>
+<p><strong>Example 12.</strong> <code>STUDENT × COURSE</code> has degree <code>3 + 6 = 9</code> and cardinality <code>5 × 5 = 25</code>.</p>
+<p>Most of those 25 rows are <strong>meaningless</strong> — they pair a student with a course they never took.</p>
+<div class="admonition warning">
+<p class="admonition-title">× alone is almost never what you want</p>
+<p>The Cartesian product is useful only when immediately followed by a SELECT that keeps the meaningful combinations:</p>
+<p><code>σ&lt;sub&gt;STUDENT.Rollno = ADMISSION.Rollno&lt;/sub&gt;(STUDENT × ADMISSION)</code></p>
+<p>This combination — product then select — is so common that it is given its own name: the <strong>JOIN</strong> (Lesson 4). An accidental <code>×</code> without a matching condition is the classic cause of a query that returns millions of rows.</p>
+</div>
+<p><strong>Example 13 — product followed by selection.</strong> Names of students admitted to <code>CS01</code>.</p>
+<div class="language-text highlight"><pre><span></span><code>T1 ← σ SID='CS01' (ADMISSION)                    2 tuples
+T2 ← STUDENT × T1                                5 × 2 = 10 tuples, degree 6
+T3 ← σ STUDENT.Rollno = T1.Rollno (T2)           2 tuples
+RESULT ← π Name (T3)
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ankit Sharma</td>
+</tr>
+<tr>
+<td>Riya Verma</td>
+</tr>
+</tbody>
+</table>
+<h2 id="117-query-trees">11.7 Query Trees<a class="headerlink" href="#117-query-trees" title="Permanent link">&para;</a></h2>
+<p>Every algebra expression can be drawn as a tree: leaves are base relations, internal nodes are operations, and evaluation proceeds bottom-up. This is exactly the internal representation the optimiser manipulates.</p>
+<div class="language-text highlight"><pre><span></span><code>   Query: names of students admitted to 'CS01'
+
+                  π Name
+                    |
+          σ STUDENT.Rollno = ADMISSION.Rollno
+                    |
+                    ×
+                  /   \
+            STUDENT    σ SID='CS01'
+                            |
+                        ADMISSION
+
+   Read bottom-up: filter ADMISSION, cross with STUDENT,
+   keep matching pairs, project the name.
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">A first optimisation rule</p>
+<p>Compare two equivalent expressions:</p>
+<p><strong>(a)</strong> <code>π&lt;sub&gt;Name&lt;/sub&gt;(σ&lt;sub&gt;Rollno=Rollno ∧ SID='CS01'&lt;/sub&gt;(STUDENT × ADMISSION))</code> — the product makes <code>5 × 6 = 30</code> tuples, then filters.</p>
+<p><strong>(b)</strong> <code>π&lt;sub&gt;Name&lt;/sub&gt;(σ&lt;sub&gt;Rollno=Rollno&lt;/sub&gt;(STUDENT × σ&lt;sub&gt;SID='CS01'&lt;/sub&gt;(ADMISSION)))</code> — filter first, so the product makes only <code>5 × 2 = 10</code> tuples.</p>
+<p>Both give the same answer; (b) does a third of the work. The rule is <strong>push selections down the tree, as close to the leaves as possible</strong>. This is the single most important heuristic in query optimisation, and it is why the optimiser works in algebra.</p>
+</div>
+<h2 id="118-solved-questions">11.8 Solved Questions<a class="headerlink" href="#118-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> What is relational algebra? State the closure property and the complete set of operations. Why is relational algebra important given that we use SQL?</p>
+<p><strong>A.</strong> <strong>Relational algebra</strong> is a formal, procedural query language for the relational model, consisting of operations that take one or two relations as input and produce a relation as output.</p>
+<p>The <strong>closure property</strong> states that every operation returns a <em>relation</em>. Because the output is the same kind of object as the input, operations can be composed without limit, which is what makes complex expressions and query trees possible.</p>
+<p>The <strong>complete (minimal) set</strong> is <code>{σ, π, ∪, −, ×}</code>. Every other operation is definable from these — for example <code>R ∩ S = R − (R − S)</code> and <code>R ⋈&lt;sub&gt;c&lt;/sub&gt; S = σ&lt;sub&gt;c&lt;/sub&gt;(R × S)</code>. The additional operations exist for convenience and efficiency, not for expressive power.</p>
+<p><strong>Importance despite SQL:</strong> relational algebra is the <strong>semantics of SQL</strong>. A DBMS parses a SQL statement, translates it into an algebra expression, and the <strong>query optimiser</strong> then rewrites that expression into an equivalent but cheaper one — pushing selections down, reordering joins — before generating an execution plan. Algebra also gives the precise definition of query equivalence, and defines <strong>relational completeness</strong>, the standard by which a query language's expressive power is measured.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Distinguish SELECT from PROJECT. State the exact cardinality relationship of each to its input, and explain when <code>|π&lt;sub&gt;L&lt;/sub&gt;(R)| = |R|</code>.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SELECT (σ)</th>
+<th>PROJECT (π)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chooses</td>
+<td><strong>Rows</strong> (horizontal)</td>
+<td><strong>Columns</strong> (vertical)</td>
+</tr>
+<tr>
+<td>Notation</td>
+<td><code>σ&lt;sub&gt;condition&lt;/sub&gt;(R)</code></td>
+<td><code>π&lt;sub&gt;attribute list&lt;/sub&gt;(R)</code></td>
+</tr>
+<tr>
+<td>Degree of result</td>
+<td>Same as <code>R</code></td>
+<td>Number of attributes listed</td>
+</tr>
+<tr>
+<td>Cardinality</td>
+<td><code>0 ≤ result ≤ |R|</code></td>
+<td><code>1 ≤ result ≤ |R|</code> (for non-empty <code>R</code>)</td>
+</tr>
+<tr>
+<td>Removes duplicates</td>
+<td>Not applicable — cannot create them</td>
+<td><strong>Yes</strong>, always</td>
+</tr>
+<tr>
+<td>Commutative with itself</td>
+<td><strong>Yes</strong></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>SQL equivalent</td>
+<td><code>WHERE</code> clause</td>
+<td><code>SELECT DISTINCT</code> column list</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When <code>|π&lt;sub&gt;L&lt;/sub&gt;(R)| = |R|</code>:</strong> exactly when the projection list <code>L</code> <strong>contains a superkey</strong> of <code>R</code>. A superkey guarantees that no two tuples agree on all of <code>L</code>, so no duplicates can arise and none are removed.</p>
+<p><em>Illustration.</em> <code>π&lt;sub&gt;SID, Cname&lt;/sub&gt;(COURSE)</code> has cardinality 5 = <code>|COURSE|</code>, because <code>SID</code> is a key. But <code>π&lt;sub&gt;Coursetype&lt;/sub&gt;(COURSE)</code> has cardinality 2, because <code>Coursetype</code> is not a superkey and three <code>Fulltime</code> tuples collapse into one.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Write relational algebra for each, using the running example, and give the result.</p>
+<p>a. Roll numbers and names of students born in 2001.
+b. Names of part-time courses with more than 40 seats.
+c. Distinct course types offered.
+d. Names of students admitted to <code>CS01</code>.
+e. Roll numbers of students admitted to <code>CS01</code> but not <code>MA02</code>.
+f. Roll numbers of students admitted to no course.</p>
+<p><strong>A.</strong></p>
+<p><strong>a.</strong> <code>π&lt;sub&gt;Rollno, Name&lt;/sub&gt;(σ&lt;sub&gt;Dateofbirth ≥ '2001-01-01' ∧ Dateofbirth ≤ '2001-12-31'&lt;/sub&gt;(STUDENT))</code></p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>Ankit Sharma</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>Sana Iqbal</td>
+</tr>
+<tr>
+<td>X3001</td>
+<td>Aditi Rao</td>
+</tr>
+</tbody>
+</table>
+<p><strong>b.</strong> <code>π&lt;sub&gt;Cname&lt;/sub&gt;(σ&lt;sub&gt;Coursetype='Parttime' ∧ TotalSeats&gt;40&lt;/sub&gt;(COURSE))</code> → {Mathematics}. (<code>EN03 English</code> has exactly 40, so it is excluded by the strict <code>&gt;</code>.)</p>
+<p><strong>c.</strong> <code>π&lt;sub&gt;Coursetype&lt;/sub&gt;(COURSE)</code> → {Fulltime, Parttime}. Cardinality 2, because PROJECT removes duplicates.</p>
+<p><strong>d.</strong>
+<div class="language-text highlight"><pre><span></span><code>T1 ← σ SID='CS01' (ADMISSION)
+T2 ← σ STUDENT.Rollno = T1.Rollno (STUDENT × T1)
+RESULT ← π Name (T2)
+</code></pre></div>
+→ {Ankit Sharma, Riya Verma}.</p>
+<p><strong>e.</strong>
+<div class="language-text highlight"><pre><span></span><code>CS ← π Rollno (σ SID='CS01' (ADMISSION))       = {X2019, X2020}
+MA ← π Rollno (σ SID='MA02' (ADMISSION))       = {X2019, X3001}
+RESULT ← CS − MA                                = {X2020}
+</code></pre></div>
+Note that <code>σ&lt;sub&gt;SID='CS01' ∧ SID≠'MA02'&lt;/sub&gt;</code> would be <strong>wrong</strong> — it returns both CS students, since the two facts live in different tuples.</p>
+<p><strong>f.</strong>
+<div class="language-text highlight"><pre><span></span><code>RESULT ← π Rollno (STUDENT) − π Rollno (ADMISSION)    = {Z2049}
+</code></pre></div>
+The universal "none" pattern: all X, minus those that do have Y.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Define union compatibility. Which operations require it? Given <code>R(A,B)</code> with 5 tuples and <code>S(C,D)</code> with 3 tuples where <code>dom(A)=dom(C)</code> and <code>dom(B)=dom(D)</code>, state the degree and the possible range of cardinality of <code>R ∪ S</code>, <code>R ∩ S</code>, <code>R − S</code> and <code>R × S</code>.</p>
+<p><strong>A.</strong> Two relations are <strong>union compatible</strong> if they have the <strong>same degree</strong> and <strong>corresponding attributes have the same domains</strong>. Attribute names need not agree; the result conventionally takes the names of the first operand.</p>
+<p><strong>∪, ∩ and −</strong> require union compatibility. <strong>×</strong> does not — indeed its purpose is to combine relations of different shapes.</p>
+<p>Here <code>R</code> and <code>S</code> <em>are</em> union compatible: both have degree 2 with matching domains.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Degree</th>
+<th>Cardinality range</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>R ∪ S</code></td>
+<td>2</td>
+<td><strong>5 to 8</strong></td>
+<td>At least <code>max(5,3)=5</code> if <code>S ⊆ R</code>; at most <code>5+3=8</code> if disjoint.</td>
+</tr>
+<tr>
+<td><code>R ∩ S</code></td>
+<td>2</td>
+<td><strong>0 to 3</strong></td>
+<td>At least 0 if disjoint; at most <code>min(5,3)=3</code> if <code>S ⊆ R</code>.</td>
+</tr>
+<tr>
+<td><code>R − S</code></td>
+<td>2</td>
+<td><strong>2 to 5</strong></td>
+<td>At most 5 if disjoint; at least <code>5−3=2</code> if <code>S ⊆ R</code>.</td>
+</tr>
+<tr>
+<td><code>R × S</code></td>
+<td><strong>4</strong></td>
+<td><strong>exactly 15</strong></td>
+<td>Degrees add (<code>2+2</code>); cardinalities multiply (<code>5×3</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>Note that <code>R × S</code> has a <em>fixed</em> cardinality, whereas the set operations depend on how much the relations overlap.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Show that <code>σ&lt;sub&gt;c1&lt;/sub&gt;(σ&lt;sub&gt;c2&lt;/sub&gt;(R)) = σ&lt;sub&gt;c1 ∧ c2&lt;/sub&gt;(R)</code> and that <code>π</code> is not commutative. Why do these facts matter?</p>
+<p><strong>A.</strong></p>
+<p><strong>Cascading of SELECT.</strong> A tuple <code>t</code> is in <code>σ&lt;sub&gt;c1&lt;/sub&gt;(σ&lt;sub&gt;c2&lt;/sub&gt;(R))</code> if and only if <code>t ∈ R</code>, <code>t</code> satisfies <code>c2</code> (to survive the inner select), and <code>t</code> satisfies <code>c1</code> (to survive the outer). That is precisely the condition for <code>t</code> to satisfy <code>c1 ∧ c2</code> while being in <code>R</code>, so the two expressions contain exactly the same tuples. Since conjunction is commutative, the order of the two selects is also immaterial:</p>
+<p><code>σ&lt;sub&gt;c1&lt;/sub&gt;(σ&lt;sub&gt;c2&lt;/sub&gt;(R)) = σ&lt;sub&gt;c2&lt;/sub&gt;(σ&lt;sub&gt;c1&lt;/sub&gt;(R)) = σ&lt;sub&gt;c1 ∧ c2&lt;/sub&gt;(R)</code></p>
+<p><strong>PROJECT is not commutative.</strong> <code>π&lt;sub&gt;L1&lt;/sub&gt;(π&lt;sub&gt;L2&lt;/sub&gt;(R))</code> is even <em>defined</em> only when <code>L1 ⊆ L2</code>, because the inner projection has already discarded every attribute not in <code>L2</code>. When it is defined, it equals <code>π&lt;sub&gt;L1&lt;/sub&gt;(R)</code>.</p>
+<p><em>Counter-example.</em> <code>π&lt;sub&gt;Name&lt;/sub&gt;(π&lt;sub&gt;Rollno&lt;/sub&gt;(STUDENT))</code> is <strong>invalid</strong> — <code>Name</code> no longer exists after the inner projection — whereas <code>π&lt;sub&gt;Rollno&lt;/sub&gt;(π&lt;sub&gt;Rollno, Name&lt;/sub&gt;(STUDENT))</code> is valid and equals <code>π&lt;sub&gt;Rollno&lt;/sub&gt;(STUDENT)</code>.</p>
+<p><strong>Why it matters.</strong> These are <strong>query-equivalence rules</strong>, and the optimiser uses them constantly. Cascading lets a single conjunctive selection be split into several, each of which can then be <strong>pushed down</strong> the query tree to a different leaf — reducing the size of intermediate results before an expensive product or join. The projection rule lets the optimiser drop unneeded columns early, reducing the width of intermediate tuples. Both directly reduce the amount of data moved and are among the first transformations any optimiser applies.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Explain why <code>σ&lt;sub&gt;SID='CS01' ∧ SID='MA02'&lt;/sub&gt;(ADMISSION)</code> is wrong for "students in both CS01 and MA02", and give the correct expression.</p>
+<p><strong>A.</strong> The expression returns the <strong>empty relation</strong>.</p>
+<p>SELECT evaluates its condition <strong>one tuple at a time</strong>. Each tuple of <code>ADMISSION</code> has exactly one value of <code>SID</code>, so <code>SID='CS01' ∧ SID='MA02'</code> asks for a single value that is simultaneously equal to two different constants — impossible. No tuple can satisfy it.</p>
+<p>The error is a category mistake: the English "and" here joins <strong>two facts about the same student</strong>, and those two facts are recorded in <strong>two different tuples</strong>. A tuple-at-a-time condition cannot see both at once.</p>
+<p><strong>Correct expression</strong> — form the two sets of roll numbers and intersect them:</p>
+<div class="language-text highlight"><pre><span></span><code>CS ← π Rollno (σ SID='CS01' (ADMISSION))     = {X2019, X2020}
+MA ← π Rollno (σ SID='MA02' (ADMISSION))     = {X2019, X3001}
+RESULT ← CS ∩ MA                              = {X2019}
+</code></pre></div>
+<p>Equivalently, using difference alone: <code>CS − (CS − MA)</code>.</p>
+<p><strong>The general rule.</strong> Use <strong>∧</strong> when both conditions describe the <strong>same tuple</strong> (<code>Coursetype='Fulltime' ∧ TotalSeats&gt;40</code>). Use <strong>∩</strong> (or a self-join) when the conditions describe <strong>different tuples</strong> relating to the same entity.</p>
+</div>
+<h2 id="119-exercises">11.9 Exercises<a class="headerlink" href="#119-exercises" title="Permanent link">&para;</a></h2>
+<p>Use the running example relations for all computational questions.</p>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>State the closure property and why it matters.</li>
+<li>Give the complete set of relational algebra operations.</li>
+<li>What is the degree and cardinality of <code>σ&lt;sub&gt;c&lt;/sub&gt;(R)</code> relative to <code>R</code>?</li>
+<li>When does PROJECT not reduce cardinality?</li>
+<li>Define union compatibility. Which operations require it?</li>
+<li>Why is RENAME necessary?</li>
+<li>Give the cardinality and degree of <code>R × S</code> in terms of those of <code>R</code> and <code>S</code>.</li>
+</ol>
+<p><strong>B. Write the relational algebra</strong></p>
+<ol>
+<li>Names of all students.</li>
+<li>Details of courses with duration 3 and type Parttime.</li>
+<li>Roll numbers of students admitted on or after 2019-08-01.</li>
+<li>Distinct teachers-in-charge.</li>
+<li>Names of courses taught by a teacher whose name contains "Gupta". (State any assumption about string operators.)</li>
+<li>Roll numbers of students admitted to both <code>CS01</code> and <code>MA02</code>.</li>
+<li>Roll numbers of students admitted to <code>CS01</code> or <code>CH01</code>.</li>
+<li>Roll numbers of students admitted to <code>CH01</code> but not <code>CS01</code>.</li>
+<li>Names of students not admitted to any course.</li>
+<li>Names of students admitted to at least one part-time course.</li>
+<li><code>SID</code>s of courses with no students admitted.</li>
+<li>Names of students born in 2001 who are admitted to <code>MA02</code>.</li>
+<li>Roll numbers of students admitted to more than one course. (Hint: you will need a product of <code>ADMISSION</code> with a renamed copy of itself.)</li>
+</ol>
+<p><strong>C. Compute the result</strong></p>
+<ol>
+<li>For each of questions 8 to 20, give the actual resulting relation from the sample data.</li>
+<li>Give the degree and cardinality of:
+    a. <code>STUDENT × COURSE</code>
+    b. <code>STUDENT × ADMISSION</code>
+    c. <code>σ&lt;sub&gt;Coursetype='Fulltime'&lt;/sub&gt;(COURSE) × σ&lt;sub&gt;SID='CS01'&lt;/sub&gt;(ADMISSION)</code>
+    d. <code>π&lt;sub&gt;Rollno&lt;/sub&gt;(ADMISSION)</code>
+    e. <code>π&lt;sub&gt;Rollno, SID&lt;/sub&gt;(ADMISSION)</code></li>
+<li><code>R(A,B)</code> has 8 tuples and <code>S(A,B)</code> has 5. State the minimum and maximum cardinality of <code>R ∪ S</code>, <code>R ∩ S</code>, <code>R − S</code>, <code>S − R</code> and <code>R × S</code>.</li>
+</ol>
+<p><strong>D. Analytical</strong></p>
+<ol>
+<li>Prove that <code>R ∩ S = R − (R − S)</code>, by showing that a tuple is in one side if and only if it is in the other.</li>
+<li>Draw the query tree for question 19, then draw an optimised version and explain the improvement, quantifying the number of tuples in the intermediate results in each case.</li>
+<li>Explain why <code>π&lt;sub&gt;Name&lt;/sub&gt;(σ&lt;sub&gt;SID='CS01'&lt;/sub&gt;(STUDENT × ADMISSION))</code> may give a wrong answer. Correct it.</li>
+<li>Is <code>R − (S − T) = (R − S) ∪ (R ∩ T)</code>? Justify with a proof or a counter-example.</li>
+<li>Under what conditions is <code>π&lt;sub&gt;L&lt;/sub&gt;(σ&lt;sub&gt;c&lt;/sub&gt;(R)) = σ&lt;sub&gt;c&lt;/sub&gt;(π&lt;sub&gt;L&lt;/sub&gt;(R))</code>? Give an example where they differ.</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li>SELECT is commutative.</li>
+<li>PROJECT is commutative.</li>
+<li><code>R ∪ S</code> may have more tuples than <code>|R| + |S|</code>.</li>
+<li><code>R − S = S − R</code> when <code>R</code> and <code>S</code> are union compatible.</li>
+<li>Cartesian product requires union compatibility.</li>
+<li><code>π</code> in relational algebra corresponds to SQL <code>SELECT</code> without <code>DISTINCT</code>.</li>
+<li><code>σ&lt;sub&gt;A=1 ∧ A=2&lt;/sub&gt;(R)</code> is always empty.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>True.</strong> <code>σ&lt;sub&gt;c1&lt;/sub&gt;(σ&lt;sub&gt;c2&lt;/sub&gt;(R)) = σ&lt;sub&gt;c2&lt;/sub&gt;(σ&lt;sub&gt;c1&lt;/sub&gt;(R)) = σ&lt;sub&gt;c1 ∧ c2&lt;/sub&gt;(R)</code>.</li>
+<li><strong>False.</strong> <code>π&lt;sub&gt;L1&lt;/sub&gt;(π&lt;sub&gt;L2&lt;/sub&gt;(R))</code> is defined only if <code>L1 ⊆ L2</code>; reversing the order is generally invalid.</li>
+<li><strong>False.</strong> Duplicates are removed, so <code>|R ∪ S| ≤ |R| + |S|</code>.</li>
+<li><strong>False.</strong> Difference is not commutative; equality holds only in the special case <code>R = S</code>.</li>
+<li><strong>False.</strong> Only ∪, ∩ and − require it. Cartesian product exists precisely to combine relations of different shapes.</li>
+<li><strong>False.</strong> It corresponds to <code>SELECT DISTINCT</code>, because PROJECT always removes duplicates.</li>
+<li><strong>True.</strong> An attribute has one value per tuple, so it cannot equal two distinct constants at once.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>Relational algebra is <strong>procedural</strong> and <strong>closed</strong>; the complete set is <code>{σ, π, ∪, −, ×}</code>.</li>
+<li><strong>σ</strong> chooses rows (same degree, fewer or equal tuples); <strong>π</strong> chooses columns and <strong>always removes duplicates</strong> — so it matches <code>SELECT DISTINCT</code>, not <code>SELECT</code>.</li>
+<li><code>|π&lt;sub&gt;L&lt;/sub&gt;(R)| = |R|</code> exactly when <code>L</code> contains a superkey.</li>
+<li><strong>∪, ∩, −</strong> require <strong>union compatibility</strong>; <strong>×</strong> does not, and multiplies cardinalities while adding degrees.</li>
+<li>Use <strong>∧</strong> for two conditions on the <em>same</em> tuple; use <strong>∩</strong> for two facts in <em>different</em> tuples.</li>
+<li><em>"Find X with no Y"</em> = <strong>(all X) − (X with Y)</strong>.</li>
+<li><strong>Push selections down</strong> the query tree — the first rule of optimisation.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="keys-and-relational-integrity-constraints.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10. Keys and Relational Integrity Constraints">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                10. Keys and Relational Integrity Constraints
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-footer__link md-footer__link--next" aria-label="Next: 12. Relational Algebra II: Joins, Division and Aggregation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                12. Relational Algebra II: Joins, Division and Aggregation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

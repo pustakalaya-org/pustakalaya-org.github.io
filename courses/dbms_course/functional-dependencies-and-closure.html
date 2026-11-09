@@ -1,0 +1,2278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/functional-dependencies-and-closure.html">
+  
+  
+    <link rel="prev" href="er-to-relational-mapping.html">
+  
+  
+    <link rel="next" href="normal-forms-1nf-2nf-3nf.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>20. Functional Dependencies and Closure - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#201-functional-dependency" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              20. Functional Dependencies and Closure
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#201-functional-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 Functional Dependency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.1 Functional Dependency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-an-fd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading an FD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trivial-non-trivial-completely-non-trivial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trivial, non-trivial, completely non-trivial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fds-and-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FDs and keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-armstrongs-axioms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 Armstrong's Axioms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.2 Armstrong&#39;s Axioms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#derived-rules-provable-from-a1a3-and-used-constantly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derived rules (provable from A1–A3, and used constantly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-a-set-of-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closure of a set of dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#203-attribute-closure-the-workhorse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 Attribute Closure — the Workhorse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.3 Attribute Closure — the Workhorse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-x-lets-you-decide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What X⁺ lets you decide
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#204-equivalence-and-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 Equivalence and Covers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.4 Equivalence and Covers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimal-canonical-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal (canonical) cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#205-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#206-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#201-functional-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 Functional Dependency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.1 Functional Dependency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-an-fd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading an FD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trivial-non-trivial-completely-non-trivial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trivial, non-trivial, completely non-trivial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fds-and-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FDs and keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-armstrongs-axioms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 Armstrong's Axioms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.2 Armstrong&#39;s Axioms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#derived-rules-provable-from-a1a3-and-used-constantly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derived rules (provable from A1–A3, and used constantly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-a-set-of-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closure of a set of dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#203-attribute-closure-the-workhorse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 Attribute Closure — the Workhorse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.3 Attribute Closure — the Workhorse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-x-lets-you-decide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What X⁺ lets you decide
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#204-equivalence-and-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 Equivalence and Covers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20.4 Equivalence and Covers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimal-canonical-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal (canonical) cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#205-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#206-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-20-functional-dependencies-and-closure">Lesson 20: Functional Dependencies and Closure<a class="headerlink" href="#lesson-20-functional-dependencies-and-closure" title="Permanent link">&para;</a></h1>
+<p><em>Armstrong's axioms, attribute closure, and minimal cover</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 5:</strong> Database Design · 10 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 14.2, 14.3</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Define a <strong>functional dependency</strong> precisely, and identify FDs from a description.</li>
+<li>State and apply <strong>Armstrong's axioms</strong> and the derived rules.</li>
+<li>Compute the <strong>attribute closure</strong> <code>X⁺</code> mechanically and reliably.</li>
+<li>Use <code>X⁺</code> to test whether <code>X</code> is a <strong>superkey</strong>, and whether an FD is implied.</li>
+<li>Compute a <strong>minimal (canonical) cover</strong>.</li>
+</ol>
+</div>
+<h2 id="201-functional-dependency">20.1 Functional Dependency<a class="headerlink" href="#201-functional-dependency" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Functional dependency</p>
+<p>Let <code>R</code> be a relation schema and <code>X, Y ⊆ R</code>. The functional dependency</p>
+<p><code>X → Y</code>   (read <em>"X functionally determines Y"</em>, or <em>"Y is functionally dependent on X"</em>)</p>
+<p>holds if, <strong>for any legal relation state of <code>R</code></strong>, whenever two tuples agree on <code>X</code> they must also agree on <code>Y</code>:</p>
+<blockquote>
+<p>for all tuples <code>t1, t2</code> in <code>r(R)</code>: if <code>t1[X] = t2[X]</code> then <code>t1[Y] = t2[Y]</code>.</p>
+</blockquote>
+<p><code>X</code> is the <strong>determinant</strong>; <code>Y</code> is the <strong>dependent</strong>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">An FD is a property of the MEANING, not of the data</p>
+<p>An FD is a <strong>constraint</strong> — an assertion about <em>every possible legal state</em>, present and future — derived from the semantics of the mini-world.</p>
+<p>You may <strong>disprove</strong> an FD by finding two tuples in the current data that agree on <code>X</code> and differ on <code>Y</code>. You can <strong>never prove</strong> one from data alone: today's data may merely happen to satisfy it.</p>
+<p><em>Example.</em> If today no two students share a name, the data satisfies <code>Name → Rollno</code>. But the FD is <strong>false</strong>, because two students <em>could</em> share a name. Only the mini-world's rules decide.</p>
+</div>
+<h3 id="reading-an-fd">Reading an FD<a class="headerlink" href="#reading-an-fd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>FD</th>
+<th>English</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Rollno → Name</code></td>
+<td>Each roll number belongs to exactly one student, so it determines the name.</td>
+</tr>
+<tr>
+<td><code>SID → Cname, TotalSeats</code></td>
+<td>A course id determines its name and seat count.</td>
+</tr>
+<tr>
+<td><code>Rollno, SID → Dateofadmission</code></td>
+<td>A student-course <em>pair</em> determines one admission date.</td>
+</tr>
+<tr>
+<td><code>Name → Rollno</code></td>
+<td><strong>False</strong> — two students may share a name.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="trivial-non-trivial-completely-non-trivial">Trivial, non-trivial, completely non-trivial<a class="headerlink" href="#trivial-non-trivial-completely-non-trivial" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Classification</p>
+<ul>
+<li><strong>Trivial:</strong> <code>X → Y</code> where <code>Y ⊆ X</code>. Always true, carries no information. <code>AB → A</code>.</li>
+<li><strong>Non-trivial:</strong> <code>X → Y</code> where <code>Y ⊄ X</code> (at least one attribute of <code>Y</code> is outside <code>X</code>). <code>AB → BC</code>.</li>
+<li><strong>Completely non-trivial:</strong> <code>X → Y</code> where <code>X ∩ Y = ∅</code>. <code>AB → C</code>.</li>
+</ul>
+</div>
+<h3 id="fds-and-keys">FDs and keys<a class="headerlink" href="#fds-and-keys" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">The link that makes everything work</p>
+<p><code>K</code> is a <strong>superkey</strong> of <code>R</code> <strong>if and only if</strong> <code>K → R</code> — that is, <code>K</code> functionally determines every attribute.</p>
+<p><code>K</code> is a <strong>candidate key</strong> if additionally no proper subset of <code>K</code> determines <code>R</code>.</p>
+</div>
+<p>This is the bridge between the key theory of Unit 3 and the normalisation of Lessons 3 to 5, and it is what makes candidate keys <em>computable</em> rather than guessed.</p>
+<h2 id="202-armstrongs-axioms">20.2 Armstrong's Axioms<a class="headerlink" href="#202-armstrongs-axioms" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">The three axioms (sound and complete)</p>
+<p>Let <code>X, Y, Z</code> be sets of attributes of <code>R</code>.</p>
+<p><strong>A1 — Reflexivity.</strong> If <code>Y ⊆ X</code> then <code>X → Y</code>.
+<em>(This generates exactly the trivial dependencies.)</em></p>
+<p><strong>A2 — Augmentation.</strong> If <code>X → Y</code> then <code>XZ → YZ</code>, for any <code>Z</code>.
+<em>(Adding the same attributes to both sides preserves the dependency.)</em></p>
+<p><strong>A3 — Transitivity.</strong> If <code>X → Y</code> and <code>Y → Z</code> then <code>X → Z</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Sound and complete</p>
+<p><strong>Sound</strong> — every FD derivable by the axioms is genuinely implied by <code>F</code>; the rules never produce a false dependency.</p>
+<p><strong>Complete</strong> — every FD implied by <code>F</code> is derivable by the axioms; nothing implied is beyond reach.</p>
+<p>Together: the axioms derive <strong>exactly</strong> the set of implied dependencies — no more and no fewer. This is why <code>F⁺</code> is well defined.</p>
+</div>
+<h3 id="derived-rules-provable-from-a1a3-and-used-constantly">Derived rules (provable from A1–A3, and used constantly)<a class="headerlink" href="#derived-rules-provable-from-a1a3-and-used-constantly" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Statement</th>
+<th>Proof sketch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Union (additivity)</strong></td>
+<td>If <code>X → Y</code> and <code>X → Z</code> then <code>X → YZ</code></td>
+<td>Augment <code>X→Y</code> by <code>X</code> giving <code>X→XY</code>; augment <code>X→Z</code> by <code>Y</code> giving <code>XY→YZ</code>; transitivity.</td>
+</tr>
+<tr>
+<td><strong>Decomposition (projectivity)</strong></td>
+<td>If <code>X → YZ</code> then <code>X → Y</code> and <code>X → Z</code></td>
+<td><code>YZ → Y</code> by reflexivity; transitivity with <code>X → YZ</code>.</td>
+</tr>
+<tr>
+<td><strong>Pseudotransitivity</strong></td>
+<td>If <code>X → Y</code> and <code>WY → Z</code> then <code>WX → Z</code></td>
+<td>Augment <code>X→Y</code> by <code>W</code> giving <code>WX→WY</code>; transitivity with <code>WY→Z</code>.</td>
+</tr>
+<tr>
+<td><strong>Composition</strong></td>
+<td>If <code>X → Y</code> and <code>Z → W</code> then <code>XZ → YW</code></td>
+<td>Augment each, then combine.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Two rules that do NOT hold</p>
+<p><code>X → YZ</code> <strong>does</strong> give <code>X → Y</code> (decomposition on the <strong>right</strong> is valid).</p>
+<p>But <code>XY → Z</code> does <strong>not</strong> give <code>X → Z</code> or <code>Y → Z</code>. <strong>Decomposition on the left is invalid.</strong></p>
+<p><em>Counter-example.</em> <code>Rollno, SID → Dateofadmission</code> is true, but <code>Rollno → Dateofadmission</code> is false — a student admitted to two courses has two dates.</p>
+<p>Similarly, <code>X → Z</code> and <code>Y → Z</code> do <strong>not</strong> give <code>XY → Z</code>... they actually do, by augmentation; but the converse (splitting the left) fails. <strong>Remember: right sides split, left sides do not.</strong></p>
+</div>
+<h3 id="closure-of-a-set-of-dependencies">Closure of a set of dependencies<a class="headerlink" href="#closure-of-a-set-of-dependencies" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">F⁺</p>
+<p>The <strong>closure</strong> <code>F⁺</code> of a set of dependencies <code>F</code> is the set of <strong>all</strong> FDs implied by <code>F</code>, obtained by applying Armstrong's axioms until nothing new appears.</p>
+</div>
+<p><code>F⁺</code> is usually enormous (exponential in the number of attributes), so it is almost never computed. Instead we compute <strong>attribute closure</strong>, which answers the questions we actually care about.</p>
+<h2 id="203-attribute-closure-the-workhorse">20.3 Attribute Closure — the Workhorse<a class="headerlink" href="#203-attribute-closure-the-workhorse" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">X⁺</p>
+<p>The <strong>attribute closure</strong> <code>X⁺</code> of a set of attributes <code>X</code> under <code>F</code> is the set of <strong>all attributes functionally determined by <code>X</code></strong>:</p>
+<p><code>X⁺ = { A : X → A is in F⁺ }</code></p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">The algorithm</p>
+<div class="language-bash highlight"><pre><span></span><code>result<span class="w"> </span>:<span class="o">=</span><span class="w"> </span>X
+repeat
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>each<span class="w"> </span>functional<span class="w"> </span>dependency<span class="w">  </span>Y<span class="w"> </span>-&gt;<span class="w"> </span>Z<span class="w">  </span><span class="k">in</span><span class="w"> </span>F:
+<span class="w">        </span><span class="k">if</span><span class="w">  </span>Y<span class="w"> </span>⊆<span class="w"> </span>result<span class="w">  </span>and<span class="w">  </span>Z<span class="w"> </span>⊄<span class="w"> </span>result<span class="w">  </span><span class="k">then</span>
+<span class="w">            </span>result<span class="w"> </span>:<span class="o">=</span><span class="w"> </span>result<span class="w"> </span>∪<span class="w"> </span>Z
+<span class="k">until</span><span class="w"> </span>result<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>change
+<span class="k">return</span><span class="w"> </span>result
+</code></pre></div>
+<p>Read it as: <em>"start with X; whenever you already have everything on the left of a dependency, you may add everything on its right; repeat until stuck."</em></p>
+</div>
+<h3 id="what-x-lets-you-decide">What <code>X⁺</code> lets you decide<a class="headerlink" href="#what-x-lets-you-decide" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Is <code>X → Y</code> implied by <code>F</code>?</td>
+<td>Is <code>Y ⊆ X⁺</code>?</td>
+</tr>
+<tr>
+<td>Is <code>X</code> a <strong>superkey</strong>?</td>
+<td>Is <code>X⁺ = R</code>?</td>
+</tr>
+<tr>
+<td>Is <code>X</code> a <strong>candidate key</strong>?</td>
+<td><code>X⁺ = R</code>, <strong>and</strong> for every proper subset <code>X'</code> of <code>X</code>, <code>X'⁺ ≠ R</code>.</td>
+</tr>
+<tr>
+<td>Are <code>F</code> and <code>G</code> equivalent?</td>
+<td>Every FD of <code>F</code> follows from <code>G</code>, and vice versa (checked by closures).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h3>
+<p><code>R(A, B, C, D, E)</code> with <code>F = { A → BC, CD → E, B → D, E → A }</code>.</p>
+<p><strong>Compute <code>A⁺</code>:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Dependency used</th>
+<th>Added</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>start</td>
+<td>A</td>
+<td><code>{A}</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>A → BC</code> (A ⊆ {A})</td>
+<td>B, C</td>
+<td><code>{A,B,C}</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>B → D</code> (B ⊆ {A,B,C})</td>
+<td>D</td>
+<td><code>{A,B,C,D}</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>CD → E</code> (CD ⊆ {A,B,C,D})</td>
+<td>E</td>
+<td><code>{A,B,C,D,E}</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>E → A</code> — A already present</td>
+<td>—</td>
+<td>no change</td>
+</tr>
+</tbody>
+</table>
+<p><code>A⁺ = {A,B,C,D,E} = R</code>, so <strong><code>A</code> is a superkey</strong>, and since it is a single attribute it is minimal, so <strong><code>A</code> is a candidate key</strong>.</p>
+<p><strong>Compute <code>B⁺</code>:</strong> start <code>{B}</code>; <code>B → D</code> gives <code>{B,D}</code>; no dependency's left side is now contained in <code>{B,D}</code> (<code>A→BC</code> needs A; <code>CD→E</code> needs C; <code>E→A</code> needs E). So <code>B⁺ = {B,D}</code> — <strong><code>B</code> is not a superkey</strong>.</p>
+<p><strong>Compute <code>CD⁺</code>:</strong> start <code>{C,D}</code>; <code>CD → E</code> gives <code>{C,D,E}</code>; <code>E → A</code> gives <code>{A,C,D,E}</code>; <code>A → BC</code> gives <code>{A,B,C,D,E}</code>. So <code>CD⁺ = R</code> — <strong>superkey</strong>. Minimal? <code>C⁺ = {C}</code> and <code>D⁺ = {D}</code>, neither is <code>R</code>, so <strong><code>CD</code> is a candidate key</strong>.</p>
+<p><strong>Compute <code>E⁺</code>:</strong> <code>{E}</code> → <code>E→A</code> gives <code>{A,E}</code> → <code>A→BC</code> gives <code>{A,B,C,E}</code> → <code>B→D</code> gives all. <strong><code>E</code> is a candidate key.</strong></p>
+<p><strong>Compute <code>BC⁺</code>:</strong> <code>{B,C}</code> → <code>B→D</code> gives <code>{B,C,D}</code> → <code>CD→E</code> gives <code>{B,C,D,E}</code> → <code>E→A</code> gives all. Superkey. <code>B⁺={B,D}</code>, <code>C⁺={C}</code> — neither is <code>R</code>, so <strong><code>BC</code> is a candidate key</strong>.</p>
+<p><strong>Candidate keys of <code>R</code>: <code>A</code>, <code>E</code>, <code>BC</code>, <code>CD</code>.</strong></p>
+<div class="admonition tip">
+<p class="admonition-title">Checking whether an FD is implied</p>
+<p>Is <code>AB → E</code> implied by <code>F</code>?
+<code>AB⁺</code> = start <code>{A,B}</code> → <code>A→BC</code> gives <code>{A,B,C}</code> → <code>B→D</code> gives <code>{A,B,C,D}</code> → <code>CD→E</code> gives all. Since <code>E ∈ AB⁺</code>, <strong>yes</strong>.</p>
+<p>Is <code>D → A</code> implied?
+<code>D⁺ = {D}</code>. <code>A ∉ D⁺</code>, so <strong>no</strong>.</p>
+<p>This single technique replaces any attempt to enumerate <code>F⁺</code>.</p>
+</div>
+<h2 id="204-equivalence-and-covers">20.4 Equivalence and Covers<a class="headerlink" href="#204-equivalence-and-covers" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Cover and equivalence</p>
+<p><code>F</code> <strong>covers</strong> <code>G</code> if every FD in <code>G</code> can be inferred from <code>F</code> — that is, <code>G ⊆ F⁺</code>.</p>
+<p><code>F</code> and <code>G</code> are <strong>equivalent</strong> (<code>F ≡ G</code>) if <code>F</code> covers <code>G</code> <strong>and</strong> <code>G</code> covers <code>F</code>. Equivalent sets impose exactly the same constraints.</p>
+</div>
+<p><strong>To test <code>F ≡ G</code>:</strong> for each <code>X → Y</code> in <code>G</code>, compute <code>X⁺</code> <strong>under F</strong> and check <code>Y ⊆ X⁺</code>; then repeat in the other direction. There is no need to build either closure of dependencies.</p>
+<h3 id="minimal-canonical-cover">Minimal (canonical) cover<a class="headerlink" href="#minimal-canonical-cover" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Minimal cover</p>
+<p>A set <code>F</code> of dependencies is <strong>minimal</strong> if:</p>
+<ol>
+<li>Every dependency has a <strong>single attribute on its right-hand side</strong>.</li>
+<li>No dependency has an <strong>extraneous attribute on its left</strong>: removing any attribute from <code>X</code> in <code>X → A</code> yields a set no longer equivalent to <code>F</code>.</li>
+<li>No dependency is <strong>redundant</strong>: removing any whole dependency yields a set no longer equivalent to <code>F</code>.</li>
+</ol>
+<p>A <strong>minimal cover</strong> of <code>F</code> is a minimal set equivalent to <code>F</code>. It need not be unique.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">The algorithm — the order of the steps matters</p>
+<p><strong>Step 1.</strong> Split every right-hand side into single attributes. (Valid by the decomposition rule.)</p>
+<p><strong>Step 2.</strong> For each <code>X → A</code> with <code>|X| &gt; 1</code>, and each attribute <code>B ∈ X</code>: if <code>A ∈ (X − B)⁺</code> computed <strong>under the current set</strong>, then <code>B</code> is extraneous — remove it.</p>
+<p><strong>Step 3.</strong> For each dependency <code>f</code> in the current set: if <code>f</code> is still implied by the set <strong>without</strong> <code>f</code>, remove <code>f</code>.</p>
+<p>Step 1 first, because splitting exposes extraneous attributes; step 2 before step 3, because reducing left sides can make dependencies redundant.</p>
+</div>
+<h3 id="worked-example_1">Worked example<a class="headerlink" href="#worked-example_1" title="Permanent link">&para;</a></h3>
+<p><code>F = { A → BC, B → C, A → B, AB → C }</code></p>
+<p><strong>Step 1 — split right sides:</strong>
+<code>A → B</code>, <code>A → C</code>, <code>B → C</code>, <code>A → B</code> (duplicate, drop one), <code>AB → C</code>
+Current: <code>{ A → B, A → C, B → C, AB → C }</code></p>
+<p><strong>Step 2 — extraneous left attributes.</strong> Only <code>AB → C</code> has more than one attribute on the left.
+Is <code>A</code> extraneous? Compute <code>B⁺</code> under the current set: <code>{B, C}</code>. <code>C ∈ B⁺</code>, so <strong>yes</strong> — <code>AB → C</code> reduces to <code>B → C</code>, which is already present.
+Current: <code>{ A → B, A → C, B → C }</code></p>
+<p><strong>Step 3 — redundant dependencies.</strong></p>
+<ul>
+<li>Remove <code>A → B</code>: is <code>B ∈ A⁺</code> under <code>{A → C, B → C}</code>? <code>A⁺ = {A, C}</code>. No — <strong>keep</strong> <code>A → B</code>.</li>
+<li>Remove <code>A → C</code>: is <code>C ∈ A⁺</code> under <code>{A → B, B → C}</code>? <code>A⁺ = {A, B, C}</code>. Yes — <strong>remove</strong> it.</li>
+<li>Remove <code>B → C</code>: is <code>C ∈ B⁺</code> under <code>{A → B}</code>? <code>B⁺ = {B}</code>. No — <strong>keep</strong>.</li>
+</ul>
+<p><strong>Minimal cover: <code>{ A → B, B → C }</code>.</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Minimal covers are not unique</p>
+<p>For <code>F = { A → B, B → A, A → C, B → C }</code> two different minimal covers exist:
+<code>{ A → B, B → A, A → C }</code> and <code>{ A → B, B → A, B → C }</code>.</p>
+<p>Both are correct. An examination answer should show the working, which justifies whichever is obtained.</p>
+</div>
+<p><strong>Why minimal covers matter:</strong> the 3NF synthesis algorithm (Lesson 5) builds one relation per dependency of a minimal cover. A smaller cover therefore yields a smaller, better schema.</p>
+<h2 id="205-solved-questions">20.5 Solved Questions<a class="headerlink" href="#205-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Define a functional dependency. Can an FD be proved from a relation state? Justify.</p>
+<p><strong>A.</strong> For <code>X, Y ⊆ R</code>, the functional dependency <code>X → Y</code> holds if in <strong>every legal state</strong> of <code>R</code>, any two tuples agreeing on <code>X</code> also agree on <code>Y</code>.</p>
+<p><strong>An FD cannot be proved from a relation state; it can only be disproved.</strong></p>
+<p>A relation state is a <strong>snapshot</strong>. An FD is a <strong>constraint on all possible states</strong>, present and future. Observing that a snapshot satisfies <code>X → Y</code> shows only that no counter-example happens to be present today.</p>
+<p><em>Illustration.</em> In a small college the data may show that no two students share a name:</p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>Ankit Sharma</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>Riya Verma</td>
+</tr>
+</tbody>
+</table>
+<p>This state satisfies <code>Name → Rollno</code>. But the FD is <strong>false</strong>, because the mini-world permits two students called Ankit Sharma; admitting one tomorrow would violate it. Declaring it would wrongly reject a legitimate admission.</p>
+<p><strong>Disproof, by contrast, is conclusive.</strong> Two tuples agreeing on <code>X</code> and differing on <code>Y</code> demonstrate that the constraint does not hold, since a legal state violating it exists.</p>
+<p>The practical conclusion: FDs are obtained from the <strong>semantics of the mini-world</strong> — by asking the users — not by inspecting sample data. Sample data is useful only for catching FDs you asserted wrongly.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> State Armstrong's axioms. Prove the union and pseudotransitivity rules from them. What is meant by saying the axioms are sound and complete?</p>
+<p><strong>A.</strong> <strong>A1 Reflexivity:</strong> if <code>Y ⊆ X</code> then <code>X → Y</code>. <strong>A2 Augmentation:</strong> if <code>X → Y</code> then <code>XZ → YZ</code>. <strong>A3 Transitivity:</strong> if <code>X → Y</code> and <code>Y → Z</code> then <code>X → Z</code>.</p>
+<p><strong>Union: given <code>X → Y</code> and <code>X → Z</code>, prove <code>X → YZ</code>.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. <code>X → Y</code></td>
+<td>given</td>
+</tr>
+<tr>
+<td>2. <code>X → XY</code></td>
+<td>augment (1) with <code>X</code>: <code>XX → YX</code>, and <code>XX = X</code></td>
+</tr>
+<tr>
+<td>3. <code>X → Z</code></td>
+<td>given</td>
+</tr>
+<tr>
+<td>4. <code>XY → YZ</code></td>
+<td>augment (3) with <code>Y</code></td>
+</tr>
+<tr>
+<td>5. <code>X → YZ</code></td>
+<td>transitivity of (2) and (4)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pseudotransitivity: given <code>X → Y</code> and <code>WY → Z</code>, prove <code>WX → Z</code>.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. <code>X → Y</code></td>
+<td>given</td>
+</tr>
+<tr>
+<td>2. <code>WX → WY</code></td>
+<td>augment (1) with <code>W</code></td>
+</tr>
+<tr>
+<td>3. <code>WY → Z</code></td>
+<td>given</td>
+</tr>
+<tr>
+<td>4. <code>WX → Z</code></td>
+<td>transitivity of (2) and (3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Soundness</strong> means every FD derivable using A1–A3 is genuinely implied by <code>F</code> — the rules never generate a dependency that some legal state violates.</p>
+<p><strong>Completeness</strong> means every FD implied by <code>F</code> is derivable using A1–A3 — no implied dependency is out of reach.</p>
+<p>Together they establish that the axioms generate <strong>exactly</strong> <code>F⁺</code>, which is what makes <code>F⁺</code> well defined and makes attribute closure a <em>correct</em> decision procedure for implication.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> For <code>R(A,B,C,D,E)</code> with <code>F = {A → BC, CD → E, B → D, E → A}</code>, compute <code>A⁺</code>, <code>B⁺</code>, <code>CD⁺</code>, <code>AB⁺</code>, and find all candidate keys.</p>
+<p><strong>A.</strong></p>
+<p><strong><code>A⁺</code>:</strong> <code>{A}</code> →(A→BC) <code>{A,B,C}</code> →(B→D) <code>{A,B,C,D}</code> →(CD→E) <code>{A,B,C,D,E}</code>. <strong><code>A⁺ = R</code>.</strong></p>
+<p><strong><code>B⁺</code>:</strong> <code>{B}</code> →(B→D) <code>{B,D}</code>. No further left side is contained. <strong><code>B⁺ = {B,D}</code>.</strong></p>
+<p><strong><code>CD⁺</code>:</strong> <code>{C,D}</code> →(CD→E) <code>{C,D,E}</code> →(E→A) <code>{A,C,D,E}</code> →(A→BC) <code>{A,B,C,D,E}</code>. <strong><code>CD⁺ = R</code>.</strong></p>
+<p><strong><code>AB⁺</code>:</strong> contains <code>A⁺</code>, so <strong><code>= R</code></strong> (but not minimal, since <code>A</code> alone suffices).</p>
+<p><strong>Candidate keys.</strong> Test each set: it is a candidate key if its closure is <code>R</code> and no proper subset's closure is <code>R</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Set</th>
+<th>Closure</th>
+<th>Superkey?</th>
+<th>Minimal?</th>
+<th>Candidate key?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>R</td>
+<td>yes</td>
+<td>single attribute</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>B</td>
+<td>{B,D}</td>
+<td>no</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr>
+<td>C</td>
+<td>{C}</td>
+<td>no</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr>
+<td>D</td>
+<td>{D}</td>
+<td>no</td>
+<td>—</td>
+<td>no</td>
+</tr>
+<tr>
+<td>E</td>
+<td>R</td>
+<td>yes</td>
+<td>single attribute</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>BC</td>
+<td>R</td>
+<td>yes</td>
+<td><code>B⁺≠R</code>, <code>C⁺≠R</code></td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>CD</td>
+<td>R</td>
+<td>yes</td>
+<td><code>C⁺≠R</code>, <code>D⁺≠R</code></td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>AB, AE, …</td>
+<td>R</td>
+<td>yes</td>
+<td>contain A or E</td>
+<td>no</td>
+</tr>
+<tr>
+<td>BD, CE, DE</td>
+<td>{B,D}, R…</td>
+<td>—</td>
+<td><code>E⁺=R</code> so CE, DE contain a key</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Candidate keys: <code>A</code>, <code>E</code>, <code>BC</code>, <code>CD</code>.</strong>
+<strong>Prime attributes:</strong> <code>A, B, C, D, E</code> — <em>all</em> of them.
+<strong>Non-prime attributes:</strong> none. (This is why <code>R</code> turns out to be in 3NF despite <code>B → D</code> violating BCNF — see Lesson 4.)</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Show that decomposition on the left-hand side is invalid: <code>XY → Z</code> does not imply <code>X → Z</code>. Give a concrete counter-example.</p>
+<p><strong>A.</strong> The rule fails because <code>X</code> alone may not determine enough to fix <code>Z</code>; the dependency asserts something about the <em>combination</em>.</p>
+<p><strong>Counter-example from the college database.</strong> The true dependency is</p>
+<p><code>Rollno, SID → Dateofadmission</code></p>
+<p>— a student-course pair has exactly one admission date. Suppose <code>Rollno → Dateofadmission</code> also held. Consider:</p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>SID</th>
+<th>Dateofadmission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>CS01</td>
+<td>2019-07-15</td>
+</tr>
+<tr>
+<td>X2019</td>
+<td>MA02</td>
+<td>2019-08-01</td>
+</tr>
+</tbody>
+</table>
+<p>This state is <strong>legal</strong>: the two tuples differ on <code>(Rollno, SID)</code>, so <code>Rollno, SID → Dateofadmission</code> is not violated. But the two tuples <strong>agree on <code>Rollno</code></strong> and <strong>differ on <code>Dateofadmission</code></strong>, so <code>Rollno → Dateofadmission</code> is <strong>violated</strong>.</p>
+<p>A legal state satisfying the premise while violating the conclusion is exactly a proof that the inference is invalid.</p>
+<p><strong>Contrast with the right-hand side</strong>, where decomposition <em>is</em> valid: <code>X → YZ</code> implies <code>X → Y</code>, because <code>YZ → Y</code> by reflexivity and transitivity applies. Two tuples agreeing on <code>X</code> must agree on all of <code>YZ</code>, hence in particular on <code>Y</code>.</p>
+<p><strong>Mnemonic: right sides split; left sides do not.</strong> Getting this backwards is one of the commonest errors in normalisation questions.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Compute a minimal cover of <code>F = { AB → C, A → B, B → A, C → AB }</code> over <code>R(A,B,C)</code>. Show every step.</p>
+<p><strong>A.</strong></p>
+<p><strong>Step 1 — single attributes on the right.</strong>
+<code>AB → C</code>, <code>A → B</code>, <code>B → A</code>, <code>C → A</code>, <code>C → B</code></p>
+<p><strong>Step 2 — remove extraneous left attributes.</strong> Only <code>AB → C</code> qualifies.</p>
+<ul>
+<li>Is <code>B</code> extraneous? Compute <code>A⁺</code> under the current set: <code>{A}</code> →(A→B) <code>{A,B}</code> →(AB→C) <code>{A,B,C}</code>. Since <code>C ∈ A⁺</code>, <strong>yes</strong> — replace <code>AB → C</code> by <code>A → C</code>.</li>
+<li>Now the set is <code>{ A → C, A → B, B → A, C → A, C → B }</code>. No left side has more than one attribute, so step 2 is complete.</li>
+</ul>
+<p><strong>Step 3 — remove redundant dependencies</strong>, testing each in turn against the others.</p>
+<table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Test</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A → C</code></td>
+<td><code>A⁺</code> under <code>{A→B, B→A, C→A, C→B}</code> = <code>{A,B}</code>. <code>C ∉</code></td>
+<td><strong>keep</strong></td>
+</tr>
+<tr>
+<td><code>A → B</code></td>
+<td><code>A⁺</code> under <code>{A→C, B→A, C→A, C→B}</code> = <code>{A,C,B}</code>. <code>B ∈</code></td>
+<td><strong>remove</strong></td>
+</tr>
+<tr>
+<td><code>B → A</code></td>
+<td><code>B⁺</code> under <code>{A→C, C→A, C→B}</code> = <code>{B}</code>. <code>A ∉</code></td>
+<td><strong>keep</strong></td>
+</tr>
+<tr>
+<td><code>C → A</code></td>
+<td><code>C⁺</code> under <code>{A→C, B→A, C→B}</code> = <code>{C,B,A}</code>. <code>A ∈</code></td>
+<td><strong>remove</strong></td>
+</tr>
+<tr>
+<td><code>C → B</code></td>
+<td><code>C⁺</code> under <code>{A→C, B→A}</code> = <code>{C}</code>. <code>B ∉</code></td>
+<td><strong>keep</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Minimal cover: <code>{ A → C, B → A, C → B }</code>.</strong></p>
+<p><strong>Verification</strong> that it is equivalent to the original: under the cover, <code>A⁺ = {A,C,B} = R</code>, <code>B⁺ = {B,A,C} = R</code>, <code>C⁺ = {C,B,A} = R</code>. So every original dependency — <code>AB → C</code>, <code>A → B</code>, <code>B → A</code>, <code>C → AB</code> — is recovered, and the candidate keys <code>A</code>, <code>B</code> and <code>C</code> are unchanged.</p>
+<p>Note the elegant cyclic result <code>A → C → B → A</code>, which correctly captures that all three attributes determine one another.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Are <code>F = {A → B, B → C, A → C}</code> and <code>G = {A → B, B → C}</code> equivalent? Prove it.</p>
+<p><strong>A.</strong> Two sets are equivalent when each covers the other. Test each dependency of one against closures computed under the other.</p>
+<p><strong>Does <code>G</code> cover <code>F</code>?</strong> For each FD of <code>F</code>, compute the left side's closure <strong>under <code>G</code></strong>:</p>
+<table>
+<thead>
+<tr>
+<th>FD of F</th>
+<th>Closure under G</th>
+<th>Right side included?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A → B</code></td>
+<td><code>A⁺ = {A}</code> →(A→B) <code>{A,B}</code> →(B→C) <code>{A,B,C}</code></td>
+<td><code>B ∈</code> — yes</td>
+</tr>
+<tr>
+<td><code>B → C</code></td>
+<td><code>B⁺ = {B}</code> →(B→C) <code>{B,C}</code></td>
+<td><code>C ∈</code> — yes</td>
+</tr>
+<tr>
+<td><code>A → C</code></td>
+<td><code>A⁺ = {A,B,C}</code></td>
+<td><code>C ∈</code> — yes</td>
+</tr>
+</tbody>
+</table>
+<p>Every FD of <code>F</code> follows from <code>G</code>, so <strong><code>G</code> covers <code>F</code></strong>.</p>
+<p><strong>Does <code>F</code> cover <code>G</code>?</strong> <code>G ⊆ F</code> literally — both its dependencies appear in <code>F</code> — so trivially <strong>yes</strong>.</p>
+<p><strong>Therefore <code>F ≡ G</code>.</strong></p>
+<p>The dependency <code>A → C</code> in <code>F</code> is <strong>redundant</strong>: it is derivable from <code>A → B</code> and <code>B → C</code> by transitivity. <code>G</code> is in fact a minimal cover of <code>F</code>.</p>
+<p><strong>Note on method.</strong> It was never necessary to construct <code>F⁺</code> or <code>G⁺</code>, which would be exponentially large. Testing implication by attribute closure — <em>"is the right side inside the left side's closure?"</em> — is the standard and only practical technique.</p>
+</div>
+<h2 id="206-exercises">20.6 Exercises<a class="headerlink" href="#206-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Define a functional dependency.</li>
+<li>Why can an FD not be proved from a relation state?</li>
+<li>State Armstrong's axioms.</li>
+<li>What does it mean for the axioms to be sound and complete?</li>
+<li>Distinguish trivial from completely non-trivial FDs.</li>
+<li>State the test for <code>X</code> being a superkey.</li>
+<li>What are the three conditions for a set of FDs to be minimal?</li>
+</ol>
+<p><strong>B. Computation</strong></p>
+<ol>
+<li>For <code>R(A,B,C,D)</code> with <code>F = {A → B, B → C, C → D}</code>, compute <code>A⁺</code>, <code>B⁺</code>, <code>C⁺</code>, <code>D⁺</code> and find all candidate keys.</li>
+<li>For <code>R(A,B,C,D,E,F)</code> with <code>F = {A → BC, CD → E, B → D, E → A, F → A}</code>, compute <code>A⁺</code>, <code>F⁺</code>, <code>BC⁺</code> and find all candidate keys.</li>
+<li>For <code>R(A,B,C,D,E)</code> with <code>F = {AB → C, C → D, D → A, D → E}</code>, find all candidate keys.</li>
+<li>For <code>R(P,Q,R,S,T)</code> with <code>F = {P → QR, RS → T, Q → S, T → P}</code>, find all candidate keys.</li>
+<li>Determine whether each is implied by <code>F = {A → B, BC → D, D → E}</code>:
+    a. <code>AC → D</code>  b. <code>A → E</code>  c. <code>AC → E</code>  d. <code>B → E</code>  e. <code>ABC → DE</code></li>
+<li>Compute a minimal cover of <code>F = {A → BC, B → C, AB → D, ABC → D}</code>.</li>
+<li>Compute a minimal cover of <code>F = {AB → C, C → A, BC → D, ACD → B, D → EG, BE → C, CG → BD, CE → AG}</code>.</li>
+<li>Are <code>F = {A → B, AB → C, D → AC, D → E}</code> and <code>G = {A → BC, D → AE}</code> equivalent? Show your working.</li>
+</ol>
+<p><strong>C. Proof and analysis</strong></p>
+<ol>
+<li>Prove the decomposition rule from Armstrong's axioms.</li>
+<li>Prove the composition rule: if <code>X → Y</code> and <code>Z → W</code> then <code>XZ → YW</code>.</li>
+<li>Give a counter-example showing <code>X → Z</code> and <code>Y → Z</code> do not imply <code>X → Y</code>.</li>
+<li>Explain why <code>F⁺</code> is not computed in practice, and what is computed instead.</li>
+<li>Show that a minimal cover need not be unique, by giving a set with two different minimal covers.</li>
+<li>From this description, write down all the FDs:
+    &gt; <em>"Each student has one roll number, name and date of birth. Each course has one identifier, name, seat count and teacher-in-charge. A student may be admitted to several courses; each admission has one date. Each course is taught in one department, and each department has one head."</em></li>
+<li>A colleague asserts <code>Name → Rollno</code> because the current 400 rows satisfy it. Explain, with reference to the definition, why this reasoning is invalid, and describe what evidence would be needed instead.</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li><code>X → Y</code> can be verified by examining the current relation state.</li>
+<li>Every superkey <code>K</code> satisfies <code>K → R</code>.</li>
+<li><code>AB → C</code> implies <code>A → C</code>.</li>
+<li><code>A → BC</code> implies <code>A → B</code>.</li>
+<li>A minimal cover is unique.</li>
+<li>Armstrong's axioms are sound but not complete.</li>
+<li>If <code>X⁺ = R</code> then <code>X</code> is a candidate key.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>False.</strong> A state can only <strong>disprove</strong> an FD; an FD constrains all possible states.</li>
+<li><strong>True.</strong> That is the definition of a superkey in FD terms.</li>
+<li><strong>False.</strong> Left-side decomposition is invalid. Counter-example: <code>Rollno, SID → Dateofadmission</code> while <code>Rollno → Dateofadmission</code> is false.</li>
+<li><strong>True.</strong> Right-side decomposition is valid, by reflexivity (<code>BC → B</code>) and transitivity.</li>
+<li><strong>False.</strong> Different orders of removal can yield different, equally valid minimal covers.</li>
+<li><strong>False.</strong> They are both sound <strong>and</strong> complete — they generate exactly <code>F⁺</code>.</li>
+<li><strong>False.</strong> It makes <code>X</code> a <strong>superkey</strong>. It is a candidate key only if it is also minimal.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>An <strong>FD</strong> <code>X → Y</code> constrains <strong>every legal state</strong>; data can disprove one but never prove one.</li>
+<li><strong>Armstrong's axioms</strong> — reflexivity, augmentation, transitivity — are <strong>sound and complete</strong>, and yield union, decomposition and pseudotransitivity.</li>
+<li><strong>Right sides split; left sides do not.</strong> <code>X → YZ</code> gives <code>X → Y</code>; <code>XY → Z</code> gives nothing about <code>X → Z</code>.</li>
+<li><strong><code>X⁺</code></strong> is the workhorse: it tests implication (<code>Y ⊆ X⁺</code>), superkeys (<code>X⁺ = R</code>) and candidate keys (superkey + minimal).</li>
+<li>Two FD sets are <strong>equivalent</strong> if each covers the other — checked with attribute closures, never by building <code>F⁺</code>.</li>
+<li>A <strong>minimal cover</strong> has single-attribute right sides, no extraneous left attributes and no redundant FDs. It need not be unique, and it drives 3NF synthesis.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="er-to-relational-mapping.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 19. ER-to-Relational Mapping">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                19. ER-to-Relational Mapping
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="normal-forms-1nf-2nf-3nf.html" class="md-footer__link md-footer__link--next" aria-label="Next: 21. Normal Forms: 1NF, 2NF, 3NF">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                21. Normal Forms: 1NF, 2NF, 3NF
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

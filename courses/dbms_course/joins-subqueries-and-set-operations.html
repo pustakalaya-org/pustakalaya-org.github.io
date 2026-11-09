@@ -1,0 +1,2345 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/joins-subqueries-and-set-operations.html">
+  
+  
+    <link rel="prev" href="aggregation-group-by-and-having.html">
+  
+  
+    <link rel="next" href="views-odbc-and-database-administration.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>17. Joins, Subqueries and Set Operations - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#171-joins" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17. Joins, Subqueries and Set Operations
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#171-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Joins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.1 Joins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-syntax-forms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The syntax forms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INNER JOIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUTER JOINs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SELF JOIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-outer-join-trap-on-vs-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The outer-join trap: ON vs WHERE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#172-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Subqueries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.2 Subqueries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalar-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalar subqueries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#in-and-not-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IN and NOT IN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-and-not-exists-correlated-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXISTS and NOT EXISTS — correlated subqueries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#any-some-and-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ANY / SOME and ALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subqueries-in-from-derived-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subqueries in FROM — derived tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#173-division-in-sql-the-for-all-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Division in SQL — the "for all" queries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.3 Division in SQL — the &#34;for all&#34; queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-double-not-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1 — double NOT EXISTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-counting-usually-clearer-and-faster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2 — counting (usually clearer and faster)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#174-set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Set Operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#175-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#176-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#171-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Joins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.1 Joins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-syntax-forms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The syntax forms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INNER JOIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUTER JOINs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SELF JOIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-outer-join-trap-on-vs-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The outer-join trap: ON vs WHERE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#172-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Subqueries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.2 Subqueries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalar-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalar subqueries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#in-and-not-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IN and NOT IN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-and-not-exists-correlated-subqueries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXISTS and NOT EXISTS — correlated subqueries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#any-some-and-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ANY / SOME and ALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subqueries-in-from-derived-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subqueries in FROM — derived tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#173-division-in-sql-the-for-all-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Division in SQL — the "for all" queries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.3 Division in SQL — the &#34;for all&#34; queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-double-not-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1 — double NOT EXISTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-counting-usually-clearer-and-faster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2 — counting (usually clearer and faster)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#174-set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Set Operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#175-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#176-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-17-joins-subqueries-and-set-operations">Lesson 17: Joins, Subqueries and Set Operations<a class="headerlink" href="#lesson-17-joins-subqueries-and-set-operations" title="Permanent link">&para;</a></h1>
+<p><em>Combining tables — and queries inside queries</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 4:</strong> Structured Query Language · 12 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 6.3, 7.1 · Murach's MySQL, Ch. 4, 7</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Write <code>INNER</code>, <code>LEFT</code>, <code>RIGHT</code>, <code>FULL</code> and <code>SELF</code> joins, and multi-table joins.</li>
+<li>Distinguish <strong>non-correlated</strong> from <strong>correlated</strong> subqueries.</li>
+<li>Use <code>IN</code>, <code>NOT IN</code>, <code>EXISTS</code>, <code>NOT EXISTS</code>, <code>ANY</code>, <code>ALL</code> correctly.</li>
+<li>Handle the <strong><code>NOT IN</code> with NULL</strong> trap.</li>
+<li>Express <strong>division</strong> ("for all") queries in SQL.</li>
+<li>Use <code>UNION</code>, <code>INTERSECT</code> and <code>EXCEPT</code>, and their MySQL substitutes.</li>
+</ol>
+</div>
+<h2 id="171-joins">17.1 Joins<a class="headerlink" href="#171-joins" title="Permanent link">&para;</a></h2>
+<h3 id="the-syntax-forms">The syntax forms<a class="headerlink" href="#the-syntax-forms" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Implicit (old style) -- avoid: easy to forget the condition</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+
+<span class="c1">-- Explicit (ANSI, preferred) -- join condition cannot be forgotten</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+
+<span class="c1">-- USING, when the column names match</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">);</span>
+
+<span class="c1">-- NATURAL: joins on ALL same-named columns -- risky, avoid</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="k">NATURAL</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="p">;</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Always use explicit JOIN ... ON</p>
+<p>With the implicit comma form, forgetting the <code>WHERE</code> produces a silent <strong>Cartesian product</strong> — 5 students × 6 admissions = 30 meaningless rows, with no error. With <code>JOIN ... ON</code> the condition is syntactically required, so the mistake cannot happen. Explicit syntax also separates <em>join conditions</em> from <em>filter conditions</em>, which matters for outer joins (Section 5.1.4).</p>
+</div>
+<h3 id="inner-join">INNER JOIN<a class="headerlink" href="#inner-join" title="Permanent link">&para;</a></h3>
+<p>Returns only rows with a match on <strong>both</strong> sides.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Syllabus Q1</strong> — names of students enrolled in any course:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+</code></pre></div>
+<p><code>DISTINCT</code> is required: a student in two courses produces two rows.</p>
+<p><strong>Syllabus Q2</strong> — names of students in at least one part-time course:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="outer-joins">OUTER JOINs<a class="headerlink" href="#outer-joins" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">;</span>
+</code></pre></div>
+<p>Every student appears; <code>Arjun Nair</code> shows <code>NULL</code> for <code>Cname</code>.</p>
+<p>MySQL has no <code>FULL OUTER JOIN</code>; simulate it:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">UNION</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">RIGHT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="self-join">SELF JOIN<a class="headerlink" href="#self-join" title="Permanent link">&para;</a></h3>
+<p>A table joined to itself, using aliases — the SQL form of a recursive relationship (Unit 2, Lesson 3).</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Pairs of distinct students admitted to the same course</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Student1</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Student2</span><span class="p">,</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+</code></pre></div>
+<p>The condition <code>a1.Rollno &lt; a2.Rollno</code> (rather than <code>&lt;&gt;</code>) does two jobs: it excludes a student paired with themselves, and it lists each pair <strong>once</strong> rather than twice in both orders.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Employees and their supervisors</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Employee</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Supervisor</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">EMPLOYEE</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">SuperSsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Ssn</span><span class="p">;</span>
+</code></pre></div>
+<p>The <code>LEFT JOIN</code> keeps the chief executive, who has no supervisor.</p>
+<h3 id="the-outer-join-trap-on-vs-where">The outer-join trap: ON vs WHERE<a class="headerlink" href="#the-outer-join-trap-on-vs-where" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">A condition in WHERE silently cancels an outer join</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- WRONG: behaves as an INNER join</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">'2019-08-01'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+
+<span class="c1">-- RIGHT: the extra condition belongs in ON</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span>
+<span class="w">       </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">'2019-08-01'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Why.</strong> The <code>LEFT JOIN</code> first pads unmatched courses with NULLs. The <code>WHERE</code> clause then tests <code>NULL &gt;= '2019-08-01'</code>, which is <strong>UNKNOWN</strong>, so those rows are discarded — undoing the outer join entirely.</p>
+<p><strong>Rule:</strong> conditions on the <strong>outer (right-hand) table</strong> belong in <code>ON</code>; conditions on the <strong>preserved (left-hand) table</strong> belong in <code>WHERE</code>.</p>
+</div>
+<h2 id="172-subqueries">17.2 Subqueries<a class="headerlink" href="#172-subqueries" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Subquery (nested query)</p>
+<p>A <code>SELECT</code> statement inside another statement. The inner query is the <strong>subquery</strong>; the enclosing one is the <strong>outer query</strong>.</p>
+<p><strong>Non-correlated:</strong> independent of the outer query — evaluated <strong>once</strong>.
+<strong>Correlated:</strong> references a column of the outer query — evaluated <strong>once per outer row</strong>.</p>
+</div>
+<h3 id="scalar-subqueries">Scalar subqueries<a class="headerlink" href="#scalar-subqueries" title="Permanent link">&para;</a></h3>
+<p>Return exactly one value; usable anywhere a value is allowed.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="n">TotalSeats</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Dateofbirth</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">Dateofbirth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Dateofbirth</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="in-and-not-in">IN and NOT IN<a class="headerlink" href="#in-and-not-in" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">Rollno</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span>
+<span class="w">                  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">SID</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">SID</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">));</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">The NOT IN + NULL trap — the most dangerous bug in SQL</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">Rollno</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="p">);</span>
+</code></pre></div>
+<p>If <strong>any</strong> row of the subquery returns NULL, this query returns <strong>no rows at all</strong> — silently, with no error.</p>
+<p><strong>Why.</strong> <code>x NOT IN (a, b, NULL)</code> expands to <code>x&lt;&gt;a AND x&lt;&gt;b AND x&lt;&gt;NULL</code>. The last conjunct is <strong>UNKNOWN</strong>, and <code>TRUE AND UNKNOWN</code> is UNKNOWN, so the whole condition can never be TRUE.</p>
+<p><strong>Three safe alternatives:</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 1. Exclude NULLs explicitly</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">)</span>
+
+<span class="c1">-- 2. Use NOT EXISTS -- immune to the problem</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span>
+
+<span class="c1">-- 3. Use a LEFT JOIN ... IS NULL</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+</code></pre></div>
+<p><strong>Prefer <code>NOT EXISTS</code>.</strong> It handles NULLs correctly by construction and is usually at least as fast.</p>
+</div>
+<h3 id="exists-and-not-exists-correlated-subqueries">EXISTS and NOT EXISTS — correlated subqueries<a class="headerlink" href="#exists-and-not-exists-correlated-subqueries" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">EXISTS</p>
+<p><code>EXISTS (subquery)</code> is TRUE if the subquery returns <strong>at least one row</strong>, regardless of its contents. Convention: write <code>SELECT 1</code>, since the values are never examined.</p>
+</div>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Students admitted to at least one course</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">);</span>
+
+<span class="c1">-- Students admitted to no course</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">);</span>
+</code></pre></div>
+<p>The reference <code>s.Rollno</code> inside the subquery makes it <strong>correlated</strong>: it cannot run alone, and is conceptually re-evaluated for each candidate <code>s</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Correlated vs non-correlated</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Non-correlated</th>
+<th>Correlated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>References the outer query</td>
+<td>No</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>Evaluated</td>
+<td><strong>Once</strong></td>
+<td>Conceptually once per outer row</td>
+</tr>
+<tr>
+<td>Can run standalone</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Typical operators</td>
+<td><code>IN</code>, <code>=</code>, <code>&gt;</code> with a scalar</td>
+<td><code>EXISTS</code>, <code>NOT EXISTS</code></td>
+</tr>
+</tbody>
+</table>
+<p>Modern optimisers frequently rewrite a correlated subquery into a semi-join or anti-join (Unit 3, Lesson 4), so the "once per row" cost is conceptual rather than actual.</p>
+</div>
+<h3 id="any-some-and-all">ANY / SOME and ALL<a class="headerlink" href="#any-some-and-all" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Cname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">ANY</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">TotalSeats</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">);</span>
+<span class="c1">-- greater than AT LEAST ONE part-time course, i.e. &gt; the MINIMUM</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Cname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">TotalSeats</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">);</span>
+<span class="c1">-- greater than EVERY part-time course, i.e. &gt; the MAXIMUM</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&gt; ANY (S)</code></td>
+<td><code>&gt; MIN(S)</code></td>
+</tr>
+<tr>
+<td><code>&gt; ALL (S)</code></td>
+<td><code>&gt; MAX(S)</code></td>
+</tr>
+<tr>
+<td><code>&lt; ANY (S)</code></td>
+<td><code>&lt; MAX(S)</code></td>
+</tr>
+<tr>
+<td><code>&lt; ALL (S)</code></td>
+<td><code>&lt; MIN(S)</code></td>
+</tr>
+<tr>
+<td><code>= ANY (S)</code></td>
+<td><code>IN (S)</code></td>
+</tr>
+<tr>
+<td><code>&lt;&gt; ALL (S)</code></td>
+<td><code>NOT IN (S)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> <code>&gt; ALL</code> on an <strong>empty</strong> subquery is vacuously TRUE; <code>&gt; ANY</code> on an empty subquery is FALSE.</p>
+<h3 id="subqueries-in-from-derived-tables">Subqueries in FROM — derived tables<a class="headerlink" href="#subqueries-in-from-derived-tables" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Enrolled</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">MeanEnrolment</span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="w">       </span><span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">       </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">per_course</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div>
+<p>A derived table <strong>must</strong> be given an alias. This is the standard way to aggregate over an aggregate.</p>
+<h2 id="173-division-in-sql-the-for-all-queries">17.3 Division in SQL — the "for all" queries<a class="headerlink" href="#173-division-in-sql-the-for-all-queries" title="Permanent link">&para;</a></h2>
+<p>SQL has no division operator (Unit 3, Lesson 4). Two idioms.</p>
+<p><strong>Query:</strong> students admitted to <strong>all</strong> part-time courses.</p>
+<h3 id="method-1-double-not-exists">Method 1 — double NOT EXISTS<a class="headerlink" href="#method-1-double-not-exists" title="Permanent link">&para;</a></h3>
+<p>The logic: <em>"there is no part-time course for which this student has no admission."</em></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">         </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span>
+<span class="w">         </span><span class="k">WHERE</span><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span>
+<span class="w">           </span><span class="k">AND</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span>
+<span class="w">                             </span><span class="k">WHERE</span><span class="w">  </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="p">)</span>
+<span class="w">       </span><span class="p">);</span>
+</code></pre></div>
+<p>Read the double negative carefully — it is the direct translation of "for all", since <strong>∀x P(x)</strong> is equivalent to <strong>¬∃x ¬P(x)</strong>.</p>
+<h3 id="method-2-counting-usually-clearer-and-faster">Method 2 — counting (usually clearer and faster)<a class="headerlink" href="#method-2-counting-usually-clearer-and-faster" title="Permanent link">&para;</a></h3>
+<p>The logic: <em>"the number of distinct part-time courses this student has equals the total number of part-time courses."</em></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">     </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">);</span>
+</code></pre></div>
+<p><code>COUNT(DISTINCT c.SID)</code> rather than <code>COUNT(*)</code> guards against duplicate admission rows inflating the count.</p>
+<p><strong>Syllabus Q12</strong> — students admitted to full-time courses <strong>only</strong> (a related but different pattern — "none of the other kind"):</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">                    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">'Fulltime'</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+<p>The initial join ensures the student has <strong>at least one</strong> admission — otherwise a student with no admissions at all would vacuously qualify.</p>
+<h2 id="174-set-operations">17.4 Set Operations<a class="headerlink" href="#174-set-operations" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Meaning</th>
+<th>MySQL support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNION</code></td>
+<td>In either, duplicates removed</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>UNION ALL</code></td>
+<td>In either, duplicates <strong>kept</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>INTERSECT</code></td>
+<td>In both</td>
+<td>8.0.31+; else simulate</td>
+</tr>
+<tr>
+<td><code>EXCEPT</code> / <code>MINUS</code></td>
+<td>In the first, not the second</td>
+<td>8.0.31+; else simulate</td>
+</tr>
+</tbody>
+</table>
+<p>All require the operands to be <strong>union compatible</strong>: same number of columns, compatible types (Unit 3, Lesson 3).</p>
+<p><strong>Syllabus Q14</strong> — names of all students who took admission to any course, <strong>and</strong> course names in which at least one student has enrolled:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Item</span><span class="p">,</span><span class="w"> </span><span class="s1">'Student'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Kind</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">UNION</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="s1">'Course'</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="p">;</span>
+</code></pre></div>
+<p>The literal <code>Kind</code> column makes the combined list interpretable — without it the two sorts of name are indistinguishable.</p>
+<p><strong>Simulating <code>INTERSECT</code></strong> in older MySQL:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Students in both CS01 and MA02</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a1</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="s1">'CS01'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a2</span>
+<span class="w">                                </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="s1">'MA02'</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Simulating <code>EXCEPT</code>:</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a1</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">a1</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="s1">'CS01'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a2</span>
+<span class="w">                                    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a1</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="s1">'MA02'</span><span class="p">);</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">UNION vs UNION ALL</p>
+<p><code>UNION</code> removes duplicates, which requires a <strong>sort or hash</strong> of the combined result — real work on a large query.</p>
+<p><code>UNION ALL</code> does not. <strong>If you know the operands are disjoint, always write <code>UNION ALL</code></strong> — it is strictly faster and gives the same answer.</p>
+</div>
+<h2 id="175-solved-questions">17.5 Solved Questions<a class="headerlink" href="#175-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Distinguish correlated from non-correlated subqueries with an example of each. How does each execute?</p>
+<p><strong>A.</strong> A <strong>non-correlated</strong> subquery is self-contained: it references nothing from the outer query and can be executed on its own. The DBMS evaluates it <strong>once</strong>, and uses the resulting value or set for every outer row.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Cname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="p">);</span>
+</code></pre></div>
+The inner query returns 47 once; the outer scan then compares each course against 47.</p>
+<p>A <strong>correlated</strong> subquery references a column of the outer query, so it cannot run alone and is conceptually re-evaluated <strong>for each outer row</strong>.</p>
+<p><div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">);</span>
+</code></pre></div>
+<code>s.Rollno</code> binds to the outer row, so the subquery asks a different question for each student.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Non-correlated</th>
+<th>Correlated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>References outer query</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Executions (conceptually)</td>
+<td>1</td>
+<td>1 per outer row</td>
+</tr>
+<tr>
+<td>Runs standalone</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Typical operators</td>
+<td><code>=</code>, <code>&gt;</code>, <code>IN</code></td>
+<td><code>EXISTS</code>, <code>NOT EXISTS</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>In practice</strong> the "once per row" cost is conceptual: modern optimisers rewrite a correlated <code>EXISTS</code> into a <strong>semi-join</strong> and a correlated <code>NOT EXISTS</code> into an <strong>anti-join</strong> (Unit 3, Lesson 4), evaluating it with a single pass and an index. So <code>EXISTS</code> should not be avoided on performance grounds.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Explain the <code>NOT IN</code> with NULL trap. Give a failing example and three fixes, recommending one.</p>
+<p><strong>A.</strong> <code>x NOT IN (S)</code> is defined as <code>x &lt;&gt; s1 AND x &lt;&gt; s2 AND ... AND x &lt;&gt; sn</code>. If any <code>si</code> is NULL, that conjunct evaluates to <strong>UNKNOWN</strong>. Since <code>TRUE AND UNKNOWN = UNKNOWN</code> and <code>WHERE</code> retains only <strong>TRUE</strong>, the condition can never be satisfied — so the query returns <strong>zero rows</strong>, whatever the data.</p>
+<p>There is no error and no warning; the result simply looks like "no such students exist".</p>
+<p><strong>Failing example.</strong> Suppose <code>ADMISSION</code> is altered so that <code>Rollno</code> is nullable, and one row has <code>Rollno = NULL</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">Rollno</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="p">);</span><span class="w">   </span><span class="c1">-- returns NOTHING</span>
+</code></pre></div>
+<p>Even though <code>Arjun Nair</code> clearly has no admission, he is not returned.</p>
+<p><strong>Three fixes:</strong></p>
+<ol>
+<li>
+<p><strong>Filter the NULLs out of the subquery.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Rollno</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">)</span>
+</code></pre></div>
+Correct, but relies on the author remembering the trap every time.</p>
+</li>
+<li>
+<p><strong>Use <code>NOT EXISTS</code>.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">);</span>
+</code></pre></div>
+<code>EXISTS</code> tests only whether rows <em>exist</em>; a NULL <code>a.Rollno</code> simply fails the equality and contributes nothing. <strong>Immune by construction.</strong></p>
+</li>
+<li>
+<p><strong>Use an anti-join.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+</code></pre></div>
+Also correct, and often the fastest.</p>
+</li>
+</ol>
+<p><strong>Recommendation: <code>NOT EXISTS</code>.</strong> It is correct regardless of NULLs, states the intent directly, and optimisers implement it as an anti-join, so it matches the performance of option 3 without the subtlety of reasoning about padded NULLs.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Write SQL for syllabus practicals 1, 2, 10, 11, 12 and 14.</p>
+<p><strong>A.</strong></p>
+<p><strong>Q1 — names of students enrolled in any course.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">;</span>
+</code></pre></div></p>
+<p><strong>Q2 — names of students enrolled in at least one part-time course.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span><span class="p">;</span>
+</code></pre></div></p>
+<p><strong>Q10 — the most popular society.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">y</span><span class="p">.</span><span class="n">Socname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Members</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">SOCIETY</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ENROLLMENT</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">SocID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">SocID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">SocID</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">Socname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span>
+<span class="w">                      </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ENROLLMENT</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">SocID</span><span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+Comparing against the maximum rather than using <code>ORDER BY ... LIMIT 1</code> correctly returns <strong>all</strong> societies that tie for first place.</p>
+<p><strong>Q11 — the two most popular part-time courses.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+Note this <em>does</em> cut ties arbitrarily at the boundary; if that is unacceptable, a window function (<code>DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) &lt;= 2</code>) returns all courses in the top two ranks.</p>
+<p><strong>Q12 — students admitted to full-time courses only.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">                    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a2</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">c2</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">'Fulltime'</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+The leading join is essential: it requires the student to have <strong>at least one</strong> admission. Without it, <code>Arjun Nair</code> — who has no admissions at all — would satisfy the <code>NOT EXISTS</code> vacuously and be wrongly returned.</p>
+<p><strong>Q14 — names of all students who took admission to any course, and course names in which at least one student enrolled.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Item</span><span class="p">,</span><span class="w"> </span><span class="s1">'Student'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Kind</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">UNION</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="s1">'Course'</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="p">;</span>
+</code></pre></div>
+The two <code>SELECT</code>s are union compatible (two columns, both strings). The literal <code>Kind</code> column distinguishes the two sorts of name in the combined list.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Express "students admitted to all part-time courses" in two ways. Compare them.</p>
+<p><strong>A.</strong></p>
+<p><strong>Method 1 — double <code>NOT EXISTS</code>.</strong> Direct translation of the logical identity <strong>∀x P(x) ≡ ¬∃x ¬P(x)</strong>: <em>"there is no part-time course for which this student has no admission."</em></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">         </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span>
+<span class="w">         </span><span class="k">WHERE</span><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span>
+<span class="w">           </span><span class="k">AND</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span>
+<span class="w">                             </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Method 2 — counting.</strong> <em>"The number of distinct part-time courses this student is admitted to equals the total number of part-time courses."</em></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">     </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">)</span><span class="w"> </span><span class="o">=</span>
+<span class="w">         </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Parttime'</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Comparison.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Double <code>NOT EXISTS</code></th>
+<th>Counting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Readability</td>
+<td>Hard — a double negative</td>
+<td><strong>Easier</strong> — states the arithmetic directly</td>
+</tr>
+<tr>
+<td>Correctness with duplicates</td>
+<td>Immune</td>
+<td>Needs <code>COUNT(DISTINCT ...)</code>, else duplicate admissions inflate the count</td>
+</tr>
+<tr>
+<td>Empty divisor (no part-time courses exist)</td>
+<td>Returns <strong>every</strong> student, matching the mathematical definition of division</td>
+<td>Returns <strong>no</strong> student, since no student has any part-time admission to group</td>
+</tr>
+<tr>
+<td>Typical performance</td>
+<td>Anti-join, usually good</td>
+<td>One grouped pass, usually good</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>empty-divisor row is the important difference</strong>: the two methods genuinely disagree in that edge case. Method 1 matches the relational-algebra definition (a vacuous "for all" is true); Method 2 matches the more usual practical intent. State which behaviour you want.</p>
+<p>Both correctly return <strong>no rows</strong> on our sample data, since no student is admitted to both <code>MA02</code> and <code>EN03</code>.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Why does adding <code>WHERE a.Dateofadmission &gt;= '2019-08-01'</code> to a <code>LEFT JOIN</code> query turn it into an inner join? Give the fix.</p>
+<p><strong>A.</strong> A <code>LEFT JOIN</code> executes in two conceptual stages: first it matches rows, then it <strong>pads</strong> every unmatched left row with NULLs in the right table's columns. Only after that does the <code>WHERE</code> clause run.</p>
+<p>For an unmatched course such as <code>PH01</code>, the padded row has <code>a.Dateofadmission = NULL</code>. The condition <code>NULL &gt;= '2019-08-01'</code> evaluates to <strong>UNKNOWN</strong>, and <code>WHERE</code> retains only rows evaluating to <strong>TRUE</strong>. So every padded row is discarded — precisely the rows the outer join existed to preserve. The net effect is identical to an inner join.</p>
+<p><strong>The fix: move the condition into the <code>ON</code> clause</strong>, so it participates in <em>matching</em> rather than in <em>filtering after padding</em>.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">RecentAdmissions</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span>
+<span class="w">       </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s1">'2019-08-01'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<p>Now a course with no qualifying admission still yields one padded row, and <code>COUNT(a.Rollno)</code> correctly reports <strong>0</strong> for it.</p>
+<p><strong>The general rule:</strong></p>
+<ul>
+<li>Conditions on the <strong>preserved</strong> (left) table &rarr; <code>WHERE</code>. They legitimately remove left rows.</li>
+<li>Conditions on the <strong>optional</strong> (right) table &rarr; <code>ON</code>. Putting them in <code>WHERE</code> cancels the outer join.</li>
+<li>The one exception is a deliberate <code>WHERE &lt;right column&gt; IS NULL</code>, which is the anti-join idiom and is <em>meant</em> to keep only the unmatched rows.</li>
+</ul>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Compare <code>IN</code>, <code>EXISTS</code> and <code>JOIN</code> for "students admitted to a part-time course". Which is preferable?</p>
+<p><strong>A.</strong> Three formulations of the same question:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- 1. IN</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">Rollno</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">                  </span><span class="k">WHERE</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">);</span>
+
+<span class="c1">-- 2. EXISTS (correlated)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">               </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">);</span>
+
+<span class="c1">-- 3. JOIN</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">Rollno</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span>
+<span class="k">JOIN</span><span class="w">   </span><span class="n">COURSE</span><span class="w">    </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="o">=</span><span class="s1">'Parttime'</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>IN</code></th>
+<th><code>EXISTS</code></th>
+<th><code>JOIN</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Duplicates</td>
+<td>None — <code>IN</code> is a membership test</td>
+<td>None</td>
+<td><strong><code>DISTINCT</code> required</strong>, else a student in two part-time courses appears twice</td>
+</tr>
+<tr>
+<td>NULL safety</td>
+<td>Safe for <code>IN</code>; <strong>unsafe for <code>NOT IN</code></strong></td>
+<td>Safe both ways</td>
+<td>Safe</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Good</td>
+<td>Good for existence questions</td>
+<td>Best when columns from both tables are needed</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Optimised to a semi-join</td>
+<td>Optimised to a semi-join</td>
+<td>Fine, but <code>DISTINCT</code> costs a sort or hash</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation.</strong></p>
+<ul>
+<li>If you need <strong>only</strong> to test existence and want <strong>no</strong> columns from the other table, prefer <strong><code>EXISTS</code></strong>: it needs no <code>DISTINCT</code>, and it is NULL-safe in both its positive and negative forms, so the same habit protects you from the <code>NOT IN</code> trap.</li>
+<li>If you need <strong>columns from both tables</strong> (say the course name alongside the student name), a <strong><code>JOIN</code></strong> is the natural choice — the duplication is then meaningful data, not an artefact.</li>
+<li><code>IN</code> is perfectly good for the positive case and is often the most readable; simply never use <code>NOT IN</code> against a nullable column.</li>
+</ul>
+<p>All three are typically compiled to the same semi-join plan, so the choice is one of clarity and correctness rather than speed.</p>
+</div>
+<h2 id="176-exercises">17.6 Exercises<a class="headerlink" href="#176-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Why is explicit <code>JOIN ... ON</code> preferred to the comma form?</li>
+<li>What does <code>EXISTS</code> return, and why write <code>SELECT 1</code>?</li>
+<li>State the <code>NOT IN</code> with NULL trap in one sentence.</li>
+<li>Give the equivalent of <code>&gt; ANY</code> and <code>&gt; ALL</code> using <code>MIN</code>/<code>MAX</code>.</li>
+<li>Why must a derived table have an alias?</li>
+<li>When is <code>UNION ALL</code> preferable to <code>UNION</code>?</li>
+<li>Which clause should hold a condition on the right-hand table of a <code>LEFT JOIN</code>?</li>
+</ol>
+<p><strong>B. Write the SQL</strong></p>
+<ol>
+<li>Students and the societies they belong to, including students in none.</li>
+<li>Courses and their teachers, for courses with at least one admission.</li>
+<li>Pairs of students in the same society.</li>
+<li>Students in both a full-time and a part-time course.</li>
+<li>Students in a society but no course.</li>
+<li>Courses with more admissions than the average.</li>
+<li>The student admitted to the greatest number of courses.</li>
+<li>Societies with no members.</li>
+<li>Students admitted to every full-time course (both methods).</li>
+<li>Students admitted only to part-time courses.</li>
+<li>A combined list of all student names and all society mentor names.</li>
+<li>Students who share a course with <code>X2019</code> (excluding <code>X2019</code>).</li>
+<li>For each course, its name and the name of the youngest student admitted to it.</li>
+</ol>
+<p><strong>C. Predict and explain</strong></p>
+<ol>
+<li><code>ADMISSION</code> has one row with <code>Rollno = NULL</code>. What does <code>SELECT Name FROM STUDENT WHERE Rollno NOT IN (SELECT Rollno FROM ADMISSION);</code> return? Why?</li>
+<li>Explain the difference in results between:
+    a. <code>FROM COURSE c LEFT JOIN ADMISSION a ON c.SID=a.SID WHERE a.SID='CS01'</code>
+    b. <code>FROM COURSE c LEFT JOIN ADMISSION a ON c.SID=a.SID AND a.SID='CS01'</code></li>
+<li>What does <code>SELECT Cname FROM COURSE WHERE TotalSeats &gt; ALL (SELECT TotalSeats FROM COURSE WHERE Coursetype='Diploma');</code> return when no diploma courses exist? Why?</li>
+</ol>
+<p><strong>D. Analytical</strong></p>
+<ol>
+<li>Explain why the syllabus Q12 query needs the initial join to <code>ADMISSION</code>. Construct the data that breaks it if the join is omitted.</li>
+<li>Rewrite three <code>IN</code> subqueries as joins and three as <code>EXISTS</code>, and comment on which reads best in each case.</li>
+<li>Explain how an optimiser can turn a correlated <code>NOT EXISTS</code> into an anti-join, and why that matters.</li>
+<li>Compare the two division methods on the empty-divisor edge case. Which matches relational algebra? Which matches typical user intent?</li>
+<li>Design and write a single query producing, for each course: the name, the enrolment count, the vacant seats, the percentage full, and the name of the earliest-admitted student.</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li><code>NOT IN</code> and <code>NOT EXISTS</code> always give the same result.</li>
+<li>A correlated subquery can be executed independently.</li>
+<li><code>UNION</code> requires the same column names in both operands.</li>
+<li><code>LEFT JOIN</code> with a <code>WHERE</code> condition on the right table behaves as an inner join.</li>
+<li><code>&gt; ALL (empty set)</code> is FALSE.</li>
+<li><code>EXISTS (SELECT 1 ...)</code> and <code>EXISTS (SELECT * ...)</code> differ in result.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>False.</strong> They differ when the subquery yields NULL: <code>NOT IN</code> returns nothing, <code>NOT EXISTS</code> behaves correctly.</li>
+<li><strong>False.</strong> It references an outer column and is not a complete query on its own.</li>
+<li><strong>False.</strong> It requires the same <strong>number</strong> of columns with compatible <strong>types</strong>; names may differ, and the result takes the first operand's names.</li>
+<li><strong>True</strong> in general — the padded NULLs fail the condition and are discarded. The deliberate exception is <code>WHERE &lt;right col&gt; IS NULL</code>, the anti-join idiom.</li>
+<li><strong>False.</strong> It is vacuously <strong>TRUE</strong> — there is no counter-example in an empty set. (<code>&gt; ANY (empty)</code> is FALSE.)</li>
+<li><strong>False.</strong> <code>EXISTS</code> tests only whether a row is produced; the select list is never evaluated. <code>SELECT 1</code> is a readability convention.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>Prefer explicit <code>JOIN ... ON</code>. Conditions on the <strong>right</strong> table of an outer join belong in <strong><code>ON</code></strong>, not <code>WHERE</code>.</li>
+<li><strong>Self-joins</strong> need aliases; use <code>&lt;</code> rather than <code>&lt;&gt;</code> to list unordered pairs once.</li>
+<li><strong>Non-correlated</strong> subqueries run once; <strong>correlated</strong> ones reference the outer row and are optimised into semi-/anti-joins.</li>
+<li><strong><code>NOT IN</code> with a NULL returns nothing.</strong> Use <strong><code>NOT EXISTS</code></strong>.</li>
+<li><strong>Division</strong> ("for all") is written as <strong>double <code>NOT EXISTS</code></strong> or by <strong>counting</strong>; the two differ on an empty divisor.</li>
+<li>Set operations need <strong>union compatibility</strong>; use <code>UNION ALL</code> when the operands are known disjoint.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="aggregation-group-by-and-having.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16. Aggregation, GROUP BY and HAVING">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                16. Aggregation, GROUP BY and HAVING
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="views-odbc-and-database-administration.html" class="md-footer__link md-footer__link--next" aria-label="Next: 18. Views, ODBC and Database Administration">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                18. Views, ODBC and Database Administration
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

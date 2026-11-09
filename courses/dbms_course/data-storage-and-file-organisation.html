@@ -1,0 +1,2084 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/data-storage-and-file-organisation.html">
+  
+  
+    <link rel="prev" href="lossless-join-and-dependency-preservation.html">
+  
+  
+    <link rel="next" href="indexing.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>24. Data Storage and File Organisation - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#241-the-memory-hierarchy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              24. Data Storage and File Organisation
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#241-the-memory-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.1 The Memory Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.1 The Memory Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disk-geometry-and-access-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk geometry and access time
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#242-records-and-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.2 Records and Blocks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.2 Records and Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixed-length-and-variable-length-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed-length and variable-length records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#243-file-organisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.3 File Organisations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.3 File Organisations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heap-unordered-pile-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap (unordered / pile) file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorted-sequential-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sorted (sequential) file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hashed-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hashed file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-the-table-to-memorise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison — the table to memorise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#244-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.4 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#245-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.5 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#241-the-memory-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.1 The Memory Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.1 The Memory Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disk-geometry-and-access-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk geometry and access time
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#242-records-and-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.2 Records and Blocks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.2 Records and Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixed-length-and-variable-length-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed-length and variable-length records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#243-file-organisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.3 File Organisations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24.3 File Organisations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heap-unordered-pile-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap (unordered / pile) file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorted-sequential-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sorted (sequential) file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hashed-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hashed file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-the-table-to-memorise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison — the table to memorise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#244-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.4 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#245-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24.5 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-24-data-storage-and-file-organisation">Lesson 24: Data Storage and File Organisation<a class="headerlink" href="#lesson-24-data-storage-and-file-organisation" title="Permanent link">&para;</a></h1>
+<p><em>The memory hierarchy, records, blocks and file organisations</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 6:</strong> Data Storage and Indexes · 4 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 1 lecture</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 16</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Describe the <strong>memory hierarchy</strong> and explain why disk access dominates database cost.</li>
+<li>Define <strong>block</strong>, <strong>blocking factor</strong> and <strong>record</strong>, and compute them.</li>
+<li>Distinguish <strong>fixed-length</strong> from <strong>variable-length</strong> records and <strong>spanned</strong> from <strong>unspanned</strong> blocking.</li>
+<li>Compare <strong>heap</strong>, <strong>sorted</strong> and <strong>hashed</strong> file organisations on each operation.</li>
+<li>Choose an organisation for a stated workload.</li>
+</ol>
+</div>
+<h2 id="241-the-memory-hierarchy">24.1 The Memory Hierarchy<a class="headerlink" href="#241-the-memory-hierarchy" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>                            capacity      access time     cost/byte
+   +--------------------+
+   |  CPU registers     |   ~KB           &lt; 1 ns          highest
+   +--------------------+
+   |  Cache (L1/L2/L3)  |   MB            1-10 ns
+   +--------------------+
+   |  Main memory (RAM) |   GB            ~100 ns          PRIMARY
+   +====================+  ============================== volatile
+   |  Flash / SSD       |   TB            ~100 us          SECONDARY
+   +--------------------+                                  non-volatile
+   |  Magnetic disk     |   TB            ~10 ms
+   +--------------------+
+   |  Optical / tape    |   PB            seconds          TERTIARY
+   +--------------------+                                  lowest cost
+
+   MAIN MEMORY to DISK is roughly a 100,000-fold jump in access time.
+   That single gap dictates almost every design decision in this unit.
+</code></pre></div>
+<p><em>Figure 1.1 — The memory hierarchy.</em></p>
+<div class="admonition info">
+<p class="admonition-title">Primary, secondary, tertiary</p>
+<p><strong>Primary storage</strong> — directly accessible by the CPU: registers, cache, main memory. Fast but <strong>volatile</strong> (contents lost on power failure) and expensive per byte.</p>
+<p><strong>Secondary storage</strong> — disks and SSDs. Non-volatile, far larger, far cheaper, and roughly five orders of magnitude slower. <strong>The database lives here.</strong></p>
+<p><strong>Tertiary storage</strong> — tape and optical libraries, used for archives and backups.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Why databases are designed around disk</p>
+<p>A main-memory access takes about 100 nanoseconds; a magnetic disk access about 10 milliseconds. The ratio is roughly <strong>100,000 : 1</strong>.</p>
+<p>If a memory access were one second, a disk access would take over a <strong>day</strong>.</p>
+<p>Consequently the cost of a database operation is measured in <strong>block accesses</strong>, not in CPU instructions. An algorithm doing twice the computation but half the I/O wins easily. Every structure in this unit — indexes, B+-trees, hashing, the buffer pool — exists to reduce the number of block accesses.</p>
+</div>
+<h3 id="disk-geometry-and-access-time">Disk geometry and access time<a class="headerlink" href="#disk-geometry-and-access-time" title="Permanent link">&para;</a></h3>
+<p>A magnetic disk consists of platters with concentric <strong>tracks</strong>, divided into <strong>sectors</strong>; the set of tracks at the same radius across all platters is a <strong>cylinder</strong>.</p>
+<p><strong>Access time = seek time + rotational latency + transfer time</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it is</th>
+<th>Typical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Seek time</strong></td>
+<td>Moving the arm to the right track</td>
+<td>3–10 ms — <strong>dominant</strong></td>
+</tr>
+<tr>
+<td><strong>Rotational latency</strong></td>
+<td>Waiting for the sector to arrive under the head</td>
+<td>~4 ms (half a rotation at 7200 rpm)</td>
+</tr>
+<tr>
+<td><strong>Transfer time</strong></td>
+<td>Reading the bytes</td>
+<td>&lt; 1 ms per block</td>
+</tr>
+</tbody>
+</table>
+<p>Since seek time dominates, <strong>reading blocks that are physically adjacent is far cheaper than reading scattered blocks</strong>. This is why <em>clustering</em> related records together matters, and why a sequential scan of a whole file can be faster than an index lookup that touches many scattered blocks.</p>
+<p><strong>SSDs</strong> have no moving parts, so seek time nearly vanishes and random access is far cheaper. They do not eliminate the memory–storage gap, but they change the balance: index-based random access becomes relatively more attractive.</p>
+<h2 id="242-records-and-blocks">24.2 Records and Blocks<a class="headerlink" href="#242-records-and-blocks" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Definitions</p>
+<p><strong>Record</strong> — a collection of related field values, corresponding to one <strong>tuple</strong>.</p>
+<p><strong>Block (page)</strong> — the <strong>unit of transfer</strong> between disk and main memory, typically 4 KB or 8 KB. <strong>You cannot read a single byte or a single record from disk — you read a whole block.</strong></p>
+<p><strong>Blocking factor</strong> <code>bfr</code> — the number of records that fit in one block.</p>
+<p><code>bfr = floor( B / R )</code> where <code>B</code> = block size, <code>R</code> = record size.</p>
+<p><strong>Blocks needed</strong> for <code>r</code> records: <code>b = ceil( r / bfr )</code>.</p>
+</div>
+<h3 id="worked-calculation">Worked calculation<a class="headerlink" href="#worked-calculation" title="Permanent link">&para;</a></h3>
+<p>A <code>STUDENT</code> file has <code>r = 30,000</code> records, record size <code>R = 100</code> bytes, block size <code>B = 1024</code> bytes.</p>
+<p><code>bfr = floor(1024 / 100) = 10</code> records per block.
+<code>b = ceil(30000 / 10) = 3000</code> blocks.</p>
+<p>Unused space per block = <code>1024 − 10 × 100 = 24</code> bytes, so about 2.3 per cent is wasted.</p>
+<div class="admonition info">
+<p class="admonition-title">Spanned vs unspanned</p>
+<p><strong>Unspanned</strong> — a record never crosses a block boundary. Simple, and a record is retrieved in one block access, but space is wasted at the end of each block. Required when <code>R &gt; B</code> is impossible.</p>
+<p><strong>Spanned</strong> — a record may be split across two blocks, with a pointer to the continuation. No wasted space, and necessary when <code>R &gt; B</code>, but a record may need <strong>two</strong> block accesses.</p>
+<p>Fixed-length records are usually <strong>unspanned</strong>; large variable-length records are usually <strong>spanned</strong>.</p>
+</div>
+<h3 id="fixed-length-and-variable-length-records">Fixed-length and variable-length records<a class="headerlink" href="#fixed-length-and-variable-length-records" title="Permanent link">&para;</a></h3>
+<p><strong>Fixed-length</strong> — every record occupies the same number of bytes, so the address of record <em>i</em> is computable arithmetically: <code>start + i × R</code>. Direct access is trivial and deletion can use a simple free list.</p>
+<p><strong>Variable-length records</strong> arise when a table has <code>VARCHAR</code> fields, optional fields, repeating fields, or several record types in one file. Three techniques identify the field boundaries:</p>
+<ol>
+<li><strong>Separator characters</strong> between fields;</li>
+<li><strong>Length prefixes</strong> before each field;</li>
+<li>A <strong>field-offset table</strong> (a directory) at the start of the record — the usual modern choice, since it also gives direct access to any field.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Deletion and fragmentation</p>
+<p>Deleting a record leaves a hole. Two strategies:</p>
+<p><strong>Deletion marker (tombstone)</strong> — a flag byte marks the record as deleted; the space is reused later. Cheap, but the file grows with dead space until reorganised.</p>
+<p><strong>Compaction</strong> — records are shifted to close the gap. No wasted space, but expensive, and it invalidates any stored record addresses.</p>
+<p>Most systems use tombstones plus periodic reorganisation, which is why a table that has had many deletions may need <code>OPTIMIZE TABLE</code> or <code>VACUUM</code>.</p>
+</div>
+<h2 id="243-file-organisations">24.3 File Organisations<a class="headerlink" href="#243-file-organisations" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">File organisation vs access method</p>
+<p>The <strong>file organisation</strong> is how records are physically arranged on disk. The <strong>access method</strong> is the set of operations that can be applied to it. One organisation may support several access methods, and the same access method may work over several organisations.</p>
+</div>
+<h3 id="heap-unordered-pile-file">Heap (unordered / pile) file<a class="headerlink" href="#heap-unordered-pile-file" title="Permanent link">&para;</a></h3>
+<p>Records are appended <strong>at the end</strong> of the last block, in no particular order.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Cost</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Insert</strong></td>
+<td><strong>1–2 block accesses</strong></td>
+<td>Read the last block, add the record, write it back. <strong>Very efficient.</strong></td>
+</tr>
+<tr>
+<td><strong>Search</strong> (any field)</td>
+<td><code>b/2</code> average, <code>b</code> worst</td>
+<td>A <strong>linear search</strong> of every block.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>search + 1</td>
+<td>Find the block, mark or remove, rewrite. Leaves dead space.</td>
+</tr>
+<tr>
+<td><strong>Ordered retrieval</strong></td>
+<td>must <strong>sort</strong> the whole file</td>
+<td>Very expensive.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use when:</strong> the file is small; the workload is insert-heavy; whole-file scans are the normal access pattern (as in bulk loading, or a staging table).</p>
+<div class="admonition tip">
+<p class="admonition-title">Do the arithmetic</p>
+<p>With <code>b = 3000</code> blocks and 10 ms per block access, a linear search averages <code>1500 × 10 ms = 15 seconds</code> for <strong>one</strong> record. This is why indexes exist (Lesson 2).</p>
+</div>
+<h3 id="sorted-sequential-file">Sorted (sequential) file<a class="headerlink" href="#sorted-sequential-file" title="Permanent link">&para;</a></h3>
+<p>Records are kept <strong>physically ordered</strong> on the value of an <strong>ordering field</strong>. If that field is also a key, it is the <strong>ordering key</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Cost</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search on the ordering field</strong></td>
+<td><strong>log₂ b</strong></td>
+<td><strong>Binary search</strong> over the blocks.</td>
+</tr>
+<tr>
+<td><strong>Search on any other field</strong></td>
+<td><code>b/2</code> average</td>
+<td>No better than a heap — the order does not help.</td>
+</tr>
+<tr>
+<td><strong>Range query on the ordering field</strong></td>
+<td>log₂ b + the matching blocks</td>
+<td><strong>Excellent</strong> — matching records are contiguous.</td>
+</tr>
+<tr>
+<td><strong>Ordered retrieval</strong></td>
+<td><strong><code>b</code>, no sort needed</strong></td>
+<td>The file is already in order.</td>
+</tr>
+<tr>
+<td><strong>Insert</strong></td>
+<td><strong>very expensive</strong></td>
+<td>On average half the file must be shifted to keep the order.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>search + rewrite</td>
+<td>Usually a deletion marker.</td>
+</tr>
+</tbody>
+</table>
+<p>With <code>b = 3000</code>, a binary search costs <code>log₂ 3000 ≈ 12</code> block accesses instead of 1500 — a 125-fold improvement, <strong>but only for the ordering field</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">The insertion problem, and how it is solved</p>
+<p>Keeping a file physically sorted on every insert is unaffordable. Real systems use an <strong>overflow (transaction) file</strong>: new records go into a small unordered overflow area, which is periodically <strong>merged</strong> with the main file during reorganisation.</p>
+<p>Searches must then check both the sorted main file and the overflow area, so performance degrades between reorganisations. This awkwardness is exactly why <strong>B+-trees</strong> (Lesson 2) displaced sorted files in practice: they keep the <em>logical</em> order while tolerating insertions gracefully.</p>
+</div>
+<h3 id="hashed-file">Hashed file<a class="headerlink" href="#hashed-file" title="Permanent link">&para;</a></h3>
+<p>A <strong>hash function</strong> <code>h</code> maps a field value (the <strong>hash field</strong>) to a <strong>bucket</strong> number — a block or small group of blocks.</p>
+<div class="language-text highlight"><pre><span></span><code>   h(Rollno) = Rollno mod 5
+
+   'X2019' -&gt; numeric 2019 -&gt; 2019 mod 5 = 4  -&gt; bucket 4
+   'X2020' -&gt; 2020 mod 5   = 0                -&gt; bucket 0
+
+   +----------+   +----------+   +----------+   +----------+   +----------+
+   | bucket 0 |   | bucket 1 |   | bucket 2 |   | bucket 3 |   | bucket 4 |
+   +----------+   +----------+   +----------+   +----------+   +----------+
+   | X2020    |   |          |   | X2017    |   | X2018    |   | X2019    |
+   | X2025    |   |          |   |          |   |          |   | X2024    |
+   +----+-----+   +----------+   +----------+   +----------+   +----+-----+
+        |                                                           |
+        v  overflow chain when a bucket fills                       v
+   +----------+                                              +----------+
+   | X2030    |                                              | X2029    |
+   +----------+                                              +----------+
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Cost</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Equality search on the hash field</strong></td>
+<td><strong>1 block access</strong> (plus overflow)</td>
+<td>Compute <code>h</code>, go straight to the bucket. <strong>The fastest possible.</strong></td>
+</tr>
+<tr>
+<td><strong>Range search</strong></td>
+<td><strong><code>b</code> — useless</strong></td>
+<td>A good hash function <em>scatters</em> nearby values, so ranges are meaningless.</td>
+</tr>
+<tr>
+<td><strong>Search on any other field</strong></td>
+<td><code>b/2</code></td>
+<td>Linear scan.</td>
+</tr>
+<tr>
+<td><strong>Insert</strong></td>
+<td>1–2</td>
+<td>Compute, write.</td>
+</tr>
+<tr>
+<td><strong>Ordered retrieval</strong></td>
+<td>must sort</td>
+<td>Very expensive.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Collisions and overflow</p>
+<p>Two values may hash to the same bucket — a <strong>collision</strong>. Resolution methods:</p>
+<ul>
+<li><strong>Open addressing</strong> — place the record in the next free bucket.</li>
+<li><strong>Chaining</strong> — keep an <strong>overflow chain</strong> of extra blocks per bucket. Most common.</li>
+<li><strong>Multiple hashing</strong> — apply a second hash function.</li>
+</ul>
+<p>Performance degrades as chains lengthen, so a <strong>load factor</strong> of about 70–80 per cent is targeted.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Static vs dynamic hashing</p>
+<p><strong>Static hashing</strong> fixes the number of buckets in advance. If the file grows, chains lengthen and performance collapses; if it shrinks, space is wasted. A full <strong>rehash</strong> is then needed.</p>
+<p><strong>Dynamic hashing</strong> — <em>extendible</em> and <em>linear</em> hashing — grows and shrinks the bucket space incrementally, avoiding a total rehash. This is what real systems use.</p>
+</div>
+<h3 id="comparison-the-table-to-memorise">Comparison — the table to memorise<a class="headerlink" href="#comparison-the-table-to-memorise" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Heap</th>
+<th>Sorted</th>
+<th>Hashed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td><strong>best</strong> (1–2)</td>
+<td>worst (shift)</td>
+<td>good (1–2)</td>
+</tr>
+<tr>
+<td>Equality search on the key field</td>
+<td>poor (<code>b/2</code>)</td>
+<td>good (<code>log₂ b</code>)</td>
+<td><strong>best</strong> (1)</td>
+</tr>
+<tr>
+<td>Search on a non-key field</td>
+<td>poor (<code>b/2</code>)</td>
+<td>poor (<code>b/2</code>)</td>
+<td>poor (<code>b/2</code>)</td>
+</tr>
+<tr>
+<td><strong>Range query</strong></td>
+<td>poor (<code>b</code>)</td>
+<td><strong>best</strong></td>
+<td><strong>worst</strong> (useless)</td>
+</tr>
+<tr>
+<td>Ordered retrieval</td>
+<td>poor (sort)</td>
+<td><strong>best</strong> (free)</td>
+<td>poor (sort)</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>fair</td>
+<td>fair</td>
+<td>good</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Choosing — match the organisation to the workload</p>
+<ul>
+<li><strong>Mostly inserts, rarely searched</strong> (a log or audit table) → <strong>heap</strong>.</li>
+<li><strong>Frequent exact lookups by a key</strong> (<code>WHERE Rollno = 'X2019'</code>) → <strong>hashed</strong>.</li>
+<li><strong>Frequent range and ordered queries</strong> (<code>WHERE Dateofadmission BETWEEN ...</code>, <code>ORDER BY</code>) → <strong>sorted</strong>, or in practice a <strong>B+-tree index</strong> (Lesson 2), which gives sorted-file behaviour without the insertion penalty.</li>
+<li><strong>Mixed workload</strong> → a heap file with <strong>B+-tree indexes</strong> on the queried columns. This is what almost every real DBMS does by default.</li>
+</ul>
+</div>
+<h2 id="244-solved-questions">24.4 Solved Questions<a class="headerlink" href="#244-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Describe the memory hierarchy. Why is database performance measured in block accesses rather than instructions?</p>
+<p><strong>A.</strong> <em>(Diagram: Figure 1.1.)</em> From fastest and smallest to slowest and largest: <strong>registers, cache, main memory</strong> (all <em>primary</em>, volatile, CPU-addressable); <strong>flash/SSD and magnetic disk</strong> (<em>secondary</em>, non-volatile, where the database resides); <strong>optical and tape</strong> (<em>tertiary</em>, for archives).</p>
+<p><strong>Why block accesses are the unit of cost.</strong> The step from main memory to disk is a jump of roughly <strong>five orders of magnitude</strong> — about 100 nanoseconds against about 10 milliseconds, a ratio near 100,000:1. Any operation that touches disk is dominated by that cost; the CPU work done in between is negligible by comparison.</p>
+<p>Two consequences follow, and they shape the whole unit:</p>
+<ol>
+<li><strong>Algorithms are compared by the number of block accesses they require.</strong> An algorithm doing more computation but fewer I/Os wins. A linear search of 3000 blocks costs about 15 seconds; a B+-tree lookup of 3 blocks costs 30 milliseconds — a 500-fold difference that no amount of CPU tuning could produce.</li>
+<li><strong>Data is transferred a whole block at a time</strong>, never a byte or a record. So the design goal is to arrange records so that the ones needed together arrive in the same block — which is what clustering, indexing and the buffer pool all address.</li>
+</ol>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> A file has 50,000 records of 200 bytes each; the block size is 2048 bytes. Compute the blocking factor and the number of blocks, unspanned. How much space is wasted? Recompute if spanned.</p>
+<p><strong>A.</strong></p>
+<p><strong>Unspanned.</strong>
+<code>bfr = floor(B / R) = floor(2048 / 200) = floor(10.24) = **10** records per block.</code>
+<code>b = ceil(r / bfr) = ceil(50000 / 10) = **5000** blocks.</code></p>
+<p>Wasted space per block = <code>2048 − (10 × 200) = 48</code> bytes.
+Total waste = <code>5000 × 48 = 240,000</code> bytes ≈ <strong>234 KB</strong>, which is <code>48/2048 = **2.34 per cent**</code>.</p>
+<p><strong>Spanned.</strong> No space is wasted, so the space needed is exactly the data:
+<code>total = 50000 × 200 = 10,000,000</code> bytes; <code>b = ceil(10,000,000 / 2048) = **4883** blocks.</code></p>
+<p><strong>Saving:</strong> 117 blocks, about 2.3 per cent.</p>
+<p><strong>The trade-off.</strong> Spanning saves 2.3 per cent of the space, but a record split across a boundary needs <strong>two</strong> block accesses instead of one. Given that block accesses are the dominant cost (question 1), sacrificing up to 2× on some retrievals to save 2 per cent of cheap disk is a poor bargain.</p>
+<p><strong>Conclusion:</strong> for fixed-length records of this size, <strong>unspanned</strong> is correct. Spanning is justified when records are large relative to the block (so the waste would be substantial) or when <code>R &gt; B</code>, which makes spanning unavoidable.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Compare heap, sorted and hashed file organisations on insertion, equality search, range search and ordered retrieval. Recommend one for each of three workloads.</p>
+<p><strong>A.</strong> <em>(Comparison table of Section 1.3.)</em> Summarising the reasoning behind each entry:</p>
+<p><strong>Heap.</strong> Insertion is a simple append — read the last block, write it back — so 1–2 accesses. But there is no structure to exploit, so any search is a <strong>linear scan</strong> averaging <code>b/2</code> blocks, and ordered retrieval requires sorting the whole file.</p>
+<p><strong>Sorted.</strong> Because records are physically ordered on the ordering field, a <strong>binary search</strong> finds a record in <code>log₂ b</code> accesses, ranges are contiguous, and ordered retrieval is free. But maintaining the order on insertion requires shifting on average half the file — prohibitive, which is why real systems use an overflow area and periodic reorganisation.</p>
+<p><strong>Hashed.</strong> The hash function computes the bucket directly, giving a <strong>single</strong> block access for an equality search on the hash field — the best possible. But a good hash function deliberately <strong>scatters</strong> nearby values, so range queries and ordered retrieval are useless.</p>
+<p><strong>Recommendations.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Workload</th>
+<th>Choice</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An audit log: constant appends, read only in bulk</td>
+<td><strong>Heap</strong></td>
+<td>Insertion is optimal and full scans are the access pattern anyway.</td>
+</tr>
+<tr>
+<td>A lookup table queried only as <code>WHERE Rollno = ?</code></td>
+<td><strong>Hashed</strong></td>
+<td>One block access per lookup; ranges are never needed.</td>
+</tr>
+<tr>
+<td>A transactions table queried by date ranges and reported in date order</td>
+<td><strong>Sorted</strong> — in practice a <strong>B+-tree index</strong></td>
+<td>Ranges are contiguous and ordering is free; the B+-tree provides this without the insertion penalty.</td>
+</tr>
+</tbody>
+</table>
+<p>In practice most tables are <strong>heap files with B+-tree indexes</strong> on the queried columns, which combines cheap insertion with fast search.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Explain hashing, collisions and overflow handling. Why is hashing unsuitable for range queries?</p>
+<p><strong>A.</strong> In a <strong>hashed file</strong>, a <strong>hash function</strong> <code>h</code> maps the value of a chosen <strong>hash field</strong> to a <strong>bucket</strong> address. To store or find a record, the system computes <code>h(value)</code> and goes directly to that bucket — one block access, with no search.</p>
+<p>A <strong>collision</strong> occurs when two different field values hash to the same bucket. Collisions are unavoidable: the space of possible key values is far larger than the number of buckets. Three resolution methods:</p>
+<ol>
+<li><strong>Open addressing</strong> — scan forward to the next free bucket. Simple, but causes clustering that degrades later searches.</li>
+<li><strong>Chaining</strong> — each bucket has a pointer to an <strong>overflow chain</strong> of additional blocks. The most common method; searching a bucket means following its chain.</li>
+<li><strong>Multiple hashing</strong> — apply a second hash function to place the colliding record elsewhere.</li>
+</ol>
+<p>Because chain length determines search cost, a <strong>load factor</strong> of roughly 70–80 per cent is targeted, and <strong>dynamic hashing</strong> (extendible or linear) is used so the bucket space can grow without a total rehash.</p>
+<p><strong>Why range queries fail.</strong> A good hash function is designed to <strong>distribute values uniformly and unpredictably</strong> — that is precisely what avoids collisions. As a direct consequence, values that are <em>close together</em> are scattered to <em>unrelated</em> buckets. <code>Rollno</code> X2019 and X2020 may land in buckets 4 and 0.</p>
+<p>So <code>WHERE Rollno BETWEEN 'X2019' AND 'X2050'</code> cannot be answered by visiting a few buckets: the qualifying records could be anywhere, and <strong>every bucket must be scanned</strong> — cost <code>b</code>, worse than a heap file, since the overflow chains must be followed too.</p>
+<p>The same argument rules out <code>ORDER BY</code> and <code>MIN</code>/<code>MAX</code> on the hash field. <strong>Hashing is for equality, never for order.</strong> Where both are needed, a B+-tree index is the right structure.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> A file of 3000 blocks is searched for one record. Compute the cost under heap, sorted (on the search field) and hashed organisations, at 10 ms per block access. Comment.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Organisation</th>
+<th>Block accesses</th>
+<th>Time</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Heap</strong></td>
+<td>1500 average, 3000 worst</td>
+<td><strong>15 s</strong> average</td>
+<td>Linear scan; on average half the file is read before the record is found.</td>
+</tr>
+<tr>
+<td><strong>Sorted</strong> on the search field</td>
+<td><code>log₂ 3000 ≈ 12</code></td>
+<td><strong>0.12 s</strong></td>
+<td>Binary search halves the search space each step.</td>
+</tr>
+<tr>
+<td><strong>Hashed</strong> on the search field</td>
+<td>1 (plus overflow)</td>
+<td><strong>0.01 s</strong></td>
+<td>The bucket address is computed directly.</td>
+</tr>
+<tr>
+<td><strong>Sorted or hashed</strong>, but searching a <strong>different</strong> field</td>
+<td>1500 average</td>
+<td><strong>15 s</strong></td>
+<td>Neither structure helps for a field it is not organised on.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comments.</strong></p>
+<ol>
+<li>
+<p>The improvement from heap to sorted is <strong>125-fold</strong>; from heap to hashed, <strong>1500-fold</strong>. No amount of faster CPU or better code approaches this — the structure of the file is what matters.</p>
+</li>
+<li>
+<p><strong>The organisation helps only for the field it is built on.</strong> A file sorted on <code>Rollno</code> gives no benefit whatever to <code>WHERE Name = 'Ankit Sharma'</code>. Since a file can be physically organised on only <strong>one</strong> field, all other access paths need <strong>indexes</strong> (Lesson 2) — which is exactly why indexes exist.</p>
+</li>
+<li>
+<p>The figures assume magnetic disk. On an SSD each access might cost 0.1 ms, so the heap search falls to 0.15 s — still 15 times worse than the sorted file and 150 times worse than hashing. <strong>Faster hardware narrows the absolute gap but not the ratio.</strong></p>
+</li>
+</ol>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Distinguish fixed-length from variable-length records. Give three techniques for identifying field boundaries in variable-length records, and explain how deletion is handled.</p>
+<p><strong>A.</strong></p>
+<p><strong>Fixed-length records</strong> occupy the same number of bytes each. The address of record <em>i</em> is <code>start + i × R</code>, so direct access is a simple calculation, and the blocking factor is a constant. Space is wasted whenever a field is shorter than its allocated width.</p>
+<p><strong>Variable-length records</strong> arise from <code>VARCHAR</code> fields, optional fields that may be absent, repeating fields, or a file holding several record types. They save space but make the position of the <em>i</em>th record uncomputable, so a <strong>directory or index of record positions within each block</strong> is normally kept.</p>
+<p><strong>Three techniques for field boundaries:</strong></p>
+<ol>
+<li><strong>Separator characters</strong> — a reserved delimiter (say <code>|</code>) between fields. Simple, but the delimiter must never occur in the data, and finding field <em>k</em> requires scanning from the start.</li>
+<li><strong>Length prefixes</strong> — each field is preceded by a byte or two giving its length. No reserved character is needed, but again access is sequential within the record.</li>
+<li><strong>Field-offset table</strong> — a small directory at the head of the record giving the starting offset of each field. Costs a few bytes, but gives <strong>direct access to any field</strong> without scanning. This is the usual modern choice, and it also represents NULLs cleanly (by an offset equal to the next one).</li>
+</ol>
+<p><strong>Deletion.</strong> Two strategies:</p>
+<ul>
+<li><strong>Deletion marker (tombstone)</strong> — a flag bit or byte marks the record as deleted, and the space is reused by a later insertion of a record that fits. Cheap and does not invalidate stored addresses, but the file accumulates dead space.</li>
+<li><strong>Compaction</strong> — surviving records are shifted to close the gap. No waste, but expensive and it <strong>invalidates any stored record pointers</strong>, so indexes would have to be rebuilt.</li>
+</ul>
+<p>Real systems use <strong>tombstones plus a free-space list</strong>, with <strong>periodic reorganisation</strong> to compact. This is why a heavily-updated table benefits from <code>OPTIMIZE TABLE</code> (MySQL) or <code>VACUUM</code> (PostgreSQL); without it, a table from which most rows have been deleted may still occupy its original space and still be slow to scan.</p>
+</div>
+<h2 id="245-exercises">24.5 Exercises<a class="headerlink" href="#245-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Name the three levels of the storage hierarchy with an example of each.</li>
+<li>What is a block, and why is it the unit of transfer?</li>
+<li>Define blocking factor and give its formula.</li>
+<li>Distinguish spanned from unspanned blocking.</li>
+<li>Give the three components of disk access time and say which dominates.</li>
+<li>Why is a heap file good for insertion but poor for searching?</li>
+<li>Why can a hashed file not answer range queries?</li>
+</ol>
+<p><strong>B. Computation</strong></p>
+<ol>
+<li>A file has 20,000 records of 150 bytes; the block size is 4096 bytes. Compute <code>bfr</code>, <code>b</code>, and the wasted space per block and in total (unspanned).</li>
+<li>Repeat for 1,000,000 records of 512 bytes and a block size of 8192 bytes.</li>
+<li>For the file in question 8, compute the average number of block accesses for a search under (a) heap, (b) sorted on the search field, (c) hashed on the search field.</li>
+<li>A record is 1500 bytes and the block size is 1024 bytes. What must be done, and why?</li>
+<li>A sorted file of 4096 blocks is binary-searched. How many block accesses? How many if the file doubles in size? Comment on the growth rate.</li>
+</ol>
+<p><strong>C. Analysis</strong></p>
+<ol>
+<li>For each workload, choose a file organisation and justify:
+    a. A web-server access log, appended constantly and analysed monthly in bulk.
+    b. A table of country codes, looked up by exact code, never ranged.
+    c. A table of stock prices queried mostly as <code>WHERE date BETWEEN ... ORDER BY date</code>.
+    d. The <code>ADMISSION</code> table of our college database.</li>
+<li>Explain why a sorted file is rarely used in practice despite its good search performance. What replaced it, and why?</li>
+<li>A hashed file has a load factor of 95 per cent and searches have become slow. Diagnose the problem and give two remedies.</li>
+<li>Explain why an organisation built on one field gives no benefit to queries on another. What is the consequence for database design?</li>
+<li>A table has had 90 per cent of its rows deleted, yet full scans are as slow as before. Explain why, and give the remedy.</li>
+<li>Compare magnetic disk and SSD on the three components of access time. Which file organisation becomes relatively more attractive on an SSD, and why?</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li>A single record can be read from disk without reading its whole block.</li>
+<li>Rotational latency usually dominates disk access time.</li>
+<li>A heap file supports binary search.</li>
+<li>A hashed file gives the fastest possible equality search on the hash field.</li>
+<li>Spanned records always improve performance.</li>
+<li>Ordered retrieval from a sorted file requires a sort.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>False.</strong> The <strong>block</strong> is the unit of transfer; reading one byte costs a whole block access.</li>
+<li><strong>False.</strong> <strong>Seek time</strong> (3–10 ms) usually dominates; rotational latency averages about 4 ms.</li>
+<li><strong>False.</strong> Binary search requires the records to be <strong>ordered</strong>; a heap file must be searched linearly.</li>
+<li><strong>True.</strong> One block access, computed directly — no search at all. Only overflow chains add to it.</li>
+<li><strong>False.</strong> They save space but may require <strong>two</strong> block accesses for a record crossing a boundary. Since block accesses dominate cost, unspanned is usually better for small records.</li>
+<li><strong>False.</strong> The file is already in order, so ordered retrieval is free — one of the sorted file's main advantages.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>The <strong>memory–disk gap</strong> of about 100,000:1 makes <strong>block accesses</strong> the unit of database cost.</li>
+<li><code>bfr = floor(B/R)</code>; <code>b = ceil(r/bfr)</code>. <strong>Unspanned</strong> wastes space but keeps one record in one block; <strong>spanned</strong> saves space at the cost of a second access.</li>
+<li><strong>Seek time dominates</strong> disk access, so physically adjacent blocks are far cheaper to read.</li>
+<li><strong>Heap:</strong> best insertion, linear search. <strong>Sorted:</strong> binary search and free ordering, but crippling insertion cost. <strong>Hashed:</strong> one-access equality search, useless for ranges.</li>
+<li>Any organisation helps only for the <strong>field it is built on</strong> — which is why <strong>indexes</strong> are needed for every other access path.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="lossless-join-and-dependency-preservation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 23. Lossless Join and Dependency Preservation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                23. Lossless Join and Dependency Preservation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="indexing.html" class="md-footer__link md-footer__link--next" aria-label="Next: 25. Indexing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                25. Indexing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

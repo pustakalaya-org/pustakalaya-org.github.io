@@ -1,0 +1,2371 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/single-qubit-gates-and-the-quantum-circuit-model.html">
+  
+  
+    <link rel="prev" href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html">
+  
+  
+    <link rel="next" href="multi-qubit-gates-entanglement-and-the-bell-states.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>7. Single-Qubit Gates and the Quantum Circuit Model - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#71-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7. Single-Qubit Gates and the Quantum Circuit Model
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#71-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-why-gates-must-be-unitary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Why Gates Must Be Unitary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-the-standard-single-qubit-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 The Standard Single-Qubit Gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 The Standard Single-Qubit Gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pauli-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pauli gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hadamard-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hadamard gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotation gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#74-decomposition-and-universality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Decomposition and Universality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#75-the-quantum-circuit-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 The Quantum Circuit Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 The Quantum Circuit Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-order-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The order trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-depth-and-width" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit depth and width
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-gate-identities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful gate identities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#76-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#77-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#78-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#71-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-why-gates-must-be-unitary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Why Gates Must Be Unitary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-the-standard-single-qubit-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 The Standard Single-Qubit Gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 The Standard Single-Qubit Gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pauli-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pauli gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hadamard-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hadamard gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotation gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#74-decomposition-and-universality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Decomposition and Universality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#75-the-quantum-circuit-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 The Quantum Circuit Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 The Quantum Circuit Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-order-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The order trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-depth-and-width" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit depth and width
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-gate-identities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful gate identities
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#76-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#77-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#78-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-7-single-qubit-gates-and-the-quantum-circuit-model">Lesson 7: Single-Qubit Gates and the Quantum Circuit Model<a class="headerlink" href="#lesson-7-single-qubit-gates-and-the-quantum-circuit-model" title="Permanent link">&para;</a></h1>
+<h2 id="71-learning-outcomes">7.1 Learning Outcomes<a class="headerlink" href="#71-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Write the matrix of every standard single-qubit gate and state its action on the basis states.</li>
+<li>Explain why <strong>every</strong> quantum gate must be unitary and hence reversible.</li>
+<li>Read and construct <strong>quantum circuit diagrams</strong>, respecting the left-to-right time convention.</li>
+<li>Compose gates by matrix multiplication in the <strong>correct order</strong>.</li>
+<li>Apply the <strong><span class="arithmatex">\(Z\)</span>–<span class="arithmatex">\(Y\)</span> decomposition</strong> and state the universality of <span class="arithmatex">\(\{H, T\}\)</span> for single qubits.</li>
+<li>Relate each gate to a rotation of the Bloch sphere.</li>
+</ol>
+<h2 id="72-why-gates-must-be-unitary">7.2 Why Gates Must Be Unitary<a class="headerlink" href="#72-why-gates-must-be-unitary" title="Permanent link">&para;</a></h2>
+<p>By Postulate 2, closed-system evolution is unitary. Three consequences that define the model:</p>
+<ol>
+<li><strong>Reversibility.</strong> <span class="arithmatex">\(U^{-1} = U^\dagger\)</span> always exists. There is no quantum AND gate that discards
+    information; irreversible classical gates must be <em>embedded</em> in reversible ones (see the Toffoli
+    gate in L08).</li>
+<li><strong>Norm preservation.</strong> Probabilities continue to sum to 1 after every gate.</li>
+<li>
+<p><strong>Linearity.</strong> A gate is defined by its action on a basis, and extends linearly:</p>
+<div class="arithmatex">\[ U\big(\alpha|0\rangle + \beta|1\rangle\big) = \alpha\,U|0\rangle + \beta\,U|1\rangle . \]</div>
+</li>
+</ol>
+<blockquote>
+<p><strong>Do not read linearity as "the gate acts on each branch separately and we pick one."</strong> The two
+branches persist and later <strong>interfere</strong>.</p>
+</blockquote>
+<h2 id="73-the-standard-single-qubit-gates">7.3 The Standard Single-Qubit Gates<a class="headerlink" href="#73-the-standard-single-qubit-gates" title="Permanent link">&para;</a></h2>
+<h3 id="pauli-gates">Pauli gates<a class="headerlink" href="#pauli-gates" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ X = \begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}, \quad
+   Y = \begin{pmatrix}0&amp;-i\\ i&amp;0\end{pmatrix}, \quad
+   Z = \begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix} \]</div>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Action</th>
+<th>Bloch rotation</th>
+<th>Nickname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(X\)</span></td>
+<td><span class="arithmatex">\(\lvert 0\rangle \leftrightarrow \lvert 1\rangle\)</span></td>
+<td><span class="arithmatex">\(\pi\)</span> about <span class="arithmatex">\(\hat x\)</span></td>
+<td>bit flip, quantum NOT</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(Y\)</span></td>
+<td><span class="arithmatex">\(\lvert 0\rangle \to i\lvert 1\rangle\)</span>, <span class="arithmatex">\(\lvert 1\rangle \to -i\lvert 0\rangle\)</span></td>
+<td><span class="arithmatex">\(\pi\)</span> about <span class="arithmatex">\(\hat y\)</span></td>
+<td>bit + phase flip</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(Z\)</span></td>
+<td><span class="arithmatex">\(\lvert 0\rangle \to \lvert 0\rangle\)</span>, <span class="arithmatex">\(\lvert 1\rangle \to -\lvert 1\rangle\)</span></td>
+<td><span class="arithmatex">\(\pi\)</span> about <span class="arithmatex">\(\hat z\)</span></td>
+<td>phase flip</td>
+</tr>
+</tbody>
+</table>
+<p>Note <span class="arithmatex">\(Y = iXZ\)</span> and <span class="arithmatex">\(X^2 = Y^2 = Z^2 = I\)</span>: each Pauli is its own inverse.</p>
+<p><strong>Critical point about <span class="arithmatex">\(Z\)</span>.</strong> On <span class="arithmatex">\(|0\rangle\)</span> or <span class="arithmatex">\(|1\rangle\)</span> alone, <span class="arithmatex">\(Z\)</span> does nothing observable (it
+only adds a global phase). On a <strong>superposition</strong> it is dramatic:</p>
+<div class="arithmatex">\[ Z|+\rangle = \tfrac{1}{\sqrt2}\big(|0\rangle - |1\rangle\big) = |-\rangle . \]</div>
+<p>Phase gates are useless on basis states and essential on superpositions — this is why every
+algorithm begins with Hadamards.</p>
+<h3 id="the-hadamard-gate">The Hadamard gate<a class="headerlink" href="#the-hadamard-gate" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ H = \frac{1}{\sqrt2}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix} \]</div>
+<div class="arithmatex">\[ H|0\rangle = |+\rangle, \quad H|1\rangle = |-\rangle, \quad H|+\rangle = |0\rangle, \quad H|-\rangle = |1\rangle \]</div>
+<p>Properties: <span class="arithmatex">\(H = H^\dagger = H^{-1}\)</span>, so <span class="arithmatex">\(H^2 = I\)</span>. It is the <strong>basis-change gate</strong> between <span class="arithmatex">\(Z\)</span> and
+<span class="arithmatex">\(X\)</span>, and satisfies the crucial conjugation identities</p>
+<div class="arithmatex">\[ HXH = Z, \qquad HZH = X, \qquad HYH = -Y . \]</div>
+<p><strong>The <span class="arithmatex">\(n\)</span>-qubit Hadamard identity</strong> (used in every algorithm of Unit II):</p>
+<div class="arithmatex">\[ H^{\otimes n}|0\rangle^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n} |x\rangle \]</div>
+<p>and more generally</p>
+<div class="arithmatex">\[ H^{\otimes n}|x\rangle = \frac{1}{\sqrt{2^n}}\sum_{y\in\{0,1\}^n}(-1)^{x\cdot y}|y\rangle,
+\qquad x\cdot y = \bigoplus_j x_jy_j . \]</div>
+<p><em>Proof of the general form.</em> For one qubit, <span class="arithmatex">\(H|x\rangle = \frac{1}{\sqrt2}\sum_{y\in\{0,1\}}(-1)^{xy}|y\rangle\)</span>
+(check <span class="arithmatex">\(x=0\)</span> and <span class="arithmatex">\(x=1\)</span> separately). Take the tensor product of <span class="arithmatex">\(n\)</span> copies and note the phases add in
+the exponent. <span class="arithmatex">\(\blacksquare\)</span></p>
+<h3 id="phase-gates">Phase gates<a class="headerlink" href="#phase-gates" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ S = \begin{pmatrix}1&amp;0\\0&amp;i\end{pmatrix} = \sqrt{Z}, \qquad
+   T = \begin{pmatrix}1&amp;0\\0&amp;e^{i\pi/4}\end{pmatrix} = \sqrt{S}, \qquad
+   P(\lambda) = \begin{pmatrix}1&amp;0\\0&amp;e^{i\lambda}\end{pmatrix} \]</div>
+<p>Relations: <span class="arithmatex">\(S^2 = Z\)</span>, <span class="arithmatex">\(T^2 = S\)</span>, <span class="arithmatex">\(T^4 = Z\)</span>, <span class="arithmatex">\(T^8 = I\)</span>. Bloch action: rotation about <span class="arithmatex">\(\hat z\)</span> by
+<span class="arithmatex">\(\pi/2\)</span>, <span class="arithmatex">\(\pi/4\)</span> and <span class="arithmatex">\(\lambda\)</span> respectively.</p>
+<p><strong>The <span class="arithmatex">\(T\)</span> gate is expensive.</strong> In fault-tolerant architectures <span class="arithmatex">\(H\)</span>, <span class="arithmatex">\(S\)</span> and the CNOT (the <em>Clifford</em>
+gates) are cheap, but <span class="arithmatex">\(T\)</span> requires <strong>magic-state distillation</strong>. Circuit cost in fault-tolerant
+quantum computing is quoted as <strong><span class="arithmatex">\(T\)</span>-count</strong> and <strong><span class="arithmatex">\(T\)</span>-depth</strong>.</p>
+<h3 id="rotation-gates">Rotation gates<a class="headerlink" href="#rotation-gates" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ R_x(\theta) = e^{-i\theta X/2} = \begin{pmatrix}\cos\frac{\theta}{2} &amp; -i\sin\frac{\theta}{2}\\
+-i\sin\frac{\theta}{2} &amp; \cos\frac{\theta}{2}\end{pmatrix} \]</div>
+<div class="arithmatex">\[ R_y(\theta) = e^{-i\theta Y/2} = \begin{pmatrix}\cos\frac{\theta}{2} &amp; -\sin\frac{\theta}{2}\\
+\sin\frac{\theta}{2} &amp; \cos\frac{\theta}{2}\end{pmatrix} \]</div>
+<div class="arithmatex">\[ R_z(\theta) = e^{-i\theta Z/2} = \begin{pmatrix}e^{-i\theta/2} &amp; 0\\ 0 &amp; e^{i\theta/2}\end{pmatrix} \]</div>
+<p><span class="arithmatex">\(R_y\)</span> is real, which makes it the natural gate for encoding real-valued data in QML (Unit III).</p>
+<p><strong>Universal single-qubit gate (the <span class="arithmatex">\(U3\)</span> / <span class="arithmatex">\(U\)</span> gate).</strong></p>
+<div class="arithmatex">\[ U(\theta,\phi,\lambda) = \begin{pmatrix}
+\cos\frac{\theta}{2} &amp; -e^{i\lambda}\sin\frac{\theta}{2}\\
+e^{i\phi}\sin\frac{\theta}{2} &amp; e^{i(\phi+\lambda)}\cos\frac{\theta}{2}\end{pmatrix} \]</div>
+<p>Every single-qubit unitary equals <span class="arithmatex">\(U(\theta,\phi,\lambda)\)</span> up to a global phase. This is the gate
+that Qiskit's transpiler targets.</p>
+<h2 id="74-decomposition-and-universality">7.4 Decomposition and Universality<a class="headerlink" href="#74-decomposition-and-universality" title="Permanent link">&para;</a></h2>
+<p><strong>Theorem (<span class="arithmatex">\(Z\)</span>–<span class="arithmatex">\(Y\)</span> decomposition).</strong> Every single-qubit unitary <span class="arithmatex">\(U\)</span> can be written</p>
+<div class="arithmatex">\[ U = e^{i\gamma} R_z(\beta)\, R_y(\delta)\, R_z(\alpha) \]</div>
+<p>for real <span class="arithmatex">\(\gamma,\alpha,\beta,\delta\)</span>.</p>
+<p><em>Sketch.</em> <span class="arithmatex">\(U\)</span> is unitary, so its rows are orthonormal; solving the resulting four equations for the
+three Euler angles plus a phase gives the decomposition, exactly as for <span class="arithmatex">\(SO(3)\)</span> Euler angles.
+<span class="arithmatex">\(\blacksquare\)</span></p>
+<p><strong>Theorem (Solovay–Kitaev).</strong> The discrete set <span class="arithmatex">\(\{H, T\}\)</span> generates a dense subgroup of <span class="arithmatex">\(SU(2)\)</span>.
+Any single-qubit unitary can be approximated to accuracy <span class="arithmatex">\(\epsilon\)</span> using
+<span class="arithmatex">\(O\!\left(\log^{c}(1/\epsilon)\right)\)</span> gates from <span class="arithmatex">\(\{H,T\}\)</span>, with <span class="arithmatex">\(c \approx 2\)</span> (improvable to
+<span class="arithmatex">\(c\approx 1\)</span>).</p>
+<p><strong>Consequence.</strong> <span class="arithmatex">\(\{H, T, \mathrm{CNOT}\}\)</span> is a <strong>universal gate set</strong> for quantum computation. You
+do not need continuously tunable gates.</p>
+<h2 id="75-the-quantum-circuit-model">7.5 The Quantum Circuit Model<a class="headerlink" href="#75-the-quantum-circuit-model" title="Permanent link">&para;</a></h2>
+<h3 id="reading-a-circuit">Reading a circuit<a class="headerlink" href="#reading-a-circuit" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>q0: ---[H]---*---[X]---[M]---
+             |          |
+q1: --------[X]---------|----
+                        v
+c : ====================o====
+</code></pre></div>
+<p>Symbols: <code>[G]</code> = gate G on that wire; <code>*</code> = control of a two-qubit gate;
+<code>[X]</code> joined to a <code>*</code> by a vertical bar = the target of a CNOT; <code>[M]</code> = measurement;
+<code>====</code> = a classical wire carrying the measured bit.</p>
+<p>Conventions:</p>
+<ul>
+<li><strong>Wires are qubits, not physical wires.</strong> A horizontal line is one qubit's world-line.</li>
+<li><strong>Time flows left to right.</strong> Gates are applied in reading order.</li>
+<li>A double line is a <strong>classical</strong> register carrying measurement results.</li>
+<li>The number of wires never changes (no creating or destroying qubits mid-circuit).</li>
+<li>Gates on disjoint qubits in the same column act simultaneously and commute.</li>
+</ul>
+<h3 id="the-order-trap">The order trap<a class="headerlink" href="#the-order-trap" title="Permanent link">&para;</a></h3>
+<p>If the circuit is <span class="arithmatex">\(|\psi\rangle \to A \to B \to C\)</span>, the resulting state is</p>
+<div class="arithmatex">\[ |\psi_{\text{out}}\rangle = C\,B\,A\,|\psi\rangle . \]</div>
+<p><strong>Matrix order is the reverse of diagram order.</strong> This is the single most common examination error.</p>
+<h3 id="circuit-depth-and-width">Circuit depth and width<a class="headerlink" href="#circuit-depth-and-width" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Width</strong> = number of qubits.</li>
+<li><strong>Depth</strong> = number of time steps (layers of simultaneously executable gates).</li>
+<li>On NISQ hardware, depth is limited by decoherence: if a gate takes <span class="arithmatex">\(t_g\)</span> and coherence time is
+    <span class="arithmatex">\(T_2\)</span>, the useful depth is roughly <span class="arithmatex">\(T_2/t_g\)</span>.</li>
+</ul>
+<h3 id="useful-gate-identities">Useful gate identities<a class="headerlink" href="#useful-gate-identities" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ HXH = Z, \quad HZH = X, \quad XZ = -ZX, \quad XYX = -Y \]</div>
+<div class="arithmatex">\[ S = T^2, \quad Z = S^2, \quad X = HZH, \quad Y = SXS^\dagger \]</div>
+<div class="arithmatex">\[ R_z(\theta) = e^{-i\theta/2}P(\theta) \quad(\text{differ by a global phase}) \]</div>
+<h2 id="76-solved-problems">7.6 Solved Problems<a class="headerlink" href="#76-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-composing-a-gate-sequence">Problem 1 — Composing a gate sequence<a class="headerlink" href="#problem-1-composing-a-gate-sequence" title="Permanent link">&para;</a></h4>
+<p><em>A qubit starts in <span class="arithmatex">\(|0\rangle\)</span>. The circuit applies <span class="arithmatex">\(H\)</span>, then <span class="arithmatex">\(Z\)</span>, then <span class="arithmatex">\(H\)</span>. Find the final state
+both by tracking states and by multiplying matrices.</em></p>
+<p><strong>Solution.</strong></p>
+<p><em>State-tracking route.</em></p>
+<div class="arithmatex">\[ |0\rangle \xrightarrow{H} |+\rangle = \tfrac{1}{\sqrt2}(|0\rangle+|1\rangle) \]</div>
+<div class="arithmatex">\[ \xrightarrow{Z} \tfrac{1}{\sqrt2}(|0\rangle - |1\rangle) = |-\rangle \]</div>
+<div class="arithmatex">\[ \xrightarrow{H} |1\rangle \]</div>
+<p><em>Matrix route.</em> The overall unitary is <span class="arithmatex">\(U = H Z H\)</span> (<strong>note the reversed order</strong>):</p>
+<div class="arithmatex">\[ HZH = \frac12\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}\begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix}
+\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix} \]</div>
+<div class="arithmatex">\[ = \frac12\begin{pmatrix}1&amp;-1\\1&amp;1\end{pmatrix}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}
+= \frac12\begin{pmatrix}0&amp;2\\2&amp;0\end{pmatrix} = \begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix} = X \]</div>
+<p>So <span class="arithmatex">\(U|0\rangle = X|0\rangle = |1\rangle\)</span> ✓.</p>
+<p><strong>Result: <span class="arithmatex">\(HZH = X\)</span>.</strong> The circuit is a NOT gate built from a phase flip sandwiched between
+Hadamards — the standard trick for converting phase information into amplitude information, used in
+<em>every</em> algorithm of Unit II.</p>
+<h4 id="problem-2-effect-of-t-on-a-superposition">Problem 2 — Effect of T on a superposition<a class="headerlink" href="#problem-2-effect-of-t-on-a-superposition" title="Permanent link">&para;</a></h4>
+<p><em>Compute <span class="arithmatex">\(T|+\rangle\)</span>, express it in the Bloch picture, and find <span class="arithmatex">\(\Pr[0]\)</span> and <span class="arithmatex">\(\Pr[+]\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ T|+\rangle = \begin{pmatrix}1&amp;0\\0&amp;e^{i\pi/4}\end{pmatrix}\frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}
+= \frac{1}{\sqrt2}\begin{pmatrix}1\\ e^{i\pi/4}\end{pmatrix} \]</div>
+<div class="arithmatex">\[ = \frac{1}{\sqrt2}\left(|0\rangle + e^{i\pi/4}|1\rangle\right) \]</div>
+<p>Bloch angles: <span class="arithmatex">\(\theta = \pi/2\)</span> (equator), <span class="arithmatex">\(\varphi = \pi/4\)</span>. So</p>
+<div class="arithmatex">\[ (x,y,z) = \left(\cos\tfrac{\pi}{4},\ \sin\tfrac{\pi}{4},\ 0\right)
+= \left(\tfrac{1}{\sqrt2}, \tfrac{1}{\sqrt2}, 0\right) . \]</div>
+<div class="arithmatex">\[ \Pr[0] = \left|\tfrac{1}{\sqrt2}\right|^2 = \tfrac12 \qquad (\text{unchanged by }T) \]</div>
+<div class="arithmatex">\[ \Pr[+] = |\langle +|T|+\rangle|^2 = \left|\tfrac12(1 + e^{i\pi/4})\right|^2 \]</div>
+<div class="arithmatex">\[ = \tfrac14\left|(1+\cos\tfrac{\pi}{4}) + i\sin\tfrac{\pi}{4}\right|^2
+= \tfrac14\left[(1.7071)^2 + (0.7071)^2\right] = \tfrac14[2.9142 + 0.5] = 0.8536 \]</div>
+<p><em>Interpretation.</em> <span class="arithmatex">\(T\)</span> rotated the state 45° along the equator: <span class="arithmatex">\(Z\)</span>-statistics are untouched, but
+<span class="arithmatex">\(X\)</span>-statistics changed from certainty (1.0) to 0.854. <strong>Phase gates are invisible to <span class="arithmatex">\(Z\)</span>
+measurement.</strong></p>
+<h4 id="problem-3-verifying-a-decomposition">Problem 3 — Verifying a decomposition<a class="headerlink" href="#problem-3-verifying-a-decomposition" title="Permanent link">&para;</a></h4>
+<p><em>Show that <span class="arithmatex">\(H = e^{i\pi/2} R_y(\pi/2) R_z(\pi)\)</span> up to a global phase.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ R_z(\pi) = \begin{pmatrix}e^{-i\pi/2} &amp; 0\\ 0 &amp; e^{i\pi/2}\end{pmatrix}
+= \begin{pmatrix}-i &amp; 0 \\ 0 &amp; i\end{pmatrix} = -i\begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix} = -iZ \]</div>
+<div class="arithmatex">\[ R_y(\pi/2) = \begin{pmatrix}\cos\frac{\pi}{4} &amp; -\sin\frac{\pi}{4}\\
+\sin\frac{\pi}{4} &amp; \cos\frac{\pi}{4}\end{pmatrix}
+= \frac{1}{\sqrt2}\begin{pmatrix}1 &amp; -1\\ 1 &amp; 1\end{pmatrix} \]</div>
+<p>Multiply (right-most acts first, so compute <span class="arithmatex">\(R_y(\pi/2)\,R_z(\pi)\)</span>):</p>
+<div class="arithmatex">\[ \frac{1}{\sqrt2}\begin{pmatrix}1&amp;-1\\1&amp;1\end{pmatrix}\cdot(-i)\begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix}
+= \frac{-i}{\sqrt2}\begin{pmatrix}1 &amp; 1\\ 1 &amp; -1\end{pmatrix} = -i\,H \]</div>
+<p>Therefore <span class="arithmatex">\(R_y(\pi/2)R_z(\pi) = -iH\)</span>, i.e.</p>
+<div class="arithmatex">\[ H = i\,R_y(\pi/2)R_z(\pi) = e^{i\pi/2}R_y(\pi/2)R_z(\pi) \ \checkmark \]</div>
+<p>The prefactor <span class="arithmatex">\(e^{i\pi/2}\)</span> is a global phase and is unobservable — which is exactly why hardware
+can implement <span class="arithmatex">\(H\)</span> using only <span class="arithmatex">\(R_y\)</span> and <span class="arithmatex">\(R_z\)</span> pulses.</p>
+<h4 id="problem-4-building-an-arbitrary-state">Problem 4 — Building an arbitrary state<a class="headerlink" href="#problem-4-building-an-arbitrary-state" title="Permanent link">&para;</a></h4>
+<p><em>Design a circuit that prepares <span class="arithmatex">\(|\psi\rangle = \frac{\sqrt3}{2}|0\rangle + \frac{1}{2}e^{i\pi/3}|1\rangle\)</span>
+from <span class="arithmatex">\(|0\rangle\)</span> using <span class="arithmatex">\(R_y\)</span> and <span class="arithmatex">\(R_z\)</span> (or a phase gate).</em></p>
+<p><strong>Solution.</strong>
+Read the Bloch angles off the target:</p>
+<div class="arithmatex">\[ \cos\frac{\theta}{2} = \frac{\sqrt3}{2} \Rightarrow \frac{\theta}{2} = \frac{\pi}{6}
+\Rightarrow \theta = \frac{\pi}{3}, \qquad \varphi = \frac{\pi}{3}. \]</div>
+<p><strong>Step 1 — set the polar angle</strong> with <span class="arithmatex">\(R_y(\theta)\)</span> (real rotation, no phase introduced):</p>
+<div class="arithmatex">\[ R_y(\pi/3)|0\rangle = \cos\frac{\pi}{6}|0\rangle + \sin\frac{\pi}{6}|1\rangle
+= \frac{\sqrt3}{2}|0\rangle + \frac12|1\rangle . \]</div>
+<p><strong>Step 2 — set the azimuthal angle</strong> with <span class="arithmatex">\(P(\varphi)\)</span>:</p>
+<div class="arithmatex">\[ P(\pi/3)\left(\frac{\sqrt3}{2}|0\rangle + \frac12|1\rangle\right)
+= \frac{\sqrt3}{2}|0\rangle + \frac12 e^{i\pi/3}|1\rangle = |\psi\rangle \ \checkmark \]</div>
+<p><strong>Circuit:</strong> <span class="arithmatex">\(|0\rangle - [R_y(\pi/3)] - [P(\pi/3)] - |\psi\rangle\)</span>.</p>
+<p><em>General recipe.</em> Any single-qubit state is prepared by <span class="arithmatex">\(P(\varphi)R_y(\theta)|0\rangle\)</span>. This
+two-gate template is the basis of <strong>angle encoding</strong> in quantum machine learning (L26).</p>
+<h4 id="problem-5-circuit-identity-and-simplification">Problem 5 — Circuit identity and simplification<a class="headerlink" href="#problem-5-circuit-identity-and-simplification" title="Permanent link">&para;</a></h4>
+<p><em>Simplify the circuit <span class="arithmatex">\(H - S - H - S - H\)</span> acting on <span class="arithmatex">\(|0\rangle\)</span>, and identify the resulting gate up
+to global phase.</em></p>
+<p><strong>Solution.</strong>
+The overall unitary is <span class="arithmatex">\(U = H S H S H\)</span> (reverse of diagram order — but note this product is
+palindromic, so order caution matters less here; we still multiply right to left).</p>
+<p>Use <span class="arithmatex">\(HSH\)</span> first. With <span class="arithmatex">\(S = \begin{pmatrix}1&amp;0\\0&amp;i\end{pmatrix}\)</span>:</p>
+<div class="arithmatex">\[ HSH = \frac12\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}\begin{pmatrix}1&amp;0\\0&amp;i\end{pmatrix}
+\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}
+= \frac12\begin{pmatrix}1&amp; i\\ 1&amp; -i\end{pmatrix}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix} \]</div>
+<div class="arithmatex">\[ = \frac12\begin{pmatrix}1+i &amp; 1-i\\ 1-i &amp; 1+i\end{pmatrix}
+= \frac{1+i}{2}\begin{pmatrix}1 &amp; -i\\ -i &amp; 1\end{pmatrix} \]</div>
+<p>using <span class="arithmatex">\(\frac{1-i}{1+i} = -i\)</span>. Recognise the bracket: <span class="arithmatex">\(\begin{pmatrix}1&amp;-i\\-i&amp;1\end{pmatrix}
+= \sqrt2\,R_x(\pi/2)\)</span>. So <span class="arithmatex">\(HSH = e^{i\pi/4}R_x(\pi/2) = \sqrt{X}\)</span> up to phase.</p>
+<p>Now $U = (HSH)\,S\,\underbrace{{}}_{} $ — writing <span class="arithmatex">\(U = H S H S H\)</span>, group as <span class="arithmatex">\((HSH)(SH)\)</span>:</p>
+<div class="arithmatex">\[ U = \frac{1+i}{2}\begin{pmatrix}1&amp;-i\\-i&amp;1\end{pmatrix}
+\cdot\begin{pmatrix}1&amp;0\\0&amp;i\end{pmatrix}\cdot\frac{1}{\sqrt2}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix} \]</div>
+<div class="arithmatex">\[ SH = \frac{1}{\sqrt2}\begin{pmatrix}1&amp;1\\ i&amp;-i\end{pmatrix} \]</div>
+<div class="arithmatex">\[ U = \frac{1+i}{2\sqrt2}\begin{pmatrix}1&amp;-i\\-i&amp;1\end{pmatrix}\begin{pmatrix}1&amp;1\\i&amp;-i\end{pmatrix}
+= \frac{1+i}{2\sqrt2}\begin{pmatrix}1 - i\cdot i &amp; 1 -i(-i)\\ -i + i &amp; -i -i(-i)\end{pmatrix} \]</div>
+<div class="arithmatex">\[ = \frac{1+i}{2\sqrt2}\begin{pmatrix}2 &amp; 0\\ 0 &amp; -2i\end{pmatrix}
+= \frac{1+i}{\sqrt2}\begin{pmatrix}1 &amp; 0\\ 0 &amp; -i\end{pmatrix}
+= e^{i\pi/4}\begin{pmatrix}1&amp;0\\0&amp;e^{-i\pi/2}\end{pmatrix} \]</div>
+<p>So <span class="arithmatex">\(U = e^{i\pi/4}\,S^\dagger\)</span> — <strong>five gates collapse to one</strong>, up to an unobservable phase.</p>
+<p>Acting on <span class="arithmatex">\(|0\rangle\)</span>: <span class="arithmatex">\(U|0\rangle = e^{i\pi/4}|0\rangle \simeq |0\rangle\)</span>.</p>
+<p><em>Lesson.</em> Circuit optimisation of exactly this kind is what a transpiler does automatically (L38),
+and it is why gate-count reduction is a first-class engineering concern on NISQ hardware.</p>
+<h2 id="77-practice-problems">7.7 Practice Problems<a class="headerlink" href="#77-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Compute <span class="arithmatex">\(HYH\)</span>. <strong>[Ans: <span class="arithmatex">\(-Y\)</span>]</strong></li>
+<li>What is <span class="arithmatex">\(T^\dagger\)</span> as a matrix, and what is <span class="arithmatex">\(T\,T^\dagger\)</span>?</li>
+<li>Show <span class="arithmatex">\(S = P(\pi/2)\)</span> and <span class="arithmatex">\(T = P(\pi/4)\)</span>.</li>
+<li>Design a circuit preparing <span class="arithmatex">\(\frac{1}{\sqrt2}(|0\rangle + i|1\rangle)\)</span> from <span class="arithmatex">\(|0\rangle\)</span> using two gates. <strong>[Ans: <span class="arithmatex">\(H\)</span> then <span class="arithmatex">\(S\)</span>]</strong></li>
+<li>A circuit applies <span class="arithmatex">\(X\)</span>, then <span class="arithmatex">\(H\)</span>, then <span class="arithmatex">\(Z\)</span> to <span class="arithmatex">\(|0\rangle\)</span>. Write the final state and the overall matrix. <strong>[Ans: state <span class="arithmatex">\(\propto|-\rangle\)</span>; matrix <span class="arithmatex">\(ZHX\)</span>]</strong></li>
+<li>Verify <span class="arithmatex">\(R_z(\theta_1)R_z(\theta_2) = R_z(\theta_1+\theta_2)\)</span>.</li>
+<li>Prove <span class="arithmatex">\(H^{\otimes 2}|01\rangle = \frac12(|00\rangle - |01\rangle + |10\rangle - |11\rangle)\)</span> using the general Hadamard formula.</li>
+<li>Why is <span class="arithmatex">\(T\)</span>-count a meaningful cost metric while <span class="arithmatex">\(H\)</span>-count is not?</li>
+</ol>
+<h2 id="78-summary">7.8 Summary<a class="headerlink" href="#78-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Every gate is a unitary matrix, so quantum computation is <strong>reversible</strong>.</li>
+<li><span class="arithmatex">\(X\)</span> flips bits, <span class="arithmatex">\(Z\)</span> flips phase, <span class="arithmatex">\(H\)</span> creates superposition and converts phase ↔ amplitude, <span class="arithmatex">\(S\)</span> and <span class="arithmatex">\(T\)</span> apply partial phases.</li>
+<li><span class="arithmatex">\(H^{\otimes n}|0\rangle^{\otimes n}\)</span> gives the uniform superposition over all <span class="arithmatex">\(2^n\)</span> strings; <span class="arithmatex">\(H^{\otimes n}|x\rangle = 2^{-n/2}\sum_y(-1)^{x\cdot y}|y\rangle\)</span>.</li>
+<li>In circuit diagrams time runs left to right, but <strong>matrix products are written right to left</strong>.</li>
+<li><span class="arithmatex">\(Z\)</span>–<span class="arithmatex">\(Y\)</span> decomposition writes any single-qubit unitary with three rotations; <span class="arithmatex">\(\{H,T,\text{CNOT}\}\)</span> is universal (Solovay–Kitaev).</li>
+<li><span class="arithmatex">\(T\)</span> gates dominate fault-tolerant cost; depth is limited by coherence time on NISQ devices.</li>
+</ul>
+<p><strong>Next lesson:</strong> L08 — Multi-qubit gates, entanglement and the Bell states.</p>
+<p><strong>Practise now:</strong> <code>unit1-qubit-lab.html</code> → <em>Circuit Builder</em>: drag gates onto a wire, watch the
+Bloch vector and state vector update, and read the accumulated unitary matrix.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 6. Quantum Measurement and the Postulates of Quantum Mechanics">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                6. Quantum Measurement and the Postulates of Quantum Mechanics
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-footer__link md-footer__link--next" aria-label="Next: 8. Multi-Qubit Gates, Entanglement and the Bell States">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                8. Multi-Qubit Gates, Entanglement and the Bell States
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

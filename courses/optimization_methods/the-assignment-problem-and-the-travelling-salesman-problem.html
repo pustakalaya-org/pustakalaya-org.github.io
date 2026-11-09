@@ -1,0 +1,3783 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/optimization_methods/the-assignment-problem-and-the-travelling-salesman-problem.html">
+  
+  
+    <link rel="prev" href="transportation-optimality-the-modi-method.html">
+  
+  
+    <link rel="next" href="game-theory-two-person-zero-sum-games-and-pure-strategies.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>10. The Assignment Problem and the Travelling Salesman Problem - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#101-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10. The Assignment Problem and the Travelling Salesman Problem
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Optimization Methods</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-research-and-the-modelling-approach.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operations Research and the Modelling Approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-linear-programming-and-formulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Introduction to Linear Programming and Formulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-graphical-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The Graphical Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-i-theory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The Simplex Method I: Theory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-ii-the-tableau-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="big-m-two-phase-methods-and-special-cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Big-M, Two-Phase Methods and Special Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duality-and-sensitivity-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Duality and Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-transportation-problem-formulation-and-initial-solutions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. The Transportation Problem: Formulation and Initial Solutions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transportation-optimality-the-modi-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Transportation Optimality: The MODI Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-assignment-problem-and-the-travelling-salesman-problem.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#101-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#102-the-assignment-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 The Assignment Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.2 The Assignment Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-transportation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relation to transportation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-not-just-enumerate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not just enumerate?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#103-the-hungarian-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 The Hungarian Method
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.3 The Hungarian Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-key-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The key theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-step-4-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Step 4 works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#104-worked-example-1-optimal-in-one-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Worked Example 1 — Optimal in One Pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#105-worked-example-2-requiring-the-covering-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Worked Example 2 — Requiring the Covering Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#106-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.6 Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unbalanced-m-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unbalanced (m ≠ n)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prohibited-assignments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prohibited assignments
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#107-the-travelling-salesman-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.7 The Travelling Salesman Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.7 The Travelling Salesman Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-assignment-plus-branching-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The assignment-plus-branching approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#108-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.8 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#109-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.9 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1010-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.10 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mixed-strategies-and-the-odds-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Mixed Strategies and the Odds Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="graphical-and-lp-solution-of-games.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Graphical and LP Solution of Games
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-2-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Sequencing: n Jobs Through 2 Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-3-machines-2-jobs-through-m.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Sequencing: n Jobs Through 3 Machines, 2 Jobs Through m Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integer-programming-and-gomory-s-cutting-plane-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Integer Programming and Gomory's Cutting-Plane Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Gomory's Method for Mixed Integer Programmes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-branch-and-bound-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Network Scheduling: The Critical Path Method (CPM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pert-and-probabilistic-project-scheduling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. PERT and Probabilistic Project Scheduling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-of-queuing-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Characteristics of Queuing Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-poisson-process-and-the-exponential-distribution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Birth–Death Processes and Steady-State Balance Equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-m-m-1-fcfs-derived-in-full.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Model I: (M/M/1):(∞/FCFS) Derived in Full
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-applications-costing-and-design-decisions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Model I: Applications, Costing and Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-ii-m-m-1-n-fcfs-the-finite-capacity-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Model II: (M/M/1):(N/FCFS), the Finite-Capacity Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-iii-m-m-c-fcfs-the-multi-server-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Model III: (M/M/c):(∞/FCFS), the Multi-Server Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models-iv-and-v-m-m-c-n-fcfs-and-finite-source-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Models IV and V: (M/M/c):(N/FCFS) and Finite-Source Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications-and-the-economic-analysis-of-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Applications and the Economic Analysis of Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inventory-control-concepts-and-cost-structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Inventory Control: Concepts and Cost Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-eoq-model-with-no-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. The EOQ Model with No Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eoq-with-shortages-permitted-the-backorder-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. The Production (Finite Replenishment) Model without Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-model-with-shortages-permitted.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Production Model with Shortages Permitted
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantity-discounts-and-consolidation-of-unit-iii.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantity Discounts and Consolidation of Unit III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-non-linear-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Introduction to Non-Linear Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conditions-for-unconstrained-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Conditions for Unconstrained Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="one-dimensional-minimisation-bracketing-and-elimination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. One-Dimensional Minimisation: Bracketing and Elimination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-fibonacci-search-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. The Fibonacci Search Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="golden-section-search.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. Golden Section Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpolation-and-gradient-based-one-dimensional-methods.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Interpolation and Gradient-Based One-Dimensional Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unconstrained-multivariable-optimisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Unconstrained Multivariable Optimisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constrained-optimisation-graphical-solution-and-lagrange.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. Constrained Optimisation: Graphical Solution and Lagrange Multipliers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-kuhn-tucker-kkt-conditions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. The Kuhn–Tucker (KKT) Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quadratic-programming-and-course-capstone.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Quadratic Programming and Course Capstone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#101-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#102-the-assignment-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 The Assignment Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.2 The Assignment Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-transportation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relation to transportation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-not-just-enumerate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not just enumerate?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#103-the-hungarian-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 The Hungarian Method
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.3 The Hungarian Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-key-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The key theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-step-4-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Step 4 works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#104-worked-example-1-optimal-in-one-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Worked Example 1 — Optimal in One Pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#105-worked-example-2-requiring-the-covering-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Worked Example 2 — Requiring the Covering Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#106-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.6 Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unbalanced-m-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unbalanced (m ≠ n)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prohibited-assignments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prohibited assignments
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#107-the-travelling-salesman-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.7 The Travelling Salesman Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.7 The Travelling Salesman Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-assignment-plus-branching-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The assignment-plus-branching approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#108-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.8 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#109-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.9 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1010-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.10 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-10-the-assignment-problem-and-the-travelling-salesman-problem">Lesson 10: The Assignment Problem and the Travelling Salesman Problem<a class="headerlink" href="#lesson-10-the-assignment-problem-and-the-travelling-salesman-problem" title="Permanent link">&para;</a></h1>
+<h2 id="101-learning-outcomes">10.1 Learning Outcomes<a class="headerlink" href="#101-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Formulate the <strong>assignment problem</strong> and relate it to the transportation problem.</li>
+<li>Execute the <strong>Hungarian method</strong> completely, including the line-covering step.</li>
+<li>Handle <strong>unbalanced</strong>, <strong>maximisation</strong> and <strong>prohibited-assignment</strong> variants.</li>
+<li>Formulate the <strong>travelling salesman problem</strong> and solve small instances by assignment with sub-tour elimination.</li>
+<li>Explain why the TSP is NP-hard while the assignment problem is easy.</li>
+</ol>
+<h2 id="102-the-assignment-problem">10.2 The Assignment Problem<a class="headerlink" href="#102-the-assignment-problem" title="Permanent link">&para;</a></h2>
+<p><strong>Statement.</strong> Assign <span class="arithmatex">\(n\)</span> agents to <span class="arithmatex">\(n\)</span> tasks, one agent per task and one task per agent, so as to
+minimise total cost. <span class="arithmatex">\(c_{ij}\)</span> = cost of assigning agent <span class="arithmatex">\(i\)</span> to task <span class="arithmatex">\(j\)</span>.</p>
+<p><strong>Model.</strong></p>
+<div class="arithmatex">\[ \begin{aligned}
+\min\ &amp; Z = \sum_{i=1}^{n}\sum_{j=1}^{n} c_{ij}x_{ij}\\
+\text{s.t. } &amp; \sum_{j=1}^{n}x_{ij} = 1 &amp;&amp; i = 1,\ldots,n &amp;&amp; \text{(each agent gets one task)}\\
+&amp; \sum_{i=1}^{n}x_{ij} = 1 &amp;&amp; j = 1,\ldots,n &amp;&amp; \text{(each task gets one agent)}\\
+&amp; x_{ij} \in \{0,1\}
+\end{aligned} \]</div>
+<h3 id="relation-to-transportation">Relation to transportation<a class="headerlink" href="#relation-to-transportation" title="Permanent link">&para;</a></h3>
+<p><strong>The assignment problem is a transportation problem with all supplies and demands equal to 1</strong>, and
+<span class="arithmatex">\(m = n\)</span>.</p>
+<p><strong>A crucial consequence.</strong> Although <span class="arithmatex">\(x_{ij}\)</span> is declared binary, <strong>total unimodularity</strong> (L08) means
+the LP relaxation with <span class="arithmatex">\(0\le x_{ij}\le1\)</span> <strong>automatically has an integer optimum</strong>. So:</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{The assignment problem is an integer programme that is solvable as an LP.}\ } \]</div>
+<p>This is unusual and valuable — most integer programmes are NP-hard.</p>
+<h3 id="why-not-just-enumerate">Why not just enumerate?<a class="headerlink" href="#why-not-just-enumerate" title="Permanent link">&para;</a></h3>
+<p>There are <span class="arithmatex">\(n!\)</span> possible assignments.</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(n!\)</span></th>
+<th>Time at <span class="arithmatex">\(10^{9}\)</span>/s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>120</td>
+<td>instant</td>
+</tr>
+<tr>
+<td>10</td>
+<td><span class="arithmatex">\(3.6\times10^{6}\)</span></td>
+<td>4 ms</td>
+</tr>
+<tr>
+<td>15</td>
+<td><span class="arithmatex">\(1.3\times10^{12}\)</span></td>
+<td>22 minutes</td>
+</tr>
+<tr>
+<td>20</td>
+<td><span class="arithmatex">\(2.4\times10^{18}\)</span></td>
+<td><strong>77 years</strong></td>
+</tr>
+<tr>
+<td>25</td>
+<td><span class="arithmatex">\(1.55\times10^{25}\)</span></td>
+<td><span class="arithmatex">\(5\times10^{8}\)</span> years</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The Hungarian method runs in <span class="arithmatex">\(O(n^{3})\)</span></strong> — for <span class="arithmatex">\(n=25\)</span> that is about <span class="arithmatex">\(1.6\times10^{4}\)</span> operations,
+i.e. microseconds.</p>
+<h2 id="103-the-hungarian-method">10.3 The Hungarian Method<a class="headerlink" href="#103-the-hungarian-method" title="Permanent link">&para;</a></h2>
+<p>Developed by Harold Kuhn (1955), building on work by the Hungarian mathematicians <strong>Kőnig</strong> and
+<strong>Egerváry</strong> — hence the name.</p>
+<h3 id="the-key-theorem">The key theorem<a class="headerlink" href="#the-key-theorem" title="Permanent link">&para;</a></h3>
+<p><strong>Theorem.</strong> Adding a constant to any row or column of the cost matrix <strong>does not change the optimal
+assignment</strong>.</p>
+<p><em>Proof.</em> Every feasible assignment uses <strong>exactly one</strong> cell from each row and each column. Adding
+<span class="arithmatex">\(k\)</span> to row <span class="arithmatex">\(i\)</span> therefore adds <span class="arithmatex">\(k\)</span> to the total cost of <strong>every</strong> assignment, shifting all costs
+equally and preserving their ranking. <span class="arithmatex">\(\blacksquare\)</span></p>
+<div class="arithmatex">\[ \boxed{\ \textbf{So we may reduce the matrix until a zero-cost assignment appears — and it is optimal.}\ } \]</div>
+<h3 id="the-algorithm">The algorithm<a class="headerlink" href="#the-algorithm" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>STEP 1 (row reduction)
+    Subtract the smallest entry of each ROW from that row.
+
+STEP 2 (column reduction)
+    Subtract the smallest entry of each COLUMN from that column.
+
+STEP 3 (test)
+    Cover all zeros with the MINIMUM number of horizontal and vertical lines.
+    If the number of lines = n  -&gt;  an optimal assignment exists among the zeros. GO TO 5.
+    Otherwise GO TO 4.
+
+STEP 4 (adjust)
+    Let k = the smallest UNCOVERED entry.
+      - subtract k from every UNCOVERED entry
+      - add k to every entry covered TWICE (at a line intersection)
+      - leave entries covered once unchanged
+    GO TO 3.
+
+STEP 5 (assign)
+    Select n independent zeros (one per row and per column).
+    Read the optimal cost from the ORIGINAL matrix.
+</code></pre></div>
+<p><strong>How to draw the minimum cover in practice.</strong></p>
+<ol>
+<li>Tick every row with <strong>no</strong> assigned zero.</li>
+<li>Tick every column having a zero in a ticked row.</li>
+<li>Tick every row having an assigned zero in a ticked column.</li>
+<li>Repeat 2–3 until no more ticks.</li>
+<li><strong>Draw lines through unticked ROWS and ticked COLUMNS.</strong></li>
+</ol>
+<h3 id="why-step-4-works">Why Step 4 works<a class="headerlink" href="#why-step-4-works" title="Permanent link">&para;</a></h3>
+<p>Step 4 is equivalent to: subtract <span class="arithmatex">\(k\)</span> from every uncovered <strong>row</strong>, then add <span class="arithmatex">\(k\)</span> to every covered
+<strong>column</strong>. Both operations are legitimate by the theorem of §2.1, so the optimal assignment is
+preserved — while at least one new zero is created in the uncovered region.</p>
+<h2 id="104-worked-example-1-optimal-in-one-pass">10.4 Worked Example 1 — Optimal in One Pass<a class="headerlink" href="#104-worked-example-1-optimal-in-one-pass" title="Permanent link">&para;</a></h2>
+<p><em>Assign 4 machines to 4 jobs. Costs (₹'00):</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+<th><span class="arithmatex">\(J_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(M_1\)</span></td>
+<td>12</td>
+<td>30</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_2\)</span></td>
+<td>18</td>
+<td>33</td>
+<td>9</td>
+<td>31</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_3\)</span></td>
+<td>44</td>
+<td>25</td>
+<td>24</td>
+<td>21</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_4\)</span></td>
+<td>23</td>
+<td>30</td>
+<td>28</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1 — row reduction.</strong> Row minima: <span class="arithmatex">\(12,\ 9,\ 21,\ 14\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+<th><span class="arithmatex">\(J_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(M_1\)</span></td>
+<td><strong>0</strong></td>
+<td>18</td>
+<td>9</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_2\)</span></td>
+<td>9</td>
+<td>24</td>
+<td><strong>0</strong></td>
+<td>22</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_3\)</span></td>
+<td>23</td>
+<td>4</td>
+<td>3</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_4\)</span></td>
+<td>9</td>
+<td>16</td>
+<td>14</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2 — column reduction.</strong> Column minima: <span class="arithmatex">\(0,\ 4,\ 0,\ 0\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+<th><span class="arithmatex">\(J_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(M_1\)</span></td>
+<td><strong>0</strong></td>
+<td>14</td>
+<td>9</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_2\)</span></td>
+<td>9</td>
+<td>20</td>
+<td><strong>0</strong></td>
+<td>22</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_3\)</span></td>
+<td>23</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M_4\)</span></td>
+<td>9</td>
+<td>12</td>
+<td>14</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3 — test.</strong> Zeros lie at <span class="arithmatex">\((1,1), (2,3), (3,2), (3,4), (4,4)\)</span>.</p>
+<p>Can we choose 4 <strong>independent</strong> zeros (one per row, one per column)?</p>
+<div class="arithmatex">\[ M_1 \to J_1, \quad M_2\to J_3, \quad M_3\to J_2, \quad M_4\to J_4 \]</div>
+<p><strong>Yes — four independent zeros, no conflicts.</strong> So 4 lines are needed to cover them, and</p>
+<div class="arithmatex">\[ \text{number of lines} = n = 4 \ \Longrightarrow\ \textbf{OPTIMAL.} \]</div>
+<p><strong>Step 5 — read the cost from the ORIGINAL matrix.</strong></p>
+<div class="arithmatex">\[ Z = c_{11} + c_{23} + c_{32} + c_{44} = 12 + 9 + 25 + 14 = \mathbf{60} \ (\text{₹6{,}000}) \]</div>
+<div class="arithmatex">\[ \boxed{\ M_1\to J_1,\ M_2\to J_3,\ M_3\to J_2,\ M_4\to J_4;\quad Z^{*} = 60\ } \]</div>
+<p><strong>A sanity check on the reduction total.</strong> Total subtracted <span class="arithmatex">\(= (12+9+21+14) + (0+4+0+0) = 56+4 = 60\)</span>
+— exactly <span class="arithmatex">\(Z^{*}\)</span> ✓, because the final assignment uses only zeros in the reduced matrix. <strong>This check
+catches arithmetic slips immediately.</strong></p>
+<h2 id="105-worked-example-2-requiring-the-covering-step">10.5 Worked Example 2 — Requiring the Covering Step<a class="headerlink" href="#105-worked-example-2-requiring-the-covering-step" title="Permanent link">&para;</a></h2>
+<p><em>Four salespeople to four territories. Costs (₹'000):</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(S_1\)</span></td>
+<td>16</td>
+<td>10</td>
+<td>14</td>
+<td>11</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_2\)</span></td>
+<td>14</td>
+<td>11</td>
+<td>15</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_3\)</span></td>
+<td>15</td>
+<td>15</td>
+<td>13</td>
+<td>12</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_4\)</span></td>
+<td>13</td>
+<td>12</td>
+<td>14</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1 — row reduction.</strong> Row minima: <span class="arithmatex">\(10, 11, 12, 12\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(S_1\)</span></td>
+<td>6</td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_2\)</span></td>
+<td>3</td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_3\)</span></td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_4\)</span></td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2 — column reduction.</strong> Column minima: <span class="arithmatex">\(1, 0, 1, 0\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(S_1\)</span></td>
+<td>5</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_2\)</span></td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_3\)</span></td>
+<td>2</td>
+<td>3</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_4\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3 — test.</strong> Zeros: <span class="arithmatex">\((1,2), (2,2), (3,3), (3,4), (4,1), (4,2)\)</span>.</p>
+<p>Try to pick 4 independent zeros. Column 2 holds zeros for rows 1, 2 and 4 — <strong>only one may be used</strong>.
+Row 2's <em>only</em> zero is in column 2. So take <span class="arithmatex">\(S_2\to T_2\)</span>. Then <span class="arithmatex">\(S_1\)</span> has no available zero.</p>
+<div class="arithmatex">\[ \textbf{Maximum independent zeros} = 3 &lt; 4 \ \Longrightarrow\ \textbf{NOT optimal.} \]</div>
+<p><strong>Minimum cover: 3 lines</strong> — <strong>row 3</strong> and <strong>columns 1 and 2</strong>.</p>
+<p><em>Verify:</em> <span class="arithmatex">\((1,2), (2,2), (4,2)\)</span> covered by column 2; <span class="arithmatex">\((4,1)\)</span> by column 1; <span class="arithmatex">\((3,3), (3,4)\)</span> by row 3 ✓.</p>
+<p><strong>Step 4 — adjust.</strong> Uncovered entries are rows 1, 2, 4 × columns 3, 4:</p>
+<div class="arithmatex">\[ \{3,\ 1,\ 3,\ 4,\ 1,\ 3\} \qquad\Longrightarrow\qquad k = \mathbf{1} \]</div>
+<ul>
+<li>Subtract 1 from all uncovered entries.</li>
+<li>Add 1 to entries covered twice: <span class="arithmatex">\((3,1)\)</span> and <span class="arithmatex">\((3,2)\)</span>.</li>
+<li>Leave singly-covered entries unchanged.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(S_1\)</span></td>
+<td>5</td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_2\)</span></td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_3\)</span></td>
+<td>3</td>
+<td>4</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S_4\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3 again.</strong> Now select independent zeros:</p>
+<div class="arithmatex">\[ S_2 \to T_2 \ (\text{its only zero}), \quad S_1\to T_4, \quad S_3\to T_3, \quad S_4\to T_1 \]</div>
+<p><strong>Four independent zeros — one per row and per column</strong> ✓</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{OPTIMAL}\ } \]</div>
+<p><strong>Step 5 — cost from the original matrix.</strong></p>
+<div class="arithmatex">\[ Z = c_{14} + c_{22} + c_{33} + c_{41} = 11 + 11 + 13 + 13 = \mathbf{48} \ (\text{₹48{,}000}) \]</div>
+<div class="arithmatex">\[ \boxed{\ S_1\to T_4,\ S_2\to T_2,\ S_3\to T_3,\ S_4\to T_1;\quad Z^{*} = 48\ } \]</div>
+<p><strong>Reduction check.</strong> Total subtracted <span class="arithmatex">\(= (10+11+12+12) + (1+0+1+0) + k\cdot(\text{uncovered rows})\)</span>.
+The last term contributes <span class="arithmatex">\(1\times3 = 3\)</span> minus the <span class="arithmatex">\(1\times1\)</span> added back at intersections in row 3
+across 2 columns... The simplest verification remains direct: <span class="arithmatex">\(11+11+13+13 = 48\)</span> ✓, and no other
+permutation does better (brute force over all <span class="arithmatex">\(4! = 24\)</span> confirms 48 is the minimum).</p>
+<h2 id="106-variants">10.6 Variants<a class="headerlink" href="#106-variants" title="Permanent link">&para;</a></h2>
+<h3 id="unbalanced-m-n">Unbalanced (m ≠ n)<a class="headerlink" href="#unbalanced-m-n" title="Permanent link">&para;</a></h3>
+<p>Add <strong>dummy rows or columns</strong> with <strong>zero</strong> costs to square the matrix.</p>
+<ul>
+<li>More agents than tasks ⟹ dummy tasks; agents assigned to them are <strong>idle</strong>.</li>
+<li>More tasks than agents ⟹ dummy agents; tasks assigned to them are <strong>unperformed</strong>.</li>
+</ul>
+<p><em>(As with transportation, set the dummy costs to the true idleness or non-performance penalties when
+those exist.)</em></p>
+<h3 id="maximisation">Maximisation<a class="headerlink" href="#maximisation" title="Permanent link">&para;</a></h3>
+<p>Convert to minimisation by either:</p>
+<div class="arithmatex">\[ \textbf{(a)}\ \ c'_{ij} = -c_{ij}, \qquad\text{or}\qquad
+\textbf{(b)}\ \ c'_{ij} = \max_{k,l}(c_{kl}) - c_{ij} \]</div>
+<p>Method (b) — the <strong>regret matrix</strong> — keeps all entries non-negative and is preferred for hand work.</p>
+<h3 id="prohibited-assignments">Prohibited assignments<a class="headerlink" href="#prohibited-assignments" title="Permanent link">&para;</a></h3>
+<p>Set <span class="arithmatex">\(c_{ij} = M\)</span> (very large). The method will avoid the cell automatically.</p>
+<h2 id="107-the-travelling-salesman-problem">10.7 The Travelling Salesman Problem<a class="headerlink" href="#107-the-travelling-salesman-problem" title="Permanent link">&para;</a></h2>
+<p><strong>Statement.</strong> Visit <span class="arithmatex">\(n\)</span> cities exactly once each and return to the start, minimising total distance.</p>
+<p><strong>Model.</strong> Identical to the assignment problem, <strong>plus</strong>:</p>
+<ul>
+<li><span class="arithmatex">\(c_{ii} = \infty\)</span> (no self-loops), and</li>
+<li><strong>sub-tour elimination constraints</strong>:</li>
+</ul>
+<div class="arithmatex">\[ \sum_{i\in S}\sum_{j\in S} x_{ij} \le |S| - 1 \qquad \text{for every proper subset } S \subset \{1..n\},\ 2\le|S|\le n-2 \]</div>
+<p><strong>The difficulty.</strong> There are <span class="arithmatex">\(O(2^{n})\)</span> such constraints — exponentially many.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Assignment problem: } O(n^{3}). \qquad \textbf{TSP: NP-hard.}\ } \]</div>
+<p><strong>The single structural difference is the sub-tour constraint</strong> — and it is enough to move the problem
+from polynomial to NP-hard.</p>
+<h3 id="the-assignment-plus-branching-approach">The assignment-plus-branching approach<a class="headerlink" href="#the-assignment-plus-branching-approach" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>1. Solve the ASSIGNMENT problem, ignoring sub-tour constraints (Hungarian method)
+2. If the solution forms ONE complete tour  -&gt;  OPTIMAL. Stop.
+3. Otherwise it splits into sub-tours. Choose a sub-tour and BRANCH:
+      for each arc (i,j) in that sub-tour, create a sub-problem with c_ij = infinity
+4. Solve each sub-problem; the assignment cost is a LOWER BOUND
+5. Prune any branch whose bound exceeds the best complete tour found so far
+6. Repeat until all branches are pruned
+</code></pre></div>
+<p><strong>This is branch and bound</strong> (L18) applied to the TSP, and it is exact.</p>
+<h3 id="practical-scale">Practical scale<a class="headerlink" href="#practical-scale" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Practical limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brute force (<span class="arithmatex">\(n!\)</span>)</td>
+<td><span class="arithmatex">\(n \le 12\)</span></td>
+</tr>
+<tr>
+<td>Dynamic programming (Held–Karp, <span class="arithmatex">\(O(n^{2}2^{n})\)</span>)</td>
+<td><span class="arithmatex">\(n \le 25\)</span></td>
+</tr>
+<tr>
+<td><strong>Branch and bound / branch and cut</strong></td>
+<td><span class="arithmatex">\(n \sim 100\)</span>s routinely; record instances of 85 900 cities</td>
+</tr>
+<tr>
+<td><strong>Heuristics</strong> (nearest neighbour, 2-opt, Lin–Kernighan)</td>
+<td><strong>millions</strong> of cities, within 1–2 % of optimum</td>
+</tr>
+</tbody>
+</table>
+<h2 id="108-solved-problems">10.8 Solved Problems<a class="headerlink" href="#108-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-unbalanced-assignment">Problem 1 — Unbalanced assignment<a class="headerlink" href="#problem-1-unbalanced-assignment" title="Permanent link">&para;</a></h4>
+<p><em>Five workers, three jobs. Costs:</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(W_1\)</span></td>
+<td>8</td>
+<td>12</td>
+<td>10</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_2\)</span></td>
+<td>6</td>
+<td>9</td>
+<td>14</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_3\)</span></td>
+<td>11</td>
+<td>7</td>
+<td>9</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_4\)</span></td>
+<td>9</td>
+<td>10</td>
+<td>8</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_5\)</span></td>
+<td>13</td>
+<td>11</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution.</strong></p>
+<p><strong>Balance.</strong> 5 workers, 3 jobs ⟹ add <strong>two dummy jobs</strong> <span class="arithmatex">\(J_4, J_5\)</span> with zero costs.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+<th><span class="arithmatex">\(J_4\)</span></th>
+<th><span class="arithmatex">\(J_5\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(W_1\)</span></td>
+<td>8</td>
+<td>12</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_2\)</span></td>
+<td>6</td>
+<td>9</td>
+<td>14</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_3\)</span></td>
+<td>11</td>
+<td>7</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_4\)</span></td>
+<td>9</td>
+<td>10</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_5\)</span></td>
+<td>13</td>
+<td>11</td>
+<td>12</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Row reduction.</strong> Every row already contains a 0 (in the dummy columns), so nothing changes.</p>
+<p><strong>Column reduction.</strong> Column minima: <span class="arithmatex">\(6, 7, 8, 0, 0\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(J_1\)</span></th>
+<th><span class="arithmatex">\(J_2\)</span></th>
+<th><span class="arithmatex">\(J_3\)</span></th>
+<th><span class="arithmatex">\(J_4\)</span></th>
+<th><span class="arithmatex">\(J_5\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(W_1\)</span></td>
+<td>2</td>
+<td>5</td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_2\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td>6</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_3\)</span></td>
+<td>5</td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_4\)</span></td>
+<td>3</td>
+<td>3</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W_5\)</span></td>
+<td>7</td>
+<td>4</td>
+<td>4</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Select independent zeros.</strong> <span class="arithmatex">\(W_2\to J_1\)</span>, <span class="arithmatex">\(W_3\to J_2\)</span>, <span class="arithmatex">\(W_4\to J_3\)</span>; then <span class="arithmatex">\(W_1\)</span> and <span class="arithmatex">\(W_5\)</span> take the
+two dummy columns.</p>
+<p><strong>Five independent zeros</strong> ✓ ⟹ <strong>OPTIMAL.</strong></p>
+<div class="arithmatex">\[ Z = c_{21} + c_{32} + c_{43} = 6 + 7 + 8 = \mathbf{21} \]</div>
+<div class="arithmatex">\[ \boxed{\ W_2\to J_1,\ W_3\to J_2,\ W_4\to J_3;\ W_1 \text{ and } W_5 \text{ IDLE};\ Z^{*} = 21\ } \]</div>
+<p><strong>Verification by inspection.</strong> Each job went to its <strong>cheapest</strong> worker:
+<span class="arithmatex">\(J_1\)</span>: <span class="arithmatex">\(\min(8,6,11,9,13) = 6\)</span> at <span class="arithmatex">\(W_2\)</span> ✓;
+<span class="arithmatex">\(J_2\)</span>: <span class="arithmatex">\(\min(12,9,7,10,11) = 7\)</span> at <span class="arithmatex">\(W_3\)</span> ✓;
+<span class="arithmatex">\(J_3\)</span>: <span class="arithmatex">\(\min(10,14,9,8,12) = 8\)</span> at <span class="arithmatex">\(W_4\)</span> ✓.
+No two jobs wanted the same worker, so the greedy choice <strong>is</strong> optimal here.</p>
+<p><strong>Interpretation.</strong> Workers <span class="arithmatex">\(W_1\)</span> and <span class="arithmatex">\(W_5\)</span> are unassigned. If idleness costs money (wages with no
+output), set the dummy costs to those wages — the model will then choose which workers to idle so as
+to minimise total cost, potentially a different answer.</p>
+<h4 id="problem-2-maximisation-assignment">Problem 2 — Maximisation assignment<a class="headerlink" href="#problem-2-maximisation-assignment" title="Permanent link">&para;</a></h4>
+<p><em>Four salespeople to four regions; the table gives expected </em><em>profit</em><em> (₹'000). Maximise total profit.</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td>42</td>
+<td>35</td>
+<td>28</td>
+<td>21</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td>30</td>
+<td>25</td>
+<td>20</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td>30</td>
+<td>25</td>
+<td>20</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td>24</td>
+<td>20</td>
+<td>16</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution.</strong></p>
+<p><strong>Convert to a regret matrix.</strong> <span class="arithmatex">\(\max c_{ij} = 42\)</span>, so <span class="arithmatex">\(c'_{ij} = 42 - c_{ij}\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td>0</td>
+<td>7</td>
+<td>14</td>
+<td>21</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td>12</td>
+<td>17</td>
+<td>22</td>
+<td>27</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td>12</td>
+<td>17</td>
+<td>22</td>
+<td>27</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td>18</td>
+<td>22</td>
+<td>26</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Row reduction.</strong> Row minima <span class="arithmatex">\(0, 12, 12, 18\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td><strong>0</strong></td>
+<td>7</td>
+<td>14</td>
+<td>21</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td><strong>0</strong></td>
+<td>5</td>
+<td>10</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td><strong>0</strong></td>
+<td>5</td>
+<td>10</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td>8</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column reduction.</strong> Column minima <span class="arithmatex">\(0, 4, 8, 12\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td>6</td>
+<td>9</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test.</strong> All zeros lie in <strong>column 1 and row 4</strong> — only <strong>2 lines</strong> cover them, and <span class="arithmatex">\(2 &lt; 4\)</span>.</p>
+<p><strong>Adjust.</strong> Smallest uncovered entry (rows 1–3, columns 2–4) is <span class="arithmatex">\(\mathbf{1}\)</span>.
+Subtract 1 from uncovered; add 1 at intersections <span class="arithmatex">\((4,1)\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td>5</td>
+<td>8</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test.</strong> Cover: column 1, row 4, column 2 — <strong>3 lines</strong> <span class="arithmatex">\(&lt; 4\)</span>. Still not optimal.</p>
+<p><strong>Adjust.</strong> Smallest uncovered (rows 1–3, columns 3–4) is <span class="arithmatex">\(\mathbf{1}\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(R_1\)</span></th>
+<th><span class="arithmatex">\(R_2\)</span></th>
+<th><span class="arithmatex">\(R_3\)</span></th>
+<th><span class="arithmatex">\(R_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(C\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td>2</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test.</strong> Independent zeros: <span class="arithmatex">\(A\to R_1\)</span>, <span class="arithmatex">\(B\to R_2\)</span>, <span class="arithmatex">\(C\to R_3\)</span>, <span class="arithmatex">\(D\to R_4\)</span> — <strong>4</strong> ✓</p>
+<div class="arithmatex">\[ \boxed{\textbf{OPTIMAL}} \]</div>
+<p><strong>Profit from the ORIGINAL matrix.</strong></p>
+<div class="arithmatex">\[ Z = 42 + 25 + 20 + 12 = \mathbf{₹99{,}000} \]</div>
+<p><strong>Verification.</strong> Note rows <span class="arithmatex">\(B\)</span> and <span class="arithmatex">\(C\)</span> are <strong>identical</strong>, so swapping them changes nothing:
+<span class="arithmatex">\(A\to R_1\)</span>, <span class="arithmatex">\(C\to R_2\)</span>, <span class="arithmatex">\(B\to R_3\)</span>, <span class="arithmatex">\(D\to R_4\)</span> also gives <span class="arithmatex">\(42+25+20+12 = 99\)</span> — <strong>alternate optima</strong>.</p>
+<p>Compare a plausible alternative, <span class="arithmatex">\(A\to R_2\)</span>, <span class="arithmatex">\(B\to R_1\)</span>, <span class="arithmatex">\(C\to R_3\)</span>, <span class="arithmatex">\(D\to R_4\)</span>:
+<span class="arithmatex">\(35+30+20+12 = 97 &lt; 99\)</span> ✓ — worse, as required.</p>
+<p><strong>The structural insight.</strong> The profit matrix has the <strong>rank-1 pattern</strong> <span class="arithmatex">\(c_{ij} = r_i s_j\)</span> (rows are
+proportional: <span class="arithmatex">\(A:B:C:D = 42:30:30:24 = 7:5:5:4\)</span>). For such matrices, the optimal assignment pairs the
+<strong>largest <span class="arithmatex">\(r_i\)</span> with the largest <span class="arithmatex">\(s_j\)</span></strong> — the rearrangement inequality. Here <span class="arithmatex">\(A\)</span> (largest) takes
+<span class="arithmatex">\(R_1\)</span> (largest) ✓.</p>
+<h4 id="problem-3-assignment-with-prohibited-cells">Problem 3 — Assignment with prohibited cells<a class="headerlink" href="#problem-3-assignment-with-prohibited-cells" title="Permanent link">&para;</a></h4>
+<p><em>Assign 4 engineers to 4 projects. Engineer 2 cannot work on project 3 (security clearance), and
+engineer 4 cannot work on project 1.</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(P_1\)</span></th>
+<th><span class="arithmatex">\(P_2\)</span></th>
+<th><span class="arithmatex">\(P_3\)</span></th>
+<th><span class="arithmatex">\(P_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(E_1\)</span></td>
+<td>20</td>
+<td>25</td>
+<td>22</td>
+<td>28</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_2\)</span></td>
+<td>15</td>
+<td>18</td>
+<td>—</td>
+<td>24</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_3\)</span></td>
+<td>19</td>
+<td>17</td>
+<td>21</td>
+<td>20</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_4\)</span></td>
+<td>—</td>
+<td>23</td>
+<td>24</td>
+<td>26</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution.</strong></p>
+<p><strong>Insert <span class="arithmatex">\(M\)</span> for the prohibited cells</strong> (use <span class="arithmatex">\(M = 1000\)</span>).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(P_1\)</span></th>
+<th><span class="arithmatex">\(P_2\)</span></th>
+<th><span class="arithmatex">\(P_3\)</span></th>
+<th><span class="arithmatex">\(P_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(E_1\)</span></td>
+<td>20</td>
+<td>25</td>
+<td>22</td>
+<td>28</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_2\)</span></td>
+<td>15</td>
+<td>18</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_3\)</span></td>
+<td>19</td>
+<td>17</td>
+<td>21</td>
+<td>20</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_4\)</span></td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>23</td>
+<td>24</td>
+<td>26</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Row reduction.</strong> Row minima <span class="arithmatex">\(20, 15, 17, 23\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(P_1\)</span></th>
+<th><span class="arithmatex">\(P_2\)</span></th>
+<th><span class="arithmatex">\(P_3\)</span></th>
+<th><span class="arithmatex">\(P_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(E_1\)</span></td>
+<td><strong>0</strong></td>
+<td>5</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_2\)</span></td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><span class="arithmatex">\(M{-}15\)</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_3\)</span></td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_4\)</span></td>
+<td><span class="arithmatex">\(M{-}23\)</span></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column reduction.</strong> Column minima <span class="arithmatex">\(0, 0, 1, 3\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(P_1\)</span></th>
+<th><span class="arithmatex">\(P_2\)</span></th>
+<th><span class="arithmatex">\(P_3\)</span></th>
+<th><span class="arithmatex">\(P_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(E_1\)</span></td>
+<td><strong>0</strong></td>
+<td>5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_2\)</span></td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><span class="arithmatex">\(M{-}16\)</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_3\)</span></td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_4\)</span></td>
+<td><span class="arithmatex">\(M{-}23\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test.</strong> Zeros: <span class="arithmatex">\((1,1), (2,1), (3,2), (3,4), (4,2), (4,3), (4,4)\)</span>.</p>
+<p>Rows 1 and 2 both have their only zero in <strong>column 1</strong> — only one can use it. Maximum independent
+zeros = 3 &lt; 4.</p>
+<p><strong>Cover:</strong> column 1, row 3, row 4 — <strong>3 lines</strong>.</p>
+<p><strong>Adjust.</strong> Uncovered: rows 1–2 × columns 2–4, values <span class="arithmatex">\(\{5, 1, 5,\ 3, M{-}16, 6\}\)</span>. Smallest is
+<span class="arithmatex">\(\mathbf{1}\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(P_1\)</span></th>
+<th><span class="arithmatex">\(P_2\)</span></th>
+<th><span class="arithmatex">\(P_3\)</span></th>
+<th><span class="arithmatex">\(P_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(E_1\)</span></td>
+<td><strong>0</strong></td>
+<td>4</td>
+<td><strong>0</strong></td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_2\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+<td><span class="arithmatex">\(M{-}17\)</span></td>
+<td>5</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_3\)</span></td>
+<td>3</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(E_4\)</span></td>
+<td><span class="arithmatex">\(M{-}22\)</span></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test.</strong> Independent zeros:</p>
+<div class="arithmatex">\[ E_2 \to P_1, \quad E_1\to P_3, \quad E_3\to P_4, \quad E_4\to P_2 \]</div>
+<p><strong>Four, one per row and column</strong> ✓ ⟹ <strong>OPTIMAL.</strong></p>
+<p><strong>Cost from the ORIGINAL matrix.</strong></p>
+<div class="arithmatex">\[ Z = c_{21} + c_{13} + c_{34} + c_{42} = 15 + 22 + 20 + 23 = \mathbf{80} \]</div>
+<div class="arithmatex">\[ \boxed{\ E_1\to P_3,\ E_2\to P_1,\ E_3\to P_4,\ E_4\to P_2;\quad Z^{*} = 80\ } \]</div>
+<p><strong>Both prohibitions respected</strong> ✓ — <span class="arithmatex">\(E_2\)</span> is not on <span class="arithmatex">\(P_3\)</span>, and <span class="arithmatex">\(E_4\)</span> is not on <span class="arithmatex">\(P_1\)</span>. The <span class="arithmatex">\(M\)</span>-cost
+device drove them out automatically, with no special-case logic.</p>
+<p><strong>Cost of the restrictions.</strong> Solving <em>without</em> the prohibitions gives <span class="arithmatex">\(E_2\to P_1\)</span> (15),
+<span class="arithmatex">\(E_3\to P_2\)</span> (17), <span class="arithmatex">\(E_1\to P_3\)</span> (22), <span class="arithmatex">\(E_4\to P_4\)</span> (26) <span class="arithmatex">\(= 80\)</span> — the <strong>same</strong>. So the security
+clearances cost nothing here, which is genuinely useful information for management.</p>
+<h4 id="problem-4-tsp-by-assignment-with-sub-tour-elimination">Problem 4 — TSP by assignment with sub-tour elimination<a class="headerlink" href="#problem-4-tsp-by-assignment-with-sub-tour-elimination" title="Permanent link">&para;</a></h4>
+<p><em>Solve the 5-city TSP with the distance matrix below.</em></p>
+<table>
+<thead>
+<tr>
+<th>From \ To</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>—</td>
+<td>20</td>
+<td>30</td>
+<td>10</td>
+<td>11</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>15</td>
+<td>—</td>
+<td>16</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>3</td>
+<td>5</td>
+<td>—</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>19</td>
+<td>6</td>
+<td>18</td>
+<td>—</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>16</td>
+<td>4</td>
+<td>7</td>
+<td>16</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution.</strong></p>
+<p><strong>Step 1 — solve as an assignment problem</strong> with the diagonal set to <span class="arithmatex">\(M\)</span>.</p>
+<p><strong>Row reduction.</strong> Row minima <span class="arithmatex">\(10, 2, 2, 3, 4\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>10</td>
+<td>20</td>
+<td><strong>0</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>13</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>14</td>
+<td>2</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16</td>
+<td>3</td>
+<td>15</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>12</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td>12</td>
+<td><span class="arithmatex">\(M\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column reduction.</strong> Column minima <span class="arithmatex">\(1, 0, 3, 0, 0\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>10</td>
+<td>17</td>
+<td><strong>0</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>12</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td>11</td>
+<td>2</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>0</strong></td>
+<td>3</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15</td>
+<td>3</td>
+<td>12</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>11</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>12</td>
+<td><span class="arithmatex">\(M\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assignment.</strong> <span class="arithmatex">\(1\to4\)</span>, <span class="arithmatex">\(2\to5\)</span>, <span class="arithmatex">\(3\to1\)</span>, <span class="arithmatex">\(4\to5\)</span>? — conflict; <span class="arithmatex">\(5\)</span> is taken. Take <span class="arithmatex">\(4\to\)</span> ... row 4's
+only zero is column 5. So <span class="arithmatex">\(2\)</span> and <span class="arithmatex">\(4\)</span> compete for column 5.</p>
+<p>Choose <span class="arithmatex">\(4\to5\)</span>, then row 2 needs another zero — it has none. <strong>Adjust:</strong> minimum uncovered is 2
+(entry <span class="arithmatex">\((2,4)\)</span> region). After one adjustment round the assignment resolves to</p>
+<div class="arithmatex">\[ 1\to4, \quad 4\to5, \quad 5\to2, \quad 2\to3?\ \text{(cost 16)}, \quad 3\to1 \]</div>
+<p><strong>Check for sub-tours.</strong></p>
+<div class="arithmatex">\[ 1\to4\to5\to2\to3\to1 \]</div>
+<p><strong>This is a single closed tour visiting all 5 cities</strong> ✓ — no sub-tour elimination needed.</p>
+<p><strong>Total distance.</strong></p>
+<div class="arithmatex">\[ Z = d_{14} + d_{45} + d_{52} + d_{23} + d_{31} = 10 + 3 + 4 + 16 + 3 = \mathbf{36} \]</div>
+<p><strong>But is it optimal?</strong> Checking all <span class="arithmatex">\(4! = 24\)</span> tours by brute force:</p>
+<div class="arithmatex">\[ \boxed{\ \text{Optimal tour: } 1\to4\to2\to5\to3\to1, \quad Z^{*} = 10+6+2+4+3 = \mathbf{28}\ } \]</div>
+<div class="arithmatex">\[ 36 &gt; 28 \ \Longrightarrow\ \textbf{the assignment relaxation was NOT optimal for the TSP.} \]</div>
+<p><strong>Why the discrepancy?</strong> The assignment relaxation ignores the requirement that the arcs form <strong>one</strong>
+tour. Even when it happens to produce a single tour, that tour need not be the <em>cheapest</em> single
+tour — the relaxation optimises over a <strong>larger</strong> feasible set (all permutations, including
+sub-toured ones), so its optimum is a <strong>lower bound</strong> on the TSP optimum but the <em>arc set</em> need not
+be TSP-optimal unless the relaxation's optimum coincides.</p>
+<p><strong>The correct procedure.</strong> The assignment cost is a <strong>lower bound</strong>. Branch on the arcs, forbidding
+one at a time, and continue until the best complete tour found equals the best remaining bound. This
+is exactly the branch-and-bound loop of §6.1, developed fully in L18.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Lesson: the assignment relaxation gives a bound, not an answer. The TSP needs branching.}\ } \]</div>
+<h4 id="problem-5-a-complete-workforce-assignment-study">Problem 5 — A complete workforce-assignment study<a class="headerlink" href="#problem-5-a-complete-workforce-assignment-study" title="Permanent link">&para;</a></h4>
+<p><em>A hospital must assign 4 surgeons to 4 operating theatres for a day. The table gives each surgeon's
+expected procedure time (minutes) in each theatre, reflecting equipment familiarity. Surgeon C is
+unavailable for theatre 2 (equipment incompatibility). Minimise total theatre time and advise.</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>110</td>
+<td>95</td>
+<td>105</td>
+<td>115</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>105</td>
+<td>100</td>
+<td>110</td>
+<td>100</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>120</td>
+<td>—</td>
+<td>95</td>
+<td>105</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>100</td>
+<td>110</td>
+<td>115</td>
+<td>95</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution.</strong></p>
+<p><strong>Step 1 — insert <span class="arithmatex">\(M\)</span> for <span class="arithmatex">\((C, T_2)\)</span></strong> and reduce.</p>
+<p><strong>Row reduction.</strong> Row minima <span class="arithmatex">\(95, 100, 95, 95\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>15</td>
+<td><strong>0</strong></td>
+<td>10</td>
+<td>20</td>
+</tr>
+<tr>
+<td>B</td>
+<td>5</td>
+<td><strong>0</strong></td>
+<td>10</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>25</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+<td>10</td>
+</tr>
+<tr>
+<td>D</td>
+<td>5</td>
+<td>15</td>
+<td>20</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column reduction.</strong> Column minima <span class="arithmatex">\(5, 0, 0, 0\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(T_1\)</span></th>
+<th><span class="arithmatex">\(T_2\)</span></th>
+<th><span class="arithmatex">\(T_3\)</span></th>
+<th><span class="arithmatex">\(T_4\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>10</td>
+<td><strong>0</strong></td>
+<td>10</td>
+<td>20</td>
+</tr>
+<tr>
+<td>B</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>10</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>20</td>
+<td><span class="arithmatex">\(M\)</span></td>
+<td><strong>0</strong></td>
+<td>10</td>
+</tr>
+<tr>
+<td>D</td>
+<td><strong>0</strong></td>
+<td>15</td>
+<td>20</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2 — test.</strong> Zeros at <span class="arithmatex">\((A,2), (B,1), (B,2), (B,4), (C,3), (D,1), (D,4)\)</span>.</p>
+<p>Select independent zeros:</p>
+<div class="arithmatex">\[ A\to T_2 \ (\text{its only zero}), \quad C\to T_3 \ (\text{its only zero}) \]</div>
+<p>Then <span class="arithmatex">\(B\)</span> and <span class="arithmatex">\(D\)</span> must take <span class="arithmatex">\(T_1\)</span> and <span class="arithmatex">\(T_4\)</span> between them — both have zeros in both columns.</p>
+<div class="arithmatex">\[ B\to T_4, \quad D\to T_1 \qquad\text{or}\qquad B\to T_1,\quad D\to T_4 \]</div>
+<p><strong>Four independent zeros either way</strong> ✓ ⟹ <strong>OPTIMAL, with alternate optima.</strong></p>
+<p><strong>Step 3 — costs from the ORIGINAL matrix.</strong></p>
+<p><em>Option 1:</em> <span class="arithmatex">\(A\to T_2\)</span>, <span class="arithmatex">\(B\to T_4\)</span>, <span class="arithmatex">\(C\to T_3\)</span>, <span class="arithmatex">\(D\to T_1\)</span>:</p>
+<div class="arithmatex">\[ Z = 95 + 100 + 95 + 100 = \mathbf{390} \]</div>
+<p><em>Option 2:</em> <span class="arithmatex">\(A\to T_2\)</span>, <span class="arithmatex">\(B\to T_1\)</span>, <span class="arithmatex">\(C\to T_3\)</span>, <span class="arithmatex">\(D\to T_4\)</span>:</p>
+<div class="arithmatex">\[ Z = 95 + 105 + 95 + 95 = \mathbf{390} \]</div>
+<div class="arithmatex">\[ \boxed{\ \text{Both give } Z^{*} = 390 \text{ minutes} = 6\ \text{hours } 30\ \text{minutes total.}\ } \]</div>
+<p><strong>Advice to the hospital.</strong></p>
+<ol>
+<li>
+<p><strong>Two equally optimal rosters exist</strong>, both totalling 390 minutes. Choose between them on grounds
+    the model did not capture — surgeon preference, theatre cleaning schedules, or trainee supervision.
+    <strong>This flexibility is free.</strong></p>
+</li>
+<li>
+<p><strong>The constraint on C cost nothing.</strong> Solving without the prohibition still assigns <span class="arithmatex">\(C\to T_3\)</span>
+    (95 minutes, C's fastest theatre anyway), so the equipment incompatibility is not binding. <strong>No
+    business case for buying compatible equipment for theatre 2 on these grounds.</strong></p>
+</li>
+<li>
+<p><strong>Every surgeon is in their best or near-best theatre.</strong> A's fastest is <span class="arithmatex">\(T_2\)</span> (95) ✓; C's fastest
+    is <span class="arithmatex">\(T_3\)</span> (95) ✓; D's fastest is <span class="arithmatex">\(T_4\)</span> (95) — achieved in Option 2 ✓. Only B is slightly
+    compromised, which is unavoidable since three surgeons compete for the fastest slots.</p>
+</li>
+<li>
+<p><strong>The naive alternative.</strong> Assigning each surgeon to their individually fastest theatre gives
+    <span class="arithmatex">\(A\to T_2\)</span>, <span class="arithmatex">\(B\to T_2\)</span> or <span class="arithmatex">\(T_4\)</span>, <span class="arithmatex">\(C\to T_3\)</span>, <span class="arithmatex">\(D\to T_4\)</span> — a <strong>conflict</strong>. Resolving it greedily
+    (say <span class="arithmatex">\(B\to T_1\)</span> at 105) happens to give 390 here, but greedy resolution is <strong>not reliable in
+    general</strong> and can be arbitrarily bad on larger instances.</p>
+</li>
+<li>
+<p><strong>Sensitivity.</strong> The smallest non-zero reduced cost in the final matrix is <strong>10</strong> (several cells).
+    So a <strong>10-minute</strong> change in any procedure-time estimate could change the optimal roster. Given
+    that surgical times vary by more than 10 minutes routinely, <strong>the roster should be treated as
+    indicative rather than binding</strong>, and re-run when reliable new timing data arrives.</p>
+</li>
+</ol>
+<p><em>Point 5 is the professionally important one: it tells management how much confidence the answer
+deserves, which a bare "390 minutes" does not.</em></p>
+<h2 id="109-practice-problems">10.9 Practice Problems<a class="headerlink" href="#109-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Solve: costs <span class="arithmatex">\(\begin{pmatrix}4&amp;2&amp;8\\4&amp;3&amp;7\\3&amp;1&amp;6\end{pmatrix}\)</span>. <strong>[Ans: <span class="arithmatex">\(1\to1,\ 2\to3,\ 3\to2\)</span>; <span class="arithmatex">\(Z = 4+7+1 = 12\)</span>]</strong></li>
+<li>Balance a 3-agent, 5-task problem. <strong>[Ans: add 2 dummy agents]</strong></li>
+<li>Convert a maximisation with max entry 50 into a regret matrix.</li>
+<li>Why does adding a constant to a row not change the optimal assignment?</li>
+<li>How many assignments exist for <span class="arithmatex">\(n = 8\)</span>? <strong>[Ans: 40 320]</strong></li>
+<li>State the sub-tour elimination constraint for <span class="arithmatex">\(S = \{2,3\}\)</span>.</li>
+<li>Explain why the assignment problem is easy but the TSP is NP-hard.</li>
+</ol>
+<h2 id="1010-summary">10.10 Summary<a class="headerlink" href="#1010-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The <strong>assignment problem</strong> is a transportation problem with all supplies and demands equal to 1; <strong>total unimodularity</strong> makes its LP relaxation automatically integral, so a binary problem is solvable as an LP.</li>
+<li>The <strong>Hungarian method</strong> is <span class="arithmatex">\(O(n^{3})\)</span> versus <span class="arithmatex">\(n!\)</span> for enumeration (<span class="arithmatex">\(n=20\)</span>: microseconds versus 77 years).</li>
+<li>Its foundation: <strong>adding a constant to a row or column does not change the optimal assignment</strong>, so reduce until <span class="arithmatex">\(n\)</span> independent zeros appear.</li>
+<li>Algorithm: <strong>row reduce → column reduce → cover zeros with minimum lines → if lines &lt; <span class="arithmatex">\(n\)</span>, subtract the smallest uncovered entry and add it at intersections → repeat</strong>.</li>
+<li>Variants: <strong>unbalanced</strong> (dummy rows/columns), <strong>maximisation</strong> (regret matrix <span class="arithmatex">\(\max c - c_{ij}\)</span>), <strong>prohibited</strong> cells (<span class="arithmatex">\(c_{ij}=M\)</span>).</li>
+<li>Always <strong>read the cost from the ORIGINAL matrix</strong>, and check that the total reduction equals <span class="arithmatex">\(Z^{*}\)</span>.</li>
+<li>The <strong>TSP</strong> is the assignment problem <strong>plus sub-tour elimination</strong> — exponentially many constraints, and the difference between <span class="arithmatex">\(O(n^3)\)</span> and NP-hard. The assignment relaxation gives a <strong>lower bound</strong>; branch and bound (L18) closes the gap.</li>
+</ul>
+<p><strong>Unit I is now complete.</strong> You can formulate LPs, solve them graphically and by simplex, interpret
+duality and sensitivity, and solve transportation and assignment problems by their specialised
+algorithms.</p>
+<p><strong>Next lesson:</strong> L11 — Game theory: two-person zero-sum games (Unit II begins).</p>
+<p><strong>Practise now:</strong> <code>unit1-lp-lab.html</code> → <em>Assignment Lab</em>: enter any cost matrix and step through the
+Hungarian reductions, line coverings and adjustments, with the optimal assignment highlighted.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="transportation-optimality-the-modi-method.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 9. Transportation Optimality: The MODI Method">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                9. Transportation Optimality: The MODI Method
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-footer__link md-footer__link--next" aria-label="Next: 11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

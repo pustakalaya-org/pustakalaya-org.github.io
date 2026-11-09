@@ -1,0 +1,3467 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch15-automotive-hardware-security.html">
+  
+  
+    <link rel="prev" href="ch14-hardware-attestation.html">
+  
+  
+    <link rel="next" href="ch16-post-quantum-cryptography-hardware.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>15. Automotive Hardware Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-auto-threat" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              15. Automotive Hardware Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-auto-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.1 Automotive Threat Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.1 Automotive Threat Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1511-remote-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.1.1 Remote Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ee-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.2 Automotive E/E Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.2 Automotive E/E Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1521-autosar-classic-and-adaptive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.2.1 AUTOSAR Classic and Adaptive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-can-sec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.3 CAN Bus Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-secoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.4 CAN SecOC – Secure Onboard Communication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.4 CAN SecOC – Secure Onboard Communication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1541-secoc-mac-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.4.1 SecOC MAC Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-she" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.5 SHE – Secure Hardware Extension
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.5 SHE – Secure Hardware Extension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subsec-m1m2m3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.5.1 CMD_LOAD_KEY Protocol: M1/M2/M3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-evita" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.6 EVITA HSM Profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-aurix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.7 AURIX TC3xx HSM – Infineon TriCore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-v2x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8 V2X Security – IEEE 1609.2 and SCMS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.8 V2X Security – IEEE 1609.2 and SCMS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1581-ieee-16092-certificate-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8.1 IEEE 1609.2 Certificate Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1582-scms-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8.2 SCMS Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-uptane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.9 Uptane – OTA Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-iso21434" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.10 ISO/SAE 21434 and UN ECE WP.29 Regulation 155
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.11 FPGA Automotive HSM Resource Utilization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1512-c-code-she-cmd_load_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.12 C Code: SHE CMD_LOAD_KEY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1513-c-code-she-cmd_load_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.13 C Code: SHE CMD_LOAD_KEY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.14 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.15 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15151-isosae-214342021-and-unece-wp29-r155-enforcement-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.1 ISO/SAE 21434:2021 and UNECE WP.29 R155 Enforcement (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15152-v2x-pki-c-v2x-5g-nr-v2x-vs-dsrc-hardware-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.2 V2X PKI: C-V2X (5G NR-V2X) vs. DSRC Hardware Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15153-tesla-full-self-driving-computer-hw4-2023-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.3 Tesla Full Self-Driving Computer HW4 (2023) Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15154-automotive-hsm-infineon-she-and-nxp-se050-automotive-grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.4 Automotive HSM: Infineon SHE+ and NXP SE050 Automotive Grade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15155-ota-hardware-security-signed-rollback-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.5 OTA Hardware Security: Signed Rollback Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15156-autosar-secoc-hardware-requirements-for-zone-ee-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.6 AUTOSAR SecOC Hardware Requirements for Zone E/E Architectures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-ex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.16 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-auto-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.1 Automotive Threat Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.1 Automotive Threat Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1511-remote-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.1.1 Remote Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ee-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.2 Automotive E/E Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.2 Automotive E/E Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1521-autosar-classic-and-adaptive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.2.1 AUTOSAR Classic and Adaptive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-can-sec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.3 CAN Bus Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-secoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.4 CAN SecOC – Secure Onboard Communication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.4 CAN SecOC – Secure Onboard Communication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1541-secoc-mac-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.4.1 SecOC MAC Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-she" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.5 SHE – Secure Hardware Extension
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.5 SHE – Secure Hardware Extension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subsec-m1m2m3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.5.1 CMD_LOAD_KEY Protocol: M1/M2/M3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-evita" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.6 EVITA HSM Profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-aurix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.7 AURIX TC3xx HSM – Infineon TriCore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-v2x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8 V2X Security – IEEE 1609.2 and SCMS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.8 V2X Security – IEEE 1609.2 and SCMS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1581-ieee-16092-certificate-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8.1 IEEE 1609.2 Certificate Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1582-scms-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.8.2 SCMS Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-uptane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.9 Uptane – OTA Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-iso21434" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.10 ISO/SAE 21434 and UN ECE WP.29 Regulation 155
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.11 FPGA Automotive HSM Resource Utilization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1512-c-code-she-cmd_load_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.12 C Code: SHE CMD_LOAD_KEY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1513-c-code-she-cmd_load_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.13 C Code: SHE CMD_LOAD_KEY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.14 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.15 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15151-isosae-214342021-and-unece-wp29-r155-enforcement-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.1 ISO/SAE 21434:2021 and UNECE WP.29 R155 Enforcement (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15152-v2x-pki-c-v2x-5g-nr-v2x-vs-dsrc-hardware-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.2 V2X PKI: C-V2X (5G NR-V2X) vs. DSRC Hardware Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15153-tesla-full-self-driving-computer-hw4-2023-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.3 Tesla Full Self-Driving Computer HW4 (2023) Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15154-automotive-hsm-infineon-she-and-nxp-se050-automotive-grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.4 Automotive HSM: Infineon SHE+ and NXP SE050 Automotive Grade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15155-ota-hardware-security-signed-rollback-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.5 OTA Hardware Security: Signed Rollback Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15156-autosar-secoc-hardware-requirements-for-zone-ee-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.15.6 AUTOSAR SecOC Hardware Requirements for Zone E/E Architectures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch15-ex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15.16 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-automotive-hardware-security">Chapter 15: Automotive Hardware Security<a class="headerlink" href="#ch-automotive-hardware-security" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Automotive cybersecurity became a regulatory requirement in 2022 when UN ECE WP.29 Regulation 155 took effect. Over 100 million vehicles now contain embedded HSMs implementing SHE or EVITA specifications.</p>
+</div>
+<h2 id="sec-auto-threat"><span class="secnum">15.1</span> Automotive Threat Landscape<a class="headerlink" href="#sec-auto-threat" title="Permanent link">&para;</a></h2>
+<p>Modern vehicles contain 50–150 ECUs and expose attack surfaces across multiple wireless interfaces. The 2015 Jeep Cherokee exploit by Charlie Miller and Chris Valasek exploited a Sprint cellular IP port 6667 QNX D-Bus vulnerability, pivoting to rewrite DPIM CAN firmware – enabling remote brake, throttle, and steering control at highway speed with no physical access. The attack caused a 1.4 million vehicle recall, the first ever for a cybersecurity issue.</p>
+<h3 id="1511-remote-attack-surface"><span class="secnum">15.1.1</span> Remote Attack Surface<a class="headerlink" href="#1511-remote-attack-surface" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>OBD-II port (SAE J1979):</strong> 16-pin DLC connector. CAN pins 6/14. Full UDS (ISO 14229) access. Service 0x27 Security Access, 0x34/0x36 firmware download. No authentication. Aftermarket 4G/BLE dongles create persistent remote access.</p>
+</li>
+<li>
+<p><strong>V2X (DSRC/C-V2X):</strong> DSRC IEEE 802.11p at 5.9 GHz. C-V2X 3GPP PC5 sidelink. BSM (PSID 0x20) broadcast at 10 Hz. Pre-2019 deployments lacked certificate validation.</p>
+</li>
+<li>
+<p><strong>Cellular TCU:</strong> 4G LTE/5G NR modems in TCUs. Qualcomm MDM9615 CVEs (2014–2016). Cellular often connected to infotainment CAN.</p>
+</li>
+<li>
+<p><strong>Bluetooth:</strong> A2DP, HFP, BLE GATT. BlueBorne 2017 (CVE-2017-0781): RCE without pairing.</p>
+</li>
+<li>
+<p><strong>WiFi 802.11ac:</strong> WPA2-TKIP downgrade, PMKID, KRACK (CVE-2017-13077). Tesla Model 3 WiFi exploit at Pwn2Own 2019.</p>
+</li>
+<li>
+<p><strong>Key fob/PASE:</strong> LF 125 kHz + UHF 315/433/868 MHz. Relay attacks extend to 100 m. Keeloq broken (Courtois 2008).</p>
+</li>
+<li>
+<p><strong>CCC Digital Key/UWB:</strong> NFC ISO 14443 + UWB IEEE 802.15.4z for centimeter ranging. Apple CarKey, Android NFC key.</p>
+</li>
+</ul>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> The OBD-II port provides completely unauthenticated access to all vehicle CAN networks. A rogue 4G-enabled dongle provides persistent remote access to safety systems with no way for the driver to detect the compromise.</p>
+</div>
+<h2 id="sec-ee-arch"><span class="secnum">15.2</span> Automotive E/E Architecture<a class="headerlink" href="#sec-ee-arch" title="Permanent link">&para;</a></h2>
+<p>Three E/E architecture generations define automotive security:</p>
+<ul>
+<li>
+<p><strong>Distributed ECU (pre-2015):</strong> 80–150 dedicated ECUs on separate CAN segments. Gateway ECU (NEC V850, Renesas RH850) routes between segments with no security filtering. Wiring harness 40–60 kg.</p>
+</li>
+<li>
+<p><strong>Domain-based (2015–2025):</strong> Domain Controller ECUs. Domains: Powertrain, Chassis/Safety, ADAS, Infotainment, Body, V2X. Central Gateway NXP S32G274A provides CAN-to-Ethernet bridging with firewall rules. Wiring 30–40 kg.</p>
+</li>
+<li>
+<p><strong>Zone-based (2025+):</strong> Zone ECUs by physical region. 1000BASE-T1 backbone. Software-Defined Vehicle. VW MEB/SSP, Tesla S/X (2021+), GM Ultium. Wiring target under 20 kg.</p>
+</li>
+</ul>
+<h3 id="1521-autosar-classic-and-adaptive"><span class="secnum">15.2.1</span> AUTOSAR Classic and Adaptive<a class="headerlink" href="#1521-autosar-classic-and-adaptive" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Classic CP:</strong> OSEK/VDX RTOS. BSW: COM stack (PDUR, CANIF, SecOC), Memory (NvM, FEE), Crypto (CSM, CRYIF, CRY/SHE driver). ASIL-D brakes, steering, airbag.</p>
+</li>
+<li>
+<p><strong>Adaptive AP:</strong> POSIX Linux/QNX. ara::com (SOME/IP), ara::crypto API. ADAS, OTA, V2X stack. Supports OCI containers.</p>
+</li>
+</ul>
+<figure class="fig fig-diagram" id="fig-auto-ee">
+<img class="tikz" src="img/tikz-dd3be1f9de86.svg" alt="Domain-based Automotive E/E Architecture. Blue double arrows = 1000BASE-T1 Ethernet. Red dashed = CAN bus 500 kbps. Central Gateway NXP S32G274A enforces SecOC MAC verification and firewall. Domain…" loading="lazy">
+<figcaption><strong>Figure 15.1.</strong> Domain-based Automotive E/E Architecture. Blue double arrows = 1000BASE-T1 Ethernet. Red dashed = CAN bus 500 kbps. Central Gateway NXP S32G274A enforces SecOC MAC verification and firewall. Domain ECUs use AURIX TC397 SHE+.</figcaption>
+</figure>
+
+<h2 id="sec-can-sec"><span class="secnum">15.3</span> CAN Bus Security<a class="headerlink" href="#sec-can-sec" title="Permanent link">&para;</a></h2>
+<p>CAN (ISO 11898, Bosch 1986) has no built-in security: no source authentication (any node can forge any arbitration ID), broadcast topology (all nodes receive all frames), plaintext payloads (no encryption), no replay protection, and bus-off DoS via error frame injection.</p>
+<div class="tbl" id="tab-can-attacks">
+<div class="tbl-caption"><strong>Table 15.1.</strong> CAN Attack Vectors and Countermeasures</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Attack</strong></th>
+<th style="text-align: left;"><strong>Mechanism</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+<th style="text-align: left;"><strong>Countermeasure</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Frame injection</td>
+<td style="text-align: left;">Forge arb ID</td>
+<td style="text-align: left;">Any ECU</td>
+<td style="text-align: left;">SecOC AES-CMAC</td>
+</tr>
+<tr>
+<td style="text-align: left;">UDS replay</td>
+<td style="text-align: left;">Record 0x27 seed/key</td>
+<td style="text-align: left;">Security access</td>
+<td style="text-align: left;">Freshness counter</td>
+</tr>
+<tr>
+<td style="text-align: left;">ISO-TP FC inject</td>
+<td style="text-align: left;">Forge flow ctrl</td>
+<td style="text-align: left;">Multi-frame sessions</td>
+<td style="text-align: left;">Session state machine</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bus-off DoS</td>
+<td style="text-align: left;">Error frame flood</td>
+<td style="text-align: left;">Safety ECUs</td>
+<td style="text-align: left;">Error recovery</td>
+</tr>
+<tr>
+<td style="text-align: left;">Firmware reflash</td>
+<td style="text-align: left;">UDS 0x34/0x36/0x37</td>
+<td style="text-align: left;">All ECUs</td>
+<td style="text-align: left;">ECDSA signed firmware</td>
+</tr>
+<tr>
+<td style="text-align: left;">DTC erasure</td>
+<td style="text-align: left;">UDS 0x14</td>
+<td style="text-align: left;">All ECUs</td>
+<td style="text-align: left;">HSM audit log</td>
+</tr>
+<tr>
+<td style="text-align: left;">CAN fuzzing</td>
+<td style="text-align: left;">Random injection</td>
+<td style="text-align: left;">All ECUs</td>
+<td style="text-align: left;">CAN firewall rules</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-secoc"><span class="secnum">15.4</span> CAN SecOC – Secure Onboard Communication<a class="headerlink" href="#sec-secoc" title="Permanent link">&para;</a></h2>
+<p>AUTOSAR SecOC (SWS_SecuredOnboardCommunication, R20-11) adds AES-128-CMAC authentication to CAN, LIN, FlexRay, and Automotive Ethernet PDUs without protocol changes.</p>
+<h3 id="1541-secoc-mac-operation"><span class="secnum">15.4.1</span> SecOC MAC Operation<a class="headerlink" href="#1541-secoc-mac-operation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>MAC input:</strong> DataID[15:0] (16-bit PDU identifier) <span class="arithmatex">\(\|\)</span> AuthenticPDU <span class="arithmatex">\(\|\)</span> FreshnessValue[63:0].</p>
+</li>
+<li>
+<p><strong>MAC compute:</strong> AES-128-CMAC(SecOC_KEY, MAC_input). SecOC_KEY in SHE KEY_n slot.</p>
+</li>
+<li>
+<p><strong>Truncate:</strong> First N bits of 128-bit CMAC (N = 24–64 bits per AUTOSAR config).</p>
+</li>
+<li>
+<p><strong>Assemble:</strong> Secured PDU = AuthPDU <span class="arithmatex">\(\|\)</span> TruncFreshness[3:0] <span class="arithmatex">\(\|\)</span> TruncMAC.</p>
+</li>
+<li>
+<p><strong>Receive:</strong> Expand truncated freshness using stored counter + accept window, verify MAC.</p>
+</li>
+</ol>
+<div class="tbl" id="tab-secoc-config">
+<div class="tbl-caption"><strong>Table 15.2.</strong> SecOC Configuration by CAL Level</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tier</strong></th>
+<th style="text-align: left;"><strong>CAL</strong></th>
+<th style="text-align: left;"><strong>MAC bits</strong></th>
+<th style="text-align: left;"><strong>Fresh bits</strong></th>
+<th style="text-align: left;"><strong>Accept Window</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Safety-critical (ABS, EPS)</td>
+<td style="text-align: left;">CAL 3–4</td>
+<td style="text-align: left;">48–64</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Chassis (TPMS, suspension)</td>
+<td style="text-align: left;">CAL 2–3</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Powertrain (engine, trans)</td>
+<td style="text-align: left;">CAL 2</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Body (lights, HVAC, doors)</td>
+<td style="text-align: left;">CAL 1</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">16</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-she"><span class="secnum">15.5</span> SHE – Secure Hardware Extension<a class="headerlink" href="#sec-she" title="Permanent link">&para;</a></h2>
+<p>HIS SHE Specification v1.1 (2009) developed by BMW, Bosch, Continental, Volkswagen. AES-128-only embedded HSM targeting cost-sensitive ECUs where full EVITA HSM is not economically justified.</p>
+<div class="tbl" id="tab-she-slots">
+<div class="tbl-caption"><strong>Table 15.3.</strong> SHE Key Slot Architecture (HIS SHE v1.1 + SHE+ extensions)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Slot ID</strong></th>
+<th style="text-align: left;"><strong>Name</strong></th>
+<th style="text-align: left;"><strong>Purpose</strong></th>
+<th style="text-align: left;"><strong>Flags</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0x00</td>
+<td style="text-align: left;">SECRET_KEY</td>
+<td style="text-align: left;">Internal KDF, never exposed</td>
+<td style="text-align: left;">Always locked</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x01</td>
+<td style="text-align: left;">MASTER_ECU_KEY</td>
+<td style="text-align: left;">Authorize key updates</td>
+<td style="text-align: left;">WRITE_PROTECT</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x02</td>
+<td style="text-align: left;">BOOT_MAC_KEY</td>
+<td style="text-align: left;">Verify secure boot CMAC</td>
+<td style="text-align: left;">BOOT_PROTECT</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x03</td>
+<td style="text-align: left;">BOOT_MAC</td>
+<td style="text-align: left;">Stored boot firmware MAC</td>
+<td style="text-align: left;">BOOT_PROTECT</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x04</td>
+<td style="text-align: left;">KEY_1</td>
+<td style="text-align: left;">SecOC / user AES-128</td>
+<td style="text-align: left;">Configurable</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x05–0x0E</td>
+<td style="text-align: left;">KEY_2 to KEY_11</td>
+<td style="text-align: left;">User AES-128 keys</td>
+<td style="text-align: left;">Configurable</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x0F</td>
+<td style="text-align: left;">KEY_12</td>
+<td style="text-align: left;">Debug/calibration</td>
+<td style="text-align: left;">DEBUGGER_PROTECT</td>
+</tr>
+<tr>
+<td style="text-align: left;">0x10–0x1F</td>
+<td style="text-align: left;">(SHE+ extensions)</td>
+<td style="text-align: left;">AES-256, ECC, RSA slots</td>
+<td style="text-align: left;">Configurable</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="tbl" id="tab-she-cmds">
+<div class="tbl-caption"><strong>Table 15.4.</strong> SHE v1.1 Command Reference</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Command</strong></th>
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: left;"><strong>Key Slot</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CMD_LOAD_KEY (0x01)</td>
+<td style="text-align: left;">Provision via M1/M2/M3</td>
+<td style="text-align: left;">MASTER_ECU_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_LOAD_PLAIN_KEY (0x02)</td>
+<td style="text-align: left;">Load volatile RAM key</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_EXPORT_RAM_KEY (0x03)</td>
+<td style="text-align: left;">Export encrypted RAM key</td>
+<td style="text-align: left;">MASTER_ECU_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_ENC_ECB (0x04)</td>
+<td style="text-align: left;">AES-128-ECB encrypt/decrypt</td>
+<td style="text-align: left;">KEY_1..KEY_12</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_ENC_CBC (0x05)</td>
+<td style="text-align: left;">AES-128-CBC encrypt/decrypt</td>
+<td style="text-align: left;">KEY_1..KEY_12</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_GENERATE_MAC (0x06)</td>
+<td style="text-align: left;">AES-128-CMAC compute</td>
+<td style="text-align: left;">KEY_1..KEY_12</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_VERIFY_MAC (0x07)</td>
+<td style="text-align: left;">AES-128-CMAC verify</td>
+<td style="text-align: left;">KEY_1..KEY_12</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_INIT_RNG (0x0A)</td>
+<td style="text-align: left;">Initialize PRNG</td>
+<td style="text-align: left;">SECRET_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_EXTEND_SEED (0x0B)</td>
+<td style="text-align: left;">Mix entropy into PRNG</td>
+<td style="text-align: left;">SECRET_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_RND (0x0C)</td>
+<td style="text-align: left;">Generate 128 random bits</td>
+<td style="text-align: left;">PRNG state</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_GET_STATUS (0x0F)</td>
+<td style="text-align: left;">Read 8-bit status register</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_GET_ID (0x10)</td>
+<td style="text-align: left;">Read 96-bit UID + CMAC</td>
+<td style="text-align: left;">MASTER_ECU_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_BOOT_FAILURE (0x11)</td>
+<td style="text-align: left;">Signal boot verify failure</td>
+<td style="text-align: left;">BOOT_MAC_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_BOOT_OK (0x12)</td>
+<td style="text-align: left;">Signal successful boot verify</td>
+<td style="text-align: left;">BOOT_MAC_KEY</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMD_CANCEL (0x13)</td>
+<td style="text-align: left;">Cancel blocking operation</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="subsec-m1m2m3"><span class="secnum">15.5.1</span> CMD_LOAD_KEY Protocol: M1/M2/M3<a class="headerlink" href="#subsec-m1m2m3" title="Permanent link">&para;</a></h3>
+<figure class="fig fig-diagram" id="fig-she-m1m2m3">
+<img class="tikz" src="img/tikz-44c24f932888.svg" alt="SHE CMD_LOAD_KEY Protocol. M1 identifies key slots and ECU UID. M2 is AES-CBC-encrypted new key with monotonic counter preventing replay. M3 authenticates M1+M2 via CMAC proving AuthKey possession.…" loading="lazy">
+<figcaption><strong>Figure 15.2.</strong> SHE CMD_LOAD_KEY Protocol. M1 identifies key slots and ECU UID. M2 is AES-CBC-encrypted new key with monotonic counter preventing replay. M3 authenticates M1+M2 via CMAC proving AuthKey possession. M4+M5 are SHE confirmation messages.</figcaption>
+</figure>
+
+<h2 id="sec-evita"><span class="secnum">15.6</span> EVITA HSM Profiles<a class="headerlink" href="#sec-evita" title="Permanent link">&para;</a></h2>
+<p>EVITA (EU FP7 2008–2011, EUR 8.1M, participants: Bosch, BMW, ESCRYPT, NXP) defined three hardware HSM profiles adopted by AUTOSAR and ISO/SAE 21434.</p>
+<div class="tbl" id="tab-evita">
+<div class="tbl-caption"><strong>Table 15.5.</strong> EVITA HSM Profile Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Full</strong></th>
+<th style="text-align: left;"><strong>Medium</strong></th>
+<th style="text-align: left;"><strong>Light</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Target ECU</td>
+<td style="text-align: left;">Gateway, ADAS</td>
+<td style="text-align: left;">Domain controller</td>
+<td style="text-align: left;">Sensor/actuator</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES-128/256 HW</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSA-2048 HW</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Software only</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECC P-256 HW</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Software only</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHA-256 HW</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Software only</td>
+</tr>
+<tr>
+<td style="text-align: left;">TRNG quality</td>
+<td style="text-align: left;">AIS-31 PTG.2</td>
+<td style="text-align: left;">AIS-31 PTG.2</td>
+<td style="text-align: left;">PRNG only</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure NVM</td>
+<td style="text-align: left;">HW encrypted</td>
+<td style="text-align: left;">Hardware</td>
+<td style="text-align: left;">OTP limited</td>
+</tr>
+<tr>
+<td style="text-align: left;">Physical tamper</td>
+<td style="text-align: left;">Active shielding</td>
+<td style="text-align: left;">Logical only</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure timer</td>
+<td style="text-align: left;">HW monotonic</td>
+<td style="text-align: left;">Hardware</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure boot</td>
+<td style="text-align: left;">ECDSA-P256</td>
+<td style="text-align: left;">ECDSA-P256</td>
+<td style="text-align: left;">AES-CMAC</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHE compatible</td>
+<td style="text-align: left;">Optional SHE+</td>
+<td style="text-align: left;">Yes SHE+</td>
+<td style="text-align: left;">Yes SHE v1.1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Example chip</td>
+<td style="text-align: left;">AURIX TC397</td>
+<td style="text-align: left;">NXP S32K344</td>
+<td style="text-align: left;">RH850/P1x-C</td>
+</tr>
+<tr>
+<td style="text-align: left;">Process node</td>
+<td style="text-align: left;">28nm FDSOI</td>
+<td style="text-align: left;">40nm LP</td>
+<td style="text-align: left;">40nm LP</td>
+</tr>
+<tr>
+<td style="text-align: left;">HSM area</td>
+<td style="text-align: left;">4 mm2</td>
+<td style="text-align: left;">1 mm2</td>
+<td style="text-align: left;">0.3 mm2</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-aurix"><span class="secnum">15.7</span> AURIX TC3xx HSM – Infineon TriCore<a class="headerlink" href="#sec-aurix" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>Main CPU:</strong> 6x TriCore TC1.8E at 300 MHz (3 lockstep pairs, ASIL-D), 16 MB flash, 6.9 MB SRAM.</p>
+</li>
+<li>
+<p><strong>HSM core:</strong> ARM Cortex-M0+ at 200 MHz. Hardware-isolated from TriCore via MPU (8 regions). Inaccessible at any TriCore privilege level.</p>
+</li>
+<li>
+<p><strong>HSM Flash:</strong> 256 KB at 0xAF500000. No read/write/execute from TriCore.</p>
+</li>
+<li>
+<p><strong>HSM SRAM:</strong> 32 KB with hardware access control.</p>
+</li>
+<li>
+<p><strong>AES engine:</strong> AES-128/256 (ECB, CBC, CTR, GCM, CMAC). Throughput 1.28 Gbps AES-128-ECB at 200 MHz.</p>
+</li>
+<li>
+<p><strong>Asymmetric:</strong> RSA-2048 (sign 30 ms, verify 1 ms), RSA-4096 (sign 200 ms), ECC P-256 (scalar mul 2 ms), ECC P-384 (scalar mul 5 ms).</p>
+</li>
+<li>
+<p><strong>Hash:</strong> SHA-256 at 400 MB/s, SHA-384/SHA-512 at 280 MB/s.</p>
+</li>
+<li>
+<p><strong>TRNG:</strong> Ring-oscillator entropy, AIS-31 PTG.2, conditioned via AES-256-CTR-DRBG.</p>
+</li>
+<li>
+<p><strong>SHE+:</strong> HIS SHE v1.1 plus AES-256, ECC, RSA, up to 20 key slots.</p>
+</li>
+<li>
+<p><strong>Secure Boot:</strong> ECDSA-P256 verification of TriCore firmware before CPU release.</p>
+</li>
+<li>
+<p><strong>IPC:</strong> 32 mailbox registers: HSM_HSTx (host to HSM) + HSM_HTSx (HSM to host).</p>
+</li>
+<li>
+<p><strong>Lifecycle:</strong> DEVELOPMENT (writable) to PRODUCTION (eFUSE; Flash locked, debug off).</p>
+</li>
+<li>
+<p><strong>ASIC:</strong> 28nm FDSOI, STMicro Crolles fab. BGA-416, 27x27 mm. AEC-Q100 Grade 1.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-auto-hsm">
+<div class="tbl-caption"><strong>Table 15.6.</strong> Automotive MCU with HSM – Complete Market Survey</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>HSM Core</strong></th>
+<th style="text-align: left;"><strong>Crypto</strong></th>
+<th style="text-align: left;"><strong>Spec</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AURIX TC397</td>
+<td style="text-align: left;">Infineon</td>
+<td style="text-align: left;">ARM M0+ 200 MHz</td>
+<td style="text-align: left;">AES/ECC/RSA/SHA</td>
+<td style="text-align: left;">SHE+</td>
+<td style="text-align: left;">ADAS, chassis</td>
+</tr>
+<tr>
+<td style="text-align: left;">AURIX TC387</td>
+<td style="text-align: left;">Infineon</td>
+<td style="text-align: left;">ARM M0+ 200 MHz</td>
+<td style="text-align: left;">AES/ECC/RSA</td>
+<td style="text-align: left;">SHE+</td>
+<td style="text-align: left;">Powertrain</td>
+</tr>
+<tr>
+<td style="text-align: left;">AURIX TC375</td>
+<td style="text-align: left;">Infineon</td>
+<td style="text-align: left;">ARM M0+ 100 MHz</td>
+<td style="text-align: left;">AES/SHA</td>
+<td style="text-align: left;">SHE</td>
+<td style="text-align: left;">Body, safety</td>
+</tr>
+<tr>
+<td style="text-align: left;">S32K344</td>
+<td style="text-align: left;">NXP</td>
+<td style="text-align: left;">ARM M0+ 100 MHz</td>
+<td style="text-align: left;">AES/RSA/ECC</td>
+<td style="text-align: left;">SHE</td>
+<td style="text-align: left;">Body, chassis</td>
+</tr>
+<tr>
+<td style="text-align: left;">S32G274A</td>
+<td style="text-align: left;">NXP</td>
+<td style="text-align: left;">ARM M0+</td>
+<td style="text-align: left;">AES/RSA/ECC</td>
+<td style="text-align: left;">EVITA Full</td>
+<td style="text-align: left;">Gateway</td>
+</tr>
+<tr>
+<td style="text-align: left;">RH850/U2A</td>
+<td style="text-align: left;">Renesas</td>
+<td style="text-align: left;">ARM M0+</td>
+<td style="text-align: left;">AES/ECC/RSA</td>
+<td style="text-align: left;">SHE+</td>
+<td style="text-align: left;">ADAS, gateway</td>
+</tr>
+<tr>
+<td style="text-align: left;">RH850/P1x-C</td>
+<td style="text-align: left;">Renesas</td>
+<td style="text-align: left;">Dedicated CISC</td>
+<td style="text-align: left;">AES-128 only</td>
+<td style="text-align: left;">SHE v1.1</td>
+<td style="text-align: left;">Body, PT</td>
+</tr>
+<tr>
+<td style="text-align: left;">SPC58xB</td>
+<td style="text-align: left;">STMicro</td>
+<td style="text-align: left;">ARM M0 HSM</td>
+<td style="text-align: left;">AES/RSA/ECC</td>
+<td style="text-align: left;">SHE</td>
+<td style="text-align: left;">Powertrain</td>
+</tr>
+<tr>
+<td style="text-align: left;">SPC58xH</td>
+<td style="text-align: left;">STMicro</td>
+<td style="text-align: left;">ARM M0 HSM</td>
+<td style="text-align: left;">AES/RSA/ECC</td>
+<td style="text-align: left;">EVITA Med</td>
+<td style="text-align: left;">ADAS</td>
+</tr>
+<tr>
+<td style="text-align: left;">TMS570LC4357</td>
+<td style="text-align: left;">Texas Instr</td>
+<td style="text-align: left;">Dual-CPU lockstep</td>
+<td style="text-align: left;">AES-128 HW</td>
+<td style="text-align: left;">SafeTI</td>
+<td style="text-align: left;">Safety</td>
+</tr>
+<tr>
+<td style="text-align: left;">SAME54+ATECC608B</td>
+<td style="text-align: left;">Microchip</td>
+<td style="text-align: left;">ARM M4F + SE</td>
+<td style="text-align: left;">ECC/SHA/AES</td>
+<td style="text-align: left;">No SHE</td>
+<td style="text-align: left;">Telematics</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vector CANoe HSM</td>
+<td style="text-align: left;">Vector</td>
+<td style="text-align: left;">PC emulation</td>
+<td style="text-align: left;">All emulated</td>
+<td style="text-align: left;">SHE emulated</td>
+<td style="text-align: left;">Dev/test</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-v2x"><span class="secnum">15.8</span> V2X Security – IEEE 1609.2 and SCMS<a class="headerlink" href="#sec-v2x" title="Permanent link">&para;</a></h2>
+<h3 id="1581-ieee-16092-certificate-format"><span class="secnum">15.8.1</span> IEEE 1609.2 Certificate Format<a class="headerlink" href="#1581-ieee-16092-certificate-format" title="Permanent link">&para;</a></h3>
+<p>IEEE 1609.2-2022 SignedData: hashId (SHA-256 or SHA-384), tbsData, signer (certificate or HashedId8), signature (EcdsaP256Signature: r = compressed point 33B, s = 32B). Certificate size: approximately 145–200 bytes COER encoded.</p>
+<h3 id="1582-scms-architecture"><span class="secnum">15.8.2</span> SCMS Architecture<a class="headerlink" href="#1582-scms-architecture" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Root CA:</strong> ECDSA-521, offline, 20+ year validity. Thales Luna HSM 7 air-gapped facility. Operated by USDOT-designated CAMP.</p>
+</li>
+<li>
+<p><strong>Enrollment CA (ECA):</strong> 5-year Enrollment Certificates (EC) issued at manufacturing. EC proves vehicle legitimacy to PCA.</p>
+</li>
+<li>
+<p><strong>Pseudonym CA (PCA):</strong> 1-week Pseudonym Certificates (PC) via butterfly key expansion. Blind issuance: PCA cannot link EC to PC.</p>
+</li>
+<li>
+<p><strong>LA1 + LA2:</strong> Independent linkage seed components. LV = PRF(s1, s2, cert_id) embedded in each PC. Both LAs required to de-anonymize.</p>
+</li>
+<li>
+<p><strong>Misbehavior Authority (MA):</strong> Investigates reports, requests seeds from LA1+LA2 jointly.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-v2x-hw">
+<div class="tbl-caption"><strong>Table 15.7.</strong> V2X Hardware Platform Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Radio</strong></th>
+<th style="text-align: left;"><strong>Crypto</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SAF5100 RoadLink</td>
+<td style="text-align: left;">NXP</td>
+<td style="text-align: left;">DSRC 802.11p + C-V2X</td>
+<td style="text-align: left;">ECDSA-256 HSM</td>
+<td style="text-align: left;">OEM TCU</td>
+</tr>
+<tr>
+<td style="text-align: left;">CRATON2</td>
+<td style="text-align: left;">Autotalks</td>
+<td style="text-align: left;">Dual DSRC+C-V2X</td>
+<td style="text-align: left;">ECDSA-256, AES</td>
+<td style="text-align: left;">OEM+Aftermarket</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cohda MK5 OBU</td>
+<td style="text-align: left;">Cohda</td>
+<td style="text-align: left;">802.11p, GPS, CAN</td>
+<td style="text-align: left;">IEEE 1609.2 HSM</td>
+<td style="text-align: left;">RSU + OBU</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cohda MK6 OBU</td>
+<td style="text-align: left;">Cohda</td>
+<td style="text-align: left;">C-V2X PC5, ETH</td>
+<td style="text-align: left;">IEEE 1609.2 HSM</td>
+<td style="text-align: left;">OEM OBU</td>
+</tr>
+<tr>
+<td style="text-align: left;">SXGA3040</td>
+<td style="text-align: left;">Savari</td>
+<td style="text-align: left;">DSRC 5.9 GHz</td>
+<td style="text-align: left;">IEEE 1609.2</td>
+<td style="text-align: left;">Road-side unit</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-uptane"><span class="secnum">15.9</span> Uptane – OTA Security<a class="headerlink" href="#sec-uptane" title="Permanent link">&para;</a></h2>
+<p>Uptane (Linux Foundation Automotive, IEEE/ISTO, production: BMW, GM, Rivian):</p>
+<ul>
+<li>
+<p><strong>Director Repository:</strong> Signs Targets binding image hashes to ECU serial numbers. Director alone cannot install arbitrary images.</p>
+</li>
+<li>
+<p><strong>Image Repository:</strong> Offline-signed (air-gapped HSM) Targets with image hashes. Timestamp: 24-hour expiry. Prevents freeze attacks.</p>
+</li>
+<li>
+<p><strong>Primary ECU:</strong> Fetches + verifies both repositories. Distributes to Secondaries.</p>
+</li>
+<li>
+<p><strong>Secondary ECUs:</strong> Independent crypto verification. Hardware rollback counter (AURIX SMU, eMMC RPMB).</p>
+</li>
+<li>
+<p><strong>ECU Manifest:</strong> Signed firmware inventory report sent to Director periodically.</p>
+</li>
+</ul>
+<h2 id="sec-iso21434"><span class="secnum">15.10</span> ISO/SAE 21434 and UN ECE WP.29 Regulation 155<a class="headerlink" href="#sec-iso21434" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-regs">
+<div class="tbl-caption"><strong>Table 15.8.</strong> Automotive Cybersecurity Regulatory Landscape</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Regulation/Standard</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Key Requirements</strong></th>
+<th style="text-align: left;"><strong>Effective</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ISO/SAE 21434:2021</td>
+<td style="text-align: left;">Engineering standard</td>
+<td style="text-align: left;">CSMS, TARA, CAL 1–4</td>
+<td style="text-align: left;">Aug 2021</td>
+</tr>
+<tr>
+<td style="text-align: left;">UN ECE R155</td>
+<td style="text-align: left;">Type approval</td>
+<td style="text-align: left;">CSMS, incident response</td>
+<td style="text-align: left;">EU Jul 2022</td>
+</tr>
+<tr>
+<td style="text-align: left;">UN ECE R156</td>
+<td style="text-align: left;">Type approval</td>
+<td style="text-align: left;">SUMS, OTA validation</td>
+<td style="text-align: left;">EU Jul 2022</td>
+</tr>
+<tr>
+<td style="text-align: left;">AUTOSAR SecOC</td>
+<td style="text-align: left;">Tech specification</td>
+<td style="text-align: left;">CAN PDU authentication</td>
+<td style="text-align: left;">Continuous</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEEE 1609.2-2022</td>
+<td style="text-align: left;">IEEE standard</td>
+<td style="text-align: left;">V2X certificate security</td>
+<td style="text-align: left;">2022</td>
+</tr>
+<tr>
+<td style="text-align: left;">Uptane standard</td>
+<td style="text-align: left;">IEEE/ISTO</td>
+<td style="text-align: left;">OTA image security</td>
+<td style="text-align: left;">2019+</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> CAL (Cybersecurity Assurance Level) 1–4 in ISO/SAE 21434 mirrors ASIL A–D in ISO 26262. CAL 4 requires penetration testing by independent third party, formal threat analysis, and code review. A brake or steering ECU receiving V2X inputs typically requires CAL 3 or CAL 4 based on TARA outcome.</p>
+</div>
+<h2 id="sec-fpga-auto"><span class="secnum">15.11</span> FPGA Automotive HSM Resource Utilization<a class="headerlink" href="#sec-fpga-auto" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-fpga-auto">
+<div class="tbl-caption"><strong>Table 15.9.</strong> FPGA Automotive HSM Implementation Results</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Function</strong></th>
+<th style="text-align: left;"><strong>FPGA Device</strong></th>
+<th style="text-align: left;"><strong>LUTs</strong></th>
+<th style="text-align: left;"><strong>FFs</strong></th>
+<th style="text-align: left;"><strong>BRAMs</strong></th>
+<th style="text-align: left;"><strong>MHz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AES-128-CMAC engine</td>
+<td style="text-align: left;">PolarFire MPF025T</td>
+<td style="text-align: left;">1,850</td>
+<td style="text-align: left;">1,200</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">125</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHE controller full</td>
+<td style="text-align: left;">PolarFire MPF025T</td>
+<td style="text-align: left;">3,200</td>
+<td style="text-align: left;">2,400</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECDSA P-256 verify</td>
+<td style="text-align: left;">PolarFire MPF025T</td>
+<td style="text-align: left;">8,500</td>
+<td style="text-align: left;">6,000</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">80</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHE+ (AES+ECC+RSA)</td>
+<td style="text-align: left;">PolarFire MPF095T</td>
+<td style="text-align: left;">22,000</td>
+<td style="text-align: left;">15,000</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">90</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES-128-CBC</td>
+<td style="text-align: left;">Zynq-7020 Auto</td>
+<td style="text-align: left;">1,200</td>
+<td style="text-align: left;">900</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">SecOC engine</td>
+<td style="text-align: left;">Zynq-7020 Auto</td>
+<td style="text-align: left;">2,800</td>
+<td style="text-align: left;">2,100</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">150</td>
+</tr>
+<tr>
+<td style="text-align: left;">V2X ECDSA P-256 sign</td>
+<td style="text-align: left;">Zynq UltraScale+ EV</td>
+<td style="text-align: left;">9,200</td>
+<td style="text-align: left;">6,800</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">150</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Microsemi PolarFire (MPF025T–MPF300T) is AEC-Q100 Grade 1 automotive-qualified with non-volatile flash configuration cells eliminating the bitstream readback vulnerability of SRAM FPGAs. The TRNG meets AIS-31 PTG.3. PolarFire is the preferred FPGA for automotive HSM prototyping.</p>
+</div>
+<h2 id="1512-c-code-she-cmd_load_key"><span class="secnum">15.12</span> C Code: SHE CMD_LOAD_KEY<a class="headerlink" href="#1512-c-code-she-cmd_load_key" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>/* SHE CMD_LOAD_KEY HIS SHE v1.1 */
+#include &lt;stdint.h&gt;
+</code></pre></div>
+<h2 id="1513-c-code-she-cmd_load_key"><span class="secnum">15.13</span> C Code: SHE CMD_LOAD_KEY<a class="headerlink" href="#1513-c-code-she-cmd_load_key" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>/* SHE CMD_LOAD_KEY HIS SHE v1.1 */
+#include &lt;stdint.h&gt;
+</code></pre></div>
+<h2 id="sec-ch15-problems"><span class="secnum">15.14</span> Solved Problems<a class="headerlink" href="#sec-ch15-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: SHE CMD_LOAD_KEY M1/M2/M3 Calculation</p>
+<p>Provision KEY_1 (slot 0x04) into AURIX TC397. MASTER_ECU_KEY = <code>0x000102030405060708090A0B0C0D0E0F</code>, UID (15 bytes) = <code>0x01234567890ABCDEF012340000000000</code>, new KEY_1 = <code>0x404142434445464748494A4B4C4D4E4F</code>, counter = 1, flags = 0x04. Derive K1, construct M1, describe M2 structure, specify M3 input.</p>
+<p><strong>Solution:</strong> <strong>Step 1: KDF Constants (HIS SHE v1.1, Table 1)</strong></p>
+<p>CONST_ENC = <code>01 01 53 48 45 00 80 00 00 00 00 00 00 00 00 B0</code></p>
+<p>CONST_MAC = <code>01 02 53 48 45 00 80 00 00 00 00 00 00 00 00 B0</code></p>
+<p><strong>Step 2: Derive K1 – Miyaguchi-Preneel Compression</strong></p>
+<p><span class="arithmatex">\(K_1 = \text{AES}(\text{AuthKey}, \text{CONST\_ENC}) \oplus \text{CONST\_ENC} \oplus \text{AuthKey}\)</span></p>
+<p><strong>Step 3: Build M1 (16 bytes)</strong></p>
+<p>Byte 15 = <span class="arithmatex">\((0x04 \ll 4) \mid 0x01 =\)</span> <code>0x41</code>. M1 = <code>01 23 45 67 89 0A BC DE F0 12 34 00 00 00 00 41</code></p>
+<p><strong>Step 4: M2 Plaintext (32 bytes)</strong></p>
+<p>Word 0 = <span class="arithmatex">\((\text{counter} \ll 4) \mid \text{flags} = (1 \ll 4) \mid 4 = \texttt{0x14}\)</span>. Bytes 0–3: <code>00 00 00 14</code>. Bytes 4–19: new key. Bytes 20–31: zero.</p>
+<p><strong>Step 5: Encrypt M2 = AES-128-CBC(K1, IV=0, M2plain)</strong></p>
+<p>Block 1 input = M2plain[0..15] XOR 0x00..00. Block 2 input = M2plain[16..31] XOR Block1 ciphertext (CBC chaining).</p>
+<p><strong>Step 6: M3 = AES-128-CMAC(K2, M1 <span class="arithmatex">\(\|\)</span> M2)</strong></p>
+<p>48 bytes (3 AES blocks). CMAC output: 16-byte authentication tag proving possession of AuthKey.</p>
+<p><strong>Step 7: SHE Verification</strong></p>
+<p>SHE re-derives K2, verifies M3 CMAC, re-derives K1, decrypts M2, checks counter (1 &gt; 0), stores KEY_1, returns M4+M5 confirmation.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: CAN SecOC Freshness Counter Design for EPS ECU</p>
+<p>Design SecOC freshness for EPS ECU: 100 Hz CAN, 8-byte frame, 6-byte authentic PDU, 2-byte SecOC trailer. Requirements: no cross-ignition replay, tolerate 5 missed messages.</p>
+<p><strong>Solution:</strong> <strong>Step 1: Trailer Space Analysis</strong></p>
+<p>Available: 8 - 6 = 2 bytes = 16 bits for SecOC trailer (TruncFreshness + TruncMAC).</p>
+<p><strong>Step 2: Full Freshness Counter Structure (64-bit, NvM-persisted)</strong></p>
+<ul>
+<li>
+<p>Bits 63..48: Trip counter (16 bits). Incremented at ignition ON. NvM-persisted.</p>
+</li>
+<li>
+<p>Bits 47..40: ECU reset counter (8 bits). Incremented at ECU reset within trip.</p>
+</li>
+<li>
+<p>Bits 39..32: Reserved (8 bits, zero).</p>
+</li>
+<li>
+<p>Bits 31..0: Message counter (32 bits, 100 Hz). Capacity: <span class="arithmatex">\(2^{32}/100 \approx 497\)</span> days.</p>
+</li>
+</ul>
+<p><strong>Step 3: Truncation for 16-bit Trailer</strong></p>
+<p>TF (Truncated Freshness): 4 bits = bits 3..0 of message counter. TM (Truncated MAC): 12 bits = bits 127..116 of CMAC. Byte 6: TF[3:0] | TM[11:8]. Byte 7: TM[7:0].</p>
+<p><strong>Step 4: Accept Window</strong></p>
+<p>Window = 8: accepts [N, N+7] mod 16. Tolerates 7 missed messages <span class="arithmatex">\(\geq 5\)</span>. Satisfied.</p>
+<p><strong>Step 5: Cross-Ignition Replay Prevention</strong></p>
+<p>NvM persist at ignition OFF. Ignition ON: increment trip bits 63..48, zero bits 31..0, write NvM. Captured frames from trip T have trip counter T. In trip T+1 MAC input includes trip counter T+1, so old MAC fails verification.</p>
+<p><strong>Step 6: Security Analysis</strong></p>
+<p>12-bit MAC: brute force probability 1/4096 per attempt. At 100 Hz: 100/4096 = 2.4% per second. For CAL-3 (safety-critical EPS): upgrade to CAN FD 12-byte, use 24-bit MAC (3 bytes). Brute force: 100/16777216 = 0.0006% per second. Meets CAL-3 requirement.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: V2X Pseudonym Certificate Pool Sizing</p>
+<p>Fleet of 500,000 vehicles: urban 2 hr/day (10 rotations/hr), highway 2 hr/day (1 rotation/hr), 5-day weekday + weekend. Cert size 200 bytes. Calculate certs/vehicle/week, PCA signing rate, storage/vehicle.</p>
+<p><strong>Solution:</strong> <strong>Step 1: Rotations per Vehicle per Week</strong></p>
+<p>Urban weekday: <span class="arithmatex">\(10 \times 2 \times 5 = 100\)</span>. Highway weekday: <span class="arithmatex">\(1 \times 2 \times 5 = 10\)</span>. Weekend urban (2 days, 2 hr each): <span class="arithmatex">\(10 \times 2 \times 2 = 40\)</span>. Weekend highway: <span class="arithmatex">\(1 \times 2 \times 2 = 4\)</span>. Total: <span class="arithmatex">\(100 + 10 + 40 + 4 = 154\)</span>. With 20% margin: <span class="arithmatex">\(\lceil 154 \times 1.2 \rceil = 185\)</span> certs/vehicle/week.</p>
+<p><strong>Step 2: PCA Backend Signing Rate</strong></p>
+<p>Fleet weekly demand: <span class="arithmatex">\(500{,}000 \times 185 = 92.5\text{M}\)</span> certs/week. Average rate: <span class="arithmatex">\(92.5\text{M} / 604{,}800 \approx 153\)</span> ECDSA-P256 signs/second. Peak factor 5x (Monday morning): <span class="arithmatex">\(153 \times 5 = 765\)</span> signs/second. Thales Luna HSM 7 ECDSA-P256: 10,000 ops/sec. Required: 1 HSM. Deploy 3 for HA.</p>
+<p><strong>Step 3: Storage per Vehicle</strong></p>
+<p>Certificates: <span class="arithmatex">\(185 \times 200 = 37{,}000\)</span> bytes = 36 KB. Private keys (32B each): <span class="arithmatex">\(185 \times 32 = 5{,}920\)</span> bytes = 5.8 KB. Metadata: <span class="arithmatex">\(185 \times 20 = 3{,}700\)</span> bytes = 3.6 KB. Total: 46.6 KB. Private keys in NXP SE050 (50 KB NVM). Certs + metadata in eMMC RPMB partition.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TARA Analysis: Rogue OBD-II Dongle Attack</p>
+<p>Perform ISO/SAE 21434 Clause 15 TARA for: rogue OBD-II dongle (ESP32+SIM800L+TJA1050, &#36;15 BOM) shipped to fleet manager. Provides bidirectional 4G CAN bus access to attacker C2. Identify assets, STRIDE threats, attack path, damage, risk value, countermeasures.</p>
+<p><strong>Solution:</strong> <strong>Step 1: Asset Identification</strong></p>
+<p>Safety: ABS, ESP, EPS, engine management, airbag. Privacy: GPS trip history, driver behavior, VIN. Financial: odometer, insurance telemetry. Operational: fleet routing, maintenance data.</p>
+<p><strong>Step 2: STRIDE Threats</strong></p>
+<ul>
+<li>
+<p>S: Inject arb ID 0x1A0 (wheel speed cluster), data=0x00x8. ABS deactivates at 100 km/h.</p>
+</li>
+<li>
+<p>T: UDS 0x34/0x36/0x37 ECU reflash if 0x27 seed/key is XOR-based.</p>
+</li>
+<li>
+<p>R: UDS 0x14 ClearDTC erases all DTCs and event data records.</p>
+</li>
+<li>
+<p>I: UDS 0x22 reads VIN (0xF190), odometer (0xF4B1), GPS, key handles.</p>
+</li>
+<li>
+<p>D: Error frame flood drives ABS ECU TEC above 255. Bus-Off state.</p>
+</li>
+<li>
+<p>E: UDS 0x27 brute-force XOR seed/key. Engineering session unlock.</p>
+</li>
+</ul>
+<p><strong>Step 3: Attack Path</strong></p>
+<p>C2 <span class="arithmatex">\(\to\)</span> 4G <span class="arithmatex">\(\to\)</span> ESP32 <span class="arithmatex">\(\to\)</span> TJA1050 <span class="arithmatex">\(\to\)</span> OBD-II pins 6/14 <span class="arithmatex">\(\to\)</span> ID=0x1A0, data=0x00x8 at 100 Hz. ABS sees zero wheel speed. Driver brakes at 100 km/h. Wheels lock. Vehicle crashes.</p>
+<p><strong>Step 4: Damage</strong></p>
+<p>Severity S3 (ISO/SAE 21434): severe injuries or fatalities. Controllability C3: not controllable by average driver.</p>
+<p><strong>Step 5: Feasibility</strong></p>
+<p>Elapsed time: <span class="arithmatex">\(&lt; 1\)</span> day. Expertise: Advanced. Knowledge: Restricted-to-Public (opendbc). Equipment: ?. Attack potential: HIGH (4/5 EVITA scale).</p>
+<p><strong>Step 6: Risk Value</strong></p>
+<p>ISO/SAE 21434 5x5 matrix: Impact = 5 (S3), Feasibility = 4 (HIGH). Risk Level = 5 (Unacceptable). CAL requirement = CAL 4.</p>
+<p><strong>Step 7: Countermeasures and Residual Risk</strong></p>
+<p>C1: CAN SecOC CMAC on all safety PDUs (0x1A0, 0x200). Unsigned frames rejected. Stops injection. C2: OBD-II CAN firewall (NXP S32G): whitelist diagnostic PIDs only. C3: UDS 0x27 via ECDSA HSM challenge-response. Cannot brute-force. C4: CAN IDPS anomaly detection. C5: Physical OBD-II port lock (NFC release). Residual risk after C1+C2+C3: Risk Level 2 (Acceptable).</p>
+</div>
+<h2 id="sec-ch15-recent"><span class="secnum">15.15</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch15-recent" title="Permanent link">&para;</a></h2>
+<p>The period 2023–2026 marks the transition from voluntary automotive cybersecurity measures to mandatory regulatory enforcement, with new V2X hardware generations, the Tesla HW4 security architecture, advanced HSM silicon, hardware-enforced OTA security, and AUTOSAR SecOC hardware requirements standardised for zone-based E/E architectures.</p>
+<h3 id="15151-isosae-214342021-and-unece-wp29-r155-enforcement-2024"><span class="secnum">15.15.1</span> ISO/SAE 21434:2021 and UNECE WP.29 R155 Enforcement (2024)<a class="headerlink" href="#15151-isosae-214342021-and-unece-wp29-r155-enforcement-2024" title="Permanent link">&para;</a></h3>
+<p>UNECE Regulation 155 (R155) required all new vehicle type approvals in the European Union, Japan, and South Korea to demonstrate a certified Cybersecurity Management System (CSMS) from July 2022. The critical 2024 enforcement milestone extended this requirement to <em>all newly manufactured vehicles</em> (not just new type approvals):</p>
+<div class="tbl" id="tab-r155-enforcement">
+<div class="tbl-caption"><strong>Table 15.10.</strong> R155 / ISO 21434 enforcement timeline and hardware implications</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Date</strong></th>
+<th style="text-align: left;"><strong>Requirement</strong></th>
+<th style="text-align: left;"><strong>Hardware impact</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Jul 2022</td>
+<td style="text-align: left;">New type approvals: CSMS mandatory (EU/JP/KR)</td>
+<td style="text-align: left;">HSM mandatory for CAL 3+ ECUs</td>
+</tr>
+<tr>
+<td style="text-align: left;">Jul 2024</td>
+<td style="text-align: left;"><strong>All new vehicles</strong> (EU/JP/KR): CSMS mandatory</td>
+<td style="text-align: left;">SHE+ or EVITA in all safety ECUs</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025+</td>
+<td style="text-align: left;">China GB/T 44464 equivalent (draft)</td>
+<td style="text-align: left;">Domestic HSM requirements expected</td>
+</tr>
+<tr>
+<td style="text-align: left;">2026</td>
+<td style="text-align: left;">R156 (OTA): signed update mandatory globally</td>
+<td style="text-align: left;">RPMB / hardware rollback counter</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> ISO/SAE 21434:2021 does not mandate specific hardware; it requires that the TARA outcome drives hardware selection. In practice, CAL 3 and CAL 4 items (safety-critical brake, steering, engine management ECUs receiving external inputs) universally require hardware HSMs (SHE+ or EVITA Medium/Full) to achieve the cryptographic protection strength required.</p>
+</div>
+<h3 id="15152-v2x-pki-c-v2x-5g-nr-v2x-vs-dsrc-hardware-comparison"><span class="secnum">15.15.2</span> V2X PKI: C-V2X (5G NR-V2X) vs. DSRC Hardware Comparison<a class="headerlink" href="#15152-v2x-pki-c-v2x-5g-nr-v2x-vs-dsrc-hardware-comparison" title="Permanent link">&para;</a></h3>
+<p>The V2X hardware ecosystem bifurcated in 2023–2024 between legacy DSRC (IEEE 802.11p, OBD-deployed) and C-V2X (3GPP Rel-16 NR-V2X PC5) in new OEM deployments:</p>
+<div class="tbl" id="tab-v2x-comparison">
+<div class="tbl-caption"><strong>Table 15.11.</strong> C-V2X vs. DSRC hardware security comparison (2024 production)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>DSRC (802.11p)</strong></th>
+<th style="text-align: left;"><strong>C-V2X (NR-V2X PC5)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Radio</td>
+<td style="text-align: left;">5.9 GHz, 10 MHz channels</td>
+<td style="text-align: left;">5.9 GHz PC5 Rel-16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hardware</td>
+<td style="text-align: left;">NXP SAF5100, Cohda MK5</td>
+<td style="text-align: left;">Qualcomm FSM10055, NXP SAF5400</td>
+</tr>
+<tr>
+<td style="text-align: left;">HSM</td>
+<td style="text-align: left;">Integrated ECDSA-P256</td>
+<td style="text-align: left;">Integrated ECDSA-P256 + SEV</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pseudonym certs</td>
+<td style="text-align: left;">IEEE 1609.2 (COER)</td>
+<td style="text-align: left;">IEEE 1609.2 (same format)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Latency</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>2 ms (no network dep.)</td>
+<td style="text-align: left;">1–4 ms (Uu-free PC5)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Certificate issuance latency</td>
+<td style="text-align: left;">SCMS offline batch</td>
+<td style="text-align: left;">SCMS online (<span class="math inline">\(&lt;\)</span>100 ms)</td>
+</tr>
+<tr>
+<td style="text-align: left;">CNSA 2.0 readiness</td>
+<td style="text-align: left;">Requires upgrade to P-384</td>
+<td style="text-align: left;">P-384 in Rel-18 draft</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>The NXP SAF5400 (C-V2X, 2023) integrates the IEEE 1609.2 certificate management and signing engine into a single SoC with dedicated HSM (Arm Cortex-M7 at 400 MHz), supporting concurrent ECDSA-P256 signing at 5,000 ops/s for dense-traffic 10 Hz BSM broadcast scenarios (<span class="arithmatex">\(\approx 500\)</span> simultaneous peer vehicles per intersection).</p>
+<h3 id="15153-tesla-full-self-driving-computer-hw4-2023-security-architecture"><span class="secnum">15.15.3</span> Tesla Full Self-Driving Computer HW4 (2023) Security Architecture<a class="headerlink" href="#15153-tesla-full-self-driving-computer-hw4-2023-security-architecture" title="Permanent link">&para;</a></h3>
+<p>Tesla Hardware 4 (HW4, introduced in Model S/3/X/Y from late 2022, widely deployed 2023) represents the current state-of-the-art in OEM FSD security:</p>
+<ul>
+<li>
+<p><strong>SoC:</strong> Samsung 7 nm dual-chip configuration, each with two FSD neural network accelerators (ASIC NPUs), ARM Cortex-A72 application cluster, and an isolated security domain.</p>
+</li>
+<li>
+<p><strong>Secure Boot:</strong> Four-stage measured boot (BootROM <span class="arithmatex">\(\to\)</span> BL1 <span class="arithmatex">\(\to\)</span> TF-A <span class="arithmatex">\(\to\)</span> FSD OS) with per-stage ECDSA-P384 signature verification. Boot measurements are extended into an internal PCR-equivalent register and signed with the device’s unique key before any network connection is permitted.</p>
+</li>
+<li>
+<p><strong>Camera pipeline isolation:</strong> Camera ISP data paths are routed through SMMU-protected DMA channels; the FSD NPU can only DMA from designated camera buffer regions, preventing cross-sensor data leakage.</p>
+</li>
+<li>
+<p><strong>OTA attestation:</strong> Each OTA delta package is verified by an ECDSA-P384 Tesla production key. HW4 adds a monotonic hardware counter (in SEC NVM) that prevents downgrade to a previous signed version even if the attacker presents a valid old signature.</p>
+</li>
+<li>
+<p><strong>Tamper detection:</strong> HW4 implements a silicon-level physical tamper detector (differential voltage monitor on SEC domain VDD) that triggers erasure of the device attestation key if VDD deviation exceeds <span class="arithmatex">\(\pm\)</span>3% for more than 10 <span class="arithmatex">\(\mu\)</span>s.</p>
+</li>
+</ul>
+<h3 id="15154-automotive-hsm-infineon-she-and-nxp-se050-automotive-grade"><span class="secnum">15.15.4</span> Automotive HSM: Infineon SHE+ and NXP SE050 Automotive Grade<a class="headerlink" href="#15154-automotive-hsm-infineon-she-and-nxp-se050-automotive-grade" title="Permanent link">&para;</a></h3>
+<p>Two HSM products targeting emerging automotive requirements (post-quantum readiness, EVITA Full performance, and ISO 26262 ASIL-B/D qualification):</p>
+<p><strong>Infineon SHE+ v1.2 (2024 firmware, AURIX TC3xx):</strong> Adds optional ML-DSA-44 (FIPS 204) verification to the existing ECDSA-P384 secure boot chain via an HSM firmware extension, enabling hybrid classical + post-quantum firmware signature verification for vehicles with a 2035 end-of-life target aligned with CNSA 2.0.</p>
+<p><strong>NXP SE050 Automotive (AEC-Q100 Grade 2, 2023):</strong> Extends the commercial SE050 secure element with:</p>
+<ul>
+<li>
+<p>Operating range: <span class="arithmatex">\(-40\)</span> to <span class="arithmatex">\(+105\)</span> <span class="arithmatex">\(^\circ\)</span>C (Grade 2)</p>
+</li>
+<li>
+<p>AEC-Q100 qualification: 1000 h HTOL, 85<span class="arithmatex">\(^\circ\)</span>C/85% RH THB</p>
+</li>
+<li>
+<p>I2C interface: 1 MHz Fast-Mode+, fault-tolerant framing for CAN gateway integration</p>
+</li>
+<li>
+<p>Key capacity: 12 ECDSA-P256 key slots, 4 ECC-P384, 3 AES-256</p>
+</li>
+<li>
+<p>Certifications: CC EAL6+ (same as commercial SE050), ISO 26262 ASIL-B for safety-relevant key operations (secure boot signing key management)</p>
+</li>
+</ul>
+<h3 id="15155-ota-hardware-security-signed-rollback-protection"><span class="secnum">15.15.5</span> OTA Hardware Security: Signed Rollback Protection<a class="headerlink" href="#15155-ota-hardware-security-signed-rollback-protection" title="Permanent link">&para;</a></h3>
+<p>UNECE R156 (Software Update Management System, SUMS) requires hardware-enforced rollback prevention as a mandatory feature of OTA update systems from 2024. Hardware rollback counter implementations in production:</p>
+<div class="tbl" id="tab-ota-rollback">
+<div class="tbl-caption"><strong>Table 15.12.</strong> Automotive OTA rollback prevention hardware mechanisms</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Mechanism</strong></th>
+<th style="text-align: left;"><strong>Hardware</strong></th>
+<th style="text-align: left;"><strong>Security property</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">eMMC RPMB (Replay Protected Memory Block)</td>
+<td style="text-align: left;">eMMC 5.1 (Micron, Kioxia)</td>
+<td style="text-align: left;">32-bit counter signed by device-unique HMAC key</td>
+</tr>
+<tr>
+<td style="text-align: left;">AURIX TC3xx NvM SMU</td>
+<td style="text-align: left;">Infineon TriCore SMU</td>
+<td style="text-align: left;">32-bit monotonic NvM counter, HSM-protected</td>
+</tr>
+<tr>
+<td style="text-align: left;">eFUSE version counter</td>
+<td style="text-align: left;">Multiple MCUs</td>
+<td style="text-align: left;">Blow-once per update: irreversible version lock</td>
+</tr>
+<tr>
+<td style="text-align: left;">Uptane hardware counter</td>
+<td style="text-align: left;">AURIX + eMMC RPMB</td>
+<td style="text-align: left;">Dual-source mutual verification</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> eFUSE-based version counters are irreversible – each software update permanently blows one fuse bit. For a vehicle with 150 ECUs and 25-year lifetime, a 32-bit eFUSE counter supports at most 32 updates per ECU. Uptane with eMMC RPMB provides equivalent security with unlimited update cycles and is preferred for gateway and infotainment ECUs.</p>
+</div>
+<h3 id="15156-autosar-secoc-hardware-requirements-for-zone-ee-architectures"><span class="secnum">15.15.6</span> AUTOSAR SecOC Hardware Requirements for Zone E/E Architectures<a class="headerlink" href="#15156-autosar-secoc-hardware-requirements-for-zone-ee-architectures" title="Permanent link">&para;</a></h3>
+<p>The AUTOSAR R22-11 SecOC specification (Secure Onboard Communication) has been updated for zone-based E/E architectures (2024 baseline):</p>
+<ul>
+<li>
+<p><strong>Ethernet SecOC:</strong> MACsec (IEEE 802.1AE) is now the mandatory link-layer security for 1000BASE-T1 backbone links in zone-based architectures, replacing per-PDU CMAC for backbone traffic. Zone ECUs must include a MACsec-capable Ethernet PHY (NXP TJA1120, 2023).</p>
+</li>
+<li>
+<p><strong>CAN FD SecOC latency:</strong> For safety-critical PDUs at 10 ms cycle time, the SecOC CMAC computation must complete within 2 ms. This requires hardware AES-CMAC acceleration; software-only implementations on Cortex-M4 at 120 MHz cannot meet this requirement for 64-bit MAC lengths.</p>
+</li>
+<li>
+<p><strong>Key freshness via HSM:</strong> The freshness value provider (FvP) must be backed by a hardware monotonic counter in the HSM, not a software counter, to prevent FvP manipulation by a compromised host CPU.</p>
+</li>
+<li>
+<p><strong>Hardware crypto requirement:</strong> AUTOSAR R22-11 formally mandates that AES-CMAC for CAL 3 and CAL 4 PDUs must be computed in an HSM subsystem isolated from the main CPU, citing the SHE+ or EVITA Light specification as the minimum acceptable implementation.</p>
+</li>
+</ul>
+<h2 id="sec-ch15-ex"><span class="secnum">15.16</span> Exercises<a class="headerlink" href="#sec-ch15-ex" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Describe the three fundamental security weaknesses of CAN (ISO 11898). For each, provide a specific attack with the exact arbitration ID, injected payload, affected ECU, and resulting vehicle behavior.</p>
+</li>
+<li>
+<p>SHE mandates AES-128 only. Grover algorithm reduces post-quantum security to 64-bit effective. Assess whether AES-128 SecOC keys are adequate for vehicles in service until 2045 and describe the SHE+ migration path.</p>
+</li>
+<li>
+<p>Design a complete SecOC configuration table for 20 CAN PDUs across three security tiers (safety 5 ms, chassis 20 ms, body 100 ms). Specify CAN FD payload, authentic PDU size, truncated freshness bits, truncated MAC bits, accept window, and brute-force attack time for each tier.</p>
+</li>
+<li>
+<p>A factory provisioned 50,000 AURIX TC397 ECUs with the same MASTER_ECU_KEY value. An attacker extracts the key via fault injection. Assess the blast radius and design a remote re-keying procedure using only CMD_LOAD_KEY.</p>
+</li>
+<li>
+<p>Reconstruct the 2015 Jeep Cherokee attack chain: (a) Sprint cellular IP port 6667, (b) QNX D-Bus IPC escalation, (c) Harman HU firmware update, (d) DPIM CAN firmware rewrite. Identify CVSS v3.1 score for each step.</p>
+</li>
+<li>
+<p>IEEE 1609.2 uses ECDSA P-256 (64-byte sig). A post-quantum extension proposes ML-DSA-44 (2420-byte sig). Calculate maximum V2X vehicles per km2 broadcasting BSMs at 10 Hz on DSRC 10 MHz channel at 6 Mbps, 50% efficiency. Compare P-256 vs. ML-DSA-44.</p>
+</li>
+<li>
+<p>Explain the SCMS butterfly key expansion scheme. Show how a single enrollment certificate request produces 20 unique pseudonym keypairs without the PCA learning the vehicle identity.</p>
+</li>
+<li>
+<p>Uptane requires Director + Image repository dual signatures. Construct a specific attack where Director is fully compromised but Image repository (offline keys) prevents arbitrary firmware installation. Show the verification failure sequence.</p>
+</li>
+<li>
+<p>Perform TARA for V2X BSM spoofing: attacker broadcasts 50 phantom BSMs claiming braking at 0 km/h on a highway on-ramp. Identify damage scenarios for ADAS cooperative collision avoidance. Propose countermeasures at PHY, MAC, and ADAS application layers.</p>
+</li>
+<li>
+<p>The AURIX TC397 HSM IPC uses 32 mailbox registers. Identify the TOCTOU vulnerability where TriCore modifies command buffer between HSM reading header and parameters. Describe the parameter snapshotting mitigation.</p>
+</li>
+<li>
+<p>UN ECE Regulation 155 requires OEMs to report cybersecurity incidents. An OEM discovers a remotely exploitable buffer overflow in 800,000 production vehicles. Write the complete incident response plan from T+0 to T+72h including regulatory notification and patch deployment strategy.</p>
+</li>
+<li>
+<p>Implement in Python using the <code>cryptography</code> library a SHE CMD_VERIFY_MAC function: given 16-byte key, message (hex string), reference MAC (hex string), and truncation N bytes (1–16), compute AES-128-CMAC and return VERIFICATION_PASSED or VERIFICATION_FAILED. Validate against NIST SP 800-38B test vector 1: key=<code>2B7E151628AED2A6ABF7158809CF4F3C</code>, empty message, expected MAC=<code>BB1D6929E95937287FA37D129B756746</code>.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch14-hardware-attestation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 14. Hardware Attestation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                14. Hardware Attestation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch16-post-quantum-cryptography-hardware.html" class="md-footer__link md-footer__link--next" aria-label="Next: 16. Post-Quantum Cryptography Hardware">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                16. Post-Quantum Cryptography Hardware
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

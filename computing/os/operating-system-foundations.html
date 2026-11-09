@@ -1,0 +1,3384 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/computing/os/operating-system-foundations.html">
+  
+  
+    <link rel="prev" href="how-to-read-this-guide.html">
+  
+  
+    <link rel="next" href="processes-threads-scheduling-concurrency.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>1. Operating System Foundations - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#11-what-an-operating-system-does" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1. Operating System Foundations
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Operating Systems, Containers & Kubernetes</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operating System Foundations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="operating-system-foundations.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operating System Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-an-operating-system-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What an Operating System Does
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 What an Operating System Does">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-what-your-os-is-managing-right-now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See what your OS is managing right now
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-the-hardware-an-os-manages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 The Hardware an OS Manages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 The Hardware an OS Manages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-your-cpu-memory-and-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect your CPU, memory and disks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-kernel-space-vs-user-space-and-privilege-rings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Kernel Space vs User Space and Privilege Rings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Kernel Space vs User Space and Privilege Rings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-time-spent-in-user-mode-vs-kernel-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch time spent in user mode vs kernel mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-system-calls-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 System Calls End to End
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 System Calls End to End">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-every-system-call-a-command-makes-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch every system call a command makes (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-interrupts-exceptions-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Interrupts, Exceptions and Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5 Interrupts, Exceptions and Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-interrupts-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch interrupts arrive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-os-architectures-monolithic-microkernel-hybrid-unikernel-exokernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 OS Architectures: Monolithic, Microkernel, Hybrid, Unikernel, Exokernel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 OS Architectures: Monolithic, Microkernel, Hybrid, Unikernel, Exokernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-the-loadable-pieces-of-your-monolithic-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See the loadable pieces of your monolithic kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-inside-a-kernel-a-map-of-the-main-subsystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Inside a Kernel: A Map of the Main Subsystems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7 Inside a Kernel: A Map of the Main Subsystems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-browse-the-linux-kernels-subsystem-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Browse the Linux kernel's subsystem layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-types-of-operating-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 Types of Operating Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.8 Types of Operating Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-what-kind-of-system-are-you-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: What kind of system are you on?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-the-boot-process-from-power-on-to-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 The Boot Process: From Power-On to Login
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9 The Boot Process: From Power-On to Login">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-how-your-machine-booted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect how your machine booted
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-posix-and-the-single-unix-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 POSIX and the Single UNIX Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10 POSIX and the Single UNIX Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-your-system-about-posix-values-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask your system about POSIX values and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-a-short-history-of-operating-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.11 A Short History of Operating Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11 A Short History of Operating Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-spot-your-unix-heritage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Spot your Unix heritage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-the-os-landscape-and-market-shares-in-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.12 The OS Landscape and Market Shares in 2026
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12 The OS Landscape and Market Shares in 2026">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-identify-your-own-os-precisely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Identify your own OS precisely
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-shells-and-command-line-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.13 Shells and Command-Line Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.13 Shells and Command-Line Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-your-first-ten-minutes-at-a-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Your first ten minutes at a shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="processes-threads-scheduling-concurrency.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Processes, Threads, Scheduling & Concurrency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="memory-management-file-systems-i-o.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Memory Management, File Systems & I/O
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linux-in-depth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linux in Depth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="windows-macos-mobile-specialised-operating-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Windows, macOS, Mobile & Specialised Operating Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="virtualization-hypervisors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Virtualization & Hypervisors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="containers-in-depth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Containers in Depth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="kubernetes-in-depth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Kubernetes in Depth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-security-careers-learning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Operations, Security, Careers & Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-operating-systems-student-should-master.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Operating Systems Student Should Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-what-an-operating-system-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What an Operating System Does
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 What an Operating System Does">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-what-your-os-is-managing-right-now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See what your OS is managing right now
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-the-hardware-an-os-manages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 The Hardware an OS Manages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 The Hardware an OS Manages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-your-cpu-memory-and-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect your CPU, memory and disks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-kernel-space-vs-user-space-and-privilege-rings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Kernel Space vs User Space and Privilege Rings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Kernel Space vs User Space and Privilege Rings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-time-spent-in-user-mode-vs-kernel-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch time spent in user mode vs kernel mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-system-calls-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 System Calls End to End
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 System Calls End to End">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-every-system-call-a-command-makes-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch every system call a command makes (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-interrupts-exceptions-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Interrupts, Exceptions and Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5 Interrupts, Exceptions and Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-interrupts-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch interrupts arrive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-os-architectures-monolithic-microkernel-hybrid-unikernel-exokernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 OS Architectures: Monolithic, Microkernel, Hybrid, Unikernel, Exokernel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 OS Architectures: Monolithic, Microkernel, Hybrid, Unikernel, Exokernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-the-loadable-pieces-of-your-monolithic-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See the loadable pieces of your monolithic kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-inside-a-kernel-a-map-of-the-main-subsystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Inside a Kernel: A Map of the Main Subsystems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7 Inside a Kernel: A Map of the Main Subsystems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-browse-the-linux-kernels-subsystem-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Browse the Linux kernel's subsystem layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-types-of-operating-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 Types of Operating Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.8 Types of Operating Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-what-kind-of-system-are-you-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: What kind of system are you on?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-the-boot-process-from-power-on-to-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 The Boot Process: From Power-On to Login
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9 The Boot Process: From Power-On to Login">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-how-your-machine-booted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect how your machine booted
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-posix-and-the-single-unix-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 POSIX and the Single UNIX Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10 POSIX and the Single UNIX Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-your-system-about-posix-values-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask your system about POSIX values and limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-a-short-history-of-operating-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.11 A Short History of Operating Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11 A Short History of Operating Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-spot-your-unix-heritage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Spot your Unix heritage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-the-os-landscape-and-market-shares-in-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.12 The OS Landscape and Market Shares in 2026
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12 The OS Landscape and Market Shares in 2026">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-identify-your-own-os-precisely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Identify your own OS precisely
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-shells-and-command-line-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.13 Shells and Command-Line Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.13 Shells and Command-Line Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-your-first-ten-minutes-at-a-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Your first ten minutes at a shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-1-operating-system-foundations">Chapter 1: Operating System Foundations<a class="headerlink" href="#chapter-1-operating-system-foundations" title="Permanent link">&para;</a></h1>
+<p>This chapter builds the mental model the rest of the guide rests on: what an operating system is for, the hardware it manages, the wall between user mode and kernel mode, and how programs cross it with system calls and interrupts. It then tours kernel designs and OS types, follows a computer from power-on to login, explains POSIX, traces OS history from CTSS to Android, maps the 2026 market and gets you started at the command line.</p>
+<h2 id="11-what-an-operating-system-does">1.1 What an Operating System Does<a class="headerlink" href="#11-what-an-operating-system-does" title="Permanent link">&para;</a></h2>
+<p>An operating system (OS) is the master program that runs a computer. It shares out the processor, memory, storage and devices among programs, hides messy hardware details behind simple ideas like files and windows, and stops programs from harming each other or the system. Everything else — browsers, games, databases — runs on top of it.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-01-what-an-operating-system-does.svg" alt="Applications never touch hardware directly; every request passes through the system-call door into the kernel." loading="lazy">
+<figcaption><strong>Where the OS sits.</strong> Applications never touch hardware directly; every request passes through the system-call door into the kernel.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>An OS is like the management of a busy hotel: it assigns rooms (memory), schedules the shared lifts and staff (CPU time), gives guests a simple front desk instead of letting them wander into the boiler room (abstraction), and makes each guest's key open only their own room (protection).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Amara, a student at the fictional Lakeside College, opens Spotify, a browser with 30 tabs and VS Code on her 16 GB laptop. The OS gives each program its own private memory, switches the 8 CPU cores between roughly 300 processes many times per second, and turns a click on 'Save' into block writes on her NVMe drive. When one browser tab crashes, the OS cleans up only that process; everything else keeps running.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>At boot the kernel takes control of the CPU, memory and devices and starts the first user program.</li>
+<li>Programs ask for services (open a file, send a packet, get memory) through system calls instead of touching hardware directly.</li>
+<li>The scheduler shares CPU time, and the memory manager gives each process its own virtual address space.</li>
+<li>Device drivers translate generic requests into commands for specific hardware.</li>
+<li>Protection checks (privilege levels, permissions, memory isolation) stop one program or user harming another.</li>
+<li>When a program exits, the OS reclaims every resource it held.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every software developer, system administrator, DevOps/SRE engineer, security analyst and embedded engineer relies on OS knowledge daily — it is the foundation under virtualization, containers and the cloud.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the three classic roles — resource manager (allocator), extended machine (abstraction) and protector (isolation); they frame most OS exam answers.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Tanenbaum describes two complementary views: top-down, the OS is an 'extended machine' offering clean abstractions; bottom-up, it is a 'resource manager' multiplexing hardware in time (CPU) and in space (memory, disk).</li>
+<li>The core abstractions are few: processes and threads for the CPU, virtual address spaces for memory, files and directories for storage, sockets for networks, and handles or file descriptors that name them all.</li>
+<li>'Operating system' is used loosely: strictly it is the privileged kernel; broadly it includes system libraries, shells, the init system, utilities and the desktop — the root of the 'Linux vs GNU/Linux' naming argument.</li>
+<li>Kernels are large: the Linux source tree passed roughly 40 million lines in 2025, though any one build compiles only a fraction of it, mostly the drivers for that machine's hardware.</li>
+<li>Good OS design separates mechanism (how to switch tasks or map pages) from policy (which task to pick, which page to evict), so policies can change without rewriting the core.</li>
+<li>The kernel's own overhead is normally a few percent of CPU, but pathological OS behaviour — thrashing, lock contention, excessive context switches — can make fast hardware feel slow.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking the desktop or GUI is the OS: the graphical shell is just another program, and most servers run the same kernel with no GUI at all.</li>
+<li>Believing apps talk to hardware directly: ordinary programs must go through the kernel via system calls; direct hardware access is blocked.</li>
+<li>Equating 'Linux' with a complete OS: Linux is the kernel; distributions add GNU tools, systemd, package managers and desktops.</li>
+</ul>
+</div>
+<h3 id="try-it-see-what-your-os-is-managing-right-now">Try it: See what your OS is managing right now<a class="headerlink" href="#try-it-see-what-your-os-is-managing-right-now" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="c"># Linux / macOS</span>
+<span class="n">uname</span> <span class="n">-a</span>            <span class="c"># kernel name and version</span>
+<span class="nb">ps </span><span class="n">aux</span> <span class="p">|</span> <span class="n">wc</span> <span class="n">-l</span>      <span class="c"># roughly how many processes are running</span>
+<span class="n">free</span> <span class="n">-h</span>             <span class="c"># memory use (Linux)</span>
+
+<span class="c"># Windows PowerShell</span>
+<span class="nb">Get-ComputerInfo</span> <span class="n">-Property</span> <span class="n">OsName</span><span class="p">,</span><span class="n">OsVersion</span>
+<span class="p">(</span><span class="nb">Get-Process</span><span class="p">).</span><span class="n">Count</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Software that manages hardware, provides abstractions and services to programs, and enforces isolation between them.</td>
+<td>Windows 11, macOS, Ubuntu Linux, Android and iOS are all operating systems built around a kernel.</td>
+</tr>
+<tr>
+<td><strong>Kernel</strong><br><em>Component · Current · Beginner</em></td>
+<td>The privileged core of the OS, running with full hardware access and handling scheduling, memory, devices and system calls.</td>
+<td>Linux's /boot/vmlinuz-* file and Windows' ntoskrnl.exe are loaded at boot and stay in memory until shutdown.</td>
+</tr>
+<tr>
+<td><strong>Resource manager role</strong><br><em>Concept · Current · Beginner</em></td>
+<td>The OS divides CPU time, memory, disk and network bandwidth fairly and efficiently among competing programs and users.</td>
+<td>A video render and a video call share 8 cores; the OS favours the call so its audio never stutters.</td>
+</tr>
+<tr>
+<td><strong>Time and space multiplexing</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Sharing a resource by taking turns (CPU time slices) or by dividing it into parts (memory regions, disk blocks).</td>
+<td>Four programs take turns on one core every few milliseconds, while each also owns a separate slice of the 16 GB RAM.</td>
+</tr>
+<tr>
+<td><strong>Abstraction (extended machine)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Turning raw hardware into simple, uniform ideas — files, processes, sockets, windows — so programmers needn't know device details.</td>
+<td>A Python program calls open('notes.txt') and works identically on an SSD, a USB stick or a network share.</td>
+</tr>
+<tr>
+<td><strong>Protection and isolation</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Mechanisms ensuring one process or user cannot read, change or crash another's memory, files or the kernel itself.</td>
+<td>A crashing game shows an error and exits, while your unsaved document in another app is unaffected.</td>
+</tr>
+<tr>
+<td><strong>Policy vs mechanism</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Design principle separating how something is done (mechanism) from the rules deciding what is done (policy).</td>
+<td>Linux's scheduler mechanism stays the same while sched_ext lets administrators plug in a different scheduling policy.</td>
+</tr>
+<tr>
+<td><strong>Multiprogramming</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Keeping several programs in memory so the CPU can run another whenever the current one waits for I/O.</td>
+<td>While a payroll job waits for a tape or disk read, the mainframe runs a second job instead of sitting idle.</td>
+</tr>
+<tr>
+<td><strong>Preemptive multitasking</strong><br><em>Concept · Current · Beginner</em></td>
+<td>The OS forcibly switches between tasks using timer interrupts, so no single program can monopolise the CPU.</td>
+<td>An infinite loop in one app cannot freeze Windows 11 or macOS; other windows stay responsive.</td>
+</tr>
+<tr>
+<td><strong>Multi-user operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>An OS that lets several users work at once or in turn, each with separate accounts, files and permissions.</td>
+<td>Forty students log in by SSH to one university Linux server, each confined to their own home directory.</td>
+</tr>
+<tr>
+<td><strong>System programs and utilities</strong><br><em>Software · Current · Beginner</em></td>
+<td>Programs shipped with the OS for everyday management: file tools, editors, compilers, shells and service managers.</td>
+<td>ls, cp, ps and systemctl on Linux, or Task Manager and Disk Management on Windows, are system programs.</td>
+</tr>
+<tr>
+<td><strong>Desktop environment (graphical shell)</strong><br><em>GNOME, KDE Plasma, Windows Explorer, macOS Finder · Software · Current · Beginner</em></td>
+<td>The windows, panels, menus and file manager that form the graphical face of an OS — an ordinary user program.</td>
+<td>Ubuntu uses GNOME by default and Kubuntu uses KDE Plasma, yet both run on the same Linux kernel.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-the-hardware-an-os-manages">1.2 The Hardware an OS Manages<a class="headerlink" href="#12-the-hardware-an-os-manages" title="Permanent link">&para;</a></h2>
+<p>To understand an OS you need a mental picture of the machine underneath: a CPU with cores and registers that execute instructions, memory (RAM) that holds running programs, storage that keeps data when the power is off, and devices connected through buses. The OS's job is to share all of these safely.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-02-the-hardware-an-os-manages.svg" alt="Each step down the hierarchy is roughly 10-1,000 times slower, so the OS works hard to keep hot data high up." loading="lazy">
+<figcaption><strong>Typical access latency (log scale).</strong> Each step down the hierarchy is roughly 10-1,000 times slower, so the OS works hard to keep hot data high up.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The computer is a kitchen: CPU cores are chefs, registers are what each chef holds in their hands, cache is the worktop, RAM is the fridge, the SSD is the storeroom down the corridor — and the OS is the head chef handing out work.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Ravi's fictional start-up, PixelPress, rents a cloud server with 16 vCPUs, 64 GB of RAM and a 1 TB NVMe disk. Reading from L1 cache takes about 1 ns, from RAM about 100 ns, and from the NVMe disk around 100 µs — roughly 100,000 times slower than cache. That gap is why the OS keeps recently used file data in RAM and why PixelPress's database is sized to fit its hot data in memory.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The CPU repeatedly fetches an instruction, decodes it and executes it, using registers for working values.</li>
+<li>The instruction pointer (program counter) says which instruction comes next; the stack pointer tracks function calls.</li>
+<li>The memory management unit (MMU) translates every virtual address a program uses into a physical RAM address.</li>
+<li>Devices (disks, network cards, GPUs) are driven through control registers, move data to RAM by DMA, then raise interrupts.</li>
+<li>A hardware timer interrupts the CPU periodically so the OS can regain control and switch tasks.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>OS developers, performance engineers, embedded engineers and anyone sizing servers or troubleshooting slowness need this hardware picture.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the latency ladder in rough powers of ten — register &lt; cache &lt; RAM &lt; SSD &lt; network/disk — interviewers love 'why does the page cache matter so much?'</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>A modern x86-64 core has 16 general-purpose 64-bit registers (RAX-R15), the instruction pointer RIP, RFLAGS and, with AVX-512, 32 vector registers of 512 bits — all part of the state saved on every context switch.</li>
+<li>Caches come in levels: L1 is typically 32-64 KB per core, L2 one to a few megabytes per core, and a shared L3 tens of megabytes; cache lines are 64 bytes on x86 and most Arm cores.</li>
+<li>Symmetric multiprocessing (SMP) means all cores share memory and run one kernel; NUMA servers give each socket its own local memory, so the OS tries to keep each thread near its data.</li>
+<li>Hybrid CPUs — Intel's P-cores and E-cores since 12th-gen Core (2021), Arm big.LITTLE and Apple's performance and efficiency cores — force the scheduler to decide where a thread runs, not just when.</li>
+<li>Simultaneous multithreading (Intel Hyper-Threading, AMD SMT) exposes two logical CPUs per core that share execution units, so 16 logical CPUs are not sixteen times one core's speed.</li>
+<li>Devices are reached through memory-mapped I/O or x86 I/O ports; PCI Express links connect NVMe drives, GPUs and NICs, and an IOMMU restricts which memory each device may access.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming more cores always means faster programs: single-threaded code uses one core; the OS can only spread work that is already split into threads or processes.</li>
+<li>Confusing RAM with storage: 'memory' is volatile working space, while 'storage' (SSD, disk) keeps data without power and is thousands of times slower.</li>
+<li>Ignoring NUMA on large servers: a thread on socket 0 reading memory attached to socket 1 pays a noticeable latency penalty.</li>
+</ul>
+</div>
+<h3 id="try-it-inspect-your-cpu-memory-and-disks">Try it: Inspect your CPU, memory and disks<a class="headerlink" href="#try-it-inspect-your-cpu-memory-and-disks" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="c"># Linux</span>
+<span class="n">lscpu</span> <span class="p">|</span> <span class="n">head</span> <span class="p">-</span><span class="n">20</span>        <span class="c"># cores, threads, caches, NUMA nodes</span>
+<span class="n">lsblk</span>                   <span class="c"># disks and partitions</span>
+<span class="n">head</span> <span class="p">-</span><span class="n">3</span> <span class="p">/</span><span class="n">proc</span><span class="p">/</span><span class="n">meminfo</span>
+
+<span class="c"># macOS</span>
+<span class="n">sysctl</span> <span class="n">-n</span> <span class="n">machdep</span><span class="p">.</span><span class="n">cpu</span><span class="p">.</span><span class="n">brand_string</span> <span class="n">hw</span><span class="p">.</span><span class="n">ncpu</span> <span class="n">hw</span><span class="p">.</span><span class="n">memsize</span>
+
+<span class="c"># Windows PowerShell</span>
+<span class="nb">Get-CimInstance</span> <span class="n">Win32_Processor</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span><span class="n">NumberOfCores</span><span class="p">,</span><span class="n">NumberOfLogicalProcessors</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_1">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU core</strong><br><em>Intel, AMD, Arm licensees, RISC-V vendors · Component · Current · Beginner</em></td>
+<td>An independent execution unit that fetches, decodes and runs instructions; one chip may contain dozens of cores.</td>
+<td>An AMD Ryzen 7 9700X has 8 cores and 16 hardware threads, so the OS sees 16 logical CPUs.</td>
+</tr>
+<tr>
+<td><strong>Registers</strong><br><em>Component · Current · Beginner</em></td>
+<td>The fastest, tiny storage inside a core, holding current values, the instruction pointer and the stack pointer.</td>
+<td>On x86-64 the RIP register holds the address of the next instruction and RSP points to the top of the stack.</td>
+</tr>
+<tr>
+<td><strong>Instruction set architecture (ISA)</strong><br><em>Intel/AMD (x86-64), Arm (AArch64), RISC-V International · Standard · Current · Beginner</em></td>
+<td>The contract between software and CPU: instructions, registers, privilege modes and memory model.</td>
+<td>Apple M-series Macs and Windows on Arm laptops run Arm64 code; most cloud servers run x86-64, with Arm instances such as AWS Graviton growing.</td>
+</tr>
+<tr>
+<td><strong>Cache hierarchy</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Small, fast memories (L1, L2, L3) between core and RAM that keep recently used data close to the CPU.</td>
+<td>A loop over a 20 KB array stays in L1 cache and runs many times faster than code jumping randomly through 4 GB.</td>
+</tr>
+<tr>
+<td><strong>RAM (DRAM)</strong><br><em>JEDEC (DDR5, LPDDR5X standards) · Component · Current · Beginner</em></td>
+<td>Main memory holding running programs and their data: fast but volatile, so its contents vanish at power-off.</td>
+<td>A laptop with 16 GB of DDR5 holds the OS, browser and editor; when it fills, the OS compresses or swaps out pages.</td>
+</tr>
+<tr>
+<td><strong>Storage device (SSD/HDD)</strong><br><em>NVM Express, SATA-IO · Component · Current · Beginner</em></td>
+<td>Non-volatile storage for files and the OS itself, read and written in blocks through device drivers.</td>
+<td>A PCIe 4.0 NVMe SSD reads around 7 GB/s sequentially, yet small random reads are still far slower than RAM.</td>
+</tr>
+<tr>
+<td><strong>Hardware timer</strong><br><em>Component · Current · Intermediate</em></td>
+<td>A clock device that interrupts the CPU at set intervals, letting the OS regain control for scheduling and timekeeping.</td>
+<td>Linux kernels typically tick at 250 or 1,000 Hz (CONFIG_HZ), meaning every 4 ms or every 1 ms.</td>
+</tr>
+<tr>
+<td><strong>PCI Express</strong><br><em>PCI-SIG · Standard · Current · Intermediate</em></td>
+<td>High-speed serial interconnect linking CPUs to GPUs, NVMe drives and network cards; each generation roughly doubles per-lane bandwidth.</td>
+<td>A PCIe 5.0 x4 NVMe SSD can reach about 14 GB/s; the OS discovers it by enumerating the PCIe bus at boot.</td>
+</tr>
+<tr>
+<td><strong>SMP and multicore</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Symmetric multiprocessing: all cores share memory and any core can run kernel code, so the kernel needs careful locking.</td>
+<td>`nproc` prints how many logical CPUs the OS sees; Linux supports systems with thousands of them.</td>
+</tr>
+<tr>
+<td><strong>NUMA</strong><br><em>Concept · Current · Advanced</em></td>
+<td>Non-Uniform Memory Access: on multi-socket servers each CPU has local RAM that is faster than another socket's RAM.</td>
+<td>`numactl --hardware` on a 2-socket database server shows two nodes; binding PostgreSQL to one node cuts memory latency.</td>
+</tr>
+<tr>
+<td><strong>Hybrid (heterogeneous) cores</strong><br><em>Intel, Arm, Apple · Concept · Current · Intermediate</em></td>
+<td>Chips mixing fast performance cores with power-saving efficiency cores, requiring smarter OS scheduling.</td>
+<td>An Intel Core Ultra laptop runs background indexing on E-cores while the game in focus stays on P-cores.</td>
+</tr>
+<tr>
+<td><strong>SMT / Hyper-Threading</strong><br><em>Intel (Hyper-Threading), AMD (SMT) · Concept · Current · Intermediate</em></td>
+<td>One physical core presents two logical CPUs that share its execution units to fill idle cycles.</td>
+<td>A 4-core, 8-thread laptop shows 8 CPUs in Task Manager, but heavy maths may gain only 10-30% from the extra threads.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-kernel-space-vs-user-space-and-privilege-rings">1.3 Kernel Space vs User Space and Privilege Rings<a class="headerlink" href="#13-kernel-space-vs-user-space-and-privilege-rings" title="Permanent link">&para;</a></h2>
+<p>The CPU has at least two modes: a privileged kernel mode where any instruction and any memory is allowed, and a restricted user mode for ordinary programs. The kernel runs in kernel mode; apps run in user mode and must ask the kernel for anything sensitive. This split is what stops one buggy app from crashing the whole machine.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-03-kernel-space-vs-user-space-and.svg" alt="Each level can see and control everything above it; bugs lower down are the most dangerous." loading="lazy">
+<figcaption><strong>Privilege levels, least to most powerful.</strong> Each level can see and control everything above it; bugs lower down are the most dangerous.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a bank: customers (user mode) stay in the public hall and hand forms across the counter, while only staff (kernel mode) may enter the vault — the counter window is the system call.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Leo, a student at the fictional Northgate University, writes a C program that executes the privileged x86 instruction `hlt` to halt the CPU. Because his program runs in ring 3, the CPU raises a general-protection fault instead; Linux catches it and kills the program with SIGSEGV while every other program keeps running. The same instruction in the kernel's idle loop, running in ring 0, works normally.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>At power-on the CPU starts in its most privileged mode; the kernel sets up page tables and interrupt tables, then drops to user mode to run the first program.</li>
+<li>Every memory page is marked user or supervisor; user-mode code touching a supervisor page triggers a fault.</li>
+<li>Privileged instructions (loading page tables, disabling interrupts, port I/O) fault if executed in user mode.</li>
+<li>To request a service, user code executes a special instruction (syscall, svc or ecall) that switches to kernel mode at a fixed entry point.</li>
+<li>The kernel validates the request, does the work and returns to user mode with a result.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Kernel and driver developers, security researchers, exploit analysts and anyone debugging crashes ('kernel panic' versus 'segfault') work with this boundary.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>x86 has four rings but mainstream OSes use only ring 0 (kernel) and ring 3 (user); on Arm the equivalents are EL0 (apps) and EL1 (kernel), with EL2 for hypervisors and EL3 for secure firmware.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>On x86 the current privilege level (CPL) is held in the low two bits of the CS register; the interrupt descriptor table and the page-table user/supervisor bit together decide what ring-3 code can reach.</li>
+<li>Linux maps the kernel into the upper half of every process's virtual address space, so a system call does not need a full address-space switch, while user programs live in the lower half.</li>
+<li>The 2018 Meltdown flaw let user code speculatively read kernel memory; Kernel Page-Table Isolation (KPTI, called KVA Shadow on Windows) now unmaps most of the kernel while user code runs, costing a few percent on syscall-heavy workloads.</li>
+<li>SMEP (Intel Ivy Bridge, 2012) and SMAP (Broadwell, 2014), with AMD equivalents, stop the kernel from executing or casually reading user pages, blocking a whole class of privilege-escalation exploits.</li>
+<li>Arm defines four exception levels — EL0 applications, EL1 kernel, EL2 hypervisor, EL3 secure monitor for TrustZone — while RISC-V uses U, S and M modes plus a hypervisor extension.</li>
+<li>Some code runs 'below ring 0': hypervisors (informally ring −1), System Management Mode (ring −2) and management engines (ring −3); flaws there are serious because the OS cannot observe them.</li>
+<li>Moving code out of the kernel improves robustness: Windows' UMDF and Linux FUSE run drivers and file systems as ordinary processes, so their crashes do not take the system down.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking 'running as root or Administrator' means kernel mode: admin processes still run in user mode; they are simply allowed to make more privileged requests.</li>
+<li>Picturing the kernel as a separate process running beside apps: most kernel code runs on behalf of a process during its system calls and interrupts.</li>
+<li>Assuming user-mode programs can't hurt the system: they can't directly, but a faulty kernel-mode driver (as in the July 2024 CrowdStrike outage) crashes the whole machine.</li>
+</ul>
+</div>
+<h3 id="try-it-watch-time-spent-in-user-mode-vs-kernel-mode">Try it: Watch time spent in user mode vs kernel mode<a class="headerlink" href="#try-it-watch-time-spent-in-user-mode-vs-kernel-mode" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Linux/macOS: 'user' vs 'sys' time of one command</span>
+<span class="nb">time</span><span class="w"> </span>ls<span class="w"> </span>-R<span class="w"> </span>/usr<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+
+<span class="c1"># Linux: per-second user (us) vs system (sy) CPU percentages</span>
+vmstat<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">5</span>
+
+<span class="c1"># Windows: Task Manager &gt; Performance &gt; CPU, right-click graph &gt; 'Show kernel times'</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_2">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User mode</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Restricted CPU mode for applications: privileged instructions and kernel memory are off-limits.</td>
+<td>Your web browser, text editor and even a root shell all execute in user mode.</td>
+</tr>
+<tr>
+<td><strong>Kernel mode (supervisor mode)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Privileged CPU mode in which code may run any instruction and access all memory and devices.</td>
+<td>The Linux scheduler, the ext4 file-system code and the Wi-Fi driver all run in kernel mode.</td>
+</tr>
+<tr>
+<td><strong>Protection rings (x86)</strong><br><em>Intel / AMD · Concept · Current · Intermediate</em></td>
+<td>Four privilege levels (0-3) on x86; ring 0 is most privileged and mainstream OSes use only rings 0 and 3.</td>
+<td>A ring-3 program executing `cli` (disable interrupts) gets a general-protection fault instead of freezing the PC.</td>
+</tr>
+<tr>
+<td><strong>Arm exception levels (EL0-EL3)</strong><br><em>Arm · Concept · Current · Intermediate</em></td>
+<td>Arm's privilege model: EL0 applications, EL1 OS kernel, EL2 hypervisor, EL3 secure-monitor firmware.</td>
+<td>On recent Pixel phones apps run at EL0, the Linux kernel at EL1 and Google's pKVM hypervisor at EL2.</td>
+</tr>
+<tr>
+<td><strong>RISC-V privilege modes</strong><br><em>RISC-V International (Privileged Specification) · Concept · Current · Advanced</em></td>
+<td>User (U), Supervisor (S) and Machine (M) modes, plus a hypervisor extension, defined in the RISC-V privileged spec.</td>
+<td>OpenSBI firmware runs in M-mode and provides services to a Linux kernel running in S-mode on a RISC-V board.</td>
+</tr>
+<tr>
+<td><strong>Privileged instruction</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>A CPU instruction only kernel mode may execute, such as loading page tables, halting or disabling interrupts.</td>
+<td>Writing the x86 CR3 register switches page tables — only the kernel does this, on every process switch.</td>
+</tr>
+<tr>
+<td><strong>Mode switch</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>The CPU moving between user and kernel mode via a system call, interrupt or exception; cheaper than a full context switch.</td>
+<td>A program calling getpid() makes a mode switch into the kernel and back, usually in well under a microsecond.</td>
+</tr>
+<tr>
+<td><strong>Kernel address space</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>The region of every process's virtual memory reserved for kernel code and data, mapped but inaccessible from user mode.</td>
+<td>On 64-bit Linux, user programs live in the lower half of the address space and the kernel in the upper half.</td>
+</tr>
+<tr>
+<td><strong>KPTI (Kernel Page-Table Isolation)</strong><br><em>Linux 4.15 (2018); Windows 'KVA Shadow' · Component · Current · Advanced</em></td>
+<td>Separate page tables that hide kernel memory from user mode, defeating the Meltdown attack.</td>
+<td>`cat /sys/devices/system/cpu/vulnerabilities/meltdown` prints 'Mitigation: PTI' on affected Intel CPUs.</td>
+</tr>
+<tr>
+<td><strong>SMEP / SMAP</strong><br><em>Intel / AMD · Concept · Current · Advanced</em></td>
+<td>CPU features that stop the kernel executing (SMEP) or unexpectedly accessing (SMAP) user-space memory.</td>
+<td>`grep -o -w -E 'smep&#124;smap' /proc/cpuinfo &#124; sort -u` shows whether your CPU supports them.</td>
+</tr>
+<tr>
+<td><strong>System Management Mode (SMM)</strong><br><em>Intel / AMD · Concept · Current · Advanced</em></td>
+<td>Hidden x86 firmware mode, more privileged than the OS, used for power and platform handling.</td>
+<td>Vulnerable SMM handlers let attackers hide code that even the OS kernel cannot detect or remove.</td>
+</tr>
+<tr>
+<td><strong>User-mode drivers</strong><br><em>Microsoft UMDF; Linux FUSE and UIO · Concept · Current · Intermediate</em></td>
+<td>Device or file-system drivers running as ordinary processes, so their crashes don't bring down the kernel.</td>
+<td>Windows UMDF drivers for some USB devices and Linux's sshfs (a FUSE file system) run outside the kernel.</td>
+</tr>
+<tr>
+<td><strong>Kernel panic / Blue Screen</strong><br><em>Concept · Current · Beginner</em></td>
+<td>The OS halts deliberately when kernel-mode code hits an unrecoverable error, to avoid corrupting data.</td>
+<td>A faulty driver triggers a Linux 'kernel panic' or a Windows stop error (BSOD); a user-mode crash just ends one app.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="14-system-calls-end-to-end">1.4 System Calls End to End<a class="headerlink" href="#14-system-calls-end-to-end" title="Permanent link">&para;</a></h2>
+<p>A system call is how a program asks the kernel to do something it isn't allowed to do itself — read a file, start a process, send network data. The program places a request number and arguments in CPU registers, executes a special instruction, and the CPU jumps into the kernel, which does the work and returns a result or an error code.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-04-system-calls-end-to-end.svg" alt="The app sees one function call; underneath, the CPU changes mode twice and the kernel may sleep until the disk interrupt arrives." loading="lazy">
+<figcaption><strong>One read() from app to disk and back.</strong> The app sees one function call; underneath, the CPU changes mode twice and the kernel may sleep until the disk interrupt arrives.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like ordering at a drive-through: you can't walk into the kitchen, so you speak your order number into the speaker (the syscall number), drive to the window (the mode switch) and receive your food — or a 'sorry, sold out' (an error code).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Sofia runs `cat notes.txt` on her Ubuntu laptop, cat calls the C library's open(), read() and write(). glibc puts system-call number 257 (openat) in the RAX register and the file path in RSI, then executes the `syscall` instruction. The kernel checks permissions, finds the file in the page cache and returns file descriptor 3; a later read() copies 1,200 bytes into cat's buffer. Running `strace cat notes.txt` shows every one of these calls.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The program calls a library wrapper such as read() in libc (on Windows, a Win32 function such as ReadFile, which calls into ntdll.dll).</li>
+<li>The wrapper loads the system-call number and arguments into registers — on Linux x86-64 the number goes in RAX and arguments in RDI, RSI, RDX, R10, R8 and R9.</li>
+<li>It executes the trap instruction — `syscall` on x86-64, `svc #0` on Arm64, `ecall` on RISC-V — switching the CPU to kernel mode.</li>
+<li>Kernel entry code saves user registers, looks the number up in the system-call table and calls the matching handler.</li>
+<li>The handler validates pointers and permissions, does the work (perhaps sleeping until I/O completes) and sets a return value.</li>
+<li>The kernel restores registers and returns to user mode; on failure libc stores a code such as ENOENT in errno and returns −1.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Systems programmers, performance engineers, security engineers writing seccomp or EDR rules, and anyone answering 'why is this program hanging?' with strace.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know a few Linux x86-64 numbers (read = 0, write = 1, execve = 59) and the tracing tools: strace on Linux, dtruss/DTrace on macOS and Process Monitor on Windows.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Linux x86-64 defines more than 450 system-call numbers in arch/x86/entry/syscalls/syscall_64.tbl; new calls are appended and old numbers are never reused, so binaries keep working for decades.</li>
+<li>The vDSO is a small kernel-provided library mapped into every Linux process so calls such as clock_gettime() and gettimeofday() run entirely in user mode without any mode switch.</li>
+<li>Windows does not document its system-call numbers and changes them between builds; programs must call ntdll.dll (NtReadFile and friends) or Win32 APIs, so Windows compatibility is kept at the API level.</li>
+<li>Linux's stable system-call ABI ('we do not break user space') lets containers run an Alpine userland on an Ubuntu host kernel and lets gVisor and WSL 1 reimplement the interface.</li>
+<li>A trivial system call costs very roughly 100 nanoseconds on modern x86, but security mitigations can multiply that, which is why batching interfaces such as io_uring and sendmmsg exist.</li>
+<li>Older entry mechanisms (int 0x80, sysenter) gave way to `syscall`; Intel's FRED (Flexible Return and Event Delivery), enabled by default in recent Linux 7.x kernels on supporting CPUs, redesigns ring transitions.</li>
+<li>seccomp lets a process install a filter restricting which system calls it may make — the basis of Docker's default profile and Chrome's sandbox, covered with OS security later in this guide.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Confusing library functions with system calls: printf() is a libc function that buffers text and only occasionally calls write(); many libc functions make no system call at all.</li>
+<li>Reading errno after a successful call: errno is meaningful only after a function reports failure, usually by returning −1; check the return value first.</li>
+<li>Assuming system calls are free: a loop doing one-byte read() calls can be hundreds of times slower than reading 64 KB at once.</li>
+</ul>
+</div>
+<h3 id="try-it-watch-every-system-call-a-command-makes-linux">Try it: Watch every system call a command makes (Linux)<a class="headerlink" href="#try-it-watch-every-system-call-a-command-makes-linux" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>strace<span class="w"> </span>-c<span class="w"> </span>ls<span class="w"> </span>/tmp<span class="w">                       </span><span class="c1"># summary table of system calls</span>
+strace<span class="w"> </span>-e<span class="w"> </span><span class="nv">trace</span><span class="o">=</span>openat<span class="w"> </span>cat<span class="w"> </span>/etc/hostname<span class="w"> </span><span class="c1"># only file opens</span>
+strace<span class="w"> </span>-f<span class="w"> </span>-e<span class="w"> </span><span class="nv">trace</span><span class="o">=</span>network<span class="w"> </span>curl<span class="w"> </span>-sI<span class="w"> </span>https://example.com
+
+<span class="c1"># Windows: Sysinternals Process Monitor shows file, registry and process calls</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_3">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System call</strong><br><em>Concept · Current · Beginner</em></td>
+<td>The controlled entry point through which a user program requests a kernel service, switching the CPU into kernel mode.</td>
+<td>Opening, reading and closing a file takes at least three system calls: openat, read and close.</td>
+</tr>
+<tr>
+<td><strong>System-call table</strong><br><em>Component · Current · Intermediate</em></td>
+<td>Kernel array mapping each system-call number to its handler function.</td>
+<td>On Linux x86-64, entry 0 is read, 1 write, 39 getpid, 59 execve and 60 exit.</td>
+</tr>
+<tr>
+<td><strong>syscall / svc / ecall instructions</strong><br><em>Intel/AMD, Arm, RISC-V · Concept · Current · Advanced</em></td>
+<td>The CPU instructions that trap into the kernel on x86-64, Arm64 and RISC-V respectively.</td>
+<td>Disassembling glibc's read() with objdump shows a `syscall` instruction right after the number is loaded into EAX.</td>
+</tr>
+<tr>
+<td><strong>C standard library (libc)</strong><br><em>GNU glibc, musl, Apple libSystem, Microsoft UCRT · Software · Current · Beginner</em></td>
+<td>Library wrapping system calls in friendly C functions, plus strings, memory allocation, maths and more.</td>
+<td>Alpine Linux uses musl and Ubuntu uses glibc; the same C source compiles against either.</td>
+</tr>
+<tr>
+<td><strong>ntdll.dll and the Native API</strong><br><em>Microsoft · API · Current · Advanced</em></td>
+<td>Windows' lowest user-mode layer: Win32 calls such as CreateFileW end in ntdll stubs like NtCreateFile that enter the kernel.</td>
+<td>Malware analysts watch calls such as NtWriteVirtualMemory in ntdll to spot code being injected into other processes.</td>
+</tr>
+<tr>
+<td><strong>read() / write()</strong><br><em>POSIX · System call · Current · Beginner</em></td>
+<td>Copy bytes between a file descriptor and a memory buffer — the basis of nearly all Unix I/O.</td>
+<td>write(1, "hi\n", 3) prints 'hi' on standard output without using printf.</td>
+</tr>
+<tr>
+<td><strong>openat() / close()</strong><br><em>POSIX · System call · Current · Intermediate</em></td>
+<td>openat opens a file by path (relative to a directory) and returns a file descriptor; close releases it.</td>
+<td>strace shows openat(AT_FDCWD, "/etc/hostname", O_RDONLY) = 3 when you run cat /etc/hostname.</td>
+</tr>
+<tr>
+<td><strong>getpid()</strong><br><em>POSIX · System call · Current · Intermediate</em></td>
+<td>Returns the calling process's ID — one of the simplest system calls, often used to measure raw syscall overhead.</td>
+<td>A microbenchmark calling getpid() a million times measures the cost of entering and leaving the kernel.</td>
+</tr>
+<tr>
+<td><strong>errno</strong><br><em>POSIX / ISO C · Concept · Current · Beginner</em></td>
+<td>Thread-local variable holding the error code after a failed call, such as ENOENT (no such file) or EACCES (permission denied).</td>
+<td>Opening a missing file returns −1 with errno = ENOENT, and perror() prints 'No such file or directory'.</td>
+</tr>
+<tr>
+<td><strong>vDSO</strong><br><em>Linux kernel · Component · Current · Advanced</em></td>
+<td>Kernel-supplied shared library mapped into each process that runs selected time-related calls entirely in user mode.</td>
+<td>`ldd /bin/ls` lists linux-vdso.so.1 with no file path, because the kernel itself provides it.</td>
+</tr>
+<tr>
+<td><strong>strace</strong><br><em>Open source (Linux) · Tool · Current · Intermediate</em></td>
+<td>Traces the system calls and signals of a process using ptrace, showing arguments and return values.</td>
+<td>strace -f -e trace=network curl example.com shows the socket, connect and sendto calls that curl makes.</td>
+</tr>
+<tr>
+<td><strong>Process Monitor</strong><br><em>Microsoft Sysinternals · Tool · Current · Intermediate</em></td>
+<td>Windows tool logging real-time file, registry, network and process activity of every program.</td>
+<td>A help-desk engineer filters ProcMon on 'NAME NOT FOUND' to find the missing DLL that stops an app starting.</td>
+</tr>
+<tr>
+<td><strong>DTrace / dtruss</strong><br><em>Originally Sun Microsystems; macOS and FreeBSD · Tool · Current · Advanced</em></td>
+<td>Dynamic tracing framework; its dtruss script shows a process's system calls on macOS.</td>
+<td>sudo dtruss ls lists the open and getdirentries calls ls makes; System Integrity Protection may limit full tracing.</td>
+</tr>
+<tr>
+<td><strong>Stable syscall ABI ('don't break user space')</strong><br><em>Linux kernel policy · Concept · Current · Intermediate</em></td>
+<td>Linux promises that system-call numbers and behaviour visible to programs never change incompatibly.</td>
+<td>A statically linked program built in 2005 still runs on a 2026 Linux 7.x kernel.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="15-interrupts-exceptions-and-traps">1.5 Interrupts, Exceptions and Traps<a class="headerlink" href="#15-interrupts-exceptions-and-traps" title="Permanent link">&para;</a></h2>
+<p>Interrupts are signals that make the CPU stop what it is doing and run kernel code. Hardware interrupts come from devices ('a network packet arrived'); exceptions come from the running instruction itself ('divide by zero', 'that page isn't in memory'); traps are deliberate, like a system call or a debugger breakpoint.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-05-interrupts-exceptions-and-traps.svg" alt="Keep the top half tiny; the heavy lifting happens later in a bottom half with interrupts re-enabled." loading="lazy">
+<figcaption><strong>Life of a hardware interrupt.</strong> Keep the top half tiny; the heavy lifting happens later in a bottom half with interrupts re-enabled.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A chef cooking (the CPU) can be interrupted by the doorbell (hardware interrupt), by burning a hand on the pan (exception) or by deliberately ringing for the manager (trap) — each time they put the pan down, deal with it and carry on.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>On the fictional Riverside Hospital's file server, a 25 Gbit network card receives a burst of packets. Instead of interrupting for every packet, it raises one MSI-X interrupt on CPU 3; the handler acknowledges it within microseconds and schedules NAPI polling in a softirq, which processes up to 64 packets per batch. Meanwhile CPU 5 takes a page-fault exception when the database touches memory that was swapped out, and the kernel loads the page before re-running the instruction.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>A device asserts an interrupt (or the CPU detects an exception); the interrupt controller (APIC on x86, GIC on Arm) delivers a vector number to a CPU.</li>
+<li>The CPU finishes or abandons the current instruction, saves the instruction pointer and flags, and switches to kernel mode and a kernel stack.</li>
+<li>It looks up the vector in the interrupt descriptor table (IDT) or Arm vector table and jumps to the handler.</li>
+<li>The 'top half' does the minimum: acknowledge the device, grab urgent data, schedule deferred work.</li>
+<li>Deferred 'bottom half' work (softirqs, tasklets, workqueues, threaded IRQs; DPCs on Windows) runs soon after with interrupts enabled.</li>
+<li>The kernel returns from the interrupt (iretq on x86, eret on Arm), possibly switching to a different task if a reschedule is due.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Kernel and driver developers, embedded and firmware engineers, real-time engineers, and performance tuners who set IRQ affinity on busy network servers.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Interview classic: hardware interrupts are asynchronous (independent of the current instruction), while exceptions and traps are synchronous (caused by it); a page fault is a restartable fault.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>x86 has 256 interrupt vectors: 0-31 are reserved for CPU exceptions (0 divide error, 3 breakpoint, 6 invalid opcode, 13 general protection, 14 page fault) and the rest serve devices and inter-processor interrupts.</li>
+<li>Exceptions come in three kinds: faults are restartable (a page fault re-runs the instruction), traps are reported after the instruction (int3 breakpoint) and aborts are unrecoverable (double fault, machine check).</li>
+<li>Message-Signalled Interrupts replace interrupt wires with memory writes; MSI-X allows up to 2,048 vectors per device, so a multi-queue NIC or NVMe drive can steer each queue to its own CPU.</li>
+<li>Windows orders interrupt work by Interrupt Request Level: device ISRs run at high IRQL and queue Deferred Procedure Calls at DISPATCH_LEVEL; touching pageable memory at high IRQL causes the IRQL_NOT_LESS_OR_EQUAL blue screen.</li>
+<li>At very high packet rates interrupts can starve real work (interrupt livelock), so drivers switch to polling: Linux NAPI, NIC interrupt coalescing and busy-polling for ultra-low-latency systems.</li>
+<li>Non-maskable interrupts cannot be disabled; Linux uses them for the hard-lockup watchdog and perf sampling, and a server's NMI button can force a crash dump of a hung machine.</li>
+<li>Inter-processor interrupts let one CPU poke another — to reschedule, run a function remotely or shoot down stale TLB entries after a page-table change.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Doing slow work in an interrupt handler: handlers must not sleep or wait; defer heavy processing to a bottom half or kernel thread.</li>
+<li>Calling every unusual event a 'trap': strictly, hardware interrupts are asynchronous, while traps and faults are caused by the current instruction.</li>
+<li>Assuming every page fault is an error: most are normal (demand paging, copy-on-write); only invalid accesses become segmentation faults.</li>
+</ul>
+</div>
+<h3 id="try-it-watch-interrupts-arrive">Try it: Watch interrupts arrive<a class="headerlink" href="#try-it-watch-interrupts-arrive" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Linux: interrupt counts per CPU and per device</span>
+head<span class="w"> </span>-15<span class="w"> </span>/proc/interrupts
+watch<span class="w"> </span>-n1<span class="w"> </span><span class="s2">"grep -i -E 'nvme|eth|enp|LOC' /proc/interrupts"</span>
+
+<span class="c1"># Windows: interrupts per second</span>
+typeperf<span class="w"> </span><span class="s2">"\Processor(_Total)\Interrupts/sec"</span><span class="w"> </span>-sc<span class="w"> </span><span class="m">5</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_4">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hardware interrupt (IRQ)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Asynchronous signal from a device asking the CPU for attention, such as completed disk I/O or a key press.</td>
+<td>Each keystroke on a USB keyboard ends in an interrupt that wakes the kernel's input driver.</td>
+</tr>
+<tr>
+<td><strong>Exception (fault, trap, abort)</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Synchronous event caused by the current instruction, such as divide-by-zero, an invalid opcode or a page fault.</td>
+<td>Integer division by zero in C triggers x86 vector 0, and Linux sends the process SIGFPE.</td>
+</tr>
+<tr>
+<td><strong>Trap (software interrupt)</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>An intentional exception used to enter the kernel or a debugger, such as a system-call instruction or int3.</td>
+<td>A debugger sets a breakpoint by overwriting an instruction's first byte with int3 (0xCC).</td>
+</tr>
+<tr>
+<td><strong>General protection fault (#GP)</strong><br><em>Intel / AMD · Concept · Current · Intermediate</em></td>
+<td>x86 exception for privilege and segment violations, such as user code running a privileged instruction.</td>
+<td>A ring-3 program executing `hlt` gets #GP (vector 13); Linux delivers SIGSEGV and the shell prints 'Segmentation fault'.</td>
+</tr>
+<tr>
+<td><strong>Interrupt Descriptor Table (IDT)</strong><br><em>Intel / AMD · Component · Current · Advanced</em></td>
+<td>x86 table of up to 256 entries mapping each interrupt or exception vector to its handler.</td>
+<td>Old rootkits hooked IDT entries; modern kernels protect the table and Windows PatchGuard checks it for tampering.</td>
+</tr>
+<tr>
+<td><strong>APIC / GIC</strong><br><em>Intel/AMD (APIC); Arm (GIC) · Component · Current · Advanced</em></td>
+<td>Interrupt controllers that route device interrupts to CPU cores: the APIC family on x86, the Generic Interrupt Controller on Arm.</td>
+<td>The Raspberry Pi 4's BCM2711 chip uses an Arm GIC-400 to route interrupts to its four cores.</td>
+</tr>
+<tr>
+<td><strong>MSI / MSI-X</strong><br><em>PCI-SIG · Standard · Current · Advanced</em></td>
+<td>Message-signalled interrupts: PCIe devices raise interrupts by writing to a special address instead of using a wire.</td>
+<td>An NVMe SSD gives each I/O queue its own MSI-X vector so completions land on the CPU that issued the request.</td>
+</tr>
+<tr>
+<td><strong>Interrupt handler (ISR) / top half</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Short, fast kernel routine run immediately on an interrupt; acknowledges the device and defers the rest.</td>
+<td>A network driver's ISR masks further receive interrupts and schedules NAPI polling.</td>
+</tr>
+<tr>
+<td><strong>Bottom halves: softirq, tasklet, workqueue</strong><br><em>Linux kernel · Component · Current · Advanced</em></td>
+<td>Linux mechanisms for deferred interrupt work that runs later with interrupts enabled; workqueues may even sleep.</td>
+<td>The ksoftirqd/N kernel threads in `ps` output process network softirqs when there is too much to finish inline.</td>
+</tr>
+<tr>
+<td><strong>DPC and IRQL</strong><br><em>Microsoft Windows · Concept · Current · Advanced</em></td>
+<td>Windows' Deferred Procedure Calls and Interrupt Request Levels, which order interrupt work by priority.</td>
+<td>LatencyMon reveals which driver's DPCs cause audio crackles on a Windows music-production PC.</td>
+</tr>
+<tr>
+<td><strong>Non-maskable interrupt (NMI)</strong><br><em>Concept · Current · Advanced</em></td>
+<td>High-priority interrupt that cannot be disabled, used for critical hardware errors, watchdogs and debugging.</td>
+<td>Linux's hard-lockup detector uses NMIs to report 'NMI watchdog: hard LOCKUP' when a CPU stops responding.</td>
+</tr>
+<tr>
+<td><strong>Inter-processor interrupt (IPI)</strong><br><em>Concept · Current · Advanced</em></td>
+<td>An interrupt one CPU sends to another, for rescheduling, TLB shootdowns or remote function calls.</td>
+<td>The RES and TLB lines in /proc/interrupts count rescheduling and TLB-shootdown IPIs on each CPU.</td>
+</tr>
+<tr>
+<td><strong>Timer interrupt and tickless kernel</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Periodic timer interrupts drive scheduling and timekeeping; tickless (NO_HZ) kernels stop the tick on idle CPUs to save power.</td>
+<td>With CONFIG_NO_HZ_IDLE, an idle laptop core sleeps deeply instead of waking 1,000 times a second.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="16-os-architectures-monolithic-microkernel-hybrid-unikernel-exokernel">1.6 OS Architectures: Monolithic, Microkernel, Hybrid, Unikernel, Exokernel<a class="headerlink" href="#16-os-architectures-monolithic-microkernel-hybrid-unikernel-exokernel" title="Permanent link">&para;</a></h2>
+<p>Kernels are built in different shapes. A monolithic kernel puts almost everything — drivers, file systems, networking — into one big privileged program; a microkernel keeps only the bare minimum privileged and runs everything else as separate user-mode servers; hybrid kernels mix the two. Unikernels and exokernels are more radical designs for special uses.</p>
+<p><strong>Three classic kernel designs</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Monolithic</th>
+<th>Microkernel</th>
+<th>Hybrid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>In kernel mode</strong></td>
+<td>Everything: drivers, FS, network</td>
+<td>Scheduling, memory, IPC only</td>
+<td>Core plus most services</td>
+</tr>
+<tr>
+<td><strong>Drivers run</strong></td>
+<td>Inside the kernel</td>
+<td>As user-mode servers</td>
+<td>Mostly inside the kernel</td>
+</tr>
+<tr>
+<td><strong>Driver crash</strong></td>
+<td>Can panic the system</td>
+<td>Restart that server</td>
+<td>Can crash the system</td>
+</tr>
+<tr>
+<td><strong>Service calls</strong></td>
+<td>Function calls</td>
+<td>IPC messages</td>
+<td>Mostly function calls</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Linux, FreeBSD, OpenBSD</td>
+<td>seL4, QNX, MINIX 3, Zircon</td>
+<td>Windows NT, Apple XNU</td>
+</tr>
+</tbody>
+</table>
+<p><em>The real difference is what runs in kernel mode, and therefore what a single bug can take down.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A monolithic kernel is an open-plan office where everyone shouts across desks (fast, but one fire spreads everywhere); a microkernel is a building of locked rooms passing notes under the doors (safer, slower); a unikernel is a food truck built to serve exactly one dish.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional carmaker Volta Motors chooses QNX, a microkernel real-time OS, for its digital dashboard: if the graphics driver crashes, it restarts in milliseconds while the speedometer keeps updating. Its cloud back-end runs on Linux, a monolithic kernel, for raw throughput, and its research team is testing a Unikraft unikernel that boots a small web service in a few milliseconds.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Decide what must run privileged: at minimum, address-space management, thread scheduling and inter-process communication (IPC).</li>
+<li>Monolithic: link drivers, file systems and the network stack into the kernel; components call each other as plain functions.</li>
+<li>Microkernel: run drivers and services as separate user processes that talk by message passing through the kernel.</li>
+<li>Hybrid: keep a microkernel-like structure but run performance-critical services in kernel mode (Windows NT, XNU).</li>
+<li>Unikernel: compile one application plus only the OS library pieces it needs into a single image that runs directly on a hypervisor.</li>
+<li>Exokernel: the kernel only multiplexes raw hardware securely; applications bring their own 'library OS' abstractions.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>OS designers, embedded and automotive engineers choosing an RTOS, security architects needing verified kernels, and cloud engineers experimenting with lightweight VMs.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember the trade-off: monolithic means fast function calls and simplicity; microkernel means isolation, reliability and verifiability at the cost of IPC overhead.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>The 1992 Tanenbaum–Torvalds debate on comp.os.minix argued Linux was obsolete because it was monolithic; decades later Linux dominates general computing, while microkernels won safety-critical niches such as cars, avionics and modems.</li>
+<li>Early microkernels like Mach were slow because each service request needed several context switches; Jochen Liedtke's L4 (1993) showed IPC could be roughly an order of magnitude faster, founding the L4 family.</li>
+<li>seL4 (2009) was the first general-purpose OS kernel with a machine-checked proof that its C implementation matches its specification — about 10,000 lines of code backed by a far larger proof.</li>
+<li>Linux is monolithic but modular: loadable modules (.ko files) add drivers at runtime, yet they run in ring 0 with full privileges, so one bad module can still crash or compromise the system.</li>
+<li>Windows NT's executive, kernel and HAL share one kernel-mode address space, and macOS's XNU merges Mach and BSD into one kernel image, so both 'hybrids' behave much like monolithic kernels in practice.</li>
+<li>Unikernels such as MirageOS (OCaml), Unikraft and Nanos remove the user/kernel split entirely, giving tiny images and millisecond boots but making debugging and multi-process programs harder.</li>
+<li>MIT's exokernel research (Aegis and ExOS, 1995) exposed hardware securely to library operating systems; its ideas live on in kernel-bypass networking such as DPDK and in unikernel library OSes.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Calling Windows a microkernel: NT borrowed microkernel ideas, but its drivers, file systems and much of the graphics stack run in kernel mode.</li>
+<li>Thinking microkernels are inevitably slow: L4-family kernels make IPC very fast; real overhead depends on design and workload.</li>
+<li>Assuming loadable modules make Linux a microkernel: modules are linked into the same privileged address space as the rest of the kernel.</li>
+</ul>
+</div>
+<h3 id="try-it-see-the-loadable-pieces-of-your-monolithic-kernel">Try it: See the loadable pieces of your monolithic kernel<a class="headerlink" href="#try-it-see-the-loadable-pieces-of-your-monolithic-kernel" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Linux: modules extend the monolithic kernel at runtime</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+modinfo<span class="w"> </span>ext4<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-5
+
+<span class="c1"># macOS: kernel extensions loaded into XNU</span>
+kmutil<span class="w"> </span>showloaded<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_5">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Monolithic kernel</strong><br><em>Concept · Current · Beginner</em></td>
+<td>All core OS services, drivers and file systems run together in kernel mode as one large program.</td>
+<td>Linux, FreeBSD and OpenBSD are monolithic: a network driver hands packets to the TCP/IP stack with an ordinary function call.</td>
+</tr>
+<tr>
+<td><strong>Microkernel</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Minimal privileged kernel providing address spaces, threads and IPC; drivers and services run as isolated user-mode servers.</td>
+<td>In QNX, a crashed USB driver process is restarted by a supervisor while the rest of the car's software keeps running.</td>
+</tr>
+<tr>
+<td><strong>Hybrid kernel</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Microkernel-inspired structure that keeps many services in kernel mode for speed.</td>
+<td>Windows NT and Apple's XNU are usually described as hybrid kernels.</td>
+</tr>
+<tr>
+<td><strong>Unikernel</strong><br><em>Concept · Emerging · Intermediate</em></td>
+<td>Single-purpose machine image linking one application with just the OS libraries it needs, running directly on a hypervisor.</td>
+<td>A Unikraft image running NGINX can be only a few megabytes and boot in milliseconds on QEMU/KVM or Firecracker.</td>
+</tr>
+<tr>
+<td><strong>Exokernel</strong><br><em>MIT (Dawson Engler, Frans Kaashoek) · Concept · Legacy · Advanced</em></td>
+<td>Research design where the kernel only allocates hardware securely and applications implement abstractions in library OSes.</td>
+<td>MIT's Aegis and Xok exokernels showed that web servers with application-specific I/O could run much faster than on conventional kernels.</td>
+</tr>
+<tr>
+<td><strong>Modular monolithic design</strong><br><em>Linux, FreeBSD · Concept · Current · Intermediate</em></td>
+<td>A monolithic kernel that loads and unloads modules at runtime, gaining flexibility without gaining isolation.</td>
+<td>`sudo modprobe vfio-pci` loads a driver into the running Linux kernel without rebooting — but it runs fully privileged.</td>
+</tr>
+<tr>
+<td><strong>Mach</strong><br><em>Carnegie Mellon University (from 1985) · Kernel · Legacy · Intermediate</em></td>
+<td>Influential research microkernel that introduced tasks, threads and ports; its code lives on inside Apple's XNU.</td>
+<td>Every Mac and iPhone still uses Mach ports for low-level messaging between processes.</td>
+</tr>
+<tr>
+<td><strong>L4 microkernel family</strong><br><em>Jochen Liedtke (1993) and successors · Kernel · Current · Advanced</em></td>
+<td>Second-generation microkernels built for extremely fast IPC; members include Fiasco.OC, OKL4 and seL4.</td>
+<td>OKL4, an L4 variant, has shipped inside the modem firmware of many mobile phones.</td>
+</tr>
+<tr>
+<td><strong>seL4</strong><br><em>seL4 Foundation (originally NICTA / Data61) · Kernel · Current · Advanced</em></td>
+<td>High-assurance L4 microkernel with a machine-checked mathematical proof of functional correctness.</td>
+<td>DARPA's HACMS programme used seL4 in an unmanned Boeing Little Bird helicopter that resisted red-team hacking.</td>
+</tr>
+<tr>
+<td><strong>MINIX 3</strong><br><em>Andrew Tanenbaum, Vrije Universiteit Amsterdam · Operating system · Legacy · Intermediate</em></td>
+<td>Teaching-oriented microkernel OS whose drivers restart themselves after crashes; earlier MINIX inspired Linus Torvalds.</td>
+<td>A MINIX 3 derivative runs inside the Intel Management Engine on many Intel PCs.</td>
+</tr>
+<tr>
+<td><strong>QNX Neutrino</strong><br><em>BlackBerry QNX · Kernel · Current · Intermediate</em></td>
+<td>Commercial real-time microkernel used in cars, medical devices and industrial systems.</td>
+<td>Many car infotainment and digital-cockpit systems run on QNX, where a crashed service restarts without a reboot.</td>
+</tr>
+<tr>
+<td><strong>Zircon</strong><br><em>Google (Fuchsia project) · Kernel · Emerging · Advanced</em></td>
+<td>Capability-based microkernel at the heart of Google's Fuchsia OS; every resource is reached through a handle.</td>
+<td>Google moved its first-generation Nest Hub smart displays from a Linux-based OS to Fuchsia on Zircon in 2021.</td>
+</tr>
+<tr>
+<td><strong>Redox OS</strong><br><em>Open-source community · Operating system · Emerging · Advanced</em></td>
+<td>Unix-like microkernel operating system written in Rust, aimed at memory safety and reliability.</td>
+<td>Students can boot Redox in QEMU to explore a system whose drivers and file system run as user-space daemons.</td>
+</tr>
+<tr>
+<td><strong>Unikraft</strong><br><em>Unikraft open-source project · Software · Emerging · Advanced</em></td>
+<td>Modular toolkit for building specialised unikernel images for many applications and hypervisors.</td>
+<td>A team packages a small Python API with Unikraft to get a tiny VM image that boots in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>Tanenbaum–Torvalds debate</strong><br><em>comp.os.minix, 1992 · Concept · Legacy · Beginner</em></td>
+<td>Famous Usenet argument over monolithic versus microkernel design, opened by Tanenbaum's post 'LINUX is obsolete'.</td>
+<td>OS courses still use the debate to discuss trade-offs between raw performance and modular, isolated design.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="17-inside-a-kernel-a-map-of-the-main-subsystems">1.7 Inside a Kernel: A Map of the Main Subsystems<a class="headerlink" href="#17-inside-a-kernel-a-map-of-the-main-subsystems" title="Permanent link">&para;</a></h2>
+<p>A general-purpose kernel is really a set of cooperating subsystems: process and thread management, the scheduler, memory management, file systems, the networking stack, device drivers, IPC and security. Learning this map first makes every later chapter easy to place.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-07-inside-a-kernel-a-map-of-the-main.svg" alt="In a monolithic kernel all of these share one privileged address space and call each other directly." loading="lazy">
+<figcaption><strong>Main kernel subsystems.</strong> In a monolithic kernel all of these share one privileged address space and call each other directly.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A kernel is like a city hall with departments — housing (memory), transport (scheduler), records office (file systems), post office (networking), utility contractors (drivers) and police (security) — all in one building and talking constantly.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Kenji's photo app at the fictional SnapLeaf uploads a 5 MB picture, nearly every subsystem helps. The file-system layer and ext4 read the file, the page cache keeps it in RAM, the scheduler runs the upload thread, the TCP/IP stack splits the data into about 3,600 packets, the Wi-Fi driver transmits them, and the security module checks that the app may use the network at all.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The system-call layer receives requests and dispatches them to the right subsystem.</li>
+<li>Process management creates processes and threads; the scheduler decides which one runs on each CPU.</li>
+<li>Memory management maps virtual pages to physical frames and manages caches and swap.</li>
+<li>The file-system layer offers one interface over many file systems, and the block layer queues disk requests.</li>
+<li>The networking stack implements sockets, TCP/IP and packet filtering; drivers talk to the actual hardware.</li>
+<li>Security hooks (Linux Security Modules, the Windows Security Reference Monitor) check permissions throughout.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Students mapping the field, kernel developers deciding where to contribute, and SREs who must decide which subsystem to blame for a slowdown.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>When troubleshooting, ask 'which subsystem?' first — CPU (scheduler), memory, disk (file system/block) or network — then pick the matching tool; this is the start of the USE method used later in the guide.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>In the Linux source tree, drivers/ is by far the largest directory — well over half of all code — while the core scheduler (kernel/sched/) and memory manager (mm/) are comparatively small but performance-critical.</li>
+<li>Each subsystem has maintainers listed in the MAINTAINERS file; patches flow through subsystem trees such as net-next, mm and tip into Linus Torvalds's mainline during each two-week merge window.</li>
+<li>Windows organises its kernel-mode executive into managers — Object, Process, Memory, I/O, Cache, Configuration (registry) and Security Reference Monitor — layered above the kernel and the hardware abstraction layer.</li>
+<li>Handle-based designs (Unix file descriptors, Windows handles, Fuchsia handles) let one mechanism — reference-counted references with access rights — cover files, processes, events, sockets and more.</li>
+<li>Shared infrastructure — locking, RCU, workqueues, timers, memory allocators and tracing (ftrace, eBPF) — is used by every subsystem, and is where many subtle bugs hide.</li>
+<li>Kernels are slowly adopting memory-safe languages: Linux has accepted Rust code since 6.1 (December 2022), mainly for new drivers, and Microsoft has begun shipping Rust components in the Windows kernel.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming the kernel is mostly scheduler and memory code: most of it is device drivers, which is also where most kernel bugs are found.</li>
+<li>Thinking subsystems are isolated like microservices: in a monolithic kernel they share memory, so a bug in one can silently corrupt another.</li>
+</ul>
+</div>
+<h3 id="try-it-browse-the-linux-kernels-subsystem-layout">Try it: Browse the Linux kernel's subsystem layout<a class="headerlink" href="#try-it-browse-the-linux-kernels-subsystem-layout" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Each top-level directory of the source tree is roughly one subsystem</span>
+git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/torvalds/linux.git
+ls<span class="w"> </span>linux/<span class="w">        </span><span class="c1"># arch/ block/ drivers/ fs/ kernel/ mm/ net/ security/ ...</span>
+du<span class="w"> </span>-sh<span class="w"> </span>linux/drivers<span class="w"> </span>linux/fs<span class="w"> </span>linux/net<span class="w"> </span>linux/mm<span class="w"> </span>linux/kernel
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_6">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Process management</strong><br><em>Component · Current · Beginner</em></td>
+<td>Creates, tracks and destroys processes and threads, and handles signals and exit codes.</td>
+<td>Running `python app.py` makes process management build a new task, load Python and record the shell as its parent.</td>
+</tr>
+<tr>
+<td><strong>CPU scheduler</strong><br><em>Component · Current · Beginner</em></td>
+<td>Picks which ready thread runs on each CPU and for how long.</td>
+<td>Linux's EEVDF scheduler chooses a new thread whenever the current one blocks or uses up its time slice.</td>
+</tr>
+<tr>
+<td><strong>Memory manager</strong><br><em>Component · Current · Beginner</em></td>
+<td>Maintains virtual address spaces, page tables, physical page allocation, caching and swapping.</td>
+<td>When RAM runs low, the Linux memory manager reclaims page-cache pages before resorting to swap or the OOM killer.</td>
+</tr>
+<tr>
+<td><strong>File-system layer</strong><br><em>Component · Current · Beginner</em></td>
+<td>Common kernel layer giving one API (open, read, write) over many different on-disk and network file systems.</td>
+<td>The same `cp` command copies from an ext4 disk to a FAT32 USB stick because this layer hides the differences.</td>
+</tr>
+<tr>
+<td><strong>Network stack</strong><br><em>Component · Current · Beginner</em></td>
+<td>Implements sockets, TCP/UDP/IP, routing, packet filtering and queuing between applications and network drivers.</td>
+<td>A web server's accept() and send() calls pass through the kernel's TCP code before the NIC driver transmits frames.</td>
+</tr>
+<tr>
+<td><strong>Driver subsystem</strong><br><em>Component · Current · Beginner</em></td>
+<td>Kernel code that operates particular hardware and presents it through standard interfaces such as block or network devices.</td>
+<td>Plugging in a USB webcam loads the uvcvideo driver, which exposes /dev/video0 to any video app.</td>
+</tr>
+<tr>
+<td><strong>IPC subsystem</strong><br><em>Component · Current · Beginner</em></td>
+<td>Kernel mechanisms letting processes exchange data and notifications: pipes, sockets, shared memory and message queues.</td>
+<td>`ls &#124; grep txt` relies on the kernel's pipe code to carry ls's output into grep.</td>
+</tr>
+<tr>
+<td><strong>Linux Security Modules (LSM)</strong><br><em>Linux kernel · Component · Current · Intermediate</em></td>
+<td>Hooks throughout the kernel that let modules such as SELinux, AppArmor and Landlock enforce extra access rules.</td>
+<td>On Fedora, SELinux stops a hijacked web-server process reading /home even where file permissions would allow it.</td>
+</tr>
+<tr>
+<td><strong>Windows Executive</strong><br><em>Microsoft · Component · Current · Intermediate</em></td>
+<td>Upper layer of the NT kernel: the object, process, memory, I/O, cache, configuration and security managers.</td>
+<td>Every handle a Windows program opens — file, registry key or event — is tracked by the Executive's Object Manager.</td>
+</tr>
+<tr>
+<td><strong>Hardware abstraction layer (HAL)</strong><br><em>Microsoft (hal.dll); per-architecture code in other kernels · Component · Current · Intermediate</em></td>
+<td>Thin layer hiding platform differences such as interrupt controllers and timers from the rest of the kernel.</td>
+<td>Windows' hal.dll, and Linux's per-architecture arch/ code in a similar role, let one core kernel run on many boards.</td>
+</tr>
+<tr>
+<td><strong>Kernel threads</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Threads that run only in kernel mode, doing housekeeping such as flushing data, reclaiming memory or deferred work.</td>
+<td>Names in square brackets in `ps -ef`, such as [kswapd0] and [kworker/0:1], are Linux kernel threads.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="18-types-of-operating-systems">1.8 Types of Operating Systems<a class="headerlink" href="#18-types-of-operating-systems" title="Permanent link">&para;</a></h2>
+<p>Operating systems are tuned for very different jobs. Batch systems run queued jobs without interaction; time-sharing systems let many users interact at once; desktop, server and mobile OSes balance responsiveness, throughput and battery life; real-time OSes guarantee deadlines; embedded OSes fit inside small devices; distributed OSes make many computers act like one.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-08-types-of-operating-systems.svg" alt="One kernel can fill several roles: Linux appears in almost every box here." loading="lazy">
+<figcaption><strong>Operating system types by purpose.</strong> One kernel can fill several roles: Linux appears in almost every box here.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Like vehicles: a freight train (batch) is efficient but you can't hop off anywhere; a bus (time-sharing) serves many riders in turn; an ambulance (real-time) must arrive on time; a bicycle (embedded) is light and does one job well.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Harbourview Port uses five kinds of OS in one day: a payroll batch job on an IBM z/OS mainframe at 2 a.m., Windows 11 desktops for clerks, Linux servers for the shipping database, Android tablets for dock workers, and FreeRTOS on sensors in every crane, which must stop a load within 10 ms of a fault signal.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Identify the main goal: throughput (batch, server), responsiveness (desktop, mobile), deadlines (real-time) or size and power (embedded).</li>
+<li>Choose scheduling and memory policies that serve that goal.</li>
+<li>Decide the interaction model: none (batch), terminal or GUI (time-sharing, desktop), touch (mobile), or none at all (embedded).</li>
+<li>Match the hardware footprint: from kilobytes of RAM on a microcontroller to terabytes on mainframes and servers.</li>
+<li>Distributed and cluster systems add networking, replication and failure handling across many machines.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Solution architects, embedded engineers, mainframe operators, mobile developers and IoT designers choose between OS types on every project.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Distinguish hard real-time (a missed deadline is a failure, e.g. an airbag) from soft real-time (a miss only degrades quality, e.g. video playback) — a frequent exam question.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Mainframe batch processing is far from dead: IBM z/OS still runs core banking, insurance and airline workloads, with JCL describing jobs much as it did in the 1960s.</li>
+<li>Time-sharing, pioneered by CTSS and Multics, introduced ideas modern OSes take for granted: multiple users, preemptive scheduling, file permissions and an interactive command shell.</li>
+<li>Real-time OSes are judged by worst-case latency rather than average speed: a good RTOS bounds interrupt-to-task latency to microseconds, and deterministic priority scheduling matters more than throughput.</li>
+<li>Embedded devices range from 32-bit microcontrollers with tens of kilobytes of RAM running FreeRTOS or Zephyr up to embedded Linux systems built with Yocto or Buildroot on Arm SoCs.</li>
+<li>Distributed operating systems such as Amoeba, Sprite and Plan 9 tried to make a network look like one computer; today orchestrators like Kubernetes, sometimes called a 'datacenter OS', largely fill that role.</li>
+<li>Server OSes favour throughput, stability and remote management; they usually run headless, support huge memory and core counts, and offer ten-year-plus support lifecycles (RHEL, Windows Server).</li>
+<li>Network devices run their own OSes too: Cisco IOS XE, Juniper Junos (FreeBSD-based) and SONiC (Debian-based) are operating systems specialised for forwarding packets.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking 'real-time' means 'fast': it means predictable — a slower system that always meets its deadline is real-time; a fast one that sometimes misses is not.</li>
+<li>Assuming embedded means no OS: tiny devices may run a bare-metal loop, but anything with networking, files or several tasks usually runs an RTOS or embedded Linux.</li>
+<li>Treating the categories as exclusive: Linux serves as a server, desktop, mobile (Android), embedded and even real-time OS (PREEMPT_RT).</li>
+</ul>
+</div>
+<h3 id="try-it-what-kind-of-system-are-you-on">Try it: What kind of system are you on?<a class="headerlink" href="#try-it-what-kind-of-system-are-you-on" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code># Linux/macOS: kernel and CPU architecture
+uname -s -m
+# Linux: how preemptible is this kernel? (look for PREEMPT, PREEMPT_DYNAMIC or PREEMPT_RT)
+uname -v
+# Windows PowerShell: client or server edition?
+(Get-CimInstance Win32_OperatingSystem).ProductType   # 1 = workstation, 3 = server
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_7">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Batch operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Runs queued jobs one after another without user interaction, maximising throughput.</td>
+<td>A bank's nightly interest calculation runs as a batch job submitted with JCL on IBM z/OS.</td>
+</tr>
+<tr>
+<td><strong>Time-sharing system</strong><br><em>Concept · Legacy · Beginner</em></td>
+<td>Many users share one computer interactively; the CPU switches between them so quickly that each feels in control.</td>
+<td>In the 1960s, dozens of MIT users at teletype terminals shared one IBM 7094 through CTSS.</td>
+</tr>
+<tr>
+<td><strong>Desktop operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>OS for personal computers emphasising a GUI, responsiveness, application compatibility and broad hardware support.</td>
+<td>Windows 11, macOS and desktop Linux distributions such as Ubuntu and Fedora are desktop OSes.</td>
+</tr>
+<tr>
+<td><strong>Server operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>OS tuned for many simultaneous network clients, stability, remote administration and long support lifecycles.</td>
+<td>RHEL, Ubuntu Server and Windows Server 2025 run web, database and file servers, mostly with no monitor attached.</td>
+</tr>
+<tr>
+<td><strong>Mobile operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>OS for phones and tablets focused on touch interfaces, battery life, app sandboxing and app stores.</td>
+<td>Android and iOS both suspend or kill background apps aggressively to save memory and battery.</td>
+</tr>
+<tr>
+<td><strong>Real-time operating system (RTOS)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>OS that guarantees tasks respond within bounded, predictable time limits.</td>
+<td>A car's brake controller running an RTOS must react to a wheel-sensor interrupt within a few milliseconds, every single time.</td>
+</tr>
+<tr>
+<td><strong>Hard vs soft real-time</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Hard: a missed deadline is a system failure. Soft: occasional misses only reduce quality.</td>
+<td>Airbag deployment is hard real-time; dropping one frame in a video call is soft real-time.</td>
+</tr>
+<tr>
+<td><strong>Embedded operating system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Compact OS built into a dedicated device, often with little RAM, no disk and no display.</td>
+<td>A smart thermostat runs Zephyr or FreeRTOS on a microcontroller with 256 KB of RAM.</td>
+</tr>
+<tr>
+<td><strong>Distributed operating system</strong><br><em>Concept · Legacy · Intermediate</em></td>
+<td>Software making a network of computers appear as a single system that shares resources transparently.</td>
+<td>Bell Labs' Plan 9 let a user's terminal use a remote server's CPU and files as if they were local.</td>
+</tr>
+<tr>
+<td><strong>Network operating system</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>OS specialised for network devices or, historically, for LAN file and print servers.</td>
+<td>Novell NetWare served office files in the 1990s; today Cisco IOS XE and SONiC run routers and switches.</td>
+</tr>
+<tr>
+<td><strong>z/OS</strong><br><em>IBM · Operating system · Current · Intermediate</em></td>
+<td>IBM's flagship mainframe OS for very high-reliability, high-throughput transaction and batch processing.</td>
+<td>z/OS on IBM Z mainframes processes card payments and account updates for many of the world's largest banks.</td>
+</tr>
+<tr>
+<td><strong>Datacenter OS (cluster orchestrator)</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Informal term for software that manages a whole data centre's machines as one pool of resources.</td>
+<td>Engineers call Kubernetes 'the operating system of the cloud' because it schedules containers across thousands of machines.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="19-the-boot-process-from-power-on-to-login">1.9 The Boot Process: From Power-On to Login<a class="headerlink" href="#19-the-boot-process-from-power-on-to-login" title="Permanent link">&para;</a></h2>
+<p>Booting is a relay race from pressing the power button to seeing a login screen. Firmware (UEFI, or the old BIOS) tests and initialises the hardware and finds a bootloader; the bootloader loads the kernel; the kernel sets up memory and drivers and starts the first user process (init), which starts everything else.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-09-the-boot-process-from-power-on-to-login.svg" alt="Each stage loads and (with Secure Boot) verifies the next before handing over control." loading="lazy">
+<figcaption><strong>Boot chain from power button to login.</strong> Each stage loads and (with Secure Boot) verifies the next before handing over control.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like opening a theatre: the caretaker switches on the power and checks the building (firmware), the stage manager arrives with the script (bootloader), the director takes charge (kernel), and front-of-house opens the doors to the audience (init and login).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Marta's Fedora laptop at the fictional Bayside Design: UEFI firmware runs its power-on self-test, verifies Secure Boot signatures and loads shim and GRUB from the EFI System Partition. GRUB loads the kernel and initramfs; the initramfs asks for her disk-encryption passphrase, mounts the real root file system and hands over to systemd as PID 1, which starts about 200 units in parallel. `systemd-analyze` reports the whole boot took 9.8 seconds.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Power-on: the CPU starts executing firmware from flash memory at a fixed reset address.</li>
+<li>Firmware (UEFI or legacy BIOS) runs the power-on self-test, initialises RAM and devices, and chooses a boot device from its boot order.</li>
+<li>UEFI loads a bootloader (.efi file) from the EFI System Partition, checking signatures if Secure Boot is on; legacy BIOS loads the 512-byte master boot record instead.</li>
+<li>The bootloader (GRUB, systemd-boot, Windows Boot Manager) loads the kernel and an initial RAM disk and passes a command line.</li>
+<li>The kernel sets up memory management, interrupts and drivers, mounts the root file system and starts the first process (PID 1).</li>
+<li>Init (systemd, launchd, or Windows' smss and wininit) starts services, networking and finally the login screen.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>System administrators, firmware and platform engineers, security teams hunting boot-level malware, and anyone rescuing an unbootable machine.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Be able to recite both chains: UEFI → shim/GRUB → vmlinuz + initramfs → systemd (Linux) and UEFI → bootmgfw.efi → winload.efi → ntoskrnl.exe → smss.exe → wininit/winlogon (Windows).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>UEFI, specified by the UEFI Forum, replaced the 1981-era PC BIOS: it reads FAT-formatted EFI System Partitions, boots from GPT disks larger than 2 TiB and runs signed 64-bit boot applications.</li>
+<li>Secure Boot checks each boot component against keys stored in firmware variables (PK, KEK, db and the dbx revocation list); Linux distributions use a Microsoft-signed shim that then verifies GRUB and the kernel with the distribution's own key.</li>
+<li>Microsoft's original 2011 Secure Boot certificates start expiring in 2026, so firmware, Windows and Linux boot media have been moving to newer 2023 certificates — a major 2025-2026 maintenance task for IT teams.</li>
+<li>The initramfs is a compressed cpio archive unpacked into RAM, built by tools such as dracut or initramfs-tools, holding just enough drivers and scripts to find, decrypt and mount the real root file system.</li>
+<li>Measured boot records a hash of each stage in the TPM, so disk-encryption unlocking or remote attestation can prove that the boot chain was not modified.</li>
+<li>Phones and embedded boards follow the same pattern with different names: a boot ROM in the chip, bootloaders such as U-Boot or Android's ABL, then the kernel, protected by schemes like Android Verified Boot.</li>
+<li>PID 1 must never exit — if it dies, the Linux kernel panics. Modern init systems start services in parallel from dependency graphs, which is why boots shrank from minutes to seconds.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Confusing BIOS with UEFI: almost every PC made since about 2012 uses UEFI; 'BIOS settings' is simply the old name for the firmware setup screen.</li>
+<li>Thinking Secure Boot encrypts anything: it only verifies signatures on boot code; disk encryption such as BitLocker or LUKS is a separate layer.</li>
+<li>Deleting the small EFI System Partition to reclaim space: without it the firmware has no bootloader to start.</li>
+</ul>
+</div>
+<h3 id="try-it-inspect-how-your-machine-booted">Try it: Inspect how your machine booted<a class="headerlink" href="#try-it-inspect-how-your-machine-booted" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Linux: how long did each stage take?</span>
+systemd-analyze
+systemd-analyze<span class="w"> </span>blame<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+<span class="c1"># Booted with UEFI or legacy BIOS?</span>
+<span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>/sys/firmware/efi<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>UEFI<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>BIOS
+
+<span class="c1"># Windows (admin PowerShell): boot entries</span>
+bcdedit<span class="w"> </span>/enum
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_8">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Firmware</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Software stored in flash memory on the motherboard that initialises hardware and starts the boot process.</td>
+<td>Installing the vendor's firmware update on a laptop fixes CPU microcode bugs and refreshes Secure Boot certificates.</td>
+</tr>
+<tr>
+<td><strong>BIOS (legacy)</strong><br><em>IBM PC, 1981 · Standard · Legacy · Beginner</em></td>
+<td>Original PC firmware: 16-bit, it loads the first 512-byte sector of a disk (the MBR) and jumps to it.</td>
+<td>Old machines in 'Legacy/CSM' mode boot from MBR-partitioned disks limited to 2 TiB partitions.</td>
+</tr>
+<tr>
+<td><strong>UEFI</strong><br><em>UEFI Forum · Standard · Current · Beginner</em></td>
+<td>Modern firmware interface that runs 64-bit EFI applications from a FAT partition and supports GPT disks, networking and Secure Boot.</td>
+<td>A boot entry pointing to \EFI\ubuntu\shimx64.efi tells the UEFI firmware how to start Ubuntu.</td>
+</tr>
+<tr>
+<td><strong>POST (power-on self-test)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Firmware checks of CPU, memory and essential devices that run before anything boots.</td>
+<td>A PC that beeps or blinks an LED code at power-on is reporting a POST failure, such as missing or faulty RAM.</td>
+</tr>
+<tr>
+<td><strong>EFI System Partition (ESP)</strong><br><em>UEFI specification · Concept · Current · Intermediate</em></td>
+<td>Small FAT32 partition, often 100 MB to 1 GB, holding the bootloaders of every installed OS.</td>
+<td>Ubuntu mounts it at /boot/efi; on dual-boot PCs it also holds EFI/Microsoft/Boot/bootmgfw.efi.</td>
+</tr>
+<tr>
+<td><strong>Secure Boot</strong><br><em>UEFI Forum · Standard · Current · Intermediate</em></td>
+<td>Firmware feature that runs only bootloaders and kernels signed by trusted keys, blocking boot-level malware.</td>
+<td>An unsigned custom kernel refuses to boot with Secure Boot on until you enrol your own key with mokutil.</td>
+</tr>
+<tr>
+<td><strong>shim</strong><br><em>Open source, signed by Microsoft · Software · Current · Intermediate</em></td>
+<td>Small first-stage UEFI loader that lets Linux distributions boot under Secure Boot using their own signing keys.</td>
+<td>Fedora, Ubuntu, Debian and SUSE ship shim so they install on Secure Boot PCs without changing firmware settings.</td>
+</tr>
+<tr>
+<td><strong>GRUB 2</strong><br><em>GNU Project · Software · Current · Beginner</em></td>
+<td>The most common Linux bootloader: boot menu, multi-boot support, reads many file systems, loads kernel plus initramfs.</td>
+<td>Holding Shift or pressing Esc at start-up shows GRUB's menu so you can pick an older kernel after a bad update.</td>
+</tr>
+<tr>
+<td><strong>systemd-boot</strong><br><em>systemd project · Software · Current · Intermediate</em></td>
+<td>Simple UEFI boot manager that starts kernels described by small text entries or unified kernel images.</td>
+<td>Arch Linux users often choose systemd-boot for a faster, simpler boot menu than GRUB.</td>
+</tr>
+<tr>
+<td><strong>Windows Boot Manager</strong><br><em>Microsoft · Software · Current · Intermediate</em></td>
+<td>Windows' UEFI boot application (bootmgfw.efi) that reads the BCD store and starts winload.efi to load the kernel.</td>
+<td>`bcdedit` edits the Boot Configuration Data, for example to add a Safe Mode entry or change the menu timeout.</td>
+</tr>
+<tr>
+<td><strong>initramfs / initrd</strong><br><em>Concept · Current · Intermediate</em></td>
+<td>Temporary root file system in RAM containing the drivers and tools needed to mount the real root disk.</td>
+<td>An encrypted Ubuntu laptop's initramfs prompts for the LUKS passphrase before the root file system can be mounted.</td>
+</tr>
+<tr>
+<td><strong>Init process (PID 1)</strong><br><em>Concept · Current · Beginner</em></td>
+<td>First user-space process started by the kernel; it launches all other services and adopts orphaned processes.</td>
+<td>`ps -p 1 -o comm=` prints 'systemd' on most Linux distributions; on macOS, PID 1 is launchd.</td>
+</tr>
+<tr>
+<td><strong>U-Boot</strong><br><em>Das U-Boot open-source project · Software · Current · Advanced</em></td>
+<td>Popular bootloader for embedded and Arm boards that loads Linux from flash, SD card or the network.</td>
+<td>Many routers and development boards start via U-Boot, whose console lets engineers load a test kernel over TFTP.</td>
+</tr>
+<tr>
+<td><strong>Measured boot</strong><br><em>Trusted Computing Group · Concept · Current · Advanced</em></td>
+<td>Each boot stage hashes the next and records it in the TPM, creating evidence of exactly what software started.</td>
+<td>systemd-cryptenroll --tpm2-pcrs=7 ties disk unlocking to Secure Boot state recorded in the TPM.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="110-posix-and-the-single-unix-specification">1.10 POSIX and the Single UNIX Specification<a class="headerlink" href="#110-posix-and-the-single-unix-specification" title="Permanent link">&para;</a></h2>
+<p>POSIX is a family of IEEE standards that defines what a Unix-like operating system must offer programs: system interfaces such as fork and open, C library functions, a shell language and standard utilities like ls and grep. The Single UNIX Specification is the same core plus extras; passing its tests lets a vendor call a product UNIX.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-10-posix-and-the-single-unix-specification.svg" alt="One standard, maintained jointly since 2001, revised roughly once a decade." loading="lazy">
+<figcaption><strong>How POSIX and SUS evolved.</strong> One standard, maintained jointly since 2001, revised roughly once a decade.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>POSIX is like a standard plug and socket: if every wall socket follows the specification, any appliance (program) built to it works in any house without rewiring.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional analytics firm DataFjord writes its log tool in C using only POSIX interfaces (open, read, getopt, pthread_create). The same source compiles unchanged on Ubuntu, Alpine, FreeBSD and macOS; only the Windows port needed extra work, which they solved by shipping it inside WSL. Their shell scripts start with #!/bin/sh and avoid bash-only features, so they also run under dash and BusyBox.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>1988: IEEE publishes POSIX.1, standardising the C interface to Unix-like systems.</li>
+<li>Later parts add the shell and utilities (POSIX.2, 1992), real-time extensions (1993) and threads (POSIX.1c, 1995).</li>
+<li>The Open Group's Single UNIX Specification and POSIX merge in 2001; the Austin Group maintains both as one document.</li>
+<li>Revisions follow in 2008, 2017 and 2024 — POSIX.1-2024 equals SUS Version 5's core (Base Specifications Issue 8).</li>
+<li>Vendors may certify products against the specification to use the UNIX trademark; others are 'mostly POSIX-compliant' without certification.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Systems programmers writing portable code, shell scripters, OS vendors, and anyone porting software between Linux, BSD, macOS and commercial Unix.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the distinction: Linux distributions are largely POSIX-compatible but generally not certified, while macOS releases have been certified UNIX 03 since Mac OS X Leopard (2007).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>POSIX.1-2024 (IEEE Std 1003.1-2024, published June 2024) is technically identical to The Open Group Base Specifications Issue 8 and has four volumes: Base Definitions, System Interfaces, Shell and Utilities, and Rationale.</li>
+<li>The 2024 revision standardised interfaces that had long been common in practice, such as strlcpy() and strlcat(), reallocarray(), asprintf(), ppoll() and getentropy(), and aligned the standard with C17.</li>
+<li>Certified UNIX products have included IBM AIX, HP-UX, Oracle Solaris and Apple macOS; a few Linux-based systems (such as Huawei's EulerOS) were certified, but mainstream distributions never seek certification.</li>
+<li>Feature-test macros such as _POSIX_C_SOURCE=200809L or _XOPEN_SOURCE=700 tell the C library which version of the standard a program expects, hiding non-standard extensions.</li>
+<li>The Linux Standard Base tried to standardise binary compatibility between distributions on top of POSIX but stalled after version 5.0 (2015); in practice, glibc versions and packaging define compatibility today.</li>
+<li>Windows is not natively POSIX-compliant: its old POSIX subsystem and later Services for UNIX were removed, and today Cygwin, MSYS2 and WSL supply Unix-like environments.</li>
+<li>The name POSIX was suggested by Richard Stallman; the X signals its Unix heritage, and the IEEE standard number 1003 is still how most specifications cite it.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Writing #!/bin/sh but using bash features such as [[ ]] or arrays: on Debian and Ubuntu /bin/sh is dash, so the script breaks; use #!/bin/bash or stick to POSIX syntax.</li>
+<li>Assuming 'POSIX-compliant' means 'certified': only systems that pass The Open Group's test suites may use the UNIX trademark.</li>
+<li>Expecting identical command flags everywhere: GNU tools add extensions (such as sed -i with no suffix) that behave differently on macOS and the BSDs.</li>
+</ul>
+</div>
+<h3 id="try-it-ask-your-system-about-posix-values-and-limits">Try it: Ask your system about POSIX values and limits<a class="headerlink" href="#try-it-ask-your-system-about-posix-values-and-limits" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>getconf<span class="w"> </span>_POSIX_VERSION<span class="w">     </span><span class="c1"># e.g. 200809 = POSIX.1-2008 interfaces</span>
+getconf<span class="w"> </span>ARG_MAX<span class="w">            </span><span class="c1"># max bytes of arguments passed to exec</span>
+getconf<span class="w"> </span>PAGESIZE<span class="w">           </span><span class="c1"># 4096 on most x86-64 Linux, 16384 on Apple silicon</span>
+<span class="c1"># Check a script for bash-only syntax before running it with /bin/sh</span>
+shellcheck<span class="w"> </span>--shell<span class="o">=</span>sh<span class="w"> </span>myscript.sh
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_9">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>POSIX</strong><br><em>IEEE 1003 / The Open Group / ISO/IEC 9945 · Standard · Current · Beginner</em></td>
+<td>Portable Operating System Interface: standards defining Unix-like system interfaces, C library, shell and utilities.</td>
+<td>Code using fork(), pipe() and the POSIX shell runs on Linux, macOS and FreeBSD with minimal changes.</td>
+</tr>
+<tr>
+<td><strong>POSIX.1-2024</strong><br><em>IEEE Std 1003.1-2024 · Standard · Current · Intermediate</em></td>
+<td>The current POSIX base standard, published June 2024 and identical to Open Group Base Specifications Issue 8.</td>
+<td>POSIX.1-2024 finally standardised strlcpy() and reallocarray(), long available on the BSDs and in newer glibc.</td>
+</tr>
+<tr>
+<td><strong>Single UNIX Specification (SUS)</strong><br><em>The Open Group · Specification · Current · Intermediate</em></td>
+<td>Superset of POSIX defining what a system must provide to carry the UNIX brand; Version 5 dates from 2024.</td>
+<td>Vendors test against the SUS to put the UNIX trademark on products such as IBM AIX and Apple macOS.</td>
+</tr>
+<tr>
+<td><strong>Austin Group</strong><br><em>IEEE, The Open Group, ISO/IEC JTC 1/SC 22 · Organisation · Current · Advanced</em></td>
+<td>Joint working group that maintains the combined POSIX and Single UNIX Specification documents.</td>
+<td>Anyone can report defects or propose changes for the next POSIX revision on the Austin Group's public bug tracker.</td>
+</tr>
+<tr>
+<td><strong>The Open Group</strong><br><em>Organisation · Current · Intermediate</em></td>
+<td>Industry consortium that owns the UNIX trademark and runs the UNIX certification programmes.</td>
+<td>The Open Group's register lists UNIX 03-certified products, including releases of IBM AIX and Apple macOS.</td>
+</tr>
+<tr>
+<td><strong>UNIX 03 certification</strong><br><em>The Open Group · Certification · Current · Intermediate</em></td>
+<td>Conformance branding for operating systems that pass the Single UNIX Specification test suites.</td>
+<td>macOS is certified UNIX 03; Ubuntu behaves much like Unix but has never been certified.</td>
+</tr>
+<tr>
+<td><strong>Unix-like system</strong><br><em>Concept · Current · Beginner</em></td>
+<td>An OS that behaves like Unix (shell, files, processes, permissions) without necessarily being certified or descended from AT&amp;T code.</td>
+<td>Linux distributions, FreeBSD and the lower layers of Android are all Unix-like systems.</td>
+</tr>
+<tr>
+<td><strong>POSIX shell (sh)</strong><br><em>POSIX.1 Shell and Utilities volume · Standard · Current · Beginner</em></td>
+<td>The standard command language — variables, if/case/for/while, pipes, redirection — without bash or zsh extensions.</td>
+<td>A Dockerfile's RUN lines execute with /bin/sh -c, so portable sh syntax avoids surprises in Alpine-based images.</td>
+</tr>
+<tr>
+<td><strong>POSIX utilities</strong><br><em>POSIX.1 Shell and Utilities volume · Standard · Current · Beginner</em></td>
+<td>Standard commands — ls, grep, sed, awk, find, sort and well over a hundred more — with defined options and behaviour.</td>
+<td>A script using only POSIX options for find and sed runs on both a Linux server and a MacBook.</td>
+</tr>
+<tr>
+<td><strong>getconf</strong><br><em>POSIX · Command · Current · Intermediate</em></td>
+<td>Utility that prints system configuration values and limits defined by POSIX, such as page size or maximum argument length.</td>
+<td>`getconf PAGESIZE` prints 4096 on most x86-64 Linux systems and 16384 on Apple silicon Macs.</td>
+</tr>
+<tr>
+<td><strong>Feature-test macros</strong><br><em>POSIX / ISO C · Concept · Current · Advanced</em></td>
+<td>Preprocessor definitions such as _POSIX_C_SOURCE that choose which standard's interfaces a C program can see.</td>
+<td>Compiling with -D_POSIX_C_SOURCE=200809L hides GNU-only functions, catching portability problems early.</td>
+</tr>
+<tr>
+<td><strong>Cygwin / MSYS2</strong><br><em>Cygwin (Red Hat-sponsored); MSYS2 open source · Software · Current · Intermediate</em></td>
+<td>Windows environments providing a POSIX API layer and Unix tools so Unix software can compile and run on Windows.</td>
+<td>Git for Windows ships an MSYS2-based bash so Git's shell scripts work on Windows.</td>
+</tr>
+<tr>
+<td><strong>Linux Standard Base (LSB)</strong><br><em>Linux Foundation · Standard · Legacy · Intermediate</em></td>
+<td>Former standard for binary compatibility across Linux distributions, built on POSIX; largely abandoned after version 5.0 (2015).</td>
+<td>Old commercial installers checked `lsb_release` output; Debian dropped most LSB support in 2023.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="111-a-short-history-of-operating-systems">1.11 A Short History of Operating Systems<a class="headerlink" href="#111-a-short-history-of-operating-systems" title="Permanent link">&para;</a></h2>
+<p>Operating systems grew from simple job loaders in the 1950s into the layered systems on every device today. The key milestones are time-sharing (CTSS, Multics), Unix in 1969 and its many descendants (BSD, Linux, macOS, Android), MS-DOS and Windows on PCs, and the smartphone OSes of the late 2000s.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-11-a-short-history-of-operating-systems.svg" alt="Most of today&#x27;s systems trace back to two lines: Unix (1969) and Windows NT (1993)." loading="lazy">
+<figcaption><strong>Milestones in operating-system history.</strong> Most of today&#x27;s systems trace back to two lines: Unix (1969) and Windows NT (1993).</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>OS history is a family tree: Multics is the grandparent, Unix the famous parent, and today's Linux, macOS, iOS and Android are cousins who inherited the same habits — files, processes, shells and pipes.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Grace, a junior engineer at the fictional Old Mill Software, types `ls -l` on a 2026 MacBook and on a Linux server and sees almost the same output. Both systems descend from ideas first shipped at Bell Labs in 1969-1971: hierarchical files, rwx permissions and small tools joined by pipes. Even Windows PowerShell defines `ls` as an alias for Get-ChildItem.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>1950s-60s: batch monitors and IBM's OS/360 (shipped 1966) manage jobs on mainframes.</li>
+<li>1961-69: CTSS and Multics invent interactive time-sharing and hardware-enforced protection.</li>
+<li>1969-80s: Unix spreads from Bell Labs; Berkeley's BSD adds virtual memory and TCP/IP sockets.</li>
+<li>1980s: PCs arrive with CP/M and MS-DOS, the Macintosh brings the GUI, and GNU begins a free Unix-like system.</li>
+<li>1990s: Windows NT and Linux appear, and the open-source movement grows.</li>
+<li>2000s-today: Mac OS X/macOS, iOS and Android put Unix-like kernels into billions of devices.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Anyone in computing benefits — interviewers like history questions, and design choices such as fork(), everything-is-a-file and Windows drive letters only make sense with this background.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Anchor dates: Unix 1969, MS-DOS 1981, Linux 1991, Windows NT 1993, Mac OS X 2001, iPhone 2007, first Android phone 2008.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>CTSS (Compatible Time-Sharing System) was first demonstrated at MIT in 1961 and later ran on the IBM 7090/7094; it is credited with early forms of e-mail, text formatting and password-protected accounts.</li>
+<li>Multics (from 1965; MIT, GE and Bell Labs) pioneered hierarchical file systems, dynamic linking, protection rings and a single-level store; after Bell Labs left in 1969, Ken Thompson and Dennis Ritchie built Unix as a simpler reaction.</li>
+<li>Rewriting Unix in C in 1973 made it portable; AT&amp;T's licensing let universities study the source, and Berkeley's BSD added virtual memory, a faster file system and the sockets TCP/IP stack in 4.2BSD (1983).</li>
+<li>The Unix wars and the USL v. BSDi lawsuit (settled 1994) held back BSD exactly when Linux appeared, which helps explain Linux's rapid rise in the 1990s.</li>
+<li>Linus Torvalds announced Linux on 25 August 1991 as 'just a hobby'; combined with GNU tools (begun by Richard Stallman in 1983) and licensed under GPLv2, it became a complete free OS.</li>
+<li>Windows NT 3.1 (1993), led by Dave Cutler, formerly of DEC's VMS team, introduced a portable, preemptive, protected-memory kernel; every consumer Windows since XP (2001) is NT-based.</li>
+<li>Mac OS X 10.0 (2001) combined NeXTSTEP's Mach-and-BSD XNU kernel with a new interface; the same core powers iOS (2007), while Android (first phone 2008) put a Linux kernel into billions of pockets.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Saying Linux is a version of Unix: Linux is a from-scratch Unix-like kernel with no AT&amp;T code; the BSDs descend from the original source.</li>
+<li>Believing Windows grew straight out of MS-DOS: Windows 95, 98 and ME were DOS-based, but all current Windows versions use the separate NT kernel.</li>
+<li>Thinking macOS is based on Linux: macOS uses XNU (Mach plus BSD); Android, by contrast, really does use the Linux kernel.</li>
+</ul>
+</div>
+<h3 id="try-it-spot-your-unix-heritage">Try it: Spot your Unix heritage<a class="headerlink" href="#try-it-spot-your-unix-heritage" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>man<span class="w"> </span><span class="m">1</span><span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20<span class="w">      </span><span class="c1"># man pages descend from the 1971 Unix manual</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$SHELL</span>
+uname<span class="w"> </span>-a
+cal<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="m">1752</span><span class="w">               </span><span class="c1"># Unix 'cal' still shows the 1752 calendar change</span>
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_10">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IBM OS/360</strong><br><em>IBM (announced 1964, shipped 1966) · Operating system · Legacy · Intermediate</em></td>
+<td>OS for IBM's System/360 mainframes, the first to span a whole range of compatible machines; ancestor of z/OS.</td>
+<td>Fred Brooks's book 'The Mythical Man-Month' draws its lessons from managing the OS/360 project.</td>
+</tr>
+<tr>
+<td><strong>CTSS</strong><br><em>MIT (Fernando Corbató), 1961 · Operating system · Legacy · Intermediate</em></td>
+<td>Compatible Time-Sharing System: one of the first time-sharing OSes, letting many users work interactively at once.</td>
+<td>CTSS users exchanged some of the earliest electronic messages, an early form of e-mail, in the mid-1960s.</td>
+</tr>
+<tr>
+<td><strong>Multics</strong><br><em>MIT, General Electric, Bell Labs (from 1965) · Operating system · Legacy · Intermediate</em></td>
+<td>Influential time-sharing OS that introduced hierarchical file systems, protection rings and dynamic linking.</td>
+<td>The x86 protection rings echo Multics, which used hardware rings to separate users from the supervisor.</td>
+</tr>
+<tr>
+<td><strong>Unix</strong><br><em>Bell Labs (Ken Thompson, Dennis Ritchie), 1969 · Operating system · Legacy · Beginner</em></td>
+<td>Small, elegant multi-user OS whose ideas — hierarchical files, processes, shells, pipes — underlie most modern systems.</td>
+<td>The first Unix ran on a PDP-7 minicomputer; the 1973 Fourth Edition kernel was rewritten in C.</td>
+</tr>
+<tr>
+<td><strong>C programming language</strong><br><em>Dennis Ritchie, Bell Labs (1972) · Language · Current · Beginner</em></td>
+<td>Systems programming language created to write Unix; still the main language of operating-system kernels.</td>
+<td>The Linux, Windows NT and XNU kernels are written mostly in C, with growing amounts of Rust and C++.</td>
+</tr>
+<tr>
+<td><strong>BSD</strong><br><em>University of California, Berkeley · Operating system · Legacy · Intermediate</em></td>
+<td>Berkeley Software Distribution: Unix variant that added virtual memory and TCP/IP sockets; ancestor of FreeBSD, OpenBSD and NetBSD.</td>
+<td>The sockets API from 4.2BSD (1983) is still how almost every program opens a network connection.</td>
+</tr>
+<tr>
+<td><strong>GNU Project</strong><br><em>Richard Stallman / Free Software Foundation (1983) · Organisation · Current · Beginner</em></td>
+<td>Effort to build a free Unix-like OS; it supplied the compiler, C library, shell and tools most Linux systems use.</td>
+<td>bash, gcc, glibc and coreutils (ls, cp, mv) on an Ubuntu server all come from GNU.</td>
+</tr>
+<tr>
+<td><strong>CP/M</strong><br><em>Digital Research (Gary Kildall), 1974 · Operating system · Legacy · Intermediate</em></td>
+<td>Early microcomputer OS for 8-bit machines whose design heavily influenced MS-DOS.</td>
+<td>CP/M's drive letters (A:, B:) carried into MS-DOS and still survive in Windows as C:.</td>
+</tr>
+<tr>
+<td><strong>MS-DOS</strong><br><em>Microsoft (1981), from Seattle Computer Products' 86-DOS · Operating system · Legacy · Beginner</em></td>
+<td>Single-user, single-tasking disk OS for the IBM PC and compatibles.</td>
+<td>Microsoft has published the source code of MS-DOS 1.25, 2.0 and 4.0 on GitHub for historians and hobbyists.</td>
+</tr>
+<tr>
+<td><strong>Classic Mac OS</strong><br><em>Apple (1984) · Operating system · Legacy · Beginner</em></td>
+<td>The original Macintosh system software that brought a mouse-driven graphical interface to the mass market.</td>
+<td>Mac OS 9 (1999) was the last classic version before Mac OS X replaced it with a Unix-based core.</td>
+</tr>
+<tr>
+<td><strong>Windows NT</strong><br><em>Microsoft (Dave Cutler), 1993 · Operating system · Current · Beginner</em></td>
+<td>Microsoft's portable, preemptive, protected-memory OS family — the base of every Windows version since XP.</td>
+<td>Running `ver` on Windows 11 still reports an internal NT version of 10.0.</td>
+</tr>
+<tr>
+<td><strong>Linux (1991)</strong><br><em>Linus Torvalds · Kernel · Current · Beginner</em></td>
+<td>Free Unix-like kernel announced in August 1991, now the most widely deployed OS kernel in the world.</td>
+<td>Linux 0.01 had about 10,000 lines of code; by 2025 the kernel source tree had passed roughly 40 million.</td>
+</tr>
+<tr>
+<td><strong>Mac OS X / macOS</strong><br><em>Apple (2001) · Operating system · Current · Beginner</em></td>
+<td>Apple's Unix-based desktop OS built on the XNU kernel from NeXTSTEP; renamed macOS in 2016.</td>
+<td>In 2025 Apple jumped from macOS 15 Sequoia to macOS 26 Tahoe to align version numbers with the year.</td>
+</tr>
+<tr>
+<td><strong>iPhone OS / iOS</strong><br><em>Apple (2007) · Operating system · Current · Beginner</em></td>
+<td>Mobile OS derived from Mac OS X, launched with the first iPhone and renamed iOS in 2010.</td>
+<td>The App Store opened in 2008 with iPhone OS 2.0, creating the modern mobile-app economy.</td>
+</tr>
+<tr>
+<td><strong>Android</strong><br><em>Android Inc. / Google (2008) · Operating system · Current · Beginner</em></td>
+<td>Linux-kernel-based mobile OS; first shipped on the HTC Dream (T-Mobile G1) in 2008.</td>
+<td>Because Android's core is open source (AOSP), makers such as Samsung and Xiaomi ship their own customised versions.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="112-the-os-landscape-and-market-shares-in-2026">1.12 The OS Landscape and Market Shares in 2026<a class="headerlink" href="#112-the-os-landscape-and-market-shares-in-2026" title="Permanent link">&para;</a></h2>
+<p>No single OS rules everywhere. Android is the most-used OS overall because of phones; Windows dominates traditional desktops and laptops; Apple's iOS and macOS hold a large premium share; and Linux runs most servers, clouds, supercomputers and embedded devices even though it is a small slice of desktops.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-12-the-os-landscape-and-market-shares-in.svg" alt="StatCounter, July 2026 (approximate); web-traffic share is not the same as installed devices." loading="lazy">
+<figcaption><strong>Share of worldwide web traffic, all devices.</strong> StatCounter, July 2026 (approximate); web-traffic share is not the same as installed devices.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The OS market is like a city's transport: cars (Windows) fill the roads, scooters (Android) are everywhere, premium taxis (Apple) take a profitable share, and the trains and power lines nobody notices (Linux in servers and devices) carry most of the freight.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Nadia, an IT student, audits the fictional Greenway Logistics: 380 Windows 11 laptops, 40 MacBooks, 600 Android scanners and phones, 90 iPhones, 120 Linux virtual machines in the cloud and a Kubernetes cluster on Linux nodes. Her report concludes: 'Linux is about 3% of our desktops but 100% of our servers.'</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Decide which population you mean: desktops, phones, servers, embedded devices or web traffic.</li>
+<li>Pick a data source: web-traffic trackers (StatCounter), shipment trackers (IDC, Counterpoint), surveys (Steam) or server scans.</li>
+<li>Treat numbers as approximate and check how large the 'unknown' share is — methods differ by several percentage points.</li>
+<li>Compare trends over many months rather than quoting one month in isolation.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT managers planning device fleets, developers choosing target platforms, security teams prioritising patches, and students deciding which OS skills to learn first.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Quote ranges, not precise figures: in mid-2026 Android was roughly two-thirds of mobile and about 40% of all web traffic, Windows roughly 60% of desktops, and Linux around 4% of desktops but most cloud servers.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>StatCounter counts page views on sites using its tracker, so it measures web activity rather than installed devices; mid-2026 desktop figures swung by several points month to month, partly because of a large 'unknown' category.</li>
+<li>On phones, StatCounter showed Android at about 67-69% and iOS about 31-33% worldwide in mid-2026, while iOS leads in some richer markets such as the United States and Japan.</li>
+<li>Windows 10 reached end of support on 14 October 2025; Windows 11 (versions 24H2 and 25H2) is now the majority Windows version, with paid Extended Security Updates bridging organisations that could not upgrade in time.</li>
+<li>Linux has run on every TOP500 supercomputer since November 2017 and on most public-cloud virtual machines; Microsoft has said that more than half of Azure's VM cores run Linux.</li>
+<li>Apple moved to year-based version numbers in 2025 (iOS 26, macOS 26 Tahoe); the 27 releases shipped in September 2026, and macOS 27 supports only Apple silicon Macs.</li>
+<li>In China, Huawei's HarmonyOS — including the non-Android HarmonyOS NEXT generation launched in 2024 — has become a significant third mobile platform alongside Android and iOS.</li>
+<li>Embedded and IoT devices such as routers, TVs, cars and cameras vastly outnumber PCs; most run embedded Linux, Android variants or RTOSes like FreeRTOS and Zephyr, so 'most-used OS' depends on what you count.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Treating one month's StatCounter figure as exact: shares move by several points between months and between desktop-only and all-device views.</li>
+<li>Concluding that Linux is unimportant from its desktop share: nearly every website and cloud service you use is served from Linux.</li>
+<li>Forgetting ChromeOS, consoles and embedded devices: education fleets, gaming and IoT are sizeable worlds with their own operating systems.</li>
+</ul>
+</div>
+<h3 id="try-it-identify-your-own-os-precisely">Try it: Identify your own OS precisely<a class="headerlink" href="#try-it-identify-your-own-os-precisely" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># Linux</span>
+cat<span class="w"> </span>/etc/os-release
+uname<span class="w"> </span>-r
+<span class="c1"># macOS</span>
+sw_vers
+<span class="c1"># Windows PowerShell</span>
+Get-CimInstance<span class="w"> </span>Win32_OperatingSystem<span class="w"> </span><span class="p">|</span><span class="w"> </span>Select-Object<span class="w"> </span>Caption,Version,BuildNumber
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_11">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Windows on desktops</strong><br><em>Microsoft · Operating system · Current · Beginner</em></td>
+<td>The dominant desktop OS family, with roughly 60% or more of worldwide desktop web traffic in 2026, mostly Windows 11.</td>
+<td>Most corporate laptops and gaming PCs run Windows 11, managed by tools such as Intune or Group Policy.</td>
+</tr>
+<tr>
+<td><strong>Windows 10 end of support</strong><br><em>Microsoft (14 October 2025) · Concept · Current · Beginner</em></td>
+<td>Free security updates for Windows 10 ended; organisations upgraded to Windows 11 or bought Extended Security Updates.</td>
+<td>Greenway enrolled 60 older PCs that failed Windows 11's TPM 2.0 requirement in ESU while replacements were ordered.</td>
+</tr>
+<tr>
+<td><strong>Android on mobile</strong><br><em>Google / Open Handset Alliance · Operating system · Current · Beginner</em></td>
+<td>The most-used OS by web traffic (about 41% of all devices in 2026) and roughly two-thirds of smartphone traffic.</td>
+<td>Android 17 began rolling out to Pixel phones in June 2026, with other manufacturers following in later months.</td>
+</tr>
+<tr>
+<td><strong>iOS and iPadOS</strong><br><em>Apple · Operating system · Current · Beginner</em></td>
+<td>Apple's mobile OSes: about a third of mobile web traffic worldwide and a majority in markets such as the US and Japan.</td>
+<td>iOS 27 was released to the public in September 2026 alongside macOS 27.</td>
+</tr>
+<tr>
+<td><strong>macOS on desktops</strong><br><em>Apple · Operating system · Current · Beginner</em></td>
+<td>Apple's desktop OS, around 15% of desktop web traffic; from macOS 27 it runs only on Apple silicon Macs.</td>
+<td>Design and software teams often standardise on MacBooks; macOS 26 Tahoe was the final release for Intel Macs.</td>
+</tr>
+<tr>
+<td><strong>Linux on the desktop</strong><br><em>Many distributions (Ubuntu, Fedora, Mint, SteamOS...) · Operating system · Current · Beginner</em></td>
+<td>Desktop Linux held roughly 3-5% of worldwide desktop web traffic in 2026, helped by gaming and Windows 10's end of support.</td>
+<td>Valve's Steam Deck runs SteamOS, an Arch-based Linux, which has helped raise Linux's share among gamers.</td>
+</tr>
+<tr>
+<td><strong>Linux in servers and the cloud</strong><br><em>Operating system · Current · Beginner</em></td>
+<td>The default OS for web servers, public-cloud VMs, containers, Kubernetes nodes and supercomputers.</td>
+<td>AWS, Microsoft and Google each maintain their own Linux distributions (Amazon Linux, Azure Linux, Container-Optimized OS) for their clouds.</td>
+</tr>
+<tr>
+<td><strong>TOP500 list</strong><br><em>TOP500 project · Resource · Current · Intermediate</em></td>
+<td>Twice-yearly ranking of the world's fastest supercomputers; every system on it has run Linux since November 2017.</td>
+<td>El Capitan at Lawrence Livermore, which topped the list from November 2024, runs a Linux-based operating system.</td>
+</tr>
+<tr>
+<td><strong>ChromeOS</strong><br><em>Google · Operating system · Current · Beginner</em></td>
+<td>Linux-based, browser-centred OS for Chromebooks; about 1-2% of desktop traffic, strongest in US schools.</td>
+<td>A school district manages 5,000 student Chromebooks centrally from the Google Admin console.</td>
+</tr>
+<tr>
+<td><strong>HarmonyOS</strong><br><em>Huawei · Operating system · Emerging · Intermediate</em></td>
+<td>Huawei's OS family; HarmonyOS NEXT no longer runs Android apps and targets phones, tablets and PCs, mainly in China.</td>
+<td>Huawei phones sold in China ship with HarmonyOS, whose native apps are written in the ArkTS language.</td>
+</tr>
+<tr>
+<td><strong>Embedded and IoT operating systems</strong><br><em>Concept · Current · Beginner</em></td>
+<td>OSes inside routers, TVs, cars, cameras and sensors: embedded Linux, Android variants, FreeRTOS, Zephyr, QNX and others.</td>
+<td>A smart TV may run Tizen, webOS or Android TV — all Linux-based — while its remote control's chip runs an RTOS.</td>
+</tr>
+<tr>
+<td><strong>StatCounter Global Stats</strong><br><em>StatCounter · Resource · Current · Beginner</em></td>
+<td>Free web-analytics site estimating OS and browser market shares from page views across a large network of websites.</td>
+<td>Journalists quote StatCounter's monthly desktop shares, but its 'unknown' category reached around 20% of desktop traffic in 2026.</td>
+</tr>
+<tr>
+<td><strong>Shipment trackers (IDC, Counterpoint)</strong><br><em>IDC, Counterpoint Research · Resource · Current · Intermediate</em></td>
+<td>Analyst firms counting devices shipped each quarter by vendor and OS, complementing web-traffic statistics.</td>
+<td>Quarterly smartphone shipment reports show Android phones make up roughly four-fifths of new phones sold worldwide.</td>
+</tr>
+<tr>
+<td><strong>Steam Hardware &amp; Software Survey</strong><br><em>Valve · Resource · Current · Intermediate</em></td>
+<td>Monthly opt-in survey of Steam gamers' hardware and OS, widely used to gauge gaming platforms.</td>
+<td>Linux's share on Steam has risen to a few percent since the Steam Deck (2022) and the Proton compatibility layer.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="113-shells-and-command-line-basics">1.13 Shells and Command-Line Basics<a class="headerlink" href="#113-shells-and-command-line-basics" title="Permanent link">&para;</a></h2>
+<p>A shell is a program that reads the commands you type, runs other programs for you and shows their output. It is an ordinary user program: the terminal window draws the text, the shell interprets it, and the kernel runs the resulting processes. Learning a shell (bash, zsh or PowerShell) is the single most useful practical OS skill.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-13-shells-and-command-line-basics.svg" alt="Parsing and expansion happen in the shell; only the final program runs in a new process." loading="lazy">
+<figcaption><strong>What the shell does with one command line.</strong> Parsing and expansion happen in the shell; only the final program runs in a new process.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The shell is a waiter: you speak in a short, precise language ('two coffees, no sugar'), the waiter passes the order to the kitchen (the kernel) and brings back what comes out — and you can write your regular order on a card (a script).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>On her first day at the fictional CloudNest support desk, Aisha opens a terminal and types `cd /var/log`, `ls -lh`, then `tail -n 50 syslog &#124; grep -i error`. The shell expands and splits the line, starts tail and grep as two processes joined by a pipe, and within seconds she spots 'No space left on device' — something that would take minutes of clicking in a GUI.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The terminal emulator shows a prompt and passes your keystrokes to the shell.</li>
+<li>The shell parses the line: words, quotes, variables (&#36;HOME), wildcards (*.txt), pipes and redirections.</li>
+<li>It finds the program by searching each directory in the PATH variable, unless the command is a built-in such as cd.</li>
+<li>It creates a child process (fork and exec on Unix, CreateProcess on Windows) and waits for it — or runs it in the background with &amp;.</li>
+<li>When the command ends, the shell records its exit status (&#36;? in Unix shells, &#36;LASTEXITCODE in PowerShell) and prints a new prompt.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every sysadmin, DevOps engineer, developer, data scientist and security analyst; interviews for these roles routinely include live command-line tasks.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Learn to help yourself: `man ls`, `ls --help`, `help cd` (bash built-ins), `Get-Help Get-Process` (PowerShell) and `tldr` pages answer most questions faster than a web search.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Terminal, console and shell are different things: a terminal emulator (GNOME Terminal, iTerm2, Windows Terminal) draws characters and handles keys, and a pseudo-terminal (pty) device connects it to the shell process.</li>
+<li>bash (GNU, 1989) is the default interactive shell on most Linux distributions; macOS switched its default to zsh in Catalina (2019); Debian and Ubuntu use the small, fast dash as /bin/sh for system scripts.</li>
+<li>PowerShell pipes .NET objects rather than text, so `Get-Process &#124; Sort-Object CPU -Descending &#124; Select-Object -First 5` sorts on a real numeric property; PowerShell 7 is cross-platform and open source.</li>
+<li>Exit status 0 means success and anything else failure: 127 means 'command not found', 126 'not executable', and 128 + N means the process was killed by signal N (130 after Ctrl+C).</li>
+<li>Built-ins such as cd, export and exit must run inside the shell itself, because a child process cannot change its parent's working directory or environment variables.</li>
+<li>Startup files shape your environment: ~/.bashrc and ~/.bash_profile for bash, ~/.zshrc for zsh and &#36;PROFILE for PowerShell — aliases, functions and PATH changes belong there.</li>
+<li>Remote administration is mostly shell-based: OpenSSH gives a shell on servers (and ships with current Windows), often inside tmux or screen so long jobs survive a dropped connection.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running `rm -rf "&#36;DIR"/` when DIR is unset or misspelt can delete far more than intended; quote variables and use `set -u` in scripts.</li>
+<li>Pasting commands from a web page straight into a root shell: read them first — malicious pages can hide extra commands in copied text.</li>
+<li>Expecting cmd.exe syntax to work in PowerShell or bash (or vice versa): quoting, variables and escape characters all differ.</li>
+</ul>
+</div>
+<h3 id="try-it-your-first-ten-minutes-at-a-shell">Try it: Your first ten minutes at a shell<a class="headerlink" href="#try-it-your-first-ten-minutes-at-a-shell" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="nb">pwd</span><span class="w">                 </span><span class="c1"># where am I?</span>
+ls<span class="w"> </span>-la<span class="w"> </span>~<span class="w">            </span><span class="c1"># list home directory, including hidden files</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$SHELL</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="nb">type</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>ls<span class="w">          </span><span class="c1"># built-in vs external program</span>
+false<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"exit status: </span><span class="nv">$?</span><span class="s2">"</span><span class="w">   </span><span class="c1"># prints 1</span>
+
+<span class="c1"># PowerShell equivalents</span>
+Get-Location<span class="p">;</span><span class="w"> </span>Get-ChildItem<span class="w"> </span>~<span class="w"> </span>-Force<span class="p">;</span><span class="w"> </span><span class="nv">$env</span>:Path
+</code></pre></div>
+<h4 id="key-kernels-commands-tools-standards-concepts_12">Key kernels, commands, tools, standards &amp; concepts<a class="headerlink" href="#key-kernels-commands-tools-standards-concepts_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Shell</strong><br><em>Concept · Current · Beginner</em></td>
+<td>A command interpreter that reads commands, runs programs and scripts, and connects them with pipes and redirection.</td>
+<td>Opening Terminal on a Mac starts zsh, which waits for your commands at the % prompt.</td>
+</tr>
+<tr>
+<td><strong>Terminal emulator</strong><br><em>Microsoft, GNOME, iTerm2, Alacritty and others · Software · Current · Beginner</em></td>
+<td>Program that displays a text terminal in a window and passes keystrokes to the shell running inside it.</td>
+<td>Windows Terminal, GNOME Terminal and iTerm2 are terminal emulators; each can host bash, zsh or PowerShell.</td>
+</tr>
+<tr>
+<td><strong>bash</strong><br><em>GNU Project (Brian Fox, 1989) · Software · Current · Beginner</em></td>
+<td>The Bourne-Again Shell: default interactive shell on most Linux distributions and the most common scripting shell.</td>
+<td>`#!/bin/bash` at the top of a deployment script tells the kernel to run it with bash.</td>
+</tr>
+<tr>
+<td><strong>zsh</strong><br><em>Open source (Paul Falstad, 1990) · Software · Current · Beginner</em></td>
+<td>Feature-rich Bourne-style shell, default on macOS since Catalina (2019) and popular with the Oh My Zsh framework.</td>
+<td>A developer adds `plugins=(git docker)` to ~/.zshrc to get tab completion for git and docker commands.</td>
+</tr>
+<tr>
+<td><strong>fish</strong><br><em>Open source (fish-shell project) · Software · Current · Beginner</em></td>
+<td>User-friendly shell with autosuggestions and syntax highlighting out of the box; version 4.0 (2025) was rewritten in Rust.</td>
+<td>Typing `git ch` in fish greys in a suggestion from history; pressing the right-arrow key accepts it.</td>
+</tr>
+<tr>
+<td><strong>dash</strong><br><em>Debian (Debian Almquist shell) · Software · Current · Intermediate</em></td>
+<td>Small, fast POSIX shell that Debian and Ubuntu use as /bin/sh for system scripts.</td>
+<td>Ubuntu's /bin/sh is a symlink to dash, which runs start-up scripts faster than bash would.</td>
+</tr>
+<tr>
+<td><strong>PowerShell</strong><br><em>Microsoft (open source since 2016) · Software · Current · Beginner</em></td>
+<td>Object-based shell and scripting language; Windows PowerShell 5.1 is built in and PowerShell 7 runs on Windows, Linux and macOS.</td>
+<td>`Get-Service &#124; Where-Object Status -eq 'Running'` lists running Windows services as objects, not text.</td>
+</tr>
+<tr>
+<td><strong>cmd.exe</strong><br><em>Microsoft · Software · Legacy · Beginner</em></td>
+<td>The classic Windows Command Prompt, descended from MS-DOS's COMMAND.COM and still used for .bat batch files.</td>
+<td>`ipconfig /all` and `dir` in cmd.exe are among the first commands help-desk staff learn.</td>
+</tr>
+<tr>
+<td><strong>PATH environment variable</strong><br><em>Concept · Current · Beginner</em></td>
+<td>Ordered list of directories the shell searches to find the program file for a command.</td>
+<td>After installing Go, adding /usr/local/go/bin to PATH lets you type `go version` from any directory.</td>
+</tr>
+<tr>
+<td><strong>Exit status</strong><br><em>POSIX · Concept · Current · Beginner</em></td>
+<td>Number a program returns when it ends: 0 means success, non-zero means an error; used by scripts and by &amp;&amp; and &#124;&#124;.</td>
+<td>`make &amp;&amp; ./app` runs the app only if make exits with status 0.</td>
+</tr>
+<tr>
+<td><strong>Built-in command</strong><br><em>Concept · Current · Beginner</em></td>
+<td>A command implemented inside the shell itself rather than as a separate program, such as cd, export or alias.</td>
+<td>`type cd` prints 'cd is a shell builtin', whereas `type ls` prints a path such as /usr/bin/ls.</td>
+</tr>
+<tr>
+<td><strong>man pages</strong><br><em>Unix tradition (since 1971) · Resource · Current · Beginner</em></td>
+<td>The Unix manual, in numbered sections: 1 commands, 2 system calls, 3 library functions, 5 file formats, 8 admin tools.</td>
+<td>`man 2 open` shows the system call, while `man 1 open` may show an unrelated command.</td>
+</tr>
+<tr>
+<td><strong>Core navigation commands</strong><br><em>POSIX / GNU coreutils · Command · Current · Beginner</em></td>
+<td>pwd, cd, ls, cp, mv, rm, mkdir, cat and less — the essentials for moving around and handling files.</td>
+<td>`mkdir -p ~/labs/os &amp;&amp; cd ~/labs/os &amp;&amp; pwd` creates nested folders, enters them and prints the location.</td>
+</tr>
+<tr>
+<td><strong>SSH (Secure Shell)</strong><br><em>OpenSSH (OpenBSD project) · Software · Current · Beginner</em></td>
+<td>Encrypted protocol and tool for logging into a shell on a remote machine and copying files securely.</td>
+<td>`ssh aisha@203.0.113.10` opens a shell on a cloud VM; `scp report.txt aisha@203.0.113.10:` copies a file there.</td>
+</tr>
+<tr>
+<td><strong>tmux</strong><br><em>Open source (Nicholas Marriott) · Software · Current · Intermediate</em></td>
+<td>Terminal multiplexer: several shells in one window, and sessions that keep running after you disconnect.</td>
+<td>An engineer starts a long database migration inside tmux, closes the laptop and later reattaches with `tmux attach`.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="how-to-read-this-guide.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: How to read this guide">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                How to read this guide
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="processes-threads-scheduling-concurrency.html" class="md-footer__link md-footer__link--next" aria-label="Next: 2. Processes, Threads, Scheduling &amp; Concurrency">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2. Processes, Threads, Scheduling & Concurrency
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

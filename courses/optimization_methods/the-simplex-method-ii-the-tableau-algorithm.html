@@ -1,0 +1,2976 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/optimization_methods/the-simplex-method-ii-the-tableau-algorithm.html">
+  
+  
+    <link rel="prev" href="the-simplex-method-i-theory.html">
+  
+  
+    <link rel="next" href="big-m-two-phase-methods-and-special-cases.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>5. The Simplex Method II: The Tableau Algorithm - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#51-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5. The Simplex Method II: The Tableau Algorithm
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Optimization Methods</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-research-and-the-modelling-approach.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operations Research and the Modelling Approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-linear-programming-and-formulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Introduction to Linear Programming and Formulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-graphical-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The Graphical Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-i-theory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The Simplex Method I: Theory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-simplex-method-ii-the-tableau-algorithm.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#51-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52-setting-up-the-tableau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Setting Up the Tableau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-the-pivot-operation-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 The Pivot Operation, Step by Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54-worked-example-complete-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Worked Example — Complete Trace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 Worked Example — Complete Trace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iteration-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55-reading-the-final-tableau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Reading the Final Tableau
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5 Reading the Final Tableau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-optimal-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The optimal solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-prices-dual-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow prices (dual values)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dual-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dual solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detecting-alternate-optima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting alternate optima
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#56-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#57-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#58-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="big-m-two-phase-methods-and-special-cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Big-M, Two-Phase Methods and Special Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duality-and-sensitivity-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Duality and Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-transportation-problem-formulation-and-initial-solutions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. The Transportation Problem: Formulation and Initial Solutions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transportation-optimality-the-modi-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Transportation Optimality: The MODI Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-assignment-problem-and-the-travelling-salesman-problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mixed-strategies-and-the-odds-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Mixed Strategies and the Odds Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="graphical-and-lp-solution-of-games.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Graphical and LP Solution of Games
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-2-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Sequencing: n Jobs Through 2 Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-3-machines-2-jobs-through-m.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Sequencing: n Jobs Through 3 Machines, 2 Jobs Through m Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integer-programming-and-gomory-s-cutting-plane-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Integer Programming and Gomory's Cutting-Plane Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Gomory's Method for Mixed Integer Programmes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-branch-and-bound-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Network Scheduling: The Critical Path Method (CPM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pert-and-probabilistic-project-scheduling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. PERT and Probabilistic Project Scheduling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-of-queuing-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Characteristics of Queuing Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-poisson-process-and-the-exponential-distribution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Birth–Death Processes and Steady-State Balance Equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-m-m-1-fcfs-derived-in-full.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Model I: (M/M/1):(∞/FCFS) Derived in Full
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-applications-costing-and-design-decisions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Model I: Applications, Costing and Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-ii-m-m-1-n-fcfs-the-finite-capacity-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Model II: (M/M/1):(N/FCFS), the Finite-Capacity Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-iii-m-m-c-fcfs-the-multi-server-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Model III: (M/M/c):(∞/FCFS), the Multi-Server Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models-iv-and-v-m-m-c-n-fcfs-and-finite-source-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Models IV and V: (M/M/c):(N/FCFS) and Finite-Source Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications-and-the-economic-analysis-of-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Applications and the Economic Analysis of Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inventory-control-concepts-and-cost-structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Inventory Control: Concepts and Cost Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-eoq-model-with-no-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. The EOQ Model with No Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eoq-with-shortages-permitted-the-backorder-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. The Production (Finite Replenishment) Model without Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-model-with-shortages-permitted.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Production Model with Shortages Permitted
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantity-discounts-and-consolidation-of-unit-iii.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantity Discounts and Consolidation of Unit III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-non-linear-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Introduction to Non-Linear Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conditions-for-unconstrained-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Conditions for Unconstrained Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="one-dimensional-minimisation-bracketing-and-elimination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. One-Dimensional Minimisation: Bracketing and Elimination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-fibonacci-search-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. The Fibonacci Search Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="golden-section-search.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. Golden Section Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpolation-and-gradient-based-one-dimensional-methods.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Interpolation and Gradient-Based One-Dimensional Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unconstrained-multivariable-optimisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Unconstrained Multivariable Optimisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constrained-optimisation-graphical-solution-and-lagrange.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. Constrained Optimisation: Graphical Solution and Lagrange Multipliers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-kuhn-tucker-kkt-conditions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. The Kuhn–Tucker (KKT) Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quadratic-programming-and-course-capstone.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Quadratic Programming and Course Capstone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#51-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52-setting-up-the-tableau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Setting Up the Tableau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-the-pivot-operation-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 The Pivot Operation, Step by Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54-worked-example-complete-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Worked Example — Complete Trace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 Worked Example — Complete Trace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iteration-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iteration 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55-reading-the-final-tableau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Reading the Final Tableau
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5 Reading the Final Tableau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-optimal-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The optimal solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-prices-dual-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow prices (dual values)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dual-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dual solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detecting-alternate-optima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting alternate optima
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#56-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#57-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#58-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-5-the-simplex-method-ii-the-tableau-algorithm">Lesson 5: The Simplex Method II: The Tableau Algorithm<a class="headerlink" href="#lesson-5-the-simplex-method-ii-the-tableau-algorithm" title="Permanent link">&para;</a></h1>
+<h2 id="51-learning-outcomes">5.1 Learning Outcomes<a class="headerlink" href="#51-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Set up the initial simplex tableau from an LP.</li>
+<li>Execute pivot operations accurately and efficiently.</li>
+<li>Read the optimal solution, slack values and <strong>shadow prices</strong> from the final tableau.</li>
+<li>Verify a solution independently.</li>
+<li>Recognise alternate optima from the final tableau.</li>
+</ol>
+<h2 id="52-setting-up-the-tableau">5.2 Setting Up the Tableau<a class="headerlink" href="#52-setting-up-the-tableau" title="Permanent link">&para;</a></h2>
+<p><strong>The recipe.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>1. Convert to standard form (L02): all constraints '=', all b_i &gt;= 0
+2. Identify an initial basis -- the slack variables, if all constraints were &lt;=
+3. Build the table:  Basis | c_B | all variable columns | RHS
+4. Compute the z_j - c_j row
+</code></pre></div>
+<p><strong>Layout convention used throughout this course.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(c_j \to\)</span></th>
+<th></th>
+<th><span class="arithmatex">\(c_1\)</span></th>
+<th><span class="arithmatex">\(c_2\)</span></th>
+<th><span class="arithmatex">\(\cdots\)</span></th>
+<th><span class="arithmatex">\(c_n\)</span></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basis</strong></td>
+<td><span class="arithmatex">\(c_B\)</span></td>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td><span class="arithmatex">\(\cdots\)</span></td>
+<td><span class="arithmatex">\(x_n\)</span></td>
+<td><strong>RHS</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_{B_1}\)</span></td>
+<td><span class="arithmatex">\(c_{B_1}\)</span></td>
+<td><span class="arithmatex">\(a_{11}\)</span></td>
+<td><span class="arithmatex">\(a_{12}\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(a_{1n}\)</span></td>
+<td><span class="arithmatex">\(b_1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\vdots\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_{B_m}\)</span></td>
+<td><span class="arithmatex">\(c_{B_m}\)</span></td>
+<td><span class="arithmatex">\(a_{m1}\)</span></td>
+<td><span class="arithmatex">\(a_{m2}\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(a_{mn}\)</span></td>
+<td><span class="arithmatex">\(b_m\)</span></td>
+</tr>
+<tr>
+<td><strong><span class="arithmatex">\(z_j - c_j\)</span></strong></td>
+<td></td>
+<td><span class="arithmatex">\(\Delta_1\)</span></td>
+<td><span class="arithmatex">\(\Delta_2\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(\Delta_n\)</span></td>
+<td><span class="arithmatex">\(Z\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="53-the-pivot-operation-step-by-step">5.3 The Pivot Operation, Step by Step<a class="headerlink" href="#53-the-pivot-operation-step-by-step" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>Given pivot element p = a[r][k]  (row r, column k):
+
+1.  New pivot row  =  old pivot row / p
+2.  For every other row i:
+        new row i  =  old row i  -  a[i][k] x (new pivot row)
+3.  Replace the basis label in row r by x_k, and c_B by c_k
+4.  Recompute z_j - c_j
+</code></pre></div>
+<p><strong>Three checks after every pivot</strong> — do these every time and errors become rare:</p>
+<ol>
+<li>The pivot column now reads <span class="arithmatex">\((0,\ldots,0,1,0,\ldots,0)^T\)</span> with the 1 in the pivot row.</li>
+<li>All RHS values are <span class="arithmatex">\(\ge 0\)</span>.</li>
+<li><span class="arithmatex">\(Z\)</span> has improved (or stayed the same, under degeneracy).</li>
+</ol>
+<p><strong>Work in fractions, not decimals.</strong> Simplex tableaus produce values like <span class="arithmatex">\(2/3\)</span> and <span class="arithmatex">\(5/14\)</span>; decimal
+rounding accumulates and eventually corrupts the <span class="arithmatex">\(z_j-c_j\)</span> signs, causing wrong termination.</p>
+<h2 id="54-worked-example-complete-trace">5.4 Worked Example — Complete Trace<a class="headerlink" href="#54-worked-example-complete-trace" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[ \begin{aligned}
+\max\ &amp; Z = 5x_1 + 4x_2\\
+\text{s.t. } &amp; 6x_1 + 4x_2 \le 24\\
+&amp; x_1 + 2x_2 \le 6\\
+&amp; x_1, x_2 \ge 0
+\end{aligned} \]</div>
+<p><em>(This is the problem solved graphically in L03; the optimum is <span class="arithmatex">\((3, 1.5)\)</span> with <span class="arithmatex">\(Z = 21\)</span>.)</em></p>
+<p><strong>Standard form.</strong></p>
+<div class="arithmatex">\[ 6x_1 + 4x_2 + s_1 = 24, \qquad x_1 + 2x_2 + s_2 = 6 \]</div>
+<div class="arithmatex">\[ \max\ Z = 5x_1 + 4x_2 + 0s_1 + 0s_2 \]</div>
+<h3 id="iteration-0">Iteration 0<a class="headerlink" href="#iteration-0" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span> (5)</th>
+<th><span class="arithmatex">\(x_2\)</span> (4)</th>
+<th><span class="arithmatex">\(s_1\)</span> (0)</th>
+<th><span class="arithmatex">\(s_2\)</span> (0)</th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(s_1\)</span></td>
+<td>0</td>
+<td><strong>6</strong></td>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+<td>24</td>
+<td><span class="arithmatex">\(24/6 = 4\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>6</td>
+<td><span class="arithmatex">\(6/1 = 6\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td><strong>−5</strong> ↑</td>
+<td>−4</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading it.</strong> Basis <span class="arithmatex">\(\{s_1, s_2\}\)</span>, so <span class="arithmatex">\(x_1 = x_2 = 0\)</span> — this is the <strong>origin</strong>, <span class="arithmatex">\(Z = 0\)</span>.</p>
+<p><em>Since <span class="arithmatex">\(c_B = (0,0)\)</span>, every <span class="arithmatex">\(z_j = 0\)</span> and <span class="arithmatex">\(z_j - c_j = -c_j\)</span>.</em></p>
+<p><strong>Entering:</strong> <span class="arithmatex">\(x_1\)</span> (most negative, <span class="arithmatex">\(-5\)</span>).
+<strong>Ratios:</strong> <span class="arithmatex">\(\{4, 6\}\)</span>; minimum is 4 in row 1. <strong>Leaving:</strong> <span class="arithmatex">\(s_1\)</span>. <strong>Pivot = 6.</strong></p>
+<h3 id="iteration-1">Iteration 1<a class="headerlink" href="#iteration-1" title="Permanent link">&para;</a></h3>
+<p>Divide row 1 by 6; then row 2 ← row 2 − 1×(new row 1).</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>5</td>
+<td>1</td>
+<td><span class="arithmatex">\(2/3\)</span></td>
+<td><span class="arithmatex">\(1/6\)</span></td>
+<td>0</td>
+<td>4</td>
+<td><span class="arithmatex">\(4 \div \frac23 = 6\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><strong><span class="arithmatex">\(4/3\)</span></strong></td>
+<td><span class="arithmatex">\(-1/6\)</span></td>
+<td>1</td>
+<td>2</td>
+<td><span class="arithmatex">\(2 \div \frac43 = 3/2\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td><strong><span class="arithmatex">\(-2/3\)</span></strong> ↑</td>
+<td><span class="arithmatex">\(5/6\)</span></td>
+<td>0</td>
+<td><strong>20</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading it.</strong> <span class="arithmatex">\(x_1 = 4\)</span>, <span class="arithmatex">\(s_2 = 2\)</span>, <span class="arithmatex">\(Z = 20\)</span> — the corner <span class="arithmatex">\((4, 0)\)</span> from L03 ✓.</p>
+<p><em>Check the <span class="arithmatex">\(z_j-c_j\)</span> row:</em> <span class="arithmatex">\(z_2 = 5(\frac23)+0(\frac43) = \frac{10}{3}\)</span>, so
+<span class="arithmatex">\(z_2-c_2 = \frac{10}{3}-4 = -\frac23\)</span> ✓.</p>
+<p><strong>Not optimal</strong> (<span class="arithmatex">\(-2/3 &lt; 0\)</span>). <strong>Entering:</strong> <span class="arithmatex">\(x_2\)</span>. <strong>Leaving:</strong> <span class="arithmatex">\(s_2\)</span>. <strong>Pivot = <span class="arithmatex">\(4/3\)</span>.</strong></p>
+<h3 id="iteration-2">Iteration 2<a class="headerlink" href="#iteration-2" title="Permanent link">&para;</a></h3>
+<p>Row 2 ← row 2 ÷ <span class="arithmatex">\(\frac43\)</span>, giving <span class="arithmatex">\((0,\ 1,\ -\frac18,\ \frac34,\ \frac32)\)</span>.
+Row 1 ← row 1 − <span class="arithmatex">\(\frac23\)</span>×(new row 2).</p>
+<p><em>Row 1 detail:</em> <span class="arithmatex">\(s_1\)</span>: <span class="arithmatex">\(\frac16 - \frac23(-\frac18) = \frac16+\frac{1}{12} = \frac14\)</span>;
+<span class="arithmatex">\(s_2\)</span>: <span class="arithmatex">\(0 - \frac23(\frac34) = -\frac12\)</span>; RHS: <span class="arithmatex">\(4 - \frac23(\frac32) = 3\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>5</td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(1/4\)</span></td>
+<td><span class="arithmatex">\(-1/2\)</span></td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(-1/8\)</span></td>
+<td><span class="arithmatex">\(3/4\)</span></td>
+<td><strong>3/2</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(3/4\)</span></td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td><strong>21</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>All <span class="arithmatex">\(z_j - c_j \ge 0\)</span> ⟹ OPTIMAL.</strong></p>
+<div class="arithmatex">\[ \boxed{\ x_1^{*} = 3,\quad x_2^{*} = \tfrac32,\quad Z^{*} = 21\ } \]</div>
+<p><strong>Exactly matching the graphical answer of L03</strong> ✓.</p>
+<h2 id="55-reading-the-final-tableau">5.5 Reading the Final Tableau<a class="headerlink" href="#55-reading-the-final-tableau" title="Permanent link">&para;</a></h2>
+<p>The final tableau contains far more than the answer.</p>
+<h3 id="the-optimal-solution">The optimal solution<a class="headerlink" href="#the-optimal-solution" title="Permanent link">&para;</a></h3>
+<p>Basic variables take their RHS values; non-basic variables are zero:</p>
+<div class="arithmatex">\[ x_1 = 3, \quad x_2 = \tfrac32, \quad s_1 = 0, \quad s_2 = 0 \]</div>
+<p><strong>Both slacks are zero ⟹ both constraints are binding</strong>, so both resources are fully consumed.</p>
+<h3 id="shadow-prices-dual-values">Shadow prices (dual values)<a class="headerlink" href="#shadow-prices-dual-values" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ \text{Shadow price of constraint } i \ =\ (z_j - c_j) \text{ in the column of slack } s_i\ } \]</div>
+<div class="arithmatex">\[ y_1 = \tfrac34 = 0.75, \qquad y_2 = \tfrac12 = 0.5 \]</div>
+<p><strong>Interpretation.</strong> One additional unit of resource 1 raises the optimum by <strong>₹0.75</strong>; one additional
+unit of resource 2 raises it by <strong>₹0.50</strong>.</p>
+<p><strong>Verification.</strong> Change <span class="arithmatex">\(b_1\)</span> from 24 to 25 and re-solve: the new intersection of
+<span class="arithmatex">\(6x_1+4x_2 = 25\)</span> and <span class="arithmatex">\(x_1+2x_2 = 6\)</span> is <span class="arithmatex">\(x_1 = 13/4\)</span>, <span class="arithmatex">\(x_2 = 11/8\)</span>, giving</p>
+<div class="arithmatex">\[ Z = 5\left(\tfrac{13}{4}\right)+4\left(\tfrac{11}{8}\right) = \tfrac{65}{4}+\tfrac{11}{2}
+= 16.25 + 5.5 = 21.75 = 21 + 0.75 \ \checkmark \]</div>
+<p><strong>The shadow price is exact.</strong> This tells management the <strong>maximum</strong> they should pay for an extra unit
+of each resource — one of the most commercially valuable outputs of an LP.</p>
+<h3 id="the-dual-solution">The dual solution<a class="headerlink" href="#the-dual-solution" title="Permanent link">&para;</a></h3>
+<p>The shadow prices <span class="arithmatex">\((y_1, y_2) = (0.75, 0.5)\)</span> <strong>are</strong> the optimal solution of the <strong>dual</strong> problem
+(L07). Note</p>
+<div class="arithmatex">\[ 24y_1 + 6y_2 = 24(0.75) + 6(0.5) = 18 + 3 = 21 = Z^{*} \ \checkmark \]</div>
+<p>— <strong>strong duality</strong>, verified numerically.</p>
+<h3 id="detecting-alternate-optima">Detecting alternate optima<a class="headerlink" href="#detecting-alternate-optima" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ \textbf{A \emph{non-basic} variable with } z_j - c_j = 0 \textbf{ at optimality } \Longrightarrow \textbf{ alternate optima.}\ } \]</div>
+<p>Here <span class="arithmatex">\(s_1\)</span> and <span class="arithmatex">\(s_2\)</span> have <span class="arithmatex">\(z_j-c_j = \frac34, \frac12 &gt; 0\)</span> — both strictly positive — so this optimum
+is <strong>unique</strong>, agreeing with L03's slope analysis.</p>
+<h2 id="56-solved-problems">5.6 Solved Problems<a class="headerlink" href="#56-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-full-simplex-on-the-furniture-problem">Problem 1 — Full simplex on the furniture problem<a class="headerlink" href="#problem-1-full-simplex-on-the-furniture-problem" title="Permanent link">&para;</a></h4>
+<p><em>Solve <span class="arithmatex">\(\max\ Z = 450x_1+300x_2\)</span> s.t. <span class="arithmatex">\(5x_1+3x_2\le120\)</span>, <span class="arithmatex">\(2x_1+4x_2\le90\)</span>, <span class="arithmatex">\(x_1,x_2\ge0\)</span> by simplex, and
+extract the shadow prices.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Standard form.</strong> <span class="arithmatex">\(5x_1+3x_2+s_1 = 120\)</span>, <span class="arithmatex">\(2x_1+4x_2+s_2 = 90\)</span>.</p>
+<p><strong>Iteration 0.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span> (450)</th>
+<th><span class="arithmatex">\(x_2\)</span> (300)</th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(s_1\)</span></td>
+<td>0</td>
+<td><strong>5</strong></td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>120</td>
+<td><span class="arithmatex">\(24\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td>90</td>
+<td><span class="arithmatex">\(45\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td><strong>−450</strong></td>
+<td>−300</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Entering <span class="arithmatex">\(x_1\)</span>; ratios <span class="arithmatex">\(120/5 = 24\)</span> and <span class="arithmatex">\(90/2 = 45\)</span>; leaving <span class="arithmatex">\(s_1\)</span>; pivot 5.</p>
+<p><strong>Iteration 1.</strong> Row 1 ÷ 5; row 2 ← row 2 − 2(new row 1).</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>450</td>
+<td>1</td>
+<td><span class="arithmatex">\(3/5\)</span></td>
+<td><span class="arithmatex">\(1/5\)</span></td>
+<td>0</td>
+<td>24</td>
+<td><span class="arithmatex">\(40\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><strong><span class="arithmatex">\(14/5\)</span></strong></td>
+<td><span class="arithmatex">\(-2/5\)</span></td>
+<td>1</td>
+<td>42</td>
+<td><span class="arithmatex">\(15\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td><strong>−30</strong></td>
+<td>90</td>
+<td>0</td>
+<td><strong>10 800</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Check:</em> <span class="arithmatex">\(z_2 = 450(\frac35) = 270\)</span>, so <span class="arithmatex">\(z_2-c_2 = 270-300 = -30\)</span> ✓.</p>
+<p>This is the corner <span class="arithmatex">\((24, 0)\)</span> with <span class="arithmatex">\(Z = 10{,}800\)</span> ✓ (matching L03's table).</p>
+<p>Entering <span class="arithmatex">\(x_2\)</span>; ratios <span class="arithmatex">\(24 \div \frac35 = 40\)</span> and <span class="arithmatex">\(42\div\frac{14}{5} = 15\)</span>; leaving <span class="arithmatex">\(s_2\)</span>;
+pivot <span class="arithmatex">\(14/5\)</span>.</p>
+<p><strong>Iteration 2.</strong> Row 2 ÷ <span class="arithmatex">\(\frac{14}{5}\)</span> gives <span class="arithmatex">\((0,\ 1,\ -\frac17,\ \frac{5}{14},\ 15)\)</span>.
+Row 1 ← row 1 − <span class="arithmatex">\(\frac35\)</span>(new row 2):
+<span class="arithmatex">\(s_1\)</span>: <span class="arithmatex">\(\frac15 - \frac35(-\frac17) = \frac15+\frac{3}{35} = \frac{10}{35} = \frac27\)</span>;
+<span class="arithmatex">\(s_2\)</span>: <span class="arithmatex">\(0 - \frac35\cdot\frac{5}{14} = -\frac{3}{14}\)</span>; RHS: <span class="arithmatex">\(24 - \frac35(15) = 15\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>450</td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(2/7\)</span></td>
+<td><span class="arithmatex">\(-3/14\)</span></td>
+<td><strong>15</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>300</td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(-1/7\)</span></td>
+<td><span class="arithmatex">\(5/14\)</span></td>
+<td><strong>15</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(600/7\)</span></td>
+<td><span class="arithmatex">\(75/7\)</span></td>
+<td><strong>11 250</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>All <span class="arithmatex">\(z_j-c_j \ge 0\)</span> ⟹ OPTIMAL.</strong></p>
+<div class="arithmatex">\[ \boxed{\ x_1^{*} = 15 \text{ tables},\ x_2^{*} = 15 \text{ chairs},\ Z^{*} = ₹11{,}250\ } \]</div>
+<p><strong>Shadow prices.</strong></p>
+<div class="arithmatex">\[ y_1 = \frac{600}{7} = ₹85.71 \ \text{per carpentry hour}, \qquad
+   y_2 = \frac{75}{7} = ₹10.71 \ \text{per finishing hour} \]</div>
+<p><strong>Management interpretation.</strong> Carpentry hours are worth <strong>8× more</strong> than finishing hours at the
+margin. If overtime carpentry can be bought for less than ₹85.71/hour, buy it; if finishing overtime
+costs more than ₹10.71/hour, do not.</p>
+<p><strong>Duality check.</strong> <span class="arithmatex">\(120(600/7) + 90(75/7) = \frac{72000+6750}{7} = \frac{78750}{7} = 11{,}250 = Z^{*}\)</span> ✓.</p>
+<p><strong>Iteration count.</strong> 2 pivots for a 2-constraint problem — consistent with the <span class="arithmatex">\(2m\)</span>–<span class="arithmatex">\(3m\)</span> rule of L04.</p>
+<h4 id="problem-2-a-three-variable-problem">Problem 2 — A three-variable problem<a class="headerlink" href="#problem-2-a-three-variable-problem" title="Permanent link">&para;</a></h4>
+<p><em>Solve <span class="arithmatex">\(\max\ Z = 3x_1+5x_2+4x_3\)</span> s.t. <span class="arithmatex">\(2x_1+3x_2\le8\)</span>, <span class="arithmatex">\(2x_2+5x_3\le10\)</span>, <span class="arithmatex">\(3x_1+2x_2+4x_3\le15\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Iteration 0.</strong> Basis <span class="arithmatex">\(\{s_1,s_2,s_3\}\)</span>, <span class="arithmatex">\(Z=0\)</span>; <span class="arithmatex">\(z_j-c_j = (-3,-5,-4,0,0,0)\)</span>.</p>
+<p>Entering <span class="arithmatex">\(x_2\)</span> (most negative, <span class="arithmatex">\(-5\)</span>). Column <span class="arithmatex">\(x_2 = (3, 2, 2)^T\)</span>; ratios
+<span class="arithmatex">\(\frac83 = 2.67\)</span>, <span class="arithmatex">\(\frac{10}{2}=5\)</span>, <span class="arithmatex">\(\frac{15}{2}=7.5\)</span>. Minimum in row 1 ⟹ <span class="arithmatex">\(s_1\)</span> leaves, pivot 3.</p>
+<p><strong>Iteration 1.</strong> Row 1 ÷ 3: <span class="arithmatex">\((\frac23,\ 1,\ 0,\ \frac13,\ 0,\ 0\ |\ \frac83)\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(x_3\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th><span class="arithmatex">\(s_3\)</span></th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>5</td>
+<td><span class="arithmatex">\(2/3\)</span></td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(1/3\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(8/3\)</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(-4/3\)</span></td>
+<td>0</td>
+<td><strong>5</strong></td>
+<td><span class="arithmatex">\(-2/3\)</span></td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(14/3\)</span></td>
+<td><span class="arithmatex">\(14/15\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_3\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(5/3\)</span></td>
+<td>0</td>
+<td>4</td>
+<td><span class="arithmatex">\(-2/3\)</span></td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(29/3\)</span></td>
+<td><span class="arithmatex">\(29/12\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(1/3\)</span></td>
+<td>0</td>
+<td><strong>−4</strong></td>
+<td><span class="arithmatex">\(5/3\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(40/3\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Entering <span class="arithmatex">\(x_3\)</span>; minimum ratio <span class="arithmatex">\(14/15\)</span> in row 2 ⟹ <span class="arithmatex">\(s_2\)</span> leaves, pivot 5.</p>
+<p><strong>Iteration 2.</strong> Row 2 ÷ 5: <span class="arithmatex">\((-\frac{4}{15},\ 0,\ 1,\ -\frac{2}{15},\ \frac15,\ 0\ |\ \frac{14}{15})\)</span>.
+Row 3 ← row 3 − 4(new row 2).</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(x_3\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th><span class="arithmatex">\(s_3\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>5</td>
+<td><span class="arithmatex">\(2/3\)</span></td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(1/3\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(8/3\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_3\)</span></td>
+<td>4</td>
+<td><span class="arithmatex">\(-4/15\)</span></td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(-2/15\)</span></td>
+<td><span class="arithmatex">\(1/5\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(14/15\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_3\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(41/15\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(-2/15\)</span></td>
+<td><span class="arithmatex">\(-4/5\)</span></td>
+<td>1</td>
+<td><span class="arithmatex">\(89/15\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(-11/15\)</span></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(17/15\)</span></td>
+<td><span class="arithmatex">\(4/5\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(256/15\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><em>Check <span class="arithmatex">\(z_1-c_1\)</span>:</em> <span class="arithmatex">\(z_1 = 5(\frac23)+4(-\frac{4}{15})+0 = \frac{10}{3}-\frac{16}{15}
+= \frac{50-16}{15} = \frac{34}{15}\)</span>, so <span class="arithmatex">\(z_1-c_1 = \frac{34}{15}-3 = -\frac{11}{15}\)</span> ✓.</p>
+<p><strong>Not optimal.</strong> Entering <span class="arithmatex">\(x_1\)</span>; ratios: row 1 <span class="arithmatex">\(\frac{8/3}{2/3} = 4\)</span>; row 2 has a negative entry
+(skip); row 3 <span class="arithmatex">\(\frac{89/15}{41/15} = \frac{89}{41} \approx 2.17\)</span> ← minimum. Leaving <span class="arithmatex">\(s_3\)</span>.</p>
+<p><strong>Iteration 3.</strong> Pivot on <span class="arithmatex">\(\frac{41}{15}\)</span>. Row 3 ÷ <span class="arithmatex">\(\frac{41}{15}\)</span>; then eliminate.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(x_3\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th><span class="arithmatex">\(s_3\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(15/41\)</span></td>
+<td><span class="arithmatex">\(8/41\)</span></td>
+<td><span class="arithmatex">\(-10/41\)</span></td>
+<td><span class="arithmatex">\(50/41\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_3\)</span></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(-6/41\)</span></td>
+<td><span class="arithmatex">\(5/41\)</span></td>
+<td><span class="arithmatex">\(4/41\)</span></td>
+<td><span class="arithmatex">\(62/41\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(-2/41\)</span></td>
+<td><span class="arithmatex">\(-12/41\)</span></td>
+<td><span class="arithmatex">\(15/41\)</span></td>
+<td><span class="arithmatex">\(89/41\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(45/41\)</span></td>
+<td><span class="arithmatex">\(24/41\)</span></td>
+<td><span class="arithmatex">\(11/41\)</span></td>
+<td><span class="arithmatex">\(765/41\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>All <span class="arithmatex">\(z_j-c_j \ge 0\)</span> ⟹ OPTIMAL.</strong></p>
+<div class="arithmatex">\[ \boxed{\ x_1 = \tfrac{89}{41} = 2.171,\ \ x_2 = \tfrac{50}{41} = 1.220,\ \
+x_3 = \tfrac{62}{41} = 1.512,\ \ Z^{*} = \tfrac{765}{41} = 18.659\ } \]</div>
+<p><strong>Independent verification.</strong> Substitute into the original constraints:</p>
+<div class="arithmatex">\[ 2(2.171)+3(1.220) = 4.342+3.659 = 8.00 \le 8 \ \checkmark \ \text{(binding)} \]</div>
+<div class="arithmatex">\[ 2(1.220)+5(1.512) = 2.439+7.561 = 10.00 \le 10 \ \checkmark \ \text{(binding)} \]</div>
+<div class="arithmatex">\[ 3(2.171)+2(1.220)+4(1.512) = 6.512+2.439+6.049 = 15.00 \le 15 \ \checkmark \ \text{(binding)} \]</div>
+<p><strong>All three binding</strong> — as expected with 3 constraints and 3 variables at a non-degenerate optimum.</p>
+<div class="arithmatex">\[ Z = 3(2.171)+5(1.220)+4(1.512) = 6.512+6.098+6.049 = 18.659 \ \checkmark \]</div>
+<h4 id="problem-3-recognising-alternate-optima-in-the-tableau">Problem 3 — Recognising alternate optima in the tableau<a class="headerlink" href="#problem-3-recognising-alternate-optima-in-the-tableau" title="Permanent link">&para;</a></h4>
+<p><em>A final tableau shows <span class="arithmatex">\(z_j - c_j = (0, 0, 0, 5/2, 0)\)</span> where columns 1 and 2 are basic and columns 3,
+4, 5 are non-basic. What do you conclude, and how do you find the second optimum?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Diagnosis.</strong> Columns 3 and 5 are <strong>non-basic</strong> yet have <span class="arithmatex">\(z_j - c_j = 0\)</span>.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{ALTERNATE OPTIMA exist.}\ } \]</div>
+<p><strong>Why.</strong> Bringing <span class="arithmatex">\(x_3\)</span> (or <span class="arithmatex">\(x_5\)</span>) into the basis changes <span class="arithmatex">\(Z\)</span> by <span class="arithmatex">\(-(z_j-c_j)\cdot\theta = 0\)</span> — the
+objective is <strong>unchanged</strong>. So a different corner achieves the same optimal value.</p>
+<p><strong>Finding the second optimum.</strong> Perform one more pivot with <span class="arithmatex">\(x_3\)</span> entering:</p>
+<ol>
+<li>Apply the minimum-ratio test to column 3 to find the leaving variable.</li>
+<li>Pivot as usual.</li>
+<li>The new tableau has the <strong>same <span class="arithmatex">\(Z\)</span></strong> but a <strong>different</strong> basic solution — the second optimal corner.</li>
+</ol>
+<p><strong>Describing all optima.</strong> With optimal corners <span class="arithmatex">\(\vec x^{(1)}\)</span> and <span class="arithmatex">\(\vec x^{(2)}\)</span>, every point</p>
+<div class="arithmatex">\[ \vec x(\lambda) = \lambda\vec x^{(1)} + (1-\lambda)\vec x^{(2)}, \qquad \lambda\in[0,1] \]</div>
+<p>is optimal, by the linearity argument of L03, Problem 3.</p>
+<p><strong>A caution.</strong> If the minimum-ratio test on column 3 gives <strong>no positive entries</strong>, then <span class="arithmatex">\(x_3\)</span> can
+increase without limit at <em>constant</em> <span class="arithmatex">\(Z\)</span> — the optimal set is an unbounded <strong>ray</strong>, not a bounded
+edge. The objective is still bounded; only the optimal <em>set</em> is infinite in extent.</p>
+<p><strong>Why report alternate optima.</strong> They give the decision-maker freedom to satisfy criteria the model
+omitted — supplier relationships, workforce stability, ease of implementation — at <strong>zero cost</strong>. A
+report that hides them gives away that freedom.</p>
+<h4 id="problem-4-degeneracy-in-action">Problem 4 — Degeneracy in action<a class="headerlink" href="#problem-4-degeneracy-in-action" title="Permanent link">&para;</a></h4>
+<p><em>Solve <span class="arithmatex">\(\max\ Z = 3x_1+9x_2\)</span> s.t. <span class="arithmatex">\(x_1+4x_2\le8\)</span>, <span class="arithmatex">\(x_1+2x_2\le4\)</span>, <span class="arithmatex">\(x_1,x_2\ge0\)</span>, noting the degeneracy.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Iteration 0.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span> (3)</th>
+<th><span class="arithmatex">\(x_2\)</span> (9)</th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(s_1\)</span></td>
+<td>0</td>
+<td>1</td>
+<td><strong>4</strong></td>
+<td>1</td>
+<td>0</td>
+<td>8</td>
+<td><span class="arithmatex">\(8/4 = 2\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>4</td>
+<td><span class="arithmatex">\(4/2 = 2\)</span> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>−3</td>
+<td><strong>−9</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>A TIE in the minimum ratio</strong> (<span class="arithmatex">\(2 = 2\)</span>) ⟹ <strong>degeneracy will occur.</strong></p>
+<p>Take row 1 (arbitrary choice); <span class="arithmatex">\(s_1\)</span> leaves, pivot 4.</p>
+<p><strong>Iteration 1.</strong> Row 1 ÷ 4: <span class="arithmatex">\((\frac14,\ 1,\ \frac14,\ 0\ |\ 2)\)</span>. Row 2 ← row 2 − 2(new row 1):
+<span class="arithmatex">\((\frac12,\ 0,\ -\frac12,\ 1\ |\ 0)\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>9</td>
+<td><span class="arithmatex">\(1/4\)</span></td>
+<td>1</td>
+<td><span class="arithmatex">\(1/4\)</span></td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(s_2\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(-1/2\)</span></td>
+<td>1</td>
+<td><strong>0</strong> ← degenerate</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td><span class="arithmatex">\(-3/4\)</span></td>
+<td>0</td>
+<td><span class="arithmatex">\(9/4\)</span></td>
+<td>0</td>
+<td><strong>18</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><span class="arithmatex">\(s_2 = 0\)</span> while basic ⟹ DEGENERATE BFS.</strong></p>
+<p><strong>Not optimal</strong> (<span class="arithmatex">\(z_1-c_1 = -\frac34\)</span>). Entering <span class="arithmatex">\(x_1\)</span>; ratios: row 1 <span class="arithmatex">\(2\div\frac14 = 8\)</span>; row 2
+<span class="arithmatex">\(0\div\frac12 = \mathbf{0}\)</span> ← minimum. Leaving <span class="arithmatex">\(s_2\)</span>, pivot <span class="arithmatex">\(\frac12\)</span>.</p>
+<p><strong>Iteration 2.</strong> Row 2 ÷ <span class="arithmatex">\(\frac12\)</span>: <span class="arithmatex">\((1,\ 0,\ -1,\ 2\ |\ 0)\)</span>. Row 1 ← row 1 − <span class="arithmatex">\(\frac14\)</span>(new row 2):
+<span class="arithmatex">\((0,\ 1,\ \frac12,\ -\frac12\ |\ 2)\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Basis</th>
+<th><span class="arithmatex">\(c_B\)</span></th>
+<th><span class="arithmatex">\(x_1\)</span></th>
+<th><span class="arithmatex">\(x_2\)</span></th>
+<th><span class="arithmatex">\(s_1\)</span></th>
+<th><span class="arithmatex">\(s_2\)</span></th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x_2\)</span></td>
+<td>9</td>
+<td>0</td>
+<td>1</td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td><span class="arithmatex">\(-1/2\)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(x_1\)</span></td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td><span class="arithmatex">\(-1\)</span></td>
+<td>2</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(z_j-c_j\)</span></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td><span class="arithmatex">\(3/2\)</span></td>
+<td><span class="arithmatex">\(3/2\)</span></td>
+<td><strong>18</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>OPTIMAL.</strong> <span class="arithmatex">\(Z = 18\)</span> — <strong>unchanged from iteration 1.</strong></p>
+<div class="arithmatex">\[ \boxed{\ x_1^{*} = 0,\quad x_2^{*} = 2,\quad Z^{*} = 18\ } \]</div>
+<p><strong>What happened — a degenerate pivot.</strong> The ratio was <span class="arithmatex">\(\theta = 0\)</span>, so the entering variable came in
+at value <strong>zero</strong>. The basis changed, but <strong>the point did not move</strong> and <span class="arithmatex">\(Z\)</span> did not improve. This is
+a <em>stalling</em> step.</p>
+<p><strong>Geometrically.</strong> Three lines pass through <span class="arithmatex">\((0,2)\)</span>: <span class="arithmatex">\(x_1+4x_2 = 8\)</span>, <span class="arithmatex">\(x_1+2x_2 = 4\)</span> and <span class="arithmatex">\(x_1 = 0\)</span>.
+With three constraints meeting at a corner in 2-D, the corner is over-determined and corresponds to
+<strong>multiple bases</strong> — exactly what degeneracy means.</p>
+<p><strong>Why cycling is the theoretical risk.</strong> If a chain of such zero-improvement pivots returned to a
+previously seen basis, the algorithm would loop forever. Here it terminated after one degenerate
+pivot; Bland's rule (L04) guarantees this in general.</p>
+<p><strong>Practical note.</strong> Degeneracy is <strong>very common</strong> — every transportation problem with a degenerate
+basic solution (L09) exhibits it — but harmless. Recognise it, do not fear it.</p>
+<h4 id="problem-5-using-shadow-prices-for-a-business-decision">Problem 5 — Using shadow prices for a business decision<a class="headerlink" href="#problem-5-using-shadow-prices-for-a-business-decision" title="Permanent link">&para;</a></h4>
+<p><em>From the furniture problem's optimal tableau, <span class="arithmatex">\(y_1 = ₹85.71\)</span> per carpentry hour and
+<span class="arithmatex">\(y_2 = ₹10.71\)</span> per finishing hour. A supplier offers 10 extra carpentry hours for ₹700 total. Should
+the firm accept? What about 20 extra finishing hours for ₹150?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Offer 1 — carpentry.</strong></p>
+<div class="arithmatex">\[ \text{Value gained} = 10 \times ₹85.71 = ₹857.14 \]</div>
+<div class="arithmatex">\[ \text{Cost} = ₹700 \qquad\Longrightarrow\qquad \textbf{Net gain} = ₹157.14 \]</div>
+<div class="arithmatex">\[ \boxed{\textbf{ACCEPT}} \]</div>
+<p><strong>But check the validity range.</strong> Shadow prices hold only while the <strong>basis</strong> stays optimal. From the
+final tableau, the <span class="arithmatex">\(s_1\)</span> column is <span class="arithmatex">\((\frac27,\ -\frac17)^T\)</span>. Increasing <span class="arithmatex">\(b_1\)</span> by <span class="arithmatex">\(\Delta\)</span> changes the
+basic variables to</p>
+<div class="arithmatex">\[ x_1 = 15 + \tfrac27\Delta, \qquad x_2 = 15 - \tfrac17\Delta \]</div>
+<p>Feasibility requires <span class="arithmatex">\(x_2 \ge 0\)</span>:</p>
+<div class="arithmatex">\[ 15 - \tfrac{\Delta}{7} \ge 0 \ \Longrightarrow\ \Delta \le 105 \]</div>
+<p><strong><span class="arithmatex">\(\Delta = 10\)</span> is well within range</strong> ✓, so the ₹85.71 rate applies fully.</p>
+<p><em>Confirming:</em> new plan <span class="arithmatex">\(x_1 = 15+\frac{20}{7} = 17.857\)</span>, <span class="arithmatex">\(x_2 = 15-\frac{10}{7} = 13.571\)</span>, giving</p>
+<div class="arithmatex">\[ Z = 450(17.857)+300(13.571) = 8035.7 + 4071.4 = ₹12{,}107.1 = 11{,}250 + 857.14 \ \checkmark \]</div>
+<p><strong>Offer 2 — finishing.</strong></p>
+<div class="arithmatex">\[ \text{Value gained} = 20\times₹10.71 = ₹214.29 \]</div>
+<div class="arithmatex">\[ \text{Cost} = ₹150 \qquad\Longrightarrow\qquad \textbf{Net gain} = ₹64.29 \]</div>
+<div class="arithmatex">\[ \boxed{\textbf{ACCEPT}} \]</div>
+<p><strong>Range check.</strong> The <span class="arithmatex">\(s_2\)</span> column is <span class="arithmatex">\((-\frac{3}{14},\ \frac{5}{14})^T\)</span>. Increasing <span class="arithmatex">\(b_2\)</span> by <span class="arithmatex">\(\Delta\)</span>:</p>
+<div class="arithmatex">\[ x_1 = 15 - \tfrac{3}{14}\Delta \ge 0 \ \Longrightarrow\ \Delta \le 70 \]</div>
+<p><span class="arithmatex">\(\Delta = 20\)</span> is within range ✓.</p>
+<p><strong>A crucial caveat if both offers are accepted together.</strong> Shadow prices are <strong>marginal</strong> rates valid
+for <em>one-at-a-time</em> changes. Simultaneous changes require the <strong>100 % rule</strong>:</p>
+<div class="arithmatex">\[ \frac{10}{105} + \frac{20}{70} = 0.095 + 0.286 = 0.381 \ \le\ 1 \]</div>
+<p><strong>Since the fractions sum to less than 1, the basis remains optimal and both shadow prices remain
+valid</strong>, so the combined gain of ₹157.14 + ₹64.29 = <strong>₹221.43</strong> is correct.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Accept both. Combined net gain ₹221.43 — verified by the 100 \% rule.}\ } \]</div>
+<p><em>This is the kind of concrete, defensible recommendation that makes LP valuable to management, and it
+comes entirely from the final tableau at no extra computational cost.</em></p>
+<h2 id="57-practice-problems">5.7 Practice Problems<a class="headerlink" href="#57-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Solve by simplex: <span class="arithmatex">\(\max\ 4x_1+3x_2\)</span> s.t. <span class="arithmatex">\(2x_1+x_2\le10\)</span>, <span class="arithmatex">\(x_1+3x_2\le15\)</span>. <strong>[Ans: <span class="arithmatex">\(x_1=3,x_2=4\)</span>, <span class="arithmatex">\(Z=24\)</span>]</strong></li>
+<li>From the L05 example's final tableau, what is the shadow price of constraint 2? <strong>[Ans: 1/2]</strong></li>
+<li>Perform one pivot on: pivot element 3 in row 2, column 1, with row 2 <span class="arithmatex">\(= (3, 6, 1, 0 \mid 9)\)</span>.</li>
+<li>A final tableau has <span class="arithmatex">\(z_j-c_j = (0,0,4,0)\)</span> with column 4 non-basic. Interpret.</li>
+<li>Verify the duality check <span class="arithmatex">\(\vec b^{T}\vec y = Z^{*}\)</span> for Problem 1 of §5.</li>
+<li>Solve <span class="arithmatex">\(\max\ 2x_1+3x_2\)</span> s.t. <span class="arithmatex">\(x_1+x_2\le4\)</span>, <span class="arithmatex">\(x_1+3x_2\le6\)</span> and identify any degeneracy.</li>
+<li>If a shadow price is 0, what does that tell you about the constraint?</li>
+</ol>
+<h2 id="58-summary">5.8 Summary<a class="headerlink" href="#58-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Build the tableau from standard form with the <strong>slacks as the initial basis</strong>; work in <strong>fractions</strong>.</li>
+<li><strong>Pivot:</strong> divide the pivot row by the pivot element, then eliminate the pivot column from every other row. <strong>Check</strong> the unit column, non-negative RHS and improved <span class="arithmatex">\(Z\)</span> each time.</li>
+<li>Read from the <strong>final tableau</strong>: optimal values (basic RHS), slacks (zero ⟹ binding), and <strong>shadow prices</strong> in the slack columns' <span class="arithmatex">\(z_j-c_j\)</span> entries.</li>
+<li><strong>Shadow price</strong> = the marginal value of one extra unit of a resource; it is exactly the <strong>dual variable</strong>, and <span class="arithmatex">\(\vec b^T\vec y = Z^{*}\)</span> (strong duality).</li>
+<li><strong>A non-basic variable with <span class="arithmatex">\(z_j-c_j = 0\)</span> at optimality signals alternate optima</strong> — always report them.</li>
+<li><strong>Degeneracy</strong> (a basic variable equal to zero, arising from a tie in the ratio test) causes a <span class="arithmatex">\(\theta = 0\)</span> pivot that changes the basis but not the solution. Common and harmless in practice.</li>
+<li>Shadow prices are valid only within a <strong>range</strong>; simultaneous changes are checked by the <strong>100 % rule</strong> (the fractions of the allowable ranges must sum to at most 1).</li>
+</ul>
+<p><strong>Next lesson:</strong> L06 — Big-M and two-phase methods, and the special cases.</p>
+<p><strong>Practise now:</strong> <code>unit1-lp-lab.html</code> → <em>Simplex Stepper</em>: enter any LP and step through the tableaus
+one pivot at a time, with the entering/leaving choices and ratios highlighted.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="the-simplex-method-i-theory.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 4. The Simplex Method I: Theory">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                4. The Simplex Method I: Theory
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="big-m-two-phase-methods-and-special-cases.html" class="md-footer__link md-footer__link--next" aria-label="Next: 6. Big-M, Two-Phase Methods and Special Cases">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                6. Big-M, Two-Phase Methods and Special Cases
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

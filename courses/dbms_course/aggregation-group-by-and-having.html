@@ -1,0 +1,2143 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/aggregation-group-by-and-having.html">
+  
+  
+    <link rel="prev" href="querying-with-select.html">
+  
+  
+    <link rel="next" href="joins-subqueries-and-set-operations.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>16. Aggregation, GROUP BY and HAVING - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#161-aggregate-functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              16. Aggregation, GROUP BY and HAVING
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#161-aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.1 Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-forms-of-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three forms of COUNT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregates-and-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregates and NULL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#162-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 GROUP BY
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2 GROUP BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-single-value-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The single-value rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-by-several-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grouping by several columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#163-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 HAVING
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#164-the-left-join-idiom-for-counting-zeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.4 The LEFT JOIN Idiom for Counting Zeros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#165-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#166-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#161-aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.1 Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-forms-of-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three forms of COUNT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregates-and-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregates and NULL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#162-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 GROUP BY
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2 GROUP BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-single-value-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The single-value rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-by-several-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grouping by several columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#163-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 HAVING
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#164-the-left-join-idiom-for-counting-zeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.4 The LEFT JOIN Idiom for Counting Zeros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#165-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.5 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#166-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.6 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-16-aggregation-group-by-and-having">Lesson 16: Aggregation, GROUP BY and HAVING<a class="headerlink" href="#lesson-16-aggregation-group-by-and-having" title="Permanent link">&para;</a></h1>
+<p><em>Summarising data — counts, totals and per-group filtering</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 4:</strong> Structured Query Language · 12 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 7.1 · Murach's MySQL, Ch. 6</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Use <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MAX</code>, <code>MIN</code> correctly, including their treatment of NULL.</li>
+<li>Distinguish <code>COUNT(*)</code>, <code>COUNT(column)</code> and <code>COUNT(DISTINCT column)</code>.</li>
+<li>Write <code>GROUP BY</code> queries and state the <strong>single-value rule</strong>.</li>
+<li>Distinguish <code>WHERE</code> from <code>HAVING</code> precisely.</li>
+<li>Combine grouping with joins, including the <code>LEFT JOIN</code> idiom for counting zeros.</li>
+</ol>
+</div>
+<h2 id="161-aggregate-functions">16.1 Aggregate Functions<a class="headerlink" href="#161-aggregate-functions" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Aggregate function</p>
+<p>A function that takes a <strong>set of values</strong> and returns a <strong>single value</strong>. Aggregates collapse many rows into one.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>Works on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COUNT(*)</code></td>
+<td>Number of <strong>rows</strong></td>
+<td>Any</td>
+</tr>
+<tr>
+<td><code>COUNT(col)</code></td>
+<td>Number of <strong>non-NULL</strong> values</td>
+<td>Any</td>
+</tr>
+<tr>
+<td><code>COUNT(DISTINCT col)</code></td>
+<td>Number of <strong>distinct non-NULL</strong> values</td>
+<td>Any</td>
+</tr>
+<tr>
+<td><code>SUM(col)</code></td>
+<td>Total</td>
+<td>Numeric only</td>
+</tr>
+<tr>
+<td><code>AVG(col)</code></td>
+<td>Arithmetic mean</td>
+<td>Numeric only</td>
+</tr>
+<tr>
+<td><code>MAX(col)</code></td>
+<td>Largest</td>
+<td>Numeric, string, date</td>
+</tr>
+<tr>
+<td><code>MIN(col)</code></td>
+<td>Smallest</td>
+<td>Numeric, string, date</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">          </span><span class="k">AS</span><span class="w"> </span><span class="n">TotalCourses</span><span class="p">,</span>
+<span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w">   </span><span class="k">AS</span><span class="w"> </span><span class="n">AllSeats</span><span class="p">,</span>
+<span class="w">       </span><span class="k">AVG</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w">   </span><span class="k">AS</span><span class="w"> </span><span class="n">MeanSeats</span><span class="p">,</span>
+<span class="w">       </span><span class="k">MAX</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w">   </span><span class="k">AS</span><span class="w"> </span><span class="n">Largest</span><span class="p">,</span>
+<span class="w">       </span><span class="k">MIN</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w">   </span><span class="k">AS</span><span class="w"> </span><span class="n">Smallest</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">COURSE</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>TotalCourses</th>
+<th>AllSeats</th>
+<th>MeanSeats</th>
+<th>Largest</th>
+<th>Smallest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>235</td>
+<td>47.0000</td>
+<td>60</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p>With no <code>GROUP BY</code>, the <strong>whole table is one group</strong> and exactly one row is returned.</p>
+<h3 id="the-three-forms-of-count">The three forms of COUNT<a class="headerlink" href="#the-three-forms-of-count" title="Permanent link">&para;</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">COUNT(*) vs COUNT(col) vs COUNT(DISTINCT col)</p>
+<p>Suppose <code>ADMISSION</code> holds 6 rows, involving 4 distinct students, and a nullable column <code>Grade</code> has 2 NULLs.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Result</th>
+<th>Counts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COUNT(*)</code></td>
+<td><strong>6</strong></td>
+<td>Rows — NULLs included</td>
+</tr>
+<tr>
+<td><code>COUNT(Rollno)</code></td>
+<td><strong>6</strong></td>
+<td>Non-NULL <code>Rollno</code> values (it is <code>NOT NULL</code>, so all)</td>
+</tr>
+<tr>
+<td><code>COUNT(DISTINCT Rollno)</code></td>
+<td><strong>4</strong></td>
+<td>Distinct students</td>
+</tr>
+<tr>
+<td><code>COUNT(Grade)</code></td>
+<td><strong>4</strong></td>
+<td>Non-NULL grades only</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>COUNT(*)</code> is the only aggregate that does not ignore NULLs.</strong> Use it when you mean <em>"how many rows"</em>, and <code>COUNT(col)</code> when you mean <em>"how many rows have a value here"</em>.</p>
+</div>
+<h3 id="aggregates-and-null">Aggregates and NULL<a class="headerlink" href="#aggregates-and-null" title="Permanent link">&para;</a></h3>
+<p>All aggregates except <code>COUNT(*)</code> <strong>ignore NULLs entirely</strong>. This matters most for <code>AVG</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Marks: 80, 90, NULL, NULL</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Marks</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">RESULT</span><span class="p">;</span><span class="w">                     </span><span class="c1">-- 85 = (80+90)/2</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">Marks</span><span class="p">)</span><span class="o">/</span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">RESULT</span><span class="p">;</span><span class="w">            </span><span class="c1">-- 42.5 = 170/4</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="k">COALESCE</span><span class="p">(</span><span class="n">Marks</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">RESULT</span><span class="p">;</span><span class="w">         </span><span class="c1">-- 42.5 -- NULL treated as zero</span>
+</code></pre></div>
+<p>All three are defensible; <strong>they answer different questions</strong>. <code>AVG(Marks)</code> is the average of the marks that exist; the others treat a missing mark as zero. Decide which you mean, and be explicit.</p>
+<h2 id="162-group-by">16.2 GROUP BY<a class="headerlink" href="#162-group-by" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">GROUP BY</p>
+<p>Partitions the rows into <strong>groups</strong> that share the same values in the grouping columns, then applies each aggregate function <strong>once per group</strong>, producing <strong>one output row per group</strong>.</p>
+</div>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">NumCourses</span><span class="p">,</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">TotalSeats</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">MeanSeats</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Coursetype</th>
+<th>NumCourses</th>
+<th>MeanSeats</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fulltime</td>
+<td>3</td>
+<td>48.3333</td>
+</tr>
+<tr>
+<td>Parttime</td>
+<td>2</td>
+<td>45.0000</td>
+</tr>
+</tbody>
+</table>
+<div class="language-text highlight"><pre><span></span><code>   BEFORE GROUPING (5 rows)          AFTER GROUP BY Coursetype (2 rows)
+
+   CS01  Fulltime  60  --,
+   CH01  Fulltime  45  --+--&gt;  group 'Fulltime'  --&gt;  COUNT=3  AVG=48.33
+   PH01  Fulltime  40  --'
+   MA02  Parttime  50  --,
+   EN03  Parttime  40  --+--&gt;  group 'Parttime'  --&gt;  COUNT=2  AVG=45.00
+</code></pre></div>
+<h3 id="the-single-value-rule">The single-value rule<a class="headerlink" href="#the-single-value-rule" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">The rule that governs every GROUP BY query</p>
+<p><strong>Every column in the <code>SELECT</code> list must either appear in the <code>GROUP BY</code> clause, or be inside an aggregate function.</strong></p>
+<p>The reason is arithmetic: a group produces <strong>one</strong> output row, so every expression in that row must have <strong>one</strong> value for the group. A grouping column has one value by construction; an aggregate collapses to one value by definition. Any other column has <em>many</em> values in the group, and the DBMS cannot choose among them.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- INVALID: which of the three Fulltime course names should be shown?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+
+<span class="c1">-- VALID</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Cname</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>A MySQL warning.</strong> Older MySQL versions, and installations without <code>ONLY_FULL_GROUP_BY</code> in the SQL mode, accept the invalid form and return an <strong>arbitrary</strong> value from the group — silently wrong. Standard SQL and modern MySQL reject it. Write standard-conforming SQL; do not rely on the permissive behaviour.</p>
+</div>
+<h3 id="grouping-by-several-columns">Grouping by several columns<a class="headerlink" href="#grouping-by-several-columns" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">YEAR</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Yr</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Admissions</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">YEAR</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Dateofadmission</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Yr</span><span class="p">;</span>
+</code></pre></div>
+<p>One group per <strong>distinct combination</strong> of the grouping columns.</p>
+<h2 id="163-having">16.3 HAVING<a class="headerlink" href="#163-having" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">HAVING</p>
+<p>Filters <strong>groups</strong> after they are formed, exactly as <code>WHERE</code> filters <strong>rows</strong> before grouping. <code>HAVING</code> may reference aggregate functions; <code>WHERE</code> may not.</p>
+</div>
+<p><strong>Syllabus Q8</strong> — course names with more than five students enrolled:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">WHERE vs HAVING — the definitive comparison</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>WHERE</code></th>
+<th><code>HAVING</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Filters</td>
+<td>Individual <strong>rows</strong></td>
+<td><strong>Groups</strong></td>
+</tr>
+<tr>
+<td>Evaluated</td>
+<td><strong>Before</strong> <code>GROUP BY</code> (step 2)</td>
+<td><strong>After</strong> <code>GROUP BY</code> (step 4)</td>
+</tr>
+<tr>
+<td>May use aggregates</td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>May use non-grouped columns</td>
+<td>Yes</td>
+<td>No (same single-value rule)</td>
+</tr>
+<tr>
+<td>Without <code>GROUP BY</code></td>
+<td>Normal row filter</td>
+<td>Treats the whole table as one group</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td><strong>Better</strong> — reduces rows before grouping</td>
+<td>Necessary only for aggregate conditions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> if the condition can be tested on a single row, put it in <code>WHERE</code>. Only conditions on an aggregate belong in <code>HAVING</code>.</p>
+</div>
+<p><strong>Both in one query:</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- Full-time courses (row filter) having more than 5 students (group filter)</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Fulltime'</span><span class="w">          </span><span class="c1">-- filter rows first</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w">                        </span><span class="c1">-- then filter groups</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Why WHERE first is faster</p>
+<p>Putting <code>Coursetype = 'Fulltime'</code> in <code>WHERE</code> discards part-time rows <strong>before</strong> the grouping work begins — fewer rows to sort or hash into groups.</p>
+<p>Writing it as <code>HAVING MAX(c.Coursetype) = 'Fulltime'</code> would group <em>everything</em> first and then throw groups away. Same answer, more work. This is the SQL counterpart of the <em>push selections down</em> rule from Unit 3, Lesson 3.</p>
+</div>
+<h2 id="164-the-left-join-idiom-for-counting-zeros">16.4 The LEFT JOIN Idiom for Counting Zeros<a class="headerlink" href="#164-the-left-join-idiom-for-counting-zeros" title="Permanent link">&para;</a></h2>
+<p>This is the single most important practical pattern in this lesson.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- WRONG: courses with no students simply vanish</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<p>An inner join produces <strong>no row</strong> for <code>PH01 Physics</code>, so it forms no group and never appears — the report silently understates the course list.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="c1">-- RIGHT</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Cname</th>
+<th>Enrolled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Computer Science</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Mathematics</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Chemistry</td>
+<td>1</td>
+</tr>
+<tr>
+<td>English</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Physics</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Two details that must both be right</p>
+<ol>
+<li><strong><code>LEFT JOIN</code></strong> keeps every course, padding unmatched ones with NULLs.</li>
+<li><strong><code>COUNT(a.Rollno)</code>, not <code>COUNT(*)</code>.</strong> For <code>PH01</code> the left join produces one row with all <code>ADMISSION</code> columns NULL. <code>COUNT(*)</code> would count that row and report <strong>1</strong>; <code>COUNT(a.Rollno)</code> ignores the NULL and correctly reports <strong>0</strong>.</li>
+</ol>
+<p>Getting the join right but leaving <code>COUNT(*)</code> is the classic half-correct answer.</p>
+</div>
+<p><strong>Syllabus Q17</strong> — display the vacant seats for each course:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w">                  </span><span class="k">AS</span><span class="w"> </span><span class="n">Filled</span><span class="p">,</span>
+<span class="w">         </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w">   </span><span class="k">AS</span><span class="w"> </span><span class="n">Vacant</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Vacant</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Syllabus Q22</strong> — count courses with more than five students, for each course type:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PopularCourses</span>
+<span class="k">FROM</span><span class="w">     </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span>
+<span class="w">           </span><span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">           </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span>
+<span class="w">           </span><span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">popular</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div>
+<p>Two levels of grouping are needed: the inner query finds which courses qualify, the outer counts them per type. This <em>nested aggregation</em> pattern is common whenever a question aggregates over the result of an aggregation.</p>
+<p><strong>Syllabus Q16</strong> — courses where enrolment is only 10 per cent of total seats:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">10</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="165-solved-questions">16.5 Solved Questions<a class="headerlink" href="#165-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Distinguish <code>COUNT(*)</code>, <code>COUNT(col)</code> and <code>COUNT(DISTINCT col)</code> with a worked example. Which ignores NULLs?</p>
+<p><strong>A.</strong></p>
+<ul>
+<li><code>COUNT(*)</code> counts <strong>rows</strong>, regardless of content. It is the <strong>only</strong> aggregate that does not ignore NULLs.</li>
+<li><code>COUNT(col)</code> counts rows where <code>col</code> is <strong>not NULL</strong>.</li>
+<li><code>COUNT(DISTINCT col)</code> counts <strong>distinct non-NULL</strong> values of <code>col</code>.</li>
+</ul>
+<p>Take a table <code>RESULT(Rollno, SID, Grade)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>SID</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>CS01</td>
+<td>A</td>
+</tr>
+<tr>
+<td>X2019</td>
+<td>MA02</td>
+<td>B</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>CS01</td>
+<td>A</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>CH01</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>Z1188</td>
+<td>EN03</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Result</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COUNT(*)</code></td>
+<td><strong>5</strong></td>
+<td>Five rows.</td>
+</tr>
+<tr>
+<td><code>COUNT(Grade)</code></td>
+<td><strong>3</strong></td>
+<td>Two grades are NULL and are ignored.</td>
+</tr>
+<tr>
+<td><code>COUNT(DISTINCT Grade)</code></td>
+<td><strong>2</strong></td>
+<td>Distinct non-NULL grades are A and B.</td>
+</tr>
+<tr>
+<td><code>COUNT(Rollno)</code></td>
+<td><strong>5</strong></td>
+<td><code>Rollno</code> is <code>NOT NULL</code>.</td>
+</tr>
+<tr>
+<td><code>COUNT(DISTINCT Rollno)</code></td>
+<td><strong>3</strong></td>
+<td>Three distinct students.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Practical significance.</strong> <em>"How many students have results?"</em> is <code>COUNT(DISTINCT Rollno)</code> = 3, not <code>COUNT(*)</code> = 5. <em>"How many results have been entered?"</em> is <code>COUNT(Grade)</code> = 3, not <code>COUNT(*)</code> = 5. Choosing the wrong form gives a plausible but wrong number, which is worse than an error.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> State and justify the single-value rule for <code>GROUP BY</code>. Give an invalid query and three ways to fix it.</p>
+<p><strong>A.</strong> <strong>The rule:</strong> every column in the <code>SELECT</code> list must either appear in the <code>GROUP BY</code> clause or be enclosed in an aggregate function.</p>
+<p><strong>Justification.</strong> <code>GROUP BY</code> produces exactly <strong>one output row per group</strong>. Every expression in that row must therefore evaluate to exactly <strong>one</strong> value for the group. A grouping column has one value by construction — that is what defines the group. An aggregate reduces many values to one by definition. Any other column holds <em>several</em> values within the group, and there is no principled way to pick one.</p>
+<p><strong>Invalid:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div>
+The <code>Fulltime</code> group contains three different <code>Cname</code> values — Computer Science, Chemistry, Physics — so the query does not specify which to display.</p>
+<p><strong>Three fixes, answering three different questions:</strong></p>
+<ol>
+<li>
+<p><strong>Drop the offending column</strong> — <em>"how many courses of each type?"</em>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Aggregate it</strong> — <em>"how many, and one representative name?"</em>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Cname</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SampleCourse</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Add it to <code>GROUP BY</code></strong> — <em>"how many courses share each (type, name) pair?"</em> This makes the groups finer, so the answer changes.
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div></p>
+</li>
+</ol>
+<p><strong>Caution.</strong> MySQL without <code>ONLY_FULL_GROUP_BY</code> accepts the invalid query and returns an <strong>arbitrary</strong> <code>Cname</code> — no error, wrong answer. Always write the standard-conforming form.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Distinguish <code>WHERE</code> from <code>HAVING</code> on at least five points. Write one query using both, and explain why the split is as it is.</p>
+<p><strong>A.</strong> <em>(Comparison table of Section 4.3.)</em> The essential differences: <code>WHERE</code> filters <strong>rows before</strong> grouping and cannot reference aggregates; <code>HAVING</code> filters <strong>groups after</strong> grouping and can.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">WHERE</span><span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Fulltime'</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><em>"Among full-time courses, list those with more than five students."</em></p>
+<p><strong>Why the split is as it is.</strong> <code>Coursetype = 'Fulltime'</code> is testable on a <strong>single row</strong> — each admission row, joined to its course, either is or is not full-time. It therefore belongs in <code>WHERE</code>, and putting it there discards part-time rows <strong>before</strong> the grouping work begins.</p>
+<p><code>COUNT(*) &gt; 5</code> is <strong>not</strong> testable on a single row: it is a property of the whole group, which does not exist until <code>GROUP BY</code> has run. It therefore <em>must</em> go in <code>HAVING</code>.</p>
+<p><strong>Performance.</strong> Moving the <code>Coursetype</code> test into <code>HAVING</code> (as <code>HAVING MAX(c.Coursetype)='Fulltime'</code>) would produce the same answer while grouping every row first and then discarding whole groups — strictly more work. This is the SQL form of the <em>push selections down</em> optimisation rule.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Write a query listing every course with its enrolment count, <strong>including courses with none</strong>. Explain both details that must be right.</p>
+<p><strong>A.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Detail 1 — the join must be <code>LEFT JOIN</code>.</strong> An inner join emits a row only where a match exists. <code>PH01 Physics</code> has no admissions, so an inner join produces no row for it, it forms no group, and it is silently absent from the report. A <code>LEFT JOIN</code> retains every course, padding the <code>ADMISSION</code> columns with NULLs where there is no match.</p>
+<p><strong>Detail 2 — the aggregate must be <code>COUNT(a.Rollno)</code>, not <code>COUNT(*)</code>.</strong> After the left join, <code>PH01</code> contributes exactly <strong>one</strong> row, whose <code>ADMISSION</code> columns are all NULL. <code>COUNT(*)</code> counts rows and would report <strong>1</strong> — a wrong answer that looks entirely plausible. <code>COUNT(a.Rollno)</code> ignores NULLs and correctly reports <strong>0</strong>.</p>
+<p><strong>Result:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cname</th>
+<th>Enrolled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Computer Science</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Mathematics</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Chemistry</td>
+<td>1</td>
+</tr>
+<tr>
+<td>English</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Physics</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Grouping by <code>c.SID</code> as well as <code>c.Cname</code> is deliberate: <code>SID</code> is the key, so two courses that happened to share a name would still be separated. Both are in the <code>GROUP BY</code>, satisfying the single-value rule.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Write SQL for syllabus practicals 6, 8, 13, 17 and 22.</p>
+<p><strong>A.</strong></p>
+<p><strong>Q6 — course details with more than N students enrolled, N supplied by the user.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">N</span><span class="p">;</span>
+</code></pre></div>
+A user variable stands in for the input; in an application this becomes a bound parameter (<code>?</code>), which is also the defence against SQL injection.</p>
+<p><strong>Q8 — course names in which more than five students have enrolled.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Enrolled</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+An inner join suffices here: a course with zero students can never satisfy <code>&gt; 5</code>, so nothing is lost by excluding it.</p>
+<p><strong>Q13 — course names in which more than 30 students took admission.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Admitted</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span>
+<span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+</code></pre></div></p>
+<p><strong>Q17 — display the vacant seats for each course.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="p">,</span>
+<span class="w">         </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w">                </span><span class="k">AS</span><span class="w"> </span><span class="n">Filled</span><span class="p">,</span>
+<span class="w">         </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Vacant</span>
+<span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">TotalSeats</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Vacant</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+Here the <code>LEFT JOIN</code> <strong>is</strong> essential: a course with no students has <em>all</em> its seats vacant and must appear, with <code>Vacant = TotalSeats</code>.</p>
+<p><strong>Q22 — number of courses with more than five students, per course type.</strong>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">Coursetype</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PopularCourses</span>
+<span class="k">FROM</span><span class="w">   </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w">   </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span>
+<span class="w">         </span><span class="k">FROM</span><span class="w">     </span><span class="n">COURSE</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">SID</span>
+<span class="w">         </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Coursetype</span>
+<span class="w">         </span><span class="k">HAVING</span><span class="w">   </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">popular</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">;</span>
+</code></pre></div>
+This needs <strong>two levels of aggregation</strong>: the inner query determines <em>which courses qualify</em> (one row per qualifying course), and the outer counts those rows per type. A single <code>GROUP BY</code> cannot do it, because the two aggregations are at different granularities.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> <code>AVG(Marks)</code> returns 85 but <code>SUM(Marks)/COUNT(*)</code> returns 42.5 on the same data. Explain, and say which is correct.</p>
+<p><strong>A.</strong> The data must contain <strong>NULLs</strong>. Suppose four rows with marks 80, 90, NULL, NULL.</p>
+<ul>
+<li><code>AVG(Marks)</code> <strong>ignores NULLs</strong>: it averages only the two present values, <code>(80+90)/2 = 85</code>.</li>
+<li><code>SUM(Marks)</code> also ignores NULLs, giving 170; but <code>COUNT(*)</code> counts <strong>rows</strong>, giving 4. So <code>170/4 = 42.5</code>.</li>
+</ul>
+<p>The mismatch arises because <code>SUM</code> and <code>COUNT(*)</code> disagree about the denominator: <code>SUM</code> skipped the NULLs, <code>COUNT(*)</code> did not.</p>
+<p><strong>Which is correct depends on what the NULLs mean</strong> — the three meanings from Unit 2, Lesson 2:</p>
+<ul>
+<li>If NULL means <strong>"the mark has not yet been entered"</strong> (unknown-missing), then those students should not influence the class average, and <strong><code>AVG(Marks)</code> = 85 is correct</strong>. It is the average of the marks that exist.</li>
+<li>If NULL means <strong>"the student was absent and scores zero"</strong>, then the missing values are really zeros, and the correct expression states that explicitly:
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="k">COALESCE</span><span class="p">(</span><span class="n">Marks</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">RESULT</span><span class="p">;</span><span class="w">   </span><span class="c1">-- 42.5</span>
+</code></pre></div></li>
+</ul>
+<p><strong>The lesson.</strong> Both numbers are arithmetically right; they answer different questions. Never write <code>SUM(x)/COUNT(*)</code> intending an average — use <code>AVG(x)</code> if NULLs should be excluded, or <code>AVG(COALESCE(x,0))</code> if they should count as zero. And always report the denominator alongside the average, so the reader can see which convention was used:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Students</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">Marks</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Graded</span><span class="p">,</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Marks</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">MeanOfGraded</span>
+<span class="k">FROM</span><span class="w">   </span><span class="k">RESULT</span><span class="p">;</span>
+</code></pre></div>
+</div>
+<h2 id="166-exercises">16.6 Exercises<a class="headerlink" href="#166-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Name the five aggregate functions.</li>
+<li>Which aggregate does not ignore NULLs?</li>
+<li>State the single-value rule.</li>
+<li>Give two differences between <code>WHERE</code> and <code>HAVING</code>.</li>
+<li>Why is <code>COUNT(*)</code> wrong after a <code>LEFT JOIN</code> when counting matches?</li>
+<li>What does a <code>GROUP BY</code> query with no matching rows return?</li>
+</ol>
+<p><strong>B. Write the SQL</strong></p>
+<ol>
+<li>Total number of students.</li>
+<li>Number of distinct courses that have at least one admission.</li>
+<li>Average, maximum and minimum seats per course type.</li>
+<li>Number of admissions per month of 2019.</li>
+<li>Courses with more than two admissions, most popular first.</li>
+<li>For each student, the number of courses they are admitted to.</li>
+<li>Students admitted to more than one course.</li>
+<li>Each society with its member count, including empty societies.</li>
+<li>The society with the most members (syllabus Q10).</li>
+<li>The two most popular part-time courses (syllabus Q11).</li>
+<li>Course types where the average seat count exceeds 45.</li>
+<li>For each teacher, the number of courses and total seats they are responsible for.</li>
+<li>Percentage of total college seats represented by each course.</li>
+<li>Courses that are more than 90 per cent full.</li>
+</ol>
+<p><strong>C. Predict and explain</strong></p>
+<ol>
+<li><code>RESULT(Rollno, Marks)</code> has 6 rows with marks 70, 80, NULL, 90, NULL, 60. Give:
+    a. <code>COUNT(*)</code> b. <code>COUNT(Marks)</code> c. <code>SUM(Marks)</code> d. <code>AVG(Marks)</code> e. <code>SUM(Marks)/COUNT(*)</code> f. <code>MAX(Marks)</code> g. <code>COUNT(DISTINCT Marks)</code></li>
+<li>Explain why each is invalid, and correct it:
+    a. <code>SELECT Cname, COUNT(*) FROM COURSE;</code>
+    b. <code>SELECT Coursetype, Cname FROM COURSE GROUP BY Coursetype;</code>
+    c. <code>SELECT Cname FROM COURSE WHERE COUNT(*) &gt; 1;</code>
+    d. <code>SELECT Coursetype, COUNT(*) AS n FROM COURSE GROUP BY Coursetype HAVING n &gt; 1;</code> (consider portability)</li>
+<li>A report of courses and enrolments shows 4 courses instead of 5. Diagnose and give two fixes.</li>
+</ol>
+<p><strong>D. Analytical</strong></p>
+<ol>
+<li>Explain why placing a non-aggregate condition in <code>HAVING</code> rather than <code>WHERE</code> gives the same answer but is slower. Illustrate with row counts.</li>
+<li>Write two queries answering <em>"the average number of students per course"</em>, one counting empty courses and one not. Explain when each is appropriate.</li>
+<li>Explain what MySQL does with an invalid <code>GROUP BY</code> when <code>ONLY_FULL_GROUP_BY</code> is off, and why this is dangerous.</li>
+<li>Design a query producing a single row with: total students, total courses, total admissions, average admissions per student, and the number of students with no admission.</li>
+<li>Explain why the syllabus Q11 query ("two most popular part-time courses") could give a misleading answer with ties, and rewrite it to handle them.</li>
+</ol>
+<p><strong>E. Objective — True or False with reason</strong></p>
+<ol>
+<li><code>AVG(col)</code> equals <code>SUM(col)/COUNT(*)</code>.</li>
+<li><code>HAVING</code> can be used without <code>GROUP BY</code>.</li>
+<li><code>COUNT(DISTINCT col)</code> includes NULL as a distinct value.</li>
+<li>Every column in <code>SELECT</code> must appear in <code>GROUP BY</code>.</li>
+<li><code>WHERE</code> can filter on <code>COUNT(*)</code>.</li>
+<li>A <code>LEFT JOIN</code> with <code>COUNT(*)</code> correctly reports zero for unmatched rows.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section E</p>
+<ol>
+<li><strong>False.</strong> <code>AVG</code> divides by the number of <strong>non-NULL</strong> values; <code>COUNT(*)</code> counts all rows. They agree only when the column has no NULLs.</li>
+<li><strong>True.</strong> Without <code>GROUP BY</code>, the whole table is one group, so <code>HAVING COUNT(*) &gt; 100</code> is a valid filter on that single group.</li>
+<li><strong>False.</strong> It counts distinct <strong>non-NULL</strong> values only.</li>
+<li><strong>False.</strong> It must appear in <code>GROUP BY</code> <strong>or</strong> be inside an aggregate function.</li>
+<li><strong>False.</strong> <code>WHERE</code> is evaluated before groups exist; aggregate conditions belong in <code>HAVING</code>.</li>
+<li><strong>False.</strong> <code>COUNT(*)</code> counts the NULL-padded row and reports 1. Use <code>COUNT(&lt;column from the right table&gt;)</code>.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>Aggregates collapse a set of values to one. <strong>All ignore NULLs except <code>COUNT(*)</code>.</strong></li>
+<li><code>COUNT(*)</code> counts rows; <code>COUNT(col)</code> counts non-NULL values; <code>COUNT(DISTINCT col)</code> counts distinct non-NULL values.</li>
+<li><code>GROUP BY</code> gives <strong>one row per group</strong>, so the <strong>single-value rule</strong> applies: every selected column must be grouped or aggregated.</li>
+<li><code>WHERE</code> filters <strong>rows before</strong> grouping and cannot see aggregates; <code>HAVING</code> filters <strong>groups after</strong> grouping and can. Put a condition in <code>WHERE</code> whenever it is testable on one row.</li>
+<li>To count zeros, use <code>LEFT JOIN</code> <strong>and</strong> <code>COUNT(&lt;right-table column&gt;)</code> — both details are required.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="querying-with-select.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 15. Querying with SELECT">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                15. Querying with SELECT
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="joins-subqueries-and-set-operations.html" class="md-footer__link md-footer__link--next" aria-label="Next: 17. Joins, Subqueries and Set Operations">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                17. Joins, Subqueries and Set Operations
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

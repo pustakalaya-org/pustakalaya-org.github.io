@@ -1,0 +1,3200 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch03-physically-unclonable-functions-puf.html">
+  
+  
+    <link rel="prev" href="ch02-hardware-security-module-hsm.html">
+  
+  
+    <link rel="next" href="ch04-trusted-execution-environment-tee.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>3. Physically Unclonable Functions (PUF) - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#31-introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3. Physically Unclonable Functions (PUF)
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-arbiter-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Arbiter PUF
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Arbiter PUF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-operating-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 Operating Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-additive-delay-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 Additive Delay Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-ring-oscillator-puf-ro-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Ring Oscillator PUF (RO-PUF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Ring Oscillator PUF (RO-PUF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-sram-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 SRAM PUF
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 SRAM PUF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341-operating-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 Operating Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-fuzzy-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Fuzzy Extractor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Fuzzy Extractor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351-implementation-with-bch-error-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1 Implementation with BCH Error Correction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352-fuzzy-extractor-python-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 Fuzzy Extractor Python Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-machine-learning-attacks-on-pufs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Machine Learning Attacks on PUFs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6 Machine Learning Attacks on PUFs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#361-logistic-regression-attack-on-arbiter-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.1 Logistic Regression Attack on Arbiter PUF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#362-pypuf-machine-learning-attack-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.2 pypuf Machine Learning Attack Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-puf-hardware-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 PUF Hardware Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7 PUF Hardware Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#371-fpga-resource-utilization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.1 FPGA Resource Utilization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#372-asic-puf-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.2 ASIC PUF Implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-puf-quality-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 PUF Quality Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-all-puf-solutions-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 All PUF Solutions Ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-standards-and-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Standards and Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-puf-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch03-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.12 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3121-deep-learning-attacks-on-pufs-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.1 Deep Learning Attacks on PUFs (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3122-new-puf-types-memristor-puf-and-sram-puf-in-3-nm-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.2 New PUF Types: Memristor PUF and SRAM PUF in 3 nm Processes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3123-isoiec-20897-12020-updated-guidance-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.3 ISO/IEC 20897-1:2020 Updated Guidance (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3124-puf-based-key-generation-for-post-quantum-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.4 PUF-Based Key Generation for Post-Quantum Algorithms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3125-nist-sp-800-90b-application-to-puf-entropy-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.5 NIST SP 800-90B Application to PUF Entropy Assessment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3126-commercial-puf-intrinsic-id-broadkey-30-and-verayo-puf-phy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.6 Commercial PUF: Intrinsic ID BroadKey 3.0 and Verayo PUF-PHY
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-puf-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.13 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-arbiter-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Arbiter PUF
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Arbiter PUF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-operating-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 Operating Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-additive-delay-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 Additive Delay Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-ring-oscillator-puf-ro-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Ring Oscillator PUF (RO-PUF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Ring Oscillator PUF (RO-PUF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-sram-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 SRAM PUF
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 SRAM PUF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341-operating-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 Operating Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-fuzzy-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Fuzzy Extractor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Fuzzy Extractor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351-implementation-with-bch-error-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1 Implementation with BCH Error Correction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352-fuzzy-extractor-python-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 Fuzzy Extractor Python Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-machine-learning-attacks-on-pufs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Machine Learning Attacks on PUFs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6 Machine Learning Attacks on PUFs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#361-logistic-regression-attack-on-arbiter-puf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.1 Logistic Regression Attack on Arbiter PUF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#362-pypuf-machine-learning-attack-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.2 pypuf Machine Learning Attack Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-puf-hardware-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 PUF Hardware Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7 PUF Hardware Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#371-fpga-resource-utilization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.1 FPGA Resource Utilization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#372-asic-puf-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.2 ASIC PUF Implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-puf-quality-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 PUF Quality Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-all-puf-solutions-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 All PUF Solutions Ecosystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-standards-and-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Standards and Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-puf-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch03-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.12 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3121-deep-learning-attacks-on-pufs-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.1 Deep Learning Attacks on PUFs (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3122-new-puf-types-memristor-puf-and-sram-puf-in-3-nm-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.2 New PUF Types: Memristor PUF and SRAM PUF in 3 nm Processes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3123-isoiec-20897-12020-updated-guidance-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.3 ISO/IEC 20897-1:2020 Updated Guidance (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3124-puf-based-key-generation-for-post-quantum-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.4 PUF-Based Key Generation for Post-Quantum Algorithms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3125-nist-sp-800-90b-application-to-puf-entropy-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.5 NIST SP 800-90B Application to PUF Entropy Assessment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3126-commercial-puf-intrinsic-id-broadkey-30-and-verayo-puf-phy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12.6 Commercial PUF: Intrinsic ID BroadKey 3.0 and Verayo PUF-PHY
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-puf-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.13 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-puf">Chapter 3: Physically Unclonable Functions (PUF)<a class="headerlink" href="#ch-puf" title="Permanent link">&para;</a></h1>
+<h2 id="31-introduction"><span class="secnum">3.1</span> Introduction<a class="headerlink" href="#31-introduction" title="Permanent link">&para;</a></h2>
+<p>A <strong>Physically Unclonable Function (PUF)</strong> is a hardware security primitive that exploits manufacturing process variations inherent in semiconductor fabrication to create a unique, device-specific mapping from input challenges to output responses. PUFs serve as a hardware fingerprint – even two chips manufactured from identical masks will produce different responses due to nanoscale variations in transistor threshold voltages, wire widths, and oxide thicknesses.</p>
+<p>Key properties of an ideal PUF:</p>
+<ul>
+<li>
+<p><strong>Uniqueness</strong>: Two different PUF instances produce distinct responses to the same challenge</p>
+</li>
+<li>
+<p><strong>Reproducibility (Reliability)</strong>: Same instance, same challenge produces the same response across temperature/voltage variations</p>
+</li>
+<li>
+<p><strong>Unclonability</strong>: No physical device can reproduce the PUF response profile, even the manufacturer</p>
+</li>
+<li>
+<p><strong>Unpredictability</strong>: Responses appear random; responses to unseen challenges are unpredictable</p>
+</li>
+<li>
+<p><strong>One-wayness</strong>: Cannot derive PUF physical parameters from observed challenge-response pairs (CRPs)</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> PUFs are classified as <strong>Strong PUFs</strong> (exponential CRP space, e.g., Arbiter PUF with <span class="arithmatex">\(2^n\)</span> challenges) or <strong>Weak PUFs</strong> (limited CRP space, e.g., SRAM PUF with one challenge per memory cell). Strong PUFs enable authentication protocols; Weak PUFs are used for key generation.</p>
+</div>
+<h2 id="32-arbiter-puf"><span class="secnum">3.2</span> Arbiter PUF<a class="headerlink" href="#32-arbiter-puf" title="Permanent link">&para;</a></h2>
+<h3 id="321-operating-principle"><span class="secnum">3.2.1</span> Operating Principle<a class="headerlink" href="#321-operating-principle" title="Permanent link">&para;</a></h3>
+<p>An Arbiter PUF uses a race condition between two signal paths to generate a 1-bit response. An <span class="arithmatex">\(n\)</span>-stage arbiter PUF provides a challenge space of <span class="arithmatex">\(2^n\)</span> distinct challenges.</p>
+<div class="center">
+<p><img class="tikz" src="img/tikz-f3c4d1c84622.svg" alt="image" loading="lazy"></p>
+</div>
+<p>Each switch stage either passes signals straight or crosses them based on challenge bit <span class="arithmatex">\(c_i\)</span>. The arbiter samples which path arrives first, producing 1-bit response <span class="arithmatex">\(r\)</span>.</p>
+<h3 id="322-additive-delay-model"><span class="secnum">3.2.2</span> Additive Delay Model<a class="headerlink" href="#322-additive-delay-model" title="Permanent link">&para;</a></h3>
+<p>The additive delay model represents path timing difference as linear in challenge parity products:</p>
+<div class="arithmatex">\[\Delta = \mathbf{w}^T \cdot \Phi(c)\]</div>
+<p>where <span class="arithmatex">\(\mathbf{w} \in \mathbb{R}^{n+1}\)</span> is the delay weight vector and <span class="arithmatex">\(\Phi(c)\)</span> is the <span class="arithmatex">\((n+1)\)</span>-dimensional feature vector. The response is <span class="arithmatex">\(r = \text{sgn}(\Delta)\)</span>. This linear separability makes Arbiter PUFs vulnerable to logistic regression attacks.</p>
+<h2 id="33-ring-oscillator-puf-ro-puf"><span class="secnum">3.3</span> Ring Oscillator PUF (RO-PUF)<a class="headerlink" href="#33-ring-oscillator-puf-ro-puf" title="Permanent link">&para;</a></h2>
+<h3 id="331-architecture"><span class="secnum">3.3.1</span> Architecture<a class="headerlink" href="#331-architecture" title="Permanent link">&para;</a></h3>
+<p>A Ring Oscillator PUF uses pairs of identically-designed ring oscillators. Due to process variations, each pair oscillates at slightly different frequencies. The PUF response bit is determined by which oscillator in a pair runs faster.</p>
+<div class="center">
+<p><img class="tikz" src="img/tikz-f18556bed9a0.svg" alt="image" loading="lazy"></p>
+</div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> FPGA implementation constraint: RO pairs must be placed in adjacent LUTs with identical routing constraints. Otherwise routing asymmetry dominates over process variation, reducing PUF uniqueness. Xilinx ISE/Vivado placement constraints: <code>LOC</code> and <code>BEL</code> directives.</p>
+</div>
+<h2 id="34-sram-puf"><span class="secnum">3.4</span> SRAM PUF<a class="headerlink" href="#34-sram-puf" title="Permanent link">&para;</a></h2>
+<h3 id="341-operating-principle"><span class="secnum">3.4.1</span> Operating Principle<a class="headerlink" href="#341-operating-principle" title="Permanent link">&para;</a></h3>
+<p>SRAM cells have a metastable state at power-up. Their initial value (0 or 1) is determined by transistor mismatch – the stronger transistor wins the race and sets the stable state. Each cell reliably powers up to its preferred value, creating a device-specific fingerprint.</p>
+<ul>
+<li>
+<p><strong>Cell count</strong>: Typical SRAM PUF uses 8,192 cells (1,024 bytes); enrolled at device initialization</p>
+</li>
+<li>
+<p><strong>Reliability</strong>:  95-99% of bits are stable across -40 to +85 C and 1.8V-3.6V supply</p>
+</li>
+<li>
+<p><strong>Unstable bits</strong>:  1-5% of bits are near-metastable; masked out via enrollment helper data</p>
+</li>
+<li>
+<p><strong>Uniqueness</strong>: Hamming distance between two different devices:  50% (ideal random)</p>
+</li>
+<li>
+<p><strong>Key generation</strong>: SRAM startup values processed through Fuzzy Extractor to produce stable key</p>
+</li>
+<li>
+<p><strong>Products</strong>: NXP SE050/SE051, Intrinsic ID QuiddiKey IP core (used in Microchip SAME54)</p>
+</li>
+</ul>
+<h2 id="35-fuzzy-extractor"><span class="secnum">3.5</span> Fuzzy Extractor<a class="headerlink" href="#35-fuzzy-extractor" title="Permanent link">&para;</a></h2>
+<p>A Fuzzy Extractor converts a noisy PUF response into a stable cryptographic key. It consists of two algorithms:</p>
+<ul>
+<li>
+<p><strong>Gen</strong><span class="arithmatex">\((w)\)</span>: On first call (enrollment), generates key <span class="arithmatex">\(k\)</span> and helper data <span class="arithmatex">\(P\)</span> from PUF response <span class="arithmatex">\(w\)</span></p>
+</li>
+<li>
+<p><strong>Rep</strong><span class="arithmatex">\((w', P)\)</span>: On subsequent calls (reconstruction), reproduces <span class="arithmatex">\(k\)</span> from noisy <span class="arithmatex">\(w'\)</span> using <span class="arithmatex">\(P\)</span></p>
+</li>
+</ul>
+<h3 id="351-implementation-with-bch-error-correction"><span class="secnum">3.5.1</span> Implementation with BCH Error Correction<a class="headerlink" href="#351-implementation-with-bch-error-correction" title="Permanent link">&para;</a></h3>
+<p>BCH codes are commonly used in fuzzy extractors for SRAM PUFs. A BCH<span class="arithmatex">\((n, k, t)\)</span> code can correct up to <span class="arithmatex">\(t\)</span> bit errors.</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 3.1.</strong> Fuzzy Extractor Parameters for SRAM PUF Key Generation</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Value</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SRAM PUF response size</td>
+<td style="text-align: left;">2,048 bits</td>
+<td style="text-align: left;">2K SRAM cells evaluated at power-up</td>
+</tr>
+<tr>
+<td style="text-align: left;">BCH code</td>
+<td style="text-align: left;">BCH(2047, 1024, 55)</td>
+<td style="text-align: left;">Corrects up to 55 bit errors in 2047-bit block</td>
+</tr>
+<tr>
+<td style="text-align: left;">Error rate assumption</td>
+<td style="text-align: left;">12% bit error rate</td>
+<td style="text-align: left;">Conservative for -40 to +85 C, <span class="math inline">\(\pm\)</span>10% voltage</td>
+</tr>
+<tr>
+<td style="text-align: left;">Raw SRAM bits used</td>
+<td style="text-align: left;">2,048 bits</td>
+<td style="text-align: left;">For one BCH block</td>
+</tr>
+<tr>
+<td style="text-align: left;">Codeword bits <span class="math inline">\(n\)</span></td>
+<td style="text-align: left;">2,047 bits</td>
+<td style="text-align: left;">BCH block length</td>
+</tr>
+<tr>
+<td style="text-align: left;">Information bits <span class="math inline">\(k\)</span></td>
+<td style="text-align: left;">1,024 bits</td>
+<td style="text-align: left;">Bits available after ECC overhead</td>
+</tr>
+<tr>
+<td style="text-align: left;">Helper data</td>
+<td style="text-align: left;"><span class="math inline">\((n-k)\)</span> = 1,023 bits parity check bits</td>
+<td style="text-align: left;">Public; does not leak PUF secret</td>
+</tr>
+<tr>
+<td style="text-align: left;">Output key after hash</td>
+<td style="text-align: left;">256 bits</td>
+<td style="text-align: left;">SHA-256(Rep output)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Security level</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">After accounting for helper data leakage</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="352-fuzzy-extractor-python-implementation"><span class="secnum">3.5.2</span> Fuzzy Extractor Python Implementation<a class="headerlink" href="#352-fuzzy-extractor-python-implementation" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bchlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">BCH</span>  <span class="c1"># pip install bchlib</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FuzzyExtractor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2047</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""BCH(n, k, t) fuzzy extractor for SRAM PUF key generation"""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bch</span> <span class="o">=</span> <span class="n">BCH</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># BCH with t error correction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sram_bits</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Enrollment: sram_bits is numpy array of 0/1 values (n bits)"""</span>
+        <span class="c1"># Truncate to BCH block size</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">sram_bits</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">raw_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">packbits</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+        <span class="c1"># Generate ECC syndrome (helper data)</span>
+        <span class="n">data_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bch</span><span class="o">.</span><span class="n">data_len</span>
+        <span class="n">secret</span> <span class="o">=</span> <span class="n">raw_bytes</span><span class="p">[:</span><span class="n">data_len</span><span class="p">]</span>
+        <span class="n">ecc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bch</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span>
+        <span class="n">helper_data</span> <span class="o">=</span> <span class="n">raw_bytes</span><span class="p">[</span><span class="n">data_len</span><span class="p">:]</span> <span class="o">+</span> <span class="n">ecc</span>  <span class="c1"># ECC parity bits</span>
+        <span class="c1"># Derive stable key via SHA-256</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">helper_data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noisy_sram_bits</span><span class="p">,</span> <span class="n">helper_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Reconstruction: recover key from noisy readout + helper data"""</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">noisy_sram_bits</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">raw_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">packbits</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+        <span class="n">data_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bch</span><span class="o">.</span><span class="n">data_len</span>
+        <span class="c1"># Apply ECC correction</span>
+        <span class="n">ecc</span> <span class="o">=</span> <span class="n">helper_data</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">helper_data</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">bch</span><span class="o">.</span><span class="n">ecc_bytes</span><span class="p">:]</span>
+        <span class="n">corrected</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bch</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">[:</span><span class="n">data_len</span><span class="p">],</span> <span class="n">ecc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">corrected</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Too many bit errors -- PUF decoding failed'</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">key</span>
+
+<span class="c1"># Simulate SRAM PUF enrollment and reconstruction</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">sram_enrollment</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2047</span><span class="p">)</span>  <span class="c1"># PUF startup values</span>
+<span class="n">fe</span> <span class="o">=</span> <span class="n">FuzzyExtractor</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2047</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">helper</span> <span class="o">=</span> <span class="n">fe</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="n">sram_enrollment</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Enrolled key: </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="c1"># Simulate noisy readout (5</span>
+<span class="n">flip_mask</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2047</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.05</span>
+<span class="n">sram_noisy</span> <span class="o">=</span> <span class="n">sram_enrollment</span> <span class="o">^</span> <span class="n">flip_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">recovered_key</span> <span class="o">=</span> <span class="n">fe</span><span class="o">.</span><span class="n">rep</span><span class="p">(</span><span class="n">sram_noisy</span><span class="p">,</span> <span class="n">helper</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Recovered key: </span><span class="si">{</span><span class="n">recovered_key</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Keys match: </span><span class="si">{</span><span class="n">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">recovered_key</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="36-machine-learning-attacks-on-pufs"><span class="secnum">3.6</span> Machine Learning Attacks on PUFs<a class="headerlink" href="#36-machine-learning-attacks-on-pufs" title="Permanent link">&para;</a></h2>
+<p>Strong PUFs (particularly Arbiter PUFs) are vulnerable to machine learning attacks. Given a set of challenge-response pairs (CRPs), an attacker can train a model to predict responses to unseen challenges with <span class="arithmatex">\(&gt;99\%\)</span> accuracy.</p>
+<h3 id="361-logistic-regression-attack-on-arbiter-puf"><span class="secnum">3.6.1</span> Logistic Regression Attack on Arbiter PUF<a class="headerlink" href="#361-logistic-regression-attack-on-arbiter-puf" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Method</strong>: Logistic Regression (Ruhrmair et al., 2010; Becker 2015)</p>
+</li>
+<li>
+<p><strong>Input</strong>: Challenge feature vector <span class="arithmatex">\(\Phi(c) \in \{-1,+1\}^{n+1}\)</span></p>
+</li>
+<li>
+<p><strong>Model</strong>: <span class="arithmatex">\(P(r=1|c) = \sigma(\mathbf{w}^T \Phi(c))\)</span> where <span class="arithmatex">\(\sigma\)</span> is sigmoid</p>
+</li>
+<li>
+<p><strong>Training data</strong>: 10,000 to 100,000 CRPs collected via physical access or side-channel</p>
+</li>
+<li>
+<p><strong>Accuracy</strong>: 64-bit Arbiter PUF: <span class="arithmatex">\(&gt;99\%\)</span> with <span class="arithmatex">\(\sim\)</span>10,000 CRPs</p>
+</li>
+<li>
+<p><strong>128-bit</strong>: <span class="arithmatex">\(&gt;99\%\)</span> with <span class="arithmatex">\(\sim\)</span>100,000 CRPs</p>
+</li>
+<li>
+<p><strong>XOR-n PUF</strong>: Requires <span class="arithmatex">\(10^n\)</span> CRPs; <span class="arithmatex">\(n=8\)</span> is currently at ML boundary</p>
+</li>
+</ul>
+<h3 id="362-pypuf-machine-learning-attack-example"><span class="secnum">3.6.2</span> pypuf Machine Learning Attack Example<a class="headerlink" href="#362-pypuf-machine-learning-attack-example" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="c1"># pip install pypuf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pypuf.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArbiterPUF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pypuf.attack</span><span class="w"> </span><span class="kn">import</span> <span class="n">LRAttack2021</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pypuf.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">random_inputs</span>
+
+<span class="c1"># Create a 64-bit Arbiter PUF instance (victim)</span>
+<span class="n">puf</span> <span class="o">=</span> <span class="n">ArbiterPUF</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mh">0xDEADBEEF</span><span class="p">)</span>
+
+<span class="c1"># Collect 20,000 challenge-response pairs (simulating physical access)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">20000</span>
+<span class="n">challenges</span> <span class="o">=</span> <span class="n">random_inputs</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">responses</span> <span class="o">=</span> <span class="n">puf</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">challenges</span><span class="p">)</span>
+
+<span class="c1"># Split into train/test</span>
+<span class="n">train_c</span><span class="p">,</span> <span class="n">test_c</span> <span class="o">=</span> <span class="n">challenges</span><span class="p">[:</span><span class="mi">15000</span><span class="p">],</span> <span class="n">challenges</span><span class="p">[</span><span class="mi">15000</span><span class="p">:]</span>
+<span class="n">train_r</span><span class="p">,</span> <span class="n">test_r</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[:</span><span class="mi">15000</span><span class="p">],</span> <span class="n">responses</span><span class="p">[</span><span class="mi">15000</span><span class="p">:]</span>
+
+<span class="c1"># Run LR attack</span>
+<span class="n">attack</span> <span class="o">=</span> <span class="n">LRAttack2021</span><span class="p">(</span>
+    <span class="n">puf</span><span class="p">,</span> <span class="n">train_c</span><span class="p">,</span> <span class="n">train_r</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># k=1 for single arbiter</span>
+    <span class="n">transformation</span><span class="o">=</span><span class="s1">'id'</span><span class="p">,</span> <span class="n">combiner</span><span class="o">=</span><span class="s1">'xor'</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Evaluate accuracy on unseen challenges</span>
+<span class="n">model_resp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">test_c</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">model_resp</span> <span class="o">==</span> <span class="n">test_r</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Attack accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s1">.1</span>
+
+<span class="c1"># Compare: 2-XOR Arbiter PUF (more resistant)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pypuf.simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">XORArbiterPUF</span>
+<span class="n">xor_puf</span> <span class="o">=</span> <span class="n">XORArbiterPUF</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mh">0xBEEF</span><span class="p">)</span>  <span class="c1"># 2-XOR</span>
+<span class="c1"># Needs ~1M CRPs for k=2; ~10M for k=4</span>
+</code></pre></div>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> All Arbiter PUF variants (single, XOR, iPUF) have been shown vulnerable to ML attacks with sufficient CRPs. Only Weak PUFs (SRAM PUF, Flash PUF) or PUFs with CRP obfuscation (Controlled PUF) are currently considered ML-resistant for authentication applications.</p>
+</div>
+<h2 id="37-puf-hardware-implementations"><span class="secnum">3.7</span> PUF Hardware Implementations<a class="headerlink" href="#37-puf-hardware-implementations" title="Permanent link">&para;</a></h2>
+<h3 id="371-fpga-resource-utilization"><span class="secnum">3.7.1</span> FPGA Resource Utilization<a class="headerlink" href="#371-fpga-resource-utilization" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-puf-fpga">
+<div class="tbl-caption"><strong>Table 3.2.</strong> FPGA Resource Utilisation — PUF Core Implementations</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Artix-7 35T (RO-PUF 256)</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr>
+<td style="text-align: left;">Artix-7 35T (Arbiter 64)</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kintex-7 160T (SRAM PUF)</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kintex-UltraScale+ (RO-PUF)</td>
+<td style="text-align: right;">490</td>
+<td style="text-align: right;">490</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr>
+<td style="text-align: left;">Spartan-7 (Butterfly PUF)</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Cyclone V (Latch PUF)</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr>
+<td style="text-align: left;">iCE40UP5K (RO-PUF 64)</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">8</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>(SRAM PUF on Kintex-7 uses 16 BRAMs as the PUF array; LUTs are for the fuzzy extractor control logic. RO-PUF resources are for the ring oscillator array and frequency counter only; BCH decoder adds approximately <span class="arithmatex">\(2\times\)</span> LUTs.)</p>
+<h3 id="372-asic-puf-implementations"><span class="secnum">3.7.2</span> ASIC PUF Implementations<a class="headerlink" href="#372-asic-puf-implementations" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-puf-asic">
+<div class="tbl-caption"><strong>Table 3.3.</strong> ASIC Implementation Metrics — PUF Security Chips</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: right;"><strong>Area (mm<sup>2</sup>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>ECC</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">180 nm CMOS</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">Research RO-PUF prototype</td>
+</tr>
+<tr>
+<td style="text-align: left;">130 nm CMOS</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">SRAM PUF IP (QuiddiKey)</td>
+</tr>
+<tr>
+<td style="text-align: left;">90 nm CMOS</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">Arbiter PUF academic</td>
+</tr>
+<tr>
+<td style="text-align: left;">65 nm CMOS</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">P-256</td>
+<td style="text-align: left;">SmartFusion2, ATECC608B</td>
+</tr>
+<tr>
+<td style="text-align: left;">40 nm CMOS</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">P-256</td>
+<td style="text-align: left;">NXP SE050 (28 nm, similar)</td>
+</tr>
+<tr>
+<td style="text-align: left;">28 nm FD-SOI</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">P-256+Ed25519</td>
+<td style="text-align: left;">NXP SE051, Maxim</td>
+</tr>
+<tr>
+<td style="text-align: left;">22 nm FinFET</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">700</td>
+<td style="text-align: right;">Multi</td>
+<td style="text-align: left;">Next-gen secure element PUF</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="38-puf-quality-metrics"><span class="secnum">3.8</span> PUF Quality Metrics<a class="headerlink" href="#38-puf-quality-metrics" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 3.4.</strong> Standard PUF Quality Metrics Definitions</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Metric</strong></th>
+<th style="text-align: left;"><strong>Formula</strong></th>
+<th style="text-align: left;"><strong>Ideal Value and Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Uniqueness</td>
+<td style="text-align: left;"><span class="math inline">\(\frac{2}{k(k-1)}\sum_{i=1}^{k}\sum_{j=i+1}^{k}\frac{HD(R_i,R_j)}{n}\times 100\%\)</span></td>
+<td style="text-align: left;">50%: responses from different devices are maximally different</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reliability</td>
+<td style="text-align: left;"><span class="math inline">\(1 - \frac{1}{|T||C|}\sum_{t,c} HD(R_t(c), R_0(c))\)</span></td>
+<td style="text-align: left;">100%: same device/same challenge always gives same response</td>
+</tr>
+<tr>
+<td style="text-align: left;">Uniformity</td>
+<td style="text-align: left;"><span class="math inline">\(\frac{1}{n}\sum_{i=1}^n r_i \times 100\%\)</span></td>
+<td style="text-align: left;">50%: equal numbers of 0s and 1s in response</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bit-aliasing</td>
+<td style="text-align: left;"><span class="math inline">\(\frac{1}{k}\sum_{j=1}^k r_{j,i} \times 100\%\)</span> per bit <span class="math inline">\(i\)</span></td>
+<td style="text-align: left;">50%: each bit position is 1 in <span class="math inline">\(\sim\)</span>50% of devices</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="39-all-puf-solutions-ecosystem"><span class="secnum">3.9</span> All PUF Solutions Ecosystem<a class="headerlink" href="#39-all-puf-solutions-ecosystem" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 3.5.</strong> Comprehensive PUF Solutions: Commercial, FPGA, Research, and Open-Source</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Vendor/Source</strong></th>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>Key Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Intrinsic ID QuiddiKey</td>
+<td style="text-align: left;">SRAM PUF IP</td>
+<td style="text-align: left;">Intrinsic ID (Eindhoven)</td>
+<td style="text-align: left;">ASIC/FPGA IP core</td>
+<td style="text-align: left;">AIS-31; NIST SP 800-90B; used in NXP, ST, Microchip; key derivation + authentication</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP SE050</td>
+<td style="text-align: left;">SRAM PUF SoC</td>
+<td style="text-align: left;">NXP Semiconductors</td>
+<td style="text-align: left;">28nm CMOS ASIC</td>
+<td style="text-align: left;">EAL6+; FIPS 140-2 L3; IoT auth; ECDSA-P256/P384; AWS Greengrass integration</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATECC608B</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">Microchip Technology</td>
+<td style="text-align: left;">40nm ASIC</td>
+<td style="text-align: left;">I2C/SWI; Arduino Nano 33 IoT; Apple HomeKit; ECC-P256 key storage; $0.80</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maxim DS28E83</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">Maxim/Analog Devices</td>
+<td style="text-align: left;">28nm ASIC</td>
+<td style="text-align: left;">1-Wire; SHA-256 HMAC; battery pack authentication; Samsung SDI cells</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsemi SmartFusion2</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">Microsemi/Microchip</td>
+<td style="text-align: left;">65nm CMOS SoC</td>
+<td style="text-align: left;">FPGA + ARM M3 + SRAM PUF; NIST CAVP; Military/Aerospace</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx DNA (7-series)</td>
+<td style="text-align: left;">Device DNA</td>
+<td style="text-align: left;">Xilinx/AMD</td>
+<td style="text-align: left;">28nm FPGA</td>
+<td style="text-align: left;">57-bit unique ID from EFUSE; not cryptographic PUF; read via JTAG</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx UltraScale+ PUF</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">Xilinx/AMD</td>
+<td style="text-align: left;">16nm FinFET FPGA</td>
+<td style="text-align: left;">Built-in PUF for device authentication; used with Xilinx Security Suite</td>
+</tr>
+<tr>
+<td style="text-align: left;">Terasic DE10-Standard RO-PUF</td>
+<td style="text-align: left;">RO PUF demo</td>
+<td style="text-align: left;">Academic</td>
+<td style="text-align: left;">Intel Cyclone V FPGA</td>
+<td style="text-align: left;">Reference design; 512 RO pairs; evaluation board $195</td>
+</tr>
+<tr>
+<td style="text-align: left;">pypuf</td>
+<td style="text-align: left;">Simulation</td>
+<td style="text-align: left;">Open Source (GitHub)</td>
+<td style="text-align: left;">Python library</td>
+<td style="text-align: left;">Simulate/attack Arbiter/XOR/SRAM PUFs; ML attack benchmarks; github.com/nils-wisiol/pypuf</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenPUF</td>
+<td style="text-align: left;">FPGA IP</td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">Xilinx/Intel FPGA</td>
+<td style="text-align: left;">HDL for Arbiter/RO PUF; Verilog; synthesis scripts</td>
+</tr>
+<tr>
+<td style="text-align: left;">CRP Database Framework</td>
+<td style="text-align: left;">Research tool</td>
+<td style="text-align: left;">TU Darmstadt</td>
+<td style="text-align: left;">Software</td>
+<td style="text-align: left;">Academic CRP collection/analysis framework for PUF evaluation</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST PUF Test Suite</td>
+<td style="text-align: left;">Evaluation tool</td>
+<td style="text-align: left;">NIST</td>
+<td style="text-align: left;">Software</td>
+<td style="text-align: left;">Statistical tests for PUF uniqueness/reliability per NIST IR 8214A</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="310-standards-and-specifications"><span class="secnum">3.10</span> Standards and Specifications<a class="headerlink" href="#310-standards-and-specifications" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>ISO/IEC 20897-1 (2020)</strong>: PUF security evaluation methodology – Part 1: Metrics</p>
+</li>
+<li>
+<p><strong>ISO/IEC 20897-2 (2022)</strong>: PUF security evaluation methodology – Part 2: Test methods</p>
+</li>
+<li>
+<p><strong>NIST IR 8214 (2018)</strong>: Threshold schemes for cryptographic primitives (PUF role in key generation)</p>
+</li>
+<li>
+<p><strong>NIST SP 800-90B (2018)</strong>: Recommendation for entropy sources (min-entropy estimation for PUF outputs)</p>
+</li>
+<li>
+<p><strong>ETSI TS 103 744</strong>: Quantum-safe cryptography – security requirements for PUF-based devices</p>
+</li>
+<li>
+<p><strong>BSI AIS-31 (2011)</strong>: Functionality classes and evaluation methodology for physical RNGs (applies to PUF entropy)</p>
+</li>
+<li>
+<p><strong>TCG DICE (Device Identity Composition Engine)</strong>: Uses PUF-derived secrets as Unique Device Secret (UDS)</p>
+</li>
+<li>
+<p><strong>IEEE 2412-2020</strong>: Standard for PUF-based IoT device identity and authentication</p>
+</li>
+</ul>
+<h2 id="sec-puf-solved"><span class="secnum">3.11</span> Solved Problems<a class="headerlink" href="#sec-puf-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: PUF Uniqueness: Hamming Distance Calculation</p>
+<p>An SRAM PUF is evaluated across 64 chips from the same wafer. Each chip produces a 512-bit response to the same challenge. The inter-chip Hamming distances are measured pairwise. The mean inter-HD is <span class="arithmatex">\(\mu = 49.8\%\)</span> and standard deviation <span class="arithmatex">\(\sigma = 2.1\%\)</span>. (a) Is this an acceptable uniqueness value? (b) What fraction of chip pairs have inter-HD <span class="arithmatex">\(&gt; 55\%\)</span> (indicating problematic overlap), assuming Gaussian distribution?</p>
+</div>
+<p><strong>Solution:</strong> <strong>(a) Ideal uniqueness:</strong></p>
+<p>The ideal inter-HD is <span class="arithmatex">\(50\%\)</span>, meaning two random <span class="arithmatex">\(n\)</span>-bit strings differ in exactly half the bits on average. <span class="arithmatex">\(\mu = 49.8\%\)</span> is within <span class="arithmatex">\(0.2\%\)</span> of the ideal, which is excellent. Accepted criterion: <span class="arithmatex">\(|\mu - 50\%| &lt; 2\%\)</span>. <strong>Pass.</strong></p>
+<p><strong>(b) Fraction with inter-HD <span class="arithmatex">\(&gt; 55\%\)</span>:</strong></p>
+<p>Standardise: <span class="arithmatex">\(z = (55 - 49.8) / 2.1 = 5.2 / 2.1 = 2.476\)</span>.</p>
+<p>From the standard normal table: <span class="arithmatex">\(P(Z &gt; 2.476) = 1 - \Phi(2.476) \approx 0.0066\)</span>.</p>
+<p><strong>About 0.66% of chip pairs</strong> have inter-HD <span class="arithmatex">\(&gt; 55\%\)</span>. For 64 chips, the number of unique pairs is <span class="arithmatex">\(\binom{64}{2} = 2016\)</span>. Expected number of problematic pairs: <span class="arithmatex">\(2016 \times 0.0066 \approx 13\)</span>.</p>
+<p><strong>Interpretation:</strong> These 13 pairs are not security failures—they merely mean those two chips produce unusually similar PUF responses. A fuzzy extractor with BCH code correcting <span class="arithmatex">\(t = 10\)</span> errors on 512-bit responses would still produce distinct keys, since the HD difference (<span class="arithmatex">\(55\% \times 512 \approx 282\)</span> bits differing) far exceeds the error correction capability of any practical code.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Fuzzy Extractor: BCH Code Parameter Selection</p>
+<p>An SRAM PUF produces 512-bit responses with intra-device HD <span class="arithmatex">\(\leq 12.5\%\)</span> (i.e., the same chip measured twice differs in at most <span class="arithmatex">\(0.125 \times 512 = 64\)</span> bits due to temperature/voltage variation). Select BCH code parameters <span class="arithmatex">\((n, k, t)\)</span> to correct up to 64-bit errors in 512-bit codewords, and calculate the helper data length.</p>
+</div>
+<p><strong>Solution:</strong> <strong>BCH code selection:</strong></p>
+<p>A BCH<span class="arithmatex">\((n, k, t)\)</span> code over <span class="arithmatex">\(GF(2^m)\)</span> with block length <span class="arithmatex">\(n = 2^m - 1\)</span> can correct up to <span class="arithmatex">\(t\)</span> errors. We need <span class="arithmatex">\(n \geq 512\)</span> and <span class="arithmatex">\(t \geq 64\)</span>.</p>
+<p>Choose <span class="arithmatex">\(m = 10\)</span>: <span class="arithmatex">\(n = 2^{10} - 1 = 1023\)</span>. For <span class="arithmatex">\(t = 64\)</span> errors, the required parity-check bits: <span class="arithmatex">\(r \leq m \cdot t = 10 \times 64 = 640\)</span> bits. Then:</p>
+<div class="arithmatex">\[k = n - r = 1023 - 640 = 383 \text{ information bits}\]</div>
+<p><strong>Practical choice:</strong> BCH(1023, 383, 64) corrects 64 errors in a 1023-bit codeword, providing 383 bits of secure key material.</p>
+<p><strong>Secure sketch construction:</strong></p>
+<ol>
+<li>
+<p><strong>Enrollment:</strong> PUF generates reference response <span class="arithmatex">\(R\)</span> (512 bits, zero-padded to 1023 bits). Encode: <span class="arithmatex">\(C = \text{BCH-Encode}(K)\)</span> for a random 383-bit key <span class="arithmatex">\(K\)</span>. Helper data: <span class="arithmatex">\(P = R \oplus C\)</span> (1023 bits, stored publicly).</p>
+</li>
+<li>
+<p><strong>Reconstruction:</strong> PUF generates noisy <span class="arithmatex">\(R'\)</span> (<span class="arithmatex">\(R' = R \oplus e\)</span>, <span class="arithmatex">\(\text{HW}(e) \leq 64\)</span>). Recover: <span class="arithmatex">\(C' = R' \oplus P = C \oplus e\)</span>. Decode: <span class="arithmatex">\(K = \text{BCH-Decode}(C')\)</span> (succeeds since <span class="arithmatex">\(\text{HW}(e) \leq t = 64\)</span>).</p>
+</li>
+</ol>
+<p><strong>Helper data size:</strong> 1023 bits <span class="arithmatex">\(\approx 128\)</span> bytes, stored in non-volatile memory.</p>
+<p><strong>Security:</strong> Given <span class="arithmatex">\(P\)</span> and up to <span class="arithmatex">\(n-k = 640\)</span> parity bits, an adversary cannot recover <span class="arithmatex">\(K\)</span> without the PUF (information-theoretic security from the fuzzy extractor construction).</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: ML Attack: Logistic Regression Success Rate</p>
+<p>A 64-stage Arbiter PUF is attacked using logistic regression with the additive delay model. The feature vector is <span class="arithmatex">\(\phi(c) \in \{-1, +1\}^{65}\)</span>. After training on <span class="arithmatex">\(N = 4000\)</span> challenge-response pairs (CRPs), the model achieves 92% prediction accuracy on a held-out test set. How many additional CRPs are needed to reach 99% accuracy, assuming accuracy grows as <span class="arithmatex">\(\text{acc}(N) = 1 - A \cdot N^{-\alpha}\)</span>? Estimate <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(\alpha\)</span> from the two data points: (1000 CRPs, 81%) and (4000 CRPs, 92%).</p>
+</div>
+<p><strong>Solution:</strong> <strong>Fit the model:</strong> From <span class="arithmatex">\(\text{acc}(N) = 1 - A \cdot N^{-\alpha}\)</span>:</p>
+<div class="arithmatex">\[\begin{align*}
+  1 - 0.81 &amp;= A \cdot 1000^{-\alpha} \Rightarrow 0.19 = A \cdot 1000^{-\alpha} \\
+  1 - 0.92 &amp;= A \cdot 4000^{-\alpha} \Rightarrow 0.08 = A \cdot 4000^{-\alpha}
+\end{align*}\]</div>
+<p>Divide: <span class="arithmatex">\(0.19/0.08 = (4000/1000)^{\alpha} = 4^{\alpha}\)</span>.</p>
+<div class="arithmatex">\[4^{\alpha} = 2.375 \Rightarrow \alpha = \frac{\log(2.375)}{\log(4)}
+  = \frac{0.3757}{0.6021} = 0.624\]</div>
+<p>From first equation: <span class="arithmatex">\(A = 0.19 \times 1000^{0.624} = 0.19 \times 76.9 = 14.6\)</span>.</p>
+<p><strong>CRPs for 99% accuracy:</strong></p>
+<div class="arithmatex">\[0.01 = 14.6 \cdot N^{-0.624} \Rightarrow N^{0.624} = 1460
+  \Rightarrow N = 1460^{1/0.624} = 1460^{1.603}\]</div>
+<div class="arithmatex">\[\log N = 1.603 \times \log 1460 = 1.603 \times 3.164 = 5.072
+  \Rightarrow N \approx 10^{5.07} \approx 118{,}000 \text{ CRPs}\]</div>
+<p><strong>Conclusion:</strong> Approximately <strong>118,000 CRPs</strong> are needed for 99% accuracy. For comparison, a Strong PUF with <span class="arithmatex">\(2^{64}\)</span> possible challenges makes exhaustive CRP collection infeasible (years of operation). XOR-PUF designs increase the difficulty of ML attacks by a factor of <span class="arithmatex">\(\binom{k}{n}\)</span> combinations.</p>
+<h2 id="sec-ch03-recent"><span class="secnum">3.12</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch03-recent" title="Permanent link">&para;</a></h2>
+<h3 id="3121-deep-learning-attacks-on-pufs-20232024"><span class="secnum">3.12.1</span> Deep Learning Attacks on PUFs (2023–2024)<a class="headerlink" href="#3121-deep-learning-attacks-on-pufs-20232024" title="Permanent link">&para;</a></h3>
+<p>The machine learning threat to Strong PUFs has intensified with deep learning approaches that surpass classical logistic regression on XOR and iPUF variants:</p>
+<div class="tbl" id="tab-puf-ml-attacks-2024">
+<div class="tbl-caption"><strong>Table 3.6.</strong> ML Attack Accuracy on PUF Variants (2023–2024 Literature)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>PUF Type</strong></th>
+<th style="text-align: left;"><strong>Attack Method</strong></th>
+<th style="text-align: left;"><strong>CRPs Required</strong></th>
+<th style="text-align: left;"><strong>Accuracy</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">64-bit Arbiter PUF</td>
+<td style="text-align: left;">Logistic Regression</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>10,000</td>
+<td style="text-align: left;"><span class="math inline">\(&gt;99\%\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">4-XOR Arbiter PUF (64-bit)</td>
+<td style="text-align: left;">Deep MLP (3-layer)</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>200,000</td>
+<td style="text-align: left;"><span class="math inline">\(&gt;98\%\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">5-XOR Arbiter PUF (64-bit)</td>
+<td style="text-align: left;">ResNet-style CNN</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>1,000,000</td>
+<td style="text-align: left;"><span class="math inline">\(&gt;96\%\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">iPUF (<span class="math inline">\(k=6\)</span>)</td>
+<td style="text-align: left;">GAN-assisted attack (2023)</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>500,000</td>
+<td style="text-align: left;"><span class="math inline">\(&gt;92\%\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Weak SRAM PUF</td>
+<td style="text-align: left;">No ML attack (insufficient CRP space)</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>A 2023 paper from ETH Zürich introduced <strong>GAN-based CRP augmentation</strong>: a generative adversarial network trained on 50,000 real CRPs synthesises millions of plausible CRPs, dramatically reducing the physical access needed before offline model training. The generated dataset then trains a ResNet classifier to <span class="arithmatex">\(&gt;97\%\)</span> on 5-XOR Arbiter PUFs.</p>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> The security claims of any Strong PUF design published before 2022 should be re-evaluated against 2023–2024 deep learning attacks. Only Controlled PUFs (hash-obfuscated challenge) and Weak PUFs (SRAM PUF for key generation) currently withstand state-of-the-art ML adversaries.</p>
+</div>
+<h3 id="3122-new-puf-types-memristor-puf-and-sram-puf-in-3-nm-processes"><span class="secnum">3.12.2</span> New PUF Types: Memristor PUF and SRAM PUF in 3 nm Processes<a class="headerlink" href="#3122-new-puf-types-memristor-puf-and-sram-puf-in-3-nm-processes" title="Permanent link">&para;</a></h3>
+<p><strong>Memristor PUF</strong> (resistive RAM based):</p>
+<ul>
+<li>
+<p>Exploits stochastic switching threshold variations in HfO<span class="arithmatex">\(_2\)</span> RRAM cells</p>
+</li>
+<li>
+<p>Demonstrated on TSMC 28 nm and Samsung 14 nm HBM stacks (2023 ISSCC)</p>
+</li>
+<li>
+<p>Advantage: <span class="arithmatex">\(10\times\)</span> higher cell density vs. SRAM PUF; non-volatile state</p>
+</li>
+<li>
+<p>Challenge: retention at elevated temperature (<span class="arithmatex">\(&gt;85^{\circ}\)</span>C) causes bit drift; requires <span class="arithmatex">\(t &gt; 100\)</span> error correction</p>
+</li>
+<li>
+<p>Uniqueness: <span class="arithmatex">\(48.2 \pm 1.8\%\)</span> inter-HD across 200 test chips</p>
+</li>
+</ul>
+<p><strong>SRAM PUF at 3 nm (TSMC N3E, 2024)</strong>:</p>
+<ul>
+<li>
+<p>FinFET-to-GAA (Gate-All-Around) transistor transition changes mismatch statistics: threshold voltage <span class="arithmatex">\(V_T\)</span> mismatch <span class="arithmatex">\(\sigma_{\Delta V_T} \approx 2.1\)</span> mV (vs. 3.8 mV at 7 nm)</p>
+</li>
+<li>
+<p>Lower mismatch reduces SRAM PUF startup reliability to <span class="arithmatex">\(\approx 93\%\)</span> at <span class="arithmatex">\(-40^{\circ}\)</span>C; requires stronger ECC (BCH <span class="arithmatex">\(t \geq 80\)</span> for 512-bit block)</p>
+</li>
+<li>
+<p><strong>Intrinsic ID NVM PUF</strong> (2024): alternative entropy source from oxide trap density in N3E; avoids SRAM reliability degradation at advanced nodes</p>
+</li>
+</ul>
+<h3 id="3123-isoiec-20897-12020-updated-guidance-2024"><span class="secnum">3.12.3</span> ISO/IEC 20897-1:2020 Updated Guidance (2024)<a class="headerlink" href="#3123-isoiec-20897-12020-updated-guidance-2024" title="Permanent link">&para;</a></h3>
+<p>ISO/IEC TC47 published updated evaluation guidance for <strong>ISO/IEC 20897-1</strong> PUF metrics in a 2024 corrigendum addressing advanced-node testing:</p>
+<ul>
+<li>
+<p><strong>Temperature cycling</strong>: Evaluation now requires 3-cycle aging (<span class="arithmatex">\(-40^{\circ}\)</span>C / <span class="arithmatex">\(+85^{\circ}\)</span>C / <span class="arithmatex">\(+125^{\circ}\)</span>C) to expose latent metastable cells before enrollment</p>
+</li>
+<li>
+<p><strong>Voltage margin testing</strong>: PUF must maintain <span class="arithmatex">\(&lt; 5\%\)</span> intra-HD at <span class="arithmatex">\(\pm 20\%\)</span> <span class="arithmatex">\(V_{DD}\)</span></p>
+</li>
+<li>
+<p><strong>ML resilience assessment</strong>: New informative annex classifies PUFs as Class A (ML-resistant) or Class B (ML-vulnerable); only Class A permitted for authentication</p>
+</li>
+<li>
+<p><strong>Min-entropy lower bound</strong>: Minimum <span class="arithmatex">\(H_{min} \geq 0.85\)</span> bits/cell mandated for Class A security; assessors must use NIST SP 800-90B estimators</p>
+</li>
+</ul>
+<h3 id="3124-puf-based-key-generation-for-post-quantum-algorithms"><span class="secnum">3.12.4</span> PUF-Based Key Generation for Post-Quantum Algorithms<a class="headerlink" href="#3124-puf-based-key-generation-for-post-quantum-algorithms" title="Permanent link">&para;</a></h3>
+<p>PUFs provide an attractive seed source for post-quantum key generation because the derived key is never stored in non-volatile memory:</p>
+<div class="tbl" id="tab-puf-pq-keygen">
+<div class="tbl-caption"><strong>Table 3.7.</strong> PUF Seed Requirements for Post-Quantum Key Generation</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Seed Size</strong></th>
+<th style="text-align: left;"><strong>PUF Bits Required</strong></th>
+<th style="text-align: left;"><strong>ECC Overhead</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ML-KEM-768 (Kyber768)</td>
+<td style="text-align: left;">32 bytes (256 bits)</td>
+<td style="text-align: left;">512 raw bits (BCH)</td>
+<td style="text-align: left;">256 bits helper data</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-DSA-65 (Dilithium3)</td>
+<td style="text-align: left;">32 bytes (256 bits)</td>
+<td style="text-align: left;">512 raw bits (BCH)</td>
+<td style="text-align: left;">256 bits helper data</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHA2-128s</td>
+<td style="text-align: left;">48 bytes (384 bits)</td>
+<td style="text-align: left;">768 raw bits</td>
+<td style="text-align: left;">384 bits helper data</td>
+</tr>
+<tr>
+<td style="text-align: left;">X25519 / P-256</td>
+<td style="text-align: left;">32 bytes (256 bits)</td>
+<td style="text-align: left;">512 raw bits</td>
+<td style="text-align: left;">256 bits helper data</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>The Intrinsic ID <strong>BroadKey 3.0</strong> IP core (2024) implements the full FIPS 203/204-compliant derivation path: SRAM PUF <span class="arithmatex">\(\to\)</span> BCH fuzzy extractor <span class="arithmatex">\(\to\)</span> HKDF-SHA-256 <span class="arithmatex">\(\to\)</span> ML-KEM/ML-DSA seed. BroadKey 3.0 is taped out on TSMC N5 and GlobalFoundries 22FDX.</p>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> PUF-derived keys for post-quantum algorithms must satisfy the same entropy requirements as classical keys: <span class="arithmatex">\(\geq 256\)</span> bits of min-entropy for 128-bit post-quantum security level. Verify min-entropy through NIST SP 800-90B assessment, not just statistical tests, before certifying a PUF for PQC key derivation.</p>
+</div>
+<h3 id="3125-nist-sp-800-90b-application-to-puf-entropy-assessment"><span class="secnum">3.12.5</span> NIST SP 800-90B Application to PUF Entropy Assessment<a class="headerlink" href="#3125-nist-sp-800-90b-application-to-puf-entropy-assessment" title="Permanent link">&para;</a></h3>
+<p>NIST SP 800-90B (Recommendation for Entropy Sources) is now the canonical framework for PUF entropy evaluation in FIPS-compliant products:</p>
+<ul>
+<li>
+<p><strong>Min-entropy estimators</strong>: The <code>ea_non_iid</code> tool (NIST GitHub) computes the 10 independent estimators (collision, compression, Markov, …) from a raw PUF bitstream; the final <span class="arithmatex">\(H_{min}\)</span> is the <em>minimum</em> of all estimators</p>
+</li>
+<li>
+<p><strong>Sample requirement</strong>: At least <span class="arithmatex">\(1{,}000{,}000\)</span> raw bits from <span class="arithmatex">\(\geq 100\)</span> devices across the full operating range must be collected</p>
+</li>
+<li>
+<p><strong>IID assumption</strong>: SRAM PUF bits are NOT independent and identically distributed (adjacent cells share supply rails); the non-IID path of SP 800-90B is mandatory</p>
+</li>
+<li>
+<p><strong>Conservative bound</strong>: NIST subtracts a 10-bit security margin from the estimated <span class="arithmatex">\(H_{min}\)</span>; a design targeting 128-bit security must demonstrate <span class="arithmatex">\(H_{min} \geq 138\)</span> bits across 512 raw cells</p>
+</li>
+</ul>
+<h3 id="3126-commercial-puf-intrinsic-id-broadkey-30-and-verayo-puf-phy"><span class="secnum">3.12.6</span> Commercial PUF: Intrinsic ID BroadKey 3.0 and Verayo PUF-PHY<a class="headerlink" href="#3126-commercial-puf-intrinsic-id-broadkey-30-and-verayo-puf-phy" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-puf-commercial-2024">
+<div class="tbl-caption"><strong>Table 3.8.</strong> Commercial PUF IP Core Comparison (2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>PUF Type</strong></th>
+<th style="text-align: left;"><strong>Key Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BroadKey 3.0</td>
+<td style="text-align: left;">Intrinsic ID</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">NIST SP 800-90B; FIPS 203/204 seed; AIS-31 Class P2; silicon-proven TSMC N5/GF 22FDX</td>
+</tr>
+<tr>
+<td style="text-align: left;">QuiddiKey 30</td>
+<td style="text-align: left;">Intrinsic ID</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">ASIC/FPGA; ARM TrustZone binding; AIS-31 Class P2; CC EAL6+ evaluation</td>
+</tr>
+<tr>
+<td style="text-align: left;">PUF-PHY</td>
+<td style="text-align: left;">Verayo</td>
+<td style="text-align: left;">Arbiter PUF</td>
+<td style="text-align: left;">Controlled PUF; pre-shared secret auth; RFID/IoT; SAR-resistant (2024 patent)</td>
+</tr>
+<tr>
+<td style="text-align: left;">QDID</td>
+<td style="text-align: left;">Crypto Quantique</td>
+<td style="text-align: left;">SRAM PUF</td>
+<td style="text-align: left;">Cloud provisioning (QDID Cloud); NB-IoT integration; zero-touch certificate enrolment</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-puf-exercises"><span class="secnum">3.13</span> Exercises<a class="headerlink" href="#sec-puf-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Calculate the uniqueness and reliability metrics for a 128-bit RO-PUF implemented on 10 Artix-7 FPGAs. Describe the measurement procedure and specify the acceptable ranges for inter-HD (uniqueness) and intra-HD (reliability).</p>
+</li>
+<li>
+<p>An SRAM PUF has intra-HD of <span class="arithmatex">\(8\%\)</span> at <span class="arithmatex">\(-40\)</span>° C and <span class="arithmatex">\(18\%\)</span> at <span class="arithmatex">\(85\)</span>° C. Select BCH code parameters <span class="arithmatex">\((n, k, t)\)</span> for a fuzzy extractor that reliably regenerates a 128-bit key across the full temperature range.</p>
+</li>
+<li>
+<p>Implement the pypuf logistic regression attack on a simulated 64-stage Arbiter PUF. Plot prediction accuracy vs. number of training CRPs (100 to 100,000). At what CRP count does the attack exceed 95% accuracy?</p>
+</li>
+<li>
+<p>A 5-XOR Arbiter PUF uses five 128-stage Arbiter PUFs in XOR combination. Estimate the number of CRPs needed for a logistic regression attack compared to a single Arbiter PUF. What neural network architecture could attack it?</p>
+</li>
+<li>
+<p>Describe the <em>reliability-based attack</em> on Arbiter PUFs. How does it exploit the intra-HD variability of “weak” challenges to recover model parameters without a conventional CRP dataset?</p>
+</li>
+<li>
+<p>Design a PUF-based key generation system for an IoT edge device using an ATECC608B. Specify: enrollment procedure, helper data storage location, key derivation (HKDF or KDF), and re-enrolment policy after a hardware replacement.</p>
+</li>
+<li>
+<p>Compare the security of Ring Oscillator PUF, SRAM PUF, and Arbiter PUF against (a) machine learning attacks, (b) cloning attacks, and (c) temperature/ voltage variation. Which is most suitable for a hostile-environment military device?</p>
+</li>
+<li>
+<p>Explain the <em>controlled PUF</em> construction that prevents a modelling attack by binding the challenge to a one-way function output. What hash function is used, and how does it affect the CRP distribution?</p>
+</li>
+<li>
+<p>A device uses a PUF-generated 256-bit root key as the DICE Unique Device Secret (UDS). Describe the full DICE CDI derivation chain from UDS to Layer 0 CDI, and explain how physical replacement of the SRAM chip changes the CDI.</p>
+</li>
+<li>
+<p>NIST IR 8214A defines a min-entropy floor for PUF outputs. Calculate the min-entropy per bit of a biased SRAM PUF where bit <span class="arithmatex">\(i\)</span> is stuck-at-1 with probability <span class="arithmatex">\(p_i = 0.55\)</span>. What is the average min-entropy per bit across all cells?</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch02-hardware-security-module-hsm.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2. Hardware Security Module (HSM)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2. Hardware Security Module (HSM)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch04-trusted-execution-environment-tee.html" class="md-footer__link md-footer__link--next" aria-label="Next: 4. Trusted Execution Environment (TEE)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                4. Trusted Execution Environment (TEE)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

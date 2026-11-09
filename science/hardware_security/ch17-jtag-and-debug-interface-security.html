@@ -1,0 +1,3320 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch17-jtag-and-debug-interface-security.html">
+  
+  
+    <link rel="prev" href="ch16-post-quantum-cryptography-hardware.html">
+  
+  
+    <link rel="next" href="ch18-hardware-cryptographic-accelerators.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>17. JTAG and Debug Interface Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-jtag-arch" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17. JTAG and Debug Interface Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 JTAG Architecture – IEEE 1149.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tap-sm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 TAP State Machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 JTAG Instructions and Device Chaining
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-coresight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 ARM CoreSight Debug Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 ARM Serial Wire Debug (SWD)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 JTAG and SWD Debug Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-debug-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7 Debug Security Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.7 Debug Security Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1771-efuse-otp-based-jtag-disable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.1 eFUSE / OTP-based JTAG Disable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1772-debug-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.2 Debug Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1773-lifecycle-based-debug-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.3 Lifecycle-Based Debug Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-jtag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.8 FPGA JTAG Security Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-asic-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.9 ASIC Debug Security Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.10 JTAG Attack Techniques and Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-debug-compare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.11 Debug Security Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-impl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12 Implementation Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.12 Implementation Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17121-openocd-tcl-jtag-chain-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.1 OpenOCD TCL: JTAG Chain Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17122-c-arm-coresight-ahb-ap-memory-read-via-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.2 C: ARM CoreSight AHB-AP Memory Read via SWD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17123-python-jtag-device-discovery-with-pyocd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.3 Python: JTAG Device Discovery with pyOCD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17124-shell-openocd-full-firmware-extraction-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.4 Shell: OpenOCD Full Firmware Extraction Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.13 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch17-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.14 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17141-jtag-over-usb-c-usb-debug-class-2023-new-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.1 JTAG over USB-C (USB Debug Class, 2023): New Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17142-jtag-authentication-bypass-cves-in-iot-socs-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.2 JTAG Authentication Bypass CVEs in IoT SoCs (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17143-arm-coresight-90-improved-debug-authentication-and-security-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.3 ARM CoreSight 9.0: Improved Debug Authentication and Security Extensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17144-risc-v-jtag-debug-transport-openocd-risc-v-support-maturity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.4 RISC-V JTAG Debug Transport: OpenOCD RISC-V Support Maturity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17145-jtagulator-v2x-updates-for-detection-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.5 JTAGulator v2.x Updates for Detection Speed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17146-psa-certified-level-2-debug-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.6 PSA Certified Level 2 Debug Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 JTAG Architecture – IEEE 1149.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tap-sm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 TAP State Machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 JTAG Instructions and Device Chaining
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-coresight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 ARM CoreSight Debug Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 ARM Serial Wire Debug (SWD)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 JTAG and SWD Debug Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-debug-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7 Debug Security Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.7 Debug Security Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1771-efuse-otp-based-jtag-disable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.1 eFUSE / OTP-based JTAG Disable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1772-debug-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.2 Debug Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1773-lifecycle-based-debug-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7.3 Lifecycle-Based Debug Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-jtag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.8 FPGA JTAG Security Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-asic-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.9 ASIC Debug Security Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.10 JTAG Attack Techniques and Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-debug-compare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.11 Debug Security Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-impl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12 Implementation Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.12 Implementation Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17121-openocd-tcl-jtag-chain-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.1 OpenOCD TCL: JTAG Chain Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17122-c-arm-coresight-ahb-ap-memory-read-via-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.2 C: ARM CoreSight AHB-AP Memory Read via SWD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17123-python-jtag-device-discovery-with-pyocd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.3 Python: JTAG Device Discovery with pyOCD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17124-shell-openocd-full-firmware-extraction-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.12.4 Shell: OpenOCD Full Firmware Extraction Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-jtag-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.13 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch17-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.14 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17141-jtag-over-usb-c-usb-debug-class-2023-new-attack-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.1 JTAG over USB-C (USB Debug Class, 2023): New Attack Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17142-jtag-authentication-bypass-cves-in-iot-socs-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.2 JTAG Authentication Bypass CVEs in IoT SoCs (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17143-arm-coresight-90-improved-debug-authentication-and-security-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.3 ARM CoreSight 9.0: Improved Debug Authentication and Security Extensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17144-risc-v-jtag-debug-transport-openocd-risc-v-support-maturity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.4 RISC-V JTAG Debug Transport: OpenOCD RISC-V Support Maturity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17145-jtagulator-v2x-updates-for-detection-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.5 JTAGulator v2.x Updates for Detection Speed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17146-psa-certified-level-2-debug-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.14.6 PSA Certified Level 2 Debug Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-jtag-debug">Chapter 17: JTAG and Debug Interface Security<a class="headerlink" href="#ch-jtag-debug" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> JTAG (IEEE 1149.1) was designed in 1985 for PCB-level manufacturing test and has become the primary debug interface for embedded systems. It also represents one of the highest-value hardware attack vectors: a single 4-wire JTAG connection can provide complete memory dump, live debugging, and firmware replacement capabilities on any unprotected device.</p>
+</div>
+<h2 id="sec-jtag-arch"><span class="secnum">17.1</span> JTAG Architecture – IEEE 1149.1<a class="headerlink" href="#sec-jtag-arch" title="Permanent link">&para;</a></h2>
+<p>JTAG (Joint Test Action Group, IEEE Std 1149.1-2013) defines the Test Access Port (TAP) interface for boundary scan and debug. The four mandatory signals are:</p>
+<ul>
+<li>
+<p><strong>TCK (Test Clock):</strong> Serial clock, typically 1–40 MHz. Data sampled on rising edge, shifted on falling edge (TDI) or rising edge (TDO), mode changes on rising edge (TMS).</p>
+</li>
+<li>
+<p><strong>TMS (Test Mode Select):</strong> Controls TAP state machine transitions. Sampled on rising edge of TCK.</p>
+</li>
+<li>
+<p><strong>TDI (Test Data In):</strong> Serial data input to the selected register (IR or DR).</p>
+</li>
+<li>
+<p><strong>TDO (Test Data Out):</strong> Serial data output from the selected register. High-impedance when not shifting.</p>
+</li>
+<li>
+<p><strong>TRST# (Test Reset, optional):</strong> Asynchronous reset of TAP state machine to Test-Logic-Reset state. Equivalent to holding TMS=1 for 5+ TCK cycles.</p>
+</li>
+</ul>
+<h2 id="sec-tap-sm"><span class="secnum">17.2</span> TAP State Machine<a class="headerlink" href="#sec-tap-sm" title="Permanent link">&para;</a></h2>
+<p>The JTAG TAP controller is a 16-state Mealy machine. TMS input on rising TCK edge drives transitions. All states are deterministically reachable from any state.</p>
+<p>Key states:</p>
+<ul>
+<li>
+<p><strong>Test-Logic-Reset (TLR):</strong> Entry state. All registers reset. TMS=1 for 5 TCK cycles from any state reaches TLR.</p>
+</li>
+<li>
+<p><strong>Run-Test/Idle (RTI):</strong> Idle loop. TMS=0 stays in RTI. Used for execution delay in some architectures.</p>
+</li>
+<li>
+<p><strong>Select-DR-Scan:</strong> Branch to Capture-DR (TMS=0) or Select-IR-Scan (TMS=1).</p>
+</li>
+<li>
+<p><strong>Capture-DR:</strong> Load parallel input into selected Data Register on rising TCK.</p>
+</li>
+<li>
+<p><strong>Shift-DR:</strong> Shift data through selected DR. TDI shifted in MSB-first, TDO shifts out.</p>
+</li>
+<li>
+<p><strong>Update-DR:</strong> Latch shifted DR value into parallel output register on falling TCK.</p>
+</li>
+<li>
+<p><strong>Capture-IR:</strong> Load IR with fixed test pattern (typically ...01). Allows IR length detection.</p>
+</li>
+<li>
+<p><strong>Shift-IR:</strong> Shift new instruction into IR. Last bit clocked while exiting at Exit1-IR.</p>
+</li>
+<li>
+<p><strong>Update-IR:</strong> Latch new IR value. Instruction takes effect.</p>
+</li>
+</ul>
+<p><strong>TMS sequences for common operations:</strong></p>
+<ul>
+<li>
+<p>Reset: TMS = 1 for 5+ TCK cycles from any state.</p>
+</li>
+<li>
+<p>TLR to Shift-IR: TMS = 0,1,1,0,0 (5 TCK cycles).</p>
+</li>
+<li>
+<p>TLR to Shift-DR: TMS = 0,1,0,0 (4 TCK cycles).</p>
+</li>
+<li>
+<p>Shift-DR to RTI: TMS = 1,1,0 (3 TCK cycles via Exit1-DR, Update-DR).</p>
+</li>
+</ul>
+<figure class="fig fig-diagram" id="fig-tap-sm">
+<img class="tikz" src="img/tikz-2990e67a2b4e.svg" alt="JTAG TAP State Machine (IEEE 1149.1, 16 states). Green = Test-Logic-Reset (entry state). Labels = TMS value driving transition on rising TCK edge. TMS=1 for 5+ cycles returns to TLR from any state." loading="lazy">
+<figcaption><strong>Figure 17.1.</strong> JTAG TAP State Machine (IEEE 1149.1, 16 states). Green = Test-Logic-Reset (entry state). Labels = TMS value driving transition on rising TCK edge. TMS=1 for 5+ cycles returns to TLR from any state.</figcaption>
+</figure>
+
+<h2 id="sec-jtag-instructions"><span class="secnum">17.3</span> JTAG Instructions and Device Chaining<a class="headerlink" href="#sec-jtag-instructions" title="Permanent link">&para;</a></h2>
+<p><strong>Mandatory JTAG Instructions (IEEE 1149.1):</strong></p>
+<ul>
+<li>
+<p><strong>BYPASS (all 1s):</strong> Minimum 1-bit shift register in DR. Allows bypassing a device in a chain.</p>
+</li>
+<li>
+<p><strong>EXTEST:</strong> Enables boundary scan for external testing. Drives pins from BSR (Boundary Scan Register).</p>
+</li>
+<li>
+<p><strong>SAMPLE/PRELOAD:</strong> Sample current pin values into BSR (SAMPLE) or preload output data (PRELOAD).</p>
+</li>
+<li>
+<p><strong>IDCODE:</strong> Selects 32-bit Device Identification Register (DR). Format: [31:28]=Version, [27:12]=Part number, [11:1]=Manufacturer, [0]=1.</p>
+</li>
+<li>
+<p><strong>USERCODE:</strong> Selects 32-bit user-defined code (for FPGA bitstream identification).</p>
+</li>
+<li>
+<p><strong>CLAMP:</strong> Drives all pins from BSR while BYPASS DR is selected.</p>
+</li>
+</ul>
+<p><strong>Device Chain Enumeration:</strong> In a JTAG chain, TDO of device N connects to TDI of device N+1. To enumerate:</p>
+<ol>
+<li>
+<p>Force TLR, load all BYPASS (shift 1s until stable). Count devices = latency of first 1 to appear on TDO.</p>
+</li>
+<li>
+<p>Load IDCODE instruction. Shift out 32 bits per device. Parse manufacturer/part/version.</p>
+</li>
+<li>
+<p>Load BYPASS again, probe IR length by detecting the mandatory 01 pattern in Capture-IR.</p>
+</li>
+</ol>
+<h2 id="sec-coresight"><span class="secnum">17.4</span> ARM CoreSight Debug Architecture<a class="headerlink" href="#sec-coresight" title="Permanent link">&para;</a></h2>
+<p>ARM CoreSight is the standard debug architecture for ARM Cortex-A/R/M processors:</p>
+<ul>
+<li>
+<p><strong>DAP (Debug Access Port):</strong> Connects external debugger (JTAG/SWD) to internal debug infrastructure. Contains DP (Debug Port) and one or more APs (Access Ports).</p>
+</li>
+<li>
+<p><strong>AHB-AP:</strong> AHB (Advanced High-speed Bus) Access Port. Provides memory-mapped access to AHB bus. Used to read/write RAM, flash, and peripherals.</p>
+</li>
+<li>
+<p><strong>APB-AP:</strong> APB (Advanced Peripheral Bus) Access Port. Accesses CoreSight debug components (ETM, ITM, CTI).</p>
+</li>
+<li>
+<p><strong>AXI-AP:</strong> AXI bus Access Port for high-performance debug access on Cortex-A.</p>
+</li>
+<li>
+<p><strong>MEM-AP:</strong> Generic memory-mapped Access Port. Provides 32-bit CSW (Control/Status Word), TAR (Transfer Address Register), DRW (Data Read/Write) interface.</p>
+</li>
+<li>
+<p><strong>ETM (Embedded Trace Macrocell):</strong> Instruction trace output over 1–4 bit trace port or SWO (Single Wire Output).</p>
+</li>
+<li>
+<p><strong>ITM (Instrumentation Trace Macrocell):</strong> Software-triggered trace via CMSIS ITM_SendChar() etc.</p>
+</li>
+<li>
+<p><strong>CTI (Cross-Trigger Interface):</strong> Connects trigger signals between cores and trace. Enables multi-core halt synchronization.</p>
+</li>
+</ul>
+<h2 id="sec-swd"><span class="secnum">17.5</span> ARM Serial Wire Debug (SWD)<a class="headerlink" href="#sec-swd" title="Permanent link">&para;</a></h2>
+<p>SWD (Serial Wire Debug, ARM IHI0031) is a 2-wire alternative to JTAG defined for ARM Cortex processors. SWJ-DP (Serial Wire / JTAG Debug Port) supports both protocols on the same pins with a switching sequence.</p>
+<p><strong>SWD Signals:</strong></p>
+<ul>
+<li>
+<p><strong>SWDIO (Serial Wire Data I/O):</strong> Bidirectional data line. Driven by host during command phase, driven by target during acknowledge and data phases.</p>
+</li>
+<li>
+<p><strong>SWDCLK (Serial Wire Clock):</strong> Clock driven by host. Data sampled on rising edge, changed on falling edge. Typical 1–50 MHz.</p>
+</li>
+<li>
+<p><strong>SWO (Serial Wire Output, optional):</strong> Asynchronous trace output. Carries ITM and ETM trace at UART NRZ or Manchester encoding.</p>
+</li>
+</ul>
+<p><strong>SWD Packet Format:</strong> Each transaction is: 8-bit request + turnaround + 3-bit ACK + turnaround + 32-bit data + 1-bit parity.</p>
+<p>Request byte fields:</p>
+<ul>
+<li>
+<p>: Start = 1</p>
+</li>
+<li>
+<p>: APnDP – 0 = Debug Port (DP), 1 = Access Port (AP)</p>
+</li>
+<li>
+<p>: RnW – 0 = write, 1 = read</p>
+</li>
+<li>
+<p>: A[3:2] – register address bits 3 and 2</p>
+</li>
+<li>
+<p>: Parity – odd parity over APnDP, RnW, A[3:2]</p>
+</li>
+<li>
+<p>: Stop = 0</p>
+</li>
+<li>
+<p>: Park = 1 (line floats high)</p>
+</li>
+</ul>
+<p>ACK responses: OK (001), WAIT (010), FAULT (100). A FAULT ACK requires reading CTRL/STAT to determine error cause.</p>
+<p><strong>DP Registers (APnDP=0):</strong></p>
+<ul>
+<li>
+<p><strong>DPIDR</strong> (read, A=0x0): Debug Port Identification – JEDEC manufacturer, version, min flag.</p>
+</li>
+<li>
+<p><strong>CTRL/STAT</strong> (A=0x4): CSYSPWRUPREQ, CDBGPWRUPREQ, STICKYERR, READOK, WDATAERR.</p>
+</li>
+<li>
+<p><strong>SELECT</strong> (write, A=0x8): Selects AP (APSEL[7:0]) and AP register bank (APBANKSEL[7:4]).</p>
+</li>
+<li>
+<p><strong>RDBUFF</strong> (read, A=0xC): Read posted AP result without issuing new AP transaction.</p>
+</li>
+</ul>
+<p><strong>JTAG-to-SWD switching sequence:</strong> Drive 50+ SWDCLK cycles with SWDIO high (TMS reset), then shift the 16-bit magic sequence 0xE79E (LSB first on SWDIO), then drive 50+ cycles high again, then drive at least 2 idle cycles low. The SWJ-DP then enters SWD mode.</p>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> SWD is preferred over JTAG in small form-factor IoT devices because it saves two pins (TDI and TMS are replaced by SWDIO). For security testing, SWD is equally powerful – a single SWD connection to any Cortex-M device provides full memory read/write access unless TZEN (TrustZone Enable) and debug authentication are properly configured.</p>
+</div>
+<figure class="fig fig-diagram" id="fig-coresight-arch">
+<img class="tikz" src="img/tikz-740cdc65696c.svg" alt="ARM CoreSight debug architecture. The DAP bridges the external JTAG/SWD interface to the internal AHB-AP (memory access) and APB-AP (debug component access). Orange = trace infrastructure; blue = DAP…" loading="lazy">
+<figcaption><strong>Figure 17.2.</strong> ARM CoreSight debug architecture. The DAP bridges the external JTAG/SWD interface to the internal AHB-AP (memory access) and APB-AP (debug component access). Orange = trace infrastructure; blue = DAP components; yellow = CPU core.</figcaption>
+</figure>
+
+<h2 id="sec-jtag-tools"><span class="secnum">17.6</span> JTAG and SWD Debug Tools<a class="headerlink" href="#sec-jtag-tools" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-jtag-tools">
+<div class="tbl-caption"><strong>Table 17.1.</strong> JTAG/SWD Debug Tool Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tool</strong></th>
+<th style="text-align: left;"><strong>Interface</strong></th>
+<th style="text-align: left;"><strong>Protocol</strong></th>
+<th style="text-align: left;"><strong>Speed</strong></th>
+<th style="text-align: left;"><strong>License</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Segger J-Link BASE</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">JTAG/SWD/cJTAG</td>
+<td style="text-align: left;">50 MHz SWD</td>
+<td style="text-align: left;">Commercial</td>
+</tr>
+<tr>
+<td style="text-align: left;">Segger J-Link EDU</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">JTAG/SWD</td>
+<td style="text-align: left;">50 MHz SWD</td>
+<td style="text-align: left;">EDU only</td>
+</tr>
+<tr>
+<td style="text-align: left;">ST-Link/V3 (on Nucleo)</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">SWD/JTAG</td>
+<td style="text-align: left;">24 MHz SWD</td>
+<td style="text-align: left;">Free (on-board)</td>
+</tr>
+<tr>
+<td style="text-align: left;">CMSIS-DAP / DAPLink</td>
+<td style="text-align: left;">USB HID</td>
+<td style="text-align: left;">JTAG/SWD</td>
+<td style="text-align: left;">10 MHz</td>
+<td style="text-align: left;">Apache 2.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Black Magic Probe</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">JTAG/SWD</td>
+<td style="text-align: left;">4 MHz</td>
+<td style="text-align: left;">GPL</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenOCD + FTDI FT2232H</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">JTAG/SWD</td>
+<td style="text-align: left;">30 MHz JTAG</td>
+<td style="text-align: left;">GPL</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bus Pirate + OpenOCD</td>
+<td style="text-align: left;">USB</td>
+<td style="text-align: left;">JTAG (slow)</td>
+<td style="text-align: left;">&lt;1 MHz</td>
+<td style="text-align: left;">GPL/CC</td>
+</tr>
+<tr>
+<td style="text-align: left;">UrJTAG + parallel port</td>
+<td style="text-align: left;">LPT</td>
+<td style="text-align: left;">JTAG</td>
+<td style="text-align: left;">5 MHz</td>
+<td style="text-align: left;">GPL</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p><strong>OpenOCD (Open On-Chip Debugger)</strong> is the de-facto open-source JTAG/SWD framework. It supports 200+ target CPUs, 100+ interface adapters, and provides GDB remote protocol (port 3333), TCL scripting, flash programming, and boundary scan.</p>
+<p><strong>Firmware extraction via OpenOCD:</strong></p>
+<div class="language-text highlight"><pre><span></span><code># Connect to STM32F4 via ST-Link/V2
+openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
+
+# In a separate terminal (GDB or telnet on port 4444):
+telnet localhost 4444
+&gt; halt
+&gt; dump_image firmware.bin 0x08000000 0x100000
+&gt; mdw 0x40023C00 8     # read RCC registers
+&gt; mww 0xE000EDF0 0xA05F0003  # DHCSR: halt all cores
+</code></pre></div>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> OpenOCD with a ? FTDI-based adapter can extract the complete firmware from most unprotected ARM Cortex-M microcontrollers in under 30 seconds. The <code>dump_image</code> command copies flash contents directly to a binary file without any authentication on devices without readout protection enabled.</p>
+</div>
+<p><strong>RISC-V Debug (RISC-V Debug Spec 0.13/1.0):</strong> RISC-V defines its own debug transport independent of JTAG. The Debug Transport Module (DTM) sits between the JTAG TAP and the Debug Module (DM). The DM provides:</p>
+<ul>
+<li>
+<p><strong>DMI (Debug Module Interface):</strong> 7-bit address, 32-bit data, 2-bit op (read/write/nop) register interface.</p>
+</li>
+<li>
+<p><strong>Abstract Commands:</strong> <code>Access Register</code> (0x0) and <code>Access Memory</code> (0x2) without halting the core.</p>
+</li>
+<li>
+<p><strong>System Bus Access:</strong> Direct AXI/AHB bus master for memory access independent of CPU state.</p>
+</li>
+<li>
+<p><strong>Program Buffer:</strong> 2–16 word RAM for arbitrary instruction execution in debug mode.</p>
+</li>
+</ul>
+<p>RISC-V <code>ndmreset</code> (non-debug module reset) and <code>dmactive</code> allow full system control via JTAG. OpenOCD supports RISC-V debug via the DTM JTAG DR at IR=0x11.</p>
+<h2 id="sec-debug-security"><span class="secnum">17.7</span> Debug Security Mechanisms<a class="headerlink" href="#sec-debug-security" title="Permanent link">&para;</a></h2>
+<p>Manufacturers implement debug port protection through four primary mechanisms:</p>
+<h3 id="1771-efuse-otp-based-jtag-disable"><span class="secnum">17.7.1</span> eFUSE / OTP-based JTAG Disable<a class="headerlink" href="#1771-efuse-otp-based-jtag-disable" title="Permanent link">&para;</a></h3>
+<p>One-time programmable fuse bits permanently disable debug access. Once blown, the JTAG TAP either becomes non-functional or returns only BYPASS.</p>
+<p><strong>Xilinx/AMD FPGA JTAG security:</strong></p>
+<ul>
+<li>
+<p><strong>JTAG_DISABLE eFUSE:</strong> Disables JTAG access to FPGA configuration. Bit 0 of eFUSE row 22 on 7-Series devices. Programmed via XAPP1248 procedure.</p>
+</li>
+<li>
+<p><strong>AES encryption + BBRAM/eFUSE key:</strong> Bitstream encrypted with 256-bit AES key. Key stored in battery-backed BBRAM or eFUSE. Encrypted bitstreams cannot be readback.</p>
+</li>
+<li>
+<p><strong>Readback Disable (RD_DISABLE):</strong> Prevents configuration memory readback via JTAG. Separate from encrypt – must set both for full protection on 7-Series.</p>
+</li>
+<li>
+<p><strong>Zynq-7000 ARM DAP:</strong> Separate from FPGA JTAG. Controlled by DAP_ENABLE eFUSE and JTAG_DIS (disables PS TAP). Zynq UltraScale+ adds JTAG_STATUS[3:0] and secure debug.</p>
+</li>
+</ul>
+<p><strong>STM32 Readout Protection (RDP) Levels:</strong></p>
+<div class="tbl" id="tab-stm32-rdp">
+<div class="tbl-caption"><strong>Table 17.2.</strong> STM32 Flash Readout Protection Levels</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Level</strong></th>
+<th style="text-align: left;"><strong>Debug</strong></th>
+<th style="text-align: left;"><strong>Flash Read</strong></th>
+<th style="text-align: left;"><strong>SRAM Access</strong></th>
+<th style="text-align: left;"><strong>Reversal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RDP0 (default)</td>
+<td style="text-align: left;">Full JTAG/SWD</td>
+<td style="text-align: left;">Full read</td>
+<td style="text-align: left;">Full access</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">RDP1</td>
+<td style="text-align: left;">SWD allowed, no readback</td>
+<td style="text-align: left;">Blocked from debug</td>
+<td style="text-align: left;">Via debugger</td>
+<td style="text-align: left;">Erase all flash</td>
+</tr>
+<tr>
+<td style="text-align: left;">RDP2</td>
+<td style="text-align: left;">Disabled permanently</td>
+<td style="text-align: left;">Blocked</td>
+<td style="text-align: left;">Blocked</td>
+<td style="text-align: left;">Irreversible</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>On STM32H7, RDP1 still allows live debugging but prevents <code>dump_image</code>. RDP2 is set by writing 0xCC to the RDP byte in FLASH_OPTSR_PRG. On STM32L5 with TrustZone, RDP1 with TZEN=1 additionally enforces secure/non-secure world isolation.</p>
+<h3 id="1772-debug-authentication"><span class="secnum">17.7.2</span> Debug Authentication<a class="headerlink" href="#1772-debug-authentication" title="Permanent link">&para;</a></h3>
+<p>Debug authentication allows selective re-enabling of debug under controlled conditions:</p>
+<ul>
+<li>
+<p><strong>Infineon AURIX TC3xx:</strong> Implements password-based debug authentication via <code>OSTATE</code> (Operation State) machine. Three debug credentials: A (application), B (Infineon), C (OEM). Credentials stored in HSM key slot, challenge-response via ECDSA-P256.</p>
+</li>
+<li>
+<p><strong>NXP S32K3:</strong> LC (Lifecycle) state machine with DEVELOP, OEM_OPEN, OEM_CLOSED, FIELD_RETURN states. Debug port disabled in OEM_CLOSED. Re-enabled only via signed debug certificate with device-unique key (derived from die UID + master secret during manufacture).</p>
+</li>
+<li>
+<p><strong>ARM CryptoIsland (CC312):</strong> Implements SoC-level authenticated debug. Host generates nonce via JTAG DR, device signs with production debug key, host verifies and sends unlock token. Implemented on NXP i.MX8, STM32MP1.</p>
+</li>
+<li>
+<p><strong>TI Sitara AM64x:</strong> SYSFW (System Firmware) manages debug enable/disable. Secure boot chain must authorize debug during boot. Debug certificate signed by TI + OEM key pair.</p>
+</li>
+</ul>
+<h3 id="1773-lifecycle-based-debug-control"><span class="secnum">17.7.3</span> Lifecycle-Based Debug Control<a class="headerlink" href="#1773-lifecycle-based-debug-control" title="Permanent link">&para;</a></h3>
+<p>Modern SoCs implement lifecycle management that ties debug access to the manufacturing/deployment state:</p>
+<ul>
+<li>
+<p><strong>DEVELOP:</strong> Full debug, no security. Used during bring-up.</p>
+</li>
+<li>
+<p><strong>IN-FIELD / OEM-CLOSED:</strong> Debug disabled or limited. Firmware runs in production mode.</p>
+</li>
+<li>
+<p><strong>RETURN MERCHANDISE:</strong> OEM can authorize re-enable of limited debug for failure analysis.</p>
+</li>
+<li>
+<p><strong>TERMINATED:</strong> Permanent disable, no recovery. Triggered by tamper event or OEM command.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> ARM PSA Certified Level 2 requires that the debug port be disabled in production and only re-enabled via authenticated debug unlock using the device unique key. This is now enforced in ARM CryptoCell-312 (CC312) and equivalent IP blocks on NXP i.MX, STM32MP, and Renesas RZ/G2 SoCs.</p>
+</div>
+<h2 id="sec-fpga-jtag"><span class="secnum">17.8</span> FPGA JTAG Security Implementations<a class="headerlink" href="#sec-fpga-jtag" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-fpga-jtag">
+<div class="tbl-caption"><strong>Table 17.3.</strong> FPGA JTAG Security – Resource Utilization and Features</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>MHz</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx 7-Series</td>
+<td style="text-align: left;">JTAG Disable eFUSE</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">1 fuse bit, permanent</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx UltraScale+</td>
+<td style="text-align: left;">Secure Debug</td>
+<td style="text-align: right;">2,100</td>
+<td style="text-align: right;">1,800</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: left;">JTAG auth + encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Cyclone V</td>
+<td style="text-align: left;">JTAG Secure Mode</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">OTP fuse row 0 bit 30</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Stratix 10</td>
+<td style="text-align: left;">SDM JTAG auth</td>
+<td style="text-align: right;">3,400</td>
+<td style="text-align: right;">2,900</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">Secure Device Manager</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microchip PolarFire</td>
+<td style="text-align: left;">User Crypto (UJTAG)</td>
+<td style="text-align: right;">1,200</td>
+<td style="text-align: right;">900</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left;">UJTAG for custom auth</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5</td>
+<td style="text-align: left;">JTAG Password</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">128-bit password, OTP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gowin GW2A</td>
+<td style="text-align: left;">JTAG Disable Bit</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">Config SRAM bit, volatile</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p><strong>Microchip PolarFire UJTAG:</strong> PolarFire exposes a UJTAG macro that connects user FPGA logic to the JTAG TAP as a custom DR. This enables custom authentication protocols – for example, presenting an AES-CBC challenge before enabling debug register access.</p>
+<p><strong>Intel Stratix 10 SDM:</strong> The Secure Device Manager (SDM) enforces JTAG authentication. Users must submit a signed authentication certificate via the JTAG USER1 DR. SDM verifies with the device root key (stored in eFUSE during personalization). Resource overhead: approximately 3,400 ALMs in the FPGA fabric for the verification logic.</p>
+<h2 id="sec-asic-debug"><span class="secnum">17.9</span> ASIC Debug Security Implementation<a class="headerlink" href="#sec-asic-debug" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-asic-debug">
+<div class="tbl-caption"><strong>Table 17.4.</strong> ASIC Debug Security – Representative Implementations</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Debug Auth</strong></th>
+<th style="text-align: left;"><strong>Lifecycle</strong></th>
+<th style="text-align: left;"><strong>Standard</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AURIX TC397</td>
+<td style="text-align: left;">28nm TSMC</td>
+<td style="text-align: left;">ECDSA-P256 challenge</td>
+<td style="text-align: left;">5 states</td>
+<td style="text-align: left;">Infineon Cerberus</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP S32G274A</td>
+<td style="text-align: left;">16nm FinFET</td>
+<td style="text-align: left;">Signed certificate</td>
+<td style="text-align: left;">OEM_CLOSED</td>
+<td style="text-align: left;">PSA Level 2</td>
+</tr>
+<tr>
+<td style="text-align: left;">STM32MP157</td>
+<td style="text-align: left;">28nm FD-SOI</td>
+<td style="text-align: left;">CryptoCell-312</td>
+<td style="text-align: left;">4 states</td>
+<td style="text-align: left;">ARM CCA ready</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI AM6442</td>
+<td style="text-align: left;">16nm FinFET</td>
+<td style="text-align: left;">TIFS ECDSA-P384</td>
+<td style="text-align: left;">4 states</td>
+<td style="text-align: left;">PSA Certified L2</td>
+</tr>
+<tr>
+<td style="text-align: left;">i.MX 8M Plus</td>
+<td style="text-align: left;">14nm FinFET</td>
+<td style="text-align: left;">HAB4 + AHAB</td>
+<td style="text-align: left;">Closed+Field</td>
+<td style="text-align: left;">NXP HAB4/AHAB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Apple A16 (est.)</td>
+<td style="text-align: left;">4nm TSMC N4</td>
+<td style="text-align: left;">Proprietary</td>
+<td style="text-align: left;">Fused in production</td>
+<td style="text-align: left;">Apple Internal</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p><strong>JTAG TAP controller area (28nm):</strong> Approximately 2,400–4,800 gates for the 16-state TAP FSM plus IR/DR muxing. CoreSight DAP adds 15,000–25,000 gates (AHB-AP + DP). Debug authentication logic adds 8,000–12,000 gates for ECDSA verification (P-256, pre-computed).</p>
+<h2 id="sec-jtag-attacks"><span class="secnum">17.10</span> JTAG Attack Techniques and Tools<a class="headerlink" href="#sec-jtag-attacks" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-jtag-attacks">
+<div class="tbl-caption"><strong>Table 17.5.</strong> JTAG Security Attack Techniques</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Attack</strong></th>
+<th style="text-align: left;"><strong>Method</strong></th>
+<th style="text-align: left;"><strong>Mitigation</strong></th>
+<th style="text-align: left;"><strong>Difficulty</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">JTAG Port Discovery</td>
+<td style="text-align: left;">UART/JTAG pinout scan (JTAGulator)</td>
+<td style="text-align: left;">Remove test pads, use BGA</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Firmware Extraction</td>
+<td style="text-align: left;">dump_image via OpenOCD</td>
+<td style="text-align: left;">RDP2 / eFUSE JTAG disable</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Live Memory Patch</td>
+<td style="text-align: left;">mww/mwb write via telnet</td>
+<td style="text-align: left;">Code signing + CRC</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Glitch + JTAG Bypass</td>
+<td style="text-align: left;">Voltage glitch RDP check then JTAG</td>
+<td style="text-align: left;">Redundant RDP storage</td>
+<td style="text-align: left;">High</td>
+</tr>
+<tr>
+<td style="text-align: left;">JTAG Password Brute</td>
+<td style="text-align: left;">Replay all 2^128 passwords</td>
+<td style="text-align: left;">Rate limit + lockout fuse</td>
+<td style="text-align: left;">Infeasible</td>
+</tr>
+<tr>
+<td style="text-align: left;">Boundary Scan Attack</td>
+<td style="text-align: left;">EXTEST to drive pins directly</td>
+<td style="text-align: left;">Remove exposed test points</td>
+<td style="text-align: left;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;">Debug Auth Bypass</td>
+<td style="text-align: left;">Fault inject during auth verification</td>
+<td style="text-align: left;">Redundant verification</td>
+<td style="text-align: left;">High</td>
+</tr>
+<tr>
+<td style="text-align: left;">SWD Sniffing</td>
+<td style="text-align: left;">Logic analyzer on SWD lines</td>
+<td style="text-align: left;">Encrypted debug session</td>
+<td style="text-align: left;">Low</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p><strong>JTAGulator:</strong> An open-source hardware tool (designed by Joe Grand) that brute-forces JTAG pinouts from unpopulated headers or test points. It supports 24 channels, 1.2V–3.3V I/O, and can identify TCK, TMS, TDI, TDO within minutes by sending TMS patterns and observing TDO responses. Also supports UART baud-rate identification.</p>
+<p><strong>Specialized Attack Procedures:</strong></p>
+<ol>
+<li>
+<p><strong>SWD Sniff Attack:</strong> Attach a logic analyzer (e.g., Saleae Logic Pro 16) to the SWD lines. Decode packets in real time using the SWD protocol analyzer. Memory contents transmitted in cleartext can be captured without disturbing operation.</p>
+</li>
+<li>
+<p><strong>JTAG on PCB via test points:</strong> Common for production boards with unpopulated 10-pin ARM Cortex debug connectors (SWD/JTAG). Use JTAGulator or a multimeter with continuity mode to identify pin 1 (VREF), GND, SWDIO, SWDCLK, and SWO.</p>
+</li>
+<li>
+<p><strong>Glitch to downgrade RDP:</strong> On STM32F1/F2, a voltage glitch on VDD during the flash readout protection check (FLASH_SR read) can skip the protection. Successfully demonstrated by Dmitry Nedospasov (2017). Mitigated on STM32L5 and H7 with hardware glitch detectors.</p>
+</li>
+</ol>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> Boundary scan via JTAG EXTEST instruction can drive any GPIO pin to any logic level regardless of software state. On boards with unprotected JTAG, an attacker can directly manipulate power-enable lines, reset signals, or I2C/SPI bus lines to trigger fault conditions or unlock additional debug interfaces.</p>
+</div>
+<h2 id="sec-debug-compare"><span class="secnum">17.11</span> Debug Security Solutions Comparison<a class="headerlink" href="#sec-debug-compare" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-debug-compare">
+<div class="tbl-caption"><strong>Table 17.6.</strong> Debug Security Solutions – All Major Approaches</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Auth Method</strong></th>
+<th style="text-align: left;"><strong>Reversible</strong></th>
+<th style="text-align: left;"><strong>Cost</strong></th>
+<th style="text-align: left;"><strong>Standard</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">eFUSE JTAG Disable</td>
+<td style="text-align: left;">Multiple</td>
+<td style="text-align: left;">None (permanent)</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Zero BOM</td>
+<td style="text-align: left;">Vendor-specific</td>
+</tr>
+<tr>
+<td style="text-align: left;">STM32 RDP2</td>
+<td style="text-align: left;">ST Micro</td>
+<td style="text-align: left;">None (permanent)</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Zero BOM</td>
+<td style="text-align: left;">ST AN4701</td>
+</tr>
+<tr>
+<td style="text-align: left;">JTAG Password (Lattice ECP5)</td>
+<td style="text-align: left;">Lattice</td>
+<td style="text-align: left;">128-bit password</td>
+<td style="text-align: left;">No (OTP)</td>
+<td style="text-align: left;">Zero BOM</td>
+<td style="text-align: left;">Lattice TN1253</td>
+</tr>
+<tr>
+<td style="text-align: left;">ARM CryptoCell-312 Auth</td>
+<td style="text-align: left;">Multiple</td>
+<td style="text-align: left;">ECDSA-P256</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">15K gates</td>
+<td style="text-align: left;">ARM IHI0086</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon Cerberus (AURIX)</td>
+<td style="text-align: left;">Infineon</td>
+<td style="text-align: left;">ECDSA-P256</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">In HSM</td>
+<td style="text-align: left;">Infineon AP</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP Debug Mailbox</td>
+<td style="text-align: left;">NXP</td>
+<td style="text-align: left;">ECDSA + cert</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">In SE</td>
+<td style="text-align: left;">NXP AN13036</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI TIFS Debug Auth</td>
+<td style="text-align: left;">TI</td>
+<td style="text-align: left;">ECDSA-P384</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">In TIFS</td>
+<td style="text-align: left;">TI SPRUIE9</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel SDM JTAG Auth</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">ECDSA-P384</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">In SDM</td>
+<td style="text-align: left;">Intel AN-710</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx Secure Debug</td>
+<td style="text-align: left;">AMD/Xilinx</td>
+<td style="text-align: left;">AES-256 + ECDSA</td>
+<td style="text-align: left;">Yes (auth)</td>
+<td style="text-align: left;">In PL</td>
+<td style="text-align: left;">UG1137</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenTitan RoT Debug</td>
+<td style="text-align: left;">Google</td>
+<td style="text-align: left;">LC token, KMAC</td>
+<td style="text-align: left;">Yes (token)</td>
+<td style="text-align: left;">Open silicon</td>
+<td style="text-align: left;">OT TRM</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p><strong>Best practices for production debug security:</strong></p>
+<ol>
+<li>
+<p>Disable JTAG/SWD in the final lifecycle state via eFUSE or OTP. Never leave debug enabled in production.</p>
+</li>
+<li>
+<p>Implement authenticated debug re-enable using a device-unique key stored in an HSM or eFUSE during manufacturing.</p>
+</li>
+<li>
+<p>Remove physical test pads and JTAG headers from production PCB layouts (not just DNP – remove copper too).</p>
+</li>
+<li>
+<p>Use SWD over JTAG where possible – smaller attack surface (2 pins vs 4+).</p>
+</li>
+<li>
+<p>Log all authenticated debug sessions and protect the signing key with key ceremonies.</p>
+</li>
+</ol>
+<h2 id="sec-jtag-impl"><span class="secnum">17.12</span> Implementation Examples<a class="headerlink" href="#sec-jtag-impl" title="Permanent link">&para;</a></h2>
+<h3 id="17121-openocd-tcl-jtag-chain-enumeration"><span class="secnum">17.12.1</span> OpenOCD TCL: JTAG Chain Enumeration<a class="headerlink" href="#17121-openocd-tcl-jtag-chain-enumeration" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code># openocd_enum.tcl -- enumerate JTAG chain and dump IDCODEs
+proc jtag_enumerate {} {
+    # Reset to TLR, then flush with BYPASS
+    irscan [lindex [jtag devices] 0] 0xFF
+    set n [llength [jtag devices]]
+    puts "Devices in chain: "
+    foreach dev [jtag devices] {
+        set idcode [drscan  32 0x00000000]
+        set mfr [expr {( &gt;&gt; 1) &amp; 0x7FF}]
+        set part [expr {( &gt;&gt; 12) &amp; 0xFFFF}]
+        set ver  [expr {( &gt;&gt; 28) &amp; 0xF}]
+        puts [format "
+                  ]
+    }
+}
+jtag_enumerate
+</code></pre></div>
+<h3 id="17122-c-arm-coresight-ahb-ap-memory-read-via-swd"><span class="secnum">17.12.2</span> C: ARM CoreSight AHB-AP Memory Read via SWD<a class="headerlink" href="#17122-c-arm-coresight-ahb-ap-memory-read-via-swd" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>/* swd_mem_read.c -- read 4 bytes from target via SWD/AHB-AP */
+#include &lt;stdint.h&gt;
+#define DP_SELECT  0x08   /* DP SELECT register */
+#define AP_CSW     0x00   /* AHB-AP CSW */
+#define AP_TAR     0x04   /* AHB-AP TAR */
+#define AP_DRW     0x0C   /* AHB-AP DRW */
+#define DP_RDBUFF  0x0C   /* DP RDBUFF */
+
+static void swd_write_dp(uint8_t addr, uint32_t val);
+static void swd_write_ap(uint8_t addr, uint32_t val);
+static uint32_t swd_read_dp(uint8_t addr);
+
+uint32_t ahb_read32(uint32_t address) {
+    /* Select AP 0, bank 0 */
+    swd_write_dp(DP_SELECT, 0x00000000);
+    /* Set CSW: 32-bit auto-increment word transfer */
+    swd_write_ap(AP_CSW, 0x23000052);
+    /* Set TAR (target address) */
+    swd_write_ap(AP_TAR, address);
+    /* Issue read to DRW (posted -- result in RDBUFF) */
+    swd_write_ap(AP_DRW, 0);
+    /* Dummy read of DRW to push posted result to RDBUFF */
+    /* Then read RDBUFF to get actual data */
+    return swd_read_dp(DP_RDBUFF);
+}
+</code></pre></div>
+<h3 id="17123-python-jtag-device-discovery-with-pyocd"><span class="secnum">17.12.3</span> Python: JTAG Device Discovery with pyOCD<a class="headerlink" href="#17123-python-jtag-device-discovery-with-pyocd" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>#!/usr/bin/env python3
+# jtag_scan.py -- discover JTAG chain using pyOCD or pyFTDI
+from pyftdi.jtag import JtagController
+from pyftdi.bits import BitSequence
+
+def scan_idcodes(url="ftdi://ftdi:2232h/1"):
+    jtag = JtagController()
+    jtag.configure(url)
+    # Reset to TLR
+    jtag.reset()
+    # Shift out 32*MAX_DEVS bits with TDI=1 to load BYPASS in all IRs
+    jtag.write_ir(BitSequence(0xFF, msb=False, length=8))
+    # Count devices: shift 1s and count until first 1 appears
+    tdo = jtag.read_dr(32 * 8)
+    devices = []
+    raw = int(tdo)
+    while raw &amp; 0xFFFFFFFF:
+        idcode = raw &amp; 0xFFFFFFFF
+        if idcode &amp; 1:  # valid IDCODE has bit0=1
+            mfr  = (idcode &gt;&gt; 1) &amp; 0x7FF
+            part = (idcode &gt;&gt; 12) &amp; 0xFFFF
+            ver  = (idcode &gt;&gt; 28) &amp; 0xF
+            devices.append({"idcode": idcode, "mfr": mfr,
+                             "part": part, "ver": ver})
+        raw &gt;&gt;= 32
+    jtag.close()
+    return devices
+
+if __name__ == "__main__":
+    devs = scan_idcodes()
+    for i, d in enumerate(devs):
+        print(f"Device {i}: IDCODE=0x{d[chr(105)+chr(100)+chr(99)+chr(111)+chr(100)+chr(101)]:08X} "
+              f"mfr=0x{d[chr(109)+chr(102)+chr(114)]:03X} part=0x{d[chr(112)+chr(97)+chr(114)+chr(116)]:04X}")
+</code></pre></div>
+<h3 id="17124-shell-openocd-full-firmware-extraction-script"><span class="secnum">17.12.4</span> Shell: OpenOCD Full Firmware Extraction Script<a class="headerlink" href="#17124-shell-openocd-full-firmware-extraction-script" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>#!/bin/bash
+# extract_fw.sh -- automated firmware extraction via OpenOCD
+set -e
+TARGET_CFG="target/stm32f4x.cfg"
+IFACE_CFG="interface/stlink.cfg"
+OUT_BIN="firmware_extracted.bin"
+FLASH_BASE="0x08000000"
+FLASH_SIZE="0x100000"  # 1MB
+
+openocd -f "" -f ""
+  -c "init"
+  -c "reset halt"
+  -c "wait_halt 500"
+  -c "dump_image   "
+  -c "verify_image  "
+  -c "resume"
+  -c "shutdown"
+
+echo "Extracted:  bytes to "
+# Identify firmware type
+file ""
+strings -n8 "" | head -20
+</code></pre></div>
+<h2 id="sec-jtag-solved"><span class="secnum">17.13</span> Solved Problems<a class="headerlink" href="#sec-jtag-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: JTAG Chain Length and IR Width Detection</p>
+<p>A PCB has a 4-pin JTAG header (TCK, TMS, TDI, TDO) connected to an unknown device chain. Describe the complete enumeration procedure: (1) determine the number of devices, (2) detect IR lengths, (3) read IDCODEs. Show the TMS sequences and expected TDO patterns. <strong>Solution:</strong> <strong>Step 1: Reset to Test-Logic-Reset.</strong> Drive TMS=1 for at least 5 TCK rising edges from any state. All TAP controllers are guaranteed to reach TLR.</p>
+<p><strong>Step 2: Count devices via BYPASS.</strong> Go to Shift-IR (TMS: 0,1,1,0,0 from TLR). Load all IRs with BYPASS (all 1s): shift at least 32*N ones (where N is the maximum possible chain length, e.g., N=16). Return to RTI via Update-IR (TMS: 1,1,0). Proceed to Shift-DR (TMS: 1,0,0). Now shift a single 0 followed by 1s into TDI. Count clock cycles until the single 0 appears on TDO: this count equals the number of devices (each BYPASS register is exactly 1 bit). If 0 appears after 3 cycles, there are 3 devices.</p>
+<p><strong>Step 3: Detect IR lengths.</strong> Reset to TLR. Enter Shift-IR. Shift all 0s until stable (flush). Shift a 1 into TDI, counting edges until it appears on TDO. The count minus 1 is the total IR length (sum across all devices in chain). Refine per-device IR lengths by resetting and observing the mandatory Capture-IR pattern (last two bits must be 01 per IEEE 1149.1 clause 8.6.1.1). For a chain of IRlen=5+4+3=12: first 1 arrives after 12 clocks total.</p>
+<p><strong>Step 4: Read IDCODEs.</strong> Reset to TLR. IDCODE instruction is the power-on-reset default IR value for IEEE 1149.1-compliant devices. Proceed directly to Shift-DR from TLR (TMS: 0,1,0,0). Shift 32*N bits = 96 bits for 3 devices. Parse each 32-bit IDCODE: bit 0 must be 1 (valid IDCODE); bits [11:1] = JEDEC manufacturer ID; bits [27:12] = part number; bits [31:28] = version. Example: 0x4BA00477 = ARM (mfr 0x23B), part 0x4B, version 4 (Cortex-A53 DAP).</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: ARM SWD MEM-AP Memory Dump Sequence</p>
+<p>You have an STM32F429ZI connected via SWD. The device is halted. Walk through the exact SWD packet sequence required to read 4 bytes from SRAM address 0x20000010 using the CoreSight AHB-AP. Show each SWD request byte, ACK, and data phase. <strong>Solution:</strong> <strong>Prerequisites:</strong> SWD line reset (50+ clocks high), JTAG-to-SWD sequence (0xE79E), 50+ clocks high, 2 idle clocks. Read DPIDR to confirm target.</p>
+<p><strong>Step 1: Power up DP.</strong> Write CTRL/STAT (A[3:2]=0b10, APnDP=0, RnW=0): Request byte: Start=1, APnDP=0, RnW=0, A[3:2]=10, Parity, Stop=0, Park=1 =&gt; 0x50. Data: 0x54000000 (CSYSPWRUPREQ=1, CDBGPWRUPREQ=1). Parity = popcount(data) mod 2 = 0. Wait for CDBGPWRUPACK=1 in CTRL/STAT read-back.</p>
+<p><strong>Step 2: Select AP 0, bank 0.</strong> Write DP SELECT (A[3:2]=0b00 of bank 2 =&gt; 0x08): Request byte: APnDP=0, RnW=0, A=0b10, Parity, =&gt; 0xA8. Data: 0x00000000 (APSEL=0x00, APBANKSEL=0x0, DPBANKSEL=0x0).</p>
+<p><strong>Step 3: Write AHB-AP CSW.</strong> Write AP register (APnDP=1, RnW=0, A[3:2]=0b00): Request byte: APnDP=1, RnW=0, A=0b00, Parity =&gt; 0x81. Data CSW=0x23000052: SIZE=0b010 (32-bit), AddrInc=0b01 (increment single), DbgSwEnable=1, MasterType=1, Prot[6:1]=0b001000 (privileged, non-secure).</p>
+<p><strong>Step 4: Write AHB-AP TAR.</strong> Write AP register (APnDP=1, RnW=0, A[3:2]=0b01): Request byte: APnDP=1, RnW=0, A=0b01 =&gt; 0x83 (recalculate parity). Data TAR=0x20000010 (target SRAM address).</p>
+<p><strong>Step 5: Read AHB-AP DRW.</strong> Read AP register (APnDP=1, RnW=1, A[3:2]=0b11): Request byte: APnDP=1, RnW=1, A=0b11 =&gt; 0x9F. ACK=OK, Data phase: 32 bits of posted result (not valid yet – this is the PREVIOUS read result).</p>
+<p><strong>Step 6: Read DP RDBUFF.</strong> Read DP register (APnDP=0, RnW=1, A[3:2]=0b11): Request byte: 0x9D. ACK=OK, Data[31:0] = actual 4 bytes at 0x20000010. Verify parity bit.</p>
+<p><strong>Result:</strong> If SRAM[0x20000010] = 0xDEADBEEF, RDBUFF returns 0xDEADBEEF with even parity = 1 (16 set bits is even =&gt; parity bit = 0).</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: STM32 RDP Level Analysis and Flash Protection</p>
+<p>A product engineer wants to ship an STM32H743ZI-based device with the following requirements: (a) no firmware readback via JTAG/SWD; (b) field firmware update via USB DFU must remain possible; (c) in-field debug must be possible for authorized service centers using a signed certificate; (d) tamper events must permanently disable the device. Specify the exact option byte configuration and lifecycle design. <strong>Solution:</strong> <strong>RDP Level Selection:</strong> Use RDP1 (not RDP2) to satisfy requirements (a)-(c). RDP2 satisfies (a) but prevents ALL debug including authenticated debug, which conflicts with requirement (c).</p>
+<p><strong>Option Byte Configuration (FLASH_OPTSR register, STM32H7):</strong></p>
+<ul>
+<li>
+<p>RDP[7:0] = 0xBB: Level 1 readout protection (0xAA=L0, 0xBB=L1, 0xCC=L2)</p>
+</li>
+<li>
+<p>nSWBOOT0 = 1: Boot from flash, not ROM (prevents DFU bypass)</p>
+</li>
+<li>
+<p>SECURITY = 1: Enable security features</p>
+</li>
+<li>
+<p>BOOT_LOCK = 1: Lock boot address to application region</p>
+</li>
+<li>
+<p>NRST_STOP_D1 = 0: Allow low-power debug</p>
+</li>
+</ul>
+<p><strong>Firmware Update (USB DFU):</strong> Implement a custom secure bootloader. The bootloader at 0x08000000 verifies a signed firmware image (ECDSA-P256 + SHA-256) before writing to the application region. The DFU endpoint is only accessible via the custom bootloader, not the ST ROM DFU (disable ROM DFU via BOOT0 pin pull-down and nSWBOOT0=1).</p>
+<p><strong>Authenticated Debug (Service Center):</strong> Use STM32H7 TZEN + CryptoCell-312 debug authentication. The service center sends a challenge request via the SWD DAP register. The device firmware generates a challenge nonce, the service center signs it with their provisioned ECDSA service key, and the device verifies and temporarily enables Level 1 debug for one session.</p>
+<p><strong>Tamper Permanent Disable:</strong> Configure the TAMP peripheral (TAMP_CR1): connect TAMP_IN1 to the case-open switch. In TAMP interrupt handler, erase all flash sectors (write FLASH_CR EOPIE=1, ERRIE=1, SER=1 for all sectors), then write RDP=0xCC via the option byte programming sequence (FLASH_OPTKEYR unlock + FLASH_OPTSR write + FLASH_OPTCR OPTSTART=1). Disable interrupts before the RDP2 write to prevent abort. After reset, device is permanently bricked.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: RISC-V Debug Module Abstract Command Execution</p>
+<p>A RISC-V SoC (SiFive FE310-G002) is connected via JTAG at IR=0x11 (DTMCS). The debug specification version is 0.13. Describe how to: (a) halt the core, (b) read the PC (program counter via CSR dpc), (c) write arbitrary 32-bit instructions via the program buffer, (d) resume execution. Specify the DMI register addresses and values. <strong>Solution:</strong> <strong>RISC-V Debug Architecture:</strong> The DTM JTAG IR=0x11 selects a 32-bit DTMCS register (Debug Transport Module Control and Status). IR=0x10 selects the 41-bit DMI register: [40:34]=address, [33:2]=data, [1:0]=op (0=nop, 1=read, 2=write, 3=reserved).</p>
+<p><strong>Step (a): Halt the core.</strong> Write dmcontrol (DMI addr 0x10): data=0x80000001 (haltreq=1, dmactive=1). DMI: addr=0x10, data=0x80000001, op=2 (write). Poll dmstatus (DMI addr 0x11, op=1) until allhalted=1 (bit 9=1).</p>
+<p><strong>Step (b): Read CSR dpc (0x7B1).</strong> Use Abstract Command – Access Register (command type 0). Write command register (DMI addr 0x17): cmdtype[31:24]=0x00, size[22:20]=0b010 (32-bit), transfer=1, write=0, regno[15:0]=0x07B1+0x1000=0x17B1 (GPR regno: CSRs are 0x0000-0x0FFF direct; for DPC use regno=0x07B1). data=0x00221FB1 (transfer=1, write=0, regno=0x17B1). Poll abstractcs (addr 0x16) until busy=0. Read data0 (addr 0x04): this is the PC value.</p>
+<p><strong>Step (c): Write instructions via program buffer.</strong> Program buffer is at DMI addresses 0x20-0x2F (16 words max). Write instruction to progbuf0 (addr 0x20): data=0x00100293 (ADDI x5, x0, 1). Write EBREAK to progbuf1 (addr 0x21): data=0x00100073 (ebreak). Issue Abstract Command with postexec=1: data=0x00241000 (cmdtype=0, size=2, postexec=1, write=1, regno=s0). The DM executes the program buffer after the abstract command. Poll abstractcs.busy=0 and check cmderr[10:8]=0 (no error).</p>
+<p><strong>Step (d): Resume.</strong> Write dmcontrol (addr 0x10): data=0x40000001 (resumereq=1, dmactive=1). Poll dmstatus until allresumed=1 (bit 17=1) and allrunning=1. Clear resumereq: write dmcontrol = 0x00000001.</p>
+</div>
+<h2 id="sec-ch17-recent"><span class="secnum">17.14</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch17-recent" title="Permanent link">&para;</a></h2>
+<p>JTAG and debug interface security has evolved since 2023 through the introduction of JTAG-over-USB-C (USB Debug Class), IoT SoC authentication bypass CVEs, ARM CoreSight 9.0 improvements, maturation of RISC-V JTAG debug support in OpenOCD, updated JTAGulator hardware, and the PSA Certified Level 2 debug access requirements.</p>
+<h3 id="17141-jtag-over-usb-c-usb-debug-class-2023-new-attack-surface"><span class="secnum">17.14.1</span> JTAG over USB-C (USB Debug Class, 2023): New Attack Surface<a class="headerlink" href="#17141-jtag-over-usb-c-usb-debug-class-2023-new-attack-surface" title="Permanent link">&para;</a></h3>
+<p>The USB 3.2 and USB4 specification includes the <strong>USB Debug Class</strong> (UDBC, USB 3.2 Annex B, also referenced in USB4 v2.0), which maps a JTAG debug port to a USB-C Alternate Mode. This creates a significant new attack surface for deployed consumer devices:</p>
+<ul>
+<li>
+<p><strong>Protocol:</strong> The USB Debug Class presents a JTAG TAP as a USB Class 0xDC (Diagnostic) interface. A host sends JTAG bit-bang commands via USB Bulk OUT transfers; the device responds via Bulk IN. Maximum throughput: 5 Gbit/s (USB 3.2 Gen 1), far exceeding physical JTAG at 50 MHz.</p>
+</li>
+<li>
+<p><strong>New attack surface:</strong> USB-C cables and docking stations are universally deployed. An attacker with a modified USB-C cable or malicious docking station can enumerate the Debug Class interface on any device that has not disabled UDBC in production firmware.</p>
+</li>
+<li>
+<p><strong>Affected devices:</strong> Several Qualcomm Snapdragon-based Android flagships (2023) shipped with UDBC enumerated in engineering builds and not disabled in production fastboot firmware. Researchers at DEF CON 31 (2023) demonstrated full DRAM extraction via USB-C UDBC on an affected device in under 60 seconds.</p>
+</li>
+<li>
+<p><strong>Mitigation:</strong> Disable UDBC in the USB descriptor table in production firmware. Enforce lifecycle-based UDBC enable/disable via eFUSE (analogous to JTAG disable fuses for traditional JTAG ports).</p>
+</li>
+</ul>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> Every USB-C port on a production device is a potential JTAG attack surface if UDBC is not explicitly disabled. Security reviews for devices with USB-C ports must include USB descriptor enumeration to confirm the Debug Class interface is absent. Use <code>lsusb -v</code> on Linux or USBView on Windows to verify no 0xDC class interface is reported.</p>
+</div>
+<h3 id="17142-jtag-authentication-bypass-cves-in-iot-socs-2023"><span class="secnum">17.14.2</span> JTAG Authentication Bypass CVEs in IoT SoCs (2023)<a class="headerlink" href="#17142-jtag-authentication-bypass-cves-in-iot-socs-2023" title="Permanent link">&para;</a></h3>
+<p>Multiple IoT SoC vendors disclosed JTAG authentication bypass vulnerabilities in 2023, following improved hardware security audit tooling:</p>
+<ul>
+<li>
+<p><strong>Insufficient boot state check:</strong> A class of SoCs (unnamed due to coordinated disclosure in progress) implements JTAG authentication as a software check in the boot ROM; a voltage glitch during the authentication state read skips the check and returns to the DEVELOP lifecycle state with full debug access.</p>
+</li>
+<li>
+<p><strong>Authentication oracle:</strong> JTAG challenge-response systems that use a fixed nonce length (e.g., 32-bit nonce in challenge) allow offline brute-force if the device does not enforce a lockout after failed attempts. With <span class="arithmatex">\(2^{32}\)</span> possible challenges and no lockout, a brute-force JTAG authentication attack completes in <span class="arithmatex">\(&lt; 12\)</span> hours at 100 kHz JTAG clock.</p>
+</li>
+<li>
+<p><strong>Mitigations adopted post-2023:</strong> Leading SoC vendors (Microchip, Renesas, NXP) moved to ECDSA-P256 challenge-response for JTAG authentication, eliminating brute-force feasibility. Lockout-after-N-failures eFUSE policies now appear in silicon revision specifications.</p>
+</li>
+</ul>
+<h3 id="17143-arm-coresight-90-improved-debug-authentication-and-security-extensions"><span class="secnum">17.14.3</span> ARM CoreSight 9.0: Improved Debug Authentication and Security Extensions<a class="headerlink" href="#17143-arm-coresight-90-improved-debug-authentication-and-security-extensions" title="Permanent link">&para;</a></h3>
+<p>ARM CoreSight Architecture Specification v9.0 (IHI0029H, 2023) introduces a revised <strong>Debug Authentication Interface (DAI)</strong> and extended security architecture:</p>
+<div class="tbl" id="tab-coresight-90">
+<div class="tbl-caption"><strong>Table 17.7.</strong> ARM CoreSight 9.0 debug security improvements</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>CoreSight 9.0 implementation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Debug Authentication Interface</td>
+<td style="text-align: left;">New DBGAUTHSTATUS_EL1 register with per-world enable bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">Realm world debug</td>
+<td style="text-align: left;">Separate debug enable bit for ARM CCA Realm world</td>
+</tr>
+<tr>
+<td style="text-align: left;">EL3 debug enable</td>
+<td style="text-align: left;">MDCR_EL3.TDA bit independently controls EL3 trace</td>
+</tr>
+<tr>
+<td style="text-align: left;">DAP authentication</td>
+<td style="text-align: left;">DAPID register includes mandatory authentication type field</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trace encryption</td>
+<td style="text-align: left;">Optional ETM trace port encryption (AES-128-CTR) for link-level trace security</td>
+</tr>
+<tr>
+<td style="text-align: left;">Multi-core halt sync</td>
+<td style="text-align: left;">Enhanced CTI (Cross-Trigger Interface) with authenticated trigger masks</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>The Realm world debug addition is significant for ARM CCA (Confidential Compute Architecture): a Realm VM can have debug independently enabled without granting the host Normal world debugger access to Realm physical memory. This enables <em>per-world debug certificates</em> – a field engineer can debug a Realm workload with a Realm-scoped debug credential without gaining any visibility into the co-located Secure world or other Realm VMs.</p>
+<h3 id="17144-risc-v-jtag-debug-transport-openocd-risc-v-support-maturity"><span class="secnum">17.14.4</span> RISC-V JTAG Debug Transport: OpenOCD RISC-V Support Maturity<a class="headerlink" href="#17144-risc-v-jtag-debug-transport-openocd-risc-v-support-maturity" title="Permanent link">&para;</a></h3>
+<p>The RISC-V Debug Specification v1.0 (ratified 2022, widely deployed 2023) has reached implementation maturity in OpenOCD, with the following security-relevant state:</p>
+<ul>
+<li>
+<p><strong>OpenOCD 0.12.0 (2023):</strong> Full RISC-V 1.0 debug module support including Abstract Commands, Program Buffer, System Bus Access, and the new <code>ndmreset</code> authenticated reset mechanism.</p>
+</li>
+<li>
+<p><strong>RISC-V Trigger Module security:</strong> OpenOCD exposes the RISC-V Trigger Module (up to 16 hardware breakpoints) via a new <code>riscv_trigger</code> command. Unconstrained trigger module access (without authentication) allows unlimited hardware breakpoints in production kernels, enabling ROP gadget patching and kernel address disclosure via the PC trace.</p>
+</li>
+<li>
+<p><strong>RISC-V debug authentication (draft 2023):</strong> The RISC-V Debug Task Group published a <em>Debug Authentication Extension</em> draft (RV-DBGAUTH) adding an ECDSA-P256 challenge in the DMI address space (address 0x38–0x3F), analogous to ARM CryptoCell debug auth, enabling lifecycle-controlled debug re-enable.</p>
+</li>
+<li>
+<p><strong>OpenTitan RISC-V debug:</strong> OpenTitan implements the RV-DBGAUTH draft with a one-time token-based debug unlock (KMAC-derived token), documented in the OpenTitan Debug Transport TRM v0.7.</p>
+</li>
+</ul>
+<h3 id="17145-jtagulator-v2x-updates-for-detection-speed"><span class="secnum">17.14.5</span> JTAGulator v2.x Updates for Detection Speed<a class="headerlink" href="#17145-jtagulator-v2x-updates-for-detection-speed" title="Permanent link">&para;</a></h3>
+<p>JTAGulator (Joe Grand, 2012–present) released version 2.x hardware and firmware in 2023–2024:</p>
+<ul>
+<li>
+<p><strong>Detection speed improvement:</strong> JTAGulator v2 uses a Parallax Propeller 2 (P2, 8-core 32-bit, 80 MHz) replacing the original Propeller 1. JTAG pinout scan speed increased from <span class="arithmatex">\(\approx\)</span>150 to <span class="arithmatex">\(\approx\)</span>800 channel-combinations per second, reducing pinout discovery time for a 24-channel scan from <span class="arithmatex">\(\approx\)</span>3 minutes to <span class="arithmatex">\(&lt; 45\)</span> seconds.</p>
+</li>
+<li>
+<p><strong>SWD passive detection:</strong> v2 adds a passive SWD sniffing mode using a 1 GSa/s sample buffer to capture SWD transactions without disturbing the target, enabling analysis of SWD traffic on locked production devices.</p>
+</li>
+<li>
+<p><strong>UART baud-rate autodetect:</strong> Extended to cover 300–4,000,000 baud, detecting the 921,600 baud engineering UARTs used in modern Qualcomm and MediaTek SoCs.</p>
+</li>
+</ul>
+<h3 id="17146-psa-certified-level-2-debug-requirements"><span class="secnum">17.14.6</span> PSA Certified Level 2 Debug Requirements<a class="headerlink" href="#17146-psa-certified-level-2-debug-requirements" title="Permanent link">&para;</a></h3>
+<p>PSA Certified Level 2 (ARM, 2023 revision) formalises debug security requirements that were previously informally stated:</p>
+<div class="tbl" id="tab-psa-l2-debug">
+<div class="tbl-caption"><strong>Table 17.8.</strong> PSA Certified Level 2 debug interface requirements</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Requirement</strong></th>
+<th style="text-align: left;"><strong>Specification</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Debug disabled in production</td>
+<td style="text-align: left;">JTAG/SWD must be disabled via eFUSE or OTP in the production lifecycle state</td>
+</tr>
+<tr>
+<td style="text-align: left;">Authenticated debug re-enable</td>
+<td style="text-align: left;">ECDSA-P256 challenge-response with device-unique key required for any re-enable</td>
+</tr>
+<tr>
+<td style="text-align: left;">Debug session scoping</td>
+<td style="text-align: left;">Re-enabled debug must be time-limited (session timeout via hardware watchdog)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Audit log</td>
+<td style="text-align: left;">Each authenticated debug session must produce a signed audit entry in NvM</td>
+</tr>
+<tr>
+<td style="text-align: left;">No JTAG in sleep modes</td>
+<td style="text-align: left;">Debug port must remain disabled during all low-power states</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>PSA Certified Level 2 evaluation includes a mandatory hardware penetration test by an approved lab (CLEF – Certified Lab for Embedded Firmware), which specifically tests JTAG/SWD disable effectiveness against voltage glitching, laser fault injection, and USB Debug Class enumeration.</p>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Explain why IEEE 1149.1 mandates that TMS=1 for 5 consecutive TCK rising edges always reaches Test-Logic-Reset regardless of the current TAP state. Prove this using the 16-state FSM transition table.</p>
+</li>
+<li>
+<p>A JTAG chain contains three devices with IR lengths of 4, 5, and 10 bits respectively. What is the minimum number of TDI bits required to load all three IRs simultaneously? Show how to address device 2 (middle device) with the BYPASS instruction while sending IDCODE to device 1.</p>
+</li>
+<li>
+<p>Compare JTAG (4-wire) and SWD (2-wire) protocols for a battery-powered IoT device with a 32-pin QFN package. Consider pin count, protocol overhead, security surface, and suitability for production test.</p>
+</li>
+<li>
+<p>A Cortex-M4 device has AHB-AP CSW register value 0x23000052. Decode all fields and explain why this configuration is used for normal 32-bit memory read access during debugging.</p>
+</li>
+<li>
+<p>Design a secure debug authentication scheme for a medical device that must comply with FDA cybersecurity guidance (2023). The scheme must: allow authorized service technicians to temporarily enable debug; maintain an audit log; use device-unique keys; and not expose the master key.</p>
+</li>
+<li>
+<p>Explain the difference between STM32 RDP Level 1 and Level 2 in the context of a fault injection attack. Why does RDP1 remain partially vulnerable to voltage glitching attacks on older STM32 families, and how did ST address this in the STM32H5 series?</p>
+</li>
+<li>
+<p>Write OpenOCD TCL commands to: (a) connect to a Zynq-7020 via JTAG, (b) halt the ARM Cortex-A9, (c) dump 512 bytes from physical address 0xFFFC0000 (OCM), (d) verify the dump against a known checksum.</p>
+</li>
+<li>
+<p>Describe the RISC-V Debug Module Interface (DMI) transaction format. What is the significance of the cmderr field in abstractcs, and what does each error code indicate?</p>
+</li>
+<li>
+<p>A JTAGulator discovers 24 test points on a PCB. The tool identifies TCK on pin 3, TDO on pin 7, but cannot find TMS or TDI. Suggest five reasons why TMS/TDI might not be detected and how to diagnose each case.</p>
+</li>
+<li>
+<p>Compare the security of Xilinx 7-Series JTAG with UltraScale+ JTAG. What specific eFUSE bits are involved, what is the attack surface difference, and how does encrypted bitstream loading interact with JTAG debug access?</p>
+</li>
+<li>
+<p>An ARM Cortex-A53 SoC uses CoreSight ETM v4 with 4-bit trace port at 500 MHz. Calculate the maximum instruction trace bandwidth in instructions per second assuming: 4-bit port, DDR (both edges), 8b/10b encoded, average ETM packet = 2.5 bytes per retired instruction.</p>
+</li>
+<li>
+<p>You are performing a security audit of an IoT gateway product. The PCB has a 10-pin Cortex Debug connector (SWD). The device runs Linux on a Cortex-A7. Describe the complete security assessment methodology: from physical access to full memory dump, including any ASLR bypass technique available through CoreSight AHB-AP.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch16-post-quantum-cryptography-hardware.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16. Post-Quantum Cryptography Hardware">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                16. Post-Quantum Cryptography Hardware
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch18-hardware-cryptographic-accelerators.html" class="md-footer__link md-footer__link--next" aria-label="Next: 18. Hardware Cryptographic Accelerators">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                18. Hardware Cryptographic Accelerators
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

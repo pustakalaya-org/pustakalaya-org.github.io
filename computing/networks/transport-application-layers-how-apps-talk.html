@@ -1,0 +1,3709 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/computing/networks/transport-application-layers-how-apps-talk.html">
+  
+  
+    <link rel="prev" href="network-layer-ip-addressing-routing.html">
+  
+  
+    <link rel="next" href="wireless-mobile-wan-the-internet.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>4. Transport & Application Layers — How Apps Talk - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#41-tcp-reliable-delivery" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. Transport & Application Layers — How Apps Talk
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Computer Networks</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="networking-foundations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Networking Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="physical-data-link-layers-cables-signals-ethernet-switching.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Physical & Data Link Layers — Cables, Signals, Ethernet & Switching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-layer-ip-addressing-routing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Network Layer — IP Addressing & Routing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Transport & Application Layers — How Apps Talk
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="transport-application-layers-how-apps-talk.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Transport & Application Layers — How Apps Talk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-tcp-reliable-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 TCP — Reliable Delivery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 TCP — Reliable Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-open-tcp-connections-and-their-states-established-time_wait-on-your-own-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List open TCP connections and their states (ESTABLISHED, TIME_WAIT...) on your own machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-udp-when-speed-beats-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 UDP &amp; When Speed Beats Reliability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 UDP &amp; When Speed Beats Reliability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-send-a-dns-query-over-udp-and-see-the-open-udp-sockets-on-your-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Send a DNS query over UDP and see the open UDP sockets on your machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-modern-transports-quic-friends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Modern Transports: QUIC &amp; Friends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Modern Transports: QUIC &amp; Friends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-whether-a-site-offers-http3-needs-a-curl-build-with-http3-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check whether a site offers HTTP/3 (needs a curl build with HTTP/3 support)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-tcp-congestion-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 TCP Congestion Control
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 TCP Congestion Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-which-congestion-control-algorithm-your-linux-machine-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See which congestion control algorithm your Linux machine uses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-ports-sockets-well-known-ports-to-memorise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ports &amp; Sockets — Well-Known Ports to Memorise
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Ports &amp; Sockets — Well-Known Ports to Memorise">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-which-ports-your-own-computer-is-listening-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See which ports your own computer is listening on
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-dns-the-internets-phonebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 DNS — The Internet's Phonebook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 DNS — The Internet&#39;s Phonebook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-look-up-different-dns-record-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Look up different DNS record types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-dhcp-automatic-addressing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 DHCP — Automatic Addressing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 DHCP — Automatic Addressing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-and-renew-your-own-dhcp-lease" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See and renew your own DHCP lease
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-the-web-http-https-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 The Web: HTTP, HTTPS &amp; APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.8 The Web: HTTP, HTTPS &amp; APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-http-requests-responses-and-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect HTTP requests, responses and headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-email-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 Email Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 Email Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-look-up-a-domains-mail-servers-and-email-security-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Look up a domain's mail servers and email security records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-file-transfer-file-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 File Transfer &amp; File Sharing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 File Transfer &amp; File Sharing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-copy-files-securely-to-your-own-lab-server-and-list-smb-shares" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Copy files securely (to your own lab server) and list SMB shares
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-remote-access-management-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Remote Access &amp; Management Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.11 Remote Access &amp; Management Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-connect-to-your-own-lab-device-and-test-reachability-of-management-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Connect to your own lab device and test reachability of management ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-real-time-voice-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 Real-Time Voice &amp; Video
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.12 Real-Time Voice &amp; Video">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-delay-and-jitter-to-a-public-host-watch-the-time-values-vary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check delay and jitter to a public host (watch the time values vary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-iot-messaging-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 IoT &amp; Messaging Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.13 IoT &amp; Messaging Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-publish-and-subscribe-to-a-public-test-mqtt-broker-needs-mosquitto-clients-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Publish and subscribe to a public test MQTT broker (needs mosquitto-clients installed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-time-directory-authentication-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Time, Directory &amp; Authentication Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Time, Directory &amp; Authentication Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-time-sync-and-kerberos-tickets-on-your-own-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check time sync and Kerberos tickets on your own machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="wireless-mobile-wan-the-internet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Wireless, Mobile, WAN & the Internet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-devices-data-centers-cloud-networking.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Network Devices, Data Centers & Cloud Networking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-operations-tools-troubleshooting.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Network Operations, Tools & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-security-basics-standards-rfcs-your-learning-path.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Network Security Basics, Standards, RFCs & Your Learning Path
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-networking-student-should-master.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Networking Student Should Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-tcp-reliable-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 TCP — Reliable Delivery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 TCP — Reliable Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-open-tcp-connections-and-their-states-established-time_wait-on-your-own-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List open TCP connections and their states (ESTABLISHED, TIME_WAIT...) on your own machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-udp-when-speed-beats-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 UDP &amp; When Speed Beats Reliability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 UDP &amp; When Speed Beats Reliability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-send-a-dns-query-over-udp-and-see-the-open-udp-sockets-on-your-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Send a DNS query over UDP and see the open UDP sockets on your machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-modern-transports-quic-friends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Modern Transports: QUIC &amp; Friends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Modern Transports: QUIC &amp; Friends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-whether-a-site-offers-http3-needs-a-curl-build-with-http3-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check whether a site offers HTTP/3 (needs a curl build with HTTP/3 support)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-tcp-congestion-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 TCP Congestion Control
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 TCP Congestion Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-which-congestion-control-algorithm-your-linux-machine-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See which congestion control algorithm your Linux machine uses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-ports-sockets-well-known-ports-to-memorise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ports &amp; Sockets — Well-Known Ports to Memorise
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Ports &amp; Sockets — Well-Known Ports to Memorise">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-which-ports-your-own-computer-is-listening-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See which ports your own computer is listening on
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-dns-the-internets-phonebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 DNS — The Internet's Phonebook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 DNS — The Internet&#39;s Phonebook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-look-up-different-dns-record-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Look up different DNS record types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-dhcp-automatic-addressing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 DHCP — Automatic Addressing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 DHCP — Automatic Addressing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-and-renew-your-own-dhcp-lease" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See and renew your own DHCP lease
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-the-web-http-https-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 The Web: HTTP, HTTPS &amp; APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.8 The Web: HTTP, HTTPS &amp; APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-inspect-http-requests-responses-and-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Inspect HTTP requests, responses and headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-email-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 Email Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 Email Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-look-up-a-domains-mail-servers-and-email-security-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Look up a domain's mail servers and email security records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-file-transfer-file-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 File Transfer &amp; File Sharing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 File Transfer &amp; File Sharing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-copy-files-securely-to-your-own-lab-server-and-list-smb-shares" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Copy files securely (to your own lab server) and list SMB shares
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-remote-access-management-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Remote Access &amp; Management Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.11 Remote Access &amp; Management Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-connect-to-your-own-lab-device-and-test-reachability-of-management-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Connect to your own lab device and test reachability of management ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-real-time-voice-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 Real-Time Voice &amp; Video
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.12 Real-Time Voice &amp; Video">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-delay-and-jitter-to-a-public-host-watch-the-time-values-vary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check delay and jitter to a public host (watch the time values vary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-iot-messaging-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 IoT &amp; Messaging Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.13 IoT &amp; Messaging Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-publish-and-subscribe-to-a-public-test-mqtt-broker-needs-mosquitto-clients-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Publish and subscribe to a public test MQTT broker (needs mosquitto-clients installed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-time-directory-authentication-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Time, Directory &amp; Authentication Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Time, Directory &amp; Authentication Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-time-sync-and-kerberos-tickets-on-your-own-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check time sync and Kerberos tickets on your own machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-4-transport-application-layers-how-apps-talk">Chapter 4: Transport &amp; Application Layers — How Apps Talk<a class="headerlink" href="#chapter-4-transport-application-layers-how-apps-talk" title="Permanent link">&para;</a></h1>
+<p>Getting a packet to the right computer is only half the job; it also has to reach the right program, arrive in order, and be understood. This chapter covers the transport layer (TCP, UDP, QUIC) that moves data between programs, and the application protocols (DNS, HTTP, email, SSH and many more) that people and devices actually use every day. You will also learn the port numbers every network professional is expected to know by heart.</p>
+<h2 id="41-tcp-reliable-delivery">4.1 TCP — Reliable Delivery<a class="headerlink" href="#41-tcp-reliable-delivery" title="Permanent link">&para;</a></h2>
+<p>TCP (Transmission Control Protocol) is the set of rules that makes sure data sent between two programs arrives complete, in the right order and without duplicates. It sets up a 'connection' first, numbers every byte it sends, and resends anything that goes missing. Web pages, email and file downloads all rely on it.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-01-tcp-reliable-delivery.svg" alt="ACK numbers name the next byte expected; each direction is closed separately with its own FIN." loading="lazy">
+<figcaption><strong>A TCP connection from open to close.</strong> ACK numbers name the next byte expected; each direction is closed separately with its own FIN.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>TCP is like sending a book chapter by chapter by registered post: you agree with the receiver before you start, every envelope is numbered, the receiver signs for each one, and you resend any envelope that is not signed for.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Priya opens her bank's website, her laptop sends a SYN to the server on port 443, the server replies SYN-ACK, and her laptop answers ACK — the 3-way handshake, taking one round trip. Her laptop starts its byte count at a random sequence number such as 1,000,000; after sending 1,460 bytes the server acknowledges 1,001,460, meaning 'I have everything up to here, send the next byte'. If one segment is lost, the server keeps acknowledging the same number, and Priya's laptop resends the missing piece. When she closes the tab, each side sends a FIN and an ACK to close its half of the conversation.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Handshake: client sends SYN, server replies SYN-ACK, client sends ACK — the connection is open.</li>
+<li>Each byte gets a sequence number; the receiver returns an acknowledgement (ACK) number saying which byte it expects next.</li>
+<li>The receiver advertises a window (how much buffer space it has free) so a fast sender cannot overwhelm it — this is flow control.</li>
+<li>If an ACK does not arrive before the retransmission timer expires, or duplicate ACKs show a gap, the sender retransmits.</li>
+<li>Closing: each side sends FIN and gets an ACK (4 messages); the side that closed first waits in TIME_WAIT before forgetting the connection.</li>
+<li>RST (reset) aborts a connection instantly, for example when a port is closed or something has gone wrong.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every web browser, email client, SSH session, database connection and file download depends on TCP; network engineers and security analysts read TCP flags in packet captures every day.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the handshake as SYN → SYN-ACK → ACK, the six classic flags (SYN, ACK, FIN, RST, PSH, URG), and that TCP is connection-oriented and reliable while UDP is not.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Initial sequence numbers are randomised (RFC 6528) so attackers cannot guess them and inject data or resets into someone else's connection.</li>
+<li>Throughput is capped at window ÷ round-trip time: a 64 KB window over a 100 ms path cannot exceed about 5 Mbit/s, which is why window scaling matters on fast long links.</li>
+<li>Common options: MSS, window scale (shift up to 14, windows up to 1 GiB), SACK-permitted and timestamps, which give accurate RTT samples and protect against wrapped sequence numbers (PAWS).</li>
+<li>Nagle's algorithm bundles small writes while delayed ACKs wait up to about 200-500 ms; together they can add lag to chatty apps, so games and SSH set TCP_NODELAY.</li>
+<li>Many sockets stuck in CLOSE_WAIT point to an application bug (it never calls close), whereas lots of TIME_WAIT is normal on busy clients and proxies.</li>
+<li>Firewalls, load balancers and NAT devices track TCP state; a stateful firewall drops mid-stream packets for which it never saw a SYN, which shows up as asymmetric-routing faults.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking sequence numbers count segments; they count bytes, so an ACK of 2461 after starting at 1001 means 1,460 bytes arrived.</li>
+<li>Believing TCP guarantees delivery to the application; it only retransmits while the connection lives, so apps must still handle resets and timeouts.</li>
+<li>Confusing a reset with a timeout: RST ('connection refused') means the host answered with no listener; silence usually means a firewall dropped the SYN.</li>
+</ul>
+</div>
+<h3 id="try-it-list-open-tcp-connections-and-their-states-established-time_wait-on-your-own-machine">Try it: List open TCP connections and their states (ESTABLISHED, TIME_WAIT...) on your own machine<a class="headerlink" href="#try-it-list-open-tcp-connections-and-their-states-established-time_wait-on-your-own-machine" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>netstat<span class="w"> </span>-an<span class="w"> </span><span class="p">|</span><span class="w"> </span>findstr<span class="w"> </span>TCP<span class="w">      </span><span class="c1"># Windows</span>
+ss<span class="w"> </span>-tan<span class="w">                        </span><span class="c1"># Linux</span>
+curl<span class="w"> </span>-v<span class="w"> </span>https://example.com<span class="w">    </span><span class="c1"># watch a TCP + TLS connection open</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TCP (Transmission Control Protocol)</strong><br><em>IETF RFC 9293 (replaced RFC 793, 2022) · RFC · Layer 4 · Current</em></td>
+<td>Connection-oriented, reliable, ordered byte-stream transport between two programs, identified by IP addresses and port numbers.</td>
+<td>A browser downloading a 2 MB image over HTTPS receives every byte in order, even if some packets were lost on Wi-Fi.</td>
+</tr>
+<tr>
+<td><strong>TCP header</strong><br><em>IETF RFC 9293 · Concept · Layer 4 · Current</em></td>
+<td>20 bytes minimum, up to 60 with options: ports, sequence and ACK numbers, data offset, flags, window, checksum, urgent pointer.</td>
+<td>A Linux SYN shows 'Header Length: 40 bytes' in Wireshark because MSS, SACK-permitted, timestamp and window-scale options were added.</td>
+</tr>
+<tr>
+<td><strong>Three-way handshake</strong><br><em>IETF RFC 9293 · Concept · Layer 4</em></td>
+<td>SYN, SYN-ACK, ACK exchange that opens a TCP connection and synchronises both sides' starting sequence numbers.</td>
+<td>Wireshark shows a laptop's SYN to 93.184.215.14:443, the reply SYN-ACK, then the laptop's ACK before any HTTPS data flows.</td>
+</tr>
+<tr>
+<td><strong>Sequence and acknowledgement numbers</strong><br><em>IETF RFC 9293 · Concept · Layer 4</em></td>
+<td>32-bit counters numbering every byte sent; the ACK number tells the sender the next byte the receiver expects.</td>
+<td>Sender transmits bytes 5001-6460; receiver replies ACK 6461, confirming all 1,460 bytes arrived.</td>
+</tr>
+<tr>
+<td><strong>TCP flags (SYN, ACK, FIN, RST, PSH, URG)</strong><br><em>IETF RFC 9293 (ECE/CWR added by RFC 3168) · Concept · Layer 4</em></td>
+<td>One-bit control fields in the TCP header that mark segments as connection setup, acknowledgement, close, reset or urgent/push data.</td>
+<td>A firewall log full of SYNs with no ACKs from one source suggests a port scan or SYN flood.</td>
+</tr>
+<tr>
+<td><strong>Receive window and flow control</strong><br><em>IETF RFC 9293; window scaling RFC 7323 · Concept · Layer 4</em></td>
+<td>The receiver advertises how many bytes it can buffer; the sender never has more unacknowledged data in flight than that.</td>
+<td>A busy phone advertises a zero window, so the server pauses sending until the app reads its buffer.</td>
+</tr>
+<tr>
+<td><strong>Window scaling</strong><br><em>IETF RFC 7323 · Standard · Layer 4 · Current</em></td>
+<td>Option negotiated in the handshake that multiplies the 16-bit window field, allowing windows far above 64 KB for fast links.</td>
+<td>A 1 Gbit/s transatlantic transfer needs several megabytes in flight, which only works with window scaling enabled.</td>
+</tr>
+<tr>
+<td><strong>Retransmission timeout (RTO)</strong><br><em>IETF RFC 6298 · Standard · Layer 4 · Current</em></td>
+<td>Timer calculated from measured round-trip times; if no ACK arrives before it expires, the segment is resent.</td>
+<td>On a 40 ms path the RTO might be about 200 ms; a lost segment is resent after that delay.</td>
+</tr>
+<tr>
+<td><strong>Selective Acknowledgement (SACK)</strong><br><em>IETF RFC 2018 · Standard · Layer 4 · Current</em></td>
+<td>Option letting the receiver report exactly which blocks arrived, so only the missing pieces are resent.</td>
+<td>Segments 3 and 7 are lost out of 10; SACK lets the sender resend just those two.</td>
+</tr>
+<tr>
+<td><strong>Four-way close (FIN/ACK)</strong><br><em>IETF RFC 9293 · Concept · Layer 4</em></td>
+<td>Each direction is closed separately: FIN, ACK from one side, then FIN, ACK from the other.</td>
+<td>A web server finishes sending a page, sends FIN; the browser ACKs, then sends its own FIN when done.</td>
+</tr>
+<tr>
+<td><strong>TCP state machine</strong><br><em>IETF RFC 9293 · Concept · Layer 4 · Current</em></td>
+<td>Eleven connection states: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1/2, CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT and CLOSED.</td>
+<td>'ss -tan state close-wait' listing hundreds of sockets reveals an application that never closes its connections.</td>
+</tr>
+<tr>
+<td><strong>TIME_WAIT</strong><br><em>IETF RFC 9293 · Concept · Layer 4</em></td>
+<td>State held by the side that closes first for twice the maximum segment lifetime, so late packets cannot confuse a new connection.</td>
+<td>A busy proxy shows thousands of TIME_WAIT entries in 'ss -tan'; Linux keeps each for 60 seconds.</td>
+</tr>
+<tr>
+<td><strong>RST (reset)</strong><br><em>IETF RFC 9293 · Concept · Layer 4</em></td>
+<td>Segment that immediately aborts a connection, commonly sent when nothing is listening on the requested port.</td>
+<td>Connecting to port 8080 on a server with no service running returns RST, shown as 'connection refused'.</td>
+</tr>
+<tr>
+<td><strong>MSS option &amp; clamping</strong><br><em>IETF RFC 9293; RFC 879 history · Concept · Layer 4</em></td>
+<td>TCP option each side places in its SYN announcing the largest segment it accepts; routers can rewrite ('clamp') it to fit tunnels.</td>
+<td>A PPPoE router configured with 'ip tcp adjust-mss 1452' rewrites passing SYNs so sessions avoid fragmentation on its 1492-byte link.</td>
+</tr>
+<tr>
+<td><strong>Keepalive</strong><br><em>IETF RFC 9293 (optional feature) · Concept · Layer 4</em></td>
+<td>Optional empty probes sent on an idle connection to check that the other end is still there.</td>
+<td>An SSH session probes every few minutes so a home router's NAT table does not silently drop it.</td>
+</tr>
+<tr>
+<td><strong>SYN flood and SYN cookies</strong><br><em>IETF RFC 4987 (Informational) · Concept · Layer 4 · Current</em></td>
+<td>Attackers send masses of SYNs to fill the half-open connection queue; SYN cookies encode state in the server's ISN so no memory is used.</td>
+<td>Linux enables net.ipv4.tcp_syncookies by default, keeping a web server answering during a spoofed-SYN flood.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="42-udp-when-speed-beats-reliability">4.2 UDP &amp; When Speed Beats Reliability<a class="headerlink" href="#42-udp-when-speed-beats-reliability" title="Permanent link">&para;</a></h2>
+<p>UDP (User Datagram Protocol) sends independent messages called datagrams with no handshake, no numbering and no resending. It just adds port numbers and an optional error check to the data and fires it off. That makes it fast and lightweight, perfect when late data is useless anyway.</p>
+<p><strong>TCP vs UDP</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Connection setup</strong></td>
+<td>3-way handshake</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>ACKs and retransmission</td>
+<td>Best effort</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Byte stream, in order</td>
+<td>Datagrams, any order</td>
+</tr>
+<tr>
+<td><strong>Header size</strong></td>
+<td>20-60 bytes</td>
+<td>8 bytes</td>
+</tr>
+<tr>
+<td><strong>Flow / congestion control</strong></td>
+<td>Yes</td>
+<td>No (app's job)</td>
+</tr>
+<tr>
+<td><strong>Broadcast / multicast</strong></td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Typical uses</strong></td>
+<td>Web, email, SSH, files</td>
+<td>DNS, VoIP, games, QUIC</td>
+</tr>
+</tbody>
+</table>
+<p><em>UDP trades every guarantee for speed and simplicity; applications add back only what they need.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>UDP is like shouting updates across a busy room or dropping postcards in a postbox: quick and cheap, but if one gets lost nobody automatically sends it again.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>In a video call between Tom in London and Ana in Lisbon, each audio packet carries 20 ms of sound. If one packet is lost, waiting 100 ms for a resend would make the voice stutter, so the app simply skips or smooths over the gap. The same is true for DNS: a lookup is one small question and one small answer, so setting up a whole TCP connection would double the delay. UDP's header is only 8 bytes, compared with at least 20 for TCP.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The app hands UDP a message and the destination IP and port.</li>
+<li>UDP adds an 8-byte header: source port, destination port, length and checksum.</li>
+<li>The datagram is sent immediately — no handshake, no connection state.</li>
+<li>The receiver checks the checksum and passes the datagram to the program listening on that port, or drops it if corrupted.</li>
+<li>Any reliability, ordering or rate control needed is built by the application itself (as QUIC, DNS and RTP do).</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Online gamers, VoIP and video-call users, live streamers, DNS and DHCP servers, and IoT sensors all depend on UDP.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Exam favourite: UDP is connectionless, unreliable (best-effort), has no flow or congestion control, and uses an 8-byte header; TCP is connection-oriented and reliable.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>The checksum covers a pseudo-header containing the IP addresses, protocol and length, so a datagram delivered to the wrong host is detected; it is optional in IPv4 but mandatory in IPv6.</li>
+<li>A UDP datagram can carry up to 65,507 bytes over IPv4, but anything above the path MTU (about 1,472 bytes of data on Ethernet) fragments, so DNS now aims for answers under 1,232 bytes.</li>
+<li>Applications rebuild only the features they need: RTP adds sequence numbers and timestamps, TFTP waits for an ACK per block, and QUIC rebuilds full reliability and congestion control.</li>
+<li>Amplification factors reported by US-CERT range from about 28-54x for DNS to 556x for NTP 'monlist' and up to 51,000x for exposed memcached servers.</li>
+<li>Firewalls and NAT treat UDP flows as pseudo-connections with idle timers of seconds to minutes, so long-lived UDP apps send keepalives to hold their mappings open.</li>
+<li>Scanning UDP is slow and ambiguous: closed ports answer ICMP Port Unreachable (often rate-limited) while open ports frequently stay silent, so nmap reports 'open&#124;filtered'.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Calling UDP 'bad because unreliable'; for live voice, games and DNS, avoiding retransmission delay is exactly the right design choice.</li>
+<li>Assuming DNS uses only UDP; large answers, DNSSEC and zone transfers use TCP 53, so firewalls must allow both.</li>
+<li>Building a UDP app with no rate control; without congestion control it can flood links and hurt everyone sharing the network.</li>
+</ul>
+</div>
+<h3 id="try-it-send-a-dns-query-over-udp-and-see-the-open-udp-sockets-on-your-machine">Try it: Send a DNS query over UDP and see the open UDP sockets on your machine<a class="headerlink" href="#try-it-send-a-dns-query-over-udp-and-see-the-open-udp-sockets-on-your-machine" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>nslookup<span class="w"> </span>example.com
+netstat<span class="w"> </span>-an<span class="w"> </span>-p<span class="w"> </span>UDP<span class="w">     </span><span class="c1"># Windows</span>
+ss<span class="w"> </span>-uan<span class="w">                 </span><span class="c1"># Linux</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_1">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UDP (User Datagram Protocol)</strong><br><em>IETF RFC 768 (1980) · RFC · Layer 4 · Current</em></td>
+<td>Connectionless transport adding only ports, length and checksum; no delivery guarantee, ordering or retransmission.</td>
+<td>A smart thermostat sends a single UDP reading to a server every minute without setting up a connection.</td>
+</tr>
+<tr>
+<td><strong>UDP header format</strong><br><em>IETF RFC 768 · Concept · Layer 4 · Current</em></td>
+<td>Just 8 bytes: source port, destination port, length and checksum, 16 bits each; nothing else is added to the application data.</td>
+<td>Wireshark decodes a DNS query as source port 53122, destination port 53, length 40, checksum verified.</td>
+</tr>
+<tr>
+<td><strong>UDP checksum</strong><br><em>IETF RFC 768; IPv6 rules RFC 8200 · Concept · Layer 4</em></td>
+<td>Error check over header and data; optional in IPv4, generally mandatory in IPv6.</td>
+<td>A datagram corrupted by a faulty cable fails the checksum and is silently discarded by the receiver.</td>
+</tr>
+<tr>
+<td><strong>Connectionless vs connection-oriented</strong><br><em>General networking concept · Concept · Layer 4</em></td>
+<td>UDP sends without setup or state; TCP establishes, tracks and tears down a connection.</td>
+<td>A DNS query over UDP finishes in one round trip; the same query over TCP needs an extra round trip for the handshake.</td>
+</tr>
+<tr>
+<td><strong>DNS over UDP</strong><br><em>IETF RFC 1035 · Protocol · Layer 7 · Current</em></td>
+<td>Most DNS questions and answers travel as single UDP datagrams on port 53; large answers fall back to TCP.</td>
+<td>Looking up www.example.com sends one small UDP packet and gets one reply in a few milliseconds.</td>
+</tr>
+<tr>
+<td><strong>VoIP and RTP over UDP</strong><br><em>IETF RFC 3550 · Concept · Layer 7</em></td>
+<td>Voice is sent in small timed packets over UDP because a late packet is worse than a lost one.</td>
+<td>An office desk phone sends 50 voice packets per second; one lost packet is a barely noticeable click.</td>
+</tr>
+<tr>
+<td><strong>Online gaming</strong><br><em>Game developers (custom UDP protocols) · Concept</em></td>
+<td>Multiplayer games stream player positions over UDP, sending fresh state rather than resending old state.</td>
+<td>A shooter game sends position updates 60 times a second; a lost update is replaced 16 ms later.</td>
+</tr>
+<tr>
+<td><strong>Live streaming and multicast</strong><br><em>Broadcasters, IPTV providers · Concept</em></td>
+<td>Live video and IPTV multicast use UDP so one stream can reach many receivers without per-viewer connections.</td>
+<td>A hotel's IPTV system multicasts 40 TV channels over UDP to every room's set-top box.</td>
+</tr>
+<tr>
+<td><strong>DHCP, NTP, SNMP, TFTP, syslog</strong><br><em>Various IETF RFCs · Concept</em></td>
+<td>Many small infrastructure protocols use UDP because their messages are short and simple to retry.</td>
+<td>A new laptop gets its IP address via DHCP on UDP ports 67/68 before it even has an address.</td>
+</tr>
+<tr>
+<td><strong>TCP vs UDP comparison</strong><br><em>General networking concept · Concept · Layer 4</em></td>
+<td>TCP: reliable, ordered, flow and congestion controlled, 20+ byte header. UDP: fast, simple, 8-byte header, no guarantees.</td>
+<td>Downloading an installer uses TCP (every byte matters); a Zoom call's audio uses UDP (timeliness matters).</td>
+</tr>
+<tr>
+<td><strong>UDP amplification / reflection</strong><br><em>Security concept (e.g. US-CERT/CISA alerts) · Concept</em></td>
+<td>Because UDP has no handshake, attackers spoof a victim's address so servers send large replies to the victim.</td>
+<td>Open DNS or NTP servers answering spoofed small queries with big replies can flood a victim's link.</td>
+</tr>
+<tr>
+<td><strong>DTLS 1.3</strong><br><em>IETF RFC 9147 (2022; replaced DTLS 1.2, RFC 6347) · RFC · Layer 4 · Current</em></td>
+<td>TLS adapted for datagrams, adding record sequence numbers and handshake retransmission so UDP traffic can be encrypted and authenticated.</td>
+<td>WebRTC uses DTLS to agree SRTP keys, and Cisco Secure Client VPNs carry tunnel traffic over DTLS on UDP 443.</td>
+</tr>
+<tr>
+<td><strong>UDP-Lite</strong><br><em>IETF RFC 3828 · RFC · Layer 4 · Legacy</em></td>
+<td>UDP variant whose checksum may cover only part of the datagram, so slightly damaged media payloads are still delivered.</td>
+<td>Textbooks cite UDP-Lite for audio codecs that prefer a corrupted sample to a dropped frame; real-world deployment is rare.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="43-modern-transports-quic-friends">4.3 Modern Transports: QUIC &amp; Friends<a class="headerlink" href="#43-modern-transports-quic-friends" title="Permanent link">&para;</a></h2>
+<p>QUIC is a newer transport protocol that runs on top of UDP and builds in reliability, encryption (TLS 1.3) and multiple independent streams. It cuts the time needed to start a secure connection and copes better with lost packets and changing networks. HTTP/3 is the version of the web protocol that runs over QUIC. Other specialist transports, like MPTCP and SCTP, solve problems such as using several links at once.</p>
+<p><strong>TCP + TLS 1.3 vs QUIC</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>TCP + TLS 1.3</th>
+<th>QUIC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Runs over</strong></td>
+<td>IP (kernel TCP)</td>
+<td>UDP (usually user space)</td>
+</tr>
+<tr>
+<td><strong>New connection</strong></td>
+<td>2 RTT before data</td>
+<td>1 RTT before data</td>
+</tr>
+<tr>
+<td><strong>Resumption</strong></td>
+<td>1 RTT (TFO rarely used)</td>
+<td>0-RTT possible</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Payload only; TCP header visible</td>
+<td>Payload and most headers</td>
+</tr>
+<tr>
+<td><strong>Lost packet</strong></td>
+<td>Stalls every stream</td>
+<td>Stalls only its stream</td>
+</tr>
+<tr>
+<td><strong>Network change</strong></td>
+<td>Connection breaks</td>
+<td>Migrates via connection ID</td>
+</tr>
+<tr>
+<td><strong>Port</strong></td>
+<td>TCP 443</td>
+<td>UDP 443</td>
+</tr>
+</tbody>
+</table>
+<p><em>QUIC merges the transport and TLS handshakes and lives in user space, so it can evolve faster than kernel TCP.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>If TCP plus TLS is like showing your ID at the door and then again at reception, QUIC is a single fast-track pass checked once — and it keeps working even if you switch from the front door to the side door mid-visit.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Sam watches a video on his phone over home Wi-Fi using HTTP/3. As he walks out to the street the phone switches to 5G and gets a new IP address. With TCP the connection would break and restart, but QUIC identifies the connection by a connection ID instead of the IP address and port, so the video keeps playing. Because Sam visited the site earlier, his phone could even send its first request in the very first packet using 0-RTT.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The client sends a QUIC Initial packet over UDP (usually port 443) that also carries the TLS 1.3 handshake.</li>
+<li>After one round trip, keys are agreed and data can flow fully encrypted — including most transport headers.</li>
+<li>Data is split into independent streams, so a lost packet only delays its own stream, not the others (no head-of-line blocking).</li>
+<li>Connection IDs let the connection survive IP address changes (connection migration).</li>
+<li>Returning clients can use 0-RTT to send a request immediately, accepting some replay risk.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Google, YouTube, Meta, Cloudflare and all major browsers use QUIC/HTTP3 heavily; mobile app developers and CDN engineers care about it most.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember: QUIC = RFC 9000, runs over UDP, always encrypted with TLS 1.3 (RFC 9001); HTTP/3 = RFC 9114; firewalls that block UDP 443 force browsers back to HTTP/2 over TCP.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>QUIC has long-header packets (Initial, 0-RTT, Handshake, Retry) and short-header 1-RTT packets, with three separate packet-number spaces so handshake and data losses are handled independently.</li>
+<li>To prevent amplification attacks, a server may send at most three times the bytes it received until the client's address is validated, and client Initial packets are padded to 1,200 bytes.</li>
+<li>Most QUIC stacks run in user space (Google's QUICHE, Microsoft MsQuic, ngtcp2, Cloudflare quiche), letting browsers ship improvements quickly but costing more CPU than kernel TCP.</li>
+<li>QUIC carries more than the web: DNS over QUIC (RFC 9250), SMB over QUIC in Windows Server and MASQUE proxy tunnels all reuse the same transport.</li>
+<li>By the mid-2020s roughly a third of websites advertised HTTP/3, and a large share of Google, Meta and Cloudflare traffic travelled over QUIC.</li>
+<li>Because QUIC encrypts its headers, network operators lose TCP-style visibility; an optional 'spin bit' lets passive observers estimate round-trip time without decrypting anything.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming QUIC is unreliable because it runs on UDP; it provides full reliability, per-stream ordering and congestion control itself.</li>
+<li>Using 0-RTT for requests that change state; replayed early data could repeat a payment, so only idempotent requests belong there.</li>
+<li>Blocking UDP 443 and assuming nothing changes; browsers fall back to TCP, but QUIC-only apps and some VPNs simply stop working.</li>
+</ul>
+</div>
+<h3 id="try-it-check-whether-a-site-offers-http3-needs-a-curl-build-with-http3-support">Try it: Check whether a site offers HTTP/3 (needs a curl build with HTTP/3 support)<a class="headerlink" href="#try-it-check-whether-a-site-offers-http3-needs-a-curl-build-with-http3-support" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>curl<span class="w"> </span>-sI<span class="w"> </span>https://cloudflare.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>findstr<span class="w"> </span>/i<span class="w"> </span>alt-svc<span class="w">     </span><span class="c1"># Windows</span>
+curl<span class="w"> </span>-sI<span class="w"> </span>https://cloudflare.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>alt-svc<span class="w">        </span><span class="c1"># Linux/macOS</span>
+curl<span class="w"> </span>--http3<span class="w"> </span>-I<span class="w"> </span>https://cloudflare.com
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_2">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>QUIC</strong><br><em>IETF RFC 9000 (2021) · RFC · Layer 4 · Current</em></td>
+<td>RFC 9000 transport over UDP: long-header packets for the handshake, short-header packets afterwards, numbered streams, connection IDs and per-packet encryption.</td>
+<td>Wireshark decodes a QUIC Initial carrying a TLS ClientHello, then short-header packets whose contents stay encrypted without the session keys.</td>
+</tr>
+<tr>
+<td><strong>QUIC-TLS</strong><br><em>IETF RFC 9001 · RFC · Layer 4 · Current</em></td>
+<td>Defines how TLS 1.3 secures QUIC; encryption is mandatory, there is no plaintext QUIC.</td>
+<td>A packet capture of QUIC shows almost nothing readable beyond the connection ID.</td>
+</tr>
+<tr>
+<td><strong>QUIC loss detection and congestion control</strong><br><em>IETF RFC 9002 · RFC · Layer 4 · Current</em></td>
+<td>Rules for detecting lost QUIC packets and pacing sending, similar in spirit to TCP's algorithms.</td>
+<td>Packet numbers in QUIC never repeat, so a resent frame is never confused with the original.</td>
+</tr>
+<tr>
+<td><strong>QUIC version 2</strong><br><em>IETF RFC 9369 (2023) · RFC · Layer 4 · Current</em></td>
+<td>Functionally identical to v1 but with different constants, to stop middleboxes ossifying around v1 details.</td>
+<td>A server supports both v1 and v2 so clients and networks get used to version negotiation.</td>
+</tr>
+<tr>
+<td><strong>Alt-Svc advertisement</strong><br><em>IETF RFC 7838 · RFC · Layer 7 · Current</em></td>
+<td>HTTP response header telling clients the same site is also reachable via another protocol or endpoint, such as HTTP/3 on UDP 443.</td>
+<td>'alt-svc: h3=":443"; ma=86400' makes Chrome try QUIC for that site for the next 24 hours.</td>
+</tr>
+<tr>
+<td><strong>0-RTT resumption</strong><br><em>IETF RFC 9000 / RFC 9846 (replaced RFC 8446) · Concept · Current</em></td>
+<td>A returning client sends application data in its first flight using keys from a previous session; vulnerable to replay.</td>
+<td>A news app's repeat GET request is sent with 0-RTT; servers allow only safe, idempotent requests this way.</td>
+</tr>
+<tr>
+<td><strong>Connection migration</strong><br><em>IETF RFC 9000 · Concept · Layer 4</em></td>
+<td>QUIC connections are identified by connection IDs, so they survive a change of IP address or port.</td>
+<td>A phone moving from Wi-Fi to 5G continues a video download without reconnecting.</td>
+</tr>
+<tr>
+<td><strong>Head-of-line blocking</strong><br><em>General networking concept · Concept</em></td>
+<td>When one lost packet holds up everything behind it; TCP suffers it across all streams, QUIC only per stream.</td>
+<td>Over HTTP/2 on TCP, one lost packet pauses all 30 images on a page; HTTP/3 pauses just one.</td>
+</tr>
+<tr>
+<td><strong>MPTCP (Multipath TCP)</strong><br><em>IETF RFC 8684 (MPTCP v1, 2020) · RFC · Layer 4 · Current</em></td>
+<td>Extension letting one TCP connection use several paths at once, such as Wi-Fi and cellular, for speed or resilience.</td>
+<td>Apple's Siri and some iOS apps use MPTCP so a request survives leaving Wi-Fi range.</td>
+</tr>
+<tr>
+<td><strong>TCP Fast Open (TFO)</strong><br><em>IETF RFC 7413 (Experimental) · RFC · Layer 4</em></td>
+<td>Lets a returning client place data in its SYN using a server-issued cookie, saving one round trip on repeat connections.</td>
+<td>Linux supports TFO via net.ipv4.tcp_fastopen, but middleboxes dropping unusual SYNs limited deployment, so QUIC 0-RTT largely took over that role.</td>
+</tr>
+<tr>
+<td><strong>SCTP (Stream Control Transmission Protocol)</strong><br><em>IETF RFC 9260 (replaced RFC 4960, 2022) · RFC · Layer 4 · Current</em></td>
+<td>Message-oriented reliable transport with multiple streams and multi-homing, popular in telecom signalling.</td>
+<td>Mobile networks carry Diameter and S1/NG signalling between core nodes over SCTP.</td>
+</tr>
+<tr>
+<td><strong>DCCP (Datagram Congestion Control Protocol)</strong><br><em>IETF RFC 4340 · RFC · Layer 4 · Legacy</em></td>
+<td>Unreliable datagram transport with built-in congestion control; standardised but rarely deployed.</td>
+<td>Mostly seen in research papers and textbooks; Linux even removed its DCCP implementation in 2025.</td>
+</tr>
+<tr>
+<td><strong>QUIC datagrams</strong><br><em>IETF RFC 9221 · RFC · Layer 4 · Current</em></td>
+<td>Extension for sending unreliable but encrypted datagrams inside a QUIC connection.</td>
+<td>A cloud-gaming service sends controller inputs as QUIC datagrams alongside reliable chat streams.</td>
+</tr>
+<tr>
+<td><strong>MASQUE / HTTP/3 proxying</strong><br><em>IETF RFC 9298 (CONNECT-UDP) · Standard · Layer 7 · Emerging</em></td>
+<td>Lets UDP traffic, including QUIC, be tunnelled through HTTP/3 proxies.</td>
+<td>Apple iCloud Private Relay uses MASQUE-style proxying to hide users' IP addresses from websites.</td>
+</tr>
+<tr>
+<td><strong>WebTransport</strong><br><em>IETF WEBTRANS drafts; W3C WebTransport API · Standard · Layer 7 · Emerging</em></td>
+<td>Browser API giving web apps several streams plus unreliable datagrams over HTTP/3; a modern alternative to WebSocket.</td>
+<td>A browser game sends player positions as WebTransport datagrams while chat messages use reliable streams on the same connection.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="44-tcp-congestion-control">4.4 TCP Congestion Control<a class="headerlink" href="#44-tcp-congestion-control" title="Permanent link">&para;</a></h2>
+<p>Congestion control is how a sender decides how fast to send so it does not overload the routers and links in between. TCP starts slowly, speeds up while things go well, and slows down when it sees signs of a traffic jam such as lost packets or delay. Different algorithms (Reno, CUBIC, BBR) make these decisions in different ways.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-04-tcp-congestion-control.svg" alt="Loss-based TCP keeps probing for more bandwidth and backs off on each loss, drawing the classic sawtooth." loading="lazy">
+<figcaption><strong>The TCP congestion-control loop.</strong> Loss-based TCP keeps probing for more bandwidth and backs off on each loss, drawing the classic sawtooth.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like merging onto a motorway: you start gently, speed up while the road is clear, and brake as soon as you see brake lights ahead — so everyone keeps moving instead of gridlocking.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Lena uploads a 500 MB video. Her computer begins with a congestion window of about 10 segments (roughly 14 KB) and doubles it every round trip during slow start: 10, 20, 40, 80... When a packet is lost at 640 segments, it halves the window and then grows it more cautiously. On her flat's busy router, a big buffer makes her video calls lag during the upload — that is bufferbloat, which FQ-CoDel queue management on the router fixes.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Slow start: the congestion window (cwnd) begins small and roughly doubles every round trip.</li>
+<li>When cwnd reaches the slow-start threshold, congestion avoidance grows it about one segment per round trip.</li>
+<li>Three duplicate ACKs signal a single lost packet: fast retransmit resends it and fast recovery halves cwnd instead of restarting.</li>
+<li>A retransmission timeout signals serious congestion: cwnd drops back to a minimum and slow start begins again.</li>
+<li>Modern algorithms (CUBIC, BBR) and ECN marking help fill fast links efficiently while keeping queues short.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Operating system and CDN engineers tune it, ISPs and home-router makers deploy AQM, and anyone troubleshooting slow transfers or laggy calls meets it.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the difference: flow control protects the receiver (receive window); congestion control protects the network (congestion window). The sender uses the smaller of the two.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>The sender may have min(cwnd, rwnd) bytes unacknowledged, so throughput ≈ window ÷ RTT; filling 1 Gbit/s over 80 ms needs about 10 MB in flight (the bandwidth-delay product).</li>
+<li>Loss-based throughput falls with the square root of the loss rate (the Mathis formula), which is why 1% loss on a long-distance path can cripple a single TCP flow.</li>
+<li>CUBIC reduces its window to 70% (β = 0.7) after a loss rather than 50%, and its growth depends on time since the last loss, not RTT, so long paths are treated more fairly.</li>
+<li>BBR cycles through Startup, Drain, ProbeBW and ProbeRTT phases; early BBRv1 could starve CUBIC flows, and BBRv3 adds loss and ECN awareness to coexist better.</li>
+<li>ECN uses two bits in the IP header: ECT(0) or ECT(1) mark capable flows and CE means 'congestion experienced'; L4S uses ECT(1) to signal its scalable congestion response.</li>
+<li>Linux pairs BBR with the 'fq' pacing qdisc; Windows has used CUBIC by default since Windows 10 version 1709, and HyStart++ (RFC 9406) helps slow start exit without overshooting.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking bigger router buffers always help; oversized buffers create bufferbloat and hundreds of milliseconds of lag under load.</li>
+<li>Judging a long-distance link by a single-stream speed test; RTT and window limits cap one flow, so use parallel streams or check window scaling.</li>
+<li>Mixing up the two windows: rwnd is set by the receiver (flow control), cwnd by the sender's view of the network (congestion control).</li>
+</ul>
+</div>
+<h3 id="try-it-see-which-congestion-control-algorithm-your-linux-machine-uses">Try it: See which congestion control algorithm your Linux machine uses<a class="headerlink" href="#try-it-see-which-congestion-control-algorithm-your-linux-machine-uses" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>sysctl<span class="w"> </span>net.ipv4.tcp_congestion_control
+sysctl<span class="w"> </span>net.ipv4.tcp_available_congestion_control
+netsh<span class="w"> </span>int<span class="w"> </span>tcp<span class="w"> </span>show<span class="w"> </span>supplemental<span class="w">    </span><span class="c1"># Windows</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_3">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TCP Congestion Control (core rules)</strong><br><em>IETF RFC 5681 · RFC · Layer 4 · Current</em></td>
+<td>Defines slow start, congestion avoidance, fast retransmit and fast recovery for TCP.</td>
+<td>Every mainstream TCP stack implements these four behaviours as its baseline.</td>
+</tr>
+<tr>
+<td><strong>Congestion window (cwnd)</strong><br><em>IETF RFC 5681 · Concept · Layer 4</em></td>
+<td>Sender-side limit on unacknowledged data in flight, adjusted according to perceived network congestion.</td>
+<td>With cwnd at 100 segments and 1460-byte MSS, about 146 KB can be in flight at once.</td>
+</tr>
+<tr>
+<td><strong>Slow start</strong><br><em>IETF RFC 5681; initial window RFC 6928 · Concept · Layer 4</em></td>
+<td>Exponential growth phase where cwnd roughly doubles each round trip, starting from about 10 segments.</td>
+<td>A new connection reaches about 1,280 segments of window in seven round trips if nothing is lost.</td>
+</tr>
+<tr>
+<td><strong>Congestion avoidance</strong><br><em>IETF RFC 5681 · Concept · Layer 4</em></td>
+<td>Linear growth phase (about one segment per round trip) used once the slow-start threshold is reached.</td>
+<td>After a loss halves cwnd to 320, Reno adds one segment per round trip: 321, 322, 323...</td>
+</tr>
+<tr>
+<td><strong>Fast retransmit and fast recovery</strong><br><em>IETF RFC 5681; NewReno RFC 6582 · Concept · Layer 4</em></td>
+<td>Three duplicate ACKs trigger an immediate resend of the missing segment and a halving, not reset, of cwnd.</td>
+<td>One lost packet on Wi-Fi is resent within one round trip instead of waiting for a 200 ms timeout.</td>
+</tr>
+<tr>
+<td><strong>RACK-TLP loss detection</strong><br><em>IETF RFC 8985 (2021) · RFC · Layer 4 · Current</em></td>
+<td>Time-based loss detection: a packet is presumed lost if a later one is acknowledged well before it; tail loss probes recover lost final segments.</td>
+<td>Linux uses RACK by default, so a lost last segment of a web response is recovered by a probe instead of a long retransmission timeout.</td>
+</tr>
+<tr>
+<td><strong>TCP Reno / NewReno</strong><br><em>IETF RFC 5681 / RFC 6582 · Standard · Layer 4 · Legacy</em></td>
+<td>Classic loss-based algorithm: additive increase, multiplicative decrease (AIMD); the textbook reference model.</td>
+<td>Exam questions on the 'sawtooth' cwnd graph are describing Reno's behaviour.</td>
+</tr>
+<tr>
+<td><strong>CUBIC</strong><br><em>IETF RFC 9438 (2023, replaced RFC 8312) · RFC · Layer 4 · Current</em></td>
+<td>Loss-based algorithm growing cwnd along a cubic curve; default in Linux, Windows and macOS.</td>
+<td>A Linux web server ships with CUBIC unless an administrator changes it.</td>
+</tr>
+<tr>
+<td><strong>BBR (Bottleneck Bandwidth and RTT)</strong><br><em>Google (BBRv1 2016, BBRv3); IETF CCWG draft · Technology · Layer 4 · Emerging</em></td>
+<td>Model-based algorithm that measures bottleneck bandwidth and minimum round-trip time instead of reacting only to loss.</td>
+<td>Google and YouTube use BBR to keep throughput high on lossy long-distance and mobile links.</td>
+</tr>
+<tr>
+<td><strong>DCTCP (Data Center TCP)</strong><br><em>IETF RFC 8257 (Informational) · RFC · Layer 4 · Current</em></td>
+<td>Data-centre algorithm that reacts to the fraction of ECN-marked packets, keeping switch queues tiny while links stay full.</td>
+<td>A cloud operator enables DCTCP inside its server racks so short search queries are not stuck behind bulk backup flows.</td>
+</tr>
+<tr>
+<td><strong>ECN (Explicit Congestion Notification)</strong><br><em>IETF RFC 3168 · RFC · Multi-layer · Current</em></td>
+<td>Routers mark packets in the IP header instead of dropping them, and TCP slows down when it sees the mark.</td>
+<td>A data-centre switch marks packets when its queue fills, so servers slow down without any loss.</td>
+</tr>
+<tr>
+<td><strong>L4S (Low Latency, Low Loss, Scalable throughput)</strong><br><em>IETF RFC 9330-9332 (2023) · RFC · Multi-layer · Emerging</em></td>
+<td>Architecture using fine-grained ECN marking to keep queuing delay around a millisecond for supporting apps.</td>
+<td>Some cable ISPs trial L4S so cloud gaming and video calls stay responsive under load.</td>
+</tr>
+<tr>
+<td><strong>Bufferbloat</strong><br><em>Term popularised by Jim Gettys (2010) · Concept</em></td>
+<td>Excessively large router buffers that fill up and add hundreds of milliseconds of delay under load.</td>
+<td>A home upload makes ping jump from 15 ms to 600 ms because the router's buffer is overfull.</td>
+</tr>
+<tr>
+<td><strong>AQM (Active Queue Management)</strong><br><em>IETF RFC 7567 (recommendations) · Concept</em></td>
+<td>Routers deliberately drop or mark packets early when queues build, signalling senders before delay grows.</td>
+<td>RFC 7567 recommends AQM be widely deployed in routers instead of simple tail-drop queues.</td>
+</tr>
+<tr>
+<td><strong>CoDel</strong><br><em>IETF RFC 8289 · RFC · Current</em></td>
+<td>AQM algorithm that watches how long packets sit in the queue and drops when delay stays above about 5 ms.</td>
+<td>Linux 'tc qdisc add dev eth0 root codel' enables CoDel on an interface.</td>
+</tr>
+<tr>
+<td><strong>FQ-CoDel</strong><br><em>IETF RFC 8290 · RFC · Current</em></td>
+<td>Combines per-flow fair queuing with CoDel, so one big upload cannot add delay to everyone else's traffic.</td>
+<td>OpenWrt routers enable FQ-CoDel/SQM to keep video calls smooth during large downloads.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="45-ports-sockets-well-known-ports-to-memorise">4.5 Ports &amp; Sockets — Well-Known Ports to Memorise<a class="headerlink" href="#45-ports-sockets-well-known-ports-to-memorise" title="Permanent link">&para;</a></h2>
+<p>An IP address gets data to the right computer; a port number (0-65535) gets it to the right program on that computer. A socket is the combination of IP address, port and protocol, and one connection is identified by both ends' sockets. Servers listen on well-known ports so clients know where to knock.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-05-ports-sockets-well-known-ports-to.svg" alt="The IP address picks the machine; the destination port picks the program that receives the data." loading="lazy">
+<figcaption><strong>One server, many listening ports.</strong> The IP address picks the machine; the destination port picks the program that receives the data.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The IP address is a block of flats' street address; the port number is the flat number. The post reaches the building by address, then the right resident by flat number.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Jordan's browser at 192.168.1.20 opens https://example.com, it connects from a random high port such as 52814 to the server's port 443. The full connection is identified by the five-tuple: TCP, 192.168.1.20:52814, 93.184.215.14:443. If Jordan opens a second tab, the browser uses another source port, say 52815, so the two conversations never mix. Firewalls write rules like 'allow TCP 443 inbound' using these numbers.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>A server program binds to a port (e.g. TCP 22 for SSH) and listens.</li>
+<li>A client picks a temporary (ephemeral) source port, usually 49152-65535.</li>
+<li>Each connection is identified by the five-tuple: protocol, source IP, source port, destination IP, destination port.</li>
+<li>The operating system uses the destination port to hand incoming data to the right program.</li>
+<li>Firewalls and NAT devices use ports to permit, block or translate traffic.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every network technician, firewall administrator, penetration tester and certification candidate (CompTIA Network+, Security+, CCNA) needs these numbers.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the ranges: 0-1023 well-known, 1024-49151 registered, 49152-65535 dynamic/ephemeral; and know which protocols use UDP (DNS 53 mostly, DHCP 67/68, NTP 123, SNMP 161/162, TFTP 69).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>More ports worth knowing: 49 TACACS+, 88 Kerberos, 179 BGP, 500/4500 IKE/IPsec, 514 syslog, 1433 SQL Server, 1812/1813 RADIUS, 5432 PostgreSQL, 8080/8443 alternative web.</li>
+<li>Operating systems choose their own ephemeral ranges: Windows uses IANA's 49152-65535, while Linux defaults to 32768-60999 (net.ipv4.ip_local_port_range).</li>
+<li>On Unix-like systems only root, or a process with the CAP_NET_BIND_SERVICE capability, may listen on ports below 1024; that is why app servers often run on 8080.</li>
+<li>nmap reports ports as open (service answered), closed (RST or ICMP unreachable) or filtered (no reply, usually a firewall dropping the probe).</li>
+<li>Ports are only conventions; next-generation firewalls identify applications by inspecting traffic (e.g. Palo Alto App-ID), so SSH on port 443 is still recognised as SSH.</li>
+<li>A client talking to one server IP and port can run out of source ports at high connection rates, a common 'SNAT port exhaustion' problem behind cloud NAT gateways.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Writing firewall rules that match the client's source port; source ports are random, so filter on destination port and direction.</li>
+<li>Mixing up the secure file pairs: SFTP runs on 22 inside SSH, while FTPS is FTP plus TLS on 21 (explicit) or 990 (implicit).</li>
+<li>Thinking moving a service to a non-standard port secures it; scanners find it in seconds, so patch, authenticate and restrict access instead.</li>
+</ul>
+</div>
+<h3 id="try-it-see-which-ports-your-own-computer-is-listening-on">Try it: See which ports your own computer is listening on<a class="headerlink" href="#try-it-see-which-ports-your-own-computer-is-listening-on" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>netstat -ano | findstr LISTENING     # Windows
+ss -tulpn                            # Linux
+Test-NetConnection example.com -Port 443   # PowerShell
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_4">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Port ranges</strong><br><em>IANA; IETF RFC 6335 · Standard · Layer 4</em></td>
+<td>Well-known 0-1023, registered 1024-49151, dynamic/private (ephemeral) 49152-65535.</td>
+<td>SSH listens on 22 (well-known), MySQL on 3306 (registered), and your browser's outgoing connections use 49152+.</td>
+</tr>
+<tr>
+<td><strong>Socket and five-tuple</strong><br><em>General networking concept (Berkeley sockets API) · Concept · Layer 4</em></td>
+<td>Socket = IP + port + protocol; a connection is uniquely identified by protocol plus both ends' IPs and ports.</td>
+<td>TCP 10.0.0.5:51000 to 172.217.16.4:443 is one unique connection among thousands on a NAT router.</td>
+</tr>
+<tr>
+<td><strong>20/21 FTP</strong><br><em>IETF RFC 959 · Protocol · Layer 7 · Legacy</em></td>
+<td>TCP 21 carries FTP commands; TCP 20 carries data in active mode. Unencrypted.</td>
+<td>An old firewall rule 'permit tcp any host 10.1.1.5 eq 21' allows FTP logins to a legacy server.</td>
+</tr>
+<tr>
+<td><strong>22 SSH (also SFTP, SCP)</strong><br><em>IETF RFC 4251-4254 · Protocol · Layer 7 · Current</em></td>
+<td>TCP 22: encrypted remote shell, file transfer (SFTP/SCP) and tunnelling.</td>
+<td>ssh admin@10.0.0.1 connects to a router's command line on TCP 22.</td>
+</tr>
+<tr>
+<td><strong>23 Telnet</strong><br><em>IETF RFC 854 · Protocol · Layer 7 · Legacy</em></td>
+<td>TCP 23: unencrypted remote terminal; passwords travel in clear text.</td>
+<td>Security audits flag any device still answering on TCP 23 as a finding to fix.</td>
+</tr>
+<tr>
+<td><strong>25 SMTP / 587 submission / 465 SMTPS</strong><br><em>IETF RFC 5321, RFC 6409, RFC 8314 · Protocol · Layer 7 · Current</em></td>
+<td>TCP 25 relays mail between servers; 587 (STARTTLS) and 465 (implicit TLS) are for clients submitting mail.</td>
+<td>Outlook sends via smtp.office365.com:587; the server then relays to Gmail's MX on port 25.</td>
+</tr>
+<tr>
+<td><strong>53 DNS</strong><br><em>IETF RFC 1035 · Protocol · Layer 7 · Current</em></td>
+<td>UDP 53 for most queries; TCP 53 for large responses and zone transfers.</td>
+<td>A firewall must allow UDP and TCP 53 to the internal DNS server, or some lookups fail.</td>
+</tr>
+<tr>
+<td><strong>67/68 DHCP</strong><br><em>IETF RFC 2131 · Protocol · Layer 7 · Current</em></td>
+<td>UDP 67 is the DHCP server, UDP 68 the client.</td>
+<td>A Cisco 'ip helper-address' forwards UDP 67 broadcasts from a VLAN to the central DHCP server.</td>
+</tr>
+<tr>
+<td><strong>80 HTTP / 443 HTTPS</strong><br><em>IETF RFC 9110; RFC 9114 for HTTP/3 · Protocol · Layer 7 · Current</em></td>
+<td>TCP 80 for plain web traffic, TCP 443 for HTTPS; UDP 443 also carries HTTP/3 over QUIC.</td>
+<td>A web server redirects http://shop.example on port 80 to https://shop.example on 443.</td>
+</tr>
+<tr>
+<td><strong>110 POP3 / 143 IMAP / 995 POP3S / 993 IMAPS</strong><br><em>IETF RFC 1939, RFC 9051, RFC 8314 · Protocol · Layer 7 · Current</em></td>
+<td>Mail retrieval ports: 110 and 143 plain/STARTTLS, 995 and 993 with implicit TLS (preferred).</td>
+<td>A phone's mail app connects to imap.example.com on TCP 993 to sync folders securely.</td>
+</tr>
+<tr>
+<td><strong>123 NTP</strong><br><em>IETF RFC 5905 · Protocol · Layer 7 · Current</em></td>
+<td>UDP 123: clock synchronisation.</td>
+<td>Windows syncs to time.windows.com over UDP 123.</td>
+</tr>
+<tr>
+<td><strong>161/162 SNMP</strong><br><em>IETF RFC 3411-3418 (SNMPv3) · Protocol · Layer 7 · Current</em></td>
+<td>UDP 161 for manager queries to agents, UDP 162 for traps sent from devices to the manager.</td>
+<td>A monitoring server polls a switch's interface counters on UDP 161 every five minutes.</td>
+</tr>
+<tr>
+<td><strong>389 LDAP / 636 LDAPS</strong><br><em>IETF RFC 4511 · Protocol · Layer 7 · Current</em></td>
+<td>TCP 389 for directory queries (with StartTLS), TCP 636 for LDAP over TLS.</td>
+<td>A Wi-Fi controller checks users against Active Directory via LDAPS on 636.</td>
+</tr>
+<tr>
+<td><strong>445 SMB</strong><br><em>Microsoft [MS-SMB2] · Protocol · Layer 7 · Current</em></td>
+<td>TCP 445: Windows file and printer sharing; should never be exposed to the internet.</td>
+<td>The 2017 WannaCry worm spread through exposed SMBv1 on port 445.</td>
+</tr>
+<tr>
+<td><strong>3389 RDP / 3306 MySQL</strong><br><em>Microsoft [MS-RDPBCGR]; Oracle (MySQL) · Protocol · Layer 7 · Current</em></td>
+<td>TCP 3389 for Windows Remote Desktop; TCP 3306 for MySQL/MariaDB databases.</td>
+<td>A web app connects to db01:3306; admins reach Windows servers over RDP on 3389 via a VPN.</td>
+</tr>
+<tr>
+<td><strong>5060/5061 SIP</strong><br><em>IETF RFC 3261 · Protocol · Layer 7 · Current</em></td>
+<td>5060 (UDP/TCP) for SIP call signalling, 5061 for SIP over TLS.</td>
+<td>An office IP phone registers with the PBX on 5061 to make encrypted call setups.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="46-dns-the-internets-phonebook">4.6 DNS — The Internet's Phonebook<a class="headerlink" href="#46-dns-the-internets-phonebook" title="Permanent link">&para;</a></h2>
+<p>DNS (Domain Name System) turns names people remember, like example.com, into IP addresses computers use, like 93.184.215.14. It is a huge distributed database split across millions of servers worldwide. Answers are cached for a set time (TTL) so lookups are usually instant.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-06-dns-the-internet-s-phonebook.svg" alt="Root and TLD servers only give referrals; the authoritative server gives the answer, which the resolver caches for its TTL." loading="lazy">
+<figcaption><strong>Recursive resolution of www.example.org.</strong> Root and TLD servers only give referrals; the authoritative server gives the answer, which the resolver caches for its TTL.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>DNS is the contacts app of the internet: you tap a name, and it quietly looks up the number to dial.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Mia types www.example.org. Her laptop asks its configured resolver (say 1.1.1.1). If the resolver has no cached answer, it asks a root server, which points to the .org TLD servers; those point to example.org's authoritative servers, which return the A record 96.7.128.198 with a TTL of 300 seconds. The resolver gives Mia the answer and remembers it for 5 minutes, so her flatmate's lookup a minute later is answered from cache instantly.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Your device's stub resolver asks a recursive resolver (ISP, company DNS, or public such as 1.1.1.1 / 8.8.8.8).</li>
+<li>The resolver checks its cache; if empty, it asks a root server for the right top-level domain (TLD) servers.</li>
+<li>The TLD server (.com, .org, .uk...) refers it to the domain's authoritative name servers.</li>
+<li>The authoritative server returns the record (e.g. A or AAAA) with a TTL.</li>
+<li>The resolver caches the answer for the TTL and returns it to your device.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every internet user relies on it; system administrators manage DNS zones, and security teams watch DNS logs for malware and phishing.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the record types cold: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), NS (name servers), PTR (reverse), SOA (zone info), TXT (text, e.g. SPF), SRV (service location) — and 'it's always DNS' when something odd breaks.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Classic DNS over UDP was limited to 512 bytes; EDNS(0) (RFC 6891) allows bigger answers, operators now advertise 1,232-byte buffers, and a truncated (TC) reply makes the client retry over TCP 53.</li>
+<li>Zone transfers copy a zone from primary to secondary servers over TCP 53: AXFR sends everything, IXFR only changes; restrict them by IP and sign them with TSIG keys.</li>
+<li>Failed lookups are cached too: negative caching (RFC 2308) uses the zone's SOA minimum value, so a mistyped record can stay 'not found' for minutes after you fix it.</li>
+<li>The 13 root identities a-m are run by 12 organisations and served from well over 1,500 anycast instances worldwide; root zone changes are coordinated by IANA.</li>
+<li>DNSSEC adds DNSKEY, RRSIG, DS and NSEC/NSEC3 records; resolvers validate a chain of trust from the root key-signing key, which was rolled over for the first time in 2018.</li>
+<li>Attacks to know: cache poisoning (the 2008 Kaminsky flaw, mitigated by source-port randomisation), DNS tunnelling for data theft, and malware using algorithmically generated domains.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Placing a CNAME at the zone apex (example.com) next to SOA and NS records; use provider ALIAS/ANAME features or plain A/AAAA records instead.</li>
+<li>Expecting record changes to apply instantly; resolvers keep old answers until the TTL expires, so lower the TTL a day before migrations.</li>
+<li>Forgetting reverse DNS: mail servers and some logging tools reject or mislabel hosts whose PTR record is missing or mismatched.</li>
+</ul>
+</div>
+<h3 id="try-it-look-up-different-dns-record-types">Try it: Look up different DNS record types<a class="headerlink" href="#try-it-look-up-different-dns-record-types" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>nslookup<span class="w"> </span>-type<span class="o">=</span>MX<span class="w"> </span>gmail.com
+dig<span class="w"> </span>example.com<span class="w"> </span>A<span class="w"> </span>+short
+dig<span class="w"> </span>example.com<span class="w"> </span>AAAA
+dig<span class="w"> </span>-x<span class="w"> </span><span class="m">8</span>.8.8.8<span class="w">          </span><span class="c1"># reverse (PTR) lookup</span>
+dig<span class="w"> </span>+trace<span class="w"> </span>example.com<span class="w">   </span><span class="c1"># follow root -&gt; TLD -&gt; authoritative</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_5">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DNS message header &amp; response codes</strong><br><em>IETF RFC 1035; RFC 6895 (registries) · Concept · Layer 7 · Current</em></td>
+<td>Every query and reply carries a 16-bit ID, flags (QR, AA, TC, RD, RA, AD) and an RCODE such as NOERROR, NXDOMAIN, SERVFAIL or REFUSED.</td>
+<td>dig shows 'status: NXDOMAIN, flags: qr rd ra' for a mistyped name: the resolver worked, but the name does not exist.</td>
+</tr>
+<tr>
+<td><strong>Recursive resolver</strong><br><em>ISPs; public resolvers (Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9 9.9.9.9) · Service · Layer 7</em></td>
+<td>Server that does the full lookup on your behalf and caches answers.</td>
+<td>A school configures its network so all students' devices use a filtering resolver.</td>
+</tr>
+<tr>
+<td><strong>Root, TLD and authoritative servers</strong><br><em>IANA/ICANN; root operators; registries · Concept · Layer 7</em></td>
+<td>13 named root server identities (a-m) point to TLD servers, which point to the domain's authoritative servers.</td>
+<td>The 13 root identities are served from well over a thousand anycast sites worldwide.</td>
+</tr>
+<tr>
+<td><strong>A and AAAA records</strong><br><em>IETF RFC 1035; AAAA RFC 3596 · Concept · Layer 7</em></td>
+<td>A maps a name to an IPv4 address; AAAA maps it to an IPv6 address.</td>
+<td>www.example.com has an A record 93.184.215.14 and an AAAA record 2606:2800:21f:cb07:6820:80da:af6b:8b2c.</td>
+</tr>
+<tr>
+<td><strong>CNAME record</strong><br><em>IETF RFC 1035 · Concept · Layer 7</em></td>
+<td>Alias pointing one name to another canonical name; cannot sit at the zone apex alongside other records.</td>
+<td>shop.example.com is a CNAME to example.myshopify.com, so the platform can change IPs freely.</td>
+</tr>
+<tr>
+<td><strong>MX record</strong><br><em>IETF RFC 1035; RFC 5321 · Concept · Layer 7</em></td>
+<td>Lists the mail servers for a domain, with preference numbers (lower = tried first).</td>
+<td>example.com MX 10 mx1.example.com and MX 20 mx2.example.com give a primary and a backup.</td>
+</tr>
+<tr>
+<td><strong>NS and SOA records</strong><br><em>IETF RFC 1035 · Concept · Layer 7</em></td>
+<td>NS names a zone's authoritative servers; SOA holds the zone's primary server, admin contact, serial number and timers.</td>
+<td>After editing a zone file, an admin increments the SOA serial so secondary servers pull the change.</td>
+</tr>
+<tr>
+<td><strong>PTR record (reverse DNS)</strong><br><em>IETF RFC 1035 · Concept · Layer 7</em></td>
+<td>Maps an IP address back to a name, using in-addr.arpa (IPv4) or ip6.arpa (IPv6).</td>
+<td>Mail servers check that the sending IP's PTR record matches its hostname before accepting mail.</td>
+</tr>
+<tr>
+<td><strong>TXT record</strong><br><em>IETF RFC 1035 · Concept · Layer 7</em></td>
+<td>Free-text record used for domain verification and email security policies (SPF, DKIM, DMARC).</td>
+<td>'v=spf1 include:_spf.google.com -all' tells receivers which servers may send example.com mail.</td>
+</tr>
+<tr>
+<td><strong>SRV record</strong><br><em>IETF RFC 2782 · Concept · Layer 7</em></td>
+<td>Gives the host and port for a named service, with priority and weight.</td>
+<td>_ldap._tcp.corp.example.com SRV records help Windows PCs find Active Directory domain controllers.</td>
+</tr>
+<tr>
+<td><strong>CAA record</strong><br><em>IETF RFC 8659 · Concept · Layer 7</em></td>
+<td>States which certificate authorities may issue TLS certificates for a domain.</td>
+<td>example.com CAA 0 issue "letsencrypt.org" stops other CAs from issuing certificates for it.</td>
+</tr>
+<tr>
+<td><strong>SVCB and HTTPS records</strong><br><em>IETF RFC 9460 (2023) · RFC · Layer 7 · Current</em></td>
+<td>Records advertising how to connect to a service: supported protocols such as h3, alternative endpoints, ports and Encrypted Client Hello keys.</td>
+<td>'dig example.com HTTPS' returning 'alpn="h2,h3"' lets a browser try QUIC on its very first visit.</td>
+</tr>
+<tr>
+<td><strong>TTL and caching</strong><br><em>IETF RFC 1035 · Concept · Layer 7</em></td>
+<td>Time To Live tells resolvers how many seconds they may cache an answer.</td>
+<td>Before migrating a website, an admin lowers the A record's TTL from 86400 to 300 to speed the switchover.</td>
+</tr>
+<tr>
+<td><strong>DoT and DoH (encrypted DNS)</strong><br><em>IETF RFC 7858 (DoT, TCP 853); RFC 8484 (DoH, HTTPS 443); RFC 9250 (DoQ) · RFC · Layer 7 · Current</em></td>
+<td>Encrypt DNS queries between client and resolver so others on the network cannot read or alter them.</td>
+<td>Firefox and Android Private DNS send lookups encrypted to a chosen resolver.</td>
+</tr>
+<tr>
+<td><strong>DNSSEC</strong><br><em>IETF RFC 4033-4035; BCP RFC 9364 · RFC · Layer 7 · Current</em></td>
+<td>Adds digital signatures to DNS records so resolvers can verify answers are genuine and unmodified.</td>
+<td>A validating resolver rejects a forged answer for a signed bank domain, returning SERVFAIL.</td>
+</tr>
+<tr>
+<td><strong>dig / nslookup</strong><br><em>ISC BIND (dig); Microsoft and others (nslookup) · Tool</em></td>
+<td>Command-line tools to query DNS servers and inspect records.</td>
+<td>'dig @8.8.8.8 example.com MX' asks Google's resolver directly for example.com's mail servers.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="47-dhcp-automatic-addressing">4.7 DHCP — Automatic Addressing<a class="headerlink" href="#47-dhcp-automatic-addressing" title="Permanent link">&para;</a></h2>
+<p>DHCP (Dynamic Host Configuration Protocol) automatically gives devices an IP address and the other settings they need to join a network, such as the default gateway and DNS servers. The address is lent for a fixed time called a lease. Without DHCP, someone would have to type settings into every phone and laptop by hand.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-07-dhcp-automatic-addressing.svg" alt="The router turns the client&#x27;s broadcasts into unicasts and adds giaddr, which tells the server which scope to use." loading="lazy">
+<figcaption><strong>DORA through a DHCP relay.</strong> The router turns the client&#x27;s broadcasts into unicasts and adds giaddr, which tells the server which scope to use.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>DHCP is like a hotel reception desk: you arrive, ask for a room, get a key card that works until checkout, and are told where breakfast and the lifts are.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Omar's laptop joins the café Wi-Fi, it broadcasts a DHCP Discover. The router answers with an Offer of 192.168.10.57, Omar's laptop Requests it, and the router Acknowledges with a 24-hour lease, gateway 192.168.10.1 and DNS 1.1.1.1. Halfway through the lease (after 12 hours), the laptop quietly asks to renew. If the DHCP server is unreachable, Windows falls back to a 169.254.x.x address — a classic sign that DHCP has failed.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Discover: the client broadcasts from 0.0.0.0 to 255.255.255.255 on UDP 67 asking for a server.</li>
+<li>Offer: a server proposes an IP address from its scope plus options.</li>
+<li>Request: the client broadcasts that it accepts that offer (informing other servers too).</li>
+<li>Acknowledge: the server confirms; the client configures the address for the lease time.</li>
+<li>Renew: at 50% of the lease (T1) the client renews directly with the server; at 87.5% (T2) it tries any server.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every home router, office network and mobile hotspot runs DHCP; network admins manage scopes and reservations in Windows Server, Cisco IOS or Infoblox.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember DORA (Discover, Offer, Request, Acknowledge), UDP ports 67 (server) and 68 (client), and that a 169.254.x.x (APIPA) address means DHCP failed.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Option 53 carries the message type: 1 DISCOVER, 2 OFFER, 3 REQUEST, 4 DECLINE, 5 ACK, 6 NAK, 7 RELEASE, 8 INFORM.</li>
+<li>Many servers ping an address before offering it, and clients may ARP-probe it after the ACK, sending DECLINE if another device answers.</li>
+<li>The relay's giaddr (gateway address) field picks the scope for the client's subnet, and option 82 adds the switch and port the request came from.</li>
+<li>DHCPv6 identifies clients by a DUID rather than a MAC, sends Solicit/Advertise/Request/Reply via multicast ff02::1:2, and never supplies the default gateway, which comes from RAs.</li>
+<li>Common servers: Windows Server DHCP, ISC Kea (successor to ISC DHCP, which reached end of life in 2022), dnsmasq on small routers, and Infoblox or EfficientIP in large enterprises.</li>
+<li>Short leases (1-4 hours) recycle addresses quickly on guest Wi-Fi; long leases (days) cut traffic and keep addresses stable on wired office networks.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Creating a new VLAN and forgetting the 'ip helper-address' on its gateway interface, so every client falls back to 169.254.x.x.</li>
+<li>Giving devices static addresses inside the DHCP pool; exclude that range or use reservations to avoid address conflicts.</li>
+<li>Expecting DHCPv6 to hand out the IPv6 default gateway; hosts learn it only from Router Advertisements.</li>
+<li>Running two DHCP servers with overlapping scopes and no failover, so they hand out the same addresses twice.</li>
+</ul>
+</div>
+<h3 id="try-it-see-and-renew-your-own-dhcp-lease">Try it: See and renew your own DHCP lease<a class="headerlink" href="#try-it-see-and-renew-your-own-dhcp-lease" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>ipconfig<span class="w"> </span>/all<span class="w">          </span><span class="c1"># Windows: shows DHCP server and lease times</span>
+ipconfig<span class="w"> </span>/release
+ipconfig<span class="w"> </span>/renew
+sudo<span class="w"> </span>dhclient<span class="w"> </span>-v<span class="w"> </span>eth0<span class="w">   </span><span class="c1"># Linux (or: nmcli device show)</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_6">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DHCPv4</strong><br><em>IETF RFC 2131; options RFC 2132 · RFC · Layer 7 · Current</em></td>
+<td>Protocol that automatically assigns IPv4 addresses and settings to clients over UDP 67/68.</td>
+<td>A home router hands out 192.168.1.100-199 to phones, TVs and laptops.</td>
+</tr>
+<tr>
+<td><strong>DORA process</strong><br><em>IETF RFC 2131 · Concept · Layer 7</em></td>
+<td>Discover, Offer, Request, Acknowledge — the four messages that give a client its address.</td>
+<td>Wireshark filter 'dhcp' on a new laptop shows exactly four packets: D, O, R, A.</td>
+</tr>
+<tr>
+<td><strong>DHCP message types</strong><br><em>IETF RFC 2132 (option 53) · Standard · Layer 7 · Current</em></td>
+<td>Besides DORA: DECLINE (offered address already in use), NAK (request refused), RELEASE (address returned) and INFORM (options only).</td>
+<td>A laptop moved to another VLAN asks for its old address, receives a NAK, and restarts with a fresh DISCOVER.</td>
+</tr>
+<tr>
+<td><strong>Lease</strong><br><em>IETF RFC 2131 · Concept</em></td>
+<td>Time-limited loan of an address; clients renew at T1 (50%) and rebind at T2 (87.5%).</td>
+<td>Windows Server's default lease is 8 days; busy guest Wi-Fi often uses 1-4 hours.</td>
+</tr>
+<tr>
+<td><strong>Scope (pool)</strong><br><em>Vendor term (Microsoft, Cisco) · Concept</em></td>
+<td>Range of addresses a DHCP server hands out for one subnet, plus exclusions.</td>
+<td>Scope 10.20.0.0/24 offers .50-.250, excluding .1-.49 for routers, printers and servers.</td>
+</tr>
+<tr>
+<td><strong>Reservation</strong><br><em>Vendor term · Concept</em></td>
+<td>Always gives the same IP address to a specific device, matched by its MAC address.</td>
+<td>The office printer with MAC 00:1A:2B:3C:4D:5E always receives 10.20.0.20.</td>
+</tr>
+<tr>
+<td><strong>Option 3 — Router (default gateway)</strong><br><em>IETF RFC 2132 · Standard</em></td>
+<td>Tells clients the IP address of their default gateway.</td>
+<td>Option 3 = 192.168.1.1 lets every client reach the internet through the home router.</td>
+</tr>
+<tr>
+<td><strong>Option 6 — DNS servers; Option 15 — domain name</strong><br><em>IETF RFC 2132 · Standard</em></td>
+<td>Tell clients which DNS servers to use and the default domain suffix.</td>
+<td>Option 6 = 10.0.0.10, 10.0.0.11 points company PCs at internal DNS servers.</td>
+</tr>
+<tr>
+<td><strong>Options 66/67 — TFTP server and boot file</strong><br><em>IETF RFC 2132 · Standard</em></td>
+<td>Tell network-booting devices and IP phones where to download their boot or configuration file.</td>
+<td>IP phones read option 66 to find the TFTP server holding their configuration.</td>
+</tr>
+<tr>
+<td><strong>DHCP relay agent / ip helper-address</strong><br><em>IETF RFC 2131/1542; Cisco IOS command · Concept · Layer 3</em></td>
+<td>A router forwards DHCP broadcasts from a local subnet as unicast to a central DHCP server.</td>
+<td>interface Vlan20 / ip helper-address 10.0.0.5 lets VLAN 20 clients use the data-centre DHCP server.</td>
+</tr>
+<tr>
+<td><strong>Option 82 — Relay Agent Information</strong><br><em>IETF RFC 3046 · RFC · Current</em></td>
+<td>Relay inserts the switch port or circuit a request came from, so the server can apply policy.</td>
+<td>An ISP uses option 82 to tie an address to a specific customer's DSL line.</td>
+</tr>
+<tr>
+<td><strong>DHCPv6</strong><br><em>IETF RFC 9915 (2026; replaced RFC 8415 from 2018) · RFC · Layer 7 · Current</em></td>
+<td>IPv6 version using UDP 546 (client) and 547 (server); messages Solicit, Advertise, Request, Reply.</td>
+<td>An ISP's router requests a /56 prefix from the ISP with DHCPv6 prefix delegation.</td>
+</tr>
+<tr>
+<td><strong>Router Advertisement M and O flags</strong><br><em>IETF RFC 4861; DNS in RAs RFC 8106 · RFC · Layer 3 · Current</em></td>
+<td>Flags telling IPv6 hosts how to configure: M=1 use stateful DHCPv6 for addresses; O=1 fetch only options such as DNS from DHCPv6.</td>
+<td>With M=0 and O=1, laptops build addresses by SLAAC but learn the company DNS servers from stateless DHCPv6.</td>
+</tr>
+<tr>
+<td><strong>DHCP snooping</strong><br><em>Switch vendors (Cisco, Juniper, Aruba) · Technology · Layer 2</em></td>
+<td>Switch feature that only trusts DHCP offers from authorised ports, blocking rogue DHCP servers.</td>
+<td>'ip dhcp snooping vlan 10' stops a student's home router from handing out wrong addresses.</td>
+</tr>
+<tr>
+<td><strong>DHCP failover</strong><br><em>Microsoft DHCP failover; ISC Kea High Availability · Technology · Layer 7 · Current</em></td>
+<td>Two servers share a scope's lease database in load-balance or hot-standby mode so addressing continues if one server fails.</td>
+<td>Windows Server DHCP failover splits clients 50/50 between two servers that replicate every new lease to each other.</td>
+</tr>
+<tr>
+<td><strong>DHCP starvation attack</strong><br><em>Attack technique (e.g. Yersinia tool) · Concept · Layer 2</em></td>
+<td>An attacker requests leases with thousands of fake MAC addresses to exhaust the pool, often before starting a rogue DHCP server.</td>
+<td>Port security limiting MACs per port, plus DHCP snooping rate limits, stops a starvation attack in a university lab.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="48-the-web-http-https-apis">4.8 The Web: HTTP, HTTPS &amp; APIs<a class="headerlink" href="#48-the-web-http-https-apis" title="Permanent link">&para;</a></h2>
+<p>HTTP (Hypertext Transfer Protocol) is the request-and-response language browsers and apps use to fetch web pages, images and data. A client sends a request such as 'GET this page', and the server replies with a status code and content. HTTPS is the same thing wrapped in TLS encryption so nobody in between can read or change it.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-08-the-web-http-https-apis.svg" alt="The meaning of HTTP has barely changed; each version changed how messages travel on the wire." loading="lazy">
+<figcaption><strong>HTTP through the years.</strong> The meaning of HTTP has barely changed; each version changed how messages travel on the wire.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>HTTP is like ordering at a restaurant counter: you ask for a specific item (request), and the server brings it with a note — 'here you go' (200), 'we moved it next door' (301) or 'we don't have that' (404).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Chloe visits https://shop.example/basket, her browser looks up the name in DNS, opens a TLS 1.3 connection to port 443, and sends 'GET /basket' with a cookie identifying her session. The server replies '200 OK' with HTML, then the browser fetches CSS, scripts and images — often from a CDN close to her. Clicking 'Pay' sends a POST request to a REST API, which replies '201 Created' with JSON describing the order.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Resolve the name with DNS, then open a connection (TCP + TLS, or QUIC for HTTP/3).</li>
+<li>Send a request: method (GET, POST...), path, headers (Host, cookies, accepted formats) and optional body.</li>
+<li>Server processes it and returns a status code, response headers and a body (HTML, JSON, image...).</li>
+<li>Browser caches content as the headers allow and fetches further resources.</li>
+<li>The connection is reused for more requests (keep-alive, HTTP/2 or HTTP/3 multiplexing).</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Web developers, API engineers, DevOps and security testers work with HTTP daily; everyone using a browser or app relies on it.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know status code classes: 1xx informational, 2xx success, 3xx redirection, 4xx client error, 5xx server error — plus the core RFCs 9110 (semantics), 9112 (HTTP/1.1), 9113 (HTTP/2), 9114 (HTTP/3).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>HTTP/2 splits messages into frames on numbered streams over one TCP connection and compresses headers with HPACK; the protocol (h2 or http/1.1) is chosen by ALPN inside the TLS handshake.</li>
+<li>Safe methods (GET, HEAD, OPTIONS) change nothing; idempotent methods (also PUT and DELETE) can be retried safely, but POST may create duplicates if repeated.</li>
+<li>Redirect nuances: 301/308 are permanent and 302/307 temporary; 307 and 308 guarantee the method and body are kept, which matters for API POSTs.</li>
+<li>HSTS (RFC 6797) tells browsers to use only HTTPS for a domain; preload lists build this into browsers so even the first visit never uses plain HTTP.</li>
+<li>Certificate lifetimes are shrinking under CA/Browser Forum rules: 200 days from March 2026, 100 days from 2027 and 47 days by 2029, making ACME automation essential.</li>
+<li>Behind most sites sit reverse proxies and load balancers (NGINX, HAProxy, Envoy, cloud ALBs) that terminate TLS, route by path or host and add headers such as X-Forwarded-For.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Believing HTTPS hides which site you visit; the domain is still visible via DNS and the TLS SNI unless encrypted DNS and Encrypted Client Hello are used.</li>
+<li>Mixing up 401 and 403: 401 means 'authenticate first', 403 means 'you are known but not allowed'.</li>
+<li>Keeping HTTP/1.1-era tricks like domain sharding on HTTP/2 or HTTP/3; extra connections defeat multiplexing and slow pages down.</li>
+</ul>
+</div>
+<h3 id="try-it-inspect-http-requests-responses-and-headers">Try it: Inspect HTTP requests, responses and headers<a class="headerlink" href="#try-it-inspect-http-requests-responses-and-headers" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>curl<span class="w"> </span>-I<span class="w"> </span>https://example.com<span class="w">            </span><span class="c1"># headers only</span>
+curl<span class="w"> </span>-v<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>NUL<span class="w">      </span><span class="c1"># Windows: full exchange incl. TLS</span>
+curl<span class="w"> </span>-s<span class="w"> </span>https://httpbin.org/get<span class="w">        </span><span class="c1"># see your own request echoed as JSON</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_7">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTTP Semantics</strong><br><em>IETF RFC 9110 (2022) · RFC · Layer 7 · Current</em></td>
+<td>Defines what all HTTP versions share: methods, status codes, headers and URIs.</td>
+<td>Whether over HTTP/1.1 or HTTP/3, '404 Not Found' means the same thing per RFC 9110.</td>
+</tr>
+<tr>
+<td><strong>URI / URL structure</strong><br><em>IETF RFC 3986 · RFC · Layer 7 · Current</em></td>
+<td>scheme://host:port/path?query#fragment: how web resources are named; the fragment is never sent to the server.</td>
+<td>In https://shop.example:8443/basket?id=7#top the port is 8443, the query is id=7, and '#top' stays inside the browser.</td>
+</tr>
+<tr>
+<td><strong>HTTP/1.1</strong><br><em>IETF RFC 9112 (replaced RFC 7230/2616) · RFC · Layer 7 · Current</em></td>
+<td>Text-based HTTP over TCP, one request at a time per connection; still widely used.</td>
+<td>'GET /index.html HTTP/1.1' followed by 'Host: example.com' is a complete minimal request.</td>
+</tr>
+<tr>
+<td><strong>HTTP/2</strong><br><em>IETF RFC 9113 (replaced RFC 7540) · RFC · Layer 7 · Current</em></td>
+<td>Binary framing that multiplexes many requests over one TCP connection, with HPACK header compression.</td>
+<td>A page with 80 images loads over a single HTTP/2 connection instead of six parallel HTTP/1.1 ones.</td>
+</tr>
+<tr>
+<td><strong>HTTP/3</strong><br><em>IETF RFC 9114 · RFC · Layer 7 · Current</em></td>
+<td>HTTP over QUIC on UDP, avoiding TCP head-of-line blocking and enabling faster connection setup.</td>
+<td>DevTools shows protocol 'h3' for a site's images; if a firewall blocks UDP 443 the browser quietly falls back to HTTP/2 over TCP.</td>
+</tr>
+<tr>
+<td><strong>HTTP methods</strong><br><em>IETF RFC 9110; PATCH RFC 5789 · Concept · Layer 7</em></td>
+<td>GET (read), POST (create/submit), PUT (replace), PATCH (modify), DELETE (remove), HEAD, OPTIONS.</td>
+<td>A to-do app sends DELETE /tasks/42 when you remove task 42.</td>
+</tr>
+<tr>
+<td><strong>Status codes</strong><br><em>IETF RFC 9110; 429 in RFC 6585 · Concept · Layer 7</em></td>
+<td>200 OK, 201 Created, 301/302 redirect, 304 Not Modified, 401, 403, 404, 429, 500, 502, 503.</td>
+<td>A load balancer returns 502 Bad Gateway when the application server behind it has crashed.</td>
+</tr>
+<tr>
+<td><strong>Headers</strong><br><em>IETF RFC 9110 · Concept · Layer 7</em></td>
+<td>Name-value metadata on requests and responses, such as Host, Content-Type, Cache-Control and Authorization.</td>
+<td>'Cache-Control: max-age=3600' lets the browser reuse a logo for an hour without asking again.</td>
+</tr>
+<tr>
+<td><strong>Conditional requests (ETag, 304)</strong><br><em>IETF RFC 9110; caching RFC 9111 · RFC · Layer 7 · Current</em></td>
+<td>Validators such as ETag and Last-Modified let clients ask 'has this changed?'; unchanged resources return 304 with no body.</td>
+<td>A browser sends If-None-Match: "v42" for style.css and receives 304 Not Modified, skipping a 200 KB download.</td>
+</tr>
+<tr>
+<td><strong>Cookies</strong><br><em>IETF RFC 6265 (update RFC 6265bis in final stages) · RFC · Layer 7 · Current</em></td>
+<td>Small pieces of data a server asks the browser to store and send back, used for sessions and preferences.</td>
+<td>'Set-Cookie: session=ab12; Secure; HttpOnly; SameSite=Lax' keeps a shopper logged in safely.</td>
+</tr>
+<tr>
+<td><strong>HTTPS and TLS 1.3</strong><br><em>IETF RFC 9846 (TLS 1.3, 2026; replaced RFC 8446); HTTPS RFC 9110 · RFC · Multi-layer · Current</em></td>
+<td>TLS encrypts and authenticates HTTP with certificates; TLS 1.3 needs just one round trip to set up.</td>
+<td>The padlock in the browser shows a certificate for shop.example issued by Let's Encrypt.</td>
+</tr>
+<tr>
+<td><strong>REST APIs</strong><br><em>Roy Fielding (2000 dissertation) · Concept · Layer 7</em></td>
+<td>Architectural style using URLs for resources and HTTP methods for actions, usually exchanging JSON.</td>
+<td>GET https://api.weather.example/v1/cities/paris returns today's Paris forecast as JSON.</td>
+</tr>
+<tr>
+<td><strong>WebSocket</strong><br><em>IETF RFC 6455 (2011) · RFC · Layer 7 · Current</em></td>
+<td>Upgrades an HTTP connection to a two-way channel for real-time messages in both directions.</td>
+<td>A live football-score page receives goal updates instantly over a WebSocket.</td>
+</tr>
+<tr>
+<td><strong>gRPC</strong><br><em>Google, now a CNCF project · Software · Layer 7 · Current</em></td>
+<td>High-performance remote procedure call framework running over HTTP/2 with Protocol Buffers messages.</td>
+<td>Microservices in a streaming company call each other's 'GetUserProfile' function via gRPC.</td>
+</tr>
+<tr>
+<td><strong>CDN caching</strong><br><em>Providers such as Cloudflare, Akamai, Fastly, Amazon CloudFront · Service · Layer 7</em></td>
+<td>Copies of content cached on servers near users to cut latency and offload the origin server.</td>
+<td>A UK visitor gets a US shop's product images from a London CDN node in 10 ms.</td>
+</tr>
+<tr>
+<td><strong>Browser developer tools (Network tab)</strong><br><em>Chrome, Firefox, Edge, Safari · Tool</em></td>
+<td>Built-in panel showing every request, status code, header, timing and protocol version.</td>
+<td>Pressing F12 and reloading shows which requests used h2 or h3 and which returned 404.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="49-email-protocols">4.9 Email Protocols<a class="headerlink" href="#49-email-protocols" title="Permanent link">&para;</a></h2>
+<p>Email uses several protocols working together. SMTP sends and relays messages between servers, while IMAP or POP3 lets your app fetch them from your mailbox. DNS MX records tell servers where to deliver, and SPF, DKIM and DMARC help prove a message really came from who it claims.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-09-email-protocols.svg" alt="SMTP pushes the message server to server; IMAP or POP3 only pulls it from the final mailbox." loading="lazy">
+<figcaption><strong>Journey of an email.</strong> SMTP pushes the message server to server; IMAP or POP3 only pulls it from the final mailbox.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>SMTP is the postal van network carrying letters between sorting offices; IMAP is your PO box you can check from any branch, while POP3 is collecting your letters and taking them home.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Aisha at contoso.example sends an email to Ben at fabrikam.example. Her mail app submits it to her provider over port 587 with STARTTLS. Her provider looks up fabrikam.example's MX record, connects to that server on port 25, and the receiving server checks SPF, DKIM and DMARC before accepting it. Ben's phone and laptop both see the message because they sync his mailbox over IMAP on port 993.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The mail client submits the message to its outgoing server (port 587 STARTTLS or 465 implicit TLS) after logging in.</li>
+<li>The sending server looks up the recipient domain's MX record in DNS.</li>
+<li>It relays the message via SMTP on port 25 to the recipient's mail server, ideally with TLS.</li>
+<li>The receiving server checks SPF, DKIM and DMARC, filters spam, and stores the message in the mailbox.</li>
+<li>The recipient's client fetches it with IMAP (synced, stays on server) or POP3 (downloaded).</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Email administrators, Microsoft 365 / Google Workspace admins, and security teams fighting phishing work with these daily.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>SMTP sends (25 relay, 587 submission, 465 implicit-TLS submission); IMAP (143/993) and POP3 (110/995) retrieve — never mix up which direction each protocol works.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>SMTP replies use three-digit codes: 250 OK, 354 start data, 4xx temporary failure (retry later, e.g. greylisting), 5xx permanent failure that triggers a bounce message (NDR).</li>
+<li>Every email has two 'from' addresses: the envelope MAIL FROM used by SPF and bounces, and the header From the user sees; DMARC requires SPF or DKIM to align with the header From.</li>
+<li>DKIM keys are typically 2048-bit RSA, with Ed25519 also standardised (RFC 8463); selectors let a domain rotate keys or use several mail providers at once.</li>
+<li>Most ISPs and cloud providers block outbound port 25 from customer machines to stop spam bots, which is why clients must submit via 587 or 465.</li>
+<li>Server-to-server TLS is opportunistic by default; MTA-STS or DANE (RFC 7672) make it mandatory, and TLS-RPT (RFC 8460) reports failures back to the domain owner.</li>
+<li>DMARC policies move from p=none (monitor) to quarantine to reject; aggregate (rua) reports show every service sending as your domain before you enforce.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Publishing two SPF TXT records for one domain; receivers return a permanent error, so merge them into a single 'v=spf1' record.</li>
+<li>Exceeding SPF's 10 DNS-lookup limit with many 'include:' entries, which makes SPF fail for legitimate mail.</li>
+<li>Assuming SPF alone stops spoofing of the visible From address; only DMARC alignment protects what users actually see.</li>
+</ul>
+</div>
+<h3 id="try-it-look-up-a-domains-mail-servers-and-email-security-records">Try it: Look up a domain's mail servers and email security records<a class="headerlink" href="#try-it-look-up-a-domains-mail-servers-and-email-security-records" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>nslookup<span class="w"> </span>-type<span class="o">=</span>MX<span class="w"> </span>outlook.com
+dig<span class="w"> </span>TXT<span class="w"> </span>gmail.com<span class="w"> </span>+short<span class="w">           </span><span class="c1"># SPF record</span>
+dig<span class="w"> </span>TXT<span class="w"> </span>_dmarc.gmail.com<span class="w"> </span>+short<span class="w">    </span><span class="c1"># DMARC policy</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_8">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SMTP (Simple Mail Transfer Protocol)</strong><br><em>IETF RFC 5321 · RFC · Layer 7 · Current</em></td>
+<td>Protocol for sending and relaying email between servers, normally on TCP port 25.</td>
+<td>A server opens 'EHLO mail.contoso.example', then MAIL FROM, RCPT TO and DATA to deliver a message.</td>
+</tr>
+<tr>
+<td><strong>Internet Message Format</strong><br><em>IETF RFC 5322 · RFC · Layer 7 · Current</em></td>
+<td>Defines the structure of an email: headers such as From, To, Subject, Date, then the body.</td>
+<td>Viewing 'show original' in Gmail reveals the RFC 5322 headers, including every server the message passed.</td>
+</tr>
+<tr>
+<td><strong>Message submission (port 587)</strong><br><em>IETF RFC 6409; implicit TLS 465 in RFC 8314 · RFC · Layer 7 · Current</em></td>
+<td>Authenticated port for mail clients to hand outgoing mail to their own server.</td>
+<td>Thunderbird is set to smtp.example.com, port 587, STARTTLS, with the user's login.</td>
+</tr>
+<tr>
+<td><strong>STARTTLS for SMTP</strong><br><em>IETF RFC 3207 · RFC · Layer 7 · Current</em></td>
+<td>Upgrades a plain SMTP connection to TLS encryption after it opens.</td>
+<td>Two mail servers on port 25 negotiate STARTTLS so the message is encrypted in transit.</td>
+</tr>
+<tr>
+<td><strong>IMAP (IMAP4rev2)</strong><br><em>IETF RFC 9051 (2021); IMAP4rev1 RFC 3501 · RFC · Layer 7 · Current</em></td>
+<td>Accesses mail kept on the server, syncing folders and read status across many devices; ports 143/993.</td>
+<td>Reading an email on a phone marks it read on the laptop too, thanks to IMAP.</td>
+</tr>
+<tr>
+<td><strong>POP3</strong><br><em>IETF RFC 1939 · RFC · Layer 7 · Legacy</em></td>
+<td>Simple protocol that downloads mail to one device, often deleting it from the server; ports 110/995.</td>
+<td>An old desktop client downloads all mail via POP3, so the phone never sees it.</td>
+</tr>
+<tr>
+<td><strong>MIME</strong><br><em>IETF RFC 2045-2049 · RFC · Layer 7 · Current</em></td>
+<td>Lets email carry attachments, HTML, images and non-English characters by encoding them in parts.</td>
+<td>A PDF invoice travels as a base64-encoded MIME part with 'Content-Type: application/pdf'.</td>
+</tr>
+<tr>
+<td><strong>Mail agents: MUA, MSA, MTA, MDA</strong><br><em>IETF RFC 5598 (Internet Mail Architecture) · Concept · Layer 7 · Current</em></td>
+<td>Roles in delivery: the user agent writes mail, the submission agent accepts it, transfer agents relay it, the delivery agent files it.</td>
+<td>Outlook (MUA) submits to the company's submission server (MSA), Postfix relays it (MTA) and Dovecot (MDA) stores it in Ben's mailbox.</td>
+</tr>
+<tr>
+<td><strong>SPF (Sender Policy Framework)</strong><br><em>IETF RFC 7208 · RFC · Layer 7 · Current</em></td>
+<td>DNS TXT record listing which servers may send mail for a domain.</td>
+<td>'v=spf1 include:spf.protection.outlook.com -all' authorises only Microsoft 365 to send.</td>
+</tr>
+<tr>
+<td><strong>DKIM (DomainKeys Identified Mail)</strong><br><em>IETF RFC 6376 · RFC · Layer 7 · Current</em></td>
+<td>Sending server signs messages with a private key; receivers verify using a public key in DNS.</td>
+<td>A 'DKIM-Signature: d=contoso.example; s=selector1' header proves the message was not altered.</td>
+</tr>
+<tr>
+<td><strong>DMARC</strong><br><em>IETF RFC 9989-9991 (2026, replaced RFC 7489) · RFC · Layer 7 · Current</em></td>
+<td>Policy telling receivers what to do when SPF/DKIM fail to align with the From domain, plus reporting.</td>
+<td>'v=DMARC1; p=reject; rua=mailto:dmarc@contoso.example' tells receivers to reject spoofed mail.</td>
+</tr>
+<tr>
+<td><strong>MTA-STS</strong><br><em>IETF RFC 8461 · RFC · Layer 7 · Current</em></td>
+<td>Lets a domain require that other servers deliver its mail only over valid, encrypted TLS.</td>
+<td>Gmail publishes an MTA-STS policy so attackers cannot strip TLS from mail bound for it.</td>
+</tr>
+<tr>
+<td><strong>Bulk-sender requirements</strong><br><em>Google and Yahoo (Feb 2024); Microsoft Outlook.com (May 2025) · Standard · Layer 7 · Current</em></td>
+<td>Senders of over 5,000 messages a day to these providers must pass SPF, DKIM and DMARC, offer one-click unsubscribe and keep spam complaints low.</td>
+<td>A charity's newsletter to Gmail users starts bouncing until IT publishes a DMARC record and aligns its DKIM signature.</td>
+</tr>
+<tr>
+<td><strong>Postfix and Microsoft Exchange</strong><br><em>Postfix (open source, Wietse Venema); Microsoft · Software · Layer 7 · Current</em></td>
+<td>Widely used mail servers: Postfix is the common Linux MTA; Exchange Server and Exchange Online power most corporate mailboxes.</td>
+<td>A university runs Postfix for outbound relaying and anti-spam filtering, while staff mailboxes live in Exchange Online.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="410-file-transfer-file-sharing">4.10 File Transfer &amp; File Sharing<a class="headerlink" href="#410-file-transfer-file-sharing" title="Permanent link">&para;</a></h2>
+<p>File transfer protocols copy files from one computer to another, while file-sharing protocols let you open and edit files that live on another machine as if they were local. Old protocols like FTP send everything unencrypted, so modern networks prefer secure options such as SFTP or encrypted SMB.</p>
+<p><strong>FTP vs SFTP vs SMB 3</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>FTP</th>
+<th>SFTP</th>
+<th>SMB 3.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Port</strong></td>
+<td>TCP 21 (+ data port)</td>
+<td>TCP 22</td>
+<td>TCP 445</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>None</td>
+<td>Always (SSH)</td>
+<td>AES-GCM, per share</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Clear-text password</td>
+<td>Password or SSH key</td>
+<td>Kerberos / NTLM</td>
+</tr>
+<tr>
+<td><strong>Typical use</strong></td>
+<td>Legacy devices</td>
+<td>Uploads, partner exchange</td>
+<td>Office file shares</td>
+</tr>
+<tr>
+<td><strong>Through NAT</strong></td>
+<td>Needs passive mode</td>
+<td>Easy, one port</td>
+<td>VPN or SMB over QUIC</td>
+</tr>
+</tbody>
+</table>
+<p><em>Pick by job: secure copies use SFTP, live shared drives use SMB or NFS, and plain FTP belongs only on isolated legacy kit.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>File transfer is like posting someone a copy of a document; file sharing is like both of you working in the same shared filing cabinet down the hall.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At a design agency, staff open project files from a Windows file server through mapped drive S:, which uses SMB 3 on port 445. Each night, a Linux server copies changed files to an off-site backup with rsync over SSH, sending only the parts that changed. When a client needs to upload a 4 GB video, they use SFTP with a dedicated account instead of old plain FTP, so the password and file are encrypted.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Choose the job: one-off copy (SFTP, SCP), sync (rsync), or live shared access (SMB, NFS).</li>
+<li>The client connects to the server's port (e.g. 22 for SFTP, 445 for SMB, 2049 for NFS).</li>
+<li>The user or machine authenticates (password, SSH key, Kerberos).</li>
+<li>Files are transferred or opened remotely, ideally encrypted in transit.</li>
+<li>Permissions on the server control who can read, write or delete.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>System administrators, web developers uploading sites, backup engineers, and every office worker opening files on a shared drive.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Secure vs insecure pairs: FTP (21, clear text) vs SFTP (22, over SSH) vs FTPS (FTP plus TLS); TFTP uses UDP 69 with no authentication at all.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Passive FTP's PASV (or EPSV) reply tells the client which data port to open; firewalls must read that reply, which fails with FTPS because the control channel is encrypted.</li>
+<li>TFTP sends 512-byte blocks and waits for an ACK for each (stop-and-wait); the blksize option (RFC 2348) allows larger blocks to speed up firmware and PXE boot transfers.</li>
+<li>SMB1/CIFS is disabled by default on modern Windows; SMB 3.1.1 supports AES-128/256-GCM encryption, and Windows 11 24H2 requires SMB signing by default.</li>
+<li>NFSv3 needs the portmapper (111) and several dynamic ports, while NFSv4 uses only TCP 2049 and supports Kerberos (sec=krb5p) for authentication and encryption.</li>
+<li>rsync's delta algorithm uses rolling checksums to find unchanged blocks, so re-syncing a 10 GB file with a small edit sends only megabytes.</li>
+<li>OpenSSH 9.0 switched the scp command to use the SFTP protocol underneath because the legacy SCP protocol had hard-to-fix security flaws.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking SFTP is 'FTP over SSL'; SFTP is a separate SSH subsystem, while FTP over TLS is FTPS.</li>
+<li>Exposing SMB port 445 to the Internet; WannaCry and many ransomware gangs exploited exactly that.</li>
+<li>Using active FTP behind NAT, where the server's inbound data connection is blocked and directory listings hang.</li>
+</ul>
+</div>
+<h3 id="try-it-copy-files-securely-to-your-own-lab-server-and-list-smb-shares">Try it: Copy files securely (to your own lab server) and list SMB shares<a class="headerlink" href="#try-it-copy-files-securely-to-your-own-lab-server-and-list-smb-shares" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>scp<span class="w"> </span>report.pdf<span class="w"> </span>user@192.168.56.10:/home/user/
+sftp<span class="w"> </span>user@192.168.56.10
+rsync<span class="w"> </span>-avz<span class="w"> </span>./site/<span class="w"> </span>user@192.168.56.10:/var/www/site/
+net<span class="w"> </span>view<span class="w"> </span><span class="se">\\</span>localhost<span class="w">       </span><span class="c1"># Windows: list local shares</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_9">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FTP (File Transfer Protocol)</strong><br><em>IETF RFC 959 (1985) · RFC · Layer 7 · Legacy</em></td>
+<td>Classic file transfer with separate control (TCP 21) and data channels; credentials sent in clear text.</td>
+<td>An old CNC machine in a factory still receives job files over FTP on an isolated network.</td>
+</tr>
+<tr>
+<td><strong>Active vs passive FTP</strong><br><em>IETF RFC 959 · Concept · Layer 7</em></td>
+<td>Active: server connects back to the client from port 20. Passive: client opens the data connection — firewall-friendly.</td>
+<td>Switching FileZilla to passive mode fixes directory listings that hang behind a home router's NAT.</td>
+</tr>
+<tr>
+<td><strong>FTPS</strong><br><em>IETF RFC 4217 · RFC · Layer 7 · Current</em></td>
+<td>FTP secured with TLS, either explicit (AUTH TLS on 21) or implicit (port 990).</td>
+<td>A bank's partner exchanges payment files over explicit FTPS with certificate checks.</td>
+</tr>
+<tr>
+<td><strong>SFTP (SSH File Transfer Protocol)</strong><br><em>IETF secsh drafts; OpenSSH · Protocol · Layer 7 · Current</em></td>
+<td>Encrypted file transfer and management running inside SSH on port 22 — not related to FTP.</td>
+<td>WinSCP connects to a web host via SFTP to upload a website's files.</td>
+</tr>
+<tr>
+<td><strong>SCP (Secure Copy)</strong><br><em>OpenSSH · Protocol · Layer 7 · Current</em></td>
+<td>Simple command to copy files over SSH; modern OpenSSH (9.0+) uses SFTP underneath by default.</td>
+<td>'scp backup.tar.gz admin@10.0.0.5:/srv/' copies an archive to a server in one line.</td>
+</tr>
+<tr>
+<td><strong>TFTP (Trivial File Transfer Protocol)</strong><br><em>IETF RFC 1350 · RFC · Layer 7 · Current</em></td>
+<td>Tiny UDP-based transfer on port 69 with no login or encryption; used for booting and device configs.</td>
+<td>A Cisco switch's IOS image is upgraded with 'copy tftp: flash:' from a lab TFTP server.</td>
+</tr>
+<tr>
+<td><strong>SMB (Server Message Block) / CIFS</strong><br><em>Microsoft [MS-SMB2]; CIFS is the old SMB1 dialect · Protocol · Layer 7 · Current</em></td>
+<td>Windows file and printer sharing on TCP 445; SMB 3.x supports encryption, SMB1/CIFS is obsolete.</td>
+<td>Mapping \\fileserver\finance as drive F: uses SMB 3.1.1 with signing and encryption.</td>
+</tr>
+<tr>
+<td><strong>SMB over QUIC</strong><br><em>Microsoft (Windows Server 2022 Azure Edition, Windows Server 2025, Windows 11) · Technology · Layer 7 · Emerging</em></td>
+<td>Carries SMB 3.1.1 inside QUIC with TLS 1.3 on UDP 443, letting remote users reach file shares without a VPN.</td>
+<td>A travelling architect opens \\files.example.com\projects from a hotel over UDP 443 with no VPN client.</td>
+</tr>
+<tr>
+<td><strong>Samba</strong><br><em>Samba Team (open source) · Software · Layer 7 · Current</em></td>
+<td>Open-source SMB implementation letting Linux and NAS devices share files with Windows clients.</td>
+<td>A Synology NAS uses Samba so Windows PCs see its folders as normal network drives.</td>
+</tr>
+<tr>
+<td><strong>NFS (Network File System)</strong><br><em>IETF RFC 7530 (NFSv4.0), RFC 8881 (v4.1), RFC 7862 (v4.2) · RFC · Layer 7 · Current</em></td>
+<td>Unix/Linux network file sharing, NFSv4 on TCP port 2049.</td>
+<td>A VMware cluster stores virtual machines on an NFS datastore exported by a storage array.</td>
+</tr>
+<tr>
+<td><strong>WebDAV</strong><br><em>IETF RFC 4918 · RFC · Layer 7 · Current</em></td>
+<td>HTTP extension allowing files on a web server to be created, edited, locked and moved.</td>
+<td>Nextcloud lets users mount their cloud storage as a drive over WebDAV on HTTPS.</td>
+</tr>
+<tr>
+<td><strong>rsync</strong><br><em>Andrew Tridgell (original author); open source · Tool · Current</em></td>
+<td>Synchronises files efficiently by sending only changed parts, usually over SSH.</td>
+<td>A nightly 'rsync -az --delete' keeps a 200 GB photo archive mirrored, transferring only new photos.</td>
+</tr>
+<tr>
+<td><strong>Object storage (S3 API)</strong><br><em>Amazon S3 API (de facto standard); MinIO, Ceph and others · Service · Layer 7 · Current</em></td>
+<td>Files stored as objects in buckets and accessed with HTTPS REST calls; many providers copy Amazon's S3 API.</td>
+<td>'aws s3 cp backup.tar s3://acme-backups/' uploads a nightly backup over HTTPS instead of FTP.</td>
+</tr>
+<tr>
+<td><strong>Managed File Transfer (MFT)</strong><br><em>e.g. Progress MOVEit, Fortra GoAnywhere, IBM Sterling · Software · Layer 7 · Current</em></td>
+<td>Enterprise platforms wrapping SFTP, FTPS and HTTPS transfers with scheduling, auditing, encryption and partner management.</td>
+<td>Mass exploitation of GoAnywhere and MOVEit servers in 2023 exposed data at hundreds of organisations, showing why transfer servers need fast patching.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="411-remote-access-management-protocols">4.11 Remote Access &amp; Management Protocols<a class="headerlink" href="#411-remote-access-management-protocols" title="Permanent link">&para;</a></h2>
+<p>Remote access protocols let you control another computer or network device from wherever you are, either through a text command line (SSH) or a full desktop (RDP, VNC). Management protocols such as SNMP, NETCONF and syslog let administrators monitor and configure hundreds of devices automatically. Old protocols like Telnet are unencrypted and should be replaced.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-11-remote-access-management-protocols.svg" alt="Interactive access, monitoring, logging and automation each use their own protocol and port." loading="lazy">
+<figcaption><strong>Remote access and management toolbox.</strong> Interactive access, monitoring, logging and automation each use their own protocol and port.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>SSH is like phoning a colleague on a scrambled line and dictating commands; RDP is like sitting at their desk through a window; SNMP is a nurse checking every patient's vital signs on a schedule.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Raj, a network engineer, logs into a core router with 'ssh raj@10.0.0.1' using an SSH key, never Telnet. His monitoring server polls 300 switches with SNMPv3 every five minutes and graphs their bandwidth. Each device also sends syslog messages to a central collector, so when a link flaps at 03:12, Raj sees it in the logs the next morning. To fix a Windows server, he connects with RDP through the company VPN.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Administrator connects with a remote access protocol (SSH for CLI, RDP/VNC for graphical).</li>
+<li>The session authenticates — preferably with keys, certificates or multi-factor login.</li>
+<li>Monitoring systems poll devices with SNMP and receive traps when something changes.</li>
+<li>Devices stream logs to a central syslog server or SIEM for searching and alerting.</li>
+<li>Automation tools push configuration with NETCONF/YANG or via SSH scripts.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Network engineers, system administrators, managed-service providers and help-desk technicians use these every day.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Exam rule: replace Telnet (23) with SSH (22) and SNMPv1/v2c (community strings in clear text) with SNMPv3 (authentication and encryption); never expose RDP 3389 directly to the internet.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>SSH has three layers: the transport layer (key exchange, server host key, encryption), user authentication (password, public key, certificates) and the connection layer (channels, shells, forwarding).</li>
+<li>OpenSSH 10.0 (2025) made the hybrid post-quantum key exchange mlkem768x25519-sha256 its default, following earlier sntrup761x25519 support.</li>
+<li>SNMP operations are Get, GetNext, GetBulk, Set, Trap and Inform; SNMPv3 security levels are noAuthNoPriv, authNoPriv and authPriv, and only authPriv encrypts.</li>
+<li>NETCONF works with datastores (running, candidate, startup) and supports validate, commit and confirmed-commit, which rolls back automatically if the engineer loses access.</li>
+<li>RDP should sit behind Network Level Authentication and a gateway or VPN; BlueKeep (CVE-2019-0708) showed how a single exposed RDP flaw can be wormable.</li>
+<li>Good practice separates the management plane: a management VRF or out-of-band network, ACLs on VTY lines, AAA via TACACS+ and logging of every session.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Leaving SNMP communities as 'public' and 'private'; anyone can read, or with 'private' even change, device settings.</li>
+<li>Clicking through SSH host-key warnings; a changed key can mean a man-in-the-middle attack, so verify fingerprints first.</li>
+<li>Relying on UDP syslog without NTP; messages can be lost and timestamps from different devices will not line up during an investigation.</li>
+</ul>
+</div>
+<h3 id="try-it-connect-to-your-own-lab-device-and-test-reachability-of-management-ports">Try it: Connect to your own lab device and test reachability of management ports<a class="headerlink" href="#try-it-connect-to-your-own-lab-device-and-test-reachability-of-management-ports" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>ssh<span class="w"> </span>-v<span class="w"> </span>admin@192.168.56.10
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w">      </span><span class="c1"># create an SSH key pair</span>
+Test-NetConnection<span class="w"> </span><span class="m">192</span>.168.56.10<span class="w"> </span>-Port<span class="w"> </span><span class="m">22</span><span class="w">   </span><span class="c1"># PowerShell</span>
+mstsc<span class="w"> </span>/v:192.168.56.20<span class="w">      </span><span class="c1"># Windows Remote Desktop client</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_10">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SSH (Secure Shell)</strong><br><em>IETF RFC 4251-4254 (2006) · RFC · Layer 7 · Current</em></td>
+<td>Encrypted remote login, command execution and tunnelling on TCP 22; architecture, auth, transport and connection RFCs.</td>
+<td>An admin runs 'ssh -i ~/.ssh/id_ed25519 ubuntu@web01' to patch a cloud server.</td>
+</tr>
+<tr>
+<td><strong>OpenSSH</strong><br><em>OpenBSD project · Software · Current</em></td>
+<td>The most widely used SSH client and server, built into Linux, macOS and Windows 10/11.</td>
+<td>Windows users type 'ssh' in PowerShell because the OpenSSH client ships with the OS.</td>
+</tr>
+<tr>
+<td><strong>SSH key authentication</strong><br><em>IETF RFC 4252; OpenSSH · Concept · Layer 7 · Current</em></td>
+<td>Users log in with a private key whose public half is stored in authorized_keys; Ed25519 is the default key type in modern OpenSSH.</td>
+<td>'ssh-copy-id admin@10.0.0.5' installs a public key so later logins need no password and password-guessing attacks fail.</td>
+</tr>
+<tr>
+<td><strong>SSH port forwarding (tunnels)</strong><br><em>IETF RFC 4254; OpenSSH -L/-R/-D · Concept · Layer 7 · Current</em></td>
+<td>SSH can carry other TCP traffic: local (-L), remote (-R) and dynamic SOCKS (-D) forwarding through the encrypted session.</td>
+<td>'ssh -L 8443:10.0.5.20:443 bastion' lets an engineer open a lab firewall's web UI at https://localhost:8443.</td>
+</tr>
+<tr>
+<td><strong>Telnet</strong><br><em>IETF RFC 854 (1983) · RFC · Layer 7 · Legacy</em></td>
+<td>Unencrypted remote terminal on TCP 23; usernames and passwords visible to anyone capturing traffic.</td>
+<td>A Wireshark capture of a Telnet session shows the router password in plain text.</td>
+</tr>
+<tr>
+<td><strong>RDP (Remote Desktop Protocol)</strong><br><em>Microsoft [MS-RDPBCGR] · Protocol · Layer 7 · Current</em></td>
+<td>Microsoft's remote graphical desktop protocol on TCP/UDP 3389, protected with TLS and NLA.</td>
+<td>Help-desk staff use RDP via a Remote Desktop Gateway to fix a user's Windows PC.</td>
+</tr>
+<tr>
+<td><strong>VNC (RFB protocol)</strong><br><em>IETF RFC 6143 (Remote Framebuffer) · RFC · Layer 7 · Current</em></td>
+<td>Cross-platform remote desktop sharing the screen, typically on TCP 5900; encryption depends on the product.</td>
+<td>A Raspberry Pi is controlled from a laptop with RealVNC, tunnelled over SSH.</td>
+</tr>
+<tr>
+<td><strong>SNMPv1 / v2c</strong><br><em>IETF RFC 1157 (v1); RFC 1901-1908 (v2c) · RFC · Layer 7 · Legacy</em></td>
+<td>Device monitoring using 'community strings' sent in clear text as passwords.</td>
+<td>Leaving the default community 'public' enabled lets anyone read a switch's configuration details.</td>
+</tr>
+<tr>
+<td><strong>SNMPv3</strong><br><em>IETF RFC 3411-3418 · RFC · Layer 7 · Current</em></td>
+<td>Secure SNMP with user-based authentication and encryption; polls on UDP 161, traps on UDP 162.</td>
+<td>LibreNMS polls switches with SNMPv3 authPriv using SHA authentication and AES encryption.</td>
+</tr>
+<tr>
+<td><strong>MIB and OID</strong><br><em>IETF (e.g. RFC 1213 MIB-II) · Concept</em></td>
+<td>MIB is the catalogue of values a device exposes; each value has a numeric object identifier (OID).</td>
+<td>OID 1.3.6.1.2.1.1.3.0 (sysUpTime) tells how long a device has been running.</td>
+</tr>
+<tr>
+<td><strong>NETCONF and YANG</strong><br><em>IETF RFC 6241 (NETCONF), RFC 7950 (YANG 1.1) · RFC · Layer 7 · Current</em></td>
+<td>XML-based protocol over SSH (port 830) to read and change device configuration using YANG data models.</td>
+<td>An Ansible playbook pushes a new VLAN to 50 Juniper switches via NETCONF in one run.</td>
+</tr>
+<tr>
+<td><strong>RESTCONF</strong><br><em>IETF RFC 8040 · RFC · Layer 7 · Current</em></td>
+<td>HTTP/REST interface to the same YANG data models, using JSON or XML.</td>
+<td>A Python script sends GET /restconf/data/interfaces to read a Cisco router's interfaces as JSON.</td>
+</tr>
+<tr>
+<td><strong>Syslog</strong><br><em>IETF RFC 5424; UDP transport RFC 5426, TLS RFC 5425 · RFC · Layer 7 · Current</em></td>
+<td>Standard format for sending log messages to a collector, traditionally UDP 514, or TLS on 6514.</td>
+<td>'logging host 10.0.0.50' makes a Cisco router send its events to the central syslog server.</td>
+</tr>
+<tr>
+<td><strong>Severity levels (0-7)</strong><br><em>IETF RFC 5424 · Concept</em></td>
+<td>0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notice, 6 Informational, 7 Debug.</td>
+<td>'logging trap 4' sends only warnings and worse to the log server, filtering out chatter.</td>
+</tr>
+<tr>
+<td><strong>Jump host / bastion</strong><br><em>Security best practice · Concept</em></td>
+<td>Single hardened server through which all admin SSH/RDP access to internal systems must pass.</td>
+<td>'ssh -J bastion.example.com admin@10.10.0.5' reaches an internal server only via the bastion.</td>
+</tr>
+<tr>
+<td><strong>Redfish and IPMI (BMC)</strong><br><em>DMTF Redfish; Intel IPMI v2.0 · Standard · Layer 7 · Current</em></td>
+<td>Server baseboard management controllers (iDRAC, iLO) provide remote power, console and health; Redfish is the modern REST API replacing IPMI.</td>
+<td>An admin power-cycles a frozen server through its iLO from home over the VPN, without visiting the data centre.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="412-real-time-voice-video">4.12 Real-Time Voice &amp; Video<a class="headerlink" href="#412-real-time-voice-video" title="Permanent link">&para;</a></h2>
+<p>Voice and video calls over IP networks use two kinds of protocol: signalling (to set up, ring and hang up calls, e.g. SIP) and media (to carry the actual sound and pictures, e.g. RTP). Codecs compress audio and video so they fit the network. Because calls happen live, delay and jitter matter more than an occasional lost packet.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-12-real-time-voice-video.svg" alt="SIP and SDP set up the call; the voice itself flows as RTP, often directly between the phones." loading="lazy">
+<figcaption><strong>A SIP call through an office PBX.</strong> SIP and SDP set up the call; the voice itself flows as RTP, often directly between the phones.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>SIP is the receptionist who connects your call and tells both sides which line to use; RTP is the conversation itself flowing down that line.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Elena dials extension 2045 from her desk IP phone. The phone sends a SIP INVITE to the office PBX, which rings Marco's phone; when he answers, SIP '200 OK' and SDP tell both phones which codec (say G.711 at 64 kbit/s) and which UDP ports to use. Their voices then travel directly as RTP packets every 20 ms, while RTCP reports quality. A jitter buffer on each phone holds about 40 ms of audio to smooth out packets arriving unevenly.</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Phones or apps register with a SIP server (PBX or cloud phone system).</li>
+<li>Caller sends SIP INVITE with an SDP offer listing codecs and media ports.</li>
+<li>Callee rings, answers with 200 OK and its own SDP answer; caller acknowledges with ACK.</li>
+<li>Media flows as RTP (ideally SRTP, encrypted) over UDP; RTCP reports loss, jitter and delay.</li>
+<li>Either party sends SIP BYE to hang up.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>VoIP and unified-communications engineers, contact centres, and everyone using Teams, Zoom, WhatsApp calls or office desk phones.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Good voice quality targets: one-way delay under 150 ms, jitter under 30 ms, packet loss under 1%; mark voice traffic with QoS DSCP EF (46).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Per-call bandwidth includes headers: G.711 with 20 ms packets uses about 87 kbit/s each way on Ethernet (50 packets/s), while G.729 needs about 31 kbit/s.</li>
+<li>SIP responses mirror HTTP: 1xx provisional (180 Ringing), 2xx success, 3xx redirect, 4xx client errors (404, 486 Busy Here), 5xx server and 6xx global failures.</li>
+<li>ITU-T G.114 recommends keeping one-way mouth-to-ear delay below 150 ms; above about 400 ms conversations become difficult.</li>
+<li>Group video services use SFUs (Selective Forwarding Units) that forward each participant's stream without re-encoding, often with simulcast so each viewer gets a suitable resolution.</li>
+<li>Video codecs to know: H.264/AVC (universal), H.265/HEVC, VP8/VP9 (WebRTC) and AV1; roughly 1.5-4 Mbit/s is typical for a 1080p call.</li>
+<li>On a LAN, voice gets its own voice VLAN (advertised to phones via LLDP-MED or CDP) and DSCP EF (46) marking with priority queuing on every hop.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Leaving SIP ALG enabled on routers; it often rewrites SIP badly and causes one-way audio or dropped calls.</li>
+<li>Expecting QoS markings to survive the Internet; they help only on links you control, such as your LAN and managed WAN.</li>
+<li>Blaming the codec for one-way audio, which is nearly always NAT or a firewall blocking RTP in one direction.</li>
+</ul>
+</div>
+<h3 id="try-it-check-delay-and-jitter-to-a-public-host-watch-the-time-values-vary">Try it: Check delay and jitter to a public host (watch the time values vary)<a class="headerlink" href="#try-it-check-delay-and-jitter-to-a-public-host-watch-the-time-values-vary" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>ping<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span><span class="w"> </span>example.com<span class="w">       </span><span class="c1"># Windows</span>
+ping<span class="w"> </span>-c<span class="w"> </span><span class="m">20</span><span class="w"> </span>example.com<span class="w">       </span><span class="c1"># Linux/macOS</span>
+<span class="c1"># Open chrome://webrtc-internals during a browser call to see live RTP stats</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_11">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SIP (Session Initiation Protocol)</strong><br><em>IETF RFC 3261 · RFC · Layer 7 · Current</em></td>
+<td>Text-based signalling to register phones and set up, modify and end calls; ports 5060/5061 (TLS).</td>
+<td>An office's SIP trunk connects its PBX to a telecom provider instead of old phone lines.</td>
+</tr>
+<tr>
+<td><strong>SDP (Session Description Protocol)</strong><br><em>IETF RFC 8866 (replaced RFC 4566) · RFC · Layer 7 · Current</em></td>
+<td>Describes a call's media: codecs, IP addresses and ports, carried inside SIP or WebRTC messages.</td>
+<td>'m=audio 49170 RTP/AVP 0 8' offers audio on port 49170 using G.711 µ-law or A-law.</td>
+</tr>
+<tr>
+<td><strong>RTP and RTCP</strong><br><em>IETF RFC 3550 · RFC · Layer 7 · Current</em></td>
+<td>RTP carries timestamped audio/video packets over UDP; RTCP reports loss, jitter and timing.</td>
+<td>A call quality dashboard shows 0.4% loss and 12 ms jitter from RTCP reports.</td>
+</tr>
+<tr>
+<td><strong>SRTP</strong><br><em>IETF RFC 3711 · RFC · Layer 7 · Current</em></td>
+<td>Secure RTP: encrypts and authenticates media so calls cannot be eavesdropped or altered.</td>
+<td>WebRTC calls always use SRTP, with keys exchanged by DTLS.</td>
+</tr>
+<tr>
+<td><strong>G.711</strong><br><em>ITU-T G.711 (1972) · Standard · Current</em></td>
+<td>Uncompressed-quality telephone codec at 64 kbit/s; µ-law in North America and Japan, A-law elsewhere.</td>
+<td>Calls to the public phone network often use G.711 to avoid conversion.</td>
+</tr>
+<tr>
+<td><strong>Opus</strong><br><em>IETF RFC 6716 · RFC · Current</em></td>
+<td>Flexible, royalty-free audio codec from 6 to 510 kbit/s, good for speech and music.</td>
+<td>WhatsApp, Discord and WebRTC apps use Opus to keep calls clear on weak connections.</td>
+</tr>
+<tr>
+<td><strong>H.264 / AVC</strong><br><em>ITU-T H.264 / ISO/IEC 14496-10 · Standard · Current</em></td>
+<td>The most widely supported video codec, used in video calls, streaming and cameras.</td>
+<td>A conference-room system sends 1080p video as H.264 at about 2 Mbit/s.</td>
+</tr>
+<tr>
+<td><strong>AV1</strong><br><em>Alliance for Open Media (2018) · Standard · Current</em></td>
+<td>Royalty-free video codec about 30% more efficient than older codecs; growing in streaming and calls.</td>
+<td>YouTube and Netflix stream AV1 to supported devices to save bandwidth.</td>
+</tr>
+<tr>
+<td><strong>WebRTC</strong><br><em>W3C WebRTC 1.0 (2021) and IETF RFC 8825 family · Standard · Layer 7 · Current</em></td>
+<td>Browser technology for real-time audio, video and data without plugins, using ICE, STUN, TURN, DTLS and SRTP.</td>
+<td>Google Meet runs a video call entirely inside a browser tab using WebRTC.</td>
+</tr>
+<tr>
+<td><strong>SBC (Session Border Controller)</strong><br><em>Vendors such as AudioCodes, Ribbon, Oracle; open-source Kamailio · Device · Layer 7 · Current</em></td>
+<td>Edge device for SIP that hides internal topology, fixes NAT problems, enforces security and links PBXs to carrier SIP trunks.</td>
+<td>Microsoft Teams Direct Routing needs a certified SBC between Teams and the company's phone carrier.</td>
+</tr>
+<tr>
+<td><strong>Jitter and jitter buffer</strong><br><em>General VoIP concept · Concept</em></td>
+<td>Jitter is variation in packet arrival time; a jitter buffer holds packets briefly to replay them smoothly.</td>
+<td>A 60 ms adaptive jitter buffer smooths audio on congested hotel Wi-Fi at the cost of some delay.</td>
+</tr>
+<tr>
+<td><strong>IP phones and PBX</strong><br><em>Vendors such as Cisco, Poly, Yealink; Asterisk (open source PBX) · Device · Current</em></td>
+<td>Desk phones that use SIP over Ethernet, often PoE-powered, managed by an IP PBX.</td>
+<td>A Yealink phone powered by PoE registers to a 3CX PBX and lands in the voice VLAN.</td>
+</tr>
+<tr>
+<td><strong>H.323</strong><br><em>ITU-T H.323 · Standard · Layer 7 · Legacy</em></td>
+<td>Older umbrella standard for videoconferencing and VoIP, largely replaced by SIP.</td>
+<td>A university's 2008-era video conferencing unit still dials other rooms using H.323.</td>
+</tr>
+<tr>
+<td><strong>MOS (Mean Opinion Score)</strong><br><em>ITU-T P.800; E-model ITU-T G.107 · Standard · Current</em></td>
+<td>Call-quality score from 1 (bad) to 5 (excellent); about 4 or higher is 'toll quality', usually estimated from loss, delay and jitter.</td>
+<td>A call-quality dashboard flags calls below MOS 3.5 from one branch, pointing engineers to overloaded Wi-Fi.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="413-iot-messaging-protocols">4.13 IoT &amp; Messaging Protocols<a class="headerlink" href="#413-iot-messaging-protocols" title="Permanent link">&para;</a></h2>
+<p>Sensors, machines and apps often need to exchange small messages efficiently, sometimes over weak or battery-powered links. Messaging protocols like MQTT use a publish/subscribe pattern: devices publish data to topics, and anyone interested subscribes. Industrial protocols like Modbus and OPC UA let factory equipment talk to control systems.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-13-iot-messaging-protocols.svg" alt="Publishers and subscribers never talk directly; the broker matches topics and fans out messages." loading="lazy">
+<figcaption><strong>MQTT publish/subscribe in the greenhouse.</strong> Publishers and subscribers never talk directly; the broker matches topics and fans out messages.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>MQTT is like a noticeboard in a staffroom: people pin notes under a topic heading, and anyone who follows that heading gets a copy, without needing to know who wrote it.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>A greenhouse company fits 200 soil sensors that publish readings to MQTT topics such as greenhouse/3/moisture every minute. A central broker (Mosquitto) forwards each reading to a dashboard and to an irrigation controller that subscribes to those topics. When moisture drops below 30%, the controller publishes greenhouse/3/valve = open. Meanwhile, the pumps in the boiler room are read by a PLC using Modbus TCP on port 502.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Devices connect to a broker or server (MQTT, AMQP) or to each other (CoAP, DDS).</li>
+<li>They publish messages on named topics or resources, often tiny JSON or binary payloads.</li>
+<li>Subscribers receive messages matching their topics, with optional delivery guarantees (QoS).</li>
+<li>Industrial systems poll machines with Modbus or OPC UA to read values and send commands.</li>
+<li>Security is added with TLS/DTLS, certificates and network segmentation away from IT systems.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IoT developers, smart-building and factory automation engineers (OT), utility companies and chat/messaging app developers.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know the default ports: MQTT 1883 (8883 with TLS), CoAP UDP 5683 (5684 DTLS), AMQP 5672, Modbus TCP 502, OPC UA 4840 — and that Modbus has no built-in security.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>An MQTT packet's fixed header can be as small as 2 bytes; key packets are CONNECT, PUBLISH, SUBSCRIBE and PINGREQ, and the client's keepalive interval lets the broker detect dead devices.</li>
+<li>Topic wildcards: '+' matches one level (factory/+/alarm) and '#' matches all remaining levels (factory/#); MQTT 5 adds reason codes, shared subscriptions and message expiry.</li>
+<li>CoAP offers confirmable and non-confirmable messages, Observe (RFC 7641) for push updates, block-wise transfer (RFC 7959) for firmware, and OSCORE (RFC 8613) for end-to-end security.</li>
+<li>Modbus uses function codes such as 3 (read holding registers) and 6 (write single register) with no authentication, so OT networks rely on segmentation per IEC 62443 and the Purdue model.</li>
+<li>Cloud IoT hubs (AWS IoT Core, Azure IoT Hub) authenticate each device with X.509 certificates and accept MQTT over TLS on 8883, or on 443 when firewalls allow only HTTPS.</li>
+<li>Rule of thumb: MQTT for many small, unreliable devices; AMQP or Kafka for back-end services needing durable queues or replayable high-volume streams.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running a broker on 1883 open to the Internet with no authentication; scanners find such brokers constantly and can read or inject device data.</li>
+<li>Using QoS 2 for every message; it costs four packets per delivery, while most telemetry is fine with QoS 0 or 1.</li>
+<li>Connecting Modbus or BACnet devices directly to the Internet; they have weak or no built-in security and belong behind segmented OT networks.</li>
+</ul>
+</div>
+<h3 id="try-it-publish-and-subscribe-to-a-public-test-mqtt-broker-needs-mosquitto-clients-installed">Try it: Publish and subscribe to a public test MQTT broker (needs mosquitto-clients installed)<a class="headerlink" href="#try-it-publish-and-subscribe-to-a-public-test-mqtt-broker-needs-mosquitto-clients-installed" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>mosquitto_sub<span class="w"> </span>-h<span class="w"> </span>test.mosquitto.org<span class="w"> </span>-t<span class="w"> </span><span class="s2">"school/lab1/#"</span><span class="w"> </span>-v
+mosquitto_pub<span class="w"> </span>-h<span class="w"> </span>test.mosquitto.org<span class="w"> </span>-t<span class="w"> </span><span class="s2">"school/lab1/temp"</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">"21.5"</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_12">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MQTT</strong><br><em>OASIS MQTT 5.0 (2019); v3.1.1 also ISO/IEC 20922 · Standard · Layer 7 · Current</em></td>
+<td>Lightweight publish/subscribe messaging over TCP via a broker; ports 1883 and 8883 (TLS).</td>
+<td>A smart plug publishes 'home/kitchen/plug/power 1200' watts to a Home Assistant broker.</td>
+</tr>
+<tr>
+<td><strong>MQTT QoS levels</strong><br><em>OASIS MQTT · Concept</em></td>
+<td>QoS 0 at most once, QoS 1 at least once, QoS 2 exactly once delivery.</td>
+<td>Temperature readings use QoS 0; a 'door unlock' command uses QoS 1 or 2.</td>
+</tr>
+<tr>
+<td><strong>MQTT retained messages and Last Will</strong><br><em>OASIS MQTT 3.1.1 / 5.0 · Concept · Layer 7 · Current</em></td>
+<td>Retained: the broker stores a topic's latest value for new subscribers. Last Will: published automatically if a client disconnects unexpectedly.</td>
+<td>A pump publishes 'status=offline' as its Last Will, so the dashboard notices within seconds when it loses power.</td>
+</tr>
+<tr>
+<td><strong>Mosquitto</strong><br><em>Eclipse Foundation · Software · Current</em></td>
+<td>Popular open-source MQTT broker and command-line clients.</td>
+<td>A Raspberry Pi runs Mosquitto as the hub for a home's 30 sensors.</td>
+</tr>
+<tr>
+<td><strong>CoAP (Constrained Application Protocol)</strong><br><em>IETF RFC 7252 (2014) · RFC · Layer 7 · Current</em></td>
+<td>REST-like protocol for tiny devices over UDP 5683 (DTLS 5684), with GET/POST/PUT/DELETE.</td>
+<td>A battery sensor answers 'GET coap://sensor1/temperature' with a few bytes.</td>
+</tr>
+<tr>
+<td><strong>AMQP</strong><br><em>OASIS AMQP 1.0; ISO/IEC 19464 · Standard · Layer 7 · Current</em></td>
+<td>Reliable enterprise message-queuing protocol with routing and acknowledgements; port 5672 (5671 TLS).</td>
+<td>An online shop queues orders through RabbitMQ so payment and shipping services process them reliably.</td>
+</tr>
+<tr>
+<td><strong>Apache Kafka</strong><br><em>Apache Software Foundation · Software · Layer 7 · Current</em></td>
+<td>Distributed event-streaming platform storing ordered, replayable logs of messages; clients use its binary protocol, by default on TCP 9092.</td>
+<td>A factory forwards MQTT sensor data into Kafka so analytics jobs can replay a week of readings.</td>
+</tr>
+<tr>
+<td><strong>XMPP</strong><br><em>IETF RFC 6120 and RFC 6121 · RFC · Layer 7 · Current</em></td>
+<td>Open XML-based protocol for chat, presence and messaging; client port 5222, server-to-server 5269.</td>
+<td>Self-hosted chat servers such as Prosody or ejabberd use XMPP for team messaging.</td>
+</tr>
+<tr>
+<td><strong>DDS (Data Distribution Service)</strong><br><em>Object Management Group (OMG) · Standard · Layer 7 · Current</em></td>
+<td>Broker-less publish/subscribe middleware with real-time quality-of-service controls.</td>
+<td>ROS 2 robots share sensor and motor data over DDS.</td>
+</tr>
+<tr>
+<td><strong>Modbus TCP</strong><br><em>Modbus Organization · Protocol · Layer 7 · Legacy</em></td>
+<td>Simple industrial request/response protocol on TCP 502 for reading and writing device registers; no authentication.</td>
+<td>A building system reads a chiller's water temperature from Modbus holding register 40001.</td>
+</tr>
+<tr>
+<td><strong>OPC UA</strong><br><em>OPC Foundation; IEC 62541 · Standard · Layer 7 · Current</em></td>
+<td>Secure, platform-independent industrial data exchange with rich information models; TCP 4840.</td>
+<td>A factory's MES reads production counts from machines from different vendors via OPC UA.</td>
+</tr>
+<tr>
+<td><strong>BACnet</strong><br><em>ASHRAE 135; ISO 16484-5 · Standard · Layer 7 · Current</em></td>
+<td>Building-automation protocol for HVAC, lighting and access control; BACnet/IP uses UDP port 47808 (0xBAC0).</td>
+<td>A university energy dashboard reads chiller and air-handler values from BACnet controllers across 40 buildings.</td>
+</tr>
+<tr>
+<td><strong>LwM2M (Lightweight M2M)</strong><br><em>OMA SpecWorks · Standard · Layer 7 · Current</em></td>
+<td>Device management protocol built on CoAP for remote configuration, monitoring and firmware updates.</td>
+<td>A utility updates firmware on 50,000 NB-IoT water meters through an LwM2M server.</td>
+</tr>
+<tr>
+<td><strong>Matter</strong><br><em>Connectivity Standards Alliance (2022) · Standard · Layer 7 · Current</em></td>
+<td>Smart-home application standard over IP (Wi-Fi, Thread, Ethernet) so devices work across Apple, Google and Amazon.</td>
+<td>A Matter smart bulb is added once and works with both an iPhone and an Alexa speaker.</td>
+</tr>
+<tr>
+<td><strong>Publish/subscribe pattern</strong><br><em>General messaging concept · Concept</em></td>
+<td>Senders publish to topics without knowing the receivers; subscribers receive whatever matches their interests.</td>
+<td>Subscribing to 'factory/+/alarm' receives alarms from every production line.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="414-time-directory-authentication-services">4.14 Time, Directory &amp; Authentication Services<a class="headerlink" href="#414-time-directory-authentication-services" title="Permanent link">&para;</a></h2>
+<p>Behind every network are quiet services that keep clocks in sync, store information about users and devices, and check who is allowed in. NTP and PTP keep time accurate, LDAP directories store accounts, and Kerberos, RADIUS and TACACS+ handle logins for computers, Wi-Fi and network devices.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-14-time-directory-authentication-services.svg" alt="The password is used only at login; afterwards tickets prove identity, and they fail if clocks differ by more than 5 minutes." loading="lazy">
+<figcaption><strong>Kerberos: log in once, use many services.</strong> The password is used only at login; afterwards tickets prove identity, and they fail if clocks differ by more than 5 minutes.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>NTP is everyone setting their watch to the station clock; LDAP is the staff directory; Kerberos is a festival wristband that gets you into every tent without showing ID each time; RADIUS is the security guard checking the list at the gate.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>When Hannah logs into her work laptop, it asks a domain controller for a Kerberos ticket, which only works if both clocks are within 5 minutes of each other — kept in sync by NTP. The laptop then uses the ticket to open file shares without asking for her password again. When she joins the office Wi-Fi, the access point asks a RADIUS server, which checks her account in Active Directory via LDAP. The network team logs into switches with TACACS+, so every command they type is recorded.</p>
+</div>
+<h4 id="how-it-works_13">How it works<a class="headerlink" href="#how-it-works_13" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Devices sync their clocks with NTP (or PTP for very precise needs).</li>
+<li>User and device accounts are stored in a directory and queried with LDAP.</li>
+<li>Users authenticate once with Kerberos and receive tickets for other services.</li>
+<li>Network access (Wi-Fi, VPN, 802.1X) is checked by a RADIUS server.</li>
+<li>Admin logins to routers and switches use TACACS+ for per-command authorisation and accounting (AAA).</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Windows/Active Directory administrators, network security engineers, telecom operators and anyone setting up enterprise Wi-Fi or VPNs.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>AAA = Authentication, Authorisation, Accounting; RADIUS uses UDP 1812/1813 and encrypts only the password, TACACS+ uses TCP 49 and encrypts the whole body; Kerberos breaks if clocks drift more than 5 minutes.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>NTP keeps clocks within a few milliseconds over the Internet and under a millisecond on a LAN; stratum 16 means 'unsynchronised', and clients should use at least four sources.</li>
+<li>Kerberos tickets in Active Directory last 10 hours by default and services are named by SPNs; attacks to know include Kerberoasting, pass-the-ticket and golden tickets.</li>
+<li>LDAP entries are addressed by Distinguished Names such as CN=Hannah,OU=HR,DC=corp,DC=example; Microsoft increasingly enforces LDAP signing and channel binding to stop relay attacks.</li>
+<li>RADIUS hides only the password, using a shared secret and MD5; the 2024 BlastRADIUS flaw (CVE-2024-3596) pushed vendors to require Message-Authenticator and move towards RadSec.</li>
+<li>Common AAA servers are Cisco ISE, Aruba ClearPass, FreeRADIUS and Microsoft NPS; TACACS+ is preferred for device admin because it authorises and logs every command.</li>
+<li>PTP uses a grandmaster clock plus boundary and transparent clocks in switches; 5G TDD radio networks need time error within about ±1.5 microseconds, beyond what NTP can deliver.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Ignoring time sync: clock drift breaks Kerberos logins, TLS certificate checks, MFA codes and log correlation.</li>
+<li>Allowing LDAP simple binds on port 389 without TLS, which sends usernames and passwords in clear text.</li>
+<li>Using RADIUS where per-command control of admins is needed; TACACS+ suits device administration, RADIUS suits network access.</li>
+</ul>
+</div>
+<h3 id="try-it-check-time-sync-and-kerberos-tickets-on-your-own-machine">Try it: Check time sync and Kerberos tickets on your own machine<a class="headerlink" href="#try-it-check-time-sync-and-kerberos-tickets-on-your-own-machine" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>w32tm<span class="w"> </span>/query<span class="w"> </span>/status<span class="w">          </span><span class="c1"># Windows time sync status</span>
+klist<span class="w">                         </span><span class="c1"># Windows: list Kerberos tickets</span>
+timedatectl<span class="w"> </span>timesync-status<span class="w">   </span><span class="c1"># Linux (systemd-timesyncd)</span>
+chronyc<span class="w"> </span>tracking<span class="w">              </span><span class="c1"># Linux (chrony)</span>
+</code></pre></div>
+<h4 id="key-protocols-devices-standards-tools_13">Key protocols, devices, standards &amp; tools<a class="headerlink" href="#key-protocols-devices-standards-tools_13" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NTP (Network Time Protocol)</strong><br><em>IETF RFC 5905 (NTPv4) · RFC · Layer 7 · Current</em></td>
+<td>Synchronises clocks over UDP 123 to within milliseconds, using a hierarchy of stratum levels.</td>
+<td>Routers point to pool.ntp.org so log timestamps match across the whole network.</td>
+</tr>
+<tr>
+<td><strong>Stratum levels</strong><br><em>IETF RFC 5905 · Concept</em></td>
+<td>Distance from a reference clock: stratum 0 is the atomic/GPS clock, stratum 1 servers attach directly to it.</td>
+<td>A GPS-connected time server is stratum 1; company servers syncing from it become stratum 2.</td>
+</tr>
+<tr>
+<td><strong>NTS (Network Time Security)</strong><br><em>IETF RFC 8915 (2020) · RFC · Layer 7 · Current</em></td>
+<td>Adds cryptographic authentication to NTP so attackers cannot fake the time; key exchange on TCP 4460.</td>
+<td>Chrony is configured with 'server time.cloudflare.com iburst nts' for secured time.</td>
+</tr>
+<tr>
+<td><strong>PTP (Precision Time Protocol)</strong><br><em>IEEE 1588-2019 · Standard · Multi-layer · Current</em></td>
+<td>Sub-microsecond clock sync using hardware timestamping, for finance, telecom, broadcast and industry.</td>
+<td>A stock exchange uses PTP so trade timestamps are accurate to well under a microsecond.</td>
+</tr>
+<tr>
+<td><strong>LDAP</strong><br><em>IETF RFC 4511 · RFC · Layer 7 · Current</em></td>
+<td>Protocol for querying and updating directories of users, groups and devices; TCP 389, LDAPS 636.</td>
+<td>A web app checks 'is Hannah in the HR group?' by querying Active Directory over LDAPS.</td>
+</tr>
+<tr>
+<td><strong>Active Directory</strong><br><em>Microsoft · Software · Current</em></td>
+<td>Microsoft's directory service combining LDAP, Kerberos and DNS to manage Windows users and computers.</td>
+<td>Joining a laptop to corp.example.com lets AD apply password and security policies.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Entra ID</strong><br><em>Microsoft (formerly Azure Active Directory) · Service · Layer 7 · Current</em></td>
+<td>Cloud identity service for Microsoft 365 and SaaS apps using OIDC, SAML and OAuth rather than LDAP and Kerberos.</td>
+<td>A company syncs on-premises AD accounts to Entra ID so staff use one password for laptops and Microsoft 365.</td>
+</tr>
+<tr>
+<td><strong>Kerberos</strong><br><em>IETF RFC 4120 (Kerberos V5) · RFC · Layer 7 · Current</em></td>
+<td>Ticket-based authentication on port 88; the Key Distribution Center issues tickets so passwords are not resent.</td>
+<td>Opening \\fileserver\hr uses a Kerberos service ticket, so no password prompt appears.</td>
+</tr>
+<tr>
+<td><strong>SAML 2.0 and OpenID Connect</strong><br><em>OASIS SAML 2.0; OpenID Foundation OpenID Connect (on OAuth 2.0) · Standard · Layer 7 · Current</em></td>
+<td>Federated single sign-on: an identity provider vouches for the user to web apps with signed assertions (SAML) or ID tokens (OIDC).</td>
+<td>Staff log into Salesforce and Slack via the company identity provider, which checks MFA once and issues tokens to both.</td>
+</tr>
+<tr>
+<td><strong>AAA (Authentication, Authorisation, Accounting)</strong><br><em>General security framework · Concept</em></td>
+<td>Who are you, what may you do, and what did you do — the three jobs of network access control.</td>
+<td>A VPN checks the password (authentication), assigns a role (authorisation) and logs session time (accounting).</td>
+</tr>
+<tr>
+<td><strong>RADIUS</strong><br><em>IETF RFC 2865; accounting RFC 2866 · RFC · Layer 7 · Current</em></td>
+<td>AAA protocol for network access, on UDP 1812 (auth) and 1813 (accounting); used with 802.1X.</td>
+<td>Enterprise Wi-Fi with WPA3-Enterprise checks each user's login against a RADIUS server such as FreeRADIUS.</td>
+</tr>
+<tr>
+<td><strong>RadSec (RADIUS over TLS)</strong><br><em>IETF RFC 6614 · RFC · Layer 7 · Current</em></td>
+<td>Carries RADIUS inside TLS over TCP 2083 for secure transport across untrusted networks.</td>
+<td>The eduroam Wi-Fi roaming service uses RadSec between some universities' servers.</td>
+</tr>
+<tr>
+<td><strong>TACACS+</strong><br><em>IETF RFC 8907 (2020); originally Cisco · RFC · Layer 7 · Current</em></td>
+<td>Device-administration AAA over TCP 49, encrypting the whole payload and authorising individual commands.</td>
+<td>A junior engineer may run 'show' commands but not 'configure terminal', enforced by TACACS+.</td>
+</tr>
+<tr>
+<td><strong>Diameter</strong><br><em>IETF RFC 6733 (replaced RFC 3588) · RFC · Layer 7 · Current</em></td>
+<td>Successor to RADIUS used in mobile networks (4G/IMS) for subscriber authentication and billing; port 3868.</td>
+<td>When a phone attaches to a 4G network, the core checks the subscriber with Diameter messages.</td>
+</tr>
+<tr>
+<td><strong>IEEE 802.1X</strong><br><em>IEEE 802.1X-2020 · Standard · Layer 2 · Current</em></td>
+<td>Port-based network access control: a switch or access point only opens the port after RADIUS approves the user.</td>
+<td>Plugging an unknown laptop into an office wall socket gives no network until 802.1X login succeeds.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="network-layer-ip-addressing-routing.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Network Layer — IP Addressing &amp; Routing">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3. Network Layer — IP Addressing & Routing
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="wireless-mobile-wan-the-internet.html" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Wireless, Mobile, WAN &amp; the Internet">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                5. Wireless, Mobile, WAN & the Internet
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

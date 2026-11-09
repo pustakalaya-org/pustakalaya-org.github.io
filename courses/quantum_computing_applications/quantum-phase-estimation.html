@@ -1,0 +1,2272 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/quantum-phase-estimation.html">
+  
+  
+    <link rel="prev" href="the-quantum-fourier-transform.html">
+  
+  
+    <link rel="next" href="shor-s-algorithm-for-integer-factorization.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>19. Quantum Phase Estimation - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#191-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              19. Quantum Phase Estimation
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quantum-phase-estimation.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#191-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#192-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 The Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#193-the-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 The Circuit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#194-derivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 Derivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#195-the-exact-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 The Exact Case
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#196-the-general-case-and-the-precision-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.6 The General Case and the Precision Theorem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#197-what-if-you-do-not-have-the-eigenstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.7 What If You Do Not Have the Eigenstate?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#198-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.8 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#199-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.9 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1910-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.10 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#191-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#192-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 The Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#193-the-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 The Circuit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#194-derivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 Derivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#195-the-exact-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 The Exact Case
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#196-the-general-case-and-the-precision-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.6 The General Case and the Precision Theorem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#197-what-if-you-do-not-have-the-eigenstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.7 What If You Do Not Have the Eigenstate?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#198-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.8 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#199-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.9 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1910-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.10 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-19-quantum-phase-estimation">Lesson 19: Quantum Phase Estimation<a class="headerlink" href="#lesson-19-quantum-phase-estimation" title="Permanent link">&para;</a></h1>
+<h2 id="191-learning-outcomes">19.1 Learning Outcomes<a class="headerlink" href="#191-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>State the <strong>phase estimation problem</strong> and its input requirements.</li>
+<li>Derive the QPE circuit and show why the inverse QFT extracts the phase.</li>
+<li>Prove the <strong>exact</strong> case (<span class="arithmatex">\(\theta\)</span> an <span class="arithmatex">\(n\)</span>-bit binary fraction) gives the answer with probability 1.</li>
+<li>Apply the <strong>precision–probability theorem</strong> to choose the number of counting qubits.</li>
+<li>Recognise QPE as the central subroutine of Shor's algorithm, HHL and quantum chemistry.</li>
+</ol>
+<h2 id="192-the-problem">19.2 The Problem<a class="headerlink" href="#192-the-problem" title="Permanent link">&para;</a></h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li>A unitary <span class="arithmatex">\(U\)</span> (as a circuit, so that controlled-<span class="arithmatex">\(U^{2^k}\)</span> can be applied).</li>
+<li>An eigenstate <span class="arithmatex">\(|u\rangle\)</span> with <span class="arithmatex">\(U|u\rangle = e^{2\pi i\theta}|u\rangle\)</span>, <span class="arithmatex">\(\theta\in[0,1)\)</span>.</li>
+</ul>
+<p><strong>Find:</strong> an estimate of <span class="arithmatex">\(\theta\)</span> to <span class="arithmatex">\(n\)</span> bits of precision.</p>
+<p><strong>Why <span class="arithmatex">\([0,1)\)</span>?</strong> Every eigenvalue of a unitary has modulus 1, so it can be written <span class="arithmatex">\(e^{2\pi i\theta}\)</span>
+with <span class="arithmatex">\(\theta \in [0,1)\)</span>. The problem is to extract that real number.</p>
+<blockquote>
+<p><strong>QPE is the most important subroutine in quantum computing.</strong> Shor's order finding is QPE applied
+to the modular-multiplication operator. HHL is QPE applied to <span class="arithmatex">\(e^{iAt}\)</span>. Quantum chemistry
+algorithms are QPE applied to <span class="arithmatex">\(e^{-iHt}\)</span> to find ground-state energies. Learn it once, use it
+everywhere.</p>
+</blockquote>
+<h2 id="193-the-circuit">19.3 The Circuit<a class="headerlink" href="#193-the-circuit" title="Permanent link">&para;</a></h2>
+<p>Two registers:</p>
+<ul>
+<li><strong>Counting register:</strong> <span class="arithmatex">\(t\)</span> qubits, initialised to <span class="arithmatex">\(|0\rangle^{\otimes t}\)</span>. Larger <span class="arithmatex">\(t\)</span> ⟶ more precision.</li>
+<li><strong>Eigenstate register:</strong> holds <span class="arithmatex">\(|u\rangle\)</span>.</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code>              t counting qubits
+  |0&gt; --[H]--------------------*----------------.
+  |0&gt; --[H]-----------------*--|--- [ QFT^-1 ] --[M]--&gt; estimate of theta
+  |0&gt; --[H]--------------*--|--|----------------'
+                         |  |  |
+  |u&gt; -----------------[U^1][U^2][U^4]--- ... ---------  (unchanged)
+</code></pre></div>
+<p>The <span class="arithmatex">\(j\)</span>-th counting qubit (from the bottom) controls <span class="arithmatex">\(U^{2^{j}}\)</span>.</p>
+<h2 id="194-derivation">19.4 Derivation<a class="headerlink" href="#194-derivation" title="Permanent link">&para;</a></h2>
+<p><strong>Step 1 — superpose the counting register.</strong></p>
+<div class="arithmatex">\[ |\psi_1\rangle = \frac{1}{\sqrt{2^t}}\sum_{k=0}^{2^t-1}|k\rangle\ \otimes|u\rangle \]</div>
+<p><strong>Step 2 — controlled powers of <span class="arithmatex">\(U\)</span>.</strong> The stack of controlled-<span class="arithmatex">\(U^{2^j}\)</span> gates applies <span class="arithmatex">\(U^k\)</span> to the
+eigenstate register when the counting register holds <span class="arithmatex">\(|k\rangle\)</span>. Because <span class="arithmatex">\(|u\rangle\)</span> is an
+eigenstate,</p>
+<div class="arithmatex">\[ U^{k}|u\rangle = e^{2\pi i k\theta}|u\rangle , \]</div>
+<p>so by <strong>generalised phase kick-back</strong> (L11 §3.2) the phase lands on the counting register:</p>
+<div class="arithmatex">\[ |\psi_2\rangle = \frac{1}{\sqrt{2^t}}\sum_{k=0}^{2^t-1}e^{2\pi i k\theta}|k\rangle\ \otimes|u\rangle \]</div>
+<p><strong>The eigenstate register is unchanged and unentangled.</strong> All the information is now in the phase
+ramp of the counting register.</p>
+<p><strong>Step 3 — recognise the state.</strong> Compare with the QFT definition (L18):</p>
+<div class="arithmatex">\[ \mathrm{QFT}|j\rangle = \frac{1}{\sqrt{2^t}}\sum_k e^{2\pi ijk/2^t}|k\rangle . \]</div>
+<p>If <span class="arithmatex">\(\theta\)</span> happens to equal <span class="arithmatex">\(j/2^t\)</span> exactly for some integer <span class="arithmatex">\(j\)</span>, then <span class="arithmatex">\(|\psi_2\rangle\)</span> is <strong>exactly</strong>
+<span class="arithmatex">\(\mathrm{QFT}|j\rangle\)</span>.</p>
+<p><strong>Step 4 — apply the inverse QFT.</strong></p>
+<div class="arithmatex">\[ |\psi_3\rangle = \mathrm{QFT}^{-1}|\psi_2\rangle \]</div>
+<p><strong>Step 5 — measure the counting register</strong>, obtaining an integer <span class="arithmatex">\(m\)</span>. Output</p>
+<div class="arithmatex">\[ \tilde\theta = \frac{m}{2^t} . \]</div>
+<h2 id="195-the-exact-case">19.5 The Exact Case<a class="headerlink" href="#195-the-exact-case" title="Permanent link">&para;</a></h2>
+<p><strong>Theorem.</strong> If <span class="arithmatex">\(\theta = j/2^t\)</span> for an integer <span class="arithmatex">\(0\le j &lt; 2^t\)</span> — equivalently, <span class="arithmatex">\(\theta\)</span> has an exact
+<span class="arithmatex">\(t\)</span>-bit binary expansion — then QPE returns <span class="arithmatex">\(m = j\)</span> with <strong>probability 1</strong>.</p>
+<p><em>Proof.</em> By Step 3, <span class="arithmatex">\(|\psi_2\rangle = \mathrm{QFT}|j\rangle\)</span> exactly. Applying the inverse:</p>
+<div class="arithmatex">\[ |\psi_3\rangle = \mathrm{QFT}^{-1}\mathrm{QFT}|j\rangle = |j\rangle . \]</div>
+<p>Measurement returns <span class="arithmatex">\(j\)</span> deterministically. <span class="arithmatex">\(\blacksquare\)</span></p>
+<p><strong>Interpretation.</strong> Writing <span class="arithmatex">\(\theta = 0.\theta_1\theta_2\cdots\theta_t\)</span> in binary, the counting
+register ends up holding exactly those <span class="arithmatex">\(t\)</span> bits.</p>
+<h2 id="196-the-general-case-and-the-precision-theorem">19.6 The General Case and the Precision Theorem<a class="headerlink" href="#196-the-general-case-and-the-precision-theorem" title="Permanent link">&para;</a></h2>
+<p>When <span class="arithmatex">\(\theta\)</span> is not an exact <span class="arithmatex">\(t\)</span>-bit fraction, the output spreads around the nearest fraction. Let
+<span class="arithmatex">\(b\)</span> be the integer such that <span class="arithmatex">\(b/2^t\)</span> is the best <span class="arithmatex">\(t\)</span>-bit approximation, and let
+<span class="arithmatex">\(\delta = \theta - b/2^t\)</span> with <span class="arithmatex">\(|\delta| \le 2^{-(t+1)}\)</span>.</p>
+<p><strong>Amplitude of outcome <span class="arithmatex">\(m\)</span>.</strong></p>
+<div class="arithmatex">\[ A_m = \frac{1}{2^t}\sum_{k=0}^{2^t-1}e^{2\pi ik(\theta - m/2^t)}
+= \frac{1}{2^t}\cdot\frac{1 - e^{2\pi i 2^t(\theta - m/2^t)}}{1 - e^{2\pi i(\theta - m/2^t)}} \]</div>
+<p>(a finite geometric series), giving</p>
+<div class="arithmatex">\[ \Pr[m] = |A_m|^2 = \frac{1}{2^{2t}}\left|\frac{\sin\big(\pi 2^t(\theta - m/2^t)\big)}
+{\sin\big(\pi(\theta-m/2^t)\big)}\right|^2 . \]</div>
+<p>This is the <strong>Fejér / Dirichlet kernel</strong> — a sharply peaked function centred at <span class="arithmatex">\(m = 2^t\theta\)</span>.</p>
+<p><strong>Theorem (Standard bound).</strong> <span class="arithmatex">\(\Pr[m = b] \ge \dfrac{4}{\pi^2} \approx 0.405\)</span>.</p>
+<p><strong>Theorem (Precision–probability).</strong> To obtain <span class="arithmatex">\(\theta\)</span> accurate to <span class="arithmatex">\(n\)</span> bits with success probability
+at least <span class="arithmatex">\(1-\epsilon\)</span>, use</p>
+<div class="arithmatex">\[ \boxed{\ t = n + \left\lceil \log_2\!\left(2 + \frac{1}{2\epsilon}\right)\right\rceil \ \text{counting qubits}\ } \]</div>
+<p><strong>Worked values.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Desired precision <span class="arithmatex">\(n\)</span></th>
+<th>Failure <span class="arithmatex">\(\epsilon\)</span></th>
+<th>Extra qubits</th>
+<th>Total <span class="arithmatex">\(t\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>0.25</td>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.10</td>
+<td>3</td>
+<td>11</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0.01</td>
+<td>6</td>
+<td>16</td>
+</tr>
+<tr>
+<td>20</td>
+<td>0.01</td>
+<td>6</td>
+<td>26</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cost.</strong> The controlled-<span class="arithmatex">\(U^{2^j}\)</span> gates require <span class="arithmatex">\(1 + 2 + 4 + \cdots + 2^{t-1} = 2^t - 1\)</span> applications
+of <span class="arithmatex">\(U\)</span>, so the cost is <span class="arithmatex">\(O(2^t)\)</span> applications — <strong>exponential in the number of bits of precision</strong>.
+This is why QPE gives high precision only when <span class="arithmatex">\(U\)</span> itself can be exponentiated cheaply (as modular
+exponentiation can, by repeated squaring).</p>
+<h2 id="197-what-if-you-do-not-have-the-eigenstate">19.7 What If You Do Not Have the Eigenstate?<a class="headerlink" href="#197-what-if-you-do-not-have-the-eigenstate" title="Permanent link">&para;</a></h2>
+<p>Usually you cannot prepare <span class="arithmatex">\(|u\rangle\)</span> — that would often require knowing the answer. <strong>QPE handles
+this gracefully.</strong> Expand an arbitrary input in the eigenbasis:</p>
+<div class="arithmatex">\[ |\psi\rangle = \sum_u c_u |u\rangle . \]</div>
+<p>By linearity, QPE produces</p>
+<div class="arithmatex">\[ \sum_u c_u\,|\tilde\theta_u\rangle\otimes|u\rangle . \]</div>
+<p>Measuring the counting register returns <span class="arithmatex">\(\tilde\theta_u\)</span> <strong>with probability <span class="arithmatex">\(|c_u|^2\)</span></strong>, and collapses
+the eigenstate register to the corresponding <span class="arithmatex">\(|u\rangle\)</span>. You get a <em>random</em> eigenphase, sampled
+according to the overlap.</p>
+<p><strong>In Shor's algorithm</strong> the input <span class="arithmatex">\(|1\rangle\)</span> is an equal superposition of all <span class="arithmatex">\(r\)</span> relevant
+eigenstates of the modular-multiplication operator, so the measurement returns <span class="arithmatex">\(\approx s/r\)</span> for a
+uniformly random <span class="arithmatex">\(s\in\{0,\dots,r-1\}\)</span>. That is precisely the output the continued-fractions step
+(L20) is designed to consume.</p>
+<h2 id="198-solved-problems">19.8 Solved Problems<a class="headerlink" href="#198-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-exact-phase-estimation">Problem 1 — Exact phase estimation<a class="headerlink" href="#problem-1-exact-phase-estimation" title="Permanent link">&para;</a></h4>
+<p><em><span class="arithmatex">\(U = \begin{pmatrix}1&amp;0\\0&amp;e^{2\pi i\cdot0.375}\end{pmatrix}\)</span> with eigenstate <span class="arithmatex">\(|u\rangle = |1\rangle\)</span>.
+Use <span class="arithmatex">\(t=3\)</span> counting qubits. What is measured?</em></p>
+<p><strong>Solution.</strong>
+<span class="arithmatex">\(\theta = 0.375 = \frac{3}{8}\)</span>. In binary:</p>
+<div class="arithmatex">\[ 0.375 = \frac{0}{2} + \frac{1}{4} + \frac{1}{8} = 0.011_2 . \]</div>
+<p>Since <span class="arithmatex">\(\theta = 3/2^3\)</span> is an exact 3-bit fraction, the exact case applies:</p>
+<div class="arithmatex">\[ m = 3 = 011_2, \qquad \Pr[m=3] = 1 . \]</div>
+<p><strong>Output:</strong> <span class="arithmatex">\(\tilde\theta = 3/8 = 0.375\)</span> ✓, exactly, in one run.</p>
+<p><em>Check the state before the inverse QFT:</em></p>
+<div class="arithmatex">\[ \frac{1}{\sqrt8}\sum_{k=0}^{7}e^{2\pi ik\cdot3/8}|k\rangle = \mathrm{QFT}_8|3\rangle \ \checkmark \]</div>
+<h4 id="problem-2-inexact-phase-distribution-of-outcomes">Problem 2 — Inexact phase, distribution of outcomes<a class="headerlink" href="#problem-2-inexact-phase-distribution-of-outcomes" title="Permanent link">&para;</a></h4>
+<p><em>Now <span class="arithmatex">\(\theta = 0.4\)</span> with <span class="arithmatex">\(t = 3\)</span>. Compute <span class="arithmatex">\(\Pr[m]\)</span> for all <span class="arithmatex">\(m\)</span> and identify the most likely outcome.</em></p>
+<p><strong>Solution.</strong>
+<span class="arithmatex">\(2^t\theta = 8\times0.4 = 3.2\)</span>. The nearest integer is <span class="arithmatex">\(b = 3\)</span>, so <span class="arithmatex">\(\tilde\theta = 3/8 = 0.375\)</span> with
+error <span class="arithmatex">\(0.025\)</span>.</p>
+<p>Using <span class="arithmatex">\(\Pr[m] = \frac{1}{64}\left|\frac{\sin(8\pi(0.4 - m/8))}{\sin(\pi(0.4-m/8))}\right|^2\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(m\)</span></th>
+<th><span class="arithmatex">\(0.4 - m/8\)</span></th>
+<th><span class="arithmatex">\(\Pr[m]\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><span class="arithmatex">\(0.400\)</span></td>
+<td>0.006</td>
+</tr>
+<tr>
+<td>1</td>
+<td><span class="arithmatex">\(0.275\)</span></td>
+<td>0.009</td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="arithmatex">\(0.150\)</span></td>
+<td>0.026</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><span class="arithmatex">\(0.025\)</span></td>
+<td><strong>0.877</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="arithmatex">\(-0.100\)</span></td>
+<td>0.057</td>
+</tr>
+<tr>
+<td>5</td>
+<td><span class="arithmatex">\(-0.225\)</span></td>
+<td>0.013</td>
+</tr>
+<tr>
+<td>6</td>
+<td><span class="arithmatex">\(-0.350\)</span></td>
+<td>0.007</td>
+</tr>
+<tr>
+<td>7</td>
+<td><span class="arithmatex">\(-0.475\)</span></td>
+<td>0.005</td>
+</tr>
+</tbody>
+</table>
+<p>Sum <span class="arithmatex">\(= 1.000\)</span> ✓.</p>
+<p><strong>Most likely outcome: <span class="arithmatex">\(m = 3\)</span> with probability 0.877</strong>, far above the guaranteed bound
+<span class="arithmatex">\(4/\pi^2 = 0.405\)</span>. Note the asymmetry: <span class="arithmatex">\(m=4\)</span> (0.057) is more likely than <span class="arithmatex">\(m=2\)</span> (0.026), because
+<span class="arithmatex">\(\theta = 0.4\)</span> lies between <span class="arithmatex">\(3/8 = 0.375\)</span> and <span class="arithmatex">\(4/8 = 0.5\)</span> but nearer the former. The distribution is
+sharply <strong>concentrated</strong>, not spread out.</p>
+<p><em>Practical procedure.</em> Run QPE several times and take the mode. Two runs already give the correct
+answer with probability <span class="arithmatex">\(1 - (0.123)^2 \approx 98.5\%\)</span>.</p>
+<h4 id="problem-3-choosing-the-number-of-counting-qubits">Problem 3 — Choosing the number of counting qubits<a class="headerlink" href="#problem-3-choosing-the-number-of-counting-qubits" title="Permanent link">&para;</a></h4>
+<p><em>You need <span class="arithmatex">\(\theta\)</span> to 10 binary digits with failure probability at most 5 %. How many counting
+qubits, and how many applications of <span class="arithmatex">\(U\)</span>?</em></p>
+<p><strong>Solution.</strong>
+Apply the formula with <span class="arithmatex">\(n = 10\)</span>, <span class="arithmatex">\(\epsilon = 0.05\)</span>:</p>
+<div class="arithmatex">\[ t = n + \left\lceil\log_2\!\left(2 + \frac{1}{2\times0.05}\right)\right\rceil
+= 10 + \lceil\log_2(2 + 10)\rceil = 10 + \lceil\log_2 12\rceil = 10 + \lceil3.585\rceil = 10 + 4 \]</div>
+<div class="arithmatex">\[ \boxed{t = 14 \ \text{counting qubits}} \]</div>
+<p>Applications of <span class="arithmatex">\(U\)</span>:</p>
+<div class="arithmatex">\[ 2^{14} - 1 = 16{,}383 . \]</div>
+<p>Total qubits: 14 counting + however many <span class="arithmatex">\(|u\rangle\)</span> requires.</p>
+<p><em>Observation.</em> Doubling the precision from 10 to 20 bits would need <span class="arithmatex">\(t = 24\)</span> and <span class="arithmatex">\(2^{24}\approx1.7\times10^7\)</span>
+applications of <span class="arithmatex">\(U\)</span> — the exponential cost in precision. <strong>QPE buys precision at exponential cost in
+circuit depth</strong>, which is why NISQ devices cannot run it and why <em>iterative</em> QPE (one counting qubit
+reused <span class="arithmatex">\(t\)</span> times, with classical feed-forward) was invented.</p>
+<h4 id="problem-4-qpe-applied-to-a-pauli">Problem 4 — QPE applied to a Pauli<a class="headerlink" href="#problem-4-qpe-applied-to-a-pauli" title="Permanent link">&para;</a></h4>
+<p><em>Apply QPE with <span class="arithmatex">\(t=2\)</span> to <span class="arithmatex">\(U = Z\)</span> with eigenstate <span class="arithmatex">\(|1\rangle\)</span>. Verify the output.</em></p>
+<p><strong>Solution.</strong>
+<span class="arithmatex">\(Z|1\rangle = -|1\rangle = e^{i\pi}|1\rangle = e^{2\pi i(1/2)}|1\rangle\)</span>, so <span class="arithmatex">\(\theta = \frac12\)</span>.</p>
+<p><span class="arithmatex">\(\theta = 1/2 = 2/4 = 2/2^t\)</span> — exact for <span class="arithmatex">\(t=2\)</span>, with <span class="arithmatex">\(j = 2 = 10_2\)</span>.</p>
+<p><strong>Trace it.</strong> After Step 1: <span class="arithmatex">\(\frac12\sum_{k=0}^3|k\rangle|1\rangle\)</span>.</p>
+<p>After Step 2 (phase <span class="arithmatex">\(e^{2\pi ik/2} = (-1)^k\)</span>):</p>
+<div class="arithmatex">\[ \frac12\big(|0\rangle - |1\rangle + |2\rangle - |3\rangle\big)\otimes|1\rangle \]</div>
+<p>This is <span class="arithmatex">\(\mathrm{QFT}_4|2\rangle\)</span> (computed in L18, Problem 1) ✓.</p>
+<p>After <span class="arithmatex">\(\mathrm{QFT}_4^{-1}\)</span>: <span class="arithmatex">\(|2\rangle = |10\rangle\)</span>.</p>
+<p><strong>Measurement gives <span class="arithmatex">\(m=2\)</span></strong>, so <span class="arithmatex">\(\tilde\theta = 2/4 = 0.5\)</span> ✓, and the eigenvalue is
+<span class="arithmatex">\(e^{2\pi i(0.5)} = -1\)</span> ✓.</p>
+<p><em>Note.</em> With <span class="arithmatex">\(t = 1\)</span> this reduces to the Hadamard test of L11 Problem 4: one <span class="arithmatex">\(H\)</span>, one controlled-<span class="arithmatex">\(Z\)</span>,
+one <span class="arithmatex">\(H\)</span>, measure — giving 1 with certainty.</p>
+<h4 id="problem-5-qpe-for-order-finding-previewing-shor">Problem 5 — QPE for order finding (previewing Shor)<a class="headerlink" href="#problem-5-qpe-for-order-finding-previewing-shor" title="Permanent link">&para;</a></h4>
+<p><em>Let <span class="arithmatex">\(N=15\)</span>, <span class="arithmatex">\(a=7\)</span>. Define <span class="arithmatex">\(U_a|y\rangle = |ay \bmod 15\rangle\)</span>. Show that its eigenvalues have phases
+<span class="arithmatex">\(s/r\)</span>, and state what QPE would return.</em></p>
+<p><strong>Solution.</strong></p>
+<p>From L17, <span class="arithmatex">\(r = \mathrm{ord}_{15}(7) = 4\)</span>: the cycle is <span class="arithmatex">\(1 \to 7 \to 4 \to 13 \to 1\)</span>.</p>
+<p><strong>Eigenstates.</strong> For <span class="arithmatex">\(s = 0,1,\dots,r-1\)</span> define</p>
+<div class="arithmatex">\[ |u_s\rangle = \frac{1}{\sqrt r}\sum_{k=0}^{r-1} e^{-2\pi i sk/r}\,\big|a^k \bmod N\big\rangle . \]</div>
+<p><strong>Verify the eigenvalue equation.</strong></p>
+<div class="arithmatex">\[ U_a|u_s\rangle = \frac{1}{\sqrt r}\sum_{k=0}^{r-1}e^{-2\pi isk/r}|a^{k+1}\rangle \]</div>
+<p>Substitute <span class="arithmatex">\(k' = k+1\)</span> (indices mod <span class="arithmatex">\(r\)</span>, using <span class="arithmatex">\(a^r \equiv 1\)</span>):</p>
+<div class="arithmatex">\[ = \frac{1}{\sqrt r}\sum_{k'}e^{-2\pi is(k'-1)/r}|a^{k'}\rangle
+= e^{2\pi is/r}\cdot\frac{1}{\sqrt r}\sum_{k'}e^{-2\pi isk'/r}|a^{k'}\rangle
+= e^{2\pi is/r}|u_s\rangle \ \checkmark \]</div>
+<div class="arithmatex">\[ \boxed{\ \theta_s = \frac{s}{r} = \frac{s}{4} \in \left\{0,\ \tfrac14,\ \tfrac12,\ \tfrac34\right\}\ } \]</div>
+<p><strong>The problem of preparing <span class="arithmatex">\(|u_s\rangle\)</span>.</strong> Building <span class="arithmatex">\(|u_s\rangle\)</span> requires knowing <span class="arithmatex">\(r\)</span> — which is
+what we are trying to find. <strong>The resolution</strong> is the key identity</p>
+<div class="arithmatex">\[ \frac{1}{\sqrt r}\sum_{s=0}^{r-1}|u_s\rangle = |1\rangle . \]</div>
+<p><em>Proof:</em> the coefficient of <span class="arithmatex">\(|a^k\rangle\)</span> in the sum is
+<span class="arithmatex">\(\frac{1}{r}\sum_s e^{-2\pi isk/r}\)</span>, which is 1 if <span class="arithmatex">\(k\equiv0\)</span> and 0 otherwise — leaving only
+<span class="arithmatex">\(|a^0\rangle = |1\rangle\)</span> ✓.</p>
+<p><strong>So we simply prepare <span class="arithmatex">\(|1\rangle\)</span></strong> — trivially easy — which is an equal superposition of all <span class="arithmatex">\(r\)</span>
+eigenstates. By §6, QPE then returns <span class="arithmatex">\(\tilde\theta \approx s/4\)</span> for a uniformly random
+<span class="arithmatex">\(s\in\{0,1,2,3\}\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th>Measured <span class="arithmatex">\(\tilde\theta\)</span></th>
+<th><span class="arithmatex">\(s\)</span></th>
+<th>Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(0.00\)</span></td>
+<td>0</td>
+<td>1/4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(0.25\)</span></td>
+<td>1</td>
+<td>1/4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(0.50\)</span></td>
+<td>2</td>
+<td>1/4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(0.75\)</span></td>
+<td>3</td>
+<td>1/4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recovering <span class="arithmatex">\(r\)</span>.</strong> From <span class="arithmatex">\(\tilde\theta = 0.25 = \frac14\)</span> we read <span class="arithmatex">\(r = 4\)</span> directly. From
+<span class="arithmatex">\(\tilde\theta = 0.5 = \frac12\)</span> we get the <em>reduced</em> fraction <span class="arithmatex">\(\frac12\)</span>, giving <span class="arithmatex">\(r = 2\)</span> — <strong>wrong</strong>,
+because <span class="arithmatex">\(s=2\)</span> and <span class="arithmatex">\(r=4\)</span> share the factor 2. From <span class="arithmatex">\(\tilde\theta = 0\)</span> we learn nothing.</p>
+<p>This is why Shor's algorithm needs <strong>continued fractions</strong> and a verification step <span class="arithmatex">\(a^r\stackrel{?}{\equiv}1\)</span>,
+and why it may need to be repeated. Useful outcomes here are <span class="arithmatex">\(s\in\{1,3\}\)</span> (those coprime to <span class="arithmatex">\(r\)</span>),
+occurring with probability <span class="arithmatex">\(\phi(r)/r = 2/4 = 1/2\)</span>.</p>
+<h2 id="199-practice-problems">19.9 Practice Problems<a class="headerlink" href="#199-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li><span class="arithmatex">\(\theta = 0.625\)</span> with <span class="arithmatex">\(t=3\)</span>: what is measured? <strong>[Ans: <span class="arithmatex">\(m=5\)</span>, exact]</strong></li>
+<li><span class="arithmatex">\(\theta = 1/3\)</span> with <span class="arithmatex">\(t=4\)</span>: find <span class="arithmatex">\(b\)</span> and the error. <strong>[Ans: <span class="arithmatex">\(b=5\)</span>, <span class="arithmatex">\(\tilde\theta = 5/16 = 0.3125\)</span>]</strong></li>
+<li>How many counting qubits for 6-bit precision with 1 % failure? <strong>[Ans: <span class="arithmatex">\(t=12\)</span>]</strong></li>
+<li>Apply QPE with <span class="arithmatex">\(t=2\)</span> to <span class="arithmatex">\(U=S\)</span> with eigenstate <span class="arithmatex">\(|1\rangle\)</span>. <strong>[Ans: <span class="arithmatex">\(\theta = 1/4\)</span>, <span class="arithmatex">\(m=1\)</span>, exact]</strong></li>
+<li>Prove that the phases of <span class="arithmatex">\(U_a\)</span> are exactly <span class="arithmatex">\(\{s/r\}\)</span> for <span class="arithmatex">\(s = 0,\dots,r-1\)</span>.</li>
+<li>Show <span class="arithmatex">\(\Pr[b]\ge 4/\pi^2\)</span> using <span class="arithmatex">\(|\sin x| \ge 2|x|/\pi\)</span> for <span class="arithmatex">\(|x|\le\pi/2\)</span>.</li>
+<li>Why does the eigenstate register end up unentangled from the counting register in the exact case?</li>
+</ol>
+<h2 id="1910-summary">19.10 Summary<a class="headerlink" href="#1910-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>QPE</strong> estimates <span class="arithmatex">\(\theta\)</span> where <span class="arithmatex">\(U|u\rangle = e^{2\pi i\theta}|u\rangle\)</span>, using <span class="arithmatex">\(t\)</span> counting qubits.</li>
+<li>Circuit: Hadamards → controlled-<span class="arithmatex">\(U^{2^j}\)</span> (phase kick-back writes the ramp <span class="arithmatex">\(e^{2\pi ik\theta}\)</span>) → <span class="arithmatex">\(\mathrm{QFT}^{-1}\)</span> → measure.</li>
+<li><strong>Exact case:</strong> if <span class="arithmatex">\(\theta\)</span> has a <span class="arithmatex">\(t\)</span>-bit binary expansion, the answer is deterministic.</li>
+<li><strong>General case:</strong> the outcome distribution is a Fejér kernel peaked at <span class="arithmatex">\(b\approx2^t\theta\)</span>, with <span class="arithmatex">\(\Pr[b]\ge 4/\pi^2\)</span>; use <span class="arithmatex">\(t = n + \lceil\log_2(2+\frac{1}{2\epsilon})\rceil\)</span> qubits.</li>
+<li>Cost is <span class="arithmatex">\(2^t-1\)</span> applications of <span class="arithmatex">\(U\)</span> — <strong>exponential in precision</strong>, so <span class="arithmatex">\(U\)</span> must be cheaply exponentiable.</li>
+<li>If you cannot prepare <span class="arithmatex">\(|u\rangle\)</span>, feed in any state: QPE returns a random eigenphase with probability <span class="arithmatex">\(|c_u|^2\)</span>. In Shor, the easily-prepared <span class="arithmatex">\(|1\rangle\)</span> is an equal superposition of all <span class="arithmatex">\(r\)</span> eigenstates.</li>
+<li>QPE is the engine of <strong>Shor, HHL and quantum chemistry</strong>.</li>
+</ul>
+<p><strong>Next lesson:</strong> L20 — Shor's algorithm for integer factorization, assembled in full.</p>
+<p><strong>Practise now:</strong> <code>unit2-algorithms-lab.html</code> → <em>Phase Estimation</em> tab: set <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(t\)</span>, and see
+the Fejér-kernel probability distribution and the effect of adding counting qubits.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="the-quantum-fourier-transform.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 18. The Quantum Fourier Transform">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                18. The Quantum Fourier Transform
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="shor-s-algorithm-for-integer-factorization.html" class="md-footer__link md-footer__link--next" aria-label="Next: 20. Shor&#39;s Algorithm for Integer Factorization">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                20. Shor's Algorithm for Integer Factorization
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

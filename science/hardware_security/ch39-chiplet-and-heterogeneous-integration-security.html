@@ -1,0 +1,2490 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch39-chiplet-and-heterogeneous-integration-security.html">
+  
+  
+    <link rel="prev" href="ch38-hardware-security-design-flow-and-eda-tools.html">
+  
+  
+    <link rel="next" href="key-standards-reference.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>39. Chiplet and Heterogeneous Integration Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-chiplet-arch" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              39. Chiplet and Heterogeneous Integration Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1 Chiplet Architecture Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.1 Chiplet Architecture Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3911-key-interconnect-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1.1 Key Interconnect Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3912-trust-zones-in-a-chiplet-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1.2 Trust Zones in a Chiplet Package
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-threats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2 Security Threats in Chiplet Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.2 Security Threats in Chiplet Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3921-die-to-die-d2d-interconnect-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.1 Die-to-Die (D2D) Interconnect Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3922-supply-chain-threats-specific-to-chiplets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.2 Supply Chain Threats Specific to Chiplets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3923-hbm-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.3 HBM Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ucie-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.3 UCIe Security (Universal Chiplet Interconnect Express)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.3 UCIe Security (Universal Chiplet Interconnect Express)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3931-ucie-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.3.1 UCIe Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.4 Chiplet Identity and Attestation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.4 Chiplet Identity and Attestation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3941-dice-based-chiplet-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.4.1 DICE-based Chiplet Identity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.5 FPGA Implementation: Secure D2D Controller
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.6 ASIC Implementation Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.7 Chiplet Security Ecosystem and Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch39-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.8 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3981-ucie-20-security-enhancements-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.1 UCIe 2.0 Security Enhancements (2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3982-ieee-p3164-chiplet-security-standard-2024-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.2 IEEE P3164 Chiplet Security Standard (2024 Draft)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3983-chips-act-trusted-fab-certification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.3 CHIPS Act Trusted Fab Certification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1 Chiplet Architecture Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.1 Chiplet Architecture Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3911-key-interconnect-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1.1 Key Interconnect Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3912-trust-zones-in-a-chiplet-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.1.2 Trust Zones in a Chiplet Package
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-threats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2 Security Threats in Chiplet Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.2 Security Threats in Chiplet Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3921-die-to-die-d2d-interconnect-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.1 Die-to-Die (D2D) Interconnect Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3922-supply-chain-threats-specific-to-chiplets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.2 Supply Chain Threats Specific to Chiplets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3923-hbm-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.2.3 HBM Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ucie-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.3 UCIe Security (Universal Chiplet Interconnect Express)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.3 UCIe Security (Universal Chiplet Interconnect Express)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3931-ucie-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.3.1 UCIe Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.4 Chiplet Identity and Attestation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.4 Chiplet Identity and Attestation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3941-dice-based-chiplet-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.4.1 DICE-based Chiplet Identity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.5 FPGA Implementation: Secure D2D Controller
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.6 ASIC Implementation Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-chiplet-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.7 Chiplet Security Ecosystem and Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch39-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39.8 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3981-ucie-20-security-enhancements-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.1 UCIe 2.0 Security Enhancements (2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3982-ieee-p3164-chiplet-security-standard-2024-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.2 IEEE P3164 Chiplet Security Standard (2024 Draft)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3983-chips-act-trusted-fab-certification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39.8.3 CHIPS Act Trusted Fab Certification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-chiplet-security">Chapter 39: Chiplet and Heterogeneous Integration Security<a class="headerlink" href="#ch-chiplet-security" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Chiplets disaggregate a monolithic SoC into multiple dies connected by a high-speed die-to-die interconnect. While enabling cost-effective scaling, chiplet architectures introduce new trust boundaries, supply chain risks, and physical attack surfaces that monolithic designs do not face.</p>
+</div>
+<p>The chiplet revolution—driven by TSMC’s CoWoS, Intel Foveros, and AMD’s EMIB— fundamentally changes the hardware security landscape. When a single package contains dies from multiple vendors, manufactured in different fabs, across different continents, each die-to-die link becomes a potential trust boundary and attack surface.</p>
+<h2 id="sec-chiplet-arch"><span class="secnum">39.1</span> Chiplet Architecture Overview<a class="headerlink" href="#sec-chiplet-arch" title="Permanent link">&para;</a></h2>
+<h3 id="3911-key-interconnect-standards"><span class="secnum">39.1.1</span> Key Interconnect Standards<a class="headerlink" href="#3911-key-interconnect-standards" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Standard</strong></th>
+<th style="text-align: left;"><strong>Bandwidth</strong></th>
+<th style="text-align: left;"><strong>Range</strong></th>
+<th style="text-align: left;"><strong>Security Support</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">UCIe 1.1 (2023)</td>
+<td style="text-align: left;">32 Gb/s/mm</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>2mm</td>
+<td style="text-align: left;">Optional AES-256-GCM encryption+auth</td>
+</tr>
+<tr>
+<td style="text-align: left;">BoW (Open)</td>
+<td style="text-align: left;">112 Gb/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>1mm</td>
+<td style="text-align: left;">No native security</td>
+</tr>
+<tr>
+<td style="text-align: left;">AIB (Intel)</td>
+<td style="text-align: left;">2 Gb/s/pin</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>10mm</td>
+<td style="text-align: left;">Integrity bits only</td>
+</tr>
+<tr>
+<td style="text-align: left;">HBM3</td>
+<td style="text-align: left;">1.2 TB/s</td>
+<td style="text-align: left;">Stacked</td>
+<td style="text-align: left;">Per-channel ECC; no encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">CXL 3.0</td>
+<td style="text-align: left;">256 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>10m PCIe</td>
+<td style="text-align: left;">AES-256-GCM IDE encryption</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="3912-trust-zones-in-a-chiplet-package"><span class="secnum">39.1.2</span> Trust Zones in a Chiplet Package<a class="headerlink" href="#3912-trust-zones-in-a-chiplet-package" title="Permanent link">&para;</a></h3>
+<figure class="fig fig-diagram" id="fig-chiplet-trust">
+<img class="tikz" src="img/tikz-6e643b365924.svg" alt="Chiplet package trust zones: different dies have different trust levels requiring appropriate interconnect security." loading="lazy">
+<figcaption><strong>Figure 39.1.</strong> Chiplet package trust zones: different dies have different trust levels requiring appropriate interconnect security.</figcaption>
+</figure>
+
+<h2 id="sec-chiplet-threats"><span class="secnum">39.2</span> Security Threats in Chiplet Systems<a class="headerlink" href="#sec-chiplet-threats" title="Permanent link">&para;</a></h2>
+<h3 id="3921-die-to-die-d2d-interconnect-attacks"><span class="secnum">39.2.1</span> Die-to-Die (D2D) Interconnect Attacks<a class="headerlink" href="#3921-die-to-die-d2d-interconnect-attacks" title="Permanent link">&para;</a></h3>
+<p>Unlike monolithic on-chip buses, die-to-die interconnects are accessible with physical probing equipment:</p>
+<dl>
+<dt>Passive Probing</dt>
+<dd>High-bandwidth oscilloscope (100+ GHz Keysight DSA-Z or Tektronix DPO70000SX) with ground-signal probes can capture UCIe or BoW signals at the package edge if the interposer is exposed.</dd>
+<dt>Active Interposer Substitution</dt>
+<dd>Replace a legitimate passive interposer with a <em>malicious active interposer</em> that intercepts, modifies, or replays die-to-die transactions. Demonstrated by researchers at MIT Lincoln Labs (2022).</dd>
+<dt>Differential Power Analysis on D2D</dt>
+<dd>The simultaneous switching of 1000+ UCIe lanes creates measurable power signatures correlating with bus data.</dd>
+</dl>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> Unencrypted die-to-die interconnects (BoW, early AIB) expose all data exchanged between chiplets to an attacker with package-level physical access. For security-sensitive data (keys, plaintext, attestation) always mandate UCIe with AES-256-GCM or a CXL IDE-equivalent link.</p>
+</div>
+<h3 id="3922-supply-chain-threats-specific-to-chiplets"><span class="secnum">39.2.2</span> Supply Chain Threats Specific to Chiplets<a class="headerlink" href="#3922-supply-chain-threats-specific-to-chiplets" title="Permanent link">&para;</a></h3>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Threat</strong></th>
+<th style="text-align: left;"><strong>Chiplet-Specific Vector</strong></th>
+<th style="text-align: left;"><strong>Countermeasure</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Malicious third-party chiplet</td>
+<td style="text-align: left;">Untested chiplet from untrusted fab inserted into multi-die package</td>
+<td style="text-align: left;">SPDM attestation of each die; AS6081 procurement</td>
+</tr>
+<tr>
+<td style="text-align: left;">Counterfeit chiplet</td>
+<td style="text-align: left;">Legitimate chiplet replaced with lower-grade die</td>
+<td style="text-align: left;">PUF-based die identity; X-ray verification</td>
+</tr>
+<tr>
+<td style="text-align: left;">Malicious interposer</td>
+<td style="text-align: left;">Active silicon interposer with embedded hardware Trojan</td>
+<td style="text-align: left;">Electrical testing; X-ray CT of assembled package</td>
+</tr>
+<tr>
+<td style="text-align: left;">Side-channel via shared substrate</td>
+<td style="text-align: left;">Thermal or EM crosstalk between dies exposes secrets</td>
+<td style="text-align: left;">Physical isolation; thermal shield layers</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory chiplet extraction</td>
+<td style="text-align: left;">HBM3 stacked die removed and read off-chip</td>
+<td style="text-align: left;">Per-granule encryption on memory die</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h3 id="3923-hbm-security"><span class="secnum">39.2.3</span> HBM Security<a class="headerlink" href="#3923-hbm-security" title="Permanent link">&para;</a></h3>
+<p>High Bandwidth Memory (HBM3, JEDEC JESD238) is stacked directly on the die using Through-Silicon Vias (TSVs). Security concerns:</p>
+<ul>
+<li>
+<p>HBM3 does <strong>not</strong> natively encrypt data. An attacker with access to the package (FIB, interposer probing) can read memory contents.</p>
+</li>
+<li>
+<p>NVIDIA H100’s Memory Encryption Engine (MEE) provides AES-XTS-256 between the SXM5 die and HBM3 stacks, implementing inline encryption in the memory controller.</p>
+</li>
+<li>
+<p>AMD MI300X (2024) integrates CPU+GPU dies in the same package, sharing HBM3; AMD SEV-SNP encryption covers the HBM3 address space.</p>
+</li>
+</ul>
+<h2 id="sec-ucie-security"><span class="secnum">39.3</span> UCIe Security (Universal Chiplet Interconnect Express)<a class="headerlink" href="#sec-ucie-security" title="Permanent link">&para;</a></h2>
+<p>UCIe 1.1 (2023) defines an optional but strongly recommended security layer above the physical/adapter layer. The security stack uses:</p>
+<h3 id="3931-ucie-security-architecture"><span class="secnum">39.3.1</span> UCIe Security Architecture<a class="headerlink" href="#3931-ucie-security-architecture" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Die Authentication</strong> (D-Auth): ECDSA-P384 or CRYSTALS-Dilithium identity proof at link initialization. Each die presents a certificate chain to its peer.</p>
+</li>
+<li>
+<p><strong>Link Encryption</strong>: AES-256-GCM with a 96-bit nonce per packet. Key agreement via X25519 (or CRYSTALS-Kyber for post-quantum).</p>
+</li>
+<li>
+<p><strong>Replay Protection</strong>: 48-bit sequence number; out-of-order packets generate security alerts.</p>
+</li>
+<li>
+<p><strong>Key Refresh</strong>: Session keys rotated every <span class="arithmatex">\(2^{32}\)</span> packets (<span class="arithmatex">\(\sim\)</span>4 billion) to maintain GCM nonce uniqueness.</p>
+</li>
+</ol>
+<div class="language-c highlight"><pre><span></span><code><span class="cm">/* Die A (initiator) initiates secure session with Die B */</span>
+
+<span class="cm">/* Step 1: Exchange ephemeral X25519 keys */</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">eph_privA</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">eph_pubA</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">x25519_keygen</span><span class="p">(</span><span class="n">eph_privA</span><span class="p">,</span><span class="w"> </span><span class="n">eph_pubA</span><span class="p">);</span>
+<span class="n">ucie_send</span><span class="p">(</span><span class="n">DIE_B</span><span class="p">,</span><span class="w"> </span><span class="n">MSG_KEY_EXCHANGE</span><span class="p">,</span><span class="w"> </span><span class="n">eph_pubA</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">eph_pubB</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">ucie_recv</span><span class="p">(</span><span class="n">DIE_B</span><span class="p">,</span><span class="w"> </span><span class="n">MSG_KEY_EXCHANGE</span><span class="p">,</span><span class="w"> </span><span class="n">eph_pubB</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+
+<span class="cm">/* Step 2: ECDH shared secret */</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">shared</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">x25519</span><span class="p">(</span><span class="n">shared</span><span class="p">,</span><span class="w"> </span><span class="n">eph_privA</span><span class="p">,</span><span class="w"> </span><span class="n">eph_pubB</span><span class="p">);</span>
+
+<span class="cm">/* Step 3: HKDF to derive AES-256-GCM keys */</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">key_A2B</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">key_B2A</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">hkdf_sha256</span><span class="p">(</span><span class="n">shared</span><span class="p">,</span><span class="w"> </span><span class="s">"UCIe-D2D-A2B"</span><span class="p">,</span><span class="w"> </span><span class="n">key_A2B</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="n">hkdf_sha256</span><span class="p">(</span><span class="n">shared</span><span class="p">,</span><span class="w"> </span><span class="s">"UCIe-D2D-B2A"</span><span class="p">,</span><span class="w"> </span><span class="n">key_B2A</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+
+<span class="cm">/* Step 4: Authenticate dies (ECDSA-P384 certificate exchange) */</span>
+<span class="n">ucie_send_certificate</span><span class="p">(</span><span class="n">DIE_B</span><span class="p">,</span><span class="w"> </span><span class="n">die_cert_chain</span><span class="p">);</span>
+<span class="n">ucie_verify_certificate</span><span class="p">(</span><span class="n">recv_cert</span><span class="p">,</span><span class="w"> </span><span class="n">trusted_CA_pubkey</span><span class="p">);</span>
+
+<span class="cm">/* All subsequent UCIe packets encrypted + authenticated */</span>
+</code></pre></div>
+<h2 id="sec-chiplet-attestation"><span class="secnum">39.4</span> Chiplet Identity and Attestation<a class="headerlink" href="#sec-chiplet-attestation" title="Permanent link">&para;</a></h2>
+<p>Each chiplet must have a unique, unforgeable identity. The proposed architecture (IEEE P3164 Chiplet Security Working Group, 2023–2024):</p>
+<h3 id="3941-dice-based-chiplet-identity"><span class="secnum">39.4.1</span> DICE-based Chiplet Identity<a class="headerlink" href="#3941-dice-based-chiplet-identity" title="Permanent link">&para;</a></h3>
+<p>The TCG DICE (Device Identity Composition Engine) Layering Architecture maps naturally to chiplet stacks:</p>
+<ol>
+<li>
+<p><strong>Layer 0 – Immutable Die Identity</strong>: PUF-derived root key burned at wafer sort. Certificate issued by the fab.</p>
+</li>
+<li>
+<p><strong>Layer 1 – Package-Level Composition</strong>: The host die’s security controller measures all peer dies via D2D authentication and composes a <em>compound device identity</em> (CDI).</p>
+</li>
+<li>
+<p><strong>Layer 2 – System-Level Attestation</strong>: The CDI is bound to a TPM/RoT attestation chain, proving the full chiplet composition to a remote verifier.</p>
+</li>
+</ol>
+<figure class="fig fig-diagram" id="fig-chiplet-dice">
+<img class="tikz" src="img/tikz-c0dd2b50fb0d.svg" alt="DICE-based chiplet identity layering: fab-rooted die identity composes into a system attestation quote." loading="lazy">
+<figcaption><strong>Figure 39.2.</strong> DICE-based chiplet identity layering: fab-rooted die identity composes into a system attestation quote.</figcaption>
+</figure>
+
+<h2 id="sec-chiplet-fpga"><span class="secnum">39.5</span> FPGA Implementation: Secure D2D Controller<a class="headerlink" href="#sec-chiplet-fpga" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Component</strong></th>
+<th style="text-align: left;"><strong>FPGA Platform</strong></th>
+<th style="text-align: left;"><strong>Resources</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AES-256-GCM D2D engine</td>
+<td style="text-align: left;">Xilinx Alveo U280</td>
+<td style="text-align: left;">4,800 LUTs, 4 BRAMs</td>
+<td style="text-align: left;">25 Gb/s per lane</td>
+</tr>
+<tr>
+<td style="text-align: left;">UCIe Security Controller</td>
+<td style="text-align: left;">Intel Agilex 7</td>
+<td style="text-align: left;">12,000 LUTs</td>
+<td style="text-align: left;">Full D-Auth + encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECDSA-P384 Die Auth</td>
+<td style="text-align: left;">Artix-7 XC7A100T</td>
+<td style="text-align: left;">6,500 LUTs</td>
+<td style="text-align: left;">4ms handshake</td>
+</tr>
+<tr>
+<td style="text-align: left;">Replay Detector</td>
+<td style="text-align: left;">Artix-7</td>
+<td style="text-align: left;">800 LUTs</td>
+<td style="text-align: left;">48-bit seq, <span class="math inline">\(&lt;\)</span>1 cycle latency</td>
+</tr>
+<tr>
+<td style="text-align: left;">HBM3 MEE Prototype</td>
+<td style="text-align: left;">Xilinx HBM Alveo</td>
+<td style="text-align: left;">8,200 LUTs</td>
+<td style="text-align: left;">AES-XTS research</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-chiplet-asic"><span class="secnum">39.6</span> ASIC Implementation Data<a class="headerlink" href="#sec-chiplet-asic" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>D2D Security</strong></th>
+<th style="text-align: left;"><strong>Bandwidth</strong></th>
+<th style="text-align: left;"><strong>Power</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AMD EPYC Genoa (Zen 4)</td>
+<td style="text-align: left;">TSMC 5nm</td>
+<td style="text-align: left;">Infinity Fabric encrypted</td>
+<td style="text-align: left;">1.5 TB/s</td>
+<td style="text-align: left;">360 W</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Sapphire Rapids (TDX)</td>
+<td style="text-align: left;">Intel 7</td>
+<td style="text-align: left;">EMIB + PCIe IDE</td>
+<td style="text-align: left;">400 GB/s</td>
+<td style="text-align: left;">350 W</td>
+</tr>
+<tr>
+<td style="text-align: left;">NVIDIA H100 SXM5</td>
+<td style="text-align: left;">TSMC 4N</td>
+<td style="text-align: left;">AES-XTS-256 HBM</td>
+<td style="text-align: left;">3.35 TB/s</td>
+<td style="text-align: left;">700 W</td>
+</tr>
+<tr>
+<td style="text-align: left;">Apple M3 Ultra (UCIe)</td>
+<td style="text-align: left;">TSMC 3nm</td>
+<td style="text-align: left;">Apple proprietary D2D enc</td>
+<td style="text-align: left;">800 GB/s</td>
+<td style="text-align: left;">60 W</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Ponte Vecchio</td>
+<td style="text-align: left;">Intel 7+EMIB</td>
+<td style="text-align: left;">Encrypted EMIB links</td>
+<td style="text-align: left;">408 GB/s</td>
+<td style="text-align: left;">600 W</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-chiplet-solutions"><span class="secnum">39.7</span> Chiplet Security Ecosystem and Standards<a class="headerlink" href="#sec-chiplet-solutions" title="Permanent link">&para;</a></h2>
+<div class="center">
+<div class="tbl">
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Standard/Tool</strong></th>
+<th style="text-align: left;"><strong>Organization</strong></th>
+<th style="text-align: left;"><strong>Scope</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">UCIe 1.1 Security Annex</td>
+<td style="text-align: left;">UCIe Consortium</td>
+<td style="text-align: left;">D2D authentication and encryption spec</td>
+</tr>
+<tr>
+<td style="text-align: left;">IEEE P3164</td>
+<td style="text-align: left;">IEEE</td>
+<td style="text-align: left;">Chiplet security requirements working group (2023–)</td>
+</tr>
+<tr>
+<td style="text-align: left;">JEDEC JEP106</td>
+<td style="text-align: left;">JEDEC</td>
+<td style="text-align: left;">Manufacturer ID for supply chain traceability</td>
+</tr>
+<tr>
+<td style="text-align: left;">AS6081</td>
+<td style="text-align: left;">SAE International</td>
+<td style="text-align: left;">Counterfeit electronic parts avoidance</td>
+</tr>
+<tr>
+<td style="text-align: left;">SEMI E187</td>
+<td style="text-align: left;">SEMI</td>
+<td style="text-align: left;">Cybersecurity standard for semiconductor fabs</td>
+</tr>
+<tr>
+<td style="text-align: left;">CXL 3.0 IDE</td>
+<td style="text-align: left;">CXL Consortium</td>
+<td style="text-align: left;">AES-256-GCM IDE for CXL memory expansion</td>
+</tr>
+<tr>
+<td style="text-align: left;">JEDEC HBM3</td>
+<td style="text-align: left;">JEDEC</td>
+<td style="text-align: left;">HBM3 spec; ECC but no encryption defined</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCIe CMA/SPDM</td>
+<td style="text-align: left;">PCI-SIG</td>
+<td style="text-align: left;">Per-device measurement + authentication</td>
+</tr>
+<tr>
+<td style="text-align: left;">CHIPS Act NSTC</td>
+<td style="text-align: left;">US DoC</td>
+<td style="text-align: left;">Trusted fab certification for DoD chiplets</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2 id="sec-ch39-recent"><span class="secnum">39.8</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch39-recent" title="Permanent link">&para;</a></h2>
+<h3 id="3981-ucie-20-security-enhancements-2025"><span class="secnum">39.8.1</span> UCIe 2.0 Security Enhancements (2025)<a class="headerlink" href="#3981-ucie-20-security-enhancements-2025" title="Permanent link">&para;</a></h3>
+<p>The UCIe 2.0 specification (expected Q2 2025) adds:</p>
+<ul>
+<li>
+<p>Post-quantum key agreement (X-Wing hybrid: X25519 + ML-KEM-768) as default in the security handshake</p>
+</li>
+<li>
+<p><strong>Multi-party authentication</strong>: packages with 3+ chiplets establish a group session key with a single handshake round</p>
+</li>
+<li>
+<p><strong>Hardware attestation integration</strong>: UCIe security controller exports SPDM 1.3 measurements to the host RoT</p>
+</li>
+<li>
+<p>Die revocation: signed revocation lists distributed to UCIe controllers to block known-compromised chiplet certificates</p>
+</li>
+</ul>
+<h3 id="3982-ieee-p3164-chiplet-security-standard-2024-draft"><span class="secnum">39.8.2</span> IEEE P3164 Chiplet Security Standard (2024 Draft)<a class="headerlink" href="#3982-ieee-p3164-chiplet-security-standard-2024-draft" title="Permanent link">&para;</a></h3>
+<p>IEEE P3164 Working Group (formed 2023) published its first draft standard in 2024, covering:</p>
+<ul>
+<li>
+<p>Mandatory PUF-based die identity for Class A (secure) chiplets</p>
+</li>
+<li>
+<p>D2D link encryption requirements at three assurance levels</p>
+</li>
+<li>
+<p>Test-access security: blocking JTAG chain traversal across trust domains</p>
+</li>
+<li>
+<p>Supply chain traceability: die-level serialization and certificate issuance</p>
+</li>
+</ul>
+<h3 id="3983-chips-act-trusted-fab-certification"><span class="secnum">39.8.3</span> CHIPS Act Trusted Fab Certification<a class="headerlink" href="#3983-chips-act-trusted-fab-certification" title="Permanent link">&para;</a></h3>
+<p>The US CHIPS and Science Act (2022) created a Trusted Foundry certification programme administered by NSTC (National Semiconductor Technology Center):</p>
+<ul>
+<li>
+<p>DoD-grade chiplets must originate from TSMC Arizona, Intel Ohio, or Samsung Texas fabs (all receiving CHIPS Act funding with security requirements)</p>
+</li>
+<li>
+<p>Fab security requirements: secure design data transfer, cleared personnel for classified designs, anti-tamper measures on process equipment</p>
+</li>
+<li>
+<p>Chiplet provenance chains must be cryptographically signed by the fab and included in HBOM (Hardware Bill of Materials)</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> The HBOM (Hardware Bill of Materials) concept, analogous to SBOM for software, is gaining traction in 2024–2025. NTIA is developing HBOM guidance under the Biden/Biden-Harris Executive Order on supply chain security. An HBOM for a chiplet-based CPU would include: die manufacturer, fab, process node, mask set revision, and cryptographic die certificate hash.</p>
+</div>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>A chiplet package contains a CPU die (trusted fab) connected to a memory controller die (overseas fab) via an unencrypted BoW interconnect. Describe three attack vectors this creates and suggest mitigations for each.</p>
+</li>
+<li>
+<p>UCIe 1.1 uses AES-256-GCM for link encryption. At 32 Gb/s bandwidth, calculate the maximum number of packets before nonce reuse occurs, assuming a 96-bit nonce with 32-bit sequence numbers and 128-bit packet granularity.</p>
+</li>
+<li>
+<p>Explain the DICE layering model for chiplet attestation. If Die B (memory controller) is compromised after manufacture, how would Layer 1 composition detect this during system boot?</p>
+</li>
+<li>
+<p>Compare the security implications of HBM3 stacked in a 2.5D interposer vs. 3D stacked directly on the die using TSVs. Which is harder to probe and why?</p>
+</li>
+<li>
+<p>An attacker replaces a legitimate UCIe-attached AI accelerator chiplet with a malicious clone that supports the same D2D interface. What UCIe security feature (introduced in UCIe 1.1) would detect this substitution? What is the root of trust for this detection?</p>
+</li>
+<li>
+<p>The AS6081 standard defines counterfeit electronic parts avoidance. List three specific measures an OEM assembling a chiplet-based server SoC should implement to comply with AS6081.</p>
+</li>
+<li>
+<p>Design a security architecture for a chiplet-based SoC destined for a satellite payload. The SoC contains: compute die (trusted US fab), RF transceiver die (European fab), memory die (Taiwanese fab). Define the trust model, D2D encryption requirements, and attestation chain.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 38. Hardware Security Design Flow and EDA Tools">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                38. Hardware Security Design Flow and EDA Tools
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="key-standards-reference.html" class="md-footer__link md-footer__link--next" aria-label="Next: Key Standards Reference">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Key Standards Reference
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

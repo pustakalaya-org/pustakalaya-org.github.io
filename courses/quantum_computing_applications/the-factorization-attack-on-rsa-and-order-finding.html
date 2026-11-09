@@ -1,0 +1,2285 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/the-factorization-attack-on-rsa-and-order-finding.html">
+  
+  
+    <link rel="prev" href="number-theory-recap-and-the-rsa-cryptosystem.html">
+  
+  
+    <link rel="next" href="the-quantum-fourier-transform.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>17. The Factorization Attack on RSA and Order Finding - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#171-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17. The Factorization Attack on RSA and Order Finding
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#171-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#172-the-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 The Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#173-the-reduction-from-factoring-to-order-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 The Reduction: From Factoring to Order Finding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.3 The Reduction: From Factoring to Order Finding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The core identity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ar2-1-ruins-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a^r/2≡-1 ruins it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-success-probability-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The success-probability theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#174-the-complete-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 The Complete Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#175-why-order-finding-is-classically-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Why Order Finding Is Classically Hard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#176-the-classical-competition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 The Classical Competition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#177-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#178-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#179-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#171-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#172-the-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 The Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#173-the-reduction-from-factoring-to-order-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 The Reduction: From Factoring to Order Finding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.3 The Reduction: From Factoring to Order Finding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The core identity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ar2-1-ruins-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a^r/2≡-1 ruins it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-success-probability-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The success-probability theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#174-the-complete-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 The Complete Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#175-why-order-finding-is-classically-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Why Order Finding Is Classically Hard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#176-the-classical-competition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.6 The Classical Competition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#177-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#178-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#179-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-17-the-factorization-attack-on-rsa-and-order-finding">Lesson 17: The Factorization Attack on RSA and Order Finding<a class="headerlink" href="#lesson-17-the-factorization-attack-on-rsa-and-order-finding" title="Permanent link">&para;</a></h1>
+<h2 id="171-learning-outcomes">17.1 Learning Outcomes<a class="headerlink" href="#171-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Derive the <strong>reduction from factoring to order finding</strong> and prove why it works.</li>
+<li>State and apply the <strong>success-probability theorem</strong> for a random base <span class="arithmatex">\(a\)</span>.</li>
+<li>Execute the classical part of Shor's algorithm by hand on small numbers.</li>
+<li>Explain why order finding is classically hard but quantum-easy.</li>
+<li>Survey the best classical factoring algorithms and place them against the quantum result.</li>
+</ol>
+<h2 id="172-the-strategy">17.2 The Strategy<a class="headerlink" href="#172-the-strategy" title="Permanent link">&para;</a></h2>
+<p>Shor's algorithm is <strong>not</strong> a purely quantum algorithm. It is a <strong>hybrid</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code>CLASSICAL   reduce factoring to order finding
+   QUANTUM  find the order r of a mod N      &lt;-- the only quantum step
+CLASSICAL   convert r into factors via gcd
+</code></pre></div>
+<p>This lesson covers the two classical halves. L20 covers the quantum core. Understanding the
+reduction first makes Shor's algorithm feel inevitable rather than magical.</p>
+<h2 id="173-the-reduction-from-factoring-to-order-finding">17.3 The Reduction: From Factoring to Order Finding<a class="headerlink" href="#173-the-reduction-from-factoring-to-order-finding" title="Permanent link">&para;</a></h2>
+<h3 id="the-core-identity">The core identity<a class="headerlink" href="#the-core-identity" title="Permanent link">&para;</a></h3>
+<p>Let <span class="arithmatex">\(N\)</span> be an odd composite, and let <span class="arithmatex">\(a\)</span> be chosen with <span class="arithmatex">\(\gcd(a,N)=1\)</span>. Let
+<span class="arithmatex">\(r = \mathrm{ord}_N(a)\)</span> be the <strong>order</strong>, so <span class="arithmatex">\(a^r\equiv1\pmod N\)</span>.</p>
+<p><strong>Suppose <span class="arithmatex">\(r\)</span> is even.</strong> Then we may write</p>
+<div class="arithmatex">\[ a^{r} - 1 \equiv 0 \pmod N \]</div>
+<div class="arithmatex">\[ \left(a^{r/2}\right)^2 - 1 \equiv 0 \pmod N \]</div>
+<div class="arithmatex">\[ \big(a^{r/2}-1\big)\big(a^{r/2}+1\big) \equiv 0 \pmod N \]</div>
+<p>So <span class="arithmatex">\(N\)</span> divides the product <span class="arithmatex">\(\big(a^{r/2}-1\big)\big(a^{r/2}+1\big)\)</span>.</p>
+<p><strong>Key step.</strong> <span class="arithmatex">\(N\)</span> does <strong>not</strong> divide either factor alone, provided:</p>
+<ul>
+<li><span class="arithmatex">\(a^{r/2}\not\equiv 1 \pmod N\)</span> — guaranteed, because <span class="arithmatex">\(r\)</span> is the <em>smallest</em> exponent giving 1, and
+    <span class="arithmatex">\(r/2 &lt; r\)</span>.</li>
+<li><span class="arithmatex">\(a^{r/2}\not\equiv -1 \pmod N\)</span> — this is a genuine <strong>condition</strong> that may fail.</li>
+</ul>
+<p>If both hold, then <span class="arithmatex">\(N\)</span> shares a <strong>proper</strong> factor with each of <span class="arithmatex">\(a^{r/2}\mp1\)</span>, and</p>
+<div class="arithmatex">\[ \boxed{\ \gcd\!\left(a^{r/2}-1,\ N\right) \ \text{ and } \ \gcd\!\left(a^{r/2}+1,\ N\right)
+\ \text{ are non-trivial factors of } N .\ } \]</div>
+<p>Both gcds are computed by the Euclidean algorithm in <span class="arithmatex">\(O(\log^2 N)\)</span> time.</p>
+<h3 id="why-ar2-1-ruins-it">Why a^r/2≡-1 ruins it<a class="headerlink" href="#why-ar2-1-ruins-it" title="Permanent link">&para;</a></h3>
+<p>If <span class="arithmatex">\(a^{r/2}\equiv -1\pmod N\)</span> then <span class="arithmatex">\(a^{r/2}+1 \equiv 0\)</span>, so <span class="arithmatex">\(\gcd(a^{r/2}+1, N) = N\)</span> — trivial. And
+<span class="arithmatex">\(\gcd(a^{r/2}-1,N) = \gcd(-2, N) = 1\)</span> since <span class="arithmatex">\(N\)</span> is odd — also trivial. <strong>Both gcds fail.</strong> Pick a new
+<span class="arithmatex">\(a\)</span> and try again.</p>
+<h3 id="the-success-probability-theorem">The success-probability theorem<a class="headerlink" href="#the-success-probability-theorem" title="Permanent link">&para;</a></h3>
+<p><strong>Theorem.</strong> Let <span class="arithmatex">\(N\)</span> be odd with at least two distinct prime factors, <span class="arithmatex">\(N = p_1^{k_1}\cdots p_m^{k_m}\)</span>
+with <span class="arithmatex">\(m\ge2\)</span>. Choose <span class="arithmatex">\(a\)</span> uniformly at random from <span class="arithmatex">\(\mathbb{Z}_N^{*}\)</span> and let <span class="arithmatex">\(r = \mathrm{ord}_N(a)\)</span>.
+Then</p>
+<div class="arithmatex">\[ \Pr\Big[\,r \text{ is even \textbf{and} } a^{r/2}\not\equiv-1\ (\mathrm{mod}\ N)\,\Big]
+\ \ge\ 1 - \frac{1}{2^{m-1}} \ \ge\ \frac{1}{2} . \]</div>
+<p><strong>Consequence.</strong> Each random choice of <span class="arithmatex">\(a\)</span> succeeds with probability at least <span class="arithmatex">\(\frac12\)</span>. After <span class="arithmatex">\(k\)</span>
+attempts the failure probability is at most <span class="arithmatex">\(2^{-k}\)</span>; <strong>10 attempts give failure probability under
+<span class="arithmatex">\(0.1\%\)</span></strong>. So the expected number of quantum runs is a small constant.</p>
+<p><em>Proof idea.</em> By the Chinese Remainder Theorem, <span class="arithmatex">\(\mathbb{Z}_N^*\cong\prod_j\mathbb{Z}_{p_j^{k_j}}^*\)</span>,
+each factor being cyclic (for odd <span class="arithmatex">\(p\)</span>). Write <span class="arithmatex">\(r_j = \mathrm{ord}_{p_j^{k_j}}(a)\)</span> and let <span class="arithmatex">\(2^{d_j}\)</span>
+be the largest power of 2 dividing <span class="arithmatex">\(r_j\)</span>. Then <span class="arithmatex">\(r = \mathrm{lcm}(r_j)\)</span>, and the bad event
+(<span class="arithmatex">\(r\)</span> odd, or <span class="arithmatex">\(a^{r/2}\equiv-1\)</span>) occurs exactly when all <span class="arithmatex">\(d_j\)</span> are equal. A counting argument over the
+cyclic groups shows this has probability at most <span class="arithmatex">\(2^{-(m-1)}\)</span>. <span class="arithmatex">\(\blacksquare\)</span></p>
+<h2 id="174-the-complete-algorithm">17.4 The Complete Algorithm<a class="headerlink" href="#174-the-complete-algorithm" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>INPUT: composite N
+
+1.  If N is even, return factor 2.
+2.  If N = b^k for integers b &gt;= 2, k &gt;= 2, return b.        (classical, easy)
+3.  Choose a uniformly at random from {2, ..., N-1}.
+4.  Compute g = gcd(a, N)  [Euclid].
+        If g &gt; 1, return g.                                  (a lucky guess!)
+5.  QUANTUM: find r = ord_N(a).                              &lt;== the only quantum step
+6.  If r is odd, go to 3.
+7.  Compute x = a^(r/2) mod N.
+8.  If x == N-1  (i.e. -1 mod N), go to 3.
+9.  Return gcd(x-1, N) and gcd(x+1, N).
+</code></pre></div>
+<p><strong>Step 2 is necessary</strong> because the reduction requires at least two <em>distinct</em> prime factors; prime
+powers <span class="arithmatex">\(N = p^k\)</span> must be handled separately (and are easy: test <span class="arithmatex">\(\sqrt[k]{N}\)</span> for <span class="arithmatex">\(k \le \log_2 N\)</span>).</p>
+<p><strong>Complexity.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gcd, primality, perfect-power tests</td>
+<td><span class="arithmatex">\(O(\log^3 N)\)</span> classical</td>
+</tr>
+<tr>
+<td>Order finding (quantum)</td>
+<td><span class="arithmatex">\(O(\log^3 N)\)</span> gates, <span class="arithmatex">\(O(\log N)\)</span> qubits</td>
+</tr>
+<tr>
+<td>Expected repetitions</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><span class="arithmatex">\(O(\log^3 N)\)</span> — <strong>polynomial</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Compare GNFS: <span class="arithmatex">\(\exp\big(O(\log^{1/3}N\,\log\log^{2/3}N)\big)\)</span> — <strong>super-polynomial</strong>.</p>
+<h2 id="175-why-order-finding-is-classically-hard">17.5 Why Order Finding Is Classically Hard<a class="headerlink" href="#175-why-order-finding-is-classically-hard" title="Permanent link">&para;</a></h2>
+<p>Given <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(N\)</span>, finding the smallest <span class="arithmatex">\(r\)</span> with <span class="arithmatex">\(a^r\equiv1\)</span> appears to require searching. You
+cannot even enumerate the candidates efficiently, because <span class="arithmatex">\(r\mid\phi(N)\)</span> and <strong>you do not know
+<span class="arithmatex">\(\phi(N)\)</span></strong> — computing it is equivalent to factoring.</p>
+<p><strong>The circular dependency:</strong></p>
+<div class="arithmatex">\[ \text{factor } N \ \longleftrightarrow\ \text{compute } \phi(N)
+\ \longleftrightarrow\ \text{find } \mathrm{ord}_N(a) \]</div>
+<p>All three are polynomial-time equivalent. Classically, breaking into this circle requires
+sub-exponential sieving.</p>
+<p><strong>The quantum key.</strong> The sequence <span class="arithmatex">\(a^0, a^1, a^2, \dots \pmod N\)</span> is <strong>periodic with period <span class="arithmatex">\(r\)</span></strong>.
+Periodicity is exactly what the Quantum Fourier Transform detects — and it detects it in one shot,
+not by scanning. This is Simon's algorithm (L15) transplanted from <span class="arithmatex">\((\mathbb{Z}_2)^n\)</span> to
+<span class="arithmatex">\(\mathbb{Z}_N\)</span>.</p>
+<h2 id="176-the-classical-competition">17.6 The Classical Competition<a class="headerlink" href="#176-the-classical-competition" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Complexity</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trial division</td>
+<td><span class="arithmatex">\(O(\sqrt N)\)</span></td>
+<td>tiny <span class="arithmatex">\(N\)</span></td>
+</tr>
+<tr>
+<td>Fermat's method</td>
+<td>fast if <span class="arithmatex">\(p\approx q\)</span></td>
+<td>close primes</td>
+</tr>
+<tr>
+<td>Pollard's rho</td>
+<td><span class="arithmatex">\(O(N^{1/4})\)</span></td>
+<td>small factors</td>
+</tr>
+<tr>
+<td>Pollard's <span class="arithmatex">\(p-1\)</span></td>
+<td>fast if <span class="arithmatex">\(p-1\)</span> is smooth</td>
+<td>weak primes</td>
+</tr>
+<tr>
+<td>Elliptic Curve Method (ECM)</td>
+<td><span class="arithmatex">\(\exp(O(\sqrt{\log p\log\log p}))\)</span></td>
+<td>finding medium factors</td>
+</tr>
+<tr>
+<td>Quadratic Sieve</td>
+<td><span class="arithmatex">\(\exp(O(\sqrt{\log N\log\log N}))\)</span></td>
+<td>up to ~100 digits</td>
+</tr>
+<tr>
+<td><strong>General Number Field Sieve</strong></td>
+<td><span class="arithmatex">\(\exp\big(1.923(\ln N)^{1/3}(\ln\ln N)^{2/3}\big)\)</span></td>
+<td>the record holder</td>
+</tr>
+<tr>
+<td><strong>Shor (quantum)</strong></td>
+<td><span class="arithmatex">\(O(\log^3 N)\)</span></td>
+<td><strong>all <span class="arithmatex">\(N\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Records.</strong> RSA-250 (250 digits, 829 bits) was factored in 2020 with ≈2700 core-years. RSA-2048
+would take an estimated <span class="arithmatex">\(10^{9}\)</span> times longer — beyond reach for the foreseeable future
+<em>classically</em>.</p>
+<h2 id="177-solved-problems">17.7 Solved Problems<a class="headerlink" href="#177-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-factoring-15-by-hand">Problem 1 — Factoring 15 by hand<a class="headerlink" href="#problem-1-factoring-15-by-hand" title="Permanent link">&para;</a></h4>
+<p><em>Factor <span class="arithmatex">\(N = 15\)</span> using <span class="arithmatex">\(a = 7\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Step 4.</strong> <span class="arithmatex">\(\gcd(7,15) = 1\)</span> ✓ (no lucky factor).</p>
+<p><strong>Step 5.</strong> Find <span class="arithmatex">\(r = \mathrm{ord}_{15}(7)\)</span>:</p>
+<div class="arithmatex">\[ 7^1 = 7,\quad 7^2 = 49 \equiv 4,\quad 7^3 \equiv 28 \equiv 13,\quad 7^4 \equiv 91 \equiv 1 \]</div>
+<div class="arithmatex">\[ r = 4 . \]</div>
+<p><strong>Step 6.</strong> <span class="arithmatex">\(r = 4\)</span> is even ✓.</p>
+<p><strong>Step 7.</strong> <span class="arithmatex">\(x = 7^{4/2} = 7^2 = 49 \equiv 4 \pmod{15}\)</span>.</p>
+<p><strong>Step 8.</strong> <span class="arithmatex">\(x = 4 \ne 14 = N-1\)</span> ✓.</p>
+<p><strong>Step 9.</strong></p>
+<div class="arithmatex">\[ \gcd(4-1, 15) = \gcd(3,15) = \mathbf{3} \]</div>
+<div class="arithmatex">\[ \gcd(4+1, 15) = \gcd(5,15) = \mathbf{5} \]</div>
+<div class="arithmatex">\[ 15 = 3\times5 \ \checkmark \]</div>
+<h4 id="problem-2-a-choice-of-a-that-fails-and-one-that-works">Problem 2 — A choice of a that fails, and one that works<a class="headerlink" href="#problem-2-a-choice-of-a-that-fails-and-one-that-works" title="Permanent link">&para;</a></h4>
+<p><em>Factor <span class="arithmatex">\(N = 21\)</span>. Try <span class="arithmatex">\(a = 8\)</span>, then <span class="arithmatex">\(a = 2\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Attempt with <span class="arithmatex">\(a = 8\)</span>.</strong> <span class="arithmatex">\(\gcd(8,21)=1\)</span> ✓.</p>
+<div class="arithmatex">\[ 8^1 = 8,\quad 8^2 = 64 \equiv 1 \pmod{21} \]</div>
+<p>so <span class="arithmatex">\(r = 2\)</span>, which is even ✓.</p>
+<div class="arithmatex">\[ x = 8^{1} = 8, \qquad x \ne 20 \ \checkmark \]</div>
+<div class="arithmatex">\[ \gcd(7, 21) = \mathbf{7}, \qquad \gcd(9,21) = \mathbf{3} \]</div>
+<div class="arithmatex">\[ 21 = 3\times 7 \ \checkmark \quad\text{— this one worked.} \]</div>
+<p><strong>Attempt with <span class="arithmatex">\(a = 2\)</span>.</strong></p>
+<div class="arithmatex">\[ 2^1=2,\ 2^2=4,\ 2^3=8,\ 2^4=16,\ 2^5=32\equiv11,\ 2^6=22\equiv1 \]</div>
+<p><span class="arithmatex">\(r = 6\)</span>, even ✓. <span class="arithmatex">\(x = 2^3 = 8\)</span>, <span class="arithmatex">\(x \ne 20\)</span> ✓.</p>
+<div class="arithmatex">\[ \gcd(7,21) = 7, \qquad \gcd(9,21)=3 \ \checkmark \]</div>
+<p><strong>Now a failing case: <span class="arithmatex">\(a = 20 \equiv -1\)</span>.</strong> <span class="arithmatex">\(r = 2\)</span> (since <span class="arithmatex">\((-1)^2=1\)</span>), even ✓, but
+<span class="arithmatex">\(x = 20^1 = 20 = N-1\)</span>. <strong>Step 8 rejects it.</strong> Indeed <span class="arithmatex">\(\gcd(19,21)=1\)</span> and <span class="arithmatex">\(\gcd(21,21)=21\)</span> — both
+trivial. Retry with a different <span class="arithmatex">\(a\)</span>.</p>
+<h4 id="problem-3-factoring-91-and-estimating-the-retry-count">Problem 3 — Factoring 91 and estimating the retry count<a class="headerlink" href="#problem-3-factoring-91-and-estimating-the-retry-count" title="Permanent link">&para;</a></h4>
+<p><em>Factor <span class="arithmatex">\(N = 91\)</span> with <span class="arithmatex">\(a = 3\)</span>. Then compute the theoretical lower bound on the per-attempt success
+probability.</em></p>
+<p><strong>Solution.</strong></p>
+<p><span class="arithmatex">\(\gcd(3,91)=1\)</span> ✓. Find <span class="arithmatex">\(r = \mathrm{ord}_{91}(3)\)</span>. Note <span class="arithmatex">\(91 = 7\times13\)</span>, so
+<span class="arithmatex">\(\phi(91) = 6\times12 = 72\)</span> and <span class="arithmatex">\(r \mid 72\)</span>.</p>
+<div class="arithmatex">\[ 3^1=3,\ 3^2=9,\ 3^3=27,\ 3^4=81,\ 3^5 = 243 = 2\times91+61\equiv61 \]</div>
+<div class="arithmatex">\[ 3^6 \equiv 183 = 2\times91+1 \equiv \mathbf{1} \]</div>
+<div class="arithmatex">\[ r = 6 . \]</div>
+<p>Even ✓. <span class="arithmatex">\(x = 3^{3} = 27\)</span>. <span class="arithmatex">\(x \ne 90\)</span> ✓.</p>
+<div class="arithmatex">\[ \gcd(26, 91) = \mathbf{13}, \qquad \gcd(28,91) = \mathbf{7} \]</div>
+<div class="arithmatex">\[ 91 = 7\times13 \ \checkmark \]</div>
+<p><strong>Success probability bound.</strong> <span class="arithmatex">\(N = 91\)</span> has <span class="arithmatex">\(m = 2\)</span> distinct prime factors, so</p>
+<div class="arithmatex">\[ \Pr[\text{success}] \ge 1 - \frac{1}{2^{m-1}} = 1 - \frac12 = \frac12 . \]</div>
+<p>Expected attempts <span class="arithmatex">\(\le 2\)</span>. With 10 attempts, failure probability <span class="arithmatex">\(\le 2^{-10} &lt; 0.1\%\)</span>.</p>
+<p><em>(Empirically, for <span class="arithmatex">\(N=91\)</span> the actual success rate over all valid <span class="arithmatex">\(a\)</span> is about 76 % — the theorem's
+bound is conservative.)</em></p>
+<h4 id="problem-4-working-backwards-from-a-quantum-output">Problem 4 — Working backwards from a quantum output<a class="headerlink" href="#problem-4-working-backwards-from-a-quantum-output" title="Permanent link">&para;</a></h4>
+<p><em>A quantum order-finding run on <span class="arithmatex">\(N = 55\)</span>, <span class="arithmatex">\(a = 2\)</span> returns <span class="arithmatex">\(r = 20\)</span>. Verify <span class="arithmatex">\(r\)</span>, complete the
+factorisation, and check the answer.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Verify <span class="arithmatex">\(r\)</span>.</strong> <span class="arithmatex">\(55 = 5\times11\)</span>, <span class="arithmatex">\(\phi(55) = 4\times10 = 40\)</span>, so <span class="arithmatex">\(r\mid40\)</span> ✓ (<span class="arithmatex">\(20\mid40\)</span>).</p>
+<div class="arithmatex">\[ 2^{10} = 1024 = 18\times55 + 34 \equiv 34 \pmod{55} \]</div>
+<div class="arithmatex">\[ 2^{20} \equiv 34^2 = 1156 = 21\times55 + 1 \equiv \mathbf{1} \ \checkmark \]</div>
+<p>And <span class="arithmatex">\(2^{10}\equiv34\ne1\)</span>, so no smaller divisor of 20 works among <span class="arithmatex">\(\{1,2,4,5,10\}\)</span> — check <span class="arithmatex">\(2^4=16\)</span>,
+<span class="arithmatex">\(2^5=32\)</span>, both <span class="arithmatex">\(\ne1\)</span> ✓. So <span class="arithmatex">\(r = 20\)</span> exactly.</p>
+<p><strong>Complete the reduction.</strong> <span class="arithmatex">\(r = 20\)</span> even ✓.</p>
+<div class="arithmatex">\[ x = 2^{10} \equiv 34 \pmod{55}, \qquad x \ne 54 \ \checkmark \]</div>
+<div class="arithmatex">\[ \gcd(33, 55) = \mathbf{11}, \qquad \gcd(35,55) = \mathbf{5} \]</div>
+<div class="arithmatex">\[ 55 = 5\times11 \ \checkmark \]</div>
+<p><em>Note how little classical work this is:</em> two Euclidean algorithms on 6-bit numbers. All the
+difficulty was concentrated in producing the number 20.</p>
+<h4 id="problem-5-resource-estimate-for-rsa-2048">Problem 5 — Resource estimate for RSA-2048<a class="headerlink" href="#problem-5-resource-estimate-for-rsa-2048" title="Permanent link">&para;</a></h4>
+<p><em>Estimate the classical GNFS effort and the quantum resources needed to factor a 2048-bit RSA
+modulus. Comment on the timeline.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Classical (GNFS).</strong> The heuristic complexity is</p>
+<div class="arithmatex">\[ L_N\!\left[\tfrac13, 1.923\right] = \exp\!\left(1.923\,(\ln N)^{1/3}(\ln\ln N)^{2/3}\right) . \]</div>
+<p>With <span class="arithmatex">\(N = 2^{2048}\)</span>: <span class="arithmatex">\(\ln N = 2048\ln2 = 1419.6\)</span>, so <span class="arithmatex">\((\ln N)^{1/3} = 11.24\)</span>; <span class="arithmatex">\(\ln\ln N = \ln1419.6 = 7.258\)</span>,
+so <span class="arithmatex">\((\ln\ln N)^{2/3} = 3.73\)</span>.</p>
+<div class="arithmatex">\[ \text{exponent} = 1.923 \times 11.24 \times 3.73 = 80.6 \]</div>
+<div class="arithmatex">\[ \text{effort} \approx e^{80.6} \approx 10^{35} \ \text{operations}. \]</div>
+<p>At <span class="arithmatex">\(10^{18}\)</span> operations/second (an exascale machine devoted entirely to this):</p>
+<div class="arithmatex">\[ t \approx 10^{17}\ \mathrm{s} \approx 3\times10^{9}\ \text{years} . \]</div>
+<p><strong>Quantum (Shor).</strong> Gate count scales as <span class="arithmatex">\(O(n^3)\)</span> with <span class="arithmatex">\(n = 2048\)</span>:</p>
+<div class="arithmatex">\[ n^3 = 2048^3 = 8.6\times10^{9} \ \text{logical operations (order of magnitude)}. \]</div>
+<p>Logical qubits needed: about <span class="arithmatex">\(2n + O(\log n) \approx 4100\)</span>.</p>
+<p><strong>Physical resources.</strong> With surface-code overhead of <span class="arithmatex">\(\sim10^3\)</span>–<span class="arithmatex">\(10^4\)</span> physical qubits per logical
+qubit:</p>
+<div class="arithmatex">\[ 4100 \times 3000 \approx \mathbf{1.2\times10^{7}\ \text{physical qubits}} . \]</div>
+<p>Published estimates (Gidney &amp; Ekerå, 2021) give <strong>20 million noisy physical qubits and about 8
+hours</strong> at a <span class="arithmatex">\(10^{-3}\)</span> gate error rate — a substantial optimisation over earlier billion-qubit
+estimates.</p>
+<p><strong>Timeline comment.</strong> Current devices have <span class="arithmatex">\(10^2\)</span>–<span class="arithmatex">\(10^3\)</span> physical qubits with error rates near
+<span class="arithmatex">\(10^{-3}\)</span>. The gap is roughly four orders of magnitude in qubit count. Estimates for crossing it
+range from 10 to 30 years, with wide uncertainty. Because of <strong>"harvest now, decrypt later"</strong>, and
+because NIST published ML-KEM/ML-DSA in August 2024, migration to post-quantum cryptography is
+already underway for long-lived secrets. <strong>The correct posture is to migrate now, not to wait for
+the machine.</strong></p>
+<h2 id="178-practice-problems">17.8 Practice Problems<a class="headerlink" href="#178-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Factor <span class="arithmatex">\(N=33\)</span> using <span class="arithmatex">\(a=5\)</span>. <strong>[Ans: <span class="arithmatex">\(r=10\)</span>, <span class="arithmatex">\(x=5^5\equiv 23\)</span>, gcds give 11 and 3]</strong></li>
+<li>Factor <span class="arithmatex">\(N=35\)</span> using <span class="arithmatex">\(a=6\)</span>. Does it succeed? <strong>[Ans: <span class="arithmatex">\(r = 2\)</span>, <span class="arithmatex">\(x = 6 \ne 34\)</span>; gcds give 5 and 7 ✓]</strong></li>
+<li>Factor <span class="arithmatex">\(N = 39\)</span> using <span class="arithmatex">\(a = 5\)</span>. <strong>[Ans: <span class="arithmatex">\(r=4\)</span>, <span class="arithmatex">\(x=25\)</span>, gcds give 3 and 13]</strong></li>
+<li>For <span class="arithmatex">\(N=15\)</span>, <span class="arithmatex">\(a=14\)</span>: show that the attempt fails and explain which condition is violated.</li>
+<li>Prove that if <span class="arithmatex">\(r\)</span> is odd, the reduction gives no information.</li>
+<li>Why is Step 2 (perfect-power test) required?</li>
+<li>If <span class="arithmatex">\(N\)</span> has 3 distinct prime factors, what is the guaranteed success probability? <strong>[Ans: <span class="arithmatex">\(\ge 3/4\)</span>]</strong></li>
+</ol>
+<h2 id="179-summary">17.9 Summary<a class="headerlink" href="#179-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Shor's algorithm is <strong>hybrid</strong>: classical reduction → quantum order finding → classical gcd.</li>
+<li>If <span class="arithmatex">\(r = \mathrm{ord}_N(a)\)</span> is even and <span class="arithmatex">\(a^{r/2}\not\equiv-1\pmod N\)</span>, then <span class="arithmatex">\(\gcd(a^{r/2}\pm1, N)\)</span> are non-trivial factors.</li>
+<li>A random <span class="arithmatex">\(a\)</span> satisfies both conditions with probability <span class="arithmatex">\(\ge 1 - 2^{-(m-1)} \ge \frac12\)</span>, so <span class="arithmatex">\(O(1)\)</span> attempts suffice.</li>
+<li>Factoring, computing <span class="arithmatex">\(\phi(N)\)</span> and order finding are all <strong>polynomial-time equivalent</strong>; classically all are hard because you cannot enumerate the divisors of an unknown <span class="arithmatex">\(\phi(N)\)</span>.</li>
+<li>Order finding is a <strong>period-finding</strong> problem, which is what the QFT solves — the same structure as Simon's algorithm over a different group.</li>
+<li>Classical best is GNFS (sub-exponential, <span class="arithmatex">\(\approx10^{35}\)</span> operations for RSA-2048); Shor is <span class="arithmatex">\(O(\log^3N)\)</span> but needs <span class="arithmatex">\(\sim10^7\)</span> physical qubits with today's error rates.</li>
+</ul>
+<p><strong>Next lesson:</strong> L18 — The Quantum Fourier Transform.</p>
+<p><strong>Practise now:</strong> <code>unit2-algorithms-lab.html</code> → <em>Shor Workbench</em>: enter any <span class="arithmatex">\(N\)</span> up to 10 000, watch
+the algorithm pick <span class="arithmatex">\(a\)</span>, compute the order (by simulation), and complete the factorisation, with a
+running tally of successful and failed attempts.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16. Number Theory Recap and the RSA Cryptosystem">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                16. Number Theory Recap and the RSA Cryptosystem
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-quantum-fourier-transform.html" class="md-footer__link md-footer__link--next" aria-label="Next: 18. The Quantum Fourier Transform">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                18. The Quantum Fourier Transform
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

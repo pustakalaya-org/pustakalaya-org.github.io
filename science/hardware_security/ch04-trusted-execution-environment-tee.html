@@ -1,0 +1,3896 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch04-trusted-execution-environment-tee.html">
+  
+  
+    <link rel="prev" href="ch03-physically-unclonable-functions-puf.html">
+  
+  
+    <link rel="next" href="ch05-hardware-root-of-trust.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>4. Trusted Execution Environment (TEE) - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#41-introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. Trusted Execution Environment (TEE)
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-tee-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 TEE Landscape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-intel-sgx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Intel SGX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Intel SGX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-sgx-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.2 SGX Instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#433-remote-attestation-dcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.3 Remote Attestation (DCAP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-arm-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 ARM TrustZone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 ARM TrustZone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#441-trustzone-a-application-processors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.1 TrustZone-A (Application Processors)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#442-op-tee-open-portable-tee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.2 OP-TEE (Open Portable TEE)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#443-trustzone-m-cortex-m33m55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.3 TrustZone-M (Cortex-M33/M55)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-amd-sev-snp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 AMD SEV-SNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-confidential-computing-consortium" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Confidential Computing Consortium
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-attacks-on-tees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Attacks on TEEs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-fpga-tee-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 FPGA TEE Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 FPGA TEE Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#491-xilinx-zynq-ultrascale-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.1 Xilinx Zynq UltraScale+ TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#492-amd-kria-k26-som" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.2 AMD Kria K26 SOM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#493-intel-soc-fpga-cyclone-v-soc-hps-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.3 Intel SoC FPGA (Cyclone V SoC) HPS TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-asic-tee-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 ASIC TEE Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 ASIC TEE Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4101-apple-secure-enclave-a17-pro-7nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.1 Apple Secure Enclave (A17 Pro, 7nm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4102-qualcomm-secure-processing-unit-snapdragon-8-gen-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.2 Qualcomm Secure Processing Unit (Snapdragon 8 Gen 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4103-samsung-knox-vault-titan-m2-equivalent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.3 Samsung Knox Vault (Titan M2-equivalent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4104-mediatek-tee-teegris-and-kinibi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.4 MediaTek TEE: TEEGRIS and Kinibi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-tee-software-solutions-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 TEE Software Solutions Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-tee-architecture-comparison-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 TEE Architecture Comparison Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-advanced-attacks-on-tees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 Advanced Attacks on TEEs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.13 Advanced Attacks on TEEs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4131-sgx-step-controlled-page-fault-single-stepping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.1 SGX-Step: Controlled Page Fault Single-Stepping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4132-cacheout-cve-2020-0549" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.2 CacheOut (CVE-2020-0549)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4133-lvi-load-value-injection-cve-2020-0551" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.3 LVI: Load Value Injection (CVE-2020-0551)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4134-sgx-aepic-leak-cve-2022-21233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.4 SGX AEPIC Leak (CVE-2022-21233)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4135-platypus-power-side-channel-on-intel-sgx-cve-2020-8694" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.5 PLATYPUS: Power Side-Channel on Intel SGX (CVE-2020-8694)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4136-trustzone-cache-timing-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.6 TrustZone Cache Timing Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-code-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Code Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Code Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4141-intel-sgx-ecallocall-example-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.1 Intel SGX ECALL/OCALL Example (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4142-op-tee-trusted-application-development-skeleton-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.2 OP-TEE Trusted Application Development Skeleton (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4143-amd-sev-snp-attestation-report-parsing-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.3 AMD SEV-SNP Attestation Report Parsing (Python)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-standards-and-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.15 Standards and Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#416-key-github-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.16 Key GitHub Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#417-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.17 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch04-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4181-arm-cca-realm-management-extension-rmev1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.1 ARM CCA: Realm Management Extension (RMEv1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4182-intel-tdx-15-2024-improved-attestation-and-nested-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.2 Intel TDX 1.5 (2024): Improved Attestation and Nested VMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4183-amd-sev-snp-improvements-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.3 AMD SEV-SNP Improvements (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4184-risc-v-keystone-20-tee-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.4 RISC-V Keystone 2.0 TEE Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4185-op-tee-40-2024-fido2-and-improved-secure-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.5 OP-TEE 4.0 (2024): FIDO2 and Improved Secure Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4186-tee-attacks-cachewarp-and-tdxdown-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.6 TEE Attacks: CacheWarp and TDXDown (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4187-globalplatform-tee-protection-profile-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.7 GlobalPlatform TEE Protection Profile 1.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#419-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-tee-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 TEE Landscape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-intel-sgx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Intel SGX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Intel SGX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-sgx-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.2 SGX Instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#433-remote-attestation-dcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.3 Remote Attestation (DCAP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-arm-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 ARM TrustZone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 ARM TrustZone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#441-trustzone-a-application-processors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.1 TrustZone-A (Application Processors)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#442-op-tee-open-portable-tee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.2 OP-TEE (Open Portable TEE)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#443-trustzone-m-cortex-m33m55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.3 TrustZone-M (Cortex-M33/M55)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-amd-sev-snp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 AMD SEV-SNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-confidential-computing-consortium" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Confidential Computing Consortium
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-attacks-on-tees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Attacks on TEEs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-fpga-tee-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 FPGA TEE Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 FPGA TEE Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#491-xilinx-zynq-ultrascale-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.1 Xilinx Zynq UltraScale+ TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#492-amd-kria-k26-som" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.2 AMD Kria K26 SOM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#493-intel-soc-fpga-cyclone-v-soc-hps-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9.3 Intel SoC FPGA (Cyclone V SoC) HPS TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-asic-tee-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 ASIC TEE Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 ASIC TEE Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4101-apple-secure-enclave-a17-pro-7nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.1 Apple Secure Enclave (A17 Pro, 7nm)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4102-qualcomm-secure-processing-unit-snapdragon-8-gen-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.2 Qualcomm Secure Processing Unit (Snapdragon 8 Gen 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4103-samsung-knox-vault-titan-m2-equivalent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.3 Samsung Knox Vault (Titan M2-equivalent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4104-mediatek-tee-teegris-and-kinibi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10.4 MediaTek TEE: TEEGRIS and Kinibi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-tee-software-solutions-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 TEE Software Solutions Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-tee-architecture-comparison-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 TEE Architecture Comparison Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-advanced-attacks-on-tees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 Advanced Attacks on TEEs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.13 Advanced Attacks on TEEs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4131-sgx-step-controlled-page-fault-single-stepping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.1 SGX-Step: Controlled Page Fault Single-Stepping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4132-cacheout-cve-2020-0549" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.2 CacheOut (CVE-2020-0549)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4133-lvi-load-value-injection-cve-2020-0551" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.3 LVI: Load Value Injection (CVE-2020-0551)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4134-sgx-aepic-leak-cve-2022-21233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.4 SGX AEPIC Leak (CVE-2022-21233)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4135-platypus-power-side-channel-on-intel-sgx-cve-2020-8694" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.5 PLATYPUS: Power Side-Channel on Intel SGX (CVE-2020-8694)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4136-trustzone-cache-timing-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13.6 TrustZone Cache Timing Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-code-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Code Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Code Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4141-intel-sgx-ecallocall-example-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.1 Intel SGX ECALL/OCALL Example (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4142-op-tee-trusted-application-development-skeleton-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.2 OP-TEE Trusted Application Development Skeleton (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4143-amd-sev-snp-attestation-report-parsing-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14.3 AMD SEV-SNP Attestation Report Parsing (Python)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-standards-and-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.15 Standards and Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#416-key-github-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.16 Key GitHub Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#417-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.17 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch04-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.18 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4181-arm-cca-realm-management-extension-rmev1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.1 ARM CCA: Realm Management Extension (RMEv1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4182-intel-tdx-15-2024-improved-attestation-and-nested-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.2 Intel TDX 1.5 (2024): Improved Attestation and Nested VMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4183-amd-sev-snp-improvements-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.3 AMD SEV-SNP Improvements (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4184-risc-v-keystone-20-tee-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.4 RISC-V Keystone 2.0 TEE Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4185-op-tee-40-2024-fido2-and-improved-secure-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.5 OP-TEE 4.0 (2024): FIDO2 and Improved Secure Storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4186-tee-attacks-cachewarp-and-tdxdown-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.6 TEE Attacks: CacheWarp and TDXDown (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4187-globalplatform-tee-protection-profile-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.18.7 GlobalPlatform TEE Protection Profile 1.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#419-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.19 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-tee">Chapter 4: Trusted Execution Environment (TEE)<a class="headerlink" href="#ch-tee" title="Permanent link">&para;</a></h1>
+<h2 id="41-introduction"><span class="secnum">4.1</span> Introduction<a class="headerlink" href="#41-introduction" title="Permanent link">&para;</a></h2>
+<p>A <strong>Trusted Execution Environment (TEE)</strong> is an isolated execution environment that provides security guarantees for code and data: confidentiality (data cannot be read by untrusted software), integrity (code/data cannot be modified), and attestability (remote party can verify the TEE state). TEEs represent a critical security primitive for cloud computing, mobile payments, and IoT.</p>
+<h2 id="42-tee-landscape"><span class="secnum">4.2</span> TEE Landscape<a class="headerlink" href="#42-tee-landscape" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 4.1.</strong> TEE technologies comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Technology</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Architecture</strong></th>
+<th style="text-align: left;"><strong>Key Feature</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SGX</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">x86-64</td>
+<td style="text-align: left;">Encrypted memory (EPC), DCAP</td>
+</tr>
+<tr>
+<td style="text-align: left;">TrustZone-A</td>
+<td style="text-align: left;">ARM</td>
+<td style="text-align: left;">AArch64/32</td>
+<td style="text-align: left;">Secure/Normal world, OP-TEE</td>
+</tr>
+<tr>
+<td style="text-align: left;">TrustZone-M</td>
+<td style="text-align: left;">ARM</td>
+<td style="text-align: left;">Cortex-M</td>
+<td style="text-align: left;">TrustZone for microcontrollers</td>
+</tr>
+<tr>
+<td style="text-align: left;">SEV-SNP</td>
+<td style="text-align: left;">AMD</td>
+<td style="text-align: left;">x86-64</td>
+<td style="text-align: left;">VM-level confidential computing</td>
+</tr>
+<tr>
+<td style="text-align: left;">TDX</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">x86-64</td>
+<td style="text-align: left;">VM-level (Trust Domain)</td>
+</tr>
+<tr>
+<td style="text-align: left;">CCA</td>
+<td style="text-align: left;">ARM</td>
+<td style="text-align: left;">v9</td>
+<td style="text-align: left;">Realm Management Extension</td>
+</tr>
+<tr>
+<td style="text-align: left;">Keystone</td>
+<td style="text-align: left;">RISC-V</td>
+<td style="text-align: left;">RISC-V</td>
+<td style="text-align: left;">PMP-based enclaves</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="43-intel-sgx"><span class="secnum">4.3</span> Intel SGX<a class="headerlink" href="#43-intel-sgx" title="Permanent link">&para;</a></h2>
+<h3 id="431-architecture"><span class="secnum">4.3.1</span> Architecture<a class="headerlink" href="#431-architecture" title="Permanent link">&para;</a></h3>
+<p>Intel SGX (Software Guard Extensions) creates protected memory regions called <em>enclaves</em>:</p>
+<ul>
+<li>
+<p><strong>EPC (Enclave Page Cache)</strong>: Encrypted DRAM region (up to 512MB in SGX1, GBs in SGX2)</p>
+</li>
+<li>
+<p><strong>MEE (Memory Encryption Engine)</strong>: AES-CTR encrypts EPC contents</p>
+</li>
+<li>
+<p><strong>MRENCLAVE</strong>: Measurement (SHA-256) of enclave code/data</p>
+</li>
+<li>
+<p><strong>MRSIGNER</strong>: SHA-256 of enclave signing key</p>
+</li>
+</ul>
+<h3 id="432-sgx-instructions"><span class="secnum">4.3.2</span> SGX Instructions<a class="headerlink" href="#432-sgx-instructions" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>ECREATE  -- Create an enclave (SECS page)
+EADD     -- Add page to enclave
+EEXTEND  -- Measure page content (extend MRENCLAVE)
+EINIT    -- Initialize enclave (verify SIGSTRUCT)
+EENTER   -- Enter enclave via TCS
+EEXIT    -- Exit enclave
+EGETKEY  -- Derive enclave-specific sealing key
+EREPORT  -- Generate local attestation report
+</code></pre></div>
+<h3 id="433-remote-attestation-dcap"><span class="secnum">4.3.3</span> Remote Attestation (DCAP)<a class="headerlink" href="#433-remote-attestation-dcap" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Application creates enclave; SGX generates REPORT</p>
+</li>
+<li>
+<p>Quoting Enclave signs REPORT -&gt; QUOTE</p>
+</li>
+<li>
+<p>QUOTE sent to Intel PCCS (certificate cache service)</p>
+</li>
+<li>
+<p>Verifier checks QUOTE against Intel SGX Root CA</p>
+</li>
+<li>
+<p>Trust established: Enclave is genuine Intel SGX</p>
+</li>
+</ol>
+<h2 id="44-arm-trustzone"><span class="secnum">4.4</span> ARM TrustZone<a class="headerlink" href="#44-arm-trustzone" title="Permanent link">&para;</a></h2>
+<h3 id="441-trustzone-a-application-processors"><span class="secnum">4.4.1</span> TrustZone-A (Application Processors)<a class="headerlink" href="#441-trustzone-a-application-processors" title="Permanent link">&para;</a></h3>
+<p>TrustZone-A partitions the system into Secure World and Normal World:</p>
+<div class="language-text highlight"><pre><span></span><code>Secure World (S-EL1: OP-TEE OS, S-EL0: Trusted Apps)
+  &lt;- Monitor (EL3: ARM Trusted Firmware)
+Normal World (EL1: Linux kernel, EL0: Applications)
+
+NSS bit in bus transactions:
+  NS=0: Secure transaction (Secure World only)
+  NS=1: Non-Secure transaction (Normal World)
+</code></pre></div>
+<h3 id="442-op-tee-open-portable-tee"><span class="secnum">4.4.2</span> OP-TEE (Open Portable TEE)<a class="headerlink" href="#442-op-tee-open-portable-tee" title="Permanent link">&para;</a></h3>
+<p>OP-TEE is the open-source reference implementation of TrustZone TEE:</p>
+<ul>
+<li>
+<p><strong>GitHub</strong>: <code>github.com/OP-TEE/optee_os</code></p>
+</li>
+<li>
+<p><strong>API</strong>: GlobalPlatform TEE API (TA API + Client API)</p>
+</li>
+<li>
+<p><strong>Trusted Apps</strong>: Run in S-EL0, isolated from each other via virtual MMU</p>
+</li>
+</ul>
+<h3 id="443-trustzone-m-cortex-m33m55"><span class="secnum">4.4.3</span> TrustZone-M (Cortex-M33/M55)<a class="headerlink" href="#443-trustzone-m-cortex-m33m55" title="Permanent link">&para;</a></h3>
+<p>For microcontrollers, TrustZone-M provides:</p>
+<ul>
+<li>
+<p>SAU (Security Attribution Unit): Configures secure/non-secure memory regions</p>
+</li>
+<li>
+<p>Secure Entry Points: NSC (Non-Secure Callable) regions</p>
+</li>
+<li>
+<p>No MMU required – uses MPU for isolation</p>
+</li>
+</ul>
+<h2 id="45-amd-sev-snp"><span class="secnum">4.5</span> AMD SEV-SNP<a class="headerlink" href="#45-amd-sev-snp" title="Permanent link">&para;</a></h2>
+<p>AMD SEV-SNP (Secure Encrypted Virtualization – Secure Nested Paging) provides VM-level confidential computing:</p>
+<ul>
+<li>
+<p><strong>Memory encryption</strong>: Each VM has unique AES-128 encryption key</p>
+</li>
+<li>
+<p><strong>Memory integrity</strong>: RMP (Reverse Map Table) prevents hypervisor from remapping VM memory</p>
+</li>
+<li>
+<p><strong>Attestation</strong>: SNP Attestation Report signed by AMD SEV signing key</p>
+</li>
+<li>
+<p><strong>Use case</strong>: Azure Confidential VMs, GCP Confidential VMs</p>
+</li>
+</ul>
+<h2 id="46-confidential-computing-consortium"><span class="secnum">4.6</span> Confidential Computing Consortium<a class="headerlink" href="#46-confidential-computing-consortium" title="Permanent link">&para;</a></h2>
+<p>The <strong>Confidential Computing Consortium (CCC)</strong>, a Linux Foundation project, standardizes TEE terminology and APIs:</p>
+<ul>
+<li>
+<p>Defines: TEE, Trusted Application (TA), Remote Attestation</p>
+</li>
+<li>
+<p>Members: Intel, AMD, ARM, Microsoft, Google, IBM</p>
+</li>
+<li>
+<p>Projects: Enarx (TEE-agnostic runtime), Gramine (SGX library OS), Veraison (attestation)</p>
+</li>
+</ul>
+<h2 id="47-attacks-on-tees"><span class="secnum">4.7</span> Attacks on TEEs<a class="headerlink" href="#47-attacks-on-tees" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 4.2.</strong> Known TEE attacks</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Attack</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+<th style="text-align: left;"><strong>CVE</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Foreshadow/L1TF</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">CVE-2018-3615</td>
+</tr>
+<tr>
+<td style="text-align: left;">SGAxe</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">CVE-2020-0549</td>
+</tr>
+<tr>
+<td style="text-align: left;">CrossTalk</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">CVE-2020-0543</td>
+</tr>
+<tr>
+<td style="text-align: left;">RowHammer</td>
+<td style="text-align: left;">TrustZone</td>
+<td style="text-align: left;">Various</td>
+</tr>
+<tr>
+<td style="text-align: left;">AEPIC Leak</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">CVE-2022-21233</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="48-standards"><span class="secnum">4.8</span> Standards<a class="headerlink" href="#48-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>GlobalPlatform TEE Specification v1.0</strong> – TEE API standard</p>
+</li>
+<li>
+<p><strong>IETF RFC 9334</strong> – Remote Attestation Procedures (RATS) architecture</p>
+</li>
+<li>
+<p><strong>NIST IR 8320</strong> – Hardware-Enabled Security</p>
+</li>
+<li>
+<p><strong>TCG DICE</strong> – Device identity for TEE attestation</p>
+</li>
+</ul>
+<h2 id="49-fpga-tee-implementations"><span class="secnum">4.9</span> FPGA TEE Implementations<a class="headerlink" href="#49-fpga-tee-implementations" title="Permanent link">&para;</a></h2>
+<h3 id="491-xilinx-zynq-ultrascale-trustzone"><span class="secnum">4.9.1</span> Xilinx Zynq UltraScale+ TrustZone<a class="headerlink" href="#491-xilinx-zynq-ultrascale-trustzone" title="Permanent link">&para;</a></h3>
+<p>The Zynq UltraScale+ MPSoC integrates ARM TrustZone-A on the Processing System (PS) side. The FPGA PL fabric is accessible from both Secure and Normal worlds via AXI buses. XMPU and XPPU enforce NS/S access on DDR and peripheral buses.</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 4.3.</strong> Xilinx Zynq UltraScale+ TrustZone resource table</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Detail</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CPU (PS)</td>
+<td style="text-align: left;">Quad ARM Cortex-A53 (TrustZone-A) + dual Cortex-R5F</td>
+</tr>
+<tr>
+<td style="text-align: left;">FPGA fabric</td>
+<td style="text-align: left;">UltraScale+ PL (up to 1.1M LUTs on ZU19EG)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure CPU</td>
+<td style="text-align: left;">ARM Cortex-A53 running OP-TEE at S-EL1</td>
+</tr>
+<tr>
+<td style="text-align: left;">AXI protection</td>
+<td style="text-align: left;">TZPC controls NS bit on AXI bus from PS to PL</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure boot</td>
+<td style="text-align: left;">RSA-4096 + AES-256-GCM boot image verification</td>
+</tr>
+<tr>
+<td style="text-align: left;">Crypto HW</td>
+<td style="text-align: left;">AES-256 GCM, SHA-3/384, RSA-4096, ECC-P384</td>
+</tr>
+<tr>
+<td style="text-align: left;">OTP</td>
+<td style="text-align: left;">eFUSEs: root key hash, RSA public key hash</td>
+</tr>
+<tr>
+<td style="text-align: left;">CSU</td>
+<td style="text-align: left;">Configuration Security Unit: first-stage hardware RoT</td>
+</tr>
+<tr>
+<td style="text-align: left;">PMU</td>
+<td style="text-align: left;">Platform Management Unit (MicroBlaze): power/reset</td>
+</tr>
+<tr>
+<td style="text-align: left;">XMPU</td>
+<td style="text-align: left;">Xilinx Memory Protection Unit: NS/S enforcement on DDR</td>
+</tr>
+<tr>
+<td style="text-align: left;">XPPU</td>
+<td style="text-align: left;">Xilinx Peripheral Protection Unit: NS/S on peripherals</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="492-amd-kria-k26-som"><span class="secnum">4.9.2</span> AMD Kria K26 SOM<a class="headerlink" href="#492-amd-kria-k26-som" title="Permanent link">&para;</a></h3>
+<p>The AMD Kria K26 System-on-Module is built on Zynq UltraScale+ (XCZU5EV) for embedded AI and edge security:</p>
+<ul>
+<li>
+<p>Form factor: 26mm x 26mm SOM; mounts on KV260 or KR260 carrier board</p>
+</li>
+<li>
+<p>FPGA resources: 256K LUTs, 144 DSPs, 144 BRAMs, 1.5Mb URAMs</p>
+</li>
+<li>
+<p>TrustZone: Full ARM TrustZone-A on Cortex-A53 quad-core PS</p>
+</li>
+<li>
+<p>TEE stack: OP-TEE OS + Xilinx secure boot + PetaLinux</p>
+</li>
+<li>
+<p>Use case: Edge AI inference with ML model protection in TEE; secure OTA firmware update</p>
+</li>
+</ul>
+<h3 id="493-intel-soc-fpga-cyclone-v-soc-hps-trustzone"><span class="secnum">4.9.3</span> Intel SoC FPGA (Cyclone V SoC) HPS TrustZone<a class="headerlink" href="#493-intel-soc-fpga-cyclone-v-soc-hps-trustzone" title="Permanent link">&para;</a></h3>
+<p>Intel Cyclone V SoC integrates a Hard Processor System (HPS) with dual ARM Cortex-A9 and TrustZone-A:</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 4.4.</strong> Intel Cyclone V SoC HPS TrustZone resource table</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Detail</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CPU</td>
+<td style="text-align: left;">Dual ARM Cortex-A9 MPCore with TrustZone-A</td>
+</tr>
+<tr>
+<td style="text-align: left;">FPGA</td>
+<td style="text-align: left;">Cyclone V FPGA fabric (up to 301K LEs)</td>
+</tr>
+<tr>
+<td style="text-align: left;">HPS-FPGA bridge</td>
+<td style="text-align: left;">AXI-3 HPS2FPGA and FPGA2HPS bridges</td>
+</tr>
+<tr>
+<td style="text-align: left;">Secure World</td>
+<td style="text-align: left;">EL3: ARM Trusted Firmware (ATF), S-EL1: OP-TEE</td>
+</tr>
+<tr>
+<td style="text-align: left;">Normal World</td>
+<td style="text-align: left;">EL1: Linux 5.x, EL0: Rich OS Applications</td>
+</tr>
+<tr>
+<td style="text-align: left;">L2 cache</td>
+<td style="text-align: left;">512KB shared, NSS-bit partitioned</td>
+</tr>
+<tr>
+<td style="text-align: left;">Boot chain</td>
+<td style="text-align: left;">ROM -&gt; SPL -&gt; U-Boot -&gt; Linux, RSA-2048 verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">SDRAM firewall</td>
+<td style="text-align: left;">Registers restrict NS access to Secure regions</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="410-asic-tee-implementations"><span class="secnum">4.10</span> ASIC TEE Implementations<a class="headerlink" href="#410-asic-tee-implementations" title="Permanent link">&para;</a></h2>
+<h3 id="4101-apple-secure-enclave-a17-pro-7nm"><span class="secnum">4.10.1</span> Apple Secure Enclave (A17 Pro, 7nm)<a class="headerlink" href="#4101-apple-secure-enclave-a17-pro-7nm" title="Permanent link">&para;</a></h3>
+<p>The Apple Secure Enclave Processor (SEP) is a dedicated security subsystem in every Apple device since iPhone 5s:</p>
+<ul>
+<li>
+<p><strong>CPU</strong>: Custom ARM-based processor (Cortex-M class ISA), physically isolated from Application Processor</p>
+</li>
+<li>
+<p><strong>Process node</strong>: 7nm on A17 Pro (iPhone 15 Pro); 3nm on A18 (iPhone 16)</p>
+</li>
+<li>
+<p><strong>Memory</strong>: Dedicated encrypted RAM, hardware-separated from AP memory bus via hardware firewall</p>
+</li>
+<li>
+<p><strong>Crypto engines</strong>: AES-256, ECC-P256/P384, SHA-2/3, TRNG (DRBG seeded from ring oscillators)</p>
+</li>
+<li>
+<p><strong>Boot</strong>: Immutable SEP Boot ROM -&gt; SEP firmware (signed, verified before execution)</p>
+</li>
+<li>
+<p><strong>Keys</strong>: UID key (unique per device, blown at manufacture, never exported even to Apple)</p>
+</li>
+<li>
+<p><strong>Biometrics</strong>: Face ID and Touch ID templates stored and matched exclusively inside SEP</p>
+</li>
+<li>
+<p><strong>Attestation</strong>: SEP signs attestation statements for Apple KeyChain, Apple Pay, SE Attestation for MDM</p>
+</li>
+</ul>
+<h3 id="4102-qualcomm-secure-processing-unit-snapdragon-8-gen-3"><span class="secnum">4.10.2</span> Qualcomm Secure Processing Unit (Snapdragon 8 Gen 3)<a class="headerlink" href="#4102-qualcomm-secure-processing-unit-snapdragon-8-gen-3" title="Permanent link">&para;</a></h3>
+<p>The Qualcomm SPU is an isolated ARM Cortex-M core within the Snapdragon SoC:</p>
+<ul>
+<li>
+<p><strong>Architecture</strong>: Dedicated ARM Cortex-M security processor; hardware memory firewall from AP</p>
+</li>
+<li>
+<p><strong>TEE OS</strong>: Qualcomm QTEE v5 (GlobalPlatform TEE Internal Core API v1.3.1 compliant)</p>
+</li>
+<li>
+<p><strong>Crypto</strong>: AES-256, RSA-4096, ECC-P256/P384, SHA-3, TRNG</p>
+</li>
+<li>
+<p><strong>Storage</strong>: Secure RPMB-backed replay-protected storage for tokens and biometric templates</p>
+</li>
+<li>
+<p><strong>Use cases</strong>: Fingerprint matching, Widevine L1 DRM, SIM authentication, Qualcomm Mobile Security</p>
+</li>
+<li>
+<p><strong>Separation</strong>: Hardware TZASC (TrustZone Address Space Controller) and XPU memory firewall</p>
+</li>
+</ul>
+<h3 id="4103-samsung-knox-vault-titan-m2-equivalent"><span class="secnum">4.10.3</span> Samsung Knox Vault (Titan M2-equivalent)<a class="headerlink" href="#4103-samsung-knox-vault-titan-m2-equivalent" title="Permanent link">&para;</a></h3>
+<p>Samsung Knox Vault (Galaxy S21+) implements a dedicated Secure Element physically separate from the AP:</p>
+<ul>
+<li>
+<p><strong>Hardware</strong>: Separate security SoC (ARM SC300 core) + dedicated SRAM + embedded flash; own power supply</p>
+</li>
+<li>
+<p><strong>Isolation</strong>: Physical bus separation; no shared cache or DRAM with Application Processor</p>
+</li>
+<li>
+<p><strong>Crypto</strong>: AES-256, RSA-2048/4096, ECC-P256, ECDSA, SHA-256/512, hardware TRNG</p>
+</li>
+<li>
+<p><strong>Storage</strong>: Replay-protected secure storage for biometric templates, Samsung Pay tokens, lockscreen credentials</p>
+</li>
+<li>
+<p><strong>Certification</strong>: Common Criteria EAL 5+, FIPS 140-2 Level 3 hardware module</p>
+</li>
+<li>
+<p><strong>Attestation</strong>: Knox Attestation API: ECDSA-signed report of device security state for Android Enterprise MDM</p>
+</li>
+</ul>
+<h3 id="4104-mediatek-tee-teegris-and-kinibi"><span class="secnum">4.10.4</span> MediaTek TEE: TEEGRIS and Kinibi<a class="headerlink" href="#4104-mediatek-tee-teegris-and-kinibi" title="Permanent link">&para;</a></h3>
+<p>MediaTek Dimensity SoCs implement TrustZone-A with either Trustonic Kinibi or Samsung TEEGRIS:</p>
+<ul>
+<li>
+<p><strong>TrustZone</strong>: ARM Cortex-A cores; Monitor at EL3 (ATF); TEE OS at S-EL1</p>
+</li>
+<li>
+<p><strong>TEEGRIS</strong>: Samsung in-house TEE OS, GlobalPlatform compliant; Dimensity 9300+ and Exynos</p>
+</li>
+<li>
+<p><strong>Kinibi</strong>: Trustonic TEE; Dimensity 1200/9000 class; GP TEE API v1.2 compliant</p>
+</li>
+<li>
+<p><strong>Trustlets</strong>: Trusted Applications for fingerprint, DRM (Widevine L1), NFC payment</p>
+</li>
+<li>
+<p><strong>Crypto HW</strong>: Hardware AES, SHA, RSA accelerator accessible from Secure World via ARM SMC</p>
+</li>
+</ul>
+<h2 id="411-tee-software-solutions-reference"><span class="secnum">4.11</span> TEE Software Solutions Reference<a class="headerlink" href="#411-tee-software-solutions-reference" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 4.5.</strong> TEE software solutions and open-source repositories</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>TEE Target</strong></th>
+<th style="text-align: left;"><strong>License</strong></th>
+<th style="text-align: left;"><strong>Repository</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Intel linux-sgx</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">BSD</td>
+<td style="text-align: left;">github.com/intel/linux-sgx</td>
+</tr>
+<tr>
+<td style="text-align: left;">OP-TEE (Linaro)</td>
+<td style="text-align: left;">ARM TrustZone</td>
+<td style="text-align: left;">BSD-2</td>
+<td style="text-align: left;">github.com/OP-TEE/optee_os</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD SEV-SNP tool</td>
+<td style="text-align: left;">AMD SEV-SNP</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">github.com/AMDESE/sev-tool</td>
+</tr>
+<tr>
+<td style="text-align: left;">Apple Secure Enclave</td>
+<td style="text-align: left;">iOS/macOS SEP</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">developer.apple.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Qualcomm QTEE</td>
+<td style="text-align: left;">Snapdragon SPU</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">qualcomm.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Samsung Knox Vault</td>
+<td style="text-align: left;">Galaxy S21+ SE</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">samsung.com/knox</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trustonic Kinibi</td>
+<td style="text-align: left;">ARM TrustZone</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">trustonic.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Huawei iTrustee</td>
+<td style="text-align: left;">HiSilicon Kirin TEE</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">developer.huawei.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Prove&amp;Run ProvenCore</td>
+<td style="text-align: left;">Formal ARM TEE</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">provenrun.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sierraware SierraTEE</td>
+<td style="text-align: left;">ARM TrustZone</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">sierraware.com</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsoft Pluton</td>
+<td style="text-align: left;">AMD/Intel/Qualcomm</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">microsoft.com/security/pluton</td>
+</tr>
+<tr>
+<td style="text-align: left;">RISC-V Keystone</td>
+<td style="text-align: left;">RISC-V PMP</td>
+<td style="text-align: left;">BSD</td>
+<td style="text-align: left;">github.com/keystone-enclave</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gramine (LibOS)</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">LGPL</td>
+<td style="text-align: left;">github.com/gramineproject/gramine</td>
+</tr>
+<tr>
+<td style="text-align: left;">Enarx</td>
+<td style="text-align: left;">SGX/SEV-SNP/TDX</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">github.com/enarx/enarx</td>
+</tr>
+<tr>
+<td style="text-align: left;">Teaclave (rustSGX)</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">github.com/apache/incubator-teaclave</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="412-tee-architecture-comparison-diagram"><span class="secnum">4.12</span> TEE Architecture Comparison Diagram<a class="headerlink" href="#412-tee-architecture-comparison-diagram" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-tee-comparison">
+<img class="tikz" src="img/tikz-12a2b02e2241.svg" alt="TEE architecture: Intel SGX enclave vs ARM TrustZone worlds vs AMD SEV-SNP confidential VM" loading="lazy">
+<figcaption><strong>Figure 4.1.</strong> TEE architecture: Intel SGX enclave vs ARM TrustZone worlds vs AMD SEV-SNP confidential VM</figcaption>
+</figure>
+
+<h2 id="413-advanced-attacks-on-tees"><span class="secnum">4.13</span> Advanced Attacks on TEEs<a class="headerlink" href="#413-advanced-attacks-on-tees" title="Permanent link">&para;</a></h2>
+<h3 id="4131-sgx-step-controlled-page-fault-single-stepping"><span class="secnum">4.13.1</span> SGX-Step: Controlled Page Fault Single-Stepping<a class="headerlink" href="#4131-sgx-step-controlled-page-fault-single-stepping" title="Permanent link">&para;</a></h3>
+<p><code>github.com/jovanbulck/sgx-step</code> exploits the fact that SGX does not protect against page fault injection by an untrusted OS:</p>
+<ul>
+<li>
+<p><strong>Mechanism</strong>: Attacker clears present-bit (P=0) on enclave PTE; CPU raises #PF on each instruction; APIC timer provides single-instruction granularity</p>
+</li>
+<li>
+<p><strong>Effect</strong>: Single-step execution reveals instruction-level memory access pattern and enclave control flow</p>
+</li>
+<li>
+<p><strong>Exploit</strong>: Recover AES T-table lookup key-dependent indices; reveal RSA square-and-multiply private key bit sequence</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: SGX2 EMODPR/EACCEPT removes untrusted OS from PTE management; no complete fix for SGX1</p>
+</li>
+</ul>
+<h3 id="4132-cacheout-cve-2020-0549"><span class="secnum">4.13.2</span> CacheOut (CVE-2020-0549)<a class="headerlink" href="#4132-cacheout-cve-2020-0549" title="Permanent link">&para;</a></h3>
+<p>CacheOut (L1D Eviction Sampling) enables reading SGX enclave data via speculative L1D cache eviction:</p>
+<ul>
+<li>
+<p><strong>Root cause</strong>: Speculative writes to L1D fill buffer leak stale data across privilege boundary</p>
+</li>
+<li>
+<p><strong>Impact</strong>: Cross-SGX-enclave and cross-VM data leakage; bypasses memory encryption (data leaked in plaintext in cache)</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: Microcode update + VERW instruction to flush fill buffers on privilege transition; Linux kernel 5.10+</p>
+</li>
+</ul>
+<h3 id="4133-lvi-load-value-injection-cve-2020-0551"><span class="secnum">4.13.3</span> LVI: Load Value Injection (CVE-2020-0551)<a class="headerlink" href="#4133-lvi-load-value-injection-cve-2020-0551" title="Permanent link">&para;</a></h3>
+<p>LVI is the inverse of Meltdown: inject attacker-controlled values into SGX enclave via speculative loads:</p>
+<ul>
+<li>
+<p><strong>Mechanism</strong>: CPU speculatively uses stale fill-buffer or store-buffer value during enclave load; attacker data transiently used in enclave computation</p>
+</li>
+<li>
+<p><strong>Effect</strong>: Redirect enclave control flow speculatively; extract secrets via dependent timing measurement</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: LFENCE after every load in enclave code (up to 19x overhead); compiler flag <code>-mindirect-branch=thunk</code></p>
+</li>
+</ul>
+<h3 id="4134-sgx-aepic-leak-cve-2022-21233"><span class="secnum">4.13.4</span> SGX AEPIC Leak (CVE-2022-21233)<a class="headerlink" href="#4134-sgx-aepic-leak-cve-2022-21233" title="Permanent link">&para;</a></h3>
+<p>Architectural (non-side-channel) leak of enclave data via uninitialized xAPIC MMIO registers:</p>
+<ul>
+<li>
+<p><strong>Root cause</strong>: Reading certain xAPIC MMIO registers in legacy memory-mapped mode returns stale data from internal CPU register files</p>
+</li>
+<li>
+<p><strong>Impact</strong>: Approx. 16 bytes of enclave stack/heap per read; requires ring-0 privilege; direct architectural read</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: Disable xAPIC MMIO; enforce x2APIC mode via BIOS/kernel; Intel microcode update for affected Xeon SKUs</p>
+</li>
+</ul>
+<h3 id="4135-platypus-power-side-channel-on-intel-sgx-cve-2020-8694"><span class="secnum">4.13.5</span> PLATYPUS: Power Side-Channel on Intel SGX (CVE-2020-8694)<a class="headerlink" href="#4135-platypus-power-side-channel-on-intel-sgx-cve-2020-8694" title="Permanent link">&para;</a></h3>
+<p>Unprivileged Intel RAPL interface enables software-only power analysis of SGX enclaves:</p>
+<ul>
+<li>
+<p><strong>Mechanism</strong>: Read <code>/sys/class/powercap/intel-rapl</code> energy counter before and after ECALL; compute delta-E; apply CPA with AES key hypothesis</p>
+</li>
+<li>
+<p><strong>Impact</strong>: Full AES-NI key recovery; full RSA key recovery; no physical access; no root required on pre-5.10 Linux</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: Restrict RAPL to root; <code>kernel.perf_event_paranoid=3</code>; Intel microcode disables unprivileged RAPL; Linux 5.10 patches <code>intel_rapl_common</code> driver</p>
+</li>
+</ul>
+<h3 id="4136-trustzone-cache-timing-attacks"><span class="secnum">4.13.6</span> TrustZone Cache Timing Attacks<a class="headerlink" href="#4136-trustzone-cache-timing-attacks" title="Permanent link">&para;</a></h3>
+<p>TrustZone world switches do not flush the shared L1/L2 cache by default, enabling PRIME+PROBE attacks:</p>
+<ul>
+<li>
+<p><strong>Mechanism</strong>: Normal World PRIME-fills L1 cache sets; TA executes AES T-table lookup T[p[i] XOR k[i]] evicting primed lines; PROBE measures miss latency</p>
+</li>
+<li>
+<p><strong>Recovery</strong>: Since plaintext p[i] is known (chosen-plaintext), key byte k[i] = observed index XOR p[i]</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: (1) Flush L1 on world switch (3–5 us penalty); (2) ARMv8 AESE/AESMC hardware AES (register-to-register); (3) HACL* or BearSSL constant-time AES</p>
+</li>
+</ul>
+<h2 id="414-code-examples"><span class="secnum">4.14</span> Code Examples<a class="headerlink" href="#414-code-examples" title="Permanent link">&para;</a></h2>
+<h3 id="4141-intel-sgx-ecallocall-example-c"><span class="secnum">4.14.1</span> Intel SGX ECALL/OCALL Example (C)<a class="headerlink" href="#4141-intel-sgx-ecallocall-example-c" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>/* enclave.edl -- Enclave Definition Language interface */
+enclave {
+    trusted {
+        public int ecall_seal_data(
+            [in,  size=len]  const uint8_t *pt,  size_t len,
+            [out, size=512]  uint8_t       *out,
+            [out]            size_t        *out_len
+        );
+    };
+    untrusted {
+        void ocall_log([in, string] const char *msg);
+    };
+};
+
+/* enclave.c -- Trusted code inside SGX enclave */
+#include "sgx_tseal.h"
+#include "enclave_t.h"
+
+int ecall_seal_data(const uint8_t *pt, size_t len,
+                    uint8_t *out, size_t *out_len) {
+    uint32_t sz = sgx_calc_sealed_data_size(0, (uint32_t)len);
+    if (sz &gt; 512) return -1;
+    sgx_status_t r = sgx_seal_data(
+        0, NULL, (uint32_t)len, pt, sz, (sgx_sealed_data_t*)out);
+    *out_len = sz;
+    return (r == SGX_SUCCESS) ? 0 : -1;
+}
+
+/* app.c -- Untrusted host application */
+#include "sgx_urts.h"
+#include "enclave_u.h"
+
+int main(void) {
+    sgx_enclave_id_t eid;
+    sgx_create_enclave("enclave.signed.so", 1, NULL, NULL, &amp;eid, NULL);
+    uint8_t sealed[512]; size_t slen = 0; int rv = 0;
+    ecall_seal_data(eid, &amp;rv, (uint8_t*)"secret", 6, sealed, &amp;slen);
+    sgx_destroy_enclave(eid);
+    return 0;
+}
+</code></pre></div>
+<h3 id="4142-op-tee-trusted-application-development-skeleton-c"><span class="secnum">4.14.2</span> OP-TEE Trusted Application Development Skeleton (C)<a class="headerlink" href="#4142-op-tee-trusted-application-development-skeleton-c" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>/* ta_entry.c -- OP-TEE TA (GlobalPlatform TEE Internal Core API v1.3.1) */
+#include &lt;tee_internal_api.h&gt;
+
+TEE_Result TA_CreateEntryPoint(void) {
+    DMSG("TA loaded into Secure World");
+    return TEE_SUCCESS;
+}
+void TA_DestroyEntryPoint(void) { DMSG("TA unloaded"); }
+
+TEE_Result TA_OpenSessionEntryPoint(uint32_t pt,
+    TEE_Param p[4], void **sess_ctx) {
+    (void)pt; (void)p; *sess_ctx = NULL;
+    DMSG("Session opened from Normal World CA");
+    return TEE_SUCCESS;
+}
+
+TEE_Result TA_InvokeCommandEntryPoint(void *sess,
+    uint32_t cmd, uint32_t pt, TEE_Param p[4]) {
+    switch (cmd) {
+    case 0x0001: {  /* CMD_AES256_GCM_ENCRYPT */
+        TEE_OperationHandle op = TEE_HANDLE_NULL;
+        TEE_AllocateOperation(&amp;op, TEE_ALG_AES_GCM, TEE_MODE_ENCRYPT, 256);
+        /* TEE_SetOperationKey, TEE_AEInit, TEE_AEEncryptFinal */
+        TEE_FreeOperation(op);
+        return TEE_SUCCESS;
+    }
+    default: return TEE_ERROR_NOT_SUPPORTED;
+    }
+}
+void TA_CloseSessionEntryPoint(void *sess) { (void)sess; }
+</code></pre></div>
+<h3 id="4143-amd-sev-snp-attestation-report-parsing-python"><span class="secnum">4.14.3</span> AMD SEV-SNP Attestation Report Parsing (Python)<a class="headerlink" href="#4143-amd-sev-snp-attestation-report-parsing-python" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>#!/usr/bin/env python3
+"""Parse AMD SEV-SNP attestation report (AMD ABI Table 21 v1.55)"""
+import struct, json, sys
+
+SNP_REPORT_SIZE = 0x4A0  # 1184 bytes
+
+def parse_snp_report(raw: bytes) -&gt; dict:
+    if len(raw) &lt; SNP_REPORT_SIZE:
+        raise ValueError(f"Short report: {len(raw)}")
+    version, guest_svn = struct.unpack_from("&lt;II", raw, 0)
+    policy  = struct.unpack_from("&lt;Q",  raw, 8)[0]
+    measurement = raw[0x38:0x38+48].hex()  # SHA-384 of guest FW
+    host_data   = raw[0x68:0x68+32].hex()  # 32-byte host nonce
+    chip_id     = raw[0x1A0:0x1A0+64].hex()
+    sig_r = raw[0x2A0:0x2A0+48].hex()  # ECDSA-P384 R (little-endian)
+    sig_s = raw[0x2E8:0x2E8+48].hex()  # ECDSA-P384 S
+    return {"version": version, "guest_svn": guest_svn,
+            "policy": hex(policy), "measurement": measurement,
+            "host_data": host_data, "chip_id": chip_id,
+            "sig_r": sig_r, "sig_s": sig_s}
+
+def verify_vcek(report_bytes: bytes, vcek_pem: str) -&gt; bool:
+    from cryptography import x509
+    from cryptography.hazmat.primitives.asymmetric.ec import ECDSA
+    from cryptography.hazmat.primitives.hashes import SHA384
+    from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
+    cert   = x509.load_pem_x509_certificate(vcek_pem.encode())
+    signed = report_bytes[:0x2A0]
+    r = int.from_bytes(report_bytes[0x2A0:0x2C8], "little")
+    s = int.from_bytes(report_bytes[0x2E8:0x310], "little")
+    sig = encode_dss_signature(r, s)
+    try:
+        cert.public_key().verify(sig, signed, ECDSA(SHA384()))
+        return True
+    except Exception as e:
+        print(f"Verify failed: {e}"); return False
+
+if __name__ == "__main__":
+    raw = open(sys.argv[1], "rb").read(SNP_REPORT_SIZE)
+    print(json.dumps(parse_snp_report(raw), indent=2))
+    if len(sys.argv) &gt; 2:
+        ok = verify_vcek(raw, open(sys.argv[2]).read())
+        print("Signature VALID" if ok else "Signature INVALID")
+</code></pre></div>
+<h2 id="415-standards-and-specifications"><span class="secnum">4.15</span> Standards and Specifications<a class="headerlink" href="#415-standards-and-specifications" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>GlobalPlatform TEE v1.3.1</strong>: TEE System Architecture, Internal Core API, Client API – normative API for TrustZone Trusted Applications</p>
+</li>
+<li>
+<p><strong>CCC (Confidential Computing Consortium)</strong>: Linux Foundation project governing Gramine, Enarx, Occlum, Veraison; defines TEE and attestation terminology</p>
+</li>
+<li>
+<p><strong>IETF RATS RFC 9334</strong>: Remote Attestation Procedures; Attester, Verifier, Relying Party, Endorser, Reference Value Provider; passport and background-check models</p>
+</li>
+<li>
+<p><strong>IETF EAT RFC 9542</strong>: Entity Attestation Token – CBOR/COSE token format for attestation evidence transport</p>
+</li>
+<li>
+<p><strong>TCG DICE Architecture</strong>: Device Identifier Composition Engine – layered device identity for TEE boot chain</p>
+</li>
+<li>
+<p><strong>NIST IR 8320</strong>: Hardware-Enabled Security: TEE and hardware RoT for confidential computing in federal environments</p>
+</li>
+</ul>
+<h2 id="416-key-github-repositories"><span class="secnum">4.16</span> Key GitHub Repositories<a class="headerlink" href="#416-key-github-repositories" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><code>github.com/intel/linux-sgx</code> – Intel SGX SDK and PSW for Linux</p>
+</li>
+<li>
+<p><code>github.com/gramineproject/gramine</code> – Gramine: SGX library OS; runs unmodified Linux applications in SGX enclaves</p>
+</li>
+<li>
+<p><code>github.com/enarx/enarx</code> – Enarx: TEE-agnostic WebAssembly runtime targeting SGX, SEV-SNP, and TDX</p>
+</li>
+<li>
+<p><code>github.com/OP-TEE/optee_os</code> – OP-TEE OS: ARM TrustZone reference TEE implementation (Linaro)</p>
+</li>
+<li>
+<p><code>github.com/keystone-enclave/keystone</code> – Keystone: RISC-V PMP-based enclave framework with customizable Security Monitor</p>
+</li>
+<li>
+<p><code>github.com/AMDESE/sev-tool</code> – AMD SEV-SNP tool: attestation report retrieval, VCEK cert fetch, report verification</p>
+</li>
+<li>
+<p><code>github.com/apache/incubator-teaclave</code> – Teaclave (rustSGX): Rust SGX SDK and Function-as-a-Service TEE platform</p>
+</li>
+</ul>
+<h2 id="417-solved-problems"><span class="secnum">4.17</span> Solved Problems<a class="headerlink" href="#417-solved-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: SGX Enclave Memory: EPC Size Constraint and Paging Overhead</p>
+<p>An application developer wants to process a 2 GB dataset inside an Intel SGX v1 enclave for privacy-preserving analytics. Explain the EPC limitation and describe how the developer should handle data exceeding EPC size. What is the performance impact?</p>
+<p><strong>Solution:</strong> Intel SGX version 1 restricts the Enclave Page Cache (EPC) to a maximum of 128 MB (some BIOS/SKU configurations: 256 MB). Any enclave memory beyond the EPC limit must be <em>paged out</em> by the untrusted OS memory manager. When an EPC page is evicted:</p>
+<ol>
+<li>
+<p>The MEE (Memory Encryption Engine) encrypts the page with AES-CTR and computes a MAC (GHASH or AES-CMAC) to ensure integrity on reload.</p>
+</li>
+<li>
+<p>The encrypted + MAC page is written to regular untrusted DRAM outside the EPC.</p>
+</li>
+<li>
+<p>On re-access, the page is loaded back, decrypted, and MAC-verified by MEE before the enclave can use it.</p>
+</li>
+</ol>
+<p>For a 2 GB dataset with 128 MB EPC, the working set exceeds EPC by 16x. Random access causes nearly every operation to trigger an EPC page fault. Measured overhead: 3–100x slowdown depending on access pattern.</p>
+<p><strong>Developer solutions</strong>:</p>
+<ul>
+<li>
+<p>Upgrade to SGX2 (Icelake+ Xeon): EPC up to 512 GB; <code>EAUG</code> allows dynamic EPC page addition without recreating the enclave.</p>
+</li>
+<li>
+<p>Partition: split 2 GB into 100 MB chunks; use OCALL to request each chunk from untrusted host memory; process one chunk at a time inside EPC.</p>
+</li>
+<li>
+<p>Use Gramine SGX library OS: its built-in virtual memory manager handles EPC paging transparently for unmodified applications.</p>
+</li>
+<li>
+<p>Apply streaming algorithms (one-pass statistics, MapReduce-style processing) to minimize simultaneous EPC working set.</p>
+</li>
+</ul>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: OP-TEE Trusted Application: Device-Unique AES-256 Key Derivation</p>
+<p>Implement an OP-TEE Trusted Application that derives a device-unique AES-256 key from the Hardware Unique Key (HUK). The key must never leave the Secure World. Describe the full approach using the GlobalPlatform TEE Internal Core API.</p>
+<p><strong>Solution:</strong> The HUK is accessible only to OP-TEE at S-EL1 via the platform abstraction layer (PAL). On Xilinx Zynq, the HUK is stored in eFUSE registers accessible only at EL3/S-EL1.</p>
+<p><strong>Step 1</strong>: Invoke OP-TEE System PTA <code>PTA_SYSTEM_DERIVE_TA_UNIQUE_KEY</code> to get a 32-byte HKDF output bound to the TA UUID.</p>
+<div class="language-text highlight"><pre><span></span><code>uint8_t ta_secret[32];
+invoke_system_pta_derive_key(ta_secret, sizeof(ta_secret));
+
+TEE_ObjectHandle hkdf_key, aes_key_handle;
+TEE_Attribute hkdf_attr;
+TEE_AllocateTransientObject(TEE_TYPE_HMAC_SHA256, 256, &amp;hkdf_key);
+TEE_InitRefAttribute(&amp;hkdf_attr, TEE_ATTR_SECRET_VALUE, ta_secret, 32);
+TEE_PopulateTransientObject(hkdf_key, &amp;hkdf_attr, 1);
+TEE_DeriveKey(hkdf_key, &amp;context_attr, 1, aes_key_handle);
+
+TEE_StorageHandle sh;
+TEE_CreatePersistentObject(TEE_STORAGE_PRIVATE,
+    "enc_key_v1", 10, TEE_DATA_FLAG_ACCESS_WRITE,
+    aes_key_handle, NULL, 0, &amp;sh);
+TEE_CloseObject(sh);
+</code></pre></div>
+<p><strong>Security properties</strong>: HUK never crosses the Secure/Normal world boundary. Derived key is bound to device HUK and TA UUID. TEE Secure Storage uses AES-GCM encryption; RPMB provides hardware replay protection.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: AMD SEV-SNP vs Intel TDX: Four-Dimension Comparison</p>
+<p>Compare AMD SEV-SNP and Intel TDX in terms of: (a) threat model, (b) memory encryption granularity, (c) attestation mechanism, and (d) VM live migration support.</p>
+<p><strong>Solution:</strong> <strong>(a) Threat Model</strong>: Both protect VM workloads from a compromised hypervisor/VMM. SEV-SNP additionally defends against malicious host BIOS and DMA attacks (IOMMU + RMP). Intel TDX introduces the TDX Module at SEAM privilege level above the hypervisor, providing architectural isolation.</p>
+<p><strong>(b) Memory Encryption</strong>:</p>
+<ul>
+<li>
+<p>AMD SEV-SNP: AES-128 per VM via AMD SME/TSME key table; RMP enforces one physical page -&gt; one ASID ownership; prevents hypervisor aliasing at 4 KB granularity.</p>
+</li>
+<li>
+<p>Intel TDX: AES-128-XTS per Trust Domain via MK-TME; physical address KEYID bits carry the TD key ID; TD page attribute bits prevent hypervisor from remapping TD pages.</p>
+</li>
+</ul>
+<p><strong>(c) Attestation</strong>:</p>
+<ul>
+<li>
+<p>AMD SEV-SNP: AMD PSP generates SNP Attestation Report signed by VCEK (P-384 ECDSA); VCEK certificate from AMD KDS (<code>kdsintf.amd.com</code>); MEASUREMENT = SHA-384 of initial guest memory; HOST_DATA carries verifier nonce.</p>
+</li>
+<li>
+<p>Intel TDX: TDX Module generates TD Quote signed by TDX Quoting Enclave (P-256 ECDSA); verified against Intel PCK via PCCS; MRTD = SHA-384 of initial TD state; RTMR[0..3] are runtime extend registers.</p>
+</li>
+</ul>
+<p><strong>(d) VM Live Migration</strong>:</p>
+<ul>
+<li>
+<p>AMD SEV-SNP: Secure live migration via Migration Agent TA; encrypted pages re-keyed with destination PSP key; source and destination PSPs mutually authenticate.</p>
+</li>
+<li>
+<p>Intel TDX: TD live migration in TDX Module 1.5 (Granite Rapids); TD Migration Agent Module handles key transfer; attestation MRTD preserved; RTMRs must be re-extended post-migration.</p>
+</li>
+</ul>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TrustZone PRIME+PROBE Cache Timing Attack and Mitigations</p>
+<p>Describe how a PRIME+PROBE cache timing attack against an OP-TEE TA performing AES-128 with T-tables works. Propose two mitigations with their performance tradeoffs.</p>
+<p><strong>Solution:</strong> <strong>Attack mechanics</strong>:</p>
+<ol>
+<li>
+<p><strong>PRIME</strong>: Normal World attacker fills L1 D-cache sets corresponding to the Secure World AES T-table virtual addresses (4 tables x 1024 bytes = 4096 bytes spanning specific cache sets).</p>
+</li>
+<li>
+<p><strong>TRIGGER</strong>: Attacker calls <code>TEEC_InvokeCommand</code>; OP-TEE switches to S-EL1; TA executes round-1 AES lookup <code>T[p[i] XOR k[i]]</code> for i in 0..15. Each lookup evicts attacker data from specific L1 cache sets.</p>
+</li>
+<li>
+<p><strong>PROBE</strong>: On return, attacker measures access time to each primed cache line. Cache miss reveals the T-table index used.</p>
+</li>
+<li>
+<p><strong>Key recovery</strong>: Since attacker controls plaintext p[i] (chosen-plaintext), <code>k[i] = observed_index XOR p[i]</code>. All 16 key bytes recovered in roughly 200 invocations.</p>
+</li>
+</ol>
+<p><strong>Mitigation 1 – Constant-time bitsliced AES</strong>: Replace T-table AES with bitsliced AES (HACL*, BearSSL ct-AES). All loads are fixed; access pattern is data-independent. <em>Tradeoff</em>: 2–5x slower than T-table AES.</p>
+<p><strong>Mitigation 2 – ARMv8 hardware AES instructions</strong>: Use <code>AESE</code>/<code>AESD</code>/<code>AESMC</code> intrinsics on Cortex-A53+ (ARMv8-A). AES rounds execute in vector registers; no memory loads after key schedule; immune to cache timing. <em>Tradeoff</em>: Requires ARMv8 hardware; still potentially vulnerable to power side-channel.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Keystone RISC-V Enclave: PMP Configuration and Limits</p>
+<p>Explain how Keystone uses RISC-V Physical Memory Protection (PMP) to implement enclave isolation. How many PMP entries are required per enclave, and what limits simultaneous enclaves on a SiFive U74?</p>
+<p><strong>Solution:</strong> <strong>RISC-V PMP</strong>: Hardware-enforced memory access control at Machine mode. Each PMP entry specifies <code>pmpaddr</code> (address), <code>pmpcfg</code> byte (R/W/X bits, address matching mode NAPOT/TOR/NA4, Lock bit L). Entries are checked in priority order; first match wins.</p>
+<p><strong>Keystone PMP layout for one enclave</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code>Entry 0 [LOCKED]: Security Monitor (SM) region
+  pmpcfg = L | NAPOT | R=0 | W=0 | X=0
+  Effect: No S-mode or U-mode code can access SM memory
+
+Entry 1 [per-enclave]: Enclave physical memory (code + stack + heap)
+  pmpcfg = NAPOT | R=1 | W=1 | X=1
+  Effect: Enclave S/U-mode can access; OS (S-mode) cannot
+
+Entry 2 [per-enclave]: UTM -- Untrusted Shared Memory for OCALLs
+  pmpcfg = NAPOT | R=1 | W=1 | X=0
+  Effect: Both enclave and OS can R/W (no execute)
+
+Entry 15 [catch-all]: Full DRAM for OS
+  pmpcfg = NAPOT | R=1 | W=1 | X=1
+</code></pre></div>
+<p><strong>Entries per enclave</strong>: 3 (SM entry is shared). With 16 PMP total, 2 reserved: max <span class="arithmatex">\(14 / 3 \approx 4\)</span> simultaneous enclaves on a 16-entry platform.</p>
+<p><strong>SiFive U74 (HiFive Unmatched)</strong>: 8 PMP entries. Maximum: <span class="arithmatex">\(8 / 3 = 2\)</span> simultaneous Keystone enclaves. RISC-V Smepmp extension (64 PMP entries) would enable 20+ concurrent enclaves.</p>
+<p><strong>Critical gap vs SEV-SNP</strong>: Keystone does not encrypt enclave DRAM. Cold-boot attack or DRAM bus probing reveals enclave data in plaintext. AMD SEV-SNP AES-128 memory encryption prevents this class of physical attack.</p>
+</div>
+<h2 id="sec-ch04-recent"><span class="secnum">4.18</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch04-recent" title="Permanent link">&para;</a></h2>
+<h3 id="4181-arm-cca-realm-management-extension-rmev1"><span class="secnum">4.18.1</span> ARM CCA: Realm Management Extension (RMEv1)<a class="headerlink" href="#4181-arm-cca-realm-management-extension-rmev1" title="Permanent link">&para;</a></h3>
+<p>ARM <strong>Confidential Compute Architecture (CCA)</strong> introduces a fourth world – the <em>Realm</em> – alongside Secure, Non-Secure, and Root worlds. CCA is available in Cortex-A710, A715, and X3 cores (ARMv9.2-A), and the RME hardware shipped in Apple A17 Pro (iPhone 15 Pro) and select Qualcomm Snapdragon 8 Gen 3 devices:</p>
+<ul>
+<li>
+<p><strong>Realm Management Monitor (RMM)</strong>: Executes at the new EL2 Realm exception level; manages Realm VMs; implemented by open-source <code>tf-rmm</code> (Trusted Firmware RMM)</p>
+</li>
+<li>
+<p><strong>Granule Protection Table (GPT)</strong>: Hardware-enforced per-granule (4 KB) access control table managed by firmware; prevents Normal World hypervisor from aliasing Realm memory</p>
+</li>
+<li>
+<p><strong>CCA attestation</strong>: Realm VMs receive a hardware-signed <em>Realm Attestation Token</em> (RAT) in CBOR/COSE format; token includes realm measurement (SHA-512 of initial image), RIM/REM values, and platform certificate chain rooted in an ARM-signed root</p>
+</li>
+<li>
+<p><strong>iOS 17 use</strong>: Apple implements “Private Cloud Compute” on CCA-capable A17 Pro hardware; on-device ML inference Realms isolated from iOS kernel</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> ARM CCA differs from AMD SEV-SNP and Intel TDX in one critical way: the Realm is isolated from <em>both</em> the hypervisor and the Secure World. This orthogonal isolation provides stronger separation guarantees for multi-tenant cloud workloads on ARM infrastructure.</p>
+</div>
+<h3 id="4182-intel-tdx-15-2024-improved-attestation-and-nested-vms"><span class="secnum">4.18.2</span> Intel TDX 1.5 (2024): Improved Attestation and Nested VMs<a class="headerlink" href="#4182-intel-tdx-15-2024-improved-attestation-and-nested-vms" title="Permanent link">&para;</a></h3>
+<p>Intel released <strong>TDX Module 1.5</strong> with Granite Rapids Xeon (2024), bringing:</p>
+<div class="tbl" id="tab-tdx-1-5">
+<div class="tbl-caption"><strong>Table 4.6.</strong> Intel TDX 1.0 vs. TDX 1.5 Feature Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>TDX 1.0</strong></th>
+<th style="text-align: left;"><strong>TDX 1.5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RTMR count</td>
+<td style="text-align: left;">4 (RTMR[0–3])</td>
+<td style="text-align: left;">4 + XFAM-extended RTMRs</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nested VM support</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">TD Partitioning (L2 TDs)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Live migration</td>
+<td style="text-align: left;">Experimental</td>
+<td style="text-align: left;">GA; TD Migration Agent Module</td>
+</tr>
+<tr>
+<td style="text-align: left;">Attestation quote size</td>
+<td style="text-align: left;">4,653 bytes (ECDSA P-256)</td>
+<td style="text-align: left;">5,120 bytes (with P-384 option)</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCCS endpoint</td>
+<td style="text-align: left;">Intel-managed</td>
+<td style="text-align: left;">Customer-hosted PCCS supported</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory encryption</td>
+<td style="text-align: left;">AES-128-XTS</td>
+<td style="text-align: left;">AES-128-XTS + TME-MK</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="4183-amd-sev-snp-improvements-2024"><span class="secnum">4.18.3</span> AMD SEV-SNP Improvements (2024)<a class="headerlink" href="#4183-amd-sev-snp-improvements-2024" title="Permanent link">&para;</a></h3>
+<p>AMD Genoa / Bergamo EPYC (Zen 4) introduced <code>SNP_LAUNCH_UPDATE</code> improvements:</p>
+<ul>
+<li>
+<p><strong>VMPL (VM Permission Levels)</strong>: Up to 4 VMPL tiers within a single SNP guest; allows a security monitor VM (VMPL0) to supervise application VMs (VMPL1–3) without exposing the hypervisor</p>
+</li>
+<li>
+<p><strong>REPORT_DATA field</strong>: Extended from 512 bits to 512 bits with VMPL-scoped nonces, enabling per-VMPL attestation</p>
+</li>
+<li>
+<p><strong>SNPGuest kernel driver</strong>: Merged into Linux 6.8; provides <code>/dev/sev-guest</code> for in-guest attestation report requests without hypervisor involvement</p>
+</li>
+</ul>
+<h3 id="4184-risc-v-keystone-20-tee-framework"><span class="secnum">4.18.4</span> RISC-V Keystone 2.0 TEE Framework<a class="headerlink" href="#4184-risc-v-keystone-20-tee-framework" title="Permanent link">&para;</a></h3>
+<p>The Keystone project released <strong>Keystone 2.0</strong> in 2024 for SiFive U74 and the VisionFive 2 board:</p>
+<ul>
+<li>
+<p><strong>SM (Security Monitor) v1.4</strong>: Supports RISC-V Smepmp extension (64 PMP entries) enabling <span class="arithmatex">\(\geq 20\)</span> concurrent enclaves vs. 2 on a 16-entry platform</p>
+</li>
+<li>
+<p><strong>Attestation</strong>: DICE-based attestation using SM-generated ECDSA P-256 signatures over enclave measurement; compatible with IETF RATS RFC 9334</p>
+</li>
+<li>
+<p><strong>SDK</strong>: Keystone SDK 2.0 supports Rust enclave development via <code>keystone-rs</code></p>
+</li>
+</ul>
+<h3 id="4185-op-tee-40-2024-fido2-and-improved-secure-storage"><span class="secnum">4.18.5</span> OP-TEE 4.0 (2024): FIDO2 and Improved Secure Storage<a class="headerlink" href="#4185-op-tee-40-2024-fido2-and-improved-secure-storage" title="Permanent link">&para;</a></h3>
+<p>Linaro released <strong>OP-TEE OS 4.0</strong> with significant security additions:</p>
+<ul>
+<li>
+<p><strong>FIDO2 / WebAuthn TA</strong>: Reference Trusted Application implementing CTAP2 protocol; biometric assertion generation inside Secure World; compatible with Android FIDO2 API</p>
+</li>
+<li>
+<p><strong>Secure Storage v2</strong>: Encrypted storage now uses AES-256-GCM (replacing AES-128-CBC) with hardware TRNG-generated per-object IVs; RPMB backing on eMMC/UFS</p>
+</li>
+<li>
+<p><strong>FF-A (Firmware Framework for Arm) support</strong>: OP-TEE can now co-exist with SP (Secure Partitions) under FF-A; enables hybrid OP-TEE + CCA deployments</p>
+</li>
+<li>
+<p><strong>OP-TEE on RISC-V</strong>: Experimental port for SiFive U54/U74 via M-mode security monitor; PMP-based world isolation</p>
+</li>
+</ul>
+<h3 id="4186-tee-attacks-cachewarp-and-tdxdown-20232024"><span class="secnum">4.18.6</span> TEE Attacks: CacheWarp and TDXDown (2023–2024)<a class="headerlink" href="#4186-tee-attacks-cachewarp-and-tdxdown-20232024" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-tee-attacks-2024">
+<div class="tbl-caption"><strong>Table 4.7.</strong> New TEE Attacks (2023–2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Attack</strong></th>
+<th style="text-align: left;"><strong>Target</strong></th>
+<th style="text-align: left;"><strong>CVE</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CacheWarp</td>
+<td style="text-align: left;">AMD SEV-SNP</td>
+<td style="text-align: left;">CVE-2023-20592</td>
+<td style="text-align: left;">Write-back cache manipulation allows hypervisor to revert guest memory writes; bypasses SEV-SNP memory integrity for specific cache-flush sequences</td>
+</tr>
+<tr>
+<td style="text-align: left;">TDXDown</td>
+<td style="text-align: left;">Intel TDX</td>
+<td style="text-align: left;">CVE-2024-23953</td>
+<td style="text-align: left;">DoS via malformed <code>TDH.MEM.SEPT.ADD</code> SEAMCALL; crashes TDX module, forcing VM termination</td>
+</tr>
+<tr>
+<td style="text-align: left;">AEPIC 2</td>
+<td style="text-align: left;">Intel SGX</td>
+<td style="text-align: left;">CVE-2023-22655</td>
+<td style="text-align: left;">Extended APIC bug family; SGX enclave register file leak via legacy MMIO reads</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> CacheWarp (CVE-2023-20592) is an <em>architectural</em> vulnerability, not a side channel. AMD issued a mandatory microcode update (Genoa/Milan/Bergamo) that disables the affected cache instruction. Verify <code>/proc/cpuinfo</code> for <code>mcupdate_amd</code> flag confirming microcode version <span class="arithmatex">\(\geq 0x0830107a\)</span> (Milan) or <span class="arithmatex">\(\geq 0x0a10113e\)</span> (Genoa).</p>
+</div>
+<h3 id="4187-globalplatform-tee-protection-profile-13"><span class="secnum">4.18.7</span> GlobalPlatform TEE Protection Profile 1.3<a class="headerlink" href="#4187-globalplatform-tee-protection-profile-13" title="Permanent link">&para;</a></h3>
+<p>GlobalPlatform published <strong>TEE Protection Profile v1.3</strong> (GPD_SPE_021) in 2024:</p>
+<ul>
+<li>
+<p>New Assurance Activity AA-TEE-30: Mandatory TVLA side-channel evaluation of TEE cryptographic operations (replaces informative guidance in v1.2)</p>
+</li>
+<li>
+<p>AA-TEE-31: Post-quantum algorithm support evaluation for TAs storing long-term keys</p>
+</li>
+<li>
+<p>Updated threat model includes hypervisor-level attackers (relevant for CCA and TDX)</p>
+</li>
+<li>
+<p>Reference PP for <em>TEE Protection Profile + Secure Element</em> combined evaluation</p>
+</li>
+</ul>
+<h2 id="419-exercises"><span class="secnum">4.19</span> Exercises<a class="headerlink" href="#419-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Explain the difference between Intel SGX <code>MRENCLAVE</code> and <code>MRSIGNER</code> measurements. In what scenario should a developer choose <code>MRSIGNER</code>-based sealing? What is the security tradeoff from a key continuity and enclave update perspective?</p>
+</li>
+<li>
+<p>A cloud provider claims TEE-based protection. What specific attestation evidence must a tenant demand? List at least four fields to verify in an SGX QUOTE or SEV-SNP attestation report, and explain what each field proves about the platform state.</p>
+</li>
+<li>
+<p>Compare ARM TrustZone-A and Intel SGX isolation from the perspective of a compromised OS with root privilege. Which provides stronger guarantees? Consider: (a) memory access, (b) exception and interrupt handling, (c) shared L1/L2 cache side-channel exposure.</p>
+</li>
+<li>
+<p>Write pseudocode for the complete GlobalPlatform TEE Client API sequence to: (a) open a session to a TA by UUID, (b) invoke a command encrypting a 256-byte buffer, (c) close the session. Label each call as Normal World or Secure World transition.</p>
+</li>
+<li>
+<p>The PLATYPUS attack exploits Intel RAPL power measurements to extract SGX enclave keys without physical access. Explain why restricting RAPL to root is incomplete in a multi-tenant cloud. Propose a hardware-level countermeasure that prevents PLATYPUS without performance penalty for non-enclave workloads.</p>
+</li>
+<li>
+<p>Describe the AMD SEV-SNP Reverse Map Table (RMP). How does it prevent a hypervisor from aliasing one physical page into two VMs simultaneously? What CPU instruction validates the RMP during VM entry (VMRUN)? What happens if the RMP check fails?</p>
+</li>
+<li>
+<p>A developer wants to run Flask + SQLite inside SGX using Gramine. List four security-relevant entries required in the Gramine manifest file. What happens if the application attempts a syscall not in the manifest whitelist? How does Gramine intercept syscalls from the glibc vDSO path?</p>
+</li>
+<li>
+<p>OP-TEE supports multiple TAs running concurrently in S-EL0. Explain the isolation mechanism between TAs. What hardware feature prevents TA-A from reading TA-B heap memory? What occurs when a TA calls <code>TEE_Malloc</code> and the secure heap is fully exhausted?</p>
+</li>
+<li>
+<p>GlobalPlatform TEE v1.3.1 defines <code>TEE_STORAGE_PRIVATE</code> and <code>TEE_STORAGE_USER</code>. Explain their access control semantics. Which type should a Widevine L1 DRM key storage TA use, and why? What hardware backing provides replay protection on Android devices?</p>
+</li>
+<li>
+<p>Compare Intel TDX and AMD SEV-SNP attestation in four dimensions: (a) root signing key identity, (b) certificate retrieval endpoint URL, (c) measurement field semantics (what is measured and how), (d) nonce/freshness mechanism.</p>
+</li>
+<li>
+<p>An attacker executes SGX-Step against a naive RSA square-and-multiply implementation inside an enclave. Explain step-by-step how private key bits are revealed. Why is square-and-multiply vulnerable? Explain why the Montgomery ladder resists this attack.</p>
+</li>
+<li>
+<p>Keystone uses PMP for isolation without DRAM encryption. List three attack classes possible against Keystone but not against AMD SEV-SNP. For the most critical class, propose a concrete RISC-V ISA extension (specify mnemonic and semantics) that would close the gap.</p>
+</li>
+<li>
+<p>Design a complete threat model for a mobile payment TEE app on Qualcomm Snapdragon SPU. Enumerate: (a) assets and sensitivity levels, (b) three attacker classes with distinct capabilities, (c) one specific attack vector per class, (d) one concrete mitigation per attack with justification.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch03-physically-unclonable-functions-puf.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Physically Unclonable Functions (PUF)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3. Physically Unclonable Functions (PUF)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch05-hardware-root-of-trust.html" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Hardware Root of Trust">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                5. Hardware Root of Trust
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

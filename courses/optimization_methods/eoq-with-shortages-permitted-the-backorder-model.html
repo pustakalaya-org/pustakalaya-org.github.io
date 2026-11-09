@@ -1,0 +1,2490 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/optimization_methods/eoq-with-shortages-permitted-the-backorder-model.html">
+  
+  
+    <link rel="prev" href="the-eoq-model-with-no-shortages.html">
+  
+  
+    <link rel="next" href="the-production-finite-replenishment-model-without-shortages.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>32. EOQ with Shortages Permitted (the Backorder Model) - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#321-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              32. EOQ with Shortages Permitted (the Backorder Model)
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Optimization Methods</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-research-and-the-modelling-approach.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operations Research and the Modelling Approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-linear-programming-and-formulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Introduction to Linear Programming and Formulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-graphical-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The Graphical Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-i-theory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The Simplex Method I: Theory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-ii-the-tableau-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="big-m-two-phase-methods-and-special-cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Big-M, Two-Phase Methods and Special Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duality-and-sensitivity-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Duality and Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-transportation-problem-formulation-and-initial-solutions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. The Transportation Problem: Formulation and Initial Solutions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transportation-optimality-the-modi-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Transportation Optimality: The MODI Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-assignment-problem-and-the-travelling-salesman-problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mixed-strategies-and-the-odds-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Mixed Strategies and the Odds Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="graphical-and-lp-solution-of-games.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Graphical and LP Solution of Games
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-2-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Sequencing: n Jobs Through 2 Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-3-machines-2-jobs-through-m.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Sequencing: n Jobs Through 3 Machines, 2 Jobs Through m Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integer-programming-and-gomory-s-cutting-plane-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Integer Programming and Gomory's Cutting-Plane Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Gomory's Method for Mixed Integer Programmes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-branch-and-bound-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Network Scheduling: The Critical Path Method (CPM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pert-and-probabilistic-project-scheduling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. PERT and Probabilistic Project Scheduling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-of-queuing-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Characteristics of Queuing Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-poisson-process-and-the-exponential-distribution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Birth–Death Processes and Steady-State Balance Equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-m-m-1-fcfs-derived-in-full.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Model I: (M/M/1):(∞/FCFS) Derived in Full
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-applications-costing-and-design-decisions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Model I: Applications, Costing and Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-ii-m-m-1-n-fcfs-the-finite-capacity-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Model II: (M/M/1):(N/FCFS), the Finite-Capacity Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-iii-m-m-c-fcfs-the-multi-server-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Model III: (M/M/c):(∞/FCFS), the Multi-Server Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models-iv-and-v-m-m-c-n-fcfs-and-finite-source-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Models IV and V: (M/M/c):(N/FCFS) and Finite-Source Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications-and-the-economic-analysis-of-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Applications and the Economic Analysis of Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inventory-control-concepts-and-cost-structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Inventory Control: Concepts and Cost Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-eoq-model-with-no-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. The EOQ Model with No Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="eoq-with-shortages-permitted-the-backorder-model.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#321-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#322-why-plan-to-run-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.2 Why Plan to Run Out?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#323-the-inventory-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.3 The Inventory Profile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.3 The Inventory Profile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#average-inventory-and-average-shortage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Average inventory and average shortage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#324-deriving-the-optimum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.4 Deriving the Optimum
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.4 Deriving the Optimum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cost-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cost function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimising-over-s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimising over S
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimising-over-q" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimising over Q
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#325-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.5 Solved Problems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.5 Solved Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-1-the-standard-backorder-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 1 — The standard backorder calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-2-a-second-calculation-with-different-economics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 2 — A second calculation with different economics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-3-how-the-policy-responds-to-c_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 3 — How the policy responds to C_s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-4-inferring-c_s-from-a-chosen-service-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 4 — Inferring C_s from a chosen service level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-5-when-the-model-must-not-be-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 5 — When the model must not be used
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#326-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#327-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. The Production (Finite Replenishment) Model without Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-model-with-shortages-permitted.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Production Model with Shortages Permitted
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantity-discounts-and-consolidation-of-unit-iii.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantity Discounts and Consolidation of Unit III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-non-linear-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Introduction to Non-Linear Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conditions-for-unconstrained-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Conditions for Unconstrained Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="one-dimensional-minimisation-bracketing-and-elimination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. One-Dimensional Minimisation: Bracketing and Elimination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-fibonacci-search-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. The Fibonacci Search Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="golden-section-search.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. Golden Section Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpolation-and-gradient-based-one-dimensional-methods.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Interpolation and Gradient-Based One-Dimensional Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unconstrained-multivariable-optimisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Unconstrained Multivariable Optimisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constrained-optimisation-graphical-solution-and-lagrange.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. Constrained Optimisation: Graphical Solution and Lagrange Multipliers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-kuhn-tucker-kkt-conditions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. The Kuhn–Tucker (KKT) Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quadratic-programming-and-course-capstone.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Quadratic Programming and Course Capstone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#321-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#322-why-plan-to-run-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.2 Why Plan to Run Out?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#323-the-inventory-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.3 The Inventory Profile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.3 The Inventory Profile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#average-inventory-and-average-shortage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Average inventory and average shortage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#324-deriving-the-optimum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.4 Deriving the Optimum
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.4 Deriving the Optimum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cost-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cost function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimising-over-s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimising over S
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimising-over-q" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimising over Q
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#325-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.5 Solved Problems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="32.5 Solved Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-1-the-standard-backorder-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 1 — The standard backorder calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-2-a-second-calculation-with-different-economics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 2 — A second calculation with different economics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-3-how-the-policy-responds-to-c_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 3 — How the policy responds to C_s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-4-inferring-c_s-from-a-chosen-service-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 4 — Inferring C_s from a chosen service level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-5-when-the-model-must-not-be-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem 5 — When the model must not be used
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#326-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#327-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-32-eoq-with-shortages-permitted-the-backorder-model">Lesson 32: EOQ with Shortages Permitted (the Backorder Model)<a class="headerlink" href="#lesson-32-eoq-with-shortages-permitted-the-backorder-model" title="Permanent link">&para;</a></h1>
+<h2 id="321-learning-outcomes">32.1 Learning Outcomes<a class="headerlink" href="#321-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Draw the inventory profile when <strong>planned backorders</strong> are allowed and identify <span class="arithmatex">\(S\)</span>, <span class="arithmatex">\(B\)</span> and <span class="arithmatex">\(Q\)</span>.</li>
+<li>Derive the average holding and shortage levels from the geometry of that profile.</li>
+<li>Derive <span class="arithmatex">\(Q^{*}\)</span> and <span class="arithmatex">\(S^{*}\)</span> for the backorder model and interpret the <strong>backorder factor</strong>.</li>
+<li>Show that the model reduces to classical EOQ as <span class="arithmatex">\(C_s\to\infty\)</span>.</li>
+<li>Decide whether a planned-shortage policy is appropriate for a given business.</li>
+</ol>
+<h2 id="322-why-plan-to-run-out">32.2 Why Plan to Run Out?<a class="headerlink" href="#322-why-plan-to-run-out" title="Permanent link">&para;</a></h2>
+<p>Deliberately allowing stock-outs sounds like bad management. It is not, provided customers are willing
+to <strong>wait</strong> — that is, the demand is <strong>backordered</strong> rather than lost.</p>
+<p>The logic: if a customer is content to wait a few days, the firm can carry less stock and save holding
+cost, paying instead a smaller shortage cost. Whenever <span class="arithmatex">\(C_s\)</span> is genuinely finite and comparable to
+<span class="arithmatex">\(C_h\)</span>, the optimal policy is to run out for part of each cycle.</p>
+<blockquote>
+<p><strong>The essential distinction.</strong></p>
+<ul>
+<li><strong>Backorders</strong> — unfilled demand waits and is satisfied from the next delivery. The sale is kept;
+  only a penalty is paid. <strong>This lesson's model.</strong></li>
+<li><strong>Lost sales</strong> — the customer goes elsewhere. The sale, and possibly the customer, is gone.
+  Shortage cost is then per unit short, not per unit per unit time, and the model differs.</li>
+</ul>
+</blockquote>
+<p>Backordering is realistic for made-to-order machinery, spare parts, books and furniture. It is
+unrealistic for groceries, petrol and medicines.</p>
+<h2 id="323-the-inventory-profile">32.3 The Inventory Profile<a class="headerlink" href="#323-the-inventory-profile" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code> stock
+   S |\             |\             |\
+     | \            | \            | \
+     |  \           |  \           |  \
+   0 |---\----------|---\----------|---\-------  time
+     |    \        /|    \        /|
+  -B |     \______/ |     \______/ |
+     |&lt;-t1-&gt;|&lt;-t2-&gt;|
+     |&lt;------ t ----&gt;|
+</code></pre></div>
+<p>Notation:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(Q\)</span></td>
+<td>order quantity (the whole delivery)</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(S\)</span></td>
+<td><strong>maximum inventory level</strong> — what remains after clearing backorders</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(B=Q-S\)</span></td>
+<td><strong>maximum shortage</strong> (backorder) level</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(t_1=S/D\)</span></td>
+<td>time with stock on hand</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(t_2=B/D\)</span></td>
+<td>time in shortage</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(t=Q/D\)</span></td>
+<td>full cycle</td>
+</tr>
+</tbody>
+</table>
+<p>When a delivery of <span class="arithmatex">\(Q\)</span> arrives, <span class="arithmatex">\(B\)</span> units go immediately to waiting customers and <span class="arithmatex">\(S=Q-B\)</span> enter stock.</p>
+<h3 id="average-inventory-and-average-shortage">Average inventory and average shortage<a class="headerlink" href="#average-inventory-and-average-shortage" title="Permanent link">&para;</a></h3>
+<p>Both come from triangle areas divided by the full cycle <span class="arithmatex">\(t\)</span> — <strong>this is the step students most often
+get wrong</strong>, because each average is taken over the <em>whole</em> cycle, not over the sub-interval in which
+it is non-zero.</p>
+<div class="arithmatex">\[\text{average stock}=\frac{\tfrac12 S\,t_1}{t}=\frac{\tfrac12 S(S/D)}{Q/D}=\boxed{\frac{S^2}{2Q}}\]</div>
+<div class="arithmatex">\[\text{average shortage}=\frac{\tfrac12 B\,t_2}{t}=\boxed{\frac{B^2}{2Q}=\frac{(Q-S)^2}{2Q}}\]</div>
+<p>Setting <span class="arithmatex">\(B=0\)</span> recovers <span class="arithmatex">\(S=Q\)</span> and average stock <span class="arithmatex">\(=Q/2\)</span>, the classical result — a useful check.</p>
+<h2 id="324-deriving-the-optimum">32.4 Deriving the Optimum<a class="headerlink" href="#324-deriving-the-optimum" title="Permanent link">&para;</a></h2>
+<h3 id="the-cost-function">The cost function<a class="headerlink" href="#the-cost-function" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[TRC(Q,S)=\underbrace{\frac{C_oD}{Q}}_{\text{ordering}}
++\underbrace{\frac{C_hS^{2}}{2Q}}_{\text{holding}}
++\underbrace{\frac{C_s(Q-S)^{2}}{2Q}}_{\text{shortage}} \tag{3.1}\]</div>
+<p>This is a function of <strong>two</strong> variables, so we need both partial derivatives.</p>
+<h3 id="optimising-over-s">Optimising over S<a class="headerlink" href="#optimising-over-s" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\frac{\partial TRC}{\partial S}=\frac{C_hS}{Q}-\frac{C_s(Q-S)}{Q}=0
+\ \Longrightarrow\ C_hS=C_s(Q-S)\]</div>
+<blockquote>
+<p><strong>Result 1.</strong>
+$<span class="arithmatex">\(\boxed{\ S^{*}=\frac{C_s}{C_h+C_s}\,Q\ },\qquad
+B^{*}=Q-S^{*}=\frac{C_h}{C_h+C_s}\,Q \tag{3.2}\)</span>$</p>
+</blockquote>
+<p>The fraction <span class="arithmatex">\(\dfrac{C_s}{C_h+C_s}\)</span> is the <strong>critical ratio</strong> or <strong>service level</strong>: the proportion of
+the cycle spent in stock. It has an immediate reading — if shortage is ten times as expensive as
+holding, <span class="arithmatex">\(S^*=\tfrac{10}{11}Q\)</span> and the system is in stock <span class="arithmatex">\(91\,\%\)</span> of the time.</p>
+<h3 id="optimising-over-q">Optimising over Q<a class="headerlink" href="#optimising-over-q" title="Permanent link">&para;</a></h3>
+<p>Substituting (3.2) into (3.1) and simplifying, the cost becomes</p>
+<div class="arithmatex">\[TRC(Q)=\frac{C_oD}{Q}+\frac{Q}{2}\cdot\frac{C_hC_s}{C_h+C_s}\]</div>
+<p>which is an ordinary EOQ with <span class="arithmatex">\(C_h\)</span> replaced by the harmonic-type combination
+<span class="arithmatex">\(\dfrac{C_hC_s}{C_h+C_s}\)</span>. Hence</p>
+<blockquote>
+<p><strong>Result 2 (EOQ with backorders).</strong>
+$<span class="arithmatex">\(\boxed{\ Q^{*}=\sqrt{\frac{2C_oD}{C_h}}\ \sqrt{\frac{C_h+C_s}{C_s}}\ =\ Q^{*}_{\text{EOQ}}\cdot k,
+\qquad k=\sqrt{\frac{C_h+C_s}{C_s}}\ }\tag{3.3}\)</span>$
+$<span class="arithmatex">\(\boxed{\ S^{*}=\sqrt{\frac{2C_oD}{C_h}}\ \sqrt{\frac{C_s}{C_h+C_s}}=\frac{Q^{*}_{\text{EOQ}}}{k}\ }\tag{3.4}\)</span>$
+$<span class="arithmatex">\(\boxed{\ TRC^{*}=\sqrt{2C_oDC_h}\ \sqrt{\frac{C_s}{C_h+C_s}}=\frac{TRC^{*}_{\text{EOQ}}}{k}\ }\tag{3.5}\)</span>$</p>
+</blockquote>
+<h3 id="reading-the-results">Reading the results<a class="headerlink" href="#reading-the-results" title="Permanent link">&para;</a></h3>
+<p>The single factor <span class="arithmatex">\(k=\sqrt{\dfrac{C_h+C_s}{C_s}}&gt;1\)</span> governs everything:</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Effect of allowing backorders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Order quantity <span class="arithmatex">\(Q^*\)</span></td>
+<td><strong>multiplied</strong> by <span class="arithmatex">\(k\)</span> — order <strong>more</strong>, less often</td>
+</tr>
+<tr>
+<td>Maximum stock <span class="arithmatex">\(S^*\)</span></td>
+<td><strong>divided</strong> by <span class="arithmatex">\(k\)</span> — hold <strong>less</strong></td>
+</tr>
+<tr>
+<td>Total cost <span class="arithmatex">\(TRC^*\)</span></td>
+<td><strong>divided</strong> by <span class="arithmatex">\(k\)</span> — always <strong>cheaper</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Backordering is never worse than the classical policy</strong>, because the classical policy
+(<span class="arithmatex">\(B=0\)</span>) is available and was not chosen. The saving is the factor <span class="arithmatex">\(1/k\)</span>.</p>
+</blockquote>
+<p><strong>Two limits worth checking:</strong></p>
+<ul>
+<li><span class="arithmatex">\(C_s\to\infty\)</span> (shortages intolerable): <span class="arithmatex">\(k\to1\)</span>, so <span class="arithmatex">\(Q^*\to Q^*_{\text{EOQ}}\)</span>, <span class="arithmatex">\(S^*\to Q^*\)</span>,
+    <span class="arithmatex">\(B^*\to0\)</span>. <strong>The model collapses to Lesson 31, exactly as it must.</strong></li>
+<li><span class="arithmatex">\(C_s\to0\)</span> (shortages free): <span class="arithmatex">\(k\to\infty\)</span>, <span class="arithmatex">\(Q^*\to\infty\)</span>, <span class="arithmatex">\(S^*\to0\)</span>. Order enormous quantities and
+    hold nothing — degenerate, and a warning that a low <span class="arithmatex">\(C_s\)</span> estimate produces absurd advice.</li>
+</ul>
+<h2 id="325-solved-problems">32.5 Solved Problems<a class="headerlink" href="#325-solved-problems" title="Permanent link">&para;</a></h2>
+<h3 id="problem-1-the-standard-backorder-calculation">Problem 1 — The standard backorder calculation<a class="headerlink" href="#problem-1-the-standard-backorder-calculation" title="Permanent link">&para;</a></h3>
+<p>A firm uses <span class="arithmatex">\(10{,}000\)</span> units a year. Ordering costs <span class="arithmatex">\(₹150\)</span>; holding costs <span class="arithmatex">\(₹8\)</span> per unit per year;
+backordering costs <span class="arithmatex">\(₹25\)</span> per unit per year. Find <span class="arithmatex">\(Q^*\)</span>, <span class="arithmatex">\(S^*\)</span>, <span class="arithmatex">\(B^*\)</span>, the cost breakdown and the
+saving over the no-shortage policy.</p>
+<p><strong>Solution.</strong></p>
+<p><em>Step 1 — the backorder factor.</em></p>
+<div class="arithmatex">\[k=\sqrt{\frac{C_h+C_s}{C_s}}=\sqrt{\frac{8+25}{25}}=\sqrt{1.32}=1.14891\]</div>
+<p><em>Step 2 — the classical EOQ as a base.</em> From Lesson 31, <span class="arithmatex">\(Q^*_{\text{EOQ}}=612.37\)</span>,
+<span class="arithmatex">\(TRC^*_{\text{EOQ}}=₹4898.98\)</span>.</p>
+<p><em>Step 3 — the backorder optimum.</em></p>
+<div class="arithmatex">\[Q^{*}=612.37\times1.14891=\mathbf{703.56\text{ units}}\]</div>
+<div class="arithmatex">\[S^{*}=\frac{C_s}{C_h+C_s}Q^{*}=\frac{25}{33}(703.56)=\mathbf{533.00\text{ units}}\]</div>
+<div class="arithmatex">\[B^{*}=Q^{*}-S^{*}=703.56-533.00=\mathbf{170.56\text{ units}}\]</div>
+<div class="arithmatex">\[TRC^{*}=\frac{4898.98}{1.14891}=\mathbf{₹4264.01\text{ per year}}\]</div>
+<p><em>Step 4 — cost breakdown (an essential check).</em></p>
+<div class="arithmatex">\[\text{ordering}=\frac{150(10000)}{703.56}=₹2132.01\]</div>
+<div class="arithmatex">\[\text{holding}=\frac{8(533.00)^2}{2(703.56)}=\frac{8(284{,}089)}{1407.12}=₹1615.16\]</div>
+<div class="arithmatex">\[\text{shortage}=\frac{25(170.56)^2}{2(703.56)}=\frac{25(29{,}090.7)}{1407.12}=₹516.85\]</div>
+<div class="arithmatex">\[\text{TOTAL}=2132.01+1615.16+516.85=₹4264.02\ \checkmark\]</div>
+<p>Note that here <strong>ordering cost equals holding + shortage cost</strong> (<span class="arithmatex">\(2132.01 = 1615.16+516.85\)</span>) — the
+generalisation of the equal-costs check from Lesson 31.</p>
+<p><em>Step 5 — the saving.</em></p>
+<div class="arithmatex">\[4898.98-4264.01=\mathbf{₹634.97\text{ per year}}\ (13.0\,\%)\]</div>
+<p><em>Interpretation.</em> The optimal policy runs out of stock for
+<span class="arithmatex">\(t_2/t=B^*/Q^*=170.56/703.56=24.2\,\%\)</span> of every cycle. That is a deliberate, costed decision, not a
+failure. The saving of <span class="arithmatex">\(₹635\)</span> a year is genuine — <strong>provided customers really do wait</strong>. If even a
+quarter of the backordered demand were actually lost at a <span class="arithmatex">\(₹40\)</span> margin, the lost contribution would be
+<span class="arithmatex">\(0.25\times170.56\times14.21\text{ cycles}\times ₹40 \approx ₹24{,}000\)</span> a year, dwarfing the saving.
+<strong>Verify the backorder assumption before trusting this model.</strong></p>
+<h3 id="problem-2-a-second-calculation-with-different-economics">Problem 2 — A second calculation with different economics<a class="headerlink" href="#problem-2-a-second-calculation-with-different-economics" title="Permanent link">&para;</a></h3>
+<p><span class="arithmatex">\(D=1200\)</span> units/yr, <span class="arithmatex">\(C_o=₹100\)</span>, <span class="arithmatex">\(C_h=₹5\)</span>/unit/yr, <span class="arithmatex">\(C_s=₹15\)</span>/unit/yr. Find the full policy.</p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[k=\sqrt{\frac{5+15}{15}}=\sqrt{1.3333}=1.15470\]</div>
+<div class="arithmatex">\[Q^{*}_{\text{EOQ}}=\sqrt{\frac{2(100)(1200)}{5}}=\sqrt{48000}=219.09\]</div>
+<div class="arithmatex">\[Q^{*}=219.09(1.15470)=\mathbf{252.98\text{ units}}\]</div>
+<div class="arithmatex">\[S^{*}=\frac{15}{20}(252.98)=\mathbf{189.74\text{ units}}\]</div>
+<div class="arithmatex">\[B^{*}=\mathbf{63.25\text{ units}}\]</div>
+<div class="arithmatex">\[TRC^{*}=\frac{\sqrt{2(100)(1200)(5)}}{1.15470}=\frac{1095.45}{1.15470}=\mathbf{₹948.68\text{ per year}}\]</div>
+<p><em>Breakdown:</em> ordering <span class="arithmatex">\(₹474.34\)</span>, holding <span class="arithmatex">\(₹355.76\)</span>, shortage <span class="arithmatex">\(₹118.59\)</span>; total <span class="arithmatex">\(₹948.69\)</span> ✓.</p>
+<p><em>Cycle structure.</em> <span class="arithmatex">\(t=Q/D=252.98/1200=0.2108\)</span> yr <span class="arithmatex">\(=77\)</span> days, of which
+<span class="arithmatex">\(t_1=189.74/1200=57.7\)</span> days in stock and <span class="arithmatex">\(t_2=63.25/1200=19.2\)</span> days short.
+<strong>The firm is out of stock for 19 days in every 77 — one quarter of the time — by design.</strong></p>
+<h3 id="problem-3-how-the-policy-responds-to-c_s">Problem 3 — How the policy responds to C_s<a class="headerlink" href="#problem-3-how-the-policy-responds-to-c_s" title="Permanent link">&para;</a></h3>
+<p>For Problem 2's data, tabulate the policy as <span class="arithmatex">\(C_s\)</span> varies, and comment.</p>
+<p><strong>Solution.</strong> <span class="arithmatex">\(Q^{*}_{\text{EOQ}}=219.09\)</span>, <span class="arithmatex">\(TRC^{*}_{\text{EOQ}}=₹1095.45\)</span> throughout.</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(C_s\)</span></th>
+<th><span class="arithmatex">\(k\)</span></th>
+<th><span class="arithmatex">\(Q^{*}\)</span></th>
+<th><span class="arithmatex">\(S^{*}\)</span></th>
+<th><span class="arithmatex">\(B^{*}\)</span></th>
+<th>Fraction of cycle short</th>
+<th><span class="arithmatex">\(TRC^{*}\)</span></th>
+<th>Saving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2.4495</td>
+<td>536.66</td>
+<td>89.44</td>
+<td>447.21</td>
+<td>83.3 %</td>
+<td>₹447.21</td>
+<td>59.2 %</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1.4142</td>
+<td>309.84</td>
+<td>154.92</td>
+<td>154.92</td>
+<td>50.0 %</td>
+<td>₹774.60</td>
+<td>29.3 %</td>
+</tr>
+<tr>
+<td>15</td>
+<td>1.1547</td>
+<td>252.98</td>
+<td>189.74</td>
+<td>63.25</td>
+<td>25.0 %</td>
+<td>₹948.68</td>
+<td>13.4 %</td>
+</tr>
+<tr>
+<td>45</td>
+<td>1.0541</td>
+<td>230.94</td>
+<td>207.85</td>
+<td>23.09</td>
+<td>10.0 %</td>
+<td>₹1039.23</td>
+<td>5.1 %</td>
+</tr>
+<tr>
+<td>495</td>
+<td>1.0050</td>
+<td>220.19</td>
+<td>217.99</td>
+<td>2.20</td>
+<td>1.0 %</td>
+<td>₹1089.95</td>
+<td>0.5 %</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\infty\)</span></td>
+<td>1.0000</td>
+<td>219.09</td>
+<td>219.09</td>
+<td>0</td>
+<td>0 %</td>
+<td>₹1095.45</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><em>Interpretation.</em></p>
+<ul>
+<li>The fraction of the cycle spent short is exactly <span class="arithmatex">\(\dfrac{C_h}{C_h+C_s}\)</span> — read straight from (3.2).
+    At <span class="arithmatex">\(C_s=C_h=5\)</span> the system is short <strong>half</strong> the time.</li>
+<li>The saving is substantial only when <span class="arithmatex">\(C_s\)</span> is <strong>comparable to or smaller than</strong> <span class="arithmatex">\(C_h\)</span>. Once
+    <span class="arithmatex">\(C_s&gt;10C_h\)</span> the model is barely distinguishable from classical EOQ.</li>
+<li><strong>This is a strong practical guide.</strong> If a stock-out costs more than about ten times the holding
+    cost — which it usually does in retail — do not bother with the backorder model. Its complexity
+    buys under <span class="arithmatex">\(5\,\%\)</span>.</li>
+</ul>
+<h3 id="problem-4-inferring-c_s-from-a-chosen-service-level">Problem 4 — Inferring C_s from a chosen service level<a class="headerlink" href="#problem-4-inferring-c_s-from-a-chosen-service-level" title="Permanent link">&para;</a></h3>
+<p>A firm cannot estimate <span class="arithmatex">\(C_s\)</span> but insists on being in stock <span class="arithmatex">\(95\,\%\)</span> of the time. With <span class="arithmatex">\(C_h=₹8\)</span>,
+<span class="arithmatex">\(C_o=₹150\)</span> and <span class="arithmatex">\(D=10{,}000\)</span>, what <span class="arithmatex">\(C_s\)</span> does that imply, and what policy follows?</p>
+<p><strong>Solution.</strong> From (3.2), the in-stock fraction is <span class="arithmatex">\(\dfrac{S^*}{Q^*}=\dfrac{C_s}{C_h+C_s}\)</span>. Setting
+this to <span class="arithmatex">\(0.95\)</span>:</p>
+<div class="arithmatex">\[\frac{C_s}{8+C_s}=0.95 \Rightarrow C_s=0.95(8)+0.95C_s \Rightarrow 0.05C_s=7.6
+\Rightarrow \mathbf{C_s=₹152\text{ per unit per year}}\]</div>
+<div class="arithmatex">\[k=\sqrt{\frac{8+152}{152}}=\sqrt{1.05263}=1.02598\]</div>
+<div class="arithmatex">\[Q^{*}=612.37(1.02598)=\mathbf{628.28},\quad S^{*}=0.95(628.28)=\mathbf{596.87},\quad
+B^{*}=\mathbf{31.41}\]</div>
+<div class="arithmatex">\[TRC^{*}=\frac{4898.98}{1.02598}=\mathbf{₹4774.93}\]</div>
+<p><em>Interpretation — why this inversion is the professional approach.</em> The firm never had to name a
+shortage cost. Instead it named a <strong>service level</strong>, which managers can discuss meaningfully, and the
+model reports the implied <span class="arithmatex">\(C_s=₹152\)</span> per unit-year. The conversation then becomes: <em>"Your 95 % target
+is equivalent to valuing a stock-out at ₹152 per unit per year — about 19 times the holding cost. Is
+that right?"</em> That question can be answered; "what is your shortage cost?" usually cannot.</p>
+<p>The policy saves only <span class="arithmatex">\(₹124\)</span> a year over pure EOQ — consistent with Problem 3's finding that a high
+implied <span class="arithmatex">\(C_s\)</span> leaves little on the table.</p>
+<h3 id="problem-5-when-the-model-must-not-be-used">Problem 5 — When the model must not be used<a class="headerlink" href="#problem-5-when-the-model-must-not-be-used" title="Permanent link">&para;</a></h3>
+<p>A pharmacy considers a planned-shortage policy for a life-saving drug, arguing that <span class="arithmatex">\(C_h\)</span> is high
+(refrigeration) and patients will wait for the next delivery. Critique this.</p>
+<p><strong>Solution.</strong></p>
+<p><strong>The model is inapplicable, for four separate reasons.</strong></p>
+<ol>
+<li><strong>Demand is not backordered.</strong> A patient needing the drug today cannot wait a week. The demand is
+    <strong>lost</strong> (or worse), so the shortage cost is not "per unit per unit time" but a step function of
+    catastrophic size.</li>
+<li><strong><span class="arithmatex">\(C_s\)</span> is not commensurable with money.</strong> Any finite <span class="arithmatex">\(C_s\)</span> produces a <span class="arithmatex">\(B^*&gt;0\)</span>; the model
+    <em>structurally cannot</em> recommend zero shortage unless <span class="arithmatex">\(C_s=\infty\)</span>. A model whose form forbids the
+    right answer must not be used to justify the wrong one.</li>
+<li><strong>Demand is probabilistic</strong>, violating Lesson 31's assumption 1. Even a policy of never planning
+    shortages would need safety stock.</li>
+<li><strong>Regulatory and ethical constraints</strong> are hard constraints, not costs to be traded off.</li>
+</ol>
+<p><strong>What to do instead.</strong> Formulate as a <strong>service-level</strong> problem: choose the stock policy that meets
+demand with probability <span class="arithmatex">\(\ge99.9\,\%\)</span>, then minimise cost <em>subject to</em> that constraint. The
+constraint expresses the ethical requirement; optimisation happens inside it.</p>
+<blockquote>
+<p><strong>The general principle.</strong> An optimisation model trades off whatever you put in its objective. If
+something must not be traded off, it belongs in the <strong>constraints</strong>, not the objective. Recognising
+that distinction is the mark of a competent modeller — and misplacing it is how quantitative
+methods acquire a bad name.</p>
+</blockquote>
+<h2 id="326-practice-problems">32.6 Practice Problems<a class="headerlink" href="#326-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li><span class="arithmatex">\(D=2000\)</span>/yr, <span class="arithmatex">\(C_o=₹250\)</span>, <span class="arithmatex">\(C_h=₹10\)</span>, <span class="arithmatex">\(C_s=₹40\)</span>. Find <span class="arithmatex">\(Q^*\)</span>, <span class="arithmatex">\(S^*\)</span>, <span class="arithmatex">\(B^*\)</span>, <span class="arithmatex">\(TRC^*\)</span>.
+    <em>(Answer: <span class="arithmatex">\(353.55\)</span>, <span class="arithmatex">\(282.84\)</span>, <span class="arithmatex">\(70.71\)</span>, <span class="arithmatex">\(₹2828.43\)</span>)</em></li>
+<li>Show that <span class="arithmatex">\(S^{*}/Q^{*}\)</span> is independent of <span class="arithmatex">\(D\)</span> and <span class="arithmatex">\(C_o\)</span>, and explain why that makes sense.</li>
+<li>For Problem 1 of §4, how long is the firm out of stock in each cycle, in days on a 250-day year?
+    <em>(Answer: <span class="arithmatex">\(t=17.59\)</span> days, <span class="arithmatex">\(t_2=4.26\)</span> days)</em></li>
+<li>A firm's data give <span class="arithmatex">\(Q^{*}=500\)</span> and <span class="arithmatex">\(S^{*}=400\)</span>. What is <span class="arithmatex">\(C_s/C_h\)</span>?
+    <em>(Answer: <span class="arithmatex">\(S/Q=0.8=C_s/(C_h+C_s)\)</span>, so <span class="arithmatex">\(C_s=4C_h\)</span>)</em></li>
+<li>Prove that <span class="arithmatex">\(TRC^{*}_{\text{backorder}} \le TRC^{*}_{\text{EOQ}}\)</span> for all <span class="arithmatex">\(C_s&gt;0\)</span>, with equality
+    only in the limit <span class="arithmatex">\(C_s\to\infty\)</span>.</li>
+</ol>
+<h2 id="327-summary">32.7 Summary<a class="headerlink" href="#327-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Planned shortages are rational <strong>only when demand is genuinely backordered</strong>, not lost.</li>
+<li>Averages are taken over the <strong>whole cycle</strong>: average stock <span class="arithmatex">\(=S^2/2Q\)</span>, average shortage <span class="arithmatex">\(=(Q-S)^2/2Q\)</span>.</li>
+<li><span class="arithmatex">\(TRC(Q,S)=\dfrac{C_oD}{Q}+\dfrac{C_hS^2}{2Q}+\dfrac{C_s(Q-S)^2}{2Q}\)</span>, optimised in two variables.</li>
+<li><strong>Critical ratio:</strong> <span class="arithmatex">\(\dfrac{S^*}{Q^*}=\dfrac{C_s}{C_h+C_s}\)</span> — the fraction of the cycle in stock,
+    and a directly interpretable service level.</li>
+<li>With <span class="arithmatex">\(k=\sqrt{\dfrac{C_h+C_s}{C_s}}\)</span>: <span class="arithmatex">\(\ Q^*=kQ^*_{\text{EOQ}}\)</span>, <span class="arithmatex">\(\ S^*=Q^*_{\text{EOQ}}/k\)</span>,
+    <span class="arithmatex">\(\ TRC^*=TRC^*_{\text{EOQ}}/k\)</span>. <strong>Order more, hold less, pay less.</strong></li>
+<li>As <span class="arithmatex">\(C_s\to\infty\)</span> the model <strong>reduces exactly</strong> to classical EOQ — the required consistency check.</li>
+<li>The saving matters only when <span class="arithmatex">\(C_s\)</span> is within about an order of magnitude of <span class="arithmatex">\(C_h\)</span>. Beyond that,
+    use plain EOQ.</li>
+<li>When shortage cost cannot be priced, <strong>invert the model</strong>: choose a service level and report the
+    implied <span class="arithmatex">\(C_s\)</span>.</li>
+<li>Requirements that must never be traded off belong in the <strong>constraints</strong>, never in the objective.</li>
+</ul>
+<p><strong>Next lesson:</strong> L33 — The production (finite replenishment) model without shortages.</p>
+<p><strong>Practise now:</strong> <code>unit3-queue-inventory-lab.html</code> → <em>Backorder Lab</em>: drag <span class="arithmatex">\(C_s\)</span> and watch <span class="arithmatex">\(S^*\)</span>, <span class="arithmatex">\(B^*\)</span>
+and the shaded shortage region of the sawtooth respond.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="the-eoq-model-with-no-shortages.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 31. The EOQ Model with No Shortages">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                31. The EOQ Model with No Shortages
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-footer__link md-footer__link--next" aria-label="Next: 33. The Production (Finite Replenishment) Model without Shortages">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                33. The Production (Finite Replenishment) Model without Shortages
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

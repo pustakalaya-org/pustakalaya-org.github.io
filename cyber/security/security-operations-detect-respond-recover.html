@@ -1,0 +1,3649 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/cyber/security/security-operations-detect-respond-recover.html">
+  
+  
+    <link rel="prev" href="endpoint-device-security.html">
+  
+  
+    <link rel="next" href="application-devsecops-cloud-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>4. Security Operations — Detect, Respond & Recover - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#41-siem-security-information-event-management" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. Security Operations — Detect, Respond & Recover
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Security Tools & Cryptography</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="start-here-security-basics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Start Here — Security Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-perimeter-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Network & Perimeter Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoint-device-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Endpoint & Device Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Security Operations — Detect, Respond & Recover
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="security-operations-detect-respond-recover.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Security Operations — Detect, Respond & Recover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-siem-security-information-event-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 SIEM — Security Information &amp; Event Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 SIEM — Security Information &amp; Event Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-splunk-search-ip-addresses-with-many-failed-windows-logins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Splunk search: IP addresses with many failed Windows logins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-log-management-telemetry-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Log Management &amp; Telemetry Pipelines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Log Management &amp; Telemetry Pipelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-fluent-bit-config-skeleton-read-a-log-file-and-print-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Fluent Bit config skeleton: read a log file and print it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-user-behaviour-analytics-ueba-insider-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 User Behaviour Analytics (UEBA) &amp; Insider Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 User Behaviour Analytics (UEBA) &amp; Insider Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-microsoft-sentinel-kql-users-whose-recent-behaviour-ueba-rates-as-most-unusual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Microsoft Sentinel (KQL): users whose recent behaviour UEBA rates as most unusual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-soar-security-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 SOAR &amp; Security Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 SOAR &amp; Security Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-simplified-phishing-playbook-logic-pseudo-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Simplified phishing playbook logic (pseudo-YAML)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-incident-management-crisis-communication-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Incident Management, Crisis Communication &amp; Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Incident Management, Crisis Communication &amp; Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-minimal-incident-record-template-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Minimal incident record template (YAML)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-threat-intelligence-platforms-feeds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Threat Intelligence Platforms &amp; Feeds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 Threat Intelligence Platforms &amp; Feeds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-greynoises-free-community-api-whether-an-ip-is-a-known-scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask GreyNoise's free community API whether an IP is a known scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-threat-hunting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Threat Hunting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 Threat Hunting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-microsoft-defender-advanced-hunting-kql-encoded-powershell-commands-in-the-last-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Microsoft Defender Advanced Hunting (KQL): encoded PowerShell commands in the last week
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-vulnerability-exposure-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Vulnerability &amp; Exposure Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.8 Vulnerability &amp; Exposure Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-download-cisas-free-known-exploited-vulnerabilities-list-and-count-entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Download CISA's free Known Exploited Vulnerabilities list and count entries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-external-attack-surface-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 External Attack Surface Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 External Attack Surface Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-subdomains-of-your-own-domain-from-public-certificate-transparency-logs-a-common-first-step-in-attack-surface-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List subdomains of YOUR OWN domain from public Certificate Transparency logs (a common first step in attack-surface inventory)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-digital-forensics-incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 Digital Forensics &amp; Incident Response
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 Digital Forensics &amp; Incident Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-volatility-3-list-processes-running-in-a-memory-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Volatility 3: list processes running in a memory image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-malware-analysis-sandboxes-reverse-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Malware Analysis Sandboxes &amp; Reverse Engineering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.11 Malware Analysis Sandboxes &amp; Reverse Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-a-tiny-yara-rule-that-flags-files-containing-a-known-malicious-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: A tiny YARA rule that flags files containing a known malicious string
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-detection-frameworks-shared-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 Detection Frameworks &amp; Shared Knowledge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.12 Detection Frameworks &amp; Shared Knowledge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-sigma-rule-skeleton-detect-a-new-local-admin-being-created-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Sigma rule skeleton: detect a new local admin being created on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-managed-detection-response-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 Managed Detection &amp; Response Services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-offensive-security-testing-your-own-defences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Offensive Security: Testing Your Own Defences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Offensive Security: Testing Your Own Defences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-discover-which-services-are-open-on-a-host-you-own-and-are-authorised-to-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Discover which services are open on a host you own and are authorised to scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-security-awareness-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.15 Security Awareness Training
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="application-devsecops-cloud-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Application, DevSecOps & Cloud Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="identity-access-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Identity & Access Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-email-governance-specialized-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Data, Email, Governance & Specialized Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cryptography-the-building-blocks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Cryptography — The Building Blocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cryptography-in-the-real-world.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Cryptography in the Real World
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="your-learning-path-labs-practice-resources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Your Learning Path: Labs, Practice & Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-organisation-should-do.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Organisation Should Do
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-siem-security-information-event-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 SIEM — Security Information &amp; Event Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 SIEM — Security Information &amp; Event Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-splunk-search-ip-addresses-with-many-failed-windows-logins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Splunk search: IP addresses with many failed Windows logins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-log-management-telemetry-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Log Management &amp; Telemetry Pipelines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Log Management &amp; Telemetry Pipelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-fluent-bit-config-skeleton-read-a-log-file-and-print-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Fluent Bit config skeleton: read a log file and print it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-user-behaviour-analytics-ueba-insider-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 User Behaviour Analytics (UEBA) &amp; Insider Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 User Behaviour Analytics (UEBA) &amp; Insider Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-microsoft-sentinel-kql-users-whose-recent-behaviour-ueba-rates-as-most-unusual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Microsoft Sentinel (KQL): users whose recent behaviour UEBA rates as most unusual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#44-soar-security-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 SOAR &amp; Security Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 SOAR &amp; Security Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-simplified-phishing-playbook-logic-pseudo-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Simplified phishing playbook logic (pseudo-YAML)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-incident-management-crisis-communication-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Incident Management, Crisis Communication &amp; Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Incident Management, Crisis Communication &amp; Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-minimal-incident-record-template-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Minimal incident record template (YAML)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#46-threat-intelligence-platforms-feeds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Threat Intelligence Platforms &amp; Feeds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 Threat Intelligence Platforms &amp; Feeds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-greynoises-free-community-api-whether-an-ip-is-a-known-scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask GreyNoise's free community API whether an IP is a known scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#47-threat-hunting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Threat Hunting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 Threat Hunting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-microsoft-defender-advanced-hunting-kql-encoded-powershell-commands-in-the-last-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Microsoft Defender Advanced Hunting (KQL): encoded PowerShell commands in the last week
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#48-vulnerability-exposure-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Vulnerability &amp; Exposure Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.8 Vulnerability &amp; Exposure Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-download-cisas-free-known-exploited-vulnerabilities-list-and-count-entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Download CISA's free Known Exploited Vulnerabilities list and count entries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#49-external-attack-surface-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 External Attack Surface Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 External Attack Surface Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-subdomains-of-your-own-domain-from-public-certificate-transparency-logs-a-common-first-step-in-attack-surface-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List subdomains of YOUR OWN domain from public Certificate Transparency logs (a common first step in attack-surface inventory)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-digital-forensics-incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 Digital Forensics &amp; Incident Response
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 Digital Forensics &amp; Incident Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-volatility-3-list-processes-running-in-a-memory-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Volatility 3: list processes running in a memory image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-malware-analysis-sandboxes-reverse-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Malware Analysis Sandboxes &amp; Reverse Engineering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.11 Malware Analysis Sandboxes &amp; Reverse Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-a-tiny-yara-rule-that-flags-files-containing-a-known-malicious-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: A tiny YARA rule that flags files containing a known malicious string
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-detection-frameworks-shared-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.12 Detection Frameworks &amp; Shared Knowledge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.12 Detection Frameworks &amp; Shared Knowledge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-sigma-rule-skeleton-detect-a-new-local-admin-being-created-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Sigma rule skeleton: detect a new local admin being created on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-managed-detection-response-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.13 Managed Detection &amp; Response Services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-offensive-security-testing-your-own-defences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.14 Offensive Security: Testing Your Own Defences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.14 Offensive Security: Testing Your Own Defences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-discover-which-services-are-open-on-a-host-you-own-and-are-authorised-to-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Discover which services are open on a host you own and are authorised to scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-security-awareness-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.15 Security Awareness Training
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-4-security-operations-detect-respond-recover">Chapter 4: Security Operations — Detect, Respond &amp; Recover<a class="headerlink" href="#chapter-4-security-operations-detect-respond-recover" title="Permanent link">&para;</a></h1>
+<p>This is the security control room: the tools and services that watch for attacks, hunt for hidden intruders, investigate what happened and get the organisation back on its feet. They collect activity records, spot suspicious behaviour, automate routine work, test defences, and train and rehearse people for a crisis. Together they turn a flood of raw data into fast, confident decisions.</p>
+<h2 id="41-siem-security-information-event-management">4.1 SIEM — Security Information &amp; Event Management<a class="headerlink" href="#41-siem-security-information-event-management" title="Permanent link">&para;</a></h2>
+<p>A SIEM collects records of activity (called logs) from computers, networks and cloud apps into one place, then looks for patterns that suggest an attack. When something suspicious shows up, it raises an alert so a human analyst can check it.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-01-siem-security-information-event.svg" alt="Most value comes from steps 2 and 4: clean data and tuned detections." loading="lazy">
+<figcaption><strong>How a SIEM turns logs into alerts.</strong> Most value comes from steps 2 and 4: clean data and tuned detections.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like the CCTV control room of a shopping centre: hundreds of cameras feed into one wall of screens, and the guard is alerted when someone tries doors after closing time.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At Riverside Clinic, the SIEM notices 300 failed logins on a nurse's account within ten minutes, followed by one success from a foreign country. It links the two events and raises a high-priority alert. The on-call analyst sees the full timeline on one screen, locks the account and forces a password reset before any patient records are opened.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Connect log sources: servers, laptops, firewalls, email, cloud and identity systems.</li>
+<li>The SIEM tidies the logs into a common format and stores them for searching.</li>
+<li>Detection rules and analytics look for suspicious patterns in real time.</li>
+<li>Alerts go to analysts, who investigate using searches and timelines.</li>
+<li>Reports prove to auditors that monitoring is in place and logs are kept.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security operations centre (SOC) analysts, threat hunters and compliance teams in banks, hospitals, governments and any mid-to-large organisation.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>A SIEM is only as good as the logs you feed it and the rules you tune — start with identity, email and internet-facing systems.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>SIEM pricing is usually based on data ingested per day (GB/day) or events per second (EPS), so controlling log volume is a constant cost concern.</li>
+<li>Each platform has its own query language: SPL in Splunk, KQL in Microsoft Sentinel, YARA-L in Google SecOps, EQL and ES&#124;QL in Elastic, and AQL in QRadar.</li>
+<li>Correlation rules link events across sources and time, for example many failed logons (4625) followed by a success (4624) from the same IP within ten minutes.</li>
+<li>Detection-as-code keeps rules in Git, tests them in CI pipelines and maps each to MITRE ATT&amp;CK, bringing software engineering discipline to the SOC.</li>
+<li>PCI DSS requires keeping audit logs for at least twelve months with three months immediately available; many other regulations set similar or longer retention periods.</li>
+<li>Many SIEMs now separate cheap data-lake storage from detection and bundle SOAR, UEBA and AI assistants that summarise incidents and draft queries.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Ingesting every log on day one without use cases; start with identity, endpoint, email and internet-facing systems, then expand.</li>
+<li>Leaving default rules untuned causes alert fatigue; tune, suppress and measure each rule's true-positive rate.</li>
+<li>Not noticing silent sources; if a firewall stops sending logs, attacks there become invisible, so alert on missing data.</li>
+</ul>
+</div>
+<h3 id="try-it-splunk-search-ip-addresses-with-many-failed-windows-logins">Try it: Splunk search: IP addresses with many failed Windows logins<a class="headerlink" href="#try-it-splunk-search-ip-addresses-with-many-failed-windows-logins" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>index=wineventlog EventCode=4625
+| stats count by src_ip
+| where count &gt; 20
+| sort - count
+</code></pre></div>
+<h4 id="popular-tools-products">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Splunk Enterprise Security</strong><br><em>Splunk (Cisco) · Commercial</em></td>
+<td>Long-established SIEM built on Splunk's search language, with risk scoring, ready-made detections and, in newer editions, built-in automation and behaviour analytics.</td>
+<td>A bank searches a year of logs in seconds to find every login by a contractor whose laptop was stolen.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Sentinel</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Cloud-native SIEM, now run from the Microsoft Defender portal, connecting easily to Microsoft 365, Entra ID, Defender and many third-party sources.</td>
+<td>A school district already using Microsoft 365 switches on Sentinel and gets alerts for risky sign-ins within a day.</td>
+</tr>
+<tr>
+<td><strong>Google Security Operations</strong><br><em>Google Cloud · Cloud service</em></td>
+<td>Cloud SIEM (formerly Chronicle) that stores huge volumes of security data and searches it very fast, with Google threat intelligence built in.</td>
+<td>A retailer keeps twelve months of network logs and checks instantly whether a newly reported malicious domain was ever contacted.</td>
+</tr>
+<tr>
+<td><strong>IBM QRadar SIEM</strong><br><em>IBM · Commercial</em></td>
+<td>Widely deployed on-premises SIEM that groups related alerts into 'offenses'; IBM sold the cloud (SaaS) version to Palo Alto Networks in 2024.</td>
+<td>A utility's QRadar links a phishing click, a new admin account and a large upload into one offense.</td>
+</tr>
+<tr>
+<td><strong>Elastic Security</strong><br><em>Elastic · Freemium</em></td>
+<td>SIEM built on Elasticsearch with prebuilt detection rules, timelines and case management; free core features, paid machine learning and advanced analytics.</td>
+<td>A university uses Elastic's prebuilt rules to spot PowerShell commands commonly used by attackers on lab PCs.</td>
+</tr>
+<tr>
+<td><strong>Exabeam</strong><br><em>Exabeam (merged with LogRhythm, 2024) · Commercial</em></td>
+<td>SIEM known for user and entity behaviour analytics (UEBA): it learns what is normal for each person and flags unusual activity.</td>
+<td>An insurer is alerted when an employee suddenly downloads thousands of customer files at 3 a.m.</td>
+</tr>
+<tr>
+<td><strong>LogRhythm SIEM</strong><br><em>Exabeam (LogRhythm) · Commercial</em></td>
+<td>Mid-market SIEM with built-in compliance reports and guided case management, popular with smaller security teams.</td>
+<td>A regional credit union uses LogRhythm's PCI DSS reports to show auditors that card systems are monitored.</td>
+</tr>
+<tr>
+<td><strong>Sumo Logic</strong><br><em>Sumo Logic · Cloud service</em></td>
+<td>Cloud log analytics and SIEM platform, popular with companies running applications in AWS and other clouds.</td>
+<td>A software start-up spots stolen cloud keys being used from an unfamiliar country.</td>
+</tr>
+<tr>
+<td><strong>OpenText ArcSight</strong><br><em>OpenText (formerly Micro Focus) · Commercial</em></td>
+<td>One of the oldest enterprise SIEMs, still common in large government and telecom organisations.</td>
+<td>A national telecom feeds billions of network events per day into ArcSight for its 24/7 SOC.</td>
+</tr>
+<tr>
+<td><strong>Securonix</strong><br><em>Securonix · Cloud service</em></td>
+<td>Cloud SIEM with strong user and entity behaviour analytics for spotting insider threats and compromised accounts.</td>
+<td>A pharmaceutical firm detects a departing scientist copying research files to personal cloud storage.</td>
+</tr>
+<tr>
+<td><strong>Cortex XSIAM</strong><br><em>Palo Alto Networks · Cloud service</em></td>
+<td>AI-driven security operations platform combining SIEM, automation, endpoint data and attack surface management; Palo Alto's replacement for QRadar's cloud edition.</td>
+<td>A telecom replaces separate SIEM and SOAR tools with XSIAM, which groups thousands of daily alerts into a few dozen incidents.</td>
+</tr>
+<tr>
+<td><strong>Rapid7 InsightIDR</strong><br><em>Rapid7 · Cloud service</em></td>
+<td>Cloud SIEM popular with mid-sized teams, with built-in user behaviour analytics and decoy 'honeypot' traps; Rapid7's newer Incident Command extends it.</td>
+<td>A college is alerted when a staff account logs in from two countries an hour apart, an impossible journey.</td>
+</tr>
+<tr>
+<td><strong>FortiSIEM</strong><br><em>Fortinet · Commercial</em></td>
+<td>SIEM that combines security events with device and network health monitoring; common with Fortinet customers and managed service providers.</td>
+<td>A managed service provider watches 40 small clients' firewalls and servers from one FortiSIEM console.</td>
+</tr>
+<tr>
+<td><strong>CrowdStrike Falcon Next-Gen SIEM</strong><br><em>CrowdStrike · Cloud service</em></td>
+<td>SIEM built on CrowdStrike's Falcon platform that combines endpoint data with logs from third-party tools.</td>
+<td>A manufacturer already using Falcon on laptops adds firewall logs to see attacks from both sides.</td>
+</tr>
+<tr>
+<td><strong>Wazuh</strong><br><em>Wazuh · Open source</em></td>
+<td>Free open-source SIEM and XDR server that correlates agent, syslog and cloud logs, with ready-made PCI DSS, HIPAA and GDPR compliance dashboards.</td>
+<td>A small charity's Wazuh server collects logs from its web host, firewall and Microsoft 365 and alerts on suspicious sign-ins.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="42-log-management-telemetry-pipelines">4.2 Log Management &amp; Telemetry Pipelines<a class="headerlink" href="#42-log-management-telemetry-pipelines" title="Permanent link">&para;</a></h2>
+<p>Every device and app writes a diary of what it did — these entries are called logs, and all such data together is called telemetry. Log management tools collect, move, filter and store this data so it can be searched later; pipeline tools sit in the middle, cleaning and routing data to the right place.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-02-log-management-telemetry-pipelines.svg" alt="High-value events go to the SIEM; everything else lands in cheap storage." loading="lazy">
+<figcaption><strong>A telemetry pipeline routes data by value.</strong> High-value events go to the SIEM; everything else lands in cheap storage.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a postal sorting office: letters (logs) arrive from everywhere, get sorted, junk mail is thrown away, and each letter goes to the right building.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Harbour Logistics was paying a fortune to store noisy debug logs in its SIEM. The team placed a pipeline tool in front of it that drops useless entries, removes customer phone numbers, and sends a full copy to cheap cloud storage. SIEM costs fall by 40%, while all raw logs are still kept for a year in case an investigation needs them.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Small agents on servers and devices collect logs and send them onward.</li>
+<li>A pipeline parses, filters, masks private data and adds useful labels.</li>
+<li>Data is routed to destinations: SIEM for alerts, cheap storage for archives.</li>
+<li>Analysts search the stored logs during investigations and troubleshooting.</li>
+<li>Retention rules keep logs as long as laws and policies require.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT operations, site reliability engineers, security engineers and compliance teams in any organisation with more than a handful of systems.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Make sure every important system's clock is synced and its logs are kept somewhere attackers cannot delete them.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Syslog (RFC 5424) is the classic transport, traditionally on UDP or TCP port 514, with TLS on port 6514 for encrypted, reliable delivery.</li>
+<li>Structured formats such as JSON, CEF and LEEF make parsing reliable, while schemas such as OCSF and Elastic Common Schema standardise field names across vendors.</li>
+<li>Hot, warm, cold and archive tiers trade search speed for cost; keep recent data instantly searchable and older data in object storage that can be rehydrated.</li>
+<li>Log integrity matters: write-once (WORM) storage, hashing or a separate locked-down account for archives stops attackers erasing their tracks.</li>
+<li>OpenTelemetry's OTLP protocol is becoming the common way to ship logs, metrics and traces, supported by most observability tools and a growing number of security tools.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Dropping fields to save money that later prove essential in an investigation; keep a full raw copy in cheap storage.</li>
+<li>Logging passwords, tokens or card numbers; mask sensitive values in the pipeline before anything is stored.</li>
+<li>Mixed time zones and unsynchronised clocks scramble timelines; use NTP everywhere and store timestamps in UTC.</li>
+</ul>
+</div>
+<h3 id="try-it-fluent-bit-config-skeleton-read-a-log-file-and-print-it">Try it: Fluent Bit config skeleton: read a log file and print it<a class="headerlink" href="#try-it-fluent-bit-config-skeleton-read-a-log-file-and-print-it" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>[INPUT]
+    Name   tail
+    Path   /var/log/auth.log
+    Tag    auth
+
+[OUTPUT]
+    Name   stdout
+    Match  auth
+</code></pre></div>
+<h4 id="popular-tools-products_1">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Elastic Stack (ELK)</strong><br><em>Elastic · Freemium</em></td>
+<td>Elasticsearch, Logstash, Kibana and Beats: a hugely popular stack for collecting, storing, searching and visualising logs.</td>
+<td>A web shop ships web-server logs into Elasticsearch and builds a Kibana dashboard of errors and suspicious requests.</td>
+</tr>
+<tr>
+<td><strong>Graylog</strong><br><em>Graylog · Freemium</em></td>
+<td>Log management platform with a free open edition, easy search and alerting; often chosen by smaller teams.</td>
+<td>A city council collects firewall and server logs in Graylog and alerts on repeated VPN login failures.</td>
+</tr>
+<tr>
+<td><strong>Splunk Enterprise / Splunk Cloud Platform</strong><br><em>Splunk (Cisco) · Commercial</em></td>
+<td>General-purpose platform for indexing and searching any machine data, used for IT operations as well as security.</td>
+<td>An airline uses Splunk to trace why check-in kiosks failed, then reuses the same data for security.</td>
+</tr>
+<tr>
+<td><strong>Cribl Stream</strong><br><em>Cribl · Freemium</em></td>
+<td>Telemetry pipeline that filters, reshapes and routes data between sources and tools, often cutting storage costs sharply.</td>
+<td>A bank strips repetitive fields from firewall logs before they reach the SIEM, halving data volume.</td>
+</tr>
+<tr>
+<td><strong>Datadog Log Management</strong><br><em>Datadog · Cloud service</em></td>
+<td>Cloud monitoring service whose log product also feeds Datadog's Cloud SIEM for security detection.</td>
+<td>A SaaS company correlates an error spike with a burst of login attempts in one Datadog view.</td>
+</tr>
+<tr>
+<td><strong>Fluentd / Fluent Bit</strong><br><em>CNCF (Cloud Native Computing Foundation) · Open source</em></td>
+<td>Lightweight open-source log collectors and forwarders, especially common in containers and Kubernetes clusters.</td>
+<td>A streaming service runs Fluent Bit on every Kubernetes node to forward container logs to OpenSearch.</td>
+</tr>
+<tr>
+<td><strong>OpenSearch</strong><br><em>OpenSearch Software Foundation (Linux Foundation) · Open source</em></td>
+<td>Open-source search and analytics suite forked from Elasticsearch, with dashboards and a security analytics plugin.</td>
+<td>A government agency stores audit logs in a self-hosted OpenSearch cluster to keep data in-country.</td>
+</tr>
+<tr>
+<td><strong>Grafana Loki</strong><br><em>Grafana Labs · Open source</em></td>
+<td>Cost-efficient log storage that indexes only labels, not full text; pairs with Grafana dashboards.</td>
+<td>A gaming company keeps months of application logs cheaply in Loki and views them beside performance charts.</td>
+</tr>
+<tr>
+<td><strong>Vector</strong><br><em>Datadog · Open source</em></td>
+<td>High-performance open-source tool for collecting, transforming and routing logs and metrics.</td>
+<td>A fintech uses Vector to mask card numbers in logs before they leave its servers.</td>
+</tr>
+<tr>
+<td><strong>OpenTelemetry Collector</strong><br><em>CNCF · Open source</em></td>
+<td>Vendor-neutral standard and collector for logs, metrics and traces, so data is not locked into one product.</td>
+<td>An online retailer instruments apps once with OpenTelemetry and can switch monitoring vendors without code changes.</td>
+</tr>
+<tr>
+<td><strong>rsyslog / syslog-ng</strong><br><em>rsyslog project / One Identity (syslog-ng) · Open source</em></td>
+<td>Classic Linux tools that receive and forward syslog messages from servers and network devices.</td>
+<td>A hospital's network switches send syslog to a central rsyslog server that forwards everything to the SIEM.</td>
+</tr>
+<tr>
+<td><strong>NXLog</strong><br><em>NXLog · Freemium</em></td>
+<td>Log collection agent, popular on Windows, that gathers and forwards event logs; free Community Edition plus a commercial platform.</td>
+<td>A council installs NXLog on 300 Windows servers to send security events to its Graylog server in one standard format.</td>
+</tr>
+<tr>
+<td><strong>OCSF (Open Cybersecurity Schema Framework)</strong><br><em>OCSF project (Linux Foundation) · Framework</em></td>
+<td>Open standard format for security events, so logs from different vendors look alike and tools can share them easily.</td>
+<td>A retailer keeps logs in Amazon Security Lake in OCSF format and searches firewall and cloud events together with one query.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="43-user-behaviour-analytics-ueba-insider-risk">4.3 User Behaviour Analytics (UEBA) &amp; Insider Risk<a class="headerlink" href="#43-user-behaviour-analytics-ueba-insider-risk" title="Permanent link">&para;</a></h2>
+<p>UEBA stands for User and Entity Behaviour Analytics. It learns what 'normal' looks like for each person, computer and account — when they log in, what they open, how much they download — and flags behaviour that suddenly changes. Insider risk tools use the same idea to spot staff, contractors or stolen accounts misusing data.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-03-user-behaviour-analytics-ueba-insider.svg" alt="Illustrative scores from the Brightwater example: no single event alerts, the total does." loading="lazy">
+<figcaption><strong>Small anomalies add up to one risk score.</strong> Illustrative scores from the Brightwater example: no single event alerts, the total does.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a bank teller who knows a regular customer: if that customer suddenly withdraws their life savings in cash at closing time, the teller notices and asks a question.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At Brightwater Pharma, the UEBA system knows a research scientist normally opens about 40 files a day from the office. One Friday night her account opens 3,000 files and copies them to a personal cloud drive from a new device. Her risk score jumps and the insider risk team learns she has resigned to join a competitor. HR and legal step in before the files are shared.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Feed in activity from identity, email, file, endpoint and cloud systems.</li>
+<li>The tool builds a 'baseline' of normal behaviour for each user, device and peer group.</li>
+<li>Unusual actions add points to a risk score instead of each raising its own alert.</li>
+<li>When a score crosses a threshold, analysts review that user's full activity timeline.</li>
+<li>Security, HR, legal and privacy teams agree the response, following a written policy.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>SOC analysts, insider risk teams, HR and legal investigators in finance, pharmaceuticals, technology, defence and government.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Tell staff that monitoring exists, involve legal and privacy teams early, and keep investigations fair — the goal is protecting data, not spying on people.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Baselines are built per user, per entity such as a host or service account, and per peer group, usually needing several weeks of history before scores become dependable.</li>
+<li>Typical anomalies include impossible travel, first-time access to a resource, unusual hours, abnormal data volumes, rare processes and new privileged actions.</li>
+<li>Risk-based alerting adds small scores for each anomaly and alerts only when an entity's total crosses a threshold, cutting alert volume compared with one alert per event.</li>
+<li>Insider risk programmes commonly follow the CERT Common Sense Guide to Mitigating Insider Threats, combining HR, legal, IT and security under clear governance.</li>
+<li>In the EU, monitoring staff needs a GDPR lawful basis and proportionality, and often a data protection impact assessment and works-council consultation before deployment.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Expecting value on day one; models need weeks of clean history and accurate identity data before scores mean much.</li>
+<li>Treating a high score as proof of guilt; it is only a lead, and role changes or travel often cause false positives.</li>
+<li>Monitoring covertly without legal review risks lawsuits and destroys trust; publish an acceptable-use and monitoring policy.</li>
+</ul>
+</div>
+<h3 id="try-it-microsoft-sentinel-kql-users-whose-recent-behaviour-ueba-rates-as-most-unusual">Try it: Microsoft Sentinel (KQL): users whose recent behaviour UEBA rates as most unusual<a class="headerlink" href="#try-it-microsoft-sentinel-kql-users-whose-recent-behaviour-ueba-rates-as-most-unusual" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>BehaviorAnalytics
+| where TimeGenerated &gt; ago(7d)
+| where InvestigationPriority &gt;= 5
+| project TimeGenerated, UserPrincipalName, ActivityType, ActionType, InvestigationPriority
+| sort by InvestigationPriority desc
+</code></pre></div>
+<h4 id="popular-tools-products_2">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microsoft Sentinel UEBA</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Built-in behaviour analytics in Microsoft Sentinel that profiles users and devices and scores each unusual activity from 0 to 10.</td>
+<td>An analyst sees one account's first-ever sign-in from abroad, followed by unusual mailbox access, ranked top of the investigation list.</td>
+</tr>
+<tr>
+<td><strong>Splunk Enterprise Security UEBA</strong><br><em>Splunk (Cisco) · Commercial</em></td>
+<td>Behaviour analytics built into Splunk Enterprise Security, replacing the standalone Splunk UBA product, whose support ends in January 2027.</td>
+<td>A bank's SOC sees a privileged admin's risk score climb after unusual late-night server logins and a newly installed remote-access tool.</td>
+</tr>
+<tr>
+<td><strong>Exabeam UEBA</strong><br><em>Exabeam · Commercial</em></td>
+<td>Pioneering UEBA product that stitches each user's activity into automatic timelines and highlights risky changes in behaviour.</td>
+<td>An investigator sees a contractor's whole week as one timeline: VPN login, unusual database queries, then a large upload.</td>
+</tr>
+<tr>
+<td><strong>Securonix UEBA</strong><br><em>Securonix · Cloud service</em></td>
+<td>Long-established behaviour analytics that uses machine learning to spot insider threats, compromised accounts and data theft.</td>
+<td>A hospital spots a staff member viewing hundreds of celebrity patient records they have no work reason to open.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Purview Insider Risk Management</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Spots risky data handling by staff across Microsoft 365, such as mass downloads before leaving, with user names hidden by default.</td>
+<td>A law firm is alerted when a departing associate emails client files to a personal address during their final week.</td>
+</tr>
+<tr>
+<td><strong>DTEX InTERCEPT</strong><br><em>DTEX Systems · Commercial</em></td>
+<td>Insider risk platform that collects lightweight activity data from computers and scores risky behaviour while masking personal details.</td>
+<td>A defence contractor notices an engineer searching how to bypass USB blocking shortly before trying to copy design files.</td>
+</tr>
+<tr>
+<td><strong>Proofpoint Insider Threat Management</strong><br><em>Proofpoint · Commercial</em></td>
+<td>Endpoint-based insider threat tool (formerly ObserveIT) that records risky actions, with screenshots, as evidence for investigations.</td>
+<td>An investigator replays exactly how a contractor exported a customer list and copied it to a USB stick.</td>
+</tr>
+<tr>
+<td><strong>Gurucul</strong><br><em>Gurucul · Commercial</em></td>
+<td>Security analytics vendor offering UEBA, insider risk and SIEM, using machine-learning models to score user and access risk.</td>
+<td>A telecom finds dormant accounts that can still reach billing systems — and one contractor quietly using them.</td>
+</tr>
+<tr>
+<td><strong>Teramind</strong><br><em>Teramind · Commercial</em></td>
+<td>Employee activity monitoring and insider threat tool that records application use and can block risky actions like unauthorised uploads.</td>
+<td>A call centre stops agents pasting customer card details into personal webmail and alerts the compliance team.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="44-soar-security-automation">4.4 SOAR &amp; Security Automation<a class="headerlink" href="#44-soar-security-automation" title="Permanent link">&para;</a></h2>
+<p>SOAR stands for Security Orchestration, Automation and Response. These tools run 'playbooks' — step-by-step recipes that automatically do repetitive security chores, such as checking a suspicious link or blocking a bad address, so humans can focus on hard decisions.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-04-soar-security-automation.svg" alt="The machine gathers evidence and cleans up; a human approves the disruptive step." loading="lazy">
+<figcaption><strong>An automated phishing playbook.</strong> The machine gathers evidence and cleans up; a human approves the disruptive step.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a kitchen with recipe cards and helpers: when an order comes in, helpers chop, weigh and pre-heat automatically, and the chef only steps in for the tricky part.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Maple Insurance's staff report around 200 suspicious emails a day. A SOAR playbook pulls out each email's links and attachments, checks them against threat intelligence, and deletes confirmed phishing from every inbox. Only the unclear cases reach an analyst, cutting a day of manual work to about an hour.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>An alert or reported email triggers a playbook.</li>
+<li>The playbook gathers context: looks up IPs, files and users in other tools.</li>
+<li>Simple, clear-cut cases are handled automatically (block, quarantine, reset).</li>
+<li>Uncertain cases go to an analyst with all the evidence attached.</li>
+<li>Every action is logged, giving a complete record for reports and audits.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>SOC teams, managed security providers and IT teams that want to handle more alerts without hiring more people.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Automate the boring, low-risk steps first, and keep a human approval step before anything disruptive like isolating a server.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Common playbooks cover phishing triage, malware alert enrichment, compromised accounts (disable user, revoke sessions, reset MFA), indicator blocking and vulnerability ticket creation.</li>
+<li>Integrations call vendor APIs, so a SOAR platform's practical value depends heavily on maintained connectors for the exact tools you already own.</li>
+<li>Useful metrics include alerts closed automatically, analyst hours saved, mean time to respond and the share of incidents handled end-to-end by a playbook.</li>
+<li>Many SIEM and XDR platforms now include built-in automation, while general no-code tools such as Tines and Torq serve both security and IT workflows.</li>
+<li>AI assistants increasingly summarise cases and suggest next steps, but high-impact actions should still need human approval and leave an audit trail.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Automating a broken manual process only makes mistakes faster; document and fix the workflow before automating it.</li>
+<li>Fully automating disruptive actions such as isolating servers without guardrails can cause outages; use allowlists and approval steps.</li>
+<li>Playbooks silently break when APIs change; monitor playbook failures and give each playbook a named owner.</li>
+</ul>
+</div>
+<h3 id="try-it-simplified-phishing-playbook-logic-pseudo-yaml">Try it: Simplified phishing playbook logic (pseudo-YAML)<a class="headerlink" href="#try-it-simplified-phishing-playbook-logic-pseudo-yaml" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email_reported</span>
+<span class="nt">steps</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">extract</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">urls</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">attachments</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lookup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">threat_intel</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">verdict == malicious</span>
+<span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">delete_from_all_inboxes</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">notify_reporter</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">else</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">assign_to_analyst</span>
+</code></pre></div>
+<h4 id="popular-tools-products_3">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cortex XSOAR</strong><br><em>Palo Alto Networks · Commercial</em></td>
+<td>Mature SOAR platform with hundreds of integrations, case management and a marketplace of ready-made playbooks.</td>
+<td>A bank automatically enriches every malware alert with sandbox results and the user's manager before an analyst opens it.</td>
+</tr>
+<tr>
+<td><strong>Splunk SOAR</strong><br><em>Splunk (Cisco) · Commercial</em></td>
+<td>SOAR platform (formerly Phantom) that runs visual playbooks and works closely with Splunk Enterprise Security.</td>
+<td>A retailer's playbook blocks a malicious IP on all firewalls within a minute of a Splunk alert.</td>
+</tr>
+<tr>
+<td><strong>Tines</strong><br><em>Tines · Freemium</em></td>
+<td>No-code automation platform where teams build workflows from simple drag-and-drop steps; a free community edition is available.</td>
+<td>A two-person security team automates suspicious-login checks by messaging the user in Slack to confirm.</td>
+</tr>
+<tr>
+<td><strong>Swimlane Turbine</strong><br><em>Swimlane · Commercial</em></td>
+<td>Low-code security automation platform aimed at large SOCs and managed service providers.</td>
+<td>An MSSP uses Swimlane to triage alerts from dozens of clients in one consistent process.</td>
+</tr>
+<tr>
+<td><strong>Torq</strong><br><em>Torq · Cloud service</em></td>
+<td>Cloud-based no-code security automation ('hyperautomation') with AI-assisted case handling.</td>
+<td>A tech company auto-resets passwords and revokes sessions whenever a user's credentials appear in a breach.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Sentinel playbooks (Logic Apps)</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Automation in Microsoft Sentinel built on Azure Logic Apps, triggered by alerts or incidents.</td>
+<td>A school's playbook disables a compromised account in Entra ID and posts a note in Microsoft Teams.</td>
+</tr>
+<tr>
+<td><strong>Google SecOps SOAR</strong><br><em>Google Cloud · Cloud service</em></td>
+<td>SOAR capability (formerly Siemplify) built into Google Security Operations, grouping related alerts into cases.</td>
+<td>A logistics firm merges 50 related alerts into one case with automated enrichment.</td>
+</tr>
+<tr>
+<td><strong>FortiSOAR</strong><br><em>Fortinet · Commercial</em></td>
+<td>SOAR platform that integrates tightly with Fortinet firewalls and other security products.</td>
+<td>A hospital automatically quarantines an infected device at the network switch when malware is detected.</td>
+</tr>
+<tr>
+<td><strong>IBM QRadar SOAR</strong><br><em>IBM · Commercial</em></td>
+<td>SOAR and incident response platform (formerly IBM Resilient) with dynamic playbooks and built-in guidance on data-breach notification laws.</td>
+<td>After a laptop holding customer data is stolen, the platform lists which countries' breach-reporting deadlines apply and assigns tasks.</td>
+</tr>
+<tr>
+<td><strong>Shuffle</strong><br><em>Shuffle · Open source</em></td>
+<td>Open-source SOAR with a visual workflow editor and many community-built app integrations.</td>
+<td>A university security club automates IP reputation checks for Wazuh alerts at no licence cost.</td>
+</tr>
+<tr>
+<td><strong>Rapid7 InsightConnect</strong><br><em>Rapid7 · Commercial</em></td>
+<td>Low-code SOAR built into Rapid7's platform, with hundreds of plugins and workflows that can pause for analyst approval in chat.</td>
+<td>When InsightIDR flags a compromised account, a workflow asks the analyst in Slack before disabling it in Active Directory.</td>
+</tr>
+<tr>
+<td><strong>D3 Smart SOAR</strong><br><em>D3 Security · Commercial</em></td>
+<td>Vendor-neutral SOAR platform with many integrations and event pipelines that de-duplicate and triage alerts before analysts see them.</td>
+<td>An MSSP routes alerts from 30 clients' different SIEMs through D3 so each follows the same triage playbook.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="45-incident-management-crisis-communication-exercises">4.5 Incident Management, Crisis Communication &amp; Exercises<a class="headerlink" href="#45-incident-management-crisis-communication-exercises" title="Permanent link">&para;</a></h2>
+<p>When an attack happens, many people must work together fast — security, IT, lawyers, managers and communications staff. Incident management tools track every task and decision in one 'case', wake the right people at any hour and help leaders keep everyone informed. Exercises (practice drills, often called tabletop exercises) let teams rehearse a crisis before a real one happens.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-05-incident-management-crisis.svg" alt="Lessons from each incident feed straight back into preparation." loading="lazy">
+<figcaption><strong>The incident response cycle.</strong> Lessons from each incident feed straight back into preparation.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a hospital emergency department: a whiteboard tracks every patient and task, pagers call the right specialists, and regular drills mean everyone knows their role when the ambulances arrive.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At 6 a.m. Harbourview Hotels' SOC confirms ransomware on a booking server. PagerDuty wakes the on-call responder, who opens a case in ServiceNow and assigns time-stamped tasks to IT, legal and PR. Because the team rehearsed this exact scenario in a spring tabletop exercise, the CEO, lawyers and press team already know who decides on regulator notifications and customer messages. The final case record becomes the post-incident report.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Write an incident response plan with clear roles, contacts and decision rights.</li>
+<li>Alerts page the on-call person, who opens a case to record every action.</li>
+<li>Tasks go to security, IT, legal, HR and communications, each with an owner and deadline.</li>
+<li>Leaders share updates through agreed backup channels in case email is compromised.</li>
+<li>After closure, hold a lessons-learned review and rehearse again with a new scenario.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Incident response managers, CISOs, IT service teams, legal counsel, communications teams and executives in organisations of every size.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Keep the plan and contact list somewhere you can reach even if email and the network are down, and rehearse it at least once a year with senior leaders.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>NIST SP 800-61 Rev. 3 (April 2025) replaced the old four-phase lifecycle with guidance mapped to the CSF 2.0 functions Govern, Identify, Protect, Detect, Respond and Recover.</li>
+<li>Regulatory clocks drive decisions: GDPR expects regulator notification within 72 hours, NIS2 an early warning within 24 hours, and US-listed firms file Form 8-K within four business days of a material incident.</li>
+<li>Severity levels, for example SEV1 to SEV4, define who is woken, how quickly leaders are briefed and when lawyers, insurers or police are contacted.</li>
+<li>Out-of-band communication, such as a separate chat platform, personal phones and printed contact lists, is vital when email or Teams may be compromised.</li>
+<li>Tabletop exercises take one to four hours around a scenario with timed 'injects'; functional and full-scale exercises add real systems and teams.</li>
+<li>Cyber insurers often require panel-approved response firms, so check the policy before an incident to ensure a retainer's costs will be covered.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Keeping the only copy of the plan on a network share that ransomware encrypts; keep offline and printed copies.</li>
+<li>Wiping and rebuilding immediately destroys the evidence needed to find the root cause; preserve images and logs first.</li>
+<li>Running exercises with only IT staff; include executives, legal, communications and HR, who make the hardest decisions.</li>
+</ul>
+</div>
+<h3 id="try-it-minimal-incident-record-template-yaml">Try it: Minimal incident record template (YAML)<a class="headerlink" href="#try-it-minimal-incident-record-template-yaml" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span class="nt">incident_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IR-2026-014</span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ransomware on booking server</span>
+<span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high</span>
+<span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">contained</span>
+<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-call responder</span>
+<span class="nt">timeline</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"06:02</span><span class="nv"> </span><span class="s">alert</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">SOC"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"06:15</span><span class="nv"> </span><span class="s">server</span><span class="nv"> </span><span class="s">isolated</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">network"</span>
+<span class="nt">next_actions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">legal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check regulator notification deadline</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">comms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">draft customer statement</span>
+</code></pre></div>
+<h4 id="popular-tools-products_4">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ServiceNow Security Incident Response</strong><br><em>ServiceNow · Cloud service</em></td>
+<td>Part of ServiceNow Security Operations: tracks security incidents from detection to closure and links tasks to the IT teams that must act.</td>
+<td>A bank's analyst turns a SIEM alert into a case; patching and password-reset tasks flow automatically to the right IT teams.</td>
+</tr>
+<tr>
+<td><strong>Jira Service Management</strong><br><em>Atlassian · Freemium</em></td>
+<td>Service desk used to log, assign and track incidents; it now includes the on-call alerting of Atlassian's retiring Opsgenie.</td>
+<td>A software company tracks each security incident as a Jira ticket linked to the developer tasks that fix the root cause.</td>
+</tr>
+<tr>
+<td><strong>TheHive</strong><br><em>StrangeBee · Freemium</em></td>
+<td>Incident response case management platform for collaborating on investigations; often paired with Cortex analyzers and MISP.</td>
+<td>A CERT team tracks each incident's tasks, evidence and notes in TheHive while three analysts work together.</td>
+</tr>
+<tr>
+<td><strong>PagerDuty</strong><br><em>PagerDuty · Freemium</em></td>
+<td>On-call scheduling and alerting platform that pages the right responder by app, phone call or text and coordinates the response.</td>
+<td>A critical SIEM alert at 2 a.m. rings the on-call analyst's phone and escalates to her manager if nobody responds within ten minutes.</td>
+</tr>
+<tr>
+<td><strong>Everbridge (incl. xMatters)</strong><br><em>Everbridge · Commercial</em></td>
+<td>Critical event management platform for mass notification, crisis communication and IT alerting when normal channels are disrupted.</td>
+<td>A university texts all staff and students when a cyberattack takes email offline, then sends updates every two hours.</td>
+</tr>
+<tr>
+<td><strong>Incident response retainers (Mandiant, Unit 42, CrowdStrike, Kroll)</strong><br><em>Specialist response firms · Commercial</em></td>
+<td>Pre-agreed contracts that put expert incident responders on call, so help arrives within hours of a serious breach.</td>
+<td>When ransomware strikes, a manufacturer rings its retainer hotline and forensic experts join the call within an hour, already under contract.</td>
+</tr>
+<tr>
+<td><strong>CISA Tabletop Exercise Packages (CTEPs)</strong><br><em>CISA · Free</em></td>
+<td>Over 100 free, ready-made exercise kits with scenarios, discussion questions and templates, including ransomware and insider threats.</td>
+<td>A county water utility runs CISA's ransomware package in a two-hour meeting with managers and its IT supplier.</td>
+</tr>
+<tr>
+<td><strong>NCSC Exercise in a Box</strong><br><em>UK National Cyber Security Centre · Free</em></td>
+<td>Free online toolkit that guides organisations through realistic cyber exercises without needing outside experts.</td>
+<td>A UK charity runs a ransomware exercise with its trustees and discovers nobody knows who should call the bank.</td>
+</tr>
+<tr>
+<td><strong>Backdoors &amp; Breaches</strong><br><em>Black Hills Information Security · Freemium</em></td>
+<td>Card game for quick tabletop exercises: one player secretly picks an attack and the team must uncover it using their procedures.</td>
+<td>A SOC team plays a 45-minute round each month to practise which logs they would check first.</td>
+</tr>
+<tr>
+<td><strong>Immersive Crisis Sim</strong><br><em>Immersive (formerly Immersive Labs) · Commercial</em></td>
+<td>Interactive digital crisis simulations that test leaders' decisions under pressure and score how well the team responded.</td>
+<td>A retailer's board works through a simulated data breach, deciding when to notify regulators and what to tell customers.</td>
+</tr>
+<tr>
+<td><strong>incident.io</strong><br><em>incident.io · Cloud service</em></td>
+<td>Incident management and on-call platform run largely from Slack or Teams, creating channels, roles, status updates and post-incident reports.</td>
+<td>When a breach is declared, incident.io opens a private channel, pages the responders and drafts the timeline for the review.</td>
+</tr>
+<tr>
+<td><strong>DFIR-IRIS</strong><br><em>DFIR-IRIS project · Open source</em></td>
+<td>Free collaborative platform for incident responders to track cases, evidence, indicators, timelines and tasks, with reports generated from templates.</td>
+<td>A university CSIRT logs every artefact and timeline entry in DFIR-IRIS and exports a finished report for management.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="46-threat-intelligence-platforms-feeds">4.6 Threat Intelligence Platforms &amp; Feeds<a class="headerlink" href="#46-threat-intelligence-platforms-feeds" title="Permanent link">&para;</a></h2>
+<p>Threat intelligence is shared knowledge about attackers: which internet addresses, websites and files are malicious, and how criminal groups operate. Feeds deliver lists of these clues (called indicators), and platforms collect, score and share them so defenders can block threats early.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-06-threat-intelligence-platforms-feeds.svg" alt="Intelligence starts with the questions decision-makers need answered, not with feeds." loading="lazy">
+<figcaption><strong>The threat intelligence lifecycle.</strong> Intelligence starts with the questions decision-makers need answered, not with feeds.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a neighbourhood watch noticeboard: neighbours post descriptions of a burglar's van and tricks, so everyone knows what to look out for.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Northwind Energy's analyst sees a server talking to an unfamiliar IP address. She checks it in the company's threat intelligence platform and finds it linked to a ransomware group targeting energy firms. The firewall blocks it immediately, and the team hunts for any other machines that contacted it in the past month.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Collect indicators and reports from commercial, government and community sources.</li>
+<li>Remove duplicates and score each indicator for how trustworthy and recent it is.</li>
+<li>Push high-confidence indicators to firewalls, SIEM and email filters automatically.</li>
+<li>Analysts use reports about attacker behaviour to plan defences.</li>
+<li>Share your own findings back with trusted partners and industry groups.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Threat intelligence analysts, SOC teams, incident responders and industry sharing groups (such as ISACs) in finance, energy, healthcare and government.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Indicators like IP addresses go stale fast; focus on intelligence relevant to your industry and on attacker behaviours, which change slowly.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Intelligence works at three levels: strategic (trends and risk for executives), operational (campaigns and actors) and tactical (indicators and TTPs for SOC tools).</li>
+<li>The Traffic Light Protocol 2.0 labels TLP:RED, TLP:AMBER+STRICT, TLP:AMBER, TLP:GREEN and TLP:CLEAR tell recipients how widely they may share information.</li>
+<li>STIX 2.1 describes objects such as indicators, malware, threat actors and their relationships; TAXII 2.1 is the HTTPS API that moves them between platforms.</li>
+<li>The Admiralty Code rates source reliability from A to F and information credibility from 1 to 6, helping analysts weigh conflicting reports.</li>
+<li>Indicators age quickly: cloud IP addresses and domains are reused, so expire old indicators automatically to avoid blocking legitimate services.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Buying many feeds without defined intelligence requirements; decide which questions intelligence must answer before choosing sources.</li>
+<li>Auto-blocking low-confidence indicators can block shared hosting or CDNs; set confidence thresholds and maintain allowlists.</li>
+<li>Consuming but never sharing; communities only work when members contribute back under appropriate TLP markings.</li>
+</ul>
+</div>
+<h3 id="try-it-ask-greynoises-free-community-api-whether-an-ip-is-a-known-scanner">Try it: Ask GreyNoise's free community API whether an IP is a known scanner<a class="headerlink" href="#try-it-ask-greynoises-free-community-api-whether-an-ip-is-a-known-scanner" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://api.greynoise.io/v3/community/8.8.8.8
+</code></pre></div>
+<h4 id="popular-tools-products_5">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recorded Future</strong><br><em>Recorded Future (Mastercard) · Commercial</em></td>
+<td>Large intelligence platform that scans the open, deep and dark web and scores threats to your organisation.</td>
+<td>A bank is alerted when its customers' card numbers are offered for sale on a criminal forum.</td>
+</tr>
+<tr>
+<td><strong>Google Threat Intelligence</strong><br><em>Google Cloud (incl. Mandiant) · Commercial</em></td>
+<td>Combines Mandiant's frontline research, VirusTotal data and Google's visibility into one intelligence service.</td>
+<td>A ministry reads Mandiant reports on a state-backed group and checks its own logs for that group's tools.</td>
+</tr>
+<tr>
+<td><strong>CrowdStrike Falcon Adversary Intelligence</strong><br><em>CrowdStrike · Commercial</em></td>
+<td>Intelligence on named attacker groups (formerly Falcon Intelligence), built into the Falcon platform, with automated malware analysis and dark web monitoring.</td>
+<td>An analyst learns an alert matches a known e-crime group and follows CrowdStrike's advice on their next steps.</td>
+</tr>
+<tr>
+<td><strong>MISP</strong><br><em>MISP Project (CIRCL) · Open source</em></td>
+<td>Free platform for storing and sharing indicators and threat events among trusted communities.</td>
+<td>European CERTs share phishing domains through MISP so each member can block them within hours.</td>
+</tr>
+<tr>
+<td><strong>OpenCTI</strong><br><em>Filigran · Open source</em></td>
+<td>Open-source platform that organises threat knowledge as linked entities, using the STIX standard and MITRE ATT&amp;CK.</td>
+<td>A telecom maps which attacker groups target its sector and which techniques they use.</td>
+</tr>
+<tr>
+<td><strong>AlienVault OTX</strong><br><em>LevelBlue (formerly AT&amp;T Cybersecurity) · Free</em></td>
+<td>Open Threat Exchange: a free community where researchers publish 'pulses' of indicators about current threats.</td>
+<td>A small IT firm subscribes to OTX pulses and imports them into its open-source SIEM.</td>
+</tr>
+<tr>
+<td><strong>GreyNoise</strong><br><em>GreyNoise Intelligence · Freemium</em></td>
+<td>Identifies IP addresses that mass-scan the whole internet, so analysts can ignore background noise and focus on targeted attacks.</td>
+<td>An analyst learns an alerting IP is a harmless research scanner and closes the alert in seconds.</td>
+</tr>
+<tr>
+<td><strong>AbuseIPDB</strong><br><em>AbuseIPDB · Freemium</em></td>
+<td>Community database where people report abusive IP addresses, such as those brute-forcing logins or sending spam.</td>
+<td>A web admin checks an IP hammering the login page and sees hundreds of prior abuse reports.</td>
+</tr>
+<tr>
+<td><strong>abuse.ch (URLhaus, MalwareBazaar, ThreatFox)</strong><br><em>abuse.ch · Free</em></td>
+<td>Non-profit project offering free feeds of malware download URLs, malware samples and indicators.</td>
+<td>A university blocks all URLhaus-listed malware links at its web proxy every hour.</td>
+</tr>
+<tr>
+<td><strong>Anomali ThreatStream</strong><br><em>Anomali · Commercial</em></td>
+<td>Threat intelligence platform that gathers many feeds, scores indicators and pushes them to security tools.</td>
+<td>A retailer combines ten feeds in ThreatStream and sends only high-confidence ones to its firewalls.</td>
+</tr>
+<tr>
+<td><strong>ThreatConnect</strong><br><em>ThreatConnect (Dataminr) · Commercial</em></td>
+<td>Intelligence platform that links threat data to business risk and supports team analysis workflows.</td>
+<td>An insurer prioritises threats by how much financial damage they could cause.</td>
+</tr>
+<tr>
+<td><strong>ThreatQ</strong><br><em>Securonix (ThreatQuotient) · Commercial</em></td>
+<td>Threat intelligence platform that scores and organises indicators from many feeds and shares them with security tools and teams.</td>
+<td>An energy company's analysts merge government and commercial feeds in ThreatQ and push only relevant indicators to their firewalls.</td>
+</tr>
+<tr>
+<td><strong>CISA Automated Indicator Sharing (AIS)</strong><br><em>CISA · Free</em></td>
+<td>Free US government service exchanging machine-readable threat indicators in STIX/TAXII format between government and private organisations.</td>
+<td>A regional bank's threat platform pulls AIS indicators automatically and shares phishing domains it discovers back to the community.</td>
+</tr>
+<tr>
+<td><strong>ISACs (e.g. FS-ISAC, Health-ISAC)</strong><br><em>Sector member organisations · Commercial</em></td>
+<td>Membership-based Information Sharing and Analysis Centers where organisations in one industry share alerts, indicators and lessons under trusted rules.</td>
+<td>A hospital learns through Health-ISAC that a ransomware group is targeting its remote-access product and patches the same day.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="47-threat-hunting">4.7 Threat Hunting<a class="headerlink" href="#47-threat-hunting" title="Permanent link">&para;</a></h2>
+<p>Threat hunting means actively searching for attackers who have slipped past your defences, instead of waiting for an alert. Hunters start with an idea (a 'hypothesis'), such as 'an attacker may be using stolen passwords at night', then search logs and devices to prove or disprove it.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-07-threat-hunting.svg" alt="Even a hunt that finds nothing should leave behind a new detection or a fixed log gap." loading="lazy">
+<figcaption><strong>A hypothesis-driven hunt (PEAK style).</strong> Even a hunt that finds nothing should leave behind a new detection or a fixed log gap.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a security guard who, instead of waiting for the alarm, walks the building checking for propped-open doors and footprints in the dust.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>After reading a report about criminals hiding commands inside encoded PowerShell, a hunter at Westbrook Bank searches a month of endpoint data for that pattern. She finds one finance PC running such a command every night at 2 a.m. — a backdoor no alert had caught. The PC is isolated, the attacker's access removed, and her search becomes a permanent detection rule.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Form a hypothesis from threat intelligence, MITRE ATT&amp;CK techniques or something odd you noticed.</li>
+<li>Pick the data you need: endpoint, identity, network or cloud logs.</li>
+<li>Search for rare or unusual activity rather than only known-bad clues.</li>
+<li>Hand anything malicious to incident response.</li>
+<li>Turn successful hunts into automated detections so the same trick is caught next time.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Experienced SOC analysts, dedicated threat hunting teams, MDR providers and incident responders, mostly in medium and large organisations.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Hunting needs good data first — keep detailed endpoint and identity logs long enough to look back weeks or months.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Hunts are hypothesis-driven (based on an ATT&amp;CK technique), intelligence-driven (based on new reports or indicators) or baseline hunts that look for rare outliers.</li>
+<li>Stacking counts how often something occurs across the fleet, such as autorun entries or parent-child process pairs; items seen on only one or two hosts deserve a look.</li>
+<li>The PEAK framework (2023) names three hunt types: hypothesis-driven, baseline (exploratory data analysis) and model-assisted hunts that use machine learning.</li>
+<li>The Hunting Maturity Model, from HMM0 (relying only on automated alerts) to HMM4 (automating most successful hunts), helps teams measure their progress.</li>
+<li>Hunting depends on data retention: dwell times are often weeks, so keep searchable endpoint and identity logs for at least 30 to 90 days.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Hunting without a written question, data source and time range becomes aimless browsing; scope every hunt first.</li>
+<li>Only searching for known indicators repeats what tools already do; focus on behaviours and techniques.</li>
+<li>Not recording hunts that find nothing wastes effort; document what was checked so others can build on it.</li>
+</ul>
+</div>
+<h3 id="try-it-microsoft-defender-advanced-hunting-kql-encoded-powershell-commands-in-the-last-week">Try it: Microsoft Defender Advanced Hunting (KQL): encoded PowerShell commands in the last week<a class="headerlink" href="#try-it-microsoft-defender-advanced-hunting-kql-encoded-powershell-commands-in-the-last-week" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="n">DeviceProcessEvents</span>
+<span class="p">|</span> <span class="nb">where </span><span class="n">Timestamp</span> <span class="p">&gt;</span> <span class="n">ago</span><span class="p">(</span><span class="n">7d</span><span class="p">)</span>
+<span class="p">|</span> <span class="nb">where </span><span class="n">FileName</span> <span class="p">=~</span> <span class="s2">"powershell.exe"</span> <span class="n">and</span> <span class="n">ProcessCommandLine</span> <span class="n">contains</span> <span class="s2">"-enc"</span>
+<span class="p">|</span> <span class="n">project</span> <span class="n">Timestamp</span><span class="p">,</span> <span class="n">DeviceName</span><span class="p">,</span> <span class="n">AccountName</span><span class="p">,</span> <span class="n">ProcessCommandLine</span>
+</code></pre></div>
+<h4 id="popular-tools-products_6">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microsoft Defender XDR Advanced Hunting</strong><br><em>Microsoft · Commercial</em></td>
+<td>Lets hunters search endpoint, email, identity and cloud activity with the KQL query language; with Sentinel, much longer history is searchable.</td>
+<td>A hunter searches every company laptop for a newly reported malicious tool name and finds two hits within minutes.</td>
+</tr>
+<tr>
+<td><strong>CrowdStrike Falcon Adversary OverWatch</strong><br><em>CrowdStrike · Commercial</em></td>
+<td>Managed 24/7 threat hunting service: CrowdStrike experts search customers' endpoint, identity, cloud and third-party data for hidden attackers.</td>
+<td>OverWatch hunters spot hands-on-keyboard activity on a retailer's server overnight and warn the team before data is stolen.</td>
+</tr>
+<tr>
+<td><strong>PEAK Threat Hunting Framework</strong><br><em>Splunk (Cisco) · Framework</em></td>
+<td>Free, vendor-neutral method for planning, running and learning from hunts: Prepare, Execute, and Act with Knowledge.</td>
+<td>A SOC documents every hunt with PEAK templates, so findings become new detections and lessons are shared across shifts.</td>
+</tr>
+<tr>
+<td><strong>MSTICPy</strong><br><em>Microsoft · Open source</em></td>
+<td>Python library for hunting and investigation in Jupyter notebooks, with ready-made queries, data enrichment and charts.</td>
+<td>A hunter builds a notebook that plots sign-ins on a world map and highlights impossible travel.</td>
+</tr>
+<tr>
+<td><strong>RITA (Real Intelligence Threat Analytics)</strong><br><em>Active Countermeasures · Open source</em></td>
+<td>Analyses network logs from Zeek to find 'beaconing' — malware quietly calling home to its controller at regular intervals.</td>
+<td>A school finds a classroom PC contacting the same unknown server every 60 seconds, revealing a hidden infection.</td>
+</tr>
+<tr>
+<td><strong>Hayabusa</strong><br><em>Yamato Security · Open source</em></td>
+<td>Fast Windows event log analyser that applies thousands of Sigma rules to build a timeline of suspicious events.</td>
+<td>A responder scans logs from 50 servers in minutes and sees exactly when a new admin account appeared.</td>
+</tr>
+<tr>
+<td><strong>Chainsaw</strong><br><em>WithSecure Labs · Open source</em></td>
+<td>Command-line tool for rapidly searching Windows event logs using Sigma rules and built-in detection logic.</td>
+<td>An analyst quickly checks a laptop's logs for signs that an attacker cleared the security event log.</td>
+</tr>
+<tr>
+<td><strong>THOR / THOR Lite</strong><br><em>Nextron Systems · Freemium</em></td>
+<td>Compromise assessment scanner using thousands of YARA and Sigma rules to find hacker tools and traces on systems.</td>
+<td>After a supplier breach, THOR Lite scans a firm's web servers and finds a web shell hidden in a website folder.</td>
+</tr>
+<tr>
+<td><strong>TaHiTI Threat Hunting Methodology</strong><br><em>Dutch financial sector (FI-ISAC NL) · Framework</em></td>
+<td>Free methodology for Targeted Hunting integrating Threat Intelligence: initiate, hunt and finalise, with hunts fed by intelligence.</td>
+<td>A bank's hunt team uses TaHiTI templates to turn a new ransomware report into three documented, repeatable hunts.</td>
+</tr>
+<tr>
+<td><strong>Threat Hunter Playbook</strong><br><em>Open Threat Research Forge (OTRF) · Open source</em></td>
+<td>Community project of documented hunting analytics and Jupyter notebooks, mapped to ATT&amp;CK and tested against recorded attack datasets.</td>
+<td>A junior analyst practises hunting for credential dumping using the playbook's notebooks before trying it on company data.</td>
+</tr>
+<tr>
+<td><strong>DeepBlueCLI</strong><br><em>Eric Conrad (SANS) · Open source</em></td>
+<td>PowerShell script that scans Windows event logs for signs of attack such as password spraying, suspicious services and obfuscated commands.</td>
+<td>An IT admin runs DeepBlueCLI against a server's Security log and spots a burst of failed logons followed by a new service.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="48-vulnerability-exposure-management">4.8 Vulnerability &amp; Exposure Management<a class="headerlink" href="#48-vulnerability-exposure-management" title="Permanent link">&para;</a></h2>
+<p>A vulnerability is a weakness in software or settings that an attacker could use to break in. These tools scan your computers and apps to find weaknesses, then help you decide what to fix first. Each publicly known flaw gets a CVE number (a unique ID like CVE-2021-44228), a CVSS score from 0 to 10 for how severe it is, and an EPSS score for the chance it will be exploited soon.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-08-vulnerability-exposure-management.svg" alt="Illustrative numbers from the Oakridge School example: each filter narrows the work." loading="lazy">
+<figcaption><strong>From thousands of findings to a short urgent list.</strong> Illustrative numbers from the Oakridge School example: each filter narrows the work.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a building inspector with a checklist: they walk around noting broken locks and cracked windows, rate how dangerous each is, and you fix the front door before the garden shed.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Oakridge School's scanner finds 4,000 vulnerabilities across its laptops and servers — far too many to fix at once. The IT manager filters for flaws listed in CISA's Known Exploited Vulnerabilities catalogue and those with high EPSS scores, leaving 25 that criminals are actively using. Those are patched this week; the rest go into the normal monthly update cycle.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Build an inventory of everything you own: devices, software, cloud services.</li>
+<li>Scan regularly to find missing patches and weak settings.</li>
+<li>Prioritise using CVSS (how bad), EPSS (how likely to be exploited) and KEV (already exploited).</li>
+<li>Patch, reconfigure or add a temporary workaround.</li>
+<li>Re-scan to confirm the fix and track progress over time.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT administrators, vulnerability management teams, risk managers and auditors in every sector, especially those under regulations like PCI DSS.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>A high CVSS score is not the whole story — fix flaws that are actually being exploited (KEV, high EPSS) on internet-facing systems first.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>CVSS v4.0, released by FIRST in November 2023, adds Threat and Environmental metric groups; a base score alone measures severity, not the risk to your organisation.</li>
+<li>About 40,000 CVEs were published in 2024, a record, yet only a small fraction are ever exploited in the wild, which is why prioritisation beats patching by score.</li>
+<li>NVD enrichment fell far behind from February 2024, leaving many CVEs unscored for months; teams now also use vendor advisories, CISA's Vulnrichment data and other databases.</li>
+<li>Authenticated scans or agents find far more missing patches than unauthenticated network scans, which only see services exposed on the network.</li>
+<li>Continuous threat exposure management (CTEM) extends scanning to cloud misconfigurations, identities and attack paths, prioritising what an attacker could actually reach.</li>
+<li>The CVE program's MITRE contract nearly lapsed in April 2025 before CISA extended it; the CVE Foundation and ENISA's EUVD emerged partly in response.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Prioritising by CVSS alone; combine it with KEV, EPSS, asset criticality and internet exposure.</li>
+<li>Scanning without an asset inventory misses unknown systems; reconcile scanner results with CMDB, cloud and EDR inventories.</li>
+<li>Counting closed tickets instead of rescanning; fixes sometimes fail or regress, so verify with a new scan.</li>
+</ul>
+</div>
+<h3 id="try-it-download-cisas-free-known-exploited-vulnerabilities-list-and-count-entries">Try it: Download CISA's free Known Exploited Vulnerabilities list and count entries<a class="headerlink" href="#try-it-download-cisas-free-known-exploited-vulnerabilities-list-and-count-entries" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import json,sys; print(len(json.load(sys.stdin)['vulnerabilities']))"</span>
+</code></pre></div>
+<h4 id="popular-tools-products_7">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tenable Nessus</strong><br><em>Tenable · Freemium</em></td>
+<td>One of the most widely used vulnerability scanners; Nessus Essentials is free for up to 16 IP addresses.</td>
+<td>A small business scans its office network and finds an old router with a critical, publicly known flaw.</td>
+</tr>
+<tr>
+<td><strong>Tenable One / Tenable Vulnerability Management</strong><br><em>Tenable · Cloud service</em></td>
+<td>Cloud platform that combines scanning across devices, cloud, identity and web apps into one exposure score.</td>
+<td>A CISO shows the board how the company's exposure score dropped after a patching push.</td>
+</tr>
+<tr>
+<td><strong>Qualys VMDR</strong><br><em>Qualys · Cloud service</em></td>
+<td>Cloud vulnerability management with lightweight agents, asset inventory and built-in patching options.</td>
+<td>A global retailer tracks missing patches on 50,000 laptops worldwide from one dashboard.</td>
+</tr>
+<tr>
+<td><strong>Rapid7 InsightVM</strong><br><em>Rapid7 · Commercial</em></td>
+<td>Vulnerability management with live dashboards, risk scoring and remediation projects; now also sold within Rapid7 Exposure Command.</td>
+<td>The security team creates a remediation project and IT tracks progress until all servers are patched.</td>
+</tr>
+<tr>
+<td><strong>OpenVAS / Greenbone</strong><br><em>Greenbone · Open source</em></td>
+<td>Free, open-source vulnerability scanner with a regularly updated set of vulnerability tests.</td>
+<td>A non-profit runs Greenbone Community Edition monthly to check its handful of servers.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender Vulnerability Management</strong><br><em>Microsoft · Commercial</em></td>
+<td>Uses Defender for Endpoint agents to find vulnerable software and weak settings on devices without separate scans.</td>
+<td>An IT team sees which laptops still run an outdated browser and pushes an update through Intune.</td>
+</tr>
+<tr>
+<td><strong>Nuclei</strong><br><em>ProjectDiscovery · Open source</em></td>
+<td>Fast open-source scanner using community-written templates to check your own websites and services for known CVEs and misconfigurations.</td>
+<td>A web team runs Nuclei against its own staging sites after each release to catch exposed admin pages.</td>
+</tr>
+<tr>
+<td><strong>Trivy</strong><br><em>Aqua Security · Open source</em></td>
+<td>Open-source scanner that finds known CVEs in container images, file systems, virtual machine images and Kubernetes clusters.</td>
+<td>The vulnerability team runs Trivy nightly against production images and feeds new critical CVEs into its patch dashboard.</td>
+</tr>
+<tr>
+<td><strong>CVE Program</strong><br><em>MITRE / CISA · Free</em></td>
+<td>The global system, run by MITRE and funded by CISA, that gives each publicly known vulnerability a unique ID so everyone means the same flaw.</td>
+<td>Everyone discussing the 2021 Log4j flaw used the same ID: CVE-2021-44228.</td>
+</tr>
+<tr>
+<td><strong>NVD — National Vulnerability Database</strong><br><em>NIST · Free</em></td>
+<td>US government database that adds details such as CVSS scores and affected products to CVE entries.</td>
+<td>An analyst looks up a CVE in the NVD to see which software versions are affected.</td>
+</tr>
+<tr>
+<td><strong>CVSS — Common Vulnerability Scoring System</strong><br><em>FIRST · Framework</em></td>
+<td>Standard 0-10 severity score for vulnerabilities (Low, Medium, High, Critical); version 4.0 is current.</td>
+<td>A flaw scored 9.8 (Critical) is easy to exploit remotely without a password.</td>
+</tr>
+<tr>
+<td><strong>EPSS — Exploit Prediction Scoring System</strong><br><em>FIRST · Free</em></td>
+<td>Daily data-driven estimate of the probability a vulnerability will be exploited in the next 30 days.</td>
+<td>Two 'High' flaws: one has EPSS 0.92, the other 0.01 — patch the first today.</td>
+</tr>
+<tr>
+<td><strong>CISA KEV Catalog</strong><br><em>CISA · Free</em></td>
+<td>Free list of vulnerabilities confirmed to be actively exploited by attackers; US federal agencies must patch them by set deadlines.</td>
+<td>A council checks its scan results against KEV and patches three listed VPN flaws immediately.</td>
+</tr>
+<tr>
+<td><strong>SSVC (Stakeholder-Specific Vulnerability Categorization)</strong><br><em>CISA / CERT/CC · Framework</em></td>
+<td>Decision-tree method that turns exploitation status, exposure and impact into one of four actions: Track, Track*, Attend or Act.</td>
+<td>A council's tree rates an exploited flaw on its internet-facing VPN as 'Act', so it is patched outside the monthly cycle.</td>
+</tr>
+<tr>
+<td><strong>EUVD (European Vulnerability Database)</strong><br><em>ENISA · Free</em></td>
+<td>EU vulnerability database launched in 2025 under NIS2, aggregating CVE data with exploitation status and national CSIRT advisories.</td>
+<td>A German supplier checks the EUVD for exploited flaws in its products when preparing NIS2 vulnerability reports.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="49-external-attack-surface-management">4.9 External Attack Surface Management<a class="headerlink" href="#49-external-attack-surface-management" title="Permanent link">&para;</a></h2>
+<p>Your 'attack surface' is everything of yours that someone on the internet can reach: websites, servers, login pages, cloud storage. External Attack Surface Management (EASM) tools look at your organisation from the outside, the way an attacker would, to find forgotten or risky systems before criminals do.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-09-external-attack-surface-management.svg" alt="Discovery is continuous because new websites and cloud services appear every week." loading="lazy">
+<figcaption><strong>How EASM finds forgotten assets.</strong> Discovery is continuous because new websites and cloud services appear every week.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like walking around the outside of your house at night to check for unlocked windows, a ladder left out, or a spare key under the mat.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Silverline Bank's EASM tool discovers a test website set up by a marketing agency three years ago, still online and running old software with a known flaw. Nobody in IT knew it existed. The team takes it offline the same day and adds a rule that all new websites must be registered with security first.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Start from what you know: company names, domains and IP ranges.</li>
+<li>The tool continuously discovers related domains, servers, certificates and cloud assets.</li>
+<li>It checks each one for open services, outdated software and misconfigurations.</li>
+<li>Findings are prioritised and assigned to the owners to fix or shut down.</li>
+<li>Monitoring repeats daily, because new exposures appear all the time.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security teams, vulnerability managers and M&amp;A due-diligence teams, especially at organisations with many websites, subsidiaries or cloud accounts.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>You cannot protect what you do not know you have — keep an up-to-date list of every internet-facing system and its owner.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Discovery draws on DNS records, Certificate Transparency logs, WHOIS and registrar data, cloud provider APIs and internet-wide scan data from services such as Censys and Shodan.</li>
+<li>Certificate Transparency (RFC 6962) has public certificate authorities log every certificate they issue, so CT searches reveal hostnames an organisation has requested certificates for.</li>
+<li>Common findings include forgotten test sites, exposed admin panels and remote desktop, expired certificates, open cloud storage and dangling DNS records.</li>
+<li>Subdomain takeover happens when DNS still points to a deleted cloud resource that someone else can claim, letting them serve content under your domain.</li>
+<li>EASM feeds wider exposure-management programmes and is also used in mergers and acquisitions to assess an acquired company's internet footprint before integration.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Probing assets you do not own or have permission to test can break laws and contracts; confirm ownership before any active scanning.</li>
+<li>Discovering assets without assigning owners means nothing gets fixed; route every finding to a named team.</li>
+<li>Running discovery once a year; the attack surface changes daily with cloud deployments and marketing sites.</li>
+</ul>
+</div>
+<h3 id="try-it-list-subdomains-of-your-own-domain-from-public-certificate-transparency-logs-a-common-first-step-in-attack-surface-inventory">Try it: List subdomains of YOUR OWN domain from public Certificate Transparency logs (a common first step in attack-surface inventory)<a class="headerlink" href="#try-it-list-subdomains-of-your-own-domain-from-public-certificate-transparency-logs-a-common-first-step-in-attack-surface-inventory" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"https://crt.sh/?q=%25.example.com&amp;output=json"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.[].name_value'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
+</code></pre></div>
+<h4 id="popular-tools-products_8">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cortex Xpanse</strong><br><em>Palo Alto Networks · Commercial</em></td>
+<td>Continuously maps an organisation's internet-facing assets and can automatically fix some common exposures.</td>
+<td>A government department discovers an exposed remote desktop server at a branch office and closes it.</td>
+</tr>
+<tr>
+<td><strong>Censys</strong><br><em>Censys · Freemium</em></td>
+<td>Scans the entire internet regularly and offers search plus attack surface management for organisations.</td>
+<td>A security team searches Censys for any server using a certificate with the company's name.</td>
+</tr>
+<tr>
+<td><strong>Shodan</strong><br><em>Shodan · Freemium</em></td>
+<td>Search engine for internet-connected devices, showing open ports, software banners and exposed systems.</td>
+<td>An IT manager searches Shodan for the company's IP range and finds a webcam exposed online.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender EASM</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Microsoft's external attack surface service that discovers and inventories internet-facing assets.</td>
+<td>A retailer finds dozens of forgotten subdomains pointing to old cloud services.</td>
+</tr>
+<tr>
+<td><strong>CrowdStrike Falcon Exposure Management</strong><br><em>CrowdStrike · Commercial</em></td>
+<td>Includes Falcon Surface, which discovers and rates the risk of internet-facing assets from an attacker's viewpoint.</td>
+<td>A manufacturer finds an exposed database at a newly acquired subsidiary.</td>
+</tr>
+<tr>
+<td><strong>runZero</strong><br><em>runZero · Freemium</em></td>
+<td>Asset discovery tool that finds and fingerprints devices on internal and external networks without agents.</td>
+<td>A hospital discovers unmanaged medical devices and an internet-reachable printer it didn't know about.</td>
+</tr>
+<tr>
+<td><strong>Tenable Attack Surface Management</strong><br><em>Tenable · Commercial</em></td>
+<td>Discovers internet-facing domains and assets and feeds them into Tenable's vulnerability scanning.</td>
+<td>A company scans newly discovered websites automatically for known vulnerabilities.</td>
+</tr>
+<tr>
+<td><strong>Mandiant Attack Surface Management</strong><br><em>Google Cloud (Mandiant) · Commercial</em></td>
+<td>Discovers external assets and checks them against Mandiant threat intelligence on active exploitation.</td>
+<td>A media company is warned that an exposed VPN appliance has a flaw being exploited by ransomware gangs.</td>
+</tr>
+<tr>
+<td><strong>OWASP Amass</strong><br><em>OWASP · Open source</em></td>
+<td>Open-source tool for discovering an organisation's domains and subdomains using many public data sources.</td>
+<td>A security engineer maps all subdomains of the company's main domain to update the asset list.</td>
+</tr>
+<tr>
+<td><strong>crt.sh</strong><br><em>Sectigo · Free</em></td>
+<td>Free search engine for Certificate Transparency logs, revealing every public TLS certificate issued for your domains and hostnames.</td>
+<td>A security engineer searches crt.sh for the company domain and finds certificates for an unknown 'vpn-test' host.</td>
+</tr>
+<tr>
+<td><strong>SecurityTrails</strong><br><em>Recorded Future · Freemium</em></td>
+<td>Historical DNS, WHOIS and subdomain data service used to map an organisation's internet-facing domains and spot forgotten records.</td>
+<td>A retailer finds an old marketing subdomain still pointing to a deleted cloud bucket and removes the dangling DNS record.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="410-digital-forensics-incident-response">4.10 Digital Forensics &amp; Incident Response<a class="headerlink" href="#410-digital-forensics-incident-response" title="Permanent link">&para;</a></h2>
+<p>When a security incident happens, responders must find out what happened, how far it spread, and how to clean up. Digital forensics tools copy and examine computers, phones and memory carefully — without changing the evidence — so findings can stand up in court or in a report.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-10-digital-forensics-incident-response.svg" alt="Based on RFC 3227: the most short-lived evidence disappears first, so capture it first." loading="lazy">
+<figcaption><strong>Order of volatility: collect the top first.</strong> Based on RFC 3227: the most short-lived evidence disappears first, so capture it first.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a crime scene team: they photograph everything, bag evidence carefully, and reconstruct the timeline of who did what and when.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>After ransomware hits Cedar Accounting, responders use Velociraptor to collect key evidence from 200 PCs within an hour. KAPE and Plaso build a timeline showing the attacker entered through a phished employee's laptop four days earlier. Memory analysis with Volatility reveals the hacking tool used, so the team can remove every foothold before restoring from clean backups.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Preserve evidence: make exact copies (images) of disks, memory and phones.</li>
+<li>Record a chain of custody showing who handled evidence and when.</li>
+<li>Analyse files, logs, registry and memory to build a timeline.</li>
+<li>Contain the attacker, remove their access and recover systems.</li>
+<li>Write a report with lessons learned to prevent a repeat.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Incident responders, forensic investigators, police digital crime units, legal and HR investigators, and insurance-appointed response firms.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Prepare before an incident: have a response plan, tools ready, and logs retained — and avoid switching off infected machines before capturing memory if possible.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Forensic images use formats such as raw (dd), E01 (EnCase Expert Witness) and AFF4; cryptographic hashes such as SHA-256 prove the copy matches the original.</li>
+<li>Hardware write blockers prevent any change to source drives during acquisition; on live systems, responders document every command they run.</li>
+<li>Key Windows artefacts include Prefetch, Amcache, ShimCache, registry hives, event logs, LNK files, jump lists, the &#36;MFT and the USN journal.</li>
+<li>Targeted triage collection with KAPE or Velociraptor gathers key artefacts in minutes, replacing full-disk imaging for most enterprise incidents.</li>
+<li>ISO/IEC 27037 covers identifying, collecting and preserving digital evidence, and NIST SP 800-86 explains integrating forensic techniques into incident response.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Powering off a machine first loses memory evidence such as encryption keys and injected code; capture RAM first when safe.</li>
+<li>Analysing original evidence instead of verified copies breaks chain of custody; always work on hashed images.</li>
+<li>Restoring from backup without finding the entry point invites reinfection; confirm root cause and remove persistence first.</li>
+</ul>
+</div>
+<h3 id="try-it-volatility-3-list-processes-running-in-a-memory-image">Try it: Volatility 3: list processes running in a memory image<a class="headerlink" href="#try-it-volatility-3-list-processes-running-in-a-memory-image" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>vol<span class="w"> </span>-f<span class="w"> </span>memory.raw<span class="w"> </span>windows.pslist
+</code></pre></div>
+<h4 id="popular-tools-products_9">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Autopsy / The Sleuth Kit</strong><br><em>Sleuth Kit Labs (Brian Carrier) · Open source</em></td>
+<td>Free graphical forensics platform built on The Sleuth Kit for examining disk images, files and web history.</td>
+<td>A university investigator recovers deleted files from a USB stick in a plagiarism case.</td>
+</tr>
+<tr>
+<td><strong>EnCase Forensic</strong><br><em>OpenText · Commercial</em></td>
+<td>Long-standing forensics suite widely accepted in courts for acquiring and examining computer evidence.</td>
+<td>A police lab images a suspect's laptop and searches it for fraud documents.</td>
+</tr>
+<tr>
+<td><strong>FTK / FTK Imager</strong><br><em>Exterro · Freemium</em></td>
+<td>FTK is a full forensic analysis suite; FTK Imager is a free tool to make exact disk and memory copies.</td>
+<td>A responder uses free FTK Imager to capture RAM from a compromised server before shutting it down.</td>
+</tr>
+<tr>
+<td><strong>Magnet AXIOM</strong><br><em>Magnet Forensics · Commercial</em></td>
+<td>Examines computers, phones and cloud accounts in one case, with strong artifact parsing and timelines.</td>
+<td>An investigator links chat messages on a phone with files on a laptop in an insider theft case.</td>
+</tr>
+<tr>
+<td><strong>Cellebrite UFED / Inseyets</strong><br><em>Cellebrite · Commercial</em></td>
+<td>Specialist tools for lawfully extracting and analysing data from mobile phones.</td>
+<td>A police unit extracts messages from a seized phone under a court warrant.</td>
+</tr>
+<tr>
+<td><strong>X-Ways Forensics</strong><br><em>X-Ways Software Technology · Commercial</em></td>
+<td>Fast, lightweight forensics tool favoured by experienced examiners for disk and file system analysis.</td>
+<td>An examiner quickly searches a 2 TB disk image for specific keywords and file types.</td>
+</tr>
+<tr>
+<td><strong>Volatility</strong><br><em>Volatility Foundation · Open source</em></td>
+<td>Leading open-source framework for analysing memory (RAM) captures to find hidden malware and attacker activity.</td>
+<td>A responder finds a malicious process injected into a legitimate Windows program in memory.</td>
+</tr>
+<tr>
+<td><strong>KAPE</strong><br><em>Kroll · Free</em></td>
+<td>Kroll Artifact Parser and Extractor: quickly collects and processes key forensic files from Windows systems.</td>
+<td>A responder gathers event logs and browser history from a PC in minutes instead of imaging the whole disk.</td>
+</tr>
+<tr>
+<td><strong>Velociraptor</strong><br><em>Rapid7 · Open source</em></td>
+<td>Open-source DFIR tool using the VQL query language to collect forensic artefacts and hunt across thousands of endpoints at once.</td>
+<td>A team hunts across 5,000 laptops for a specific malicious file within minutes.</td>
+</tr>
+<tr>
+<td><strong>Plaso (log2timeline)</strong><br><em>Plaso project · Open source</em></td>
+<td>Extracts timestamps from many types of files and logs to build a single 'super timeline' of events.</td>
+<td>An analyst sees a login, a file download and a new service install in exact order.</td>
+</tr>
+<tr>
+<td><strong>Eric Zimmerman's Tools</strong><br><em>Eric Zimmerman · Free</em></td>
+<td>Free set of Windows forensics utilities for parsing registry, event logs, prefetch and other artifacts.</td>
+<td>An examiner proves which programs ran on a PC and when, using prefetch files.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender for Endpoint Live Response</strong><br><em>Microsoft · Commercial</em></td>
+<td>Remote shell in Defender for Endpoint letting responders collect files and run approved scripts on affected devices.</td>
+<td>A responder pulls a suspicious file from a remote employee's laptop without travelling there.</td>
+</tr>
+<tr>
+<td><strong>GRR Rapid Response</strong><br><em>Google · Open source</em></td>
+<td>Google's open-source remote live-forensics framework for collecting files, memory and artefacts from large fleets of machines.</td>
+<td>A cloud company pulls running processes and browser history from 300 Linux and Mac laptops during an investigation.</td>
+</tr>
+<tr>
+<td><strong>Cyber Triage</strong><br><em>Sleuth Kit Labs · Commercial</em></td>
+<td>Automated incident-response triage tool that collects endpoint artefacts and scores them so responders see likely malicious items first.</td>
+<td>An MSP checks whether a client's server was compromised in under an hour, guided by Cyber Triage's scored list.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="411-malware-analysis-sandboxes-reverse-engineering">4.11 Malware Analysis Sandboxes &amp; Reverse Engineering<a class="headerlink" href="#411-malware-analysis-sandboxes-reverse-engineering" title="Permanent link">&para;</a></h2>
+<p>Malware analysis means studying a suspicious file to learn what it does, safely. A sandbox is an isolated test computer that runs the file and records its behaviour; reverse engineering means taking the program apart to read its instructions. Defenders use the findings to detect and block the malware everywhere.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-11-malware-analysis-sandboxes-reverse.svg" alt="Most samples are understood at the first three steps; full reversing is for the hard cases." loading="lazy">
+<figcaption><strong>Malware analysis from quick to deep.</strong> Most samples are understood at the first three steps; full reversing is for the hard cases.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a bomb disposal team: first they X-ray the package in a blast-proof room (sandbox), then carefully take it apart to learn how it works (reverse engineering).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>An employee at Lakeside Logistics receives an invoice attachment that antivirus does not flag. An analyst uploads it to a private sandbox, which shows it downloading a second file and contacting a strange web address. Using PEStudio and Ghidra, she finds the malware's configuration, writes a YARA rule for it, and the team blocks the web address and finds two other infected machines.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Never open suspect files on a normal PC — use an isolated sandbox or lab machine.</li>
+<li>Check the file's hash in reputation services such as VirusTotal.</li>
+<li>Run it in a sandbox and watch its files, network traffic and processes.</li>
+<li>If needed, reverse engineer the code with a disassembler or debugger.</li>
+<li>Turn findings into detection rules and indicators to block it everywhere.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Malware analysts, SOC tier-3 analysts, incident responders, antivirus researchers and threat intelligence teams.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Uploading files to public sandboxes shares them with others — use private analysis for sensitive company documents.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Static analysis inspects a file without running it, covering headers, imports, strings and entropy; dynamic analysis runs it in a sandbox to record behaviour.</li>
+<li>Malware often checks for virtual-machine artefacts, short uptime or missing user activity to evade sandboxes, so analysts make lab machines look like real, used PCs.</li>
+<li>Packers and obfuscators hide the real code; analysts let a sample unpack itself in a debugger, then dump memory to study the true payload.</li>
+<li>Lab safety basics: isolated host-only networks, snapshots to revert, no shared folders, and simulated internet services such as INetSim or FakeNet-NG.</li>
+<li>Results feed defence as file hashes, domains, YARA and Sigma rules, ATT&amp;CK mappings and extracted configuration such as attacker server addresses to block.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Uploading confidential documents to public sandboxes exposes them to other subscribers; use private instances for sensitive files.</li>
+<li>Opening samples on a networked work laptop risks a real infection; use a dedicated, isolated analysis lab.</li>
+<li>Trusting a clean sandbox verdict; evasive malware may wait or detect the VM, so combine with static analysis.</li>
+</ul>
+</div>
+<h3 id="try-it-a-tiny-yara-rule-that-flags-files-containing-a-known-malicious-string">Try it: A tiny YARA rule that flags files containing a known malicious string<a class="headerlink" href="#try-it-a-tiny-yara-rule-that-flags-files-containing-a-known-malicious-string" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>rule Suspicious_Invoice_Dropper {
+  strings:
+    $a = "invoice-update.example" ascii
+  condition:
+    $a
+}
+</code></pre></div>
+<h4 id="popular-tools-products_10">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VirusTotal</strong><br><em>Google · Freemium</em></td>
+<td>Scans files and links with dozens of antivirus engines and shows sandbox behaviour reports.</td>
+<td>An analyst checks a file hash and sees it was first seen yesterday and flagged by 30 engines.</td>
+</tr>
+<tr>
+<td><strong>ANY.RUN</strong><br><em>ANY.RUN · Freemium</em></td>
+<td>Interactive online sandbox where analysts can click inside the running virtual machine while watching malware behaviour live.</td>
+<td>An analyst clicks 'Enable content' in a malicious document inside ANY.RUN to see what it downloads.</td>
+</tr>
+<tr>
+<td><strong>Joe Sandbox</strong><br><em>Joe Security · Commercial</em></td>
+<td>Deep automated malware analysis for Windows, macOS, Linux, Android and iOS, available in cloud or on-premises.</td>
+<td>A bank's private Joe Sandbox analyses every email attachment from outside senders.</td>
+</tr>
+<tr>
+<td><strong>CAPE Sandbox</strong><br><em>CAPE project · Open source</em></td>
+<td>Open-source sandbox derived from Cuckoo that also extracts malware configurations and unpacked code.</td>
+<td>A research team runs CAPE in-house to analyse samples without sharing them publicly.</td>
+</tr>
+<tr>
+<td><strong>Hybrid Analysis</strong><br><em>CrowdStrike · Free</em></td>
+<td>Free public malware analysis service powered by CrowdStrike's Falcon Sandbox technology.</td>
+<td>A student submits a suspicious file and reads a free behaviour report with MITRE ATT&amp;CK mappings.</td>
+</tr>
+<tr>
+<td><strong>Ghidra</strong><br><em>NSA · Open source</em></td>
+<td>Free reverse engineering suite with a decompiler that turns machine code into readable, C-like code.</td>
+<td>An analyst uses Ghidra to find the encryption key hidden inside a ransomware sample.</td>
+</tr>
+<tr>
+<td><strong>IDA Pro</strong><br><em>Hex-Rays · Commercial</em></td>
+<td>Industry-standard disassembler and debugger for professional reverse engineers, with a powerful decompiler add-on.</td>
+<td>An antivirus lab uses IDA Pro to fully map how a new banking trojan steals passwords.</td>
+</tr>
+<tr>
+<td><strong>Binary Ninja</strong><br><em>Vector 35 · Commercial</em></td>
+<td>Modern reverse engineering platform with a clean interface and strong automation through scripting.</td>
+<td>A researcher writes a script to decode hundreds of hidden strings in a malware family.</td>
+</tr>
+<tr>
+<td><strong>x64dbg</strong><br><em>x64dbg project · Open source</em></td>
+<td>Free Windows debugger for stepping through programs instruction by instruction while they run.</td>
+<td>An analyst pauses malware right after it unpacks itself to capture the real code.</td>
+</tr>
+<tr>
+<td><strong>PEStudio</strong><br><em>Winitor · Freemium</em></td>
+<td>Inspects Windows executable files without running them, highlighting suspicious imports, strings and indicators.</td>
+<td>An analyst spots that a 'PDF reader' imports keyboard-logging functions and flags it.</td>
+</tr>
+<tr>
+<td><strong>Sysinternals Suite</strong><br><em>Microsoft · Free</em></td>
+<td>Free Windows utilities like Process Explorer, Process Monitor and Autoruns for seeing what programs really do.</td>
+<td>A technician uses Autoruns to find malware that starts automatically every time Windows boots.</td>
+</tr>
+<tr>
+<td><strong>YARA</strong><br><em>VirusTotal (Google) · Open source</em></td>
+<td>Pattern-matching tool for describing malware families with text or byte rules; its faster rewrite, YARA-X, became stable in 2025.</td>
+<td>A team scans all file servers with a YARA rule to find copies of a newly analysed trojan.</td>
+</tr>
+<tr>
+<td><strong>CyberChef</strong><br><em>GCHQ · Open source</em></td>
+<td>Browser-based 'cyber Swiss army knife' for decoding, decrypting and transforming data with drag-and-drop recipes.</td>
+<td>An analyst decodes a Base64-encoded PowerShell command from a phishing email in seconds.</td>
+</tr>
+<tr>
+<td><strong>FLARE-VM</strong><br><em>Mandiant (Google Cloud) · Open source</em></td>
+<td>Script that turns a Windows virtual machine into a ready-made malware analysis lab with many tools pre-installed.</td>
+<td>A new analyst builds a complete, isolated analysis workstation in an afternoon.</td>
+</tr>
+<tr>
+<td><strong>capa</strong><br><em>Mandiant FLARE (Google Cloud) · Open source</em></td>
+<td>Identifies what an executable can do, such as encrypting files or adding persistence, and maps each capability to ATT&amp;CK.</td>
+<td>Before reversing, an analyst runs capa and learns the sample can capture screenshots and delete shadow copies.</td>
+</tr>
+<tr>
+<td><strong>REMnux</strong><br><em>Lenny Zeltser and community · Open source</em></td>
+<td>Free Linux distribution packed with tools for analysing malicious documents, scripts, network traffic and Linux or Windows malware.</td>
+<td>An analyst pairs a REMnux VM, simulating internet services, with a FLARE-VM victim machine on an isolated lab network.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="412-detection-frameworks-shared-knowledge">4.12 Detection Frameworks &amp; Shared Knowledge<a class="headerlink" href="#412-detection-frameworks-shared-knowledge" title="Permanent link">&para;</a></h2>
+<p>Frameworks are shared maps and checklists that give defenders a common language. Some describe how attackers behave step by step; others list the security controls an organisation should have; and rule formats let teams share detection logic that works in many tools.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-12-detection-frameworks-shared-knowledge.svg" alt="The higher up you detect, the more it costs the attacker to change." loading="lazy">
+<figcaption><strong>The Pyramid of Pain.</strong> The higher up you detect, the more it costs the attacker to change.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a sports playbook shared across all coaches: everyone uses the same names for the opposing team's moves, so they can trade notes on how to stop them.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Bluebird Retail's new security lead maps the company's detections to MITRE ATT&amp;CK and discovers there is almost nothing watching for stolen passwords being reused. She imports community Sigma rules for that technique into the SIEM, and uses NIST CSF 2.0 to explain the gaps to the board in plain business terms. Six months later, the coverage map shows clear progress.</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Choose a governance framework (NIST CSF, CIS Controls) to measure your overall programme.</li>
+<li>Map your detections to ATT&amp;CK techniques to spot blind spots.</li>
+<li>Import shared rules (Sigma, YARA, Suricata) to cover gaps quickly.</li>
+<li>Use D3FEND to pick defensive measures that counter specific attacker techniques.</li>
+<li>Review coverage regularly and report progress in a common language.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security architects, detection engineers, threat hunters, auditors, risk managers and executives who need a shared vocabulary.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Do not try to cover every ATT&amp;CK technique at once — prioritise the ones used by threats most relevant to your industry.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>ATT&amp;CK Enterprise organises behaviour into 14 tactics, the attacker's goals such as Initial Access or Exfiltration, and hundreds of techniques and sub-techniques describing how.</li>
+<li>Sigma rules are YAML files with logsource, detection and condition sections; converters such as pySigma translate them into SPL, KQL, ES&#124;QL and other query languages.</li>
+<li>Snort 3 and Suricata rules contain an action, a header with protocol, addresses and ports, and options such as content matches; ET Open and Talos community rules are free.</li>
+<li>The Cyber Kill Chain's seven stages are reconnaissance, weaponisation, delivery, exploitation, installation, command and control, and actions on objectives.</li>
+<li>CIS Controls v8.1 contains 18 controls and 153 safeguards in three Implementation Groups; IG1, 'essential cyber hygiene', is the recommended starting point for small organisations.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Treating ATT&amp;CK as a checklist where one rule per technique means 'covered'; detection quality varies, so test rules against real activity.</li>
+<li>Importing community Sigma rules untuned creates noise; test them against your own logs before enabling alerts.</li>
+<li>Confusing governance frameworks with detection content; CSF and CIS measure the programme, while Sigma and YARA catch attacks.</li>
+</ul>
+</div>
+<h3 id="try-it-sigma-rule-skeleton-detect-a-new-local-admin-being-created-on-windows">Try it: Sigma rule skeleton: detect a new local admin being created on Windows<a class="headerlink" href="#try-it-sigma-rule-skeleton-detect-a-new-local-admin-being-created-on-windows" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Member Added to Local Administrators</span>
+<span class="nt">logsource</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows</span>
+<span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
+<span class="nt">detection</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">EventID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4732</span>
+<span class="w">    </span><span class="nt">TargetUserName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Administrators</span>
+<span class="w">  </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">selection</span>
+<span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
+</code></pre></div>
+<h4 id="popular-tools-products_11">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MITRE ATT&amp;CK</strong><br><em>MITRE · Framework</em></td>
+<td>Free knowledge base of real-world attacker tactics and techniques, used worldwide to describe and detect attacks.</td>
+<td>A SOC tags every alert with an ATT&amp;CK technique, such as T1566 Phishing, to measure coverage.</td>
+</tr>
+<tr>
+<td><strong>MITRE D3FEND</strong><br><em>MITRE · Framework</em></td>
+<td>Knowledge graph of defensive techniques, linked to the ATT&amp;CK techniques they help counter.</td>
+<td>An architect checks which defences counter credential dumping before buying a new tool.</td>
+</tr>
+<tr>
+<td><strong>Sigma</strong><br><em>SigmaHQ community · Framework</em></td>
+<td>Open, vendor-neutral format for writing log detection rules that convert into queries for many SIEMs.</td>
+<td>A team converts a community Sigma rule into both Splunk and Sentinel queries automatically.</td>
+</tr>
+<tr>
+<td><strong>YARA rules</strong><br><em>VirusTotal (Google) and community · Framework</em></td>
+<td>Shared rule format for identifying malware files by patterns; thousands of community rules are freely available.</td>
+<td>A responder downloads public YARA rules for a ransomware family and scans file servers.</td>
+</tr>
+<tr>
+<td><strong>Snort rules</strong><br><em>Cisco (Talos) · Framework</em></td>
+<td>Rule language for network intrusion detection, describing malicious traffic patterns; Talos publishes regular rule updates.</td>
+<td>A university's Snort sensor alerts on traffic matching a known exploit for its VPN.</td>
+</tr>
+<tr>
+<td><strong>Suricata rules</strong><br><em>OISF · Framework</em></td>
+<td>Network detection rules for the open-source Suricata engine, largely compatible with Snort; Emerging Threats rulesets are popular.</td>
+<td>A hospital loads the free ET Open ruleset to spot malware calling home.</td>
+</tr>
+<tr>
+<td><strong>Cyber Kill Chain</strong><br><em>Lockheed Martin · Framework</em></td>
+<td>Seven-stage model of an attack, from reconnaissance to actions on objectives, showing where defenders can break the chain.</td>
+<td>A team blocks an attack at the 'delivery' stage by stopping the phishing email.</td>
+</tr>
+<tr>
+<td><strong>NIST Cybersecurity Framework (CSF) 2.0</strong><br><em>NIST · Framework</em></td>
+<td>Widely used framework organising security into six functions: Govern, Identify, Protect, Detect, Respond, Recover.</td>
+<td>A hospital board reviews a CSF scorecard showing 'Detect' is weaker than 'Protect'.</td>
+</tr>
+<tr>
+<td><strong>CIS Critical Security Controls v8.1</strong><br><em>Center for Internet Security · Framework</em></td>
+<td>Prioritised list of 18 practical security controls, grouped into implementation levels for smaller and larger organisations.</td>
+<td>A small accounting firm works through Implementation Group 1 as its starting checklist.</td>
+</tr>
+<tr>
+<td><strong>NIST SP 800-61 Rev. 3 (Incident Response)</strong><br><em>NIST · Framework</em></td>
+<td>US guidance on preparing for, handling and learning from incidents; the 2025 revision aligns it with the six CSF 2.0 functions.</td>
+<td>A council writes its incident response plan following the NIST guidance.</td>
+</tr>
+<tr>
+<td><strong>STIX / TAXII</strong><br><em>OASIS · Framework</em></td>
+<td>Standards for describing threat intelligence (STIX) and exchanging it automatically between systems (TAXII).</td>
+<td>Two banks share indicators automatically through a TAXII server in STIX format.</td>
+</tr>
+<tr>
+<td><strong>Pyramid of Pain</strong><br><em>David Bianco · Framework</em></td>
+<td>Model showing that blocking attacker behaviours hurts them more than blocking easily changed clues like IP addresses or file hashes.</td>
+<td>A team shifts effort from blocking IPs to detecting the attacker's techniques.</td>
+</tr>
+<tr>
+<td><strong>Diamond Model of Intrusion Analysis</strong><br><em>Caltagirone, Pendergast and Betz · Framework</em></td>
+<td>Analysis model linking every intrusion event's four features: adversary, capability, infrastructure and victim.</td>
+<td>An analyst pivots from one malicious domain (infrastructure) to the malware family (capability) and other victims.</td>
+</tr>
+<tr>
+<td><strong>MITRE ATT&amp;CK Navigator</strong><br><em>MITRE · Free</em></td>
+<td>Free web tool for colouring and annotating ATT&amp;CK matrices, used to show detection coverage, threat-group techniques and gaps.</td>
+<td>A detection team overlays its rule coverage on a ransomware group's techniques and spots five uncovered techniques.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="413-managed-detection-response-services">4.13 Managed Detection &amp; Response Services<a class="headerlink" href="#413-managed-detection-response-services" title="Permanent link">&para;</a></h2>
+<p>Managed Detection and Response (MDR) is a service where an outside company's security experts watch your systems 24 hours a day, investigate alerts and take action to stop attacks. It gives smaller organisations a security operations centre without building one themselves.</p>
+<p><strong>Build a 24/7 SOC or buy MDR?</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>In-house 24/7 SOC</th>
+<th>MDR service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>People</strong></td>
+<td>≈5 staff per 24/7 seat</td>
+<td>Provider's analysts</td>
+</tr>
+<tr>
+<td><strong>Time to start</strong></td>
+<td>Many months</td>
+<td>Weeks</td>
+</tr>
+<tr>
+<td><strong>Response actions</strong></td>
+<td>Your team</td>
+<td>Provider contains, you remediate</td>
+</tr>
+<tr>
+<td><strong>Tooling</strong></td>
+<td>You buy and tune</td>
+<td>Provider's or your own</td>
+</tr>
+<tr>
+<td><strong>Business context</strong></td>
+<td>Deep</td>
+<td>Needs good onboarding</td>
+</tr>
+<tr>
+<td><strong>Cost profile</strong></td>
+<td>Salaries + tools</td>
+<td>Per-endpoint subscription</td>
+</tr>
+</tbody>
+</table>
+<p><em>MDR trades some business knowledge for fast, round-the-clock expert coverage.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like hiring a monitored alarm company: sensors are in your house, but trained staff at a control centre respond when the alarm goes off at 3 a.m.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Pine Valley Dental has 60 staff and one IT person. At 2 a.m. on a Saturday, its MDR provider spots ransomware-like behaviour on the reception PC, isolates it from the network, and calls the IT manager. By Monday the PC is cleaned, the stolen password reset, and the practice opens as normal with a short report on what happened.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The provider deploys or connects to endpoint, identity, email and cloud sensors.</li>
+<li>Their analysts monitor alerts around the clock and hunt for hidden threats.</li>
+<li>When an attack is confirmed, they contain it (for example, isolate a device).</li>
+<li>You get notified with clear guidance and remaining actions for your team.</li>
+<li>Regular reports summarise threats stopped and improvements recommended.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Small and mid-sized businesses, schools, councils and larger organisations wanting 24/7 coverage or extra expert help.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Agree in advance exactly what the provider may do on its own (isolate a laptop, disable an account) and who they call at night.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Covering one analyst seat 24/7 needs roughly five full-time people once nights, weekends, holidays, training and sickness are included, a key reason organisations buy MDR.</li>
+<li>MDR differs from traditional managed security service providers: MSSPs mainly monitor and forward alerts, while MDR providers investigate, hunt and take containment actions themselves.</li>
+<li>Contracts should define response authority (isolate devices, disable accounts), notification times by severity, data retention and who keeps the detection content if you leave.</li>
+<li>Some MDR services work with the customer's existing tools, while others require their own EDR agent, which affects cost and the effort of switching later.</li>
+<li>Cyber insurers increasingly ask whether 24/7 monitoring and response is in place, making MDR a common way for smaller organisations to meet those requirements.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming the MDR handles everything; you still own patching, backups, identity hygiene and acting on recommendations.</li>
+<li>Giving the provider only endpoint data leaves gaps; identity, email and cloud logs are needed to catch account takeovers.</li>
+<li>Unclear escalation contacts delay night-time response; keep a tested call tree and update it when staff change.</li>
+</ul>
+</div>
+<h4 id="popular-tools-products_12">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CrowdStrike Falcon Complete</strong><br><em>CrowdStrike · Commercial</em></td>
+<td>Fully managed service where CrowdStrike experts run the Falcon platform and remediate threats on your behalf.</td>
+<td>A law firm's infected laptop is isolated and cleaned by CrowdStrike before staff even notice.</td>
+</tr>
+<tr>
+<td><strong>Arctic Wolf MDR</strong><br><em>Arctic Wolf · Commercial</em></td>
+<td>MDR service built around a named 'concierge' security team, popular with mid-sized organisations.</td>
+<td>A school district gets weekly calls from its assigned Arctic Wolf team to review risks.</td>
+</tr>
+<tr>
+<td><strong>Expel MDR</strong><br><em>Expel · Commercial</em></td>
+<td>MDR that works with the security tools you already own and shares investigation details transparently.</td>
+<td>A SaaS company keeps its existing tools and Expel analysts investigate alerts from all of them.</td>
+</tr>
+<tr>
+<td><strong>Red Canary MDR</strong><br><em>Red Canary (Zscaler) · Commercial</em></td>
+<td>MDR known for strong detection engineering and its widely read annual Threat Detection Report; part of Zscaler since 2025.</td>
+<td>A retailer receives a clear write-up of a stopped intrusion, with each step mapped to ATT&amp;CK.</td>
+</tr>
+<tr>
+<td><strong>Sophos MDR</strong><br><em>Sophos · Commercial</em></td>
+<td>24/7 managed detection and response working with Sophos and third-party products; Sophos bought Secureworks (Taegis) in 2025.</td>
+<td>A manufacturer's ransomware attempt is stopped overnight by Sophos analysts, who then explain the cause.</td>
+</tr>
+<tr>
+<td><strong>eSentire MDR</strong><br><em>eSentire · Commercial</em></td>
+<td>MDR service focused on fast containment, with network, endpoint, log and cloud coverage.</td>
+<td>A wealth management firm relies on eSentire to contain threats within minutes of detection.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender Experts for XDR</strong><br><em>Microsoft · Commercial</em></td>
+<td>Microsoft's own analysts monitor and respond to threats across the Defender and Microsoft 365 stack.</td>
+<td>A company using Microsoft 365 E5 adds Defender Experts for round-the-clock coverage.</td>
+</tr>
+<tr>
+<td><strong>Rapid7 MDR</strong><br><em>Rapid7 · Commercial</em></td>
+<td>Managed detection and response built on Rapid7's SIEM and endpoint tools, including breach response support.</td>
+<td>A college's suspicious admin activity is investigated and contained by Rapid7's SOC.</td>
+</tr>
+<tr>
+<td><strong>Unit 42 MDR</strong><br><em>Palo Alto Networks · Commercial</em></td>
+<td>Palo Alto's managed detection and response service, run by its Unit 42 threat research and response team.</td>
+<td>A Cortex customer has Unit 42 analysts watch and respond to alerts 24/7.</td>
+</tr>
+<tr>
+<td><strong>Mandiant Managed Defense</strong><br><em>Google Cloud (Mandiant) · Commercial</em></td>
+<td>MDR service backed by Mandiant's frontline incident response experience and threat intelligence.</td>
+<td>An energy firm gets early warning when attacker activity matches a group Mandiant is tracking.</td>
+</tr>
+<tr>
+<td><strong>ReliaQuest GreyMatter</strong><br><em>ReliaQuest · Commercial</em></td>
+<td>Security operations platform plus managed service that works across a customer's existing SIEM, EDR and cloud tools, with automated response.</td>
+<td>A retailer keeps its Splunk and CrowdStrike tools while ReliaQuest investigates and contains alerts around the clock.</td>
+</tr>
+<tr>
+<td><strong>Kroll Responder MDR</strong><br><em>Kroll · Commercial</em></td>
+<td>MDR service combining 24/7 monitoring and threat hunting with Kroll's incident response and forensics teams.</td>
+<td>When Kroll analysts confirm an intrusion, the same company's forensic team starts a full investigation within hours.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="414-offensive-security-testing-your-own-defences">4.14 Offensive Security: Testing Your Own Defences<a class="headerlink" href="#414-offensive-security-testing-your-own-defences" title="Permanent link">&para;</a></h2>
+<p>To defend well you must know how attacks actually work. Offensive security means safely attacking your OWN systems, with permission, to find weaknesses before criminals do. It covers penetration testing (a hands-on human test), red teaming (a realistic simulated attack) and automated breach-and-attack simulation that replays known techniques on a schedule.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-14-offensive-security-testing-your-own.svg" alt="Offensive testing is only useful when its findings feed back into stronger detection and defence." loading="lazy">
+<figcaption><strong>The purple-team loop.</strong> Offensive testing is only useful when its findings feed back into stronger detection and defence.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A bank hires a locksmith to try to break into its own vault. The locksmith reports every weak lock and unlatched window so the bank can fix them. Doing this yourself, on purpose, is far cheaper than waiting for a real thief.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Northwind Logistics hires a penetration-testing firm with a signed scope. The testers use Nmap to map exposed services, find an outdated web portal, and reach a file server. They steal nothing real, document the path, and hand over a report. Northwind patches the portal and adds an alert that would have caught the intrusion earlier.</p>
+</div>
+<h4 id="how-it-works_13">How it works<a class="headerlink" href="#how-it-works_13" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Agree written scope, rules of engagement and permission before any testing — this is what makes it legal.</li>
+<li>Reconnaissance and scanning: map what is reachable and what software and versions are running.</li>
+<li>Find and safely exploit weaknesses to prove real impact, without damaging data or services.</li>
+<li>Report each finding with evidence, risk rating and clear fix advice.</li>
+<li>Retest after fixes, and feed the attack techniques to the blue team to improve detection ('purple teaming').</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Penetration testers, red teams, security engineers validating controls, and blue teams who use the same tools to understand and detect attacks.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Never run these tools against systems you do not own or lack written permission to test — unauthorised scanning or exploitation is illegal in most countries.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Penetration tests are time-boxed and broad; red-team engagements are goal-based and stealthy, trying to reach a 'crown jewel' without being detected, which tests the blue team as much as the technology.</li>
+<li>Breach-and-attack simulation (BAS) runs automatically and continuously; Gartner now groups BAS, automated pen-testing and red-teaming under 'adversarial exposure validation (AEV)'.</li>
+<li>Standards and methods include the Penetration Testing Execution Standard (PTES), OWASP Web Security Testing Guide, OSSTMM and NIST SP 800-115; many client contracts and PCI DSS require regular testing.</li>
+<li>Common certifications are OffSec's OSCP/OSCP+ (hands-on, with OSCP+ needing renewal every three years), CompTIA PenTest+ (PT0-003) and EC-Council CEH, alongside HTB CPTS and CBBH.</li>
+<li>Cobalt Strike, Metasploit and similar tools are 'dual use': the same capability that validates defences is abused by criminals, so vendors gate licences and defenders build detections for their default behaviours.</li>
+<li>Bug-bounty programmes extend testing to a global crowd and usually sit on top of a safe-harbour vulnerability-disclosure policy; coordinated disclosure gives vendors time to fix before details go public.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running scanners or exploit tools against systems you do not own or lack written permission for; this is a crime in most countries, not a grey area.</li>
+<li>Treating a pen-test report as a one-off tick-box; value comes from fixing findings, retesting and improving detection, not from the certificate.</li>
+<li>Confusing a vulnerability scan with a penetration test: a scanner lists possible issues, while a tester proves which ones are truly exploitable and chains them.</li>
+<li>Downloading cracked copies of commercial tools like Cobalt Strike; these are frequently trojaned and have themselves caused breaches.</li>
+</ul>
+</div>
+<h3 id="try-it-discover-which-services-are-open-on-a-host-you-own-and-are-authorised-to-scan">Try it: Discover which services are open on a host you own and are authorised to scan<a class="headerlink" href="#try-it-discover-which-services-are-open-on-a-host-you-own-and-are-authorised-to-scan" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>nmap<span class="w"> </span>-sV<span class="w"> </span>--top-ports<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="m">192</span>.168.56.10
+</code></pre></div>
+<h4 id="popular-tools-products_13">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_13" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nmap</strong><br><em>Nmap Project (Gordon Lyon) · Open source</em></td>
+<td>The standard network scanner for discovering hosts, open ports and running software, with a scripting engine for safe checks.</td>
+<td>A defender scans the company's own address range weekly and spots a database port accidentally exposed to the internet.</td>
+</tr>
+<tr>
+<td><strong>sqlmap</strong><br><em>sqlmap project · Open source</em></td>
+<td>Automates finding and demonstrating SQL-injection flaws so teams can prove and then fix database exposure in their own apps.</td>
+<td>A tester confirms a legacy internal report page is injectable, giving developers a clear reproduction to patch.</td>
+</tr>
+<tr>
+<td><strong>Metasploit Framework</strong><br><em>Rapid7 · Open source</em></td>
+<td>Widely used exploitation framework with a large library of modules, used to prove whether a known weakness is actually exploitable.</td>
+<td>A red team shows an unpatched test server can be taken over, giving leadership a concrete reason to fund patching.</td>
+</tr>
+<tr>
+<td><strong>Kali Linux</strong><br><em>OffSec · Open source</em></td>
+<td>Linux distribution pre-loaded with hundreds of security-testing tools, the usual starting point for a tester's laptop or virtual machine.</td>
+<td>A new team member spins up a Kali virtual machine to run authorised tests without installing tools one by one.</td>
+</tr>
+<tr>
+<td><strong>Hashcat</strong><br><em>Hashcat project · Open source</em></td>
+<td>Fast password-recovery tool used defensively to audit whether your own stored password hashes are weak or reused.</td>
+<td>With permission, a team cracks a sample of its own hashes and finds too many short passwords, prompting a policy change.</td>
+</tr>
+<tr>
+<td><strong>BloodHound Community Edition</strong><br><em>SpecterOps · Open source</em></td>
+<td>Maps hidden attack paths in Active Directory and Entra ID so defenders can cut the routes an intruder would follow to admin.</td>
+<td>A security team uses BloodHound to find that a helpdesk group can unexpectedly reach domain-admin rights, then removes the link.</td>
+</tr>
+<tr>
+<td><strong>MITRE Caldera</strong><br><em>MITRE · Open source</em></td>
+<td>Automated adversary-emulation platform that runs ATT&amp;CK techniques as safe test campaigns to check detection and response.</td>
+<td>A blue team runs a Caldera campaign mimicking a ransomware crew and finds three steps their SIEM missed.</td>
+</tr>
+<tr>
+<td><strong>Atomic Red Team</strong><br><em>Red Canary · Open source</em></td>
+<td>Library of small, scripted tests mapped to ATT&amp;CK techniques, run to check whether each attack behaviour raises an alert.</td>
+<td>An analyst runs the credential-dumping atomic test on a lab host to confirm the EDR rule fires as expected.</td>
+</tr>
+<tr>
+<td><strong>Cobalt Strike</strong><br><em>Fortra · Commercial</em></td>
+<td>Commercial red-team platform for realistic command-and-control emulation; licence-controlled because criminals abuse cracked copies.</td>
+<td>An authorised red team uses Cobalt Strike to test whether the SOC detects beaconing traffic leaving the network.</td>
+</tr>
+<tr>
+<td><strong>Cymulate</strong><br><em>Cymulate · Commercial</em></td>
+<td>Breach-and-attack-simulation platform that continuously tests email, web, endpoint and network controls against current threats.</td>
+<td>A bank schedules daily simulations and gets a score showing which controls blocked the latest ransomware techniques.</td>
+</tr>
+<tr>
+<td><strong>Picus Security</strong><br><em>Picus Security · Commercial</em></td>
+<td>Security-validation platform that simulates attacks and suggests specific detection and prevention fixes for the gaps found.</td>
+<td>A retailer validates that a new firewall rule actually blocks a technique its simulation flagged last month.</td>
+</tr>
+<tr>
+<td><strong>Pentera</strong><br><em>Pentera · Commercial</em></td>
+<td>Automated penetration-testing platform that safely chains real techniques to show exploitable paths across the network.</td>
+<td>An insurer runs Pentera monthly and gets a ranked list of attack paths to fix, between human pen-test engagements.</td>
+</tr>
+<tr>
+<td><strong>HackerOne</strong><br><em>HackerOne · Platform</em></td>
+<td>Largest bug-bounty and vulnerability-disclosure platform, connecting organisations with vetted researchers who report flaws for rewards.</td>
+<td>A software firm runs a HackerOne bug bounty and pays a researcher who responsibly reports a serious data-exposure bug.</td>
+</tr>
+<tr>
+<td><strong>Bugcrowd</strong><br><em>Bugcrowd · Platform</em></td>
+<td>Crowdsourced security platform for bug bounties, penetration testing as a service and vulnerability disclosure programmes.</td>
+<td>A retailer launches a Bugcrowd programme so outside researchers can safely report flaws instead of selling them.</td>
+</tr>
+<tr>
+<td><strong>NetExec (nxc)</strong><br><em>NetExec community (successor to CrackMapExec) · Open source</em></td>
+<td>Network tool for testing Windows and Active Directory security at scale; the maintained successor to CrackMapExec.</td>
+<td>A tester checks whether any of the company's own servers still accept a weak, reused local administrator password.</td>
+</tr>
+<tr>
+<td><strong>Vulnerability-disclosure policy (security.txt)</strong><br><em>IETF (RFC 9116) · Framework</em></td>
+<td>A published policy and standard contact file telling finders how to report security issues safely and legally.</td>
+<td>A council adds a /.well-known/security.txt file so researchers know exactly where to send vulnerability reports.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="415-security-awareness-training">4.15 Security Awareness Training<a class="headerlink" href="#415-security-awareness-training" title="Permanent link">&para;</a></h2>
+<p>Most attacks start by tricking a person — a fake email, text or phone call. Security awareness training teaches employees to spot these scams and report them quickly, often by sending safe, fake 'practice' phishing emails so people learn by doing, without real harm.</p>
+<figure class="fig fig-diagram">
+<img src="img/04-15-security-awareness-training.svg" alt="Success is measured by fast reporting, not by zero clicks." loading="lazy">
+<figcaption><strong>A healthy awareness programme.</strong> Success is measured by fast reporting, not by zero clicks.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a fire drill: you practise leaving the building calmly, so when there is a real fire everyone already knows what to do.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At Greenfield Council, a practice email pretending to be a parcel delivery is sent to all staff. People who click see a short, friendly lesson on the warning signs; those who press the 'Report phishing' button get a thank-you. Over a year, reporting rises from 10% to 65% — and when a real scam arrives, the security team hears about it within four minutes.</p>
+</div>
+<h4 id="how-it-works_14">How it works<a class="headerlink" href="#how-it-works_14" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Give short, regular lessons on common scams: phishing, fake invoices, urgent requests from 'the boss'.</li>
+<li>Send realistic practice phishing emails and texts at random times.</li>
+<li>Show an instant, kind lesson to anyone who falls for one — no shaming.</li>
+<li>Make reporting easy with a one-click 'Report phishing' button.</li>
+<li>Track reporting rates, not just click rates, and celebrate good catches.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>HR, IT and security teams in every organisation; especially vital in finance, healthcare, education and anywhere staff handle payments or personal data.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Teach the golden rule: if a message is urgent and asks for money, passwords or secrecy, stop and check through a different, known channel.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Effective programmes use short, frequent micro-lessons of two to five minutes and tailor content by role, such as payment-change fraud for finance staff.</li>
+<li>Report rate and time-to-report matter more than click rate: one fast report lets the SOC pull a real phishing email from every mailbox.</li>
+<li>Business email compromise caused about US&#36;2.8 billion in reported losses in 2024 according to the FBI's IC3, often with no link or attachment at all.</li>
+<li>Deepfake voice and video scams are rising; in 2024 engineering firm Arup lost about US&#36;25 million after a fake video call, so teach call-back verification.</li>
+<li>NIST SP 800-50 Rev. 1 (2024) guides building cybersecurity and privacy learning programmes, and PCI DSS, HIPAA and NIS2 all expect staff training.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Shaming or punishing people who click discourages reporting; reward reports and keep lessons supportive.</li>
+<li>Using cruel lures such as fake bonuses or layoffs damages trust; agree sensitive themes with HR first.</li>
+<li>Relying on one annual hour-long course; regular short lessons and simulations change behaviour far more.</li>
+</ul>
+</div>
+<h4 id="popular-tools-products_14">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_14" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KnowBe4</strong><br><em>KnowBe4 · Commercial</em></td>
+<td>Very popular platform with a huge library of training content, simulated phishing and a 'Phish Alert' report button.</td>
+<td>A hospital sends monthly practice phishing emails and assigns short videos to anyone who clicks.</td>
+</tr>
+<tr>
+<td><strong>Proofpoint ZenGuide</strong><br><em>Proofpoint · Commercial</em></td>
+<td>Awareness training and phishing simulations (formerly Proofpoint Security Awareness) using real attacks seen by Proofpoint's email security.</td>
+<td>A bank trains staff using look-alikes of actual scams aimed at its own employees.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Attack Simulation Training</strong><br><em>Microsoft · Commercial</em></td>
+<td>Phishing simulation and training built into Microsoft Defender for Office 365 Plan 2.</td>
+<td>An IT admin runs a fake 'shared document' campaign to all Microsoft 365 users and tracks reports.</td>
+</tr>
+<tr>
+<td><strong>Hoxhunt</strong><br><em>Hoxhunt · Commercial</em></td>
+<td>Gamified, adaptive training that sends each person simulations at their own difficulty level and rewards reporting.</td>
+<td>Employees earn points for reporting simulations, and reporting becomes a friendly team competition.</td>
+</tr>
+<tr>
+<td><strong>Cofense PhishMe</strong><br><em>Cofense · Commercial</em></td>
+<td>Phishing simulation paired with a report button and analysis of real user-reported emails.</td>
+<td>Staff-reported emails are triaged, and a real phishing wave is removed from all inboxes.</td>
+</tr>
+<tr>
+<td><strong>SANS Security Awareness</strong><br><em>SANS Institute · Commercial</em></td>
+<td>Expert-written training modules and programme guidance, including role-specific courses for developers and executives.</td>
+<td>A company uses SANS modules to train finance staff on fake invoice and payment-change fraud.</td>
+</tr>
+<tr>
+<td><strong>Mimecast Engage</strong><br><em>Mimecast · Commercial</em></td>
+<td>Human-risk training platform that replaced Mimecast Awareness Training, pairing short, humorous lessons with risk scores from real email behaviour.</td>
+<td>Staff watch two-minute monthly videos and take a quick quiz on spotting fake login pages.</td>
+</tr>
+<tr>
+<td><strong>Infosec IQ</strong><br><em>Infosec (Cengage Group) · Commercial</em></td>
+<td>Awareness training and phishing simulation platform with a wide range of content and templates.</td>
+<td>A university runs role-based training for researchers handling sensitive data.</td>
+</tr>
+<tr>
+<td><strong>Terranova Security</strong><br><em>Fortra · Commercial</em></td>
+<td>Security awareness training with multilingual content and phishing simulations for global workforces.</td>
+<td>A multinational trains staff in 20 languages with localised scam examples.</td>
+</tr>
+<tr>
+<td><strong>Google Phishing Quiz</strong><br><em>Google (Jigsaw) · Free</em></td>
+<td>Free online quiz that teaches people to spot phishing emails through realistic examples.</td>
+<td>A teacher uses the quiz in class to show students how fake login emails look.</td>
+</tr>
+<tr>
+<td><strong>NCSC Top Tips for Staff</strong><br><em>UK National Cyber Security Centre · Free</em></td>
+<td>Free short e-learning package covering phishing, passwords, devices and reporting, easy to embed in an organisation's learning system.</td>
+<td>A small UK charity adds the module to volunteer onboarding so everyone completes it in their first week.</td>
+</tr>
+<tr>
+<td><strong>CybSafe</strong><br><em>CybSafe · Commercial</em></td>
+<td>Human-risk management platform that measures real security behaviours and sends nudges and training based on each person's risk.</td>
+<td>A bank sees that MFA prompts are approved too quickly and sends targeted nudges about MFA-fatigue attacks.</td>
+</tr>
+<tr>
+<td><strong>NINJIO</strong><br><em>NINJIO · Commercial</em></td>
+<td>Security awareness programme of short animated episodes based on real attacks, released monthly with quizzes and phishing simulation.</td>
+<td>Staff watch a four-minute episode about a fake payroll email and then take a two-question quiz.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="endpoint-device-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Endpoint &amp; Device Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3. Endpoint & Device Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="application-devsecops-cloud-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Application, DevSecOps &amp; Cloud Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                5. Application, DevSecOps & Cloud Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,3061 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch12-memory-security.html">
+  
+  
+    <link rel="prev" href="ch11-iommu-and-dma-protection.html">
+  
+  
+    <link rel="next" href="ch13-anti-tamper-technologies.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>12. Memory Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-rowhammer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              12. Memory Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch12-memory-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 DRAM Architecture and Rowhammer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.1 DRAM Architecture and Rowhammer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1211-dram-row-activation-and-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.1 DRAM Row Activation and Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1212-rowhammer-kim-et-al-isca-2014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.2 Rowhammer (Kim et al. ISCA 2014)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1213-rowhammer-attack-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.3 Rowhammer Attack Variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1214-privilege-escalation-via-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.4 Privilege Escalation via Rowhammer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rowhammer-mitigations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 DRAM Rowhammer Mitigations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.2 DRAM Rowhammer Mitigations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1221-ddr4-target-row-refresh-trr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.1 DDR4 Target Row Refresh (TRR)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1222-ddr5-per-row-activation-count-prac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.2 DDR5 Per-Row Activation Count (PRAC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1223-ecc-memory-and-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.3 ECC Memory and Rowhammer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-amd-sme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 AMD Memory Encryption: SME, TSME, and SEV
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.3 AMD Memory Encryption: SME, TSME, and SEV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1231-amd-sme-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.1 AMD SME Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1232-amd-sev-secure-encrypted-virtualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.2 AMD SEV (Secure Encrypted Virtualization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-intel-tme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 Intel Total Memory Encryption (TME) and MKTME
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-arm-mte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 ARM Memory Tagging Extension (MTE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-cold-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 Cold Boot Attacks and TRESOR Defense
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.7 FPGA Memory Security Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-memory-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.8 Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-memory-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.9 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch12-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#12101-rowhammer-on-ddr5-jedec-per-specification-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.1 Rowhammer on DDR5: JEDEC PER Specification (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12102-half-double-rowhammer-adjacent-row-and-ecc-bypass-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.2 Half-Double / Rowhammer++: Adjacent-Row and ECC Bypass Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12103-amd-sev-snp-improvements-in-epyc-9004-genoa-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.3 AMD SEV-SNP Improvements in EPYC 9004 (Genoa, 2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12104-intel-tdx-and-tme-mk-on-sapphire-rapids-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.4 Intel TDX and TME-MK on Sapphire Rapids (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12105-cxl-memory-security-trust-domains-in-cxl-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.5 CXL Memory Security: Trust Domains in CXL 3.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12106-lpddr5x-mobile-integrity-checking-qualcomm-oryon-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.6 LPDDR5X Mobile Integrity Checking: Qualcomm Oryon (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 DRAM Architecture and Rowhammer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.1 DRAM Architecture and Rowhammer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1211-dram-row-activation-and-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.1 DRAM Row Activation and Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1212-rowhammer-kim-et-al-isca-2014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.2 Rowhammer (Kim et al. ISCA 2014)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1213-rowhammer-attack-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.3 Rowhammer Attack Variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1214-privilege-escalation-via-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.4 Privilege Escalation via Rowhammer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-rowhammer-mitigations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 DRAM Rowhammer Mitigations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.2 DRAM Rowhammer Mitigations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1221-ddr4-target-row-refresh-trr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.1 DDR4 Target Row Refresh (TRR)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1222-ddr5-per-row-activation-count-prac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.2 DDR5 Per-Row Activation Count (PRAC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1223-ecc-memory-and-rowhammer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.3 ECC Memory and Rowhammer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-amd-sme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 AMD Memory Encryption: SME, TSME, and SEV
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.3 AMD Memory Encryption: SME, TSME, and SEV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1231-amd-sme-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.1 AMD SME Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1232-amd-sev-secure-encrypted-virtualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.2 AMD SEV (Secure Encrypted Virtualization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-intel-tme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 Intel Total Memory Encryption (TME) and MKTME
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-arm-mte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 ARM Memory Tagging Extension (MTE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-cold-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 Cold Boot Attacks and TRESOR Defense
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.7 FPGA Memory Security Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-memory-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.8 Solutions Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-memory-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.9 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch12-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#12101-rowhammer-on-ddr5-jedec-per-specification-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.1 Rowhammer on DDR5: JEDEC PER Specification (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12102-half-double-rowhammer-adjacent-row-and-ecc-bypass-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.2 Half-Double / Rowhammer++: Adjacent-Row and ECC Bypass Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12103-amd-sev-snp-improvements-in-epyc-9004-genoa-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.3 AMD SEV-SNP Improvements in EPYC 9004 (Genoa, 2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12104-intel-tdx-and-tme-mk-on-sapphire-rapids-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.4 Intel TDX and TME-MK on Sapphire Rapids (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12105-cxl-memory-security-trust-domains-in-cxl-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.5 CXL Memory Security: Trust Domains in CXL 3.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12106-lpddr5x-mobile-integrity-checking-qualcomm-oryon-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10.6 LPDDR5X Mobile Integrity Checking: Qualcomm Oryon (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-memory-security">Chapter 12: Memory Security<a class="headerlink" href="#ch-memory-security" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Memory security encompasses a wide range of threats and defenses. This chapter covers DRAM vulnerabilities (Rowhammer and variants), memory encryption (AMD SME/SEV, Intel TME/MKTME), memory tagging (ARM MTE), cold boot attacks, ECC memory, and hardware memory safety enforcement. Understanding memory security is critical for cloud isolation, TEE design, and any application handling sensitive cryptographic material.</p>
+</div>
+<h2 id="sec-rowhammer"><span class="secnum">12.1</span> DRAM Architecture and Rowhammer<a class="headerlink" href="#sec-rowhammer" title="Permanent link">&para;</a></h2>
+<h3 id="1211-dram-row-activation-and-retention"><span class="secnum">12.1.1</span> DRAM Row Activation and Retention<a class="headerlink" href="#1211-dram-row-activation-and-retention" title="Permanent link">&para;</a></h3>
+<p>DRAM stores bits as charge in capacitors. Each DRAM cell leaks charge over time: the retention time varies by temperature (<span class="arithmatex">\(\approx\)</span>64 ms at 85 <span class="arithmatex">\(\deg\)</span>C, longer at lower temperatures). DRAM cells are organized in rows (4–8 KB per row). A row must be periodically refreshed (tREFI = 7.8 ms for DDR4) to prevent bit loss.</p>
+<p>When a DRAM row is activated (opened), it disturbs adjacent rows by electromagnetic coupling. Repeated activation of an aggressor row increases the probability of bit flips in victim rows.</p>
+<h3 id="1212-rowhammer-kim-et-al-isca-2014"><span class="secnum">12.1.2</span> Rowhammer (Kim et al. ISCA 2014)<a class="headerlink" href="#1212-rowhammer-kim-et-al-isca-2014" title="Permanent link">&para;</a></h3>
+<p>Kim et al. (ISCA 2014) demonstrated that rapidly and repeatedly accessing (hammering) DRAM rows causes bit flips in adjacent rows. Their experimental methodology:</p>
+<ol>
+<li>
+<p>Select two aggressor rows flanking a victim row (double-sided hammering)</p>
+</li>
+<li>
+<p>Repeatedly read aggressor rows, flushing cache after each access (using CLFLUSH)</p>
+</li>
+<li>
+<p>After millions of accesses (within one tREFI window), victim row bits flip</p>
+</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code>/* C: Basic Rowhammer PoC -- double-sided hammer */
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;x86intrin.h&gt;
+
+void rowhammer(uint64_t *aggressor1, uint64_t *aggressor2, int iters) {
+    for (int i = 0; i &lt; iters; i++) {
+        *aggressor1;  /* Read aggressor row 1 */
+        *aggressor2;  /* Read aggressor row 2 */
+        _mm_clflush(aggressor1);  /* Evict from cache */
+        _mm_clflush(aggressor2);
+        _mm_mfence();             /* Serialize memory operations */
+    }
+}
+
+/* Check victim row for bit flips */
+void check_victim(uint64_t *victim, size_t len, uint64_t expected) {
+    for (size_t i = 0; i &lt; len/8; i++) {
+        if (victim[i] != expected) {
+            printf("FLIP at offset
+", i*8, victim[i] ^ expected);
+        }
+    }
+}
+</code></pre></div>
+<h3 id="1213-rowhammer-attack-variants"><span class="secnum">12.1.3</span> Rowhammer Attack Variants<a class="headerlink" href="#1213-rowhammer-attack-variants" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Double-sided hammering</strong>: Two aggressor rows flank victim row. Most effective; requires knowing DRAM bank/row mapping. Demonstrated by Kim et al. 2014.</p>
+</li>
+<li>
+<p><strong>One-location hammering</strong>: Single aggressor accessed repeatedly. Less effective but requires fewer known addresses.</p>
+</li>
+<li>
+<p><strong>Half-double (Google, 2021)</strong>: Aggressor rows one row away from victim (not adjacent). Bypasses some TRR implementations that only protect direct neighbors.</p>
+</li>
+<li>
+<p><strong>Blacksmith (Jattke et al. 2021)</strong>: Non-uniform hammering patterns with varying aggressor counts and access frequencies. Bypasses all known TRR implementations.</p>
+</li>
+<li>
+<p><strong>RowPress (Luo et al. 2023)</strong>: Extended aggressor row activation time (instead of hammering). Exploits DRAM retention failure at sustained high temperature.</p>
+</li>
+<li>
+<p><strong>TRRespass (Frigo et al. 2020)</strong>: Many-sided hammering (&gt;2 aggressors) bypasses Target Row Refresh (TRR) by exhausting refresh coverage.</p>
+</li>
+</ul>
+<h3 id="1214-privilege-escalation-via-rowhammer"><span class="secnum">12.1.4</span> Privilege Escalation via Rowhammer<a class="headerlink" href="#1214-privilege-escalation-via-rowhammer" title="Permanent link">&para;</a></h3>
+<p>Google Project Zero demonstrated (2015) privilege escalation via Rowhammer by targeting DRAM containing page table entries (PTEs). Flipping specific bits in a PTE can grant arbitrary memory access to an unprivileged process.</p>
+<p>Attack steps: (1) Spray memory with transparent huge pages to achieve predictable DRAM layout; (2) Identify hammer-vulnerable DRAM rows via timing; (3) Hammer adjacent to page table page; (4) Flip bit in PTE to map attacker memory with kernel read/write privileges.</p>
+<figure class="fig fig-diagram" id="fig-rowhammer">
+<img class="tikz" src="img/tikz-c8347b54bec8.svg" alt="Double-sided Rowhammer: aggressor rows N-1 and N+1 are hammered repeatedly. Electromagnetic coupling disturbs victim row N, increasing bit flip probability. With sufficient activations within one…" loading="lazy">
+<figcaption><strong>Figure 12.1.</strong> Double-sided Rowhammer: aggressor rows N-1 and N+1 are hammered repeatedly. Electromagnetic coupling disturbs victim row N, increasing bit flip probability. With sufficient activations within one tREFI period (7.8 ms for DDR4), bits flip.</figcaption>
+</figure>
+
+<figure class="fig fig-diagram" id="fig-amd-sme">
+<img class="tikz" src="img/tikz-37d6e60d5dc7.svg" alt="AMD SME memory encryption architecture. The AES-XEX hardware engine in the memory controller transparently encrypts/decrypts data using AES-128-XEX with a physical address tweak. The C-bit in page…" loading="lazy">
+<figcaption><strong>Figure 12.2.</strong> AMD SME memory encryption architecture. The AES-XEX hardware engine in the memory controller transparently encrypts/decrypts data using AES-128-XEX with a physical address tweak. The C-bit in page table entries controls per-page encryption.</figcaption>
+</figure>
+
+<h2 id="sec-rowhammer-mitigations"><span class="secnum">12.2</span> DRAM Rowhammer Mitigations<a class="headerlink" href="#sec-rowhammer-mitigations" title="Permanent link">&para;</a></h2>
+<h3 id="1221-ddr4-target-row-refresh-trr"><span class="secnum">12.2.1</span> DDR4 Target Row Refresh (TRR)<a class="headerlink" href="#1221-ddr4-target-row-refresh-trr" title="Permanent link">&para;</a></h3>
+<p>DDR4 includes Target Row Refresh (TRR) as an in-DRAM mitigation. The DRAM internally tracks row activation counts and proactively refreshes rows adjacent to highly-activated rows.</p>
+<p>TRRespass (Frigo et al. 2020) demonstrated that TRR can be exhausted by using many-sided hammering (more than 2 aggressor rows). By hammering a large set of rows simultaneously, the attacker exceeds TRR’s limited tracking capacity (<span class="arithmatex">\(\approx\)</span>20 rows in typical DDR4 DIMMs).</p>
+<h3 id="1222-ddr5-per-row-activation-count-prac"><span class="secnum">12.2.2</span> DDR5 Per-Row Activation Count (PRAC)<a class="headerlink" href="#1222-ddr5-per-row-activation-count-prac" title="Permanent link">&para;</a></h3>
+<p>DDR5 introduces Per-Row Activation Count (PRAC), a hardware counter per DRAM row that tracks activations with higher precision. The PRAC mechanism:</p>
+<ol>
+<li>
+<p>Each row maintains an activation counter (RFM Alert Refresh Activation Count)</p>
+</li>
+<li>
+<p>When counter exceeds threshold, DRAM issues an Alert-Back (AB) signal to the controller</p>
+</li>
+<li>
+<p>Memory controller responds with a Refresh Management Block (RAAMB) command</p>
+</li>
+<li>
+<p>DRAM refreshes the flagged row and its neighbors before allowing further activations</p>
+</li>
+</ol>
+<p>PRAC provides much stronger rowhammer protection than TRR because it maintains per-row state rather than approximate tracking.</p>
+<h3 id="1223-ecc-memory-and-rowhammer"><span class="secnum">12.2.3</span> ECC Memory and Rowhammer<a class="headerlink" href="#1223-ecc-memory-and-rowhammer" title="Permanent link">&para;</a></h3>
+<p>ECC (Error-Correcting Code) DRAM uses SECDED (Single Error Correct, Double Error Detect) to detect and correct single-bit errors. A standard DDR4 ECC DIMM uses 72 bits per 64-bit word: 8 extra bits for ECC syndrome.</p>
+<p>Rowhammer via ECC: Kim et al. 2014 and subsequent work showed that Rowhammer-induced bit flips can bypass ECC by causing multi-bit flips in the same 8-bit ECC word. SECDED can correct only one bit per 72-bit code word. Two flips in the same ECC word = uncorrectable.</p>
+<p>Chipkill ECC (IBM): Each byte of a 64-bit word uses a separate DRAM chip. Single DRAM chip failure (all 8 bits of the chip) = correctable by Chipkill. Provides stronger protection than standard SECDED against chip-level failures, but does not prevent all Rowhammer attacks.</p>
+<h2 id="sec-amd-sme"><span class="secnum">12.3</span> AMD Memory Encryption: SME, TSME, and SEV<a class="headerlink" href="#sec-amd-sme" title="Permanent link">&para;</a></h2>
+<p>AMD Secure Memory Encryption (SME) was introduced with the EPYC "Naples" (Zen 1) processor. It encrypts DRAM content transparently using AES-128-XEX with a physically-derived tweak, providing protection against cold boot attacks and physical memory probing.</p>
+<h3 id="1231-amd-sme-architecture"><span class="secnum">12.3.1</span> AMD SME Architecture<a class="headerlink" href="#1231-amd-sme-architecture" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>AES-128-XEX engine</strong>: Integrated in the SoC memory controller. XEX (XOR-Encrypt-XOR) mode uses the physical address as a tweak to prevent block relocation attacks.</p>
+</li>
+<li>
+<p><strong>C-bit (bit 47) in PTE</strong>: When set, indicates the page is encrypted. Software can choose per-page encryption. C-bit is located at physical address bit 47, reducing the usable physical address space to 47 bits.</p>
+</li>
+<li>
+<p><strong>Single key</strong>: All encrypted memory uses the same 128-bit key generated by the AMD Secure Processor (ASP) at boot from a hardware random source. Key is never exported or accessible to software.</p>
+</li>
+<li>
+<p><strong>TSME (Transparent SME)</strong>: Encrypts all DRAM transparently regardless of C-bit. Enabled via AMD_MSR_SME_EN MSR bit. No software changes required.</p>
+</li>
+</ul>
+<h3 id="1232-amd-sev-secure-encrypted-virtualization"><span class="secnum">12.3.2</span> AMD SEV (Secure Encrypted Virtualization)<a class="headerlink" href="#1232-amd-sev-secure-encrypted-virtualization" title="Permanent link">&para;</a></h3>
+<p>AMD SEV extends SME to virtualization: each VM gets its own AES-128 key, so the hypervisor cannot read VM memory in plaintext.</p>
+<ul>
+<li>
+<p><strong>SEV</strong>: Per-VM key (up to 509 simultaneous VMs on EPYC). Hypervisor cannot decrypt.</p>
+</li>
+<li>
+<p><strong>SEV-ES (Encrypted State)</strong>: Also encrypts VMCB (VM save area) CPU register state.</p>
+</li>
+<li>
+<p><strong>SEV-SNP (Secure Nested Paging)</strong>: Adds reverse map table (RMP) enforcing that each physical page can only be mapped by one VM. Prevents memory remapping attacks.</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code>/* C: Set C-bit in PTE for AMD SME encryption */
+#define AMD_SME_CBIT (1UL &lt;&lt; 47)
+
+/* In Linux kernel memory mapping: */
+pgprot_t encrypt_prot(pgprot_t prot) {
+    return pgprot_val(prot) | AMD_SME_CBIT;
+}
+
+/* Enable TSME via MSR (firmware/early boot only): */
+uint64_t msr_val = rdmsr(MSR_K8_SYSCFG);
+msr_val |= (1 &lt;&lt; 24);  /* MSR_K8_SYSCFG_MEM_ENCRYPT_EN */
+wrmsr(MSR_K8_SYSCFG, msr_val);
+</code></pre></div>
+<h2 id="sec-intel-tme"><span class="secnum">12.4</span> Intel Total Memory Encryption (TME) and MKTME<a class="headerlink" href="#sec-intel-tme" title="Permanent link">&para;</a></h2>
+<p>Intel TME (Total Memory Encryption), introduced in Ice Lake Xeon (Icelake-SP, 10nm), encrypts all DRAM using AES-128-XTS hardware in the memory controller. Single key covers all physical memory.</p>
+<p>Intel MKTME (Multi-Key TME, Sapphire Rapids Xeon): up to 65,535 simultaneous keys, each associated with specific physical memory ranges. Hypervisors use MKTME to assign unique keys to each VM, similar to AMD SEV but implemented via Intel Key Management Service (KMS).</p>
+<div class="language-text highlight"><pre><span></span><code>/* C: Intel TME configuration (Linux kernel, arch/x86/kernel/tme.c) */
+#define MSR_IA32_TME_ACTIVATE     0x982
+#define MSR_IA32_TME_CAPABILITY   0x981
+
+/* Read TME capability */
+uint64_t cap = rdmsr(MSR_IA32_TME_CAPABILITY);
+bool tme_supported = (cap &gt;&gt; 0) &amp; 1;
+int max_keys = (cap &gt;&gt; 36) &amp; 0xFFFF;
+printf("TME: supported=
+", tme_supported, max_keys);
+
+/* Enable TME (done by BIOS/UEFI in production): */
+wrmsr(MSR_IA32_TME_ACTIVATE, (1UL &lt;&lt; 1) | /* TME enable */
+                              (1UL &lt;&lt; 3));  /* AES-128-XTS algorithm */
+</code></pre></div>
+<h2 id="sec-arm-mte"><span class="secnum">12.5</span> ARM Memory Tagging Extension (MTE)<a class="headerlink" href="#sec-arm-mte" title="Permanent link">&para;</a></h2>
+<p>ARM MTE (Memory Tagging Extension), introduced in ARMv8.5-A (2018), provides hardware-enforced memory safety by associating 4-bit color tags with memory allocations and pointers.</p>
+<ul>
+<li>
+<p>Each 16-byte aligned granule of memory has a 4-bit tag stored in DRAM spare bits</p>
+</li>
+<li>
+<p>Each pointer has a 4-bit tag in bits [59:56] of the virtual address</p>
+</li>
+<li>
+<p>On memory access, hardware compares pointer tag with granule tag</p>
+</li>
+<li>
+<p>Tag mismatch raises a fault (sync mode) or logs an asynchronous exception</p>
+</li>
+<li>
+<p>Provides heap buffer overflow and use-after-free detection with hardware enforcement</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code>/* C: ARM MTE heap allocation with tag assignment */
+#include &lt;arm_acle.h&gt;
+#include &lt;sys/mman.h&gt;
+
+/* Allocate tagged memory using mmap with PROT_MTE */
+void *alloc_tagged(size_t size) {
+    void *ptr = mmap(NULL, size, PROT_READ|PROT_WRITE|PROT_MTE,
+                     MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+    if (ptr == MAP_FAILED) return NULL;
+    /* Generate random tag and set granule tag */
+    void *tagged_ptr = __arm_mte_create_random_tag(ptr, 0);
+    __arm_mte_set_tag(tagged_ptr);
+    return tagged_ptr;
+}
+
+/* Access with wrong tag triggers MTE fault */
+void *wrong_tag_ptr = __arm_mte_create_random_tag(ptr, ~0);
+*((int*)wrong_tag_ptr) = 0;  /* SIGSEGV or async fault */
+</code></pre></div>
+<h2 id="sec-cold-boot"><span class="secnum">12.6</span> Cold Boot Attacks and TRESOR Defense<a class="headerlink" href="#sec-cold-boot" title="Permanent link">&para;</a></h2>
+<p>DRAM cells retain data for seconds to minutes after power is removed, especially when cooled. At room temperature, data remanence is <span class="arithmatex">\(\approx\)</span>5–30 seconds. At liquid nitrogen (<span class="arithmatex">\(-196^{\circ}\)</span>C), remanence can extend to hours. This enables cold boot attacks:</p>
+<ol>
+<li>
+<p>Boot target system into OS (BitLocker unlocked, AES keys in RAM)</p>
+</li>
+<li>
+<p>Spray compressed air upside-down to cool DRAM to <span class="arithmatex">\(\approx -50^{\circ}\)</span>C</p>
+</li>
+<li>
+<p>Power off system, quickly remove DIMMs (must move within <span class="arithmatex">\(\approx\)</span>30 seconds)</p>
+</li>
+<li>
+<p>Insert DIMMs into attacker system, boot from USB key recovery tool</p>
+</li>
+<li>
+<p>Scan RAM image for AES key schedules (AES-Keyfind tool)</p>
+</li>
+</ol>
+<p><strong>TRESOR Defense (Muller et al. 2011)</strong>: Store AES key material in x86 debug registers (DR0–DR3, up to 256 bits on 64-bit systems) instead of RAM. Debug registers are not accessible to user space and not included in hibernation images. AES operations are performed by injecting key material from debug registers at encryption time.</p>
+<h2 id="sec-fpga-memory"><span class="secnum">12.7</span> FPGA Memory Security Implementations<a class="headerlink" href="#sec-fpga-memory" title="Permanent link">&para;</a></h2>
+<p>On-chip SRAM scrubbing on FPGA: SEU (Single Event Upset) from cosmic rays can flip SRAM bits. Xilinx UltraScale+ SEM (Soft Error Mitigation) IP continuously reads and corrects FPGA configuration SRAM using SECDED ECC built into the configuration frame structure.</p>
+<p>External DRAM interface encryption on FPGA: Xilinx HBM2 interface (UltraScale+ HBM FPGAs: xcku5p-HBM) encrypts the HBM2 interface using AES-128-XEX implemented in the HBM interface shell, protecting against bus interception on the HBM stack.</p>
+<p>BRAM ECC on Xilinx FPGAs: All 36 Kbit BRAMs in UltraScale+ support SECDED ECC with:</p>
+<ul>
+<li>
+<p>32-bit data + 7-bit syndrome = 39-bit BRAM word with ECC</p>
+</li>
+<li>
+<p>Single-bit error correction, double-bit error detection</p>
+</li>
+<li>
+<p>Soft error inject testability (invert any bit for testing)</p>
+</li>
+</ul>
+<h2 id="sec-memory-solutions"><span class="secnum">12.8</span> Solutions Comparison<a class="headerlink" href="#sec-memory-solutions" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-memory-solutions">
+<div class="tbl-caption"><strong>Table 12.1.</strong> Memory security solutions – hardware and software comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Mechanism</strong></th>
+<th style="text-align: left;"><strong>Coverage</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AMD SME</td>
+<td style="text-align: left;">AMD</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">AES-128-XEX in MC</td>
+<td style="text-align: left;">All DRAM (single key)</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD TSME</td>
+<td style="text-align: left;">AMD</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">AES-128-XEX, auto</td>
+<td style="text-align: left;">All DRAM transparent</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD SEV-SNP</td>
+<td style="text-align: left;">AMD</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Per-VM AES key</td>
+<td style="text-align: left;">VM isolation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel TME</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">AES-128-XTS in MC</td>
+<td style="text-align: left;">All DRAM (single key)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel MKTME</td>
+<td style="text-align: left;">Intel</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">AES-256-XTS/key</td>
+<td style="text-align: left;">Per-domain isolation</td>
+</tr>
+<tr>
+<td style="text-align: left;">ARM MTE</td>
+<td style="text-align: left;">ARM</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">4-bit tag / 16B</td>
+<td style="text-align: left;">Heap safety</td>
+</tr>
+<tr>
+<td style="text-align: left;">CHERI capabilities</td>
+<td style="text-align: left;">ARM/Cambridge</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Fat pointer bounds</td>
+<td style="text-align: left;">Code+data safety</td>
+</tr>
+<tr>
+<td style="text-align: left;">DDR4 TRR</td>
+<td style="text-align: left;">DRAM vendors</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Row refresh counter</td>
+<td style="text-align: left;">Rowhammer (partial)</td>
+</tr>
+<tr>
+<td style="text-align: left;">DDR5 PRAC</td>
+<td style="text-align: left;">JEDEC</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Per-row activation cnt</td>
+<td style="text-align: left;">Rowhammer (strong)</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECC SECDED</td>
+<td style="text-align: left;">JEDEC</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Hamming code</td>
+<td style="text-align: left;">1-bit correction</td>
+</tr>
+<tr>
+<td style="text-align: left;">Chipkill ECC</td>
+<td style="text-align: left;">IBM</td>
+<td style="text-align: left;">HW</td>
+<td style="text-align: left;">Chip-level ECC</td>
+<td style="text-align: left;">Chip failure correction</td>
+</tr>
+<tr>
+<td style="text-align: left;">TRESOR</td>
+<td style="text-align: left;">Academic</td>
+<td style="text-align: left;">SW</td>
+<td style="text-align: left;">Key in debug regs</td>
+<td style="text-align: left;">Cold boot defense</td>
+</tr>
+<tr>
+<td style="text-align: left;">AddressSanitizer</td>
+<td style="text-align: left;">Google/OSS</td>
+<td style="text-align: left;">SW+HW</td>
+<td style="text-align: left;">Shadow memory</td>
+<td style="text-align: left;">Heap/stack bugs</td>
+</tr>
+<tr>
+<td style="text-align: left;">MemorySanitizer</td>
+<td style="text-align: left;">Google/OSS</td>
+<td style="text-align: left;">SW</td>
+<td style="text-align: left;">Uninit tracking</td>
+<td style="text-align: left;">Uninitialized reads</td>
+</tr>
+<tr>
+<td style="text-align: left;">Valgrind Memcheck</td>
+<td style="text-align: left;">OSS</td>
+<td style="text-align: left;">SW</td>
+<td style="text-align: left;">Dynamic binary</td>
+<td style="text-align: left;">All memory errors</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="tbl" id="tab-memory-asic">
+<div class="tbl-caption"><strong>Table 12.2.</strong> Hardware memory encryption – ASIC implementation details</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Implementation</strong></th>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Throughput</strong></th>
+<th style="text-align: left;"><strong>Power</strong></th>
+<th style="text-align: left;"><strong>Overhead</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AMD EPYC 7003 (Zen 3) SME</td>
+<td style="text-align: left;">7nm TSMC</td>
+<td style="text-align: left;">AES-128-XEX</td>
+<td style="text-align: left;">51.2 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>5 W</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>1%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Ice Lake Xeon TME</td>
+<td style="text-align: left;">10nm Intel</td>
+<td style="text-align: left;">AES-128-XTS</td>
+<td style="text-align: left;">51.2 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>5 W</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>1%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Sapphire Rapids MKTME</td>
+<td style="text-align: left;">7nm Intel</td>
+<td style="text-align: left;">AES-256-XTS</td>
+<td style="text-align: left;">76.8 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>8 W</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>2%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kingston Aegis AES DIMM</td>
+<td style="text-align: left;">DDR4 ASIC</td>
+<td style="text-align: left;">AES-256-XTS</td>
+<td style="text-align: left;">34 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>2 W</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>1%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Optane PMem 200</td>
+<td style="text-align: left;">3D XPoint</td>
+<td style="text-align: left;">AES-256</td>
+<td style="text-align: left;">6.6 GB/s</td>
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span>3 W</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-memory-solved"><span class="secnum">12.9</span> Solved Problems<a class="headerlink" href="#sec-memory-solved" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Rowhammer Bit Flip Probability for Given Refresh Interval</p>
+<p>A DDR4-3200 DIMM has tREFI = 7.8 ms and row cycle time tRC = 45 ns. An attacker can perform double-sided hammering. Calculate: (a) maximum activations per tREFI window; (b) required activations for 99% bit flip probability given <span class="arithmatex">\(P_{flip}(n) = 1 - e^{-n/N_{crit}}\)</span> with <span class="arithmatex">\(N_{crit} = 140{,}000\)</span>; (c) whether the attack completes within one tREFI window.</p>
+<p><strong>Solution:</strong></p>
+<p><strong>Step 1: Maximum Activations per tREFI</strong></p>
+<p>Each hammer iteration accesses two aggressor rows + 2 CLFLUSH operations. CLFLUSH latency <span class="arithmatex">\(\approx\)</span> 200 ns (cache miss). Total per iteration:</p>
+<div class="arithmatex">\[t_{iter} = 2 \times tRC + 2 \times t_{CLFLUSH} = 2\times 45 + 2\times 200 = 490 \text{ ns}\]</div>
+<p>Maximum activations per tREFI:</p>
+<div class="arithmatex">\[N_{max} = \lfloor \frac{t_{REFI}}{t_{iter}} \rfloor = \lfloor \frac{7.8\times10^6}{490} \rfloor = \lfloor 15{,}918 \rfloor = 15{,}918\]</div>
+<p><strong>Step 2: Required Activations for 99% Probability</strong></p>
+<div class="arithmatex">\[P_{flip}(n) = 0.99 = 1 - e^{-n/N_{crit}}\]</div>
+<div class="arithmatex">\[e^{-n/N_{crit}} = 0.01\]</div>
+<div class="arithmatex">\[n = -N_{crit} \cdot \ln(0.01) = 140{,}000 \times 4.605 = 644{,}700 \text{ activations}\]</div>
+<p><strong>Step 3: Time Required</strong></p>
+<div class="arithmatex">\[t_{attack} = n \times t_{iter} = 644{,}700 \times 490 \text{ ns} = 315.9 \text{ ms}\]</div>
+<p>Number of tREFI windows: <span class="arithmatex">\(315.9 / 7.8 = 40.5\)</span> windows.</p>
+<p><strong>Step 4: Feasibility Assessment</strong></p>
+<p>The attack requires <span class="arithmatex">\(\approx\)</span>41 tREFI windows (316 ms total). This is feasible from a user-space process on most x86 systems. The attacker needs  644,700 aggressor row activations, achievable in 316 ms. DDR4 TRR has activation tracking window of one tREFI – attacks spreading activations across multiple windows may evade some TRR implementations.</p>
+<p><strong>Conclusion</strong>: Double-sided hammering achieves 99% bit flip probability in <span class="arithmatex">\(\approx\)</span>316 ms with 644,700 activations across 41 DRAM refresh windows. The attack is readily feasible from an unprivileged process with direct physical memory access.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: ECC SECDED Correction Capability Analysis</p>
+<p>A DDR4 ECC DIMM uses SECDED with 72-bit code words (64 data + 8 check bits). (a) What is the Hamming distance of SECDED? (b) Can it correct 2-bit errors? (c) A Rowhammer attack causes 2 bit flips in the same 64-bit word. What is the ECC response? (d) What minimum ECC strength would be needed to correct 2-bit errors?</p>
+<p><strong>Solution:</strong></p>
+<p><strong>Step 1: SECDED Code Parameters</strong></p>
+<p>SECDED uses a <span class="arithmatex">\((72, 64)\)</span> Hamming code: 72-bit codeword, 64 data bits, 8 check bits. Minimum Hamming distance: <span class="arithmatex">\(d_{min} = 4\)</span> (SECDED property).</p>
+<p><strong>Step 2: Error Correction Capability</strong></p>
+<p>For a code with <span class="arithmatex">\(d_{min} = 4\)</span>:</p>
+<ul>
+<li>
+<p>Detect up to <span class="arithmatex">\(t = d_{min} - 1 = 3\)</span> errors</p>
+</li>
+<li>
+<p>Correct up to <span class="arithmatex">\(\lfloor (d_{min}-1)/2 \rfloor = 1\)</span> error</p>
+</li>
+</ul>
+<p>SECDED cannot correct 2-bit errors. It can only detect them (as DED – Double Error Detect).</p>
+<p><strong>Step 3: Rowhammer 2-Bit Flip Scenario</strong></p>
+<p>Two bit flips in the same 72-bit codeword: the syndrome indicates a detected-but-uncorrectable double-bit error. SECDED raises an MBE (Multi-Bit Error) flag, triggering a machine check exception (MCE) on x86 or a platform error on ARM. The system crashes or reboots.</p>
+<p>However: if the two flips are in different 72-bit codewords (different DRAM chips), each flip is corrected independently. Chipkill ECC handles the case where all bits of one chip fail.</p>
+<p><strong>Step 4: Correction of 2-Bit Errors</strong></p>
+<p>A <span class="arithmatex">\((79, 64)\)</span> code (64 data + 15 check bits) with <span class="arithmatex">\(d_{min} = 6\)</span> can correct 2-bit errors: <span class="arithmatex">\(\lfloor (6-1)/2 \rfloor = 2\)</span> error correction capability. This requires 15 check bits per 64-bit word vs. the 8 used by SECDED – a 46% overhead, uneconomical for commodity DRAM.</p>
+<p><strong>Conclusion</strong>: SECDED (72,64) cannot correct 2-bit Rowhammer flips in the same codeword. The MBE triggers a system crash rather than a silent data corruption. This is a security-relevant behavior: Rowhammer causing 2-bit flips in the same ECC word causes system crash, not privilege escalation.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: AMD SME Physical Address C-Bit Encoding</p>
+<p>An AMD EPYC 7543 processor (Zen 3 microarchitecture, 7 nm TSMC) supports Secure Memory Encryption (SME) with the memory encryption C-bit located at bit position 47 of the physical address. The processor has a 48-bit physical address space (256 TB). A page table entry (PTE) for a 4 KB page at physical address <code>0x0000_7FFF_FF00_0000</code> is to be marked encrypted.</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>Calculate the C-bit mask for this processor.</p>
+</li>
+<li>
+<p>Compute the PTE physical address field value with the C-bit set.</p>
+</li>
+<li>
+<p>If the Linux kernel uses <code>__sme_set(addr)</code> to set the C-bit, show the resulting 64-bit value stored in CR3 when the encrypted page directory base is at physical address <code>0x0000_0001_0000_0000</code>.</p>
+</li>
+<li>
+<p>Explain the TSME (Transparent SME) mode and why it requires no OS changes.</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): C-Bit Mask Calculation</strong></p>
+<p>The C-bit position is reported in CPUID leaf <code>0x8000_001F</code>, EBX bits [5:0]. For EPYC 7543 with 48-bit PA: C-bit position = 47.</p>
+<div class="arithmatex">\[C\_bit\_mask = 1 \ll 47 = \texttt{0x0000\_8000\_0000\_0000}\]</div>
+<p>In binary (64 bits):</p>
+<div class="language-text highlight"><pre><span></span><code>Bit: 63       47       31       15       0
+     0...0    1    0...0    0...0    0...0
+Hex: 0x0000_8000_0000_0000
+</code></pre></div>
+<p><strong>Part (b): PTE Physical Address Field with C-Bit</strong></p>
+<p>Physical address: <code>0x0000_7FFF_FF00_0000</code></p>
+<p>Verify it fits in 48-bit PA space: bits [63:48] must be zero. <code>0x7FFF_FF00_0000</code> <span class="arithmatex">\(&lt;\)</span> <code>0x1_0000_0000_0000</code> (<span class="arithmatex">\(2^{48}\)</span>). Valid.</p>
+<p>PTE page frame number (PFN) occupies bits [51:12] for a 4 KB page. PFN = physical address <span class="arithmatex">\(\gg\)</span> 12 = <code>0x7FFF_FF00_0000</code> <span class="arithmatex">\(\gg\)</span> 12 = <code>0x7FFF_FF00_0</code></p>
+<p>With C-bit at position 47 ORed in:</p>
+<div class="language-text highlight"><pre><span></span><code>PA    = 0x00007FFFFFFF0000
+C-bit = 0x0000800000000000
+PTE   = 0x0000FFFFFFFF0000 | page flags (P, R/W, etc.)
+</code></pre></div>
+<p>Adding standard present + R/W flags (bits 0,1): PTE = <code>0x0000FFFFFFFF0003</code></p>
+<p><strong>Part (c): CR3 Value with TSME C-Bit</strong></p>
+<p>Page directory base address: <code>0x0000_0001_0000_0000</code> <code>__sme_set()</code> ORs the C-bit mask into the address:</p>
+<div class="language-text highlight"><pre><span></span><code>addr  = 0x0000000100000000
+C-bit = 0x0000800000000000
+CR3   = 0x0000800100000000
+</code></pre></div>
+<p>The hardware strips the C-bit when performing page table walks but uses it to determine the encryption key index for memory accesses.</p>
+<p><strong>Part (d): Transparent SME (TSME)</strong></p>
+<p>TSME mode (enabled via BIOS/UEFI, MSR <code>0xC001_0010</code> bit 23) encrypts <em>all</em> DRAM accesses regardless of the C-bit in PTEs. The AES-128-XEX encryption engine sits between the L3 cache and DRAM controller.</p>
+<p>No OS changes required because:</p>
+<ul>
+<li>
+<p>Every physical address is encrypted transparently</p>
+</li>
+<li>
+<p>The C-bit concept is irrelevant – all memory is encrypted</p>
+</li>
+<li>
+<p>Software reads/writes normal physical addresses; encryption is invisible</p>
+</li>
+<li>
+<p>The tweak value for XEX mode is derived from the physical address</p>
+</li>
+</ul>
+<p>TSME protects against cold boot attacks that remove DIMMs and read them in another system. The TSME key is generated randomly at power-on and stored inside the AMD Secure Processor; it never appears on any bus.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: ARM MTE Allocation Policy for Secure Heap</p>
+<p>A security engineer is implementing a secure memory allocator using ARM Memory Tagging Extension (MTE) on a Cortex-A78 based SoC. MTE provides 4-bit tags for 16-byte granules. Design a complete tagging policy for malloc() and free() that prevents use-after-free and heap buffer overflow vulnerabilities.</p>
+<div class="list-lower-alpha-paren">
+<ol>
+<li>
+<p>Calculate the tag storage overhead for a 64 MB heap.</p>
+</li>
+<li>
+<p>Describe the allocation tag selection policy to prevent tag collision.</p>
+</li>
+<li>
+<p>Show the ARM assembly sequence for tagged allocation of 64 bytes.</p>
+</li>
+<li>
+<p>Explain how MTE detects a use-after-free access.</p>
+</li>
+</ol>
+</div>
+<p><strong>Solution:</strong> <strong>Part (a): Tag Storage Overhead</strong></p>
+<p>MTE stores one 4-bit tag per 16-byte memory granule in a separate tag memory region (not visible to software as normal RAM).</p>
+<p>For a 64 MB heap:</p>
+<ul>
+<li>
+<p>Granules <span class="arithmatex">\(= 64 \times 2^{20} \div 16 = 4{,}194{,}304\)</span> granules</p>
+</li>
+<li>
+<p>Tag bits <span class="arithmatex">\(= 4{,}194{,}304 \times 4 = 16{,}777{,}216\)</span> bits <span class="arithmatex">\(= 2\)</span> MB</p>
+</li>
+<li>
+<p>Overhead <span class="arithmatex">\(= 2\,\text{MB} / 64\,\text{MB} = 3.125\%\)</span></p>
+</li>
+</ul>
+<p>The ARM architecture reserves a dedicated tag memory region, typically implemented as additional SRAM alongside main memory. On Cortex-A78, this is part of the L1 data cache tag array.</p>
+<p><strong>Part (b): Tag Selection Policy</strong></p>
+<p>A secure allocation policy must ensure the pointer tag differs from the tag of adjacent allocations to prevent overflow reads:</p>
+<ol>
+<li>
+<p>On malloc(size): generate a random 4-bit tag <span class="arithmatex">\(T_{new}\)</span></p>
+</li>
+<li>
+<p>Check: <span class="arithmatex">\(T_{new} \neq T_{prev}\)</span> (tag of preceding allocation)</p>
+</li>
+<li>
+<p>Check: <span class="arithmatex">\(T_{new} \neq T_{next}\)</span> (tag of following allocation)</p>
+</li>
+<li>
+<p>Check: <span class="arithmatex">\(T_{new} \neq 0\)</span> (tag 0 is reserved for untagged memory)</p>
+</li>
+<li>
+<p>If collision: increment tag modulo 15 (tags 1–15), retry</p>
+</li>
+<li>
+<p>On free(ptr): set memory tag to 0 (or a different random tag)</p>
+</li>
+<li>
+<p>Pointer tag is set to 0 immediately on free (invalidates all copies)</p>
+</li>
+</ol>
+<p>This excludes tag 0 (14 usable values: 1–15 minus adjacent tags).</p>
+<p><strong>Part (c): ARM Assembly for Tagged 64-byte Allocation</strong></p>
+<div class="language-text highlight"><pre><span></span><code>// X0 = pointer to 64-byte region (16-byte aligned)
+// Step 1: Generate random tag using IRG instruction
+IRG   X1, X0, XZR     // X1 = X0 with random tag in bits [59:56]
+// Step 2: Exclude tag 0 -- if tag is 0, force to 1
+MOVK  X2, #0x1, LSL #56
+CMPP  X1, XZR          // compare tag(X1) with tag(XZR)=0
+CSEL  X1, X2, X1, EQ  // if tag==0, use X2 (tag=1)
+// Step 3: Store tags for all 4 granules (4x16=64 bytes)
+STG   X1, [X1]         // store tag for granule 0
+STG   X1, [X1, #16]    // store tag for granule 1
+STG   X1, [X1, #32]    // store tag for granule 2
+STG   X1, [X1, #48]    // store tag for granule 3
+// Step 4: Return tagged pointer in X0
+MOV   X0, X1           // X0 now has tag in bits [59:56]
+</code></pre></div>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> The IRG (Insert Random Tag) instruction generates a random tag using the hardware PRNG seeded by the EL1 kernel. The tag is stored in the pointer itself (bits [59:56] of a 64-bit pointer).</p>
+</div>
+<p><strong>Part (d): Use-After-Free Detection</strong></p>
+<p>MTE detects use-after-free via tag mismatch:</p>
+<ol>
+<li>
+<p>Allocation: pointer tag <span class="arithmatex">\(= T_A\)</span> (e.g., 0x5), memory tag set to <span class="arithmatex">\(T_A\)</span></p>
+</li>
+<li>
+<p>Free: memory tag overwritten with <span class="arithmatex">\(T_F \neq T_A\)</span> (e.g., 0x9) The pointer itself is not changed (dangling pointer remains)</p>
+</li>
+<li>
+<p>UAF access: program uses stale pointer with tag <span class="arithmatex">\(T_A\)</span></p>
+</li>
+<li>
+<p>Hardware check: pointer tag (<span class="arithmatex">\(T_A = 0x5\)</span>) <span class="arithmatex">\(\neq\)</span> memory tag (<span class="arithmatex">\(T_F = 0x9\)</span>)</p>
+</li>
+<li>
+<p>Synchronous fault (SIGSEGV) raised immediately on MTE_SYNC mode</p>
+</li>
+</ol>
+<p>In MTE_SYNC mode, the fault is precise – the faulting instruction is identified. In MTE_ASYNC mode, the kernel delivers the signal at a safe point, improving throughput by approximately 3% on workloads with frequent memory accesses. Android 12+ enables MTE for heap allocations.</p>
+</div>
+<h2 id="sec-ch12-recent"><span class="secnum">12.10</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch12-recent" title="Permanent link">&para;</a></h2>
+<p>Memory security research and hardware development from 2023 to 2026 has produced the JEDEC Pairwise Error Rate (PER) specification for DDR5 Rowhammer, advances in Half-Double and Rowhammer++ attacks, AMD SEV-SNP improvements in the EPYC 9004 generation, Intel TDX and TME-MK on Sapphire Rapids, CXL memory trust domains, and integrated integrity checking in LPDDR5X mobile DRAM.</p>
+<h3 id="12101-rowhammer-on-ddr5-jedec-per-specification-2024"><span class="secnum">12.10.1</span> Rowhammer on DDR5: JEDEC PER Specification (2024)<a class="headerlink" href="#12101-rowhammer-on-ddr5-jedec-per-specification-2024" title="Permanent link">&para;</a></h3>
+<p>The JEDEC JESD79-5B specification (DDR5, revised 2024) formalises the <strong>Pairwise Error Rate (PER)</strong> metric, providing a standardised method for characterising Rowhammer susceptibility across DRAM manufacturers:</p>
+<ul>
+<li>
+<p><strong>PER definition:</strong> The probability that a victim row bit flips when the two adjacent aggressor rows are each activated <span class="arithmatex">\(N_{PER}\)</span> times within one tREFI window, measured over a population of <span class="arithmatex">\(10^6\)</span> cells.</p>
+</li>
+<li>
+<p><strong>DDR5 mandatory mitigation:</strong> All DDR5-6400 and above modules must implement Per-Row Activation Count (PRAC) with a mandatory Alert-Back (AB) signal and Refresh Management (RFM) response within 4 ns of AB assertion.</p>
+</li>
+<li>
+<p><strong>PER threshold:</strong> JEDEC specifies maximum PER <span class="arithmatex">\(&lt; 10^{-9}\)</span> per bit per activation sequence at the specified <span class="arithmatex">\(N_{PER}\)</span>. Modules with PER above threshold at 32 activations per tREFI must be marked “Rowhammer-sensitive” and rejected from server-class deployments.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-ddr5-rowhammer">
+<div class="tbl-caption"><strong>Table 12.3.</strong> DDR4 vs. DDR5 Rowhammer mitigation comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>DDR4</strong></th>
+<th style="text-align: left;"><strong>DDR5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Mitigation mechanism</td>
+<td style="text-align: left;">TRR (vendor-specific)</td>
+<td style="text-align: left;">PRAC (JEDEC standard)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Per-row tracking</td>
+<td style="text-align: left;">Approximate (ACT table)</td>
+<td style="text-align: left;"><strong>Hardware counter per row</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Granularity</td>
+<td style="text-align: left;"><span class="math inline">\(\approx\)</span>20 rows tracked</td>
+<td style="text-align: left;">All rows, no limit</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alert mechanism</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><strong>Alert-Back (AB) signal</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Controller response</td>
+<td style="text-align: left;">Optional RFM</td>
+<td style="text-align: left;"><strong>Mandatory RFM within 4 ns</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">PER standardisation</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;"><strong>JESD79-5B mandatory</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Bypass known?</td>
+<td style="text-align: left;">Yes (TRRespass, Blacksmith)</td>
+<td style="text-align: left;">No bypass published to date</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="12102-half-double-rowhammer-adjacent-row-and-ecc-bypass-attacks"><span class="secnum">12.10.2</span> Half-Double / Rowhammer++: Adjacent-Row and ECC Bypass Attacks<a class="headerlink" href="#12102-half-double-rowhammer-adjacent-row-and-ecc-bypass-attacks" title="Permanent link">&para;</a></h3>
+<p>Two significant attack evolutions emerged in 2023–2024:</p>
+<p><strong>Half-Double (Google Security, updated 2024):</strong> The original 2021 Half-Double paper showed that rows two positions from the aggressor (not just adjacent) can flip. The 2024 update demonstrates exploitation on DDR5 PRAC modules by targeting “far rows” that PRAC does not track in its initial activation window, achieving bit flips with <span class="arithmatex">\(N = 2{,}048\)</span> activations vs. the previous <span class="arithmatex">\(N = 70{,}000\)</span> on DDR4.</p>
+<p><strong>Rowhammer++ (Jattke <em>et al.</em>, USENIX Security 2024):</strong> This work systematically shows that standard ECC SECDED does not prevent privilege escalation when the attacker can:</p>
+<ol>
+<li>
+<p>Identify a target PTE whose ECC code word has three or more bits in the same byte (enabling triple-bit flip with one ECC failure, triggering MCE but not before the PTE is temporarily writable in the error-correction window).</p>
+</li>
+<li>
+<p>Chain with a race condition in the MCE handler on Linux to re-read the flipped PTE before the kernel’s poison-page logic marks it inaccessible.</p>
+</li>
+</ol>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> Rowhammer++ demonstrates that ECC alone is insufficient against an adversary who can trigger deterministic, multi-bit flips in the same ECC codeword. Server deployments should combine DDR5 PRAC + Chipkill ECC + OS-level huge-page isolation (disable transparent huge pages in <code>/sys/kernel/mm/transparent_hugepage/enabled</code>) to eliminate the physical address predictability required for targeting specific PTEs.</p>
+</div>
+<h3 id="12103-amd-sev-snp-improvements-in-epyc-9004-genoa-2023"><span class="secnum">12.10.3</span> AMD SEV-SNP Improvements in EPYC 9004 (Genoa, 2023)<a class="headerlink" href="#12103-amd-sev-snp-improvements-in-epyc-9004-genoa-2023" title="Permanent link">&para;</a></h3>
+<p>AMD EPYC 9004 (Genoa, Zen 4, 5 nm TSMC, 2022 launch with SNP firmware improvements throughout 2023) introduced the following SEV-SNP changes:</p>
+<ul>
+<li>
+<p><strong>RMP Granularity to 4 KB:</strong> The Reverse Map Table now supports 4 KB granularity (previously 2 MB-aligned), enabling finer-grained per-page ownership tracking without wasting physical memory on large RMP entries.</p>
+</li>
+<li>
+<p><strong>vTOM (Virtual Top of Memory):</strong> Genoa introduces the C-bit virtualisation mode where the hypervisor provides a virtual address boundary (vTOM) above which all guest pages are automatically treated as encrypted, eliminating the need for OS C-bit annotations in every PTE and allowing unmodified Linux guests to run under SEV-SNP.</p>
+</li>
+<li>
+<p><strong>SNP Live Migration:</strong> Experimental in firmware 1.55+, full production in 2024. Allows a running SEV-SNP guest to be migrated between EPYC hosts while maintaining attestation continuity, using a migration agent VM that holds a migration key pair endorsed by AMD KDS.</p>
+</li>
+<li>
+<p><strong>VMPL (VM Privilege Levels):</strong> Four privilege levels within a single SEV-SNP VM allow a trusted in-guest agent (VMPL0) to manage memory and attestation separately from untrusted application code (VMPL3), enabling cloud attestation agents that cannot be compromised by tenant code.</p>
+</li>
+</ul>
+<h3 id="12104-intel-tdx-and-tme-mk-on-sapphire-rapids-2023"><span class="secnum">12.10.4</span> Intel TDX and TME-MK on Sapphire Rapids (2023)<a class="headerlink" href="#12104-intel-tdx-and-tme-mk-on-sapphire-rapids-2023" title="Permanent link">&para;</a></h3>
+<p>Intel Xeon Scalable (Sapphire Rapids, SPR, Intel 7 nm, 2023) brings production TDX and TME-MK deployments:</p>
+<div class="tbl" id="tab-spr-tme">
+<div class="tbl-caption"><strong>Table 12.4.</strong> Intel TME-MK and TDX capabilities on Sapphire Rapids</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Sapphire Rapids implementation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TME-MK key count</td>
+<td style="text-align: left;">Up to 63 simultaneous encryption keys (MKTME_MAX_KEYS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Key size</td>
+<td style="text-align: left;">AES-256-XTS per MKTME domain</td>
+</tr>
+<tr>
+<td style="text-align: left;">TDX TD count</td>
+<td style="text-align: left;">Up to 4,095 Trust Domains per socket</td>
+</tr>
+<tr>
+<td style="text-align: left;">TDX memory overhead</td>
+<td style="text-align: left;"><span class="math inline">\(\approx\)</span>1% for RMP equivalent (PAMT – Physical Address Metadata Table)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Attestation throughput</td>
+<td style="text-align: left;">10,000 TDX quotes/sec via QE3 SGX enclave</td>
+</tr>
+<tr>
+<td style="text-align: left;">PCIe device passthrough</td>
+<td style="text-align: left;">TDX Connect (PCIe SPDM + IDE for direct device assignment)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> TDX Connect (production from Granite Rapids, 2024) allows a PCIe device such as an AI accelerator or NVMe drive to be assigned directly to a TDX Trust Domain. The device’s SPDM 1.3 attestation is verified by the TDX module, and an IDE session key is derived from the combined TDX+SPDM transcript, binding the encrypted PCIe link to the specific Trust Domain.</p>
+</div>
+<h3 id="12105-cxl-memory-security-trust-domains-in-cxl-30"><span class="secnum">12.10.5</span> CXL Memory Security: Trust Domains in CXL 3.0<a class="headerlink" href="#12105-cxl-memory-security-trust-domains-in-cxl-30" title="Permanent link">&para;</a></h3>
+<p>As noted in Chapter 11, CXL 3.0 introduces TEESP for binding CXL memory expanders to confidential VMs. From a memory-security perspective, the key additions are:</p>
+<ul>
+<li>
+<p><strong>CXL Trusted Memory Regions (TMR):</strong> Host software designates physical CXL address windows as Trusted Memory Regions, protected from host-OS access by a hardware-enforced access-control policy enforced at the CXL port of the root complex.</p>
+</li>
+<li>
+<p><strong>Encryption scope:</strong> Each CXL IDE session key covers one TMR. Multiple VMs using the same CXL expander have distinct IDE sessions with non-overlapping TMRs, providing inter-VM memory isolation equivalent to DRAM-side SEV-SNP.</p>
+</li>
+<li>
+<p><strong>Integrity verification:</strong> Samsung CXL DRAM modules (2024) with ECC implement optional Scrubbing + Error Reporting to the host CXL driver, extending SECDED protection across the CXL link to the module.</p>
+</li>
+</ul>
+<h3 id="12106-lpddr5x-mobile-integrity-checking-qualcomm-oryon-2024"><span class="secnum">12.10.6</span> LPDDR5X Mobile Integrity Checking: Qualcomm Oryon (2024)<a class="headerlink" href="#12106-lpddr5x-mobile-integrity-checking-qualcomm-oryon-2024" title="Permanent link">&para;</a></h3>
+<p>LPDDR5X (JEDEC JESD209-5X, 2023) adds an optional <strong>inline ECC</strong> byte per 128-bit data burst, replacing the external ECC DIMM model with on-die ECC storage in the same DRAM package. Qualcomm Snapdragon X Elite (Oryon CPU, TSMC 4 nm, 2024) is the first mobile SoC to enable LPDDR5X inline ECC in production:</p>
+<ul>
+<li>
+<p><strong>Inline ECC mode:</strong> 8 parity bits per 128-bit burst stored in a reserved region of the LPDDR5X die. The memory controller performs SECDED correction transparently. Effective capacity reduction: 6.25% (8/128 bits reserved for ECC).</p>
+</li>
+<li>
+<p><strong>Rowhammer mitigation:</strong> LPDDR5X includes a mandatory <strong>DRFM (Directed Refresh Management)</strong> command, analogous to DDR5 PRAC, which the memory controller issues when an internal activation counter saturates.</p>
+</li>
+<li>
+<p><strong>Link encryption:</strong> Qualcomm Oryon extends LPDDR5X with a proprietary AES-128-XEX inline encryption engine between the memory controller and DRAM PHY, providing data-at-rest protection equivalent to AMD TSME but at LPDDR5X bus speeds (up to 68.3 GB/s).</p>
+</li>
+<li>
+<p><strong>Security relevance:</strong> Mobile adversaries targeting DRAM via physical probing (teardown, interposer) now face both DRFM-based Rowhammer resistance and bus-level encryption, closing two major attack surfaces present in LPDDR4X-based devices.</p>
+</li>
+</ul>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p><strong>(MCQ)</strong> Which DRAM DDR standard first introduced on-die ECC as a standard feature to mitigate Rowhammer? (a) DDR3 (b) DDR4 (c) DDR5 (d) LPDDR4X</p>
+</li>
+<li>
+<p><strong>(MCQ)</strong> In AMD SME, where is the memory encryption key stored at runtime? (a) BIOS flash (b) AMD Secure Processor (PSP) (c) OS kernel keyring (d) CPU register file</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> Explain the difference between targeted Rowhammer (Kim et al. 2014) and the Blacksmith (2021) attack. What makes Blacksmith more effective against TRR-enabled DDR4 modules?</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> A DDR5 DIMM uses PRAC (Per-Row Activation Counter) with a threshold of 32 activations per tREFI period. A Rowhammer attack issues activations at 45 ns intervals over a 7.8 ms window. How many activations occur and does PRAC trigger? Show your calculation.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> You are designing a secure DRAM controller for a safety-critical system. The requirements are: (1) detect single-bit errors, (2) correct single-bit errors, (3) detect double-bit errors. Specify the ECC scheme, the number of check bits needed for a 64-bit data word, and sketch the hardware block diagram.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> The TRESOR defense stores AES keys in x86 debug registers DR0–DR3. Identify two limitations of this approach and propose a hardware-assisted alternative using Intel TXT or AMD SEV-SNP.</p>
+</li>
+<li>
+<p><strong>(Coding)</strong> Write a C function <code>hammer_row()</code> that performs double-sided Rowhammer on two aggressor rows, using x86 intrinsics <code>_mm_clflush</code> and <code>_mm_mfence</code>. Include appropriate loop count (minimum 500,000 iterations) and memory fence ordering.</p>
+</li>
+<li>
+<p><strong>(Short Answer)</strong> An Intel Xeon Scalable (Ice Lake SP) processor uses TME with AES-128-XTS. The physical address space is 52 bits. Explain how the tweak value for XTS mode is derived from the physical address and why this prevents cross-location replay attacks.</p>
+</li>
+<li>
+<p><strong>(Design)</strong> Design an ARM MTE allocator policy for a kernel slab allocator. The slab contains 128-byte objects. Specify: (1) tag selection on allocation, (2) tag invalidation on free, (3) tag checking mode (sync vs. async), and (4) how to handle tag exhaustion in a slab.</p>
+</li>
+<li>
+<p><strong>(Research)</strong> Compare Intel TME-MK (Multi-Key TME) and AMD SEV-SNP for VM memory isolation. Consider: number of concurrent encryption domains, key management, attestation support, and performance overhead. Present your comparison in a structured table.</p>
+</li>
+<li>
+<p><strong>(Analysis)</strong> A cold boot attack is performed on a LPDDR4X system. The attacker cools the DIMMs to <span class="arithmatex">\(-50\)</span> <span class="arithmatex">\(^{\circ}\)</span>C before removing them. Given that LPDDR4X data retention at <span class="arithmatex">\(-50\)</span> <span class="arithmatex">\(^{\circ}\)</span>C is approximately 60 seconds, and the attacker has a 30-second transfer window, calculate the probability that a 256-bit AES key survives intact assuming independent bit failure probability of <span class="arithmatex">\(10^{-4}\)</span> per bit.</p>
+</li>
+<li>
+<p><strong>(Capstone)</strong> You are implementing a Trusted Execution Environment (TEE) on an AMD EPYC platform using SEV-SNP. Describe the complete memory security stack: (1) how SEV-SNP encrypts VM memory, (2) the reverse-map table (RMP) and its role, (3) how the hypervisor is prevented from reading guest memory, and (4) what attestation evidence the SEV-SNP firmware provides.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch11-iommu-and-dma-protection.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 11. IOMMU and DMA Protection">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                11. IOMMU and DMA Protection
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch13-anti-tamper-technologies.html" class="md-footer__link md-footer__link--next" aria-label="Next: 13. Anti-Tamper Technologies">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                13. Anti-Tamper Technologies
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,2089 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/normal-forms-1nf-2nf-3nf.html">
+  
+  
+    <link rel="prev" href="functional-dependencies-and-closure.html">
+  
+  
+    <link rel="next" href="bcnf-and-decomposition.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>21. Normal Forms: 1NF, 2NF, 3NF - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#211-why-normalise" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              21. Normal Forms: 1NF, 2NF, 3NF
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#211-why-normalise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.1 Why Normalise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#212-first-normal-form-1nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.2 First Normal Form (1NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.2 First Normal Form (1NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#violation-and-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Violation and repair
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#213-second-normal-form-2nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.3 Second Normal Form (2NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.3 Second Normal Form (2NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-violation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition-to-2nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposition to 2NF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#214-third-normal-form-3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.4 Third Normal Form (3NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.4 Third Normal Form (3NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-violation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition-to-3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposition to 3NF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#215-a-complete-worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.5 A Complete Worked Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#216-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#217-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#211-why-normalise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.1 Why Normalise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#212-first-normal-form-1nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.2 First Normal Form (1NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.2 First Normal Form (1NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#violation-and-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Violation and repair
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#213-second-normal-form-2nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.3 Second Normal Form (2NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.3 Second Normal Form (2NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-violation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition-to-2nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposition to 2NF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#214-third-normal-form-3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.4 Third Normal Form (3NF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21.4 Third Normal Form (3NF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-violation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition-to-3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposition to 3NF
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#215-a-complete-worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.5 A Complete Worked Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#216-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#217-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-21-normal-forms-1nf-2nf-3nf">Lesson 21: Normal Forms: 1NF, 2NF, 3NF<a class="headerlink" href="#lesson-21-normal-forms-1nf-2nf-3nf" title="Permanent link">&para;</a></h1>
+<p><em>Removing repeating groups, partial dependencies and transitive dependencies</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 5:</strong> Database Design · 10 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 14.3, 14.4</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>Define <strong>prime</strong> and <strong>non-prime</strong> attributes.</li>
+<li>Test a relation for <strong>1NF</strong>, <strong>2NF</strong> and <strong>3NF</strong>, and name the exact violating dependency.</li>
+<li>Distinguish <strong>partial</strong> from <strong>transitive</strong> dependencies.</li>
+<li>Decompose a relation to 2NF and then to 3NF.</li>
+<li>State both equivalent definitions of 3NF.</li>
+</ol>
+</div>
+<h2 id="211-why-normalise">21.1 Why Normalise<a class="headerlink" href="#211-why-normalise" title="Permanent link">&para;</a></h2>
+<p>Unit 3, Lesson 1 showed that a relation storing facts about more than one kind of thing suffers <strong>insertion, deletion and modification anomalies</strong>. Normalisation is the <strong>formal, mechanical procedure</strong> for detecting that situation and repairing it.</p>
+<div class="admonition info">
+<p class="admonition-title">Normalisation</p>
+<p>The process of analysing a relation schema against its functional dependencies to <strong>minimise redundancy</strong> and <strong>eliminate update anomalies</strong>, by decomposing it into smaller relations that satisfy progressively stricter conditions called <strong>normal forms</strong>.</p>
+<p>Introduced by <strong>E. F. Codd</strong> — 1NF, 2NF and 3NF in 1971–72; BCNF with Boyce in 1974.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code>   1NF   atomic values, no repeating groups
+    |
+    |  remove PARTIAL dependencies
+    v
+   2NF   no non-prime attribute depends on part of a candidate key
+    |
+    |  remove TRANSITIVE dependencies
+    v
+   3NF   no non-prime attribute depends on another non-prime attribute
+    |
+    |  remove ALL dependencies whose determinant is not a superkey
+    v
+   BCNF  every determinant is a superkey        (Lesson 4)
+
+   Each form is STRICTLY STRONGER: every 3NF relation is in 2NF,
+   every 2NF relation is in 1NF.
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Prime and non-prime — learn this first</p>
+<p>An attribute is <strong>prime</strong> (a <em>key attribute</em>) if it belongs to <strong>some</strong> candidate key.</p>
+<p>An attribute is <strong>non-prime</strong> if it belongs to <strong>no</strong> candidate key.</p>
+<p>Note "<strong>some</strong>", not "all". If the candidate keys are <code>{A}</code> and <code>{B,C}</code>, then <code>A</code>, <code>B</code> and <code>C</code> are all prime.</p>
+<p><strong>Every 2NF and 3NF test is stated in terms of non-prime attributes, so you must find all candidate keys first.</strong> This is why Lesson 2 came before this one.</p>
+</div>
+<h2 id="212-first-normal-form-1nf">21.2 First Normal Form (1NF)<a class="headerlink" href="#212-first-normal-form-1nf" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">1NF</p>
+<p>A relation is in <strong>1NF</strong> if the domain of every attribute contains only <strong>atomic (indivisible)</strong> values, and the value of any attribute in a tuple is a <strong>single value</strong> from that domain.</p>
+<p>Equivalently: <strong>no composite attributes, no multivalued attributes, no nested relations, no repeating groups.</strong></p>
+</div>
+<p>1NF is not really a normalisation step so much as the <strong>definition of a relation</strong> (Unit 3, Lesson 1, Characteristic 3). A structure violating it is not a relation at all.</p>
+<h3 id="violation-and-repair">Violation and repair<a class="headerlink" href="#violation-and-repair" title="Permanent link">&para;</a></h3>
+<p><strong>Not in 1NF</strong> — a multivalued attribute:</p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>Name</th>
+<th>Courses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>Ankit Sharma</td>
+<td>CS01, MA02</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>Riya Verma</td>
+<td>CS01</td>
+</tr>
+</tbody>
+</table>
+<p>Three ways to repair, only one of which is correct.</p>
+<p><strong>Method 1 — a separate relation (correct).</strong> Move the multivalued attribute out, taking the key with it. This is exactly mapping step 6 of Lesson 1.</p>
+<p><code>STUDENT(Rollno, Name)</code> and <code>STUDENT_COURSE(Rollno, SID)</code> with key <code>(Rollno, SID)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>Ankit Sharma</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>Riya Verma</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Rollno</th>
+<th>SID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X2019</td>
+<td>CS01</td>
+</tr>
+<tr>
+<td>X2019</td>
+<td>MA02</td>
+</tr>
+<tr>
+<td>X2020</td>
+<td>CS01</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method 2 — flatten into one relation (poor).</strong> Repeat <code>Name</code> on every row and make <code>(Rollno, SID)</code> the key. It is in 1NF but introduces exactly the redundancy that 2NF will then have to remove.</p>
+<p><strong>Method 3 — one column per value (wrong).</strong> <code>Course1</code>, <code>Course2</code>, <code>Course3</code>. This fixes the maximum number in advance, wastes NULLs, and makes <em>"who takes CS01?"</em> require searching every column. <strong>Never do this.</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">A composite attribute also violates 1NF — technically</p>
+<p><code>Address(House, City, PIN)</code> stored as one field is non-atomic <em>if the parts are used separately</em>. Store them as three columns.</p>
+<p>But atomicity is <strong>relative to the application</strong>. If an address is only ever printed whole and never searched by city, a single <code>VARCHAR</code> is atomic <em>for that application</em>. Codd's point is about what the <em>system</em> must be able to see, not about what a human could subdivide.</p>
+</div>
+<h2 id="213-second-normal-form-2nf">21.3 Second Normal Form (2NF)<a class="headerlink" href="#213-second-normal-form-2nf" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Full and partial functional dependency</p>
+<p><code>X → Y</code> is a <strong>full functional dependency</strong> if removing <strong>any</strong> attribute from <code>X</code> destroys the dependency.</p>
+<p><code>X → Y</code> is a <strong>partial functional dependency</strong> if some attribute can be removed from <code>X</code> and the dependency still holds — i.e. a <strong>proper subset</strong> of <code>X</code> already determines <code>Y</code>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">2NF</p>
+<p>A relation is in <strong>2NF</strong> if it is in 1NF and <strong>every non-prime attribute is fully functionally dependent on every candidate key</strong> — equivalently, <strong>no non-prime attribute is partially dependent on any candidate key</strong>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">The shortcut every examiner expects you to know</p>
+<p>A partial dependency requires a <strong>proper subset</strong> of a candidate key to determine something. If every candidate key is a <strong>single attribute</strong>, no proper non-empty subset exists.</p>
+<p><strong>A relation whose candidate keys are all single attributes is automatically in 2NF.</strong> Only look for 2NF violations when there is a <strong>composite</strong> candidate key.</p>
+</div>
+<h3 id="worked-violation">Worked violation<a class="headerlink" href="#worked-violation" title="Permanent link">&para;</a></h3>
+<p><code>STUDENT_COURSE( Rollno, SID, Sname, Cname, Grade )</code></p>
+<p>FDs: <code>Rollno, SID → Grade</code>; <code>Rollno → Sname</code>; <code>SID → Cname</code>.</p>
+<p><strong>Candidate key:</strong> <code>(Rollno, SID)</code> — its closure is everything, and neither part alone suffices.
+<strong>Prime:</strong> <code>Rollno</code>, <code>SID</code>. <strong>Non-prime:</strong> <code>Sname</code>, <code>Cname</code>, <code>Grade</code>.</p>
+<p><strong>In 1NF?</strong> Yes — all values atomic.</p>
+<p><strong>In 2NF?</strong> No.</p>
+<ul>
+<li><code>Rollno → Sname</code>: <code>Rollno</code> is a <strong>proper subset</strong> of the key, and <code>Sname</code> is non-prime. <strong>Partial dependency — violation.</strong></li>
+<li><code>SID → Cname</code>: likewise. <strong>Violation.</strong></li>
+<li><code>Rollno, SID → Grade</code>: full — the whole key is needed. Fine.</li>
+</ul>
+<p><strong>The anomalies this predicts</strong> (and they are exactly those of Unit 3, Lesson 1): a student's name is repeated once per course; a new course cannot be recorded until a student enrols; deleting the last enrolment loses the course name.</p>
+<h3 id="decomposition-to-2nf">Decomposition to 2NF<a class="headerlink" href="#decomposition-to-2nf" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Procedure</p>
+<p>For each partial dependency <code>X → Y</code> (where <code>X</code> is a proper subset of a candidate key):</p>
+<ol>
+<li>Create a new relation <code>(X, Y)</code> with <code>X</code> as its primary key.</li>
+<li>Remove <code>Y</code> from the original relation, keeping <code>X</code> there as a foreign key.</li>
+</ol>
+<p>Merge new relations that share the same <code>X</code>.</p>
+</div>
+<ul>
+<li><code>Rollno → Sname</code> gives <strong><code>STUDENT(Rollno, Sname)</code></strong></li>
+<li><code>SID → Cname</code> gives <strong><code>COURSE(SID, Cname)</code></strong></li>
+<li>What remains: <strong><code>ENROLMENT(Rollno, SID, Grade)</code></strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Key</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>STUDENT(Rollno, Sname)</code></td>
+<td><code>Rollno</code></td>
+<td>Single-attribute key → automatically 2NF</td>
+</tr>
+<tr>
+<td><code>COURSE(SID, Cname)</code></td>
+<td><code>SID</code></td>
+<td>Automatically 2NF</td>
+</tr>
+<tr>
+<td><code>ENROLMENT(Rollno, SID, Grade)</code></td>
+<td><code>(Rollno, SID)</code></td>
+<td><code>Grade</code> fully depends on the whole key → 2NF</td>
+</tr>
+</tbody>
+</table>
+<p>All three anomalies have gone.</p>
+<h2 id="214-third-normal-form-3nf">21.4 Third Normal Form (3NF)<a class="headerlink" href="#214-third-normal-form-3nf" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Transitive dependency</p>
+<p>A <strong>transitive dependency</strong> on a candidate key <code>K</code> is a chain <code>K → X → A</code> where:</p>
+<ul>
+<li><code>X</code> is <strong>not</strong> a superkey, and</li>
+<li><code>A</code> is a <strong>non-prime</strong> attribute not in <code>X</code>.</li>
+</ul>
+<p>The essence: a non-prime attribute is determined by <em>another non-prime attribute</em> rather than directly by a key.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">3NF — Codd's original definition</p>
+<p>A relation is in <strong>3NF</strong> if it is in 2NF and <strong>no non-prime attribute is transitively dependent on any candidate key</strong>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">3NF — the general (working) definition</p>
+<p>A relation is in <strong>3NF</strong> if, for <strong>every</strong> non-trivial functional dependency <code>X → A</code> that holds, <strong>at least one</strong> of the following is true:</p>
+<ol>
+<li><code>X</code> is a <strong>superkey</strong>, <strong>or</strong></li>
+<li><code>A</code> is a <strong>prime</strong> attribute.</li>
+</ol>
+<p>Condition 1 alone would be BCNF; <strong>condition 2 is precisely what 3NF forgives and BCNF does not.</strong></p>
+</div>
+<p>The general definition is easier to apply and handles overlapping candidate keys correctly. Use it.</p>
+<h3 id="worked-violation_1">Worked violation<a class="headerlink" href="#worked-violation_1" title="Permanent link">&para;</a></h3>
+<p><code>STUDENT( Rollno, Sname, Dno, Dname, Dhead )</code></p>
+<p>FDs: <code>Rollno → Sname, Dno</code>; <code>Dno → Dname, Dhead</code>.</p>
+<p><strong>Candidate key:</strong> <code>Rollno</code>. <strong>Prime:</strong> <code>Rollno</code>. <strong>Non-prime:</strong> <code>Sname</code>, <code>Dno</code>, <code>Dname</code>, <code>Dhead</code>.</p>
+<p><strong>In 2NF?</strong> Yes — the only candidate key is a single attribute, so no partial dependency is possible.</p>
+<p><strong>In 3NF?</strong> No. The chain <code>Rollno → Dno → Dname</code> is transitive: <code>Dno</code> is not a superkey (<code>Dno⁺ = {Dno, Dname, Dhead} ≠ R</code>) and <code>Dname</code> is non-prime. By the general definition, <code>Dno → Dname</code> has a non-superkey determinant and a non-prime dependent, failing both conditions.</p>
+<p><strong>The anomalies:</strong> the department name and head are repeated for every student in the department; a department with no students cannot be recorded; changing a department head requires updating many rows.</p>
+<h3 id="decomposition-to-3nf">Decomposition to 3NF<a class="headerlink" href="#decomposition-to-3nf" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Procedure</p>
+<p>For each transitive dependency <code>X → Y</code> where <code>X</code> is not a superkey:</p>
+<ol>
+<li>Create a new relation <code>(X, Y)</code> with <code>X</code> as its primary key.</li>
+<li>Remove <code>Y</code> from the original relation, keeping <code>X</code> as a foreign key.</li>
+</ol>
+</div>
+<ul>
+<li><strong><code>STUDENT(Rollno, Sname, Dno)</code></strong>, key <code>Rollno</code>, <code>Dno</code> a foreign key</li>
+<li><strong><code>DEPARTMENT(Dno, Dname, Dhead)</code></strong>, key <code>Dno</code></li>
+</ul>
+<p>Both are now in 3NF, and the decomposition is <strong>lossless</strong> — the common attribute <code>Dno</code> is the key of <code>DEPARTMENT</code> (Lesson 5).</p>
+<h2 id="215-a-complete-worked-example">21.5 A Complete Worked Example<a class="headerlink" href="#215-a-complete-worked-example" title="Permanent link">&para;</a></h2>
+<p><code>INVOICE( InvNo, LineNo, CustID, CustName, CustCity, ProdID, ProdName, UnitPrice, Qty )</code></p>
+<p>FDs:
+<div class="language-text highlight"><pre><span></span><code>InvNo, LineNo → ProdID, Qty
+InvNo         → CustID
+CustID        → CustName, CustCity
+ProdID        → ProdName, UnitPrice
+</code></pre></div></p>
+<p><strong>Step 1 — candidate keys.</strong>
+<code>(InvNo, LineNo)⁺</code> = start <code>{InvNo, LineNo}</code> → <code>ProdID, Qty</code> → <code>CustID</code> → <code>CustName, CustCity</code> → <code>ProdName, UnitPrice</code> = all attributes. So <code>(InvNo, LineNo)</code> is a superkey; neither part alone is (<code>InvNo⁺</code> lacks <code>LineNo</code>, <code>LineNo⁺ = {LineNo}</code>). <strong>Candidate key: <code>(InvNo, LineNo)</code>.</strong></p>
+<p><strong>Prime:</strong> <code>InvNo</code>, <code>LineNo</code>. <strong>Non-prime:</strong> everything else.</p>
+<p><strong>Step 2 — 1NF?</strong> Yes.</p>
+<p><strong>Step 3 — 2NF?</strong> <strong>No.</strong> <code>InvNo → CustID</code> is a partial dependency: <code>InvNo</code> is a proper subset of the key and <code>CustID</code> is non-prime. Decompose:</p>
+<p><div class="language-text highlight"><pre><span></span><code>INVOICE ( InvNo, CustID )                                        key InvNo
+LINE    ( InvNo, LineNo, ProdID, Qty )                           key (InvNo, LineNo)
+</code></pre></div>
+...but <code>CustName</code>, <code>CustCity</code>, <code>ProdName</code>, <code>UnitPrice</code> must be placed too. They follow their determinants:</p>
+<div class="language-text highlight"><pre><span></span><code>INVOICE ( InvNo, CustID, CustName, CustCity )                    key InvNo
+LINE    ( InvNo, LineNo, ProdID, Qty, ProdName, UnitPrice )      key (InvNo, LineNo)
+</code></pre></div>
+<p><strong>Step 4 — 3NF?</strong> Neither is in 3NF yet.</p>
+<ul>
+<li>In <code>INVOICE</code>: <code>CustID → CustName, CustCity</code> — <code>CustID</code> is not a superkey of <code>INVOICE</code> and the dependents are non-prime. <strong>Transitive.</strong></li>
+<li>In <code>LINE</code>: <code>ProdID → ProdName, UnitPrice</code> — same problem.</li>
+</ul>
+<p>Decompose both:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">CUSTOMER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">CustID</span><span class="p">,</span><span class="w"> </span><span class="n">CustName</span><span class="p">,</span><span class="w"> </span><span class="n">CustCity</span><span class="w"> </span><span class="p">)</span><span class="w">              </span><span class="k">key</span><span class="w"> </span><span class="n">CustID</span>
+<span class="n">INVOICE</span><span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="n">InvNo</span><span class="p">,</span><span class="w"> </span><span class="n">CustID</span><span class="w"> </span><span class="p">)</span><span class="w">                           </span><span class="k">key</span><span class="w"> </span><span class="n">InvNo</span><span class="p">,</span><span class="w">  </span><span class="n">FK</span><span class="w"> </span><span class="n">CustID</span>
+<span class="n">PRODUCT</span><span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="n">ProdID</span><span class="p">,</span><span class="w"> </span><span class="n">ProdName</span><span class="p">,</span><span class="w"> </span><span class="n">UnitPrice</span><span class="w"> </span><span class="p">)</span><span class="w">             </span><span class="k">key</span><span class="w"> </span><span class="n">ProdID</span>
+<span class="n">LINE</span><span class="w">     </span><span class="p">(</span><span class="w"> </span><span class="n">InvNo</span><span class="p">,</span><span class="w"> </span><span class="n">LineNo</span><span class="p">,</span><span class="w"> </span><span class="n">ProdID</span><span class="p">,</span><span class="w"> </span><span class="n">Qty</span><span class="w"> </span><span class="p">)</span><span class="w">              </span><span class="k">key</span><span class="w"> </span><span class="p">(</span><span class="n">InvNo</span><span class="p">,</span><span class="w"> </span><span class="n">LineNo</span><span class="p">)</span>
+<span class="w">                                                     </span><span class="n">FK</span><span class="w"> </span><span class="n">InvNo</span><span class="p">,</span><span class="w"> </span><span class="n">FK</span><span class="w"> </span><span class="n">ProdID</span>
+</code></pre></div>
+<p><strong>Step 5 — verify.</strong> Every determinant (<code>CustID</code>, <code>InvNo</code>, <code>ProdID</code>, <code>(InvNo, LineNo)</code>) is the key of its own relation, so each relation is in fact in <strong>BCNF</strong>, and hence in 3NF.</p>
+<p>This is also exactly the schema the ER-to-relational mapping of Lesson 1 would have produced from a correct ER diagram — which is the practical argument for doing the conceptual design properly.</p>
+<h2 id="216-solved-questions">21.6 Solved Questions<a class="headerlink" href="#216-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Define prime and non-prime attributes. For <code>R(A,B,C,D)</code> with candidate keys <code>{A}</code> and <code>{B,C}</code>, classify every attribute.</p>
+<p><strong>A.</strong> An attribute is <strong>prime</strong> if it belongs to <strong>at least one</strong> candidate key; <strong>non-prime</strong> if it belongs to <strong>none</strong>.</p>
+<p>The word is <em>some</em>, not <em>all</em> — an attribute in any one candidate key is prime.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>In {A}?</th>
+<th>In {B,C}?</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>yes</td>
+<td>no</td>
+<td><strong>prime</strong></td>
+</tr>
+<tr>
+<td>B</td>
+<td>no</td>
+<td>yes</td>
+<td><strong>prime</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>no</td>
+<td>yes</td>
+<td><strong>prime</strong></td>
+</tr>
+<tr>
+<td>D</td>
+<td>no</td>
+<td>no</td>
+<td><strong>non-prime</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prime: A, B, C. Non-prime: D.</strong></p>
+<p><strong>Why it matters:</strong> both the 2NF and the 3NF tests are stated entirely in terms of <strong>non-prime</strong> attributes. Here only <code>D</code> can cause a violation — any dependency whose right side is <code>A</code>, <code>B</code> or <code>C</code> is automatically forgiven by 3NF, however odd its determinant.</p>
+<p>This is also why the candidate keys must be computed <strong>first</strong>: misidentify them and every subsequent normal-form judgement is wrong.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Define 2NF. Test <code>STUDENT_COURSE(Rollno, SID, Sname, Cname, Grade)</code> with <code>Rollno,SID → Grade</code>, <code>Rollno → Sname</code>, <code>SID → Cname</code>, and decompose if necessary.</p>
+<p><strong>A.</strong> A relation is in <strong>2NF</strong> if it is in 1NF and no <strong>non-prime</strong> attribute is <strong>partially</strong> dependent on any candidate key — that is, every non-prime attribute is <em>fully</em> dependent on every candidate key.</p>
+<p><strong>Candidate key.</strong> <code>(Rollno, SID)⁺</code> = <code>{Rollno, SID}</code> → <code>Grade</code> → <code>Sname</code> → <code>Cname</code> = all. <code>Rollno⁺ = {Rollno, Sname}</code>; <code>SID⁺ = {SID, Cname}</code>. Neither part alone is a superkey, so <strong><code>(Rollno, SID)</code> is the sole candidate key</strong>.</p>
+<p><strong>Prime:</strong> <code>Rollno</code>, <code>SID</code>. <strong>Non-prime:</strong> <code>Sname</code>, <code>Cname</code>, <code>Grade</code>.</p>
+<p><strong>2NF test.</strong></p>
+<table>
+<thead>
+<tr>
+<th>FD</th>
+<th>Determinant a proper subset of the key?</th>
+<th>Dependent non-prime?</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Rollno, SID → Grade</code></td>
+<td>no (it is the whole key)</td>
+<td>yes</td>
+<td>full — fine</td>
+</tr>
+<tr>
+<td><code>Rollno → Sname</code></td>
+<td><strong>yes</strong></td>
+<td><strong>yes</strong></td>
+<td><strong>partial — violates 2NF</strong></td>
+</tr>
+<tr>
+<td><code>SID → Cname</code></td>
+<td><strong>yes</strong></td>
+<td><strong>yes</strong></td>
+<td><strong>partial — violates 2NF</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not in 2NF.</strong></p>
+<p><strong>Decomposition.</strong> One relation per partial dependency, with the remainder keeping the full key:</p>
+<div class="language-text highlight"><pre><span></span><code>STUDENT   ( Rollno, Sname )          key Rollno
+COURSE    ( SID, Cname )             key SID
+ENROLMENT ( Rollno, SID, Grade )     key (Rollno, SID); both columns foreign keys
+</code></pre></div>
+<p><strong>Verification.</strong> <code>STUDENT</code> and <code>COURSE</code> have single-attribute keys, so they are automatically in 2NF (no proper subset exists). In <code>ENROLMENT</code>, <code>Grade</code> depends on the whole key. All three are in 2NF — and in fact in BCNF.</p>
+<p><strong>Anomalies removed:</strong> a course can now be recorded with no students (insertion); deleting the last enrolment leaves the course intact (deletion); a student's name is stored once (modification).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Define 3NF in both forms. Test <code>EMPLOYEE(Eno, Ename, Dno, Dname, Dlocation)</code> with <code>Eno → Ename, Dno</code> and <code>Dno → Dname, Dlocation</code>.</p>
+<p><strong>A.</strong></p>
+<p><strong>Codd's original definition.</strong> In 2NF, and no non-prime attribute is <strong>transitively</strong> dependent on any candidate key — no chain <code>K → X → A</code> with <code>X</code> not a superkey and <code>A</code> non-prime.</p>
+<p><strong>General definition.</strong> For every non-trivial FD <code>X → A</code>: either <strong><code>X</code> is a superkey</strong>, or <strong><code>A</code> is prime</strong>.</p>
+<p><strong>Analysis.</strong> <code>Eno⁺</code> = <code>{Eno, Ename, Dno}</code> → (via <code>Dno</code>) <code>{Eno, Ename, Dno, Dname, Dlocation}</code> = R. So <strong><code>Eno</code> is the only candidate key</strong>.
+<strong>Prime:</strong> <code>Eno</code>. <strong>Non-prime:</strong> <code>Ename</code>, <code>Dno</code>, <code>Dname</code>, <code>Dlocation</code>.</p>
+<p><strong>1NF:</strong> yes. <strong>2NF:</strong> yes — the sole candidate key is a single attribute, so no partial dependency can exist.</p>
+<p><strong>3NF:</strong> <strong>no.</strong></p>
+<ul>
+<li>By the original definition, <code>Eno → Dno → Dname</code> is a transitive chain: <code>Dno</code> is not a superkey (<code>Dno⁺ = {Dno, Dname, Dlocation} ≠ R</code>) and <code>Dname</code> is non-prime.</li>
+<li>By the general definition, the FD <code>Dno → Dname</code> fails <strong>both</strong> conditions: <code>Dno</code> is not a superkey, and <code>Dname</code> is not prime.</li>
+</ul>
+<p><strong>Decomposition.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>EMPLOYEE   ( Eno, Ename, Dno )              key Eno,  Dno a foreign key
+DEPARTMENT ( Dno, Dname, Dlocation )        key Dno
+</code></pre></div>
+<p><strong>Verification.</strong> In <code>EMPLOYEE</code> the only determinant is <code>Eno</code>, its key. In <code>DEPARTMENT</code> the only determinant is <code>Dno</code>, its key. Both are in <strong>BCNF</strong>.</p>
+<p>The decomposition is <strong>lossless</strong>: the common attribute <code>Dno</code> is the primary key of <code>DEPARTMENT</code>, so <code>Dno⁺</code> contains all of <code>DEPARTMENT</code> (Lesson 5). It is also <strong>dependency preserving</strong>: <code>Eno → Ename, Dno</code> is checkable within <code>EMPLOYEE</code> and <code>Dno → Dname, Dlocation</code> within <code>DEPARTMENT</code>.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Distinguish partial from transitive dependency, with an example of each, and state which normal form removes each.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Partial dependency</th>
+<th>Transitive dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shape</td>
+<td><code>X → A</code> where <code>X</code> is a <strong>proper subset of a candidate key</strong> and <code>A</code> is non-prime</td>
+<td><code>K → X → A</code> where <code>X</code> is <strong>not a superkey</strong> and <code>A</code> is non-prime</td>
+</tr>
+<tr>
+<td>Determinant</td>
+<td>Part of a key</td>
+<td>Not a key at all</td>
+</tr>
+<tr>
+<td>Requires</td>
+<td>A <strong>composite</strong> candidate key</td>
+<td>Nothing special; occurs with single-attribute keys</td>
+</tr>
+<tr>
+<td>Removed by</td>
+<td><strong>2NF</strong></td>
+<td><strong>3NF</strong></td>
+</tr>
+<tr>
+<td>Example</td>
+<td>In <code>(Rollno, SID, Sname)</code>: <code>Rollno → Sname</code></td>
+<td>In <code>(Eno, Dno, Dname)</code>: <code>Eno → Dno → Dname</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Partial</strong> — the attribute belongs with <em>part</em> of the key, so it is repeated once for every value of the <em>rest</em> of the key. <code>Sname</code> is repeated once per course the student takes.</p>
+<p><strong>Transitive</strong> — the attribute belongs with a <em>different</em> entity that happens to be identified inside this relation. <code>Dname</code> is a fact about a department, repeated once per employee in it.</p>
+<p><strong>Both are the same disease</strong> in the terms of Unit 3, Lesson 1: the relation stores facts about <strong>more than one kind of thing</strong>. The cure is the same in both cases — extract the determinant and its dependents into their own relation, leaving the determinant behind as a foreign key.</p>
+<p><strong>Note the ordering.</strong> A relation with a single-attribute candidate key <strong>cannot</strong> have a partial dependency, so it is automatically in 2NF and one need only test for 3NF.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Normalise <code>ORDER_DETAIL(OrderNo, ProdID, OrderDate, CustID, CustName, ProdName, Price, Qty)</code> to 3NF. Show the FDs, the keys, each violation and the final schema.</p>
+<p><strong>A.</strong></p>
+<p><strong>FDs from the semantics:</strong>
+<div class="language-text highlight"><pre><span></span><code>OrderNo, ProdID → Qty
+OrderNo         → OrderDate, CustID
+CustID          → CustName
+ProdID          → ProdName, Price
+</code></pre></div></p>
+<p><strong>Candidate key.</strong> <code>(OrderNo, ProdID)⁺</code> = <code>{OrderNo, ProdID}</code> → <code>Qty</code> → <code>OrderDate, CustID</code> → <code>CustName</code> → <code>ProdName, Price</code> = all attributes. Neither part alone suffices. <strong><code>(OrderNo, ProdID)</code> is the sole candidate key.</strong>
+<strong>Prime:</strong> <code>OrderNo</code>, <code>ProdID</code>. <strong>Non-prime:</strong> all the rest.</p>
+<p><strong>1NF.</strong> Satisfied — all values atomic.</p>
+<p><strong>2NF.</strong> <strong>Violated twice.</strong></p>
+<ul>
+<li><code>OrderNo → OrderDate, CustID</code> — proper subset of the key determining non-prime attributes.</li>
+<li><code>ProdID → ProdName, Price</code> — likewise.</li>
+</ul>
+<p>Decompose:
+<div class="language-text highlight"><pre><span></span><code>ORDERS   ( OrderNo, OrderDate, CustID, CustName )      key OrderNo
+PRODUCT  ( ProdID, ProdName, Price )                   key ProdID
+LINE     ( OrderNo, ProdID, Qty )                      key (OrderNo, ProdID)
+</code></pre></div></p>
+<p><strong>3NF.</strong> <code>PRODUCT</code> and <code>LINE</code> are fine — every determinant is the relation's key. But <code>ORDERS</code> still has <code>CustID → CustName</code>, where <code>CustID</code> is not a superkey of <code>ORDERS</code> and <code>CustName</code> is non-prime. <strong>Transitive — violated.</strong></p>
+<p>Decompose again:
+<div class="language-text highlight"><pre><span></span><code>CUSTOMER ( CustID, CustName )                          key CustID
+ORDERS   ( OrderNo, OrderDate, CustID )                key OrderNo, FK CustID
+</code></pre></div></p>
+<p><strong>Final schema (all in BCNF, hence 3NF):</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">CUSTOMER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">CustID</span><span class="p">,</span><span class="w"> </span><span class="n">CustName</span><span class="w"> </span><span class="p">)</span>
+<span class="n">PRODUCT</span><span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="n">ProdID</span><span class="p">,</span><span class="w"> </span><span class="n">ProdName</span><span class="p">,</span><span class="w"> </span><span class="n">Price</span><span class="w"> </span><span class="p">)</span>
+<span class="n">ORDERS</span><span class="w">   </span><span class="p">(</span><span class="w"> </span><span class="n">OrderNo</span><span class="p">,</span><span class="w"> </span><span class="n">OrderDate</span><span class="p">,</span><span class="w"> </span><span class="n">CustID</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="n">FK</span><span class="w"> </span><span class="n">CustID</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CUSTOMER</span>
+<span class="n">LINE</span><span class="w">     </span><span class="p">(</span><span class="w"> </span><span class="n">OrderNo</span><span class="p">,</span><span class="w"> </span><span class="n">ProdID</span><span class="p">,</span><span class="w"> </span><span class="n">Qty</span><span class="w"> </span><span class="p">)</span><span class="w">               </span><span class="n">FK</span><span class="w"> </span><span class="n">OrderNo</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ORDERS</span><span class="p">,</span><span class="w"> </span><span class="n">FK</span><span class="w"> </span><span class="n">ProdID</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">PRODUCT</span>
+</code></pre></div>
+<p><strong>Check:</strong> in each relation the only determinant is its own primary key, so every FD has a superkey on the left. Every decomposition step split on a determinant that became the key of the new relation, so each is <strong>lossless</strong>; and every original FD is checkable within one relation, so the decomposition is <strong>dependency preserving</strong>.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Give a relation that is in 2NF but not 3NF, and one in 1NF but not 2NF. Explain why each fails, and why the general 3NF definition is preferred to Codd's original.</p>
+<p><strong>A.</strong></p>
+<p><strong>In 1NF but not 2NF.</strong> <code>ENROLMENT(Rollno, SID, Sname, Grade)</code> with <code>Rollno, SID → Grade</code> and <code>Rollno → Sname</code>.
+Candidate key <code>(Rollno, SID)</code>; <code>Sname</code> is non-prime. <code>Rollno</code> is a <strong>proper subset</strong> of the key and determines <code>Sname</code>, so <code>Sname</code> is <strong>partially dependent</strong> on the key. Values are atomic, so it is in 1NF but fails 2NF.</p>
+<p><strong>In 2NF but not 3NF.</strong> <code>STUDENT(Rollno, Sname, Dno, Dname)</code> with <code>Rollno → Sname, Dno</code> and <code>Dno → Dname</code>.
+The sole candidate key <code>Rollno</code> is a single attribute, so no partial dependency is possible and 2NF holds. But <code>Rollno → Dno → Dname</code> is <strong>transitive</strong>: <code>Dno</code> is not a superkey and <code>Dname</code> is non-prime. Fails 3NF.</p>
+<p><strong>Why the general definition is preferred.</strong> Codd's original wording — "no non-prime attribute is transitively dependent on a candidate key" — is awkward when candidate keys <strong>overlap</strong>, because one must trace chains from <em>each</em> key and decide which attributes count as intermediate. The general form is a simple test applied to each dependency independently:</p>
+<blockquote>
+<p>for every non-trivial <code>X → A</code>: <code>X</code> is a superkey <strong>or</strong> <code>A</code> is prime.</p>
+</blockquote>
+<p>Consider <code>R(A,B,C)</code> with <code>AB → C</code> and <code>C → B</code>. Candidate keys are <code>{A,B}</code> and <code>{A,C}</code>, so <strong>all</strong> attributes are prime. The general definition immediately gives 3NF: <code>C → B</code> fails the superkey test but <code>B</code> is prime, so the second condition rescues it. Reasoning about transitive chains here is far more error-prone.</p>
+<p>The general definition also makes the relationship to BCNF transparent: <strong>BCNF is the general 3NF definition with condition 2 deleted.</strong></p>
+</div>
+<h2 id="217-exercises">21.7 Exercises<a class="headerlink" href="#217-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>Define prime and non-prime attributes.</li>
+<li>State 1NF and give two ways it can be violated.</li>
+<li>Define partial functional dependency.</li>
+<li>When is a relation automatically in 2NF?</li>
+<li>State both definitions of 3NF.</li>
+<li>Which normal form removes partial dependencies? Which removes transitive ones?</li>
+<li>Why must candidate keys be found before testing 2NF or 3NF?</li>
+</ol>
+<p><strong>B. Test and normalise</strong></p>
+<p>For each, find all candidate keys, classify the attributes, determine the highest normal form, name every violating dependency, and decompose to 3NF.</p>
+<ol>
+<li><code>R(A,B,C,D)</code> with <code>AB → C</code>, <code>C → D</code>.</li>
+<li><code>R(A,B,C,D,E)</code> with <code>A → BC</code>, <code>C → DE</code>.</li>
+<li><code>R(A,B,C,D)</code> with <code>A → B</code>, <code>B → C</code>, <code>C → D</code>.</li>
+<li><code>STUDENT(Rollno, Name, CourseID, CourseName, TeacherName, TeacherPhone)</code> with the obvious dependencies.</li>
+<li><code>SALES(InvoiceNo, ItemNo, Date, CustID, CustName, ItemName, Rate, Qty)</code>.</li>
+<li><code>PROJECT(Eno, Ename, Pno, Pname, Ploc, Hours)</code> with <code>Eno → Ename</code>, <code>Pno → Pname, Ploc</code>, <code>Eno,Pno → Hours</code>.</li>
+<li><code>BOOK(ISBN, Title, AuthorID, AuthorName, PublisherID, PublisherName, PublisherCity)</code>.</li>
+<li><code>HOSPITAL(PatientID, PatientName, DoctorID, DoctorName, Speciality, VisitDate, Diagnosis)</code>.</li>
+</ol>
+<p><strong>C. Analysis</strong></p>
+<ol>
+<li>Give a relation in 1NF but not 2NF, and prove it with an instance exhibiting an anomaly.</li>
+<li>Give a relation in 2NF but not 3NF, and demonstrate the update anomaly with actual rows.</li>
+<li>Explain why <code>Method 3</code> (Course1, Course2, Course3) is a poor repair for a 1NF violation. Give three specific problems.</li>
+<li>Show that a relation with only two attributes is always in 3NF. Is it always in BCNF?</li>
+<li>Explain why the general definition of 3NF handles overlapping candidate keys better than Codd's original. Use <code>R(A,B,C)</code> with <code>AB → C</code>, <code>C → B</code>.</li>
+<li>For <code>R(A,B,C,D)</code> with <code>AB → CD</code> and <code>D → A</code>, find all candidate keys and determine the highest normal form. (Take care: the keys overlap.)</li>
+<li>A relation has candidate keys <code>{A}</code> and <code>{B}</code>, and the dependency <code>A → B</code>. Is it in 3NF? In BCNF? Justify.</li>
+<li>"Normalisation always improves a database." Argue both sides, mentioning join cost and denormalisation.</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li>Every relation in 3NF is in 2NF.</li>
+<li>A relation with a single-attribute candidate key is always in 3NF.</li>
+<li>A partial dependency can exist when the candidate key is a single attribute.</li>
+<li>An attribute in some candidate key is prime.</li>
+<li>1NF prohibits composite attributes.</li>
+<li>Removing a transitive dependency requires creating a new relation.</li>
+<li>A relation in 2NF has no redundancy.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>True.</strong> The normal forms are strictly nested: 3NF ⊂ 2NF ⊂ 1NF.</li>
+<li><strong>False.</strong> It is automatically in <strong>2NF</strong>, but a transitive dependency can still violate 3NF — as in <code>STUDENT(Rollno, Sname, Dno, Dname)</code>.</li>
+<li><strong>False.</strong> A partial dependency needs a proper subset of the key; a single attribute has no non-empty proper subset.</li>
+<li><strong>True.</strong> That is the definition — membership of <em>some</em> candidate key, not all.</li>
+<li><strong>True.</strong> A composite attribute is not atomic, so it must be stored as its separate component columns.</li>
+<li><strong>True.</strong> The determinant and its dependents are extracted into a new relation, with the determinant left behind as a foreign key.</li>
+<li><strong>False.</strong> 2NF removes only <strong>partial</strong> dependencies. Transitive dependencies, and hence redundancy, may remain.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>Find <strong>all candidate keys first</strong>; then classify attributes as <strong>prime</strong> or <strong>non-prime</strong>.</li>
+<li><strong>1NF:</strong> atomic values — no composite, multivalued or repeating groups. Repair with a <strong>separate relation</strong>, never with <code>Course1, Course2, Course3</code>.</li>
+<li><strong>2NF:</strong> no <strong>partial</strong> dependency of a non-prime attribute on a candidate key. Only possible to violate when a key is <strong>composite</strong>.</li>
+<li><strong>3NF:</strong> no <strong>transitive</strong> dependency — or, generally, for every non-trivial <code>X → A</code>, <strong><code>X</code> is a superkey or <code>A</code> is prime</strong>.</li>
+<li>Decompose by extracting the offending <strong>determinant together with its dependents</strong> into a new relation, leaving the determinant as a foreign key.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="functional-dependencies-and-closure.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 20. Functional Dependencies and Closure">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                20. Functional Dependencies and Closure
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="bcnf-and-decomposition.html" class="md-footer__link md-footer__link--next" aria-label="Next: 22. BCNF and Decomposition">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                22. BCNF and Decomposition
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

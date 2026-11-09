@@ -1,0 +1,2681 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/amazon-braket.html">
+  
+  
+    <link rel="prev" href="pennylane-and-differentiable-quantum-programming.html">
+  
+  
+    <link rel="next" href="microsoft-q-and-the-quantum-development-kit.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>41. Amazon Braket - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#411-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              41. Amazon Braket
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="amazon-braket.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#411-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-the-managed-service-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.2 The Managed-Service Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-the-braket-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.3 The Braket SDK
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="41.3 The Braket SDK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-and-a-first-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation and a first circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.4 Devices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="41.4 Devices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simulators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-processors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum processors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a device
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-cost-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.5 Cost Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#416-hybrid-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.6 Hybrid Jobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#417-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#418-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#419-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#411-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-the-managed-service-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.2 The Managed-Service Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#413-the-braket-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.3 The Braket SDK
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="41.3 The Braket SDK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-and-a-first-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation and a first circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#414-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.4 Devices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="41.4 Devices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simulators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-processors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum processors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a device
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#415-cost-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.5 Cost Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#416-hybrid-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.6 Hybrid Jobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#417-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#418-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#419-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-41-amazon-braket">Lesson 41: Amazon Braket<a class="headerlink" href="#lesson-41-amazon-braket" title="Permanent link">&para;</a></h1>
+<h2 id="411-learning-outcomes">41.1 Learning Outcomes<a class="headerlink" href="#411-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Describe Braket's <strong>managed-service</strong> model and how it differs from vendor SDKs.</li>
+<li>Build and run circuits with the Braket SDK on simulators and QPUs.</li>
+<li>Compare the <strong>hardware vendors</strong> available through Braket.</li>
+<li>Compute the <strong>cost</strong> of a Braket experiment and design within a budget.</li>
+<li>Use <strong>Hybrid Jobs</strong> for variational algorithms.</li>
+</ol>
+<h2 id="412-the-managed-service-model">41.2 The Managed-Service Model<a class="headerlink" href="#412-the-managed-service-model" title="Permanent link">&para;</a></h2>
+<p>Braket is not a competing SDK so much as a <strong>procurement and orchestration layer</strong>. Its value
+proposition is one account, one API and one bill for hardware from several independent companies.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vendor SDK (Qiskit, Cirq)</th>
+<th>Amazon Braket</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hardware access</td>
+<td>one vendor</td>
+<td><strong>many vendors</strong></td>
+</tr>
+<tr>
+<td>Account</td>
+<td>one per vendor</td>
+<td><strong>one AWS account</strong></td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>free tier / research grants</td>
+<td><strong>pay per task and per shot</strong></td>
+</tr>
+<tr>
+<td>Simulators</td>
+<td>local</td>
+<td>local <strong>and</strong> managed (up to 34 qubits, GPU)</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>your machine</td>
+<td>S3, automatic</td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>write your own</td>
+<td><strong>Hybrid Jobs</strong> (managed containers)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When Braket is the right choice:</strong> benchmarking across hardware modalities, running production
+workloads with SLAs, or needing large managed simulators without owning a cluster.</p>
+<p><strong>When it is not:</strong> learning (IBM's free tier is better), or research needing pulse-level control
+(vendor SDKs expose more).</p>
+<h2 id="413-the-braket-sdk">41.3 The Braket SDK<a class="headerlink" href="#413-the-braket-sdk" title="Permanent link">&para;</a></h2>
+<h3 id="installation-and-a-first-circuit">Installation and a first circuit<a class="headerlink" href="#installation-and-a-first-circuit" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>amazon-braket-sdk
+aws<span class="w"> </span>configure<span class="w">                    </span><span class="c1"># set credentials and region</span>
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">braket.circuits</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">braket.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalSimulator</span>
+
+<span class="n">circ</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cnot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">probability</span><span class="p">()</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">LocalSimulator</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">measurement_counts</span><span class="p">)</span>
+<span class="c1"># Counter({'00': 508, '11': 492})</span>
+</code></pre></div>
+<p><strong>The chaining style is distinctive:</strong> <code>Circuit().h(0).cnot(0,1).rx(2, 0.5)</code>. Every gate method
+returns the circuit, so operations chain fluently.</p>
+<h3 id="gate-reference">Gate reference<a class="headerlink" href="#gate-reference" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">c</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span>
+<span class="n">c</span><span class="o">.</span><span class="n">i</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">si</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">ti</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">vi</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># v = sqrt(X)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">rx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">phaseshift</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">cnot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">cz</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">iswap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">xx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">yy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">zz</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>     <span class="c1"># Ising gates -- ion-native</span>
+<span class="n">c</span><span class="o">.</span><span class="n">ccnot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">cswap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Note <code>xx</code>, <code>yy</code>, <code>zz</code>.</strong> These Mølmer–Sørensen-type gates are <strong>native to trapped-ion hardware</strong>,
+so on IonQ they compile to a single physical operation, whereas a CNOT decomposes into several.
+Using the native gate set is often worth 2–3× in fidelity.</p>
+<h3 id="result-types">Result types<a class="headerlink" href="#result-types" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">circ</span><span class="o">.</span><span class="n">probability</span><span class="p">()</span>                       <span class="c1"># full distribution</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">expectation</span><span class="p">(</span><span class="n">observable</span><span class="o">=</span><span class="n">Observable</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">variance</span><span class="p">(</span><span class="n">observable</span><span class="o">=</span><span class="n">Observable</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">observable</span><span class="o">=</span><span class="n">Observable</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">state_vector</span><span class="p">()</span>                      <span class="c1"># simulators only</span>
+<span class="n">circ</span><span class="o">.</span><span class="n">amplitude</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="p">[</span><span class="s2">"00"</span><span class="p">,</span> <span class="s2">"11"</span><span class="p">])</span>       <span class="c1"># specific amplitudes</span>
+</code></pre></div>
+<h2 id="414-devices">41.4 Devices<a class="headerlink" href="#414-devices" title="Permanent link">&para;</a></h2>
+<h3 id="simulators">Simulators<a class="headerlink" href="#simulators" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>ARN suffix</th>
+<th>Type</th>
+<th>Max qubits</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LocalSimulator()</code></td>
+<td>—</td>
+<td>statevector</td>
+<td>~25</td>
+<td>free, on your machine</td>
+</tr>
+<tr>
+<td><strong>SV1</strong></td>
+<td><code>sv1</code></td>
+<td>statevector</td>
+<td><strong>34</strong></td>
+<td>managed, parallel</td>
+</tr>
+<tr>
+<td><strong>DM1</strong></td>
+<td><code>dm1</code></td>
+<td>density matrix</td>
+<td><strong>17</strong></td>
+<td>noise simulation</td>
+</tr>
+<tr>
+<td><strong>TN1</strong></td>
+<td><code>tn1</code></td>
+<td>tensor network</td>
+<td><strong>50</strong></td>
+<td>shallow circuits only</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">braket.aws</span><span class="w"> </span><span class="kn">import</span> <span class="n">AwsDevice</span>
+
+<span class="n">sv1</span> <span class="o">=</span> <span class="n">AwsDevice</span><span class="p">(</span><span class="s2">"arn:aws:braket:::device/quantum-simulator/amazon/sv1"</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sv1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circ</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">s3_destination_folder</span><span class="o">=</span><span class="n">s3</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="quantum-processors">Quantum processors<a class="headerlink" href="#quantum-processors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Vendor</th>
+<th>Technology</th>
+<th>Qubits</th>
+<th>Connectivity</th>
+<th>Native 2Q gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IonQ Forte / Aria</strong></td>
+<td>trapped ion</td>
+<td>36 / 25</td>
+<td><strong>all-to-all</strong></td>
+<td>MS (<span class="arithmatex">\(XX\)</span>)</td>
+</tr>
+<tr>
+<td><strong>Rigetti Ankaa-3</strong></td>
+<td>superconducting</td>
+<td>84</td>
+<td>octagonal lattice</td>
+<td>iSWAP / CZ</td>
+</tr>
+<tr>
+<td><strong>IQM Garnet</strong></td>
+<td>superconducting</td>
+<td>20</td>
+<td>square lattice</td>
+<td>CZ</td>
+</tr>
+<tr>
+<td><strong>QuEra Aquila</strong></td>
+<td>neutral atom</td>
+<td>256</td>
+<td><strong>analog only</strong></td>
+<td>Rydberg blockade</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span class="n">device</span> <span class="o">=</span> <span class="n">AwsDevice</span><span class="p">(</span><span class="s2">"arn:aws:braket:us-east-1::device/qpu/ionq/Forte-1"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">paradigm</span><span class="o">.</span><span class="n">qubitCount</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>                       <span class="c1"># ONLINE / OFFLINE</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">executionWindows</span><span class="p">)</span>   <span class="c1"># availability schedule</span>
+</code></pre></div>
+<p><strong>QuEra Aquila is different in kind.</strong> It is an <strong>analog Hamiltonian simulator</strong>, not a gate device.
+You specify a time-dependent Rydberg Hamiltonian — atom positions, laser detuning and Rabi frequency
+— and it evolves the system. Excellent for many-body physics; it cannot run gate circuits at all.</p>
+<h3 id="choosing-a-device">Choosing a device<a class="headerlink" href="#choosing-a-device" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Choose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Highest fidelity, dense connectivity</td>
+<td><strong>IonQ</strong> (all-to-all, no SWAPs)</td>
+</tr>
+<tr>
+<td>Fastest execution, many shots</td>
+<td><strong>Rigetti / IQM</strong> (ns gates)</td>
+</tr>
+<tr>
+<td>Many qubits, analog physics</td>
+<td><strong>QuEra</strong></td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td><strong>LocalSimulator</strong> (free)</td>
+</tr>
+<tr>
+<td>30+ qubits noiseless</td>
+<td><strong>SV1</strong></td>
+</tr>
+<tr>
+<td>Noise studies</td>
+<td><strong>DM1</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="415-cost-model">41.5 Cost Model<a class="headerlink" href="#415-cost-model" title="Permanent link">&para;</a></h2>
+<p><strong>This is the practical constraint students must learn to plan around.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Price (indicative, US, 2024)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Per task</strong> (a job submission)</td>
+<td><strong>$0.30</strong></td>
+</tr>
+<tr>
+<td><strong>Per shot</strong> — IonQ</td>
+<td><strong>$0.03</strong></td>
+</tr>
+<tr>
+<td><strong>Per shot</strong> — Rigetti / IQM</td>
+<td><strong>$0.00035</strong></td>
+</tr>
+<tr>
+<td>SV1 simulator</td>
+<td>$0.075 per minute</td>
+</tr>
+<tr>
+<td>DM1 simulator</td>
+<td>$0.075 per minute</td>
+</tr>
+<tr>
+<td>TN1 simulator</td>
+<td>$0.275 per minute</td>
+</tr>
+<tr>
+<td>Hybrid Jobs (classical container)</td>
+<td>standard EC2 rates</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The per-task charge is the trap.</strong> Submitting 1000 separate one-shot tasks costs
+<span class="arithmatex">\(1000\times\$0.30 = \$300\)</span> in task fees alone. <strong>Always batch shots into a single task.</strong></p>
+<p><strong>IonQ is ~85× more expensive per shot than Rigetti</strong> — reflecting slower gates and higher fidelity.
+Budget accordingly: use Rigetti for exploration and IonQ for final high-fidelity runs.</p>
+<h2 id="416-hybrid-jobs">41.6 Hybrid Jobs<a class="headerlink" href="#416-hybrid-jobs" title="Permanent link">&para;</a></h2>
+<p>For variational algorithms, round-tripping between your laptop and AWS for every iteration is slow
+and expensive in task fees. <strong>Hybrid Jobs</strong> run your classical optimisation loop in an AWS container
+<strong>next to</strong> the QPU, with priority queue access.</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">braket.jobs</span><span class="w"> </span><span class="kn">import</span> <span class="n">hybrid_job</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">braket.jobs.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_metric</span>
+
+<span class="nd">@hybrid_job</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"arn:aws:braket:us-east-1::device/qpu/ionq/Aria-1"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_vqe</span><span class="p">(</span><span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">braket.aws</span><span class="w"> </span><span class="kn">import</span> <span class="n">AwsDevice</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">AwsDevice</span><span class="p">(</span><span class="n">get_job_device_arn</span><span class="p">())</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">initial_params</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">energy</span><span class="p">)</span>
+        <span class="n">log_metric</span><span class="p">(</span><span class="n">metric_name</span><span class="o">=</span><span class="s2">"energy"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span> <span class="n">iteration_number</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">run_vqe</span><span class="p">(</span><span class="n">n_iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">arn</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
+</code></pre></div>
+<p><strong>Three concrete benefits.</strong></p>
+<ol>
+<li><strong>Priority queueing.</strong> The QPU is reserved for the job's duration, so iterations do not sit behind
+    other users' tasks — this alone can turn a 12-hour run into 20 minutes.</li>
+<li><strong>Lower latency.</strong> The classical loop runs in the same AWS region as the QPU.</li>
+<li><strong>Checkpointing and metrics.</strong> Progress survives interruptions and is visible in CloudWatch.</li>
+</ol>
+<h2 id="417-solved-problems">41.7 Solved Problems<a class="headerlink" href="#417-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-cost-of-a-qsvm-experiment">Problem 1 — Cost of a QSVM experiment<a class="headerlink" href="#problem-1-cost-of-a-qsvm-experiment" title="Permanent link">&para;</a></h4>
+<p><em>A QSVM needs a 50×50 kernel matrix at 1000 shots per entry. Compute the cost on (a) IonQ, (b)
+Rigetti, (c) SV1, assuming one task per kernel entry.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Number of kernel entries.</strong> Symmetric, diagonal known:</p>
+<div class="arithmatex">\[ \frac{50\times49}{2} = \mathbf{1225\ \text{entries}} \]</div>
+<p><strong>(a) IonQ.</strong></p>
+<div class="arithmatex">\[ \text{task fees} = 1225\times\$0.30 = \$367.50 \]</div>
+<div class="arithmatex">\[ \text{shot fees} = 1225\times1000\times\$0.03 = \$36{,}750 \]</div>
+<div class="arithmatex">\[ \boxed{\text{Total} = \$37{,}117.50} \]</div>
+<p><strong>(b) Rigetti.</strong></p>
+<div class="arithmatex">\[ \text{task fees} = 1225\times\$0.30 = \$367.50 \]</div>
+<div class="arithmatex">\[ \text{shot fees} = 1225\times1000\times\$0.00035 = \$428.75 \]</div>
+<div class="arithmatex">\[ \boxed{\text{Total} = \$796.25} \]</div>
+<p><strong>(c) SV1</strong> (noiseless simulator). At roughly 0.5 s per 1000-shot circuit:</p>
+<div class="arithmatex">\[ \text{time} = \frac{1225\times0.5}{60} = 10.2\ \text{minutes} \]</div>
+<div class="arithmatex">\[ \boxed{\text{Total} = 10.2\times\$0.075 = \$0.77} \]</div>
+<p><strong>Comparison.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Cost</th>
+<th>Ratio to SV1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SV1 simulator</td>
+<td><strong>$0.77</strong></td>
+<td>1×</td>
+</tr>
+<tr>
+<td>Rigetti QPU</td>
+<td>$796</td>
+<td>1030×</td>
+</tr>
+<tr>
+<td>IonQ QPU</td>
+<td>$37 118</td>
+<td>48 000×</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Three lessons.</strong></p>
+<ol>
+<li><strong>Develop on simulators.</strong> A $0.77 run tells you whether the algorithm works before you spend
+    $37 000 finding out that it does not.</li>
+<li><strong>Batch tasks.</strong> If the SDK allows submitting a <em>batch</em> of circuits as one task, the $367.50 in
+    task fees collapses to $0.30. Use <code>AwsQuantumTaskBatch</code>.</li>
+<li><strong>The <span class="arithmatex">\(O(M^2)\)</span> wall is financial as well as computational</strong> (L27). Doubling to 100 training
+    samples <strong>quadruples</strong> the cost: IonQ would run to about $150 000.</li>
+</ol>
+<h4 id="problem-2-native-gates-and-fidelity-on-ionq">Problem 2 — Native gates and fidelity on IonQ<a class="headerlink" href="#problem-2-native-gates-and-fidelity-on-ionq" title="Permanent link">&para;</a></h4>
+<p><em>A circuit needs 20 CNOTs. Compare running it as CNOTs versus rewriting with native <span class="arithmatex">\(XX\)</span> (MS) gates
+on IonQ, given CNOT decomposes to 1 MS + 4 single-qubit gates, with <span class="arithmatex">\(\epsilon_{\text{MS}} = 0.4\%\)</span>
+and <span class="arithmatex">\(\epsilon_{1q} = 0.03\%\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>As CNOTs.</strong> Each CNOT compiles to 1 MS gate plus 4 single-qubit gates:</p>
+<div class="arithmatex">\[ 20\ \text{CNOTs} \Rightarrow 20\ \text{MS} + 80\ \text{single-qubit} \]</div>
+<div class="arithmatex">\[ F = (1-0.004)^{20}\times(1-0.0003)^{80} = 0.996^{20}\times0.9997^{80} \]</div>
+<div class="arithmatex">\[ = 0.9231 \times 0.9763 = \mathbf{0.9013} \]</div>
+<p><strong>Rewritten with native <span class="arithmatex">\(XX\)</span> gates.</strong> If the algorithm's two-qubit interactions are naturally
+Ising-type (as in QAOA's <span class="arithmatex">\(Z_iZ_j\)</span> terms, or Trotterised spin Hamiltonians), each maps to <strong>one MS
+gate with no surrounding single-qubit gates</strong>:</p>
+<div class="arithmatex">\[ 20\ \text{MS gates only} \]</div>
+<div class="arithmatex">\[ F = 0.996^{20} = \mathbf{0.9231} \]</div>
+<p><strong>Improvement.</strong></p>
+<div class="arithmatex">\[ \frac{1 - 0.9013}{1 - 0.9231} = \frac{0.0987}{0.0769} = \mathbf{1.28\times}\ \text{less error} \]</div>
+<p><strong>Where the gain is much larger.</strong> On <strong>superconducting</strong> hardware the same 20 two-qubit gates would
+also need SWAPs if the interactions are non-local. For a dense interaction graph on 8 qubits, routing
+typically triples the two-qubit count:</p>
+<div class="arithmatex">\[ F_{\text{supercond}} \approx (1-0.008)^{60} = \mathbf{0.618} \]</div>
+<p>versus IonQ's <span class="arithmatex">\(0.923\)</span> — a <strong>5× smaller error</strong> on IonQ despite its 1000× slower gates.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{All-to-all connectivity plus native Ising gates is why trapped ions win on connectivity-heavy circuits.}\ } \]</div>
+<p><strong>Design rule.</strong> Express the algorithm in the <strong>hardware's native gate set</strong>. In Braket:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">circ</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span><span class="o">.</span><span class="n">zz</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>     <span class="c1"># native on IonQ -- 1 physical gate</span>
+<span class="c1"># rather than</span>
+<span class="n">circ</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span><span class="o">.</span><span class="n">cnot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span><span class="o">.</span><span class="n">cnot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># 2 MS + overhead</span>
+</code></pre></div>
+<h4 id="problem-3-designing-within-a-budget">Problem 3 — Designing within a budget<a class="headerlink" href="#problem-3-designing-within-a-budget" title="Permanent link">&para;</a></h4>
+<p><em>You have $500 of AWS credit and must demonstrate QAOA on a 6-node Max-Cut problem. Design the full
+experiment.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Phase 1 — Simulator development (budget: $5).</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">braket.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalSimulator</span>      <span class="c1"># FREE</span>
+</code></pre></div>
+<ul>
+<li>Implement QAOA for <span class="arithmatex">\(p = 1, 2, 3\)</span> on 6 qubits (<span class="arithmatex">\(2^6 = 64\)</span> amplitudes — instant).</li>
+<li>Grid-search <span class="arithmatex">\((\gamma,\beta)\)</span> over <span class="arithmatex">\(20\times20\)</span> points for each <span class="arithmatex">\(p\)</span>.</li>
+<li>Brute-force the exact optimum for comparison (only <span class="arithmatex">\(2^6 = 64\)</span> bitstrings).</li>
+<li><strong>Cost: $0</strong> (local simulator).</li>
+</ul>
+<p><strong>Phase 2 — Noise study on DM1 (budget: $20).</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">dm1</span> <span class="o">=</span> <span class="n">AwsDevice</span><span class="p">(</span><span class="s2">"arn:aws:braket:::device/quantum-simulator/amazon/dm1"</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>6 qubits is within DM1's 17-qubit limit.</li>
+<li>Sweep the two-qubit error rate from <span class="arithmatex">\(10^{-3}\)</span> to <span class="arithmatex">\(10^{-2}\)</span> to predict which <span class="arithmatex">\(p\)</span> survives on hardware.</li>
+<li>~20 configurations × 30 s = 10 minutes → <strong>$0.75</strong>.</li>
+<li><strong>Expected finding:</strong> <span class="arithmatex">\(p=1\)</span> survives, <span class="arithmatex">\(p=3\)</span> is destroyed by noise.</li>
+</ul>
+<p><strong>Phase 3 — Rigetti hardware run (budget: $50).</strong></p>
+<ul>
+<li>Circuit: <span class="arithmatex">\(p=1\)</span>, 6 qubits, <span class="arithmatex">\(|E|\)</span> = say 9 edges → 18 CNOTs + 6 <span class="arithmatex">\(R_x\)</span>.</li>
+<li><strong>Batch all parameter settings into one task</strong> using <code>AwsQuantumTaskBatch</code>.</li>
+<li>10 parameter points × 2000 shots:</li>
+</ul>
+<div class="arithmatex">\[ \text{cost} = \underbrace{\$0.30}_{\text{one batched task}} + 10\times2000\times\$0.00035 = \$0.30 + \$7.00 = \$7.30 \]</div>
+<p><strong>Phase 4 — IonQ confirmation run (budget: $400).</strong></p>
+<ul>
+<li>Run only the <strong>single best</strong> parameter setting found in Phase 3.</li>
+<li>Higher fidelity and all-to-all connectivity → no SWAPs.</li>
+</ul>
+<div class="arithmatex">\[ \text{shots affordable} = \frac{\$400 - \$0.30}{\$0.03} = \mathbf{13{,}323\ \text{shots}} \]</div>
+<p>Use 10 000 shots, leaving margin.</p>
+<div class="arithmatex">\[ \text{cost} = \$0.30 + 10{,}000\times\$0.03 = \$300.30 \]</div>
+<p><strong>Total budget.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Platform</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Development</td>
+<td>LocalSimulator</td>
+<td>$0.00</td>
+</tr>
+<tr>
+<td>2. Noise study</td>
+<td>DM1</td>
+<td>$0.75</td>
+</tr>
+<tr>
+<td>3. Exploration</td>
+<td>Rigetti</td>
+<td>$7.30</td>
+</tr>
+<tr>
+<td>4. Final result</td>
+<td>IonQ</td>
+<td>$300.30</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>$308.35</strong></td>
+</tr>
+<tr>
+<td><strong>Remaining</strong></td>
+<td></td>
+<td><strong>$191.65</strong> for reruns</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The strategy in one sentence.</strong> <em>Spend compute where it is free, spend cheap hardware where you
+need to explore, and spend expensive hardware once, on the single configuration you have already
+validated.</em></p>
+<h4 id="problem-4-comparing-three-hardware-modalities">Problem 4 — Comparing three hardware modalities<a class="headerlink" href="#problem-4-comparing-three-hardware-modalities" title="Permanent link">&para;</a></h4>
+<p><em>Design a benchmark comparing IonQ, Rigetti and IQM on the same circuit, and predict the results.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>The benchmark circuit: GHZ state on <span class="arithmatex">\(n\)</span> qubits</strong>, for <span class="arithmatex">\(n = 2,\dots,8\)</span>, measuring the fidelity of
+the <span class="arithmatex">\(\Pr[00\cdots0] + \Pr[11\cdots1]\)</span> signal.</p>
+<p><strong>Why GHZ?</strong> It requires <strong>long-range entanglement</strong> — every qubit correlated with every other —
+which is exactly the regime where connectivity matters. It is also easy to verify: an ideal GHZ gives
+<span class="arithmatex">\(\Pr[0^n] = \Pr[1^n] = 0.5\)</span> and zero probability for everything else.</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ghz</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">cnot</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>          <span class="c1"># chain construction (topology-friendly)</span>
+    <span class="k">return</span> <span class="n">c</span>
+
+<span class="n">devices</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"IonQ"</span><span class="p">:</span>    <span class="s2">"arn:aws:braket:us-east-1::device/qpu/ionq/Aria-1"</span><span class="p">,</span>
+    <span class="s2">"Rigetti"</span><span class="p">:</span> <span class="s2">"arn:aws:braket:us-west-1::device/qpu/rigetti/Ankaa-3"</span><span class="p">,</span>
+    <span class="s2">"IQM"</span><span class="p">:</span>     <span class="s2">"arn:aws:braket:eu-north-1::device/qpu/iqm/Garnet"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">arn</span> <span class="ow">in</span> <span class="n">devices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">AwsDevice</span><span class="p">(</span><span class="n">arn</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ghz</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">probability</span><span class="p">(),</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="c1"># record P(0^n) + P(1^n)</span>
+</code></pre></div>
+<p><strong>Predicted results.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th>IonQ (all-to-all)</th>
+<th>Rigetti (lattice)</th>
+<th>IQM (square)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>0.98</td>
+<td>0.97</td>
+<td>0.96</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.94</td>
+<td>0.88</td>
+<td>0.86</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.89</td>
+<td>0.74</td>
+<td>0.70</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.83</td>
+<td>0.58</td>
+<td>0.52</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reasoning behind the prediction.</strong></p>
+<ul>
+<li><strong>IonQ</strong> uses a chain of MS gates with <strong>no SWAPs</strong> (all-to-all), so gate count is <span class="arithmatex">\(n-1\)</span>, giving
+    <span class="arithmatex">\(F \approx 0.996^{n-1}\times(\text{single-qubit and readout errors})\)</span>.</li>
+<li><strong>Rigetti / IQM</strong> need the chain to lie along a physical path. On a lattice a linear chain usually
+    fits without SWAPs too — so the gap is driven mainly by their higher two-qubit error
+    (<span class="arithmatex">\(\sim0.8\)</span>–<span class="arithmatex">\(1.5\%\)</span> versus IonQ's <span class="arithmatex">\(0.4\%\)</span>) and higher readout error.</li>
+<li>The gap <strong>widens with <span class="arithmatex">\(n\)</span></strong> because errors compound multiplicatively.</li>
+</ul>
+<p><strong>A second, harder benchmark to add.</strong> Replace GHZ with a <strong>fully connected</strong> QAOA circuit
+(interactions between <em>all</em> pairs). Then Rigetti and IQM require <span class="arithmatex">\(O(n^2)\)</span> SWAPs while IonQ requires
+none, and the gap should widen dramatically — predicted <span class="arithmatex">\(F_{n=8}\)</span>: IonQ 0.70, Rigetti 0.15.</p>
+<p><strong>What to report.</strong> Fidelity <strong>versus two-qubit gate count</strong> and <strong>versus wall-clock time</strong>, on the
+same axes. IonQ wins on fidelity; Rigetti wins on speed and cost by ~85×. <strong>There is no single
+"best" device — only best for a given circuit shape and budget.</strong></p>
+<h4 id="problem-5-when-to-use-braket-versus-a-vendor-sdk">Problem 5 — When to use Braket versus a vendor SDK<a class="headerlink" href="#problem-5-when-to-use-braket-versus-a-vendor-sdk" title="Permanent link">&para;</a></h4>
+<p><em>Recommend Braket or a vendor SDK for each scenario.</em></p>
+<p><em>(a) An undergraduate course lab.</em>
+<em>(b) A benchmarking paper comparing four hardware platforms.</em>
+<em>(c) Production VQE for a pharmaceutical company.</em>
+<em>(d) Research needing pulse-level control on IBM hardware.</em>
+<em>(e) A 30-qubit noiseless simulation without owning a cluster.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a) Course lab → Qiskit (vendor SDK).</strong>
+IBM's free tier gives students hardware access at no cost and no credit card. Braket requires an AWS
+account with billing enabled — an administrative barrier, and a genuine financial risk if a student
+submits 1000 unbatched tasks by accident. <strong>Never expose students to per-shot billing in a first
+course.</strong></p>
+<p><strong>(b) Benchmarking paper → Braket.</strong>
+This is Braket's purpose. One SDK, one billing account, and — importantly for reproducibility — one
+uniform circuit representation across all four devices, eliminating the confound of different
+compilers. Writing the study in four vendor SDKs would introduce compiler differences that
+contaminate the hardware comparison.</p>
+<p><strong>(c) Production VQE → Braket, using Hybrid Jobs.</strong>
+Priority queue access is decisive: a 500-iteration VQE submitted as ordinary tasks could take days
+sitting behind other users. Hybrid Jobs reserve the device. AWS also provides the SLAs, IAM access
+control, audit logging and S3 data governance that a regulated pharmaceutical company requires.</p>
+<p><strong>(d) Pulse-level control on IBM → Qiskit.</strong>
+Braket exposes only the <strong>gate</strong> layer. Qiskit Pulse gives access to the underlying microwave
+waveforms — essential for gate calibration, custom pulse shaping and dynamical-decoupling research.
+Braket is not the wrong tool so much as the wrong <em>layer</em>.</p>
+<p><strong>(e) 30-qubit noiseless simulation → Braket SV1.</strong>
+30 qubits needs 17 GB and substantial CPU. SV1 handles up to 34 qubits on managed parallel hardware
+at $0.075/minute — perhaps $5 for a substantial study, versus buying or renting a large-memory
+server. <em>(Alternative: <code>lightning.gpu</code> on a rented EC2 instance, which may be cheaper for very long
+runs but requires you to manage the instance.)</em></p>
+<p><strong>The summary rule.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \text{Vendor SDK for \emph{depth} (one platform, deeply); Braket for \emph{breadth} (many platforms, uniformly).}\ } \]</div>
+<h2 id="418-practice-problems">41.8 Practice Problems<a class="headerlink" href="#418-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Cost of 5000 shots on IonQ as one task? <strong>[Ans: $150.30]</strong></li>
+<li>Same on Rigetti? <strong>[Ans: $2.05]</strong></li>
+<li>Write a Braket circuit for a 3-qubit GHZ state.</li>
+<li>Which Braket simulator for a 40-qubit shallow circuit? <strong>[Ans: TN1]</strong></li>
+<li>Why does batching shots into one task matter?</li>
+<li>Which device for a fully connected 10-qubit QAOA, and why?</li>
+<li>Compute the cost of 100 tasks × 100 shots versus 1 task × 10 000 shots on Rigetti. <strong>[Ans: $33.50 vs $3.80]</strong></li>
+</ol>
+<h2 id="419-summary">41.9 Summary<a class="headerlink" href="#419-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Braket is a <strong>managed service</strong>, not a competing SDK: one AWS account and one API for <strong>IonQ</strong> (trapped ion, all-to-all), <strong>Rigetti</strong> and <strong>IQM</strong> (superconducting), and <strong>QuEra</strong> (neutral-atom analog).</li>
+<li>Circuits use a <strong>fluent chaining</strong> style; native <code>xx</code>/<code>yy</code>/<code>zz</code> Ising gates compile to a single physical operation on trapped-ion hardware.</li>
+<li>Simulators: <code>LocalSimulator</code> (free, ~25 qubits), <strong>SV1</strong> (34 qubits), <strong>DM1</strong> (17, noisy), <strong>TN1</strong> (50, shallow).</li>
+<li><strong>Cost model:</strong> $0.30 per <strong>task</strong> plus per-shot fees — $0.03 on IonQ versus $0.00035 on Rigetti (85× cheaper). <strong>Always batch shots into one task</strong>; unbatched submission is the most common and most expensive mistake.</li>
+<li><strong>Hybrid Jobs</strong> run the classical optimisation loop next to the QPU with <strong>priority queueing</strong> — essential for variational algorithms.</li>
+<li><strong>The professional workflow:</strong> develop free on a local simulator → study noise on DM1 → explore cheaply on Rigetti → confirm once, at high shot count, on IonQ.</li>
+<li><strong>Vendor SDK for depth; Braket for breadth.</strong></li>
+</ul>
+<p><strong>Next lesson:</strong> L42 — Microsoft Q# and the Quantum Development Kit.</p>
+<p><strong>Practise now:</strong> <code>unit4-platforms-lab.html</code> → <em>Cost Calculator</em>: enter circuit count, shots and
+device, and see the task and shot fees broken down, with batching savings highlighted.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="pennylane-and-differentiable-quantum-programming.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 40. PennyLane and Differentiable Quantum Programming">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                40. PennyLane and Differentiable Quantum Programming
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-footer__link md-footer__link--next" aria-label="Next: 42. Microsoft Q# and the Quantum Development Kit">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                42. Microsoft Q# and the Quantum Development Kit
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

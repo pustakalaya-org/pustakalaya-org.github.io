@@ -1,0 +1,3199 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/computing/databases/database-foundations.html">
+  
+  
+    <link rel="prev" href="how-to-read-this-guide.html">
+  
+  
+    <link rel="next" href="the-relational-model-sql.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>1. Database Foundations - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#11-data-information-and-why-we-store-it" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1. Database Foundations
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Databases</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Database Foundations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="database-foundations.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Database Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-data-information-and-why-we-store-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Data, Information and Why We Store It
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Data, Information and Why We Store It">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-turn-raw-sales-lines-into-information-with-sqlite-install-sqlite3-then-paste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Turn raw sales lines into information with SQLite (install sqlite3, then paste)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-a-database-and-a-dbms-are" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 What a Database and a DBMS Are
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 What a Database and a DBMS Are">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-a-running-postgresql-server-what-it-is-psql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask a running PostgreSQL server what it is (psql)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-why-not-just-files-or-spreadsheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Why Not Just Files or Spreadsheets?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Why Not Just Files or Spreadsheets?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-import-a-csv-into-sqlite-and-query-it-like-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Import a CSV into SQLite and query it like a database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-a-short-history-of-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 A Short History of Databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-the-main-data-models-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 The Main Data Models at a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-tables-rows-columns-keys-and-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Tables, Rows, Columns, Keys and Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Tables, Rows, Columns, Keys and Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-create-two-linked-tables-and-watch-a-foreign-key-protect-them-postgresql-or-sqlite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Create two linked tables and watch a foreign key protect them (PostgreSQL or SQLite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-transactions-and-acid-in-plain-english" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Transactions and ACID in Plain English
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7 Transactions and ACID in Plain English">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-rollback-undo-a-transfer-psql-or-sqlite3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch ROLLBACK undo a transfer (psql or sqlite3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-oltp-vs-olap-running-the-business-vs-understanding-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 OLTP vs OLAP: Running the Business vs Understanding It
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-database-architectures-embedded-to-cloud-native" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 Database Architectures: Embedded to Cloud-Native
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9 Database Architectures: Embedded to Cloud-Native">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-compare-embedded-and-client-server-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Compare embedded and client-server in Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-the-2026-database-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 The 2026 Database Landscape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-how-an-application-talks-to-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.11 How an Application Talks to a Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11 How an Application Talks to a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-a-safe-parameterised-query-in-python-with-the-built-in-sqlite3-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: A safe parameterised query in Python with the built-in sqlite3 driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-follow-a-buy-click-through-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.12 Follow a 'Buy' Click Through the Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12 Follow a &#39;Buy&#39; Click Through the Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-oversell-proof-stock-decrement-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Oversell-proof stock decrement (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-who-works-with-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.13 Who Works With the Database?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-relational-model-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. The Relational Model & SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-modelling-database-design.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Data Modelling & Database Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-databases-work-inside.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. How Databases Work Inside
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-distributed-sql-databases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relational & Distributed SQL Databases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="nosql-specialised-databases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. NoSQL & Specialised Databases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="distributed-data-scaling-reliability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Distributed Data, Scaling & Reliability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics-warehouses-lakehouses-data-engineering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Analytics, Warehouses, Lakehouses & Data Engineering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-security-ai-careers-learning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Operations, Security, AI, Careers & Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-database-student-should-master.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Database Student Should Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-data-information-and-why-we-store-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Data, Information and Why We Store It
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Data, Information and Why We Store It">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-turn-raw-sales-lines-into-information-with-sqlite-install-sqlite3-then-paste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Turn raw sales lines into information with SQLite (install sqlite3, then paste)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-a-database-and-a-dbms-are" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 What a Database and a DBMS Are
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 What a Database and a DBMS Are">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-a-running-postgresql-server-what-it-is-psql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask a running PostgreSQL server what it is (psql)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-why-not-just-files-or-spreadsheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Why Not Just Files or Spreadsheets?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Why Not Just Files or Spreadsheets?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-import-a-csv-into-sqlite-and-query-it-like-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Import a CSV into SQLite and query it like a database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-a-short-history-of-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 A Short History of Databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-the-main-data-models-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 The Main Data Models at a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-tables-rows-columns-keys-and-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Tables, Rows, Columns, Keys and Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Tables, Rows, Columns, Keys and Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-create-two-linked-tables-and-watch-a-foreign-key-protect-them-postgresql-or-sqlite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Create two linked tables and watch a foreign key protect them (PostgreSQL or SQLite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-transactions-and-acid-in-plain-english" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Transactions and ACID in Plain English
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7 Transactions and ACID in Plain English">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-watch-rollback-undo-a-transfer-psql-or-sqlite3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Watch ROLLBACK undo a transfer (psql or sqlite3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-oltp-vs-olap-running-the-business-vs-understanding-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 OLTP vs OLAP: Running the Business vs Understanding It
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-database-architectures-embedded-to-cloud-native" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 Database Architectures: Embedded to Cloud-Native
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9 Database Architectures: Embedded to Cloud-Native">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-compare-embedded-and-client-server-in-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Compare embedded and client-server in Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-the-2026-database-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 The 2026 Database Landscape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-how-an-application-talks-to-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.11 How an Application Talks to a Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11 How an Application Talks to a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-a-safe-parameterised-query-in-python-with-the-built-in-sqlite3-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: A safe parameterised query in Python with the built-in sqlite3 driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-follow-a-buy-click-through-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.12 Follow a 'Buy' Click Through the Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12 Follow a &#39;Buy&#39; Click Through the Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-oversell-proof-stock-decrement-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Oversell-proof stock decrement (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-who-works-with-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.13 Who Works With the Database?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-1-database-foundations">Chapter 1: Database Foundations<a class="headerlink" href="#chapter-1-database-foundations" title="Permanent link">&para;</a></h1>
+<p>Start here. This chapter explains what data and databases are, why a database management system beats a pile of files, and how sixty years of history led from IBM's IMS to cloud and vector databases. It introduces the main data models, tables and keys, ACID transactions, the OLTP/OLAP split and the ways databases are deployed, then surveys the 2026 landscape, shows how applications talk to databases, follows a real 'Buy' click through one, and maps the people who work with data.</p>
+<h2 id="11-data-information-and-why-we-store-it">1.1 Data, Information and Why We Store It<a class="headerlink" href="#11-data-information-and-why-we-store-it" title="Permanent link">&para;</a></h2>
+<p>Data are raw facts: numbers, words, dates, clicks, sensor readings. Information is data that has been organised and put in context so it answers a question someone cares about. Databases exist so that data can be kept safely and turned into information quickly, again and again.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-01-data-information-and-why-we-store-it.svg" alt="Each level adds context and meaning to the one below it; databases mostly live at the bottom two." loading="lazy">
+<figcaption><strong>The DIKW pyramid.</strong> Each level adds context and meaning to the one below it; databases mostly live at the bottom two.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Data is a pile of loose receipts in a shoebox; information is the monthly spending summary you get after sorting and adding them up.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Maple Street Bakery's till records about 1,200 sales a week, each one a line like '2026-10-03 08:14, croissant, 2, £3.60'. On its own each line says little. When the owner, Amara, totals croissant sales by weather and weekday, she learns that rainy Mondays sell 30% fewer croissants, so she bakes fewer and cuts waste.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Capture: a till, app, form or sensor records raw facts as they happen.</li>
+<li>Store: the facts are written into a database so they survive power cuts and crashes.</li>
+<li>Organise: data is given structure — named fields, types and links between records.</li>
+<li>Query: someone asks a question, for example 'sales per product per week'.</li>
+<li>Interpret: the answer, read in context, becomes information and then a decision.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Everyone who works with computers meets data, but analysts, developers, data engineers and managers turn it into information daily in retail, banking, healthcare, government and science.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Learn the DIKW pyramid (Data, Information, Knowledge, Wisdom) and the three shapes of data — structured, semi-structured and unstructured — as they appear in almost every introductory exam.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Structured data fits fixed named columns (orders, payroll); semi-structured data carries its own labels (JSON, XML, log lines); unstructured data has no predefined model (photos, audio, free text) and needs extra processing before it can be queried.</li>
+<li>Metadata is data about data: column names, types, units, owners, creation dates and lineage. Without it a column called 'amt' could mean pounds, pence or kilograms, and every report built on it becomes a guess.</li>
+<li>Data quality is usually judged on six dimensions — accuracy, completeness, consistency, timeliness, validity and uniqueness. A database can enforce validity and uniqueness with constraints, but accuracy still depends on how the data was captured.</li>
+<li>Storage is cheap but not free: an order row of about 150 bytes means ten million orders take roughly 1.5 GB before indexes, which often double or triple the space used.</li>
+<li>Personal data — anything identifying a living person, such as a name, email or device ID — is regulated by laws like the EU GDPR, so what you store, for how long and who reads it are design decisions.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Using 'data' and 'information' as synonyms: data is raw facts; information is data processed into context that answers a question.</li>
+<li>Storing numbers or dates as text such as '£3.60' or '03/10/26' — sorting, summing and comparing then break; store numeric and date types and format on display.</li>
+<li>Believing more data automatically means better decisions: poor-quality data produces confident but wrong answers (garbage in, garbage out).</li>
+</ul>
+</div>
+<h3 id="try-it-turn-raw-sales-lines-into-information-with-sqlite-install-sqlite3-then-paste">Try it: Turn raw sales lines into information with SQLite (install sqlite3, then paste)<a class="headerlink" href="#try-it-turn-raw-sales-lines-into-information-with-sqlite-install-sqlite3-then-paste" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">sqlite3</span><span class="w"> </span><span class="n">bakery</span><span class="p">.</span><span class="n">db</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">sales</span><span class="p">(</span><span class="n">sold_at</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">unit_price</span><span class="w"> </span><span class="nb">REAL</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">sales</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="w"> </span><span class="p">(</span><span class="s1">'2026-10-05 08:14'</span><span class="p">,</span><span class="s1">'croissant'</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">.</span><span class="mi">80</span><span class="p">),</span>
+<span class="w"> </span><span class="p">(</span><span class="s1">'2026-10-05 08:20'</span><span class="p">,</span><span class="s1">'bagel'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">.</span><span class="mi">10</span><span class="p">),</span>
+<span class="w"> </span><span class="p">(</span><span class="s1">'2026-10-06 09:02'</span><span class="p">,</span><span class="s1">'croissant'</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">.</span><span class="mi">80</span><span class="p">);</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">item</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">units</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">qty</span><span class="o">*</span><span class="n">unit_price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">revenue</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">sales</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">revenue</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data</strong><br><em>General computing term · Concept · Current · Beginner · General</em></td>
+<td>Raw, unprocessed facts such as numbers, text, dates or measurements, with no interpretation attached.</td>
+<td>'2026-10-03, 08:14, croissant, 2' is a data record captured by a bakery till.</td>
+</tr>
+<tr>
+<td><strong>Information</strong><br><em>General computing term · Concept · Current · Beginner · General</em></td>
+<td>Data organised and placed in context so that it answers a question or supports a decision.</td>
+<td>'Croissant sales fall 30% on rainy Mondays' is information derived from months of till data.</td>
+</tr>
+<tr>
+<td><strong>DIKW pyramid</strong><br><em>Information-science model (Ackoff, 1989) · Concept · Current · Beginner · General</em></td>
+<td>A model showing Data refined into Information, Knowledge and finally Wisdom, each layer adding meaning.</td>
+<td>A lecturer uses DIKW to explain why a dashboard (information) is not the same as a business strategy (wisdom).</td>
+</tr>
+<tr>
+<td><strong>Structured data</strong><br><em>General data-management term · Concept · Current · Beginner · Relational</em></td>
+<td>Data with a fixed, predefined shape — named fields with known types — that fits naturally into tables.</td>
+<td>Bank transactions with account, amount, currency and timestamp columns are structured data.</td>
+</tr>
+<tr>
+<td><strong>Semi-structured data</strong><br><em>General data-management term · Concept · Current · Beginner · Document</em></td>
+<td>Data that carries its own labels and nesting, such as JSON or XML, but whose shape can vary between records.</td>
+<td>Two customer JSON documents, one with a 'twitter' field and one without, are semi-structured.</td>
+</tr>
+<tr>
+<td><strong>Unstructured data</strong><br><em>General data-management term · Concept · Current · Beginner · General</em></td>
+<td>Content with no predefined data model — images, audio, video, PDFs, free text — that needs extraction or embeddings before querying.</td>
+<td>A support team stores call recordings, then transcribes them so the text can be searched.</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong><br><em>General data-management term · Concept · Current · Beginner · General</em></td>
+<td>Data that describes other data: names, types, units, owners, creation time, source and meaning.</td>
+<td>A data catalogue records that column 'amt_gbp' holds order totals in pounds, owned by the finance team.</td>
+</tr>
+<tr>
+<td><strong>Record and field</strong><br><em>General data-management term · Concept · Current · Beginner · General</em></td>
+<td>A record groups facts about one thing; a field is one named fact inside it. In tables they become rows and columns.</td>
+<td>One student record has fields student_id, name, date_of_birth and course.</td>
+</tr>
+<tr>
+<td><strong>Data type</strong><br><em>Every DBMS and programming language · Concept · Current · Beginner · General</em></td>
+<td>The kind of value a field holds — integer, decimal, text, date, boolean, binary — which controls valid values and operations.</td>
+<td>Declaring price as DECIMAL(10,2) stops 'ten pounds' being stored and makes SUM(price) exact.</td>
+</tr>
+<tr>
+<td><strong>Data quality</strong><br><em>DAMA DMBOK and industry practice · Concept · Current · Intermediate · General</em></td>
+<td>How fit data is for use, judged on accuracy, completeness, consistency, timeliness, validity and uniqueness.</td>
+<td>Finding 4% of customer emails missing an '@' prompts a validation rule on the sign-up form.</td>
+</tr>
+<tr>
+<td><strong>Garbage in, garbage out (GIGO)</strong><br><em>Computing proverb, 1950s-60s · Concept · Current · Beginner · General</em></td>
+<td>The principle that flawed input data produces flawed output, however clever the software processing it.</td>
+<td>A sales forecast trained on duplicated orders predicts double the real demand.</td>
+</tr>
+<tr>
+<td><strong>Personal data</strong><br><em>EU GDPR Article 4 · Concept · Current · Beginner · General</em></td>
+<td>Any information relating to an identifiable living person, such as a name, email, IP address or location.</td>
+<td>A gym's members table holds personal data, so access is restricted and old records are deleted on schedule.</td>
+</tr>
+<tr>
+<td><strong>Data lifecycle</strong><br><em>DAMA DMBOK and industry practice · Concept · Current · Intermediate · General</em></td>
+<td>The stages data passes through: create, store, use, share, archive and destroy, each with its own rules.</td>
+<td>Invoices are kept live for two years, archived for six more for tax law, then securely deleted.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-what-a-database-and-a-dbms-are">1.2 What a Database and a DBMS Are<a class="headerlink" href="#12-what-a-database-and-a-dbms-are" title="Permanent link">&para;</a></h2>
+<p>A database is an organised collection of related data stored so that it can be found, changed and shared reliably. A database management system (DBMS) is the software that looks after it: it stores the data on disk, answers questions, keeps many users from tripping over each other and recovers after crashes. People often say 'database' when they mean the DBMS, such as PostgreSQL or MongoDB.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-02-what-a-database-and-a-dbms-are.svg" alt="Each job would otherwise have to be rewritten inside every application." loading="lazy">
+<figcaption><strong>Jobs a DBMS does for you.</strong> Each job would otherwise have to be rewritten inside every application.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The database is the library's collection of books; the DBMS is the librarian, catalogue, lending desk and security guard that let thousands of readers find, borrow and return books without chaos.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Riverside Medical Practice keeps 18,000 patient records in PostgreSQL. Receptionists book appointments, doctors add notes and the pharmacy system reads prescriptions — all at the same moment. The DBMS checks each user's permissions, stops two receptionists booking the same slot, and after a power cut it replays its log so no confirmed booking is lost.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>An application sends a request (usually a query in SQL) to the DBMS over a connection.</li>
+<li>The DBMS checks who is asking and whether they are allowed to do it.</li>
+<li>It plans the cheapest way to find the data, for example using an index.</li>
+<li>It reads or changes data in memory and records changes in a log for safety.</li>
+<li>It returns results and makes committed changes durable on disk.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every software team uses a DBMS; database administrators run them, developers write queries against them, and analysts query copies of their data.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Be precise in interviews: 'database' is the data, 'DBMS' is the software, and 'database system' is both together plus the applications using them.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>A DBMS hides physical storage behind a logical model — this is data independence, described in the ANSI/SPARC three-schema architecture (1975): external views, a conceptual schema and an internal schema can each change without breaking the others.</li>
+<li>Most DBMSs keep a system catalogue (data dictionary) of their own tables, columns, indexes and permissions, stored as tables you can query — PostgreSQL's pg_catalog and the standard information_schema are examples.</li>
+<li>Terminology differs: in PostgreSQL one server process group is a 'cluster' holding many databases, each with schemas; in MySQL 'database' and 'schema' are synonyms; in Oracle a schema is tied to a user account.</li>
+<li>A DBMS mediates every access, so it can enforce rules centrally: one CHECK constraint protects data from every application, script and person, instead of trusting each program to validate input itself.</li>
+<li>Under the surface a DBMS is a stack of components — parser, optimiser, executor, buffer manager, storage engine, log and lock manager — which later chapters open up one by one.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Calling Excel or a CSV folder a 'database': they store data but lack a DBMS's concurrency control, crash recovery and enforced integrity.</li>
+<li>Assuming one DBMS server equals one database: most servers host many databases, each with its own schemas, users and permissions.</li>
+<li>Thinking the DBMS only stores data: its value is equally in safe concurrent access, recovery and security.</li>
+</ul>
+</div>
+<h3 id="try-it-ask-a-running-postgresql-server-what-it-is-psql">Try it: Ask a running PostgreSQL server what it is (psql)<a class="headerlink" href="#try-it-ask-a-running-postgresql-server-what-it-is-psql" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s2">"SELECT version();"</span>
+psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s2">"\l"</span><span class="w">      </span><span class="c1"># list databases</span>
+psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s2">"SHOW data_directory;"</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_1">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database</strong><br><em>General term · Concept · Current · Beginner · General</em></td>
+<td>An organised, persistent collection of related data designed to be queried and updated by many users and programs.</td>
+<td>A university's database holds students, courses, enrolments and grades in linked tables.</td>
+</tr>
+<tr>
+<td><strong>Database management system (DBMS)</strong><br><em>General term · Concept · Current · Beginner · General</em></td>
+<td>Software that stores, retrieves, secures and recovers data in databases and coordinates concurrent users.</td>
+<td>PostgreSQL, MySQL, Oracle Database, SQL Server, MongoDB and SQLite are all DBMSs.</td>
+</tr>
+<tr>
+<td><strong>RDBMS</strong><br><em>Term for DBMSs based on Codd's relational model · Concept · Current · Beginner · Relational</em></td>
+<td>A relational DBMS: one that stores data as tables of rows and columns and is queried mainly with SQL.</td>
+<td>A bank's core ledger runs on an RDBMS such as Oracle Database or IBM Db2.</td>
+</tr>
+<tr>
+<td><strong>Database system</strong><br><em>Textbook term · Concept · Current · Beginner · General</em></td>
+<td>The combination of the database, the DBMS software and the applications that use them.</td>
+<td>An online shop's database system is its PostgreSQL server, its order data and the web app.</td>
+</tr>
+<tr>
+<td><strong>Data independence</strong><br><em>ANSI/SPARC architecture, 1975 · Concept · Current · Intermediate · General</em></td>
+<td>The ability to change how data is stored or organised without rewriting the applications that use it.</td>
+<td>A DBA adds an index and moves tables to faster disks; no application code changes.</td>
+</tr>
+<tr>
+<td><strong>ANSI/SPARC three-schema architecture</strong><br><em>ANSI/X3/SPARC Study Group, 1975 · Standard · Legacy · Intermediate · General</em></td>
+<td>A reference model separating external views, the conceptual schema and the internal (physical) schema of a database.</td>
+<td>Students learn that a 'managers' view hides salary columns (external) while tables (conceptual) live in files (internal).</td>
+</tr>
+<tr>
+<td><strong>System catalogue (data dictionary)</strong><br><em>Every DBMS; information_schema in ISO SQL · Feature · Current · Intermediate · General</em></td>
+<td>Internal tables describing every table, column, index, user and permission in the database.</td>
+<td>SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'; lists your PostgreSQL tables.</td>
+</tr>
+<tr>
+<td><strong>Database instance</strong><br><em>Oracle, SQL Server and general usage · Concept · Current · Intermediate · General</em></td>
+<td>A running copy of the DBMS software — processes plus memory — serving one or more databases.</td>
+<td>A developer runs a PostgreSQL instance on port 5432 and a second test instance on 5433.</td>
+</tr>
+<tr>
+<td><strong>Schema (namespace)</strong><br><em>ISO SQL and most RDBMSs · Concept · Current · Beginner · Relational</em></td>
+<td>A named container inside a database that groups tables, views and other objects, often per application or team.</td>
+<td>Tables billing.invoices and hr.employees live in separate schemas with separate permissions.</td>
+</tr>
+<tr>
+<td><strong>Query</strong><br><em>General term · Concept · Current · Beginner · General</em></td>
+<td>A request to a database to read or change data, usually written in a query language such as SQL.</td>
+<td>SELECT name FROM patients WHERE date_of_birth &lt; '1950-01-01'; asks for older patients.</td>
+</tr>
+<tr>
+<td><strong>Concurrency control</strong><br><em>Core DBMS function · Concept · Current · Intermediate · General</em></td>
+<td>The DBMS mechanisms that let many users read and write at once without corrupting data or seeing half-done changes.</td>
+<td>Two receptionists click 'book 10:30' together; concurrency control lets only one booking succeed.</td>
+</tr>
+<tr>
+<td><strong>Crash recovery</strong><br><em>Core DBMS function · Concept · Current · Intermediate · General</em></td>
+<td>Restoring the database to a consistent state after a failure, keeping committed changes and undoing unfinished ones.</td>
+<td>After a power cut, PostgreSQL replays its write-ahead log at start-up before accepting connections.</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong><br><em>PostgreSQL Global Development Group · Database · Current · Beginner · Relational</em></td>
+<td>A free, open-source object-relational DBMS known for standards compliance, extensibility and reliability; version 18 is current in October 2026.</td>
+<td>A start-up chooses PostgreSQL for orders, JSON product data and geospatial delivery zones in one system.</td>
+</tr>
+<tr>
+<td><strong>SQLite</strong><br><em>D. Richard Hipp and the SQLite developers (public domain) · Database · Current · Beginner · Relational</em></td>
+<td>A small embedded SQL database stored in one file, built into phones, browsers and countless apps.</td>
+<td>A note-taking app keeps every note in a single SQLite file on the user's laptop.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-why-not-just-files-or-spreadsheets">1.3 Why Not Just Files or Spreadsheets?<a class="headerlink" href="#13-why-not-just-files-or-spreadsheets" title="Permanent link">&para;</a></h2>
+<p>Files and spreadsheets are fine for one person and small data. Once several people or programs share data, plain files lead to duplicates, contradictions, lost updates and slow searches. A DBMS solves these problems once, centrally, so every application benefits.</p>
+<p><strong>Spreadsheet or file vs DBMS</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Files / spreadsheets</th>
+<th>DBMS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Many users at once</strong></td>
+<td>Overwrites and conflicts</td>
+<td>Locks or MVCC</td>
+</tr>
+<tr>
+<td><strong>Duplicate facts</strong></td>
+<td>Copied across files</td>
+<td>Stored once, linked by keys</td>
+</tr>
+<tr>
+<td><strong>Bad values</strong></td>
+<td>Anything can be typed</td>
+<td>Types and constraints</td>
+</tr>
+<tr>
+<td><strong>Crash mid-save</strong></td>
+<td>Corrupt or half-saved</td>
+<td>Atomic commit, log replay</td>
+</tr>
+<tr>
+<td><strong>Size limit</strong></td>
+<td>Excel: 1,048,576 rows</td>
+<td>Billions of rows</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Whole file or nothing</td>
+<td>Per table, row, column</td>
+</tr>
+<tr>
+<td><strong>Questions</strong></td>
+<td>Manual filters</td>
+<td>SQL queries, indexes</td>
+</tr>
+</tbody>
+</table>
+<p><em>Spreadsheets win on ease of starting; databases win once data is shared.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A shared spreadsheet is like a family whiteboard: fine for a shopping list, but chaos if 50 people edit it at once, rub out each other's notes and nobody remembers who wrote what.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Leila runs the fictional Greenhill Football League from three spreadsheets: players, teams and fees. A player who changes phone number is updated in one file but not the other two, two volunteers overwrite each other's edits, and finding unpaid fees takes an hour of filtering. Moving to a small PostgreSQL database stores each phone number once, locks rows during edits and answers 'who hasn't paid?' in milliseconds.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Identify the shared data and the people and programs that need it.</li>
+<li>Spot the file problems: duplication, inconsistent copies, no concurrent editing, weak security, no recovery.</li>
+<li>Move data into tables with keys so each fact is stored once.</li>
+<li>Add constraints and permissions so bad or unauthorised changes are refused.</li>
+<li>Point applications and reports at the database instead of copies of files.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Small businesses, research labs and charities often outgrow spreadsheets first; developers and data analysts are the people usually asked to migrate them.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Memorise the classic file-processing problems from textbooks: data redundancy and inconsistency, difficulty accessing data, data isolation, integrity problems, atomicity problems, concurrent-access anomalies and security problems.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>A modern Excel worksheet is capped at 1,048,576 rows by 16,384 columns; a DBMS table has no practical row limit, and PostgreSQL allows a single table to reach 32 TB with default 8 KB pages.</li>
+<li>Update anomalies are the textbook reason for databases: if a customer's address is copied into every order file, changing it in one place leaves the others stale — normalised tables store it once.</li>
+<li>Atomicity matters for multi-step changes: moving £50 between two accounts in two files can crash halfway and lose money; a database transaction commits both changes or neither.</li>
+<li>Files are not useless — CSV and Parquet are excellent for exchanging and archiving data, and embedded engines such as SQLite and DuckDB can query them directly with full SQL.</li>
+<li>Spreadsheets remain a valid front end: many teams keep data in a database and connect Excel or Google Sheets to it for analysis, getting a familiar interface with a single source of truth.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Emailing spreadsheet copies around as a 'database': each copy diverges, and nobody knows which version is the truth.</li>
+<li>Over-engineering: a one-person list of 200 items does not need a database server — SQLite or a spreadsheet may be the right tool.</li>
+<li>Assuming a shared network folder gives safe concurrent editing: most file formats have no row-level locking, so the last save wins.</li>
+</ul>
+</div>
+<h3 id="try-it-import-a-csv-into-sqlite-and-query-it-like-a-database">Try it: Import a CSV into SQLite and query it like a database<a class="headerlink" href="#try-it-import-a-csv-into-sqlite-and-query-it-like-a-database" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>sqlite3 league.db
+.mode csv
+.import players.csv players
+.mode table
+SELECT team, COUNT(*) AS players FROM players GROUP BY team;
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_2">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File-processing system</strong><br><em>Textbook term (pre-DBMS approach) · Concept · Legacy · Beginner · General</em></td>
+<td>An approach where each program keeps its own data files, duplicating data and logic across applications.</td>
+<td>Payroll and HR each keep their own employee file, so a name change must be made twice.</td>
+</tr>
+<tr>
+<td><strong>Data redundancy</strong><br><em>Textbook term · Concept · Current · Beginner · General</em></td>
+<td>The same fact stored in more than one place, wasting space and risking contradictory copies.</td>
+<td>A customer's address appears in 300 order rows instead of once in a customers table.</td>
+</tr>
+<tr>
+<td><strong>Update anomaly</strong><br><em>Codd's normalisation theory · Concept · Current · Intermediate · Relational</em></td>
+<td>An inconsistency caused when a change is applied to some copies of duplicated data but not all.</td>
+<td>A price is changed on the website file but not the invoicing file, so invoices are wrong.</td>
+</tr>
+<tr>
+<td><strong>Lost update</strong><br><em>Concurrency-control term · Concept · Current · Intermediate · General</em></td>
+<td>When two users edit the same data at once and one person's change silently overwrites the other's.</td>
+<td>Two volunteers save the shared fees spreadsheet minutes apart; the first volunteer's payments vanish.</td>
+</tr>
+<tr>
+<td><strong>Single source of truth</strong><br><em>Data-management principle · Concept · Current · Beginner · General</em></td>
+<td>Keeping one authoritative copy of each fact that every report and application reads from.</td>
+<td>Sales, finance and marketing dashboards all query one customers table instead of private exports.</td>
+</tr>
+<tr>
+<td><strong>CSV (comma-separated values)</strong><br><em>IETF RFC 4180 (2005) · Format · Current · Beginner · General</em></td>
+<td>A plain-text format with one record per line and fields separated by commas; universal for exchanging tabular data.</td>
+<td>A bank lets customers download statements as CSV to import into accounting software.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Excel</strong><br><em>Microsoft · Tool · Current · Beginner · General</em></td>
+<td>The dominant spreadsheet program; a worksheet holds up to 1,048,576 rows by 16,384 columns.</td>
+<td>A finance analyst pulls monthly figures from SQL Server into Excel for a board pack.</td>
+</tr>
+<tr>
+<td><strong>Google Sheets</strong><br><em>Google · Tool · Current · Beginner · General</em></td>
+<td>A browser-based collaborative spreadsheet, popular for small shared lists; workbooks are capped at 10 million cells.</td>
+<td>A club tracks volunteer shifts in Google Sheets before outgrowing it.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Access</strong><br><em>Microsoft (part of Microsoft 365) · Database · Legacy · Beginner · Relational</em></td>
+<td>A desktop database combining a file-based relational engine with forms and reports; common in small offices and older systems.</td>
+<td>A school office still runs its library loans in a 2010-era Access database.</td>
+</tr>
+<tr>
+<td><strong>Airtable</strong><br><em>Airtable Inc. · Service · Current · Beginner · Relational</em></td>
+<td>A cloud 'spreadsheet-database' hybrid with linked records, forms and views, aimed at non-programmers.</td>
+<td>A small events company tracks venues, bookings and suppliers in linked Airtable bases.</td>
+</tr>
+<tr>
+<td><strong>Data integrity</strong><br><em>Core database principle · Concept · Current · Beginner · General</em></td>
+<td>The accuracy and consistency of data over its life, protected by types, keys, constraints and transactions.</td>
+<td>A foreign key stops an order referencing a customer who does not exist.</td>
+</tr>
+<tr>
+<td><strong>Data silo</strong><br><em>Business and data-management term · Concept · Current · Beginner · General</em></td>
+<td>Data locked inside one team or system, invisible or incompatible with the rest of the organisation.</td>
+<td>Marketing's email list and sales' CRM disagree on how many customers the firm has.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="14-a-short-history-of-databases">1.4 A Short History of Databases<a class="headerlink" href="#14-a-short-history-of-databases" title="Permanent link">&para;</a></h2>
+<p>Databases began in the 1960s as navigational systems where programs followed pointers from record to record. In 1970 Edgar F. Codd proposed the relational model of simple tables, which led to SQL and to products such as Oracle, Db2 and later open-source MySQL and PostgreSQL. Since 2009 web-scale NoSQL systems, NewSQL, cloud databases and, most recently, vector databases for AI have joined them.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-04-a-short-history-of-databases.svg" alt="Each wave added options; none fully replaced relational databases." loading="lazy">
+<figcaption><strong>Six decades of databases.</strong> Each wave added options; none fully replaced relational databases.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like the history of maps: first turn-by-turn directions you had to follow exactly (navigational), then a grid map where you can ask for any place by its coordinates (relational), then specialised maps for different journeys (NoSQL, vector).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>A student, Tom, compares two ways to list all of a supplier's parts. In a 1970s CODASYL system he writes a loop that finds the supplier record then follows 'next part' pointers one by one. In SQL he writes one declarative line — SELECT part FROM supplies WHERE supplier = 'Acme' — and the DBMS decides how to find them. That shift is the heart of Codd's revolution.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>1960s: hierarchical (IBM IMS) and network (CODASYL, Bachman's IDS) databases navigate pointers.</li>
+<li>1970: Codd's paper proposes relations queried by what you want, not how to find it.</li>
+<li>1974-1983: IBM System R invents SEQUEL/SQL; Oracle (1979) and Db2 (1983) commercialise it.</li>
+<li>1986-1996: SQL becomes an ANSI then ISO standard; open-source MySQL (1995) and PostgreSQL (1996) appear.</li>
+<li>2006-2012: Bigtable and Dynamo papers inspire NoSQL; the term spreads after a 2009 meetup; Spanner shows global SQL.</li>
+<li>2010s-2020s: managed cloud databases, separated storage and compute, serverless, and vector search for AI.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Interviewers, lecturers and architects use this history to explain why today's systems look the way they do; it is a standard first-lecture topic in database courses.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember three names and dates: Charles Bachman (navigational databases, Turing Award 1973), Edgar F. Codd (relational model, 1970; Turing Award 1981) and Michael Stonebraker (Ingres and Postgres; Turing Award 2014).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>IBM built IMS (Information Management System) with North American Rockwell for the Apollo programme's bill of materials; first shipped around 1968, it still runs high-volume banking and insurance workloads on IBM mainframes today.</li>
+<li>Codd's June 1970 paper in Communications of the ACM, 'A Relational Model of Data for Large Shared Data Banks', separated the logical view from physical storage; IBM was slow to adopt it because IMS was profitable.</li>
+<li>System R's language was first called SEQUEL (Chamberlin and Boyce, 1974) and renamed SQL over a trademark conflict; Relational Software Inc., later renamed Oracle, shipped the first commercial SQL RDBMS, Oracle V2, in 1979.</li>
+<li>Google's Bigtable (2006) and Amazon's Dynamo (2007) papers showed how to scale across thousands of cheap servers by relaxing relational features; 'NoSQL' was popularised by a June 2009 San Francisco meetup on non-relational databases.</li>
+<li>Matthew Aslett of the 451 Group coined 'NewSQL' in 2011 for systems keeping SQL and ACID while scaling out; Google's Spanner paper (OSDI 2012) and later CockroachDB, TiDB and YugabyteDB followed that path.</li>
+<li>The 2020s brought AI-driven change: vector search arrived as specialised databases and as features inside PostgreSQL (pgvector), Oracle, SQL Server 2025, MongoDB and others, so similarity search became a mainstream database capability.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Thinking NoSQL replaced SQL: relational systems still top the DB-Engines ranking, and many NoSQL products have since added SQL-like languages and transactions.</li>
+<li>Crediting Oracle with inventing SQL: SQL came from IBM's System R research; Oracle was first to sell a commercial SQL product.</li>
+<li>Assuming 'legacy' means dead: IMS, mainframe Db2 and COBOL systems still process large shares of banking and airline transactions.</li>
+</ul>
+</div>
+<h4 id="key-databases-concepts-languages-tools-standards_3">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IBM IMS</strong><br><em>IBM (with North American Rockwell), 1966-68 · Database · Legacy · Intermediate · General</em></td>
+<td>A hierarchical database and transaction manager first built for Apollo; still used on mainframes by large banks and insurers.</td>
+<td>A bank's 1980s account system on IMS still processes millions of transactions nightly.</td>
+</tr>
+<tr>
+<td><strong>Integrated Data Store (IDS)</strong><br><em>Charles Bachman, General Electric, early 1960s · Database · Legacy · Advanced · General</em></td>
+<td>One of the first database management systems, using a navigational network model of linked records.</td>
+<td>Bachman's IDS work earned him the 1973 Turing Award, the first given for databases.</td>
+</tr>
+<tr>
+<td><strong>CODASYL network model</strong><br><em>CODASYL Data Base Task Group, 1969-1971 · Data model · Legacy · Advanced · General</em></td>
+<td>A standard network data model where records are linked in owner-member sets and programs navigate pointers.</td>
+<td>A 1970s program finds a supplier record, then loops through its 'supplies' set to list parts.</td>
+</tr>
+<tr>
+<td><strong>Codd's 1970 relational paper</strong><br><em>Edgar F. Codd, IBM; Communications of the ACM, June 1970 · Resource · Current · Intermediate · Relational</em></td>
+<td>'A Relational Model of Data for Large Shared Data Banks' — the paper that founded relational databases.</td>
+<td>Database courses still assign this 11-page paper as foundational reading.</td>
+</tr>
+<tr>
+<td><strong>System R</strong><br><em>IBM San Jose Research, 1974-1979 · Database · Legacy · Advanced · Relational</em></td>
+<td>IBM's research prototype that proved the relational model practical and created SQL and cost-based optimisation.</td>
+<td>Selinger's 1979 System R optimiser paper still underpins how query planners choose plans.</td>
+</tr>
+<tr>
+<td><strong>Ingres</strong><br><em>Michael Stonebraker and Eugene Wong, UC Berkeley, 1973 onward · Database · Legacy · Advanced · Relational</em></td>
+<td>An early relational research system using the QUEL language; its alumni founded Sybase and influenced SQL Server.</td>
+<td>Stonebraker followed Ingres with Postgres (1986), ancestor of PostgreSQL.</td>
+</tr>
+<tr>
+<td><strong>Oracle V2</strong><br><em>Relational Software Inc. (now Oracle Corporation), 1979 · Database · Legacy · Intermediate · Relational</em></td>
+<td>The first commercially available SQL relational database; there was never a 'version 1'.</td>
+<td>Larry Ellison, Bob Miner and Ed Oates built it after reading IBM's System R papers.</td>
+</tr>
+<tr>
+<td><strong>IBM Db2</strong><br><em>IBM, 1983 (on MVS mainframes) · Database · Current · Intermediate · Relational</em></td>
+<td>IBM's flagship relational database, still dominant on mainframes and used on Linux, Unix and Windows.</td>
+<td>An airline's reservation back office stores bookings in Db2 for z/OS.</td>
+</tr>
+<tr>
+<td><strong>SQL-86</strong><br><em>ANSI X3.135-1986; ISO 9075:1987 · Standard · Legacy · Intermediate · Relational</em></td>
+<td>The first official SQL standard, making SQL the industry's shared relational query language.</td>
+<td>Basic SELECT, INSERT, UPDATE and DELETE written for SQL-86 still run on modern databases.</td>
+</tr>
+<tr>
+<td><strong>NoSQL</strong><br><em>Term popularised at a June 2009 San Francisco meetup · Concept · Current · Beginner · General</em></td>
+<td>An umbrella term for non-relational databases built for scale, flexible schemas or special data shapes.</td>
+<td>MongoDB (2009), Redis (2009) and Cassandra (open-sourced 2008) rode the early NoSQL wave.</td>
+</tr>
+<tr>
+<td><strong>NewSQL</strong><br><em>Coined by Matthew Aslett, 451 Group, 2011 · Concept · Current · Intermediate · Relational</em></td>
+<td>Databases keeping SQL and ACID transactions while scaling out across many servers like NoSQL systems.</td>
+<td>CockroachDB and TiDB are often described as NewSQL or distributed SQL databases.</td>
+</tr>
+<tr>
+<td><strong>Google Spanner paper</strong><br><em>Google; OSDI 2012 · Resource · Current · Advanced · Relational</em></td>
+<td>Described a globally distributed SQL database using synchronised clocks (TrueTime) for consistent transactions.</td>
+<td>Spanner became a public Google Cloud service in 2017 and inspired CockroachDB and YugabyteDB.</td>
+</tr>
+<tr>
+<td><strong>Vector database</strong><br><em>Industry term, widespread from about 2021 · Concept · Emerging · Beginner · Vector</em></td>
+<td>A database optimised to store embeddings (number arrays) and find the most similar ones quickly.</td>
+<td>A support chatbot finds the five most relevant help articles by vector similarity before answering.</td>
+</tr>
+<tr>
+<td><strong>Turing Award database laureates</strong><br><em>ACM A.M. Turing Award · Organisation · Current · Intermediate · General</em></td>
+<td>Computing's top prize, won for databases by Bachman (1973), Codd (1981), Jim Gray (1998) and Stonebraker (2014).</td>
+<td>Jim Gray won for his work on transactions, the basis of ACID guarantees.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="15-the-main-data-models-at-a-glance">1.5 The Main Data Models at a Glance<a class="headerlink" href="#15-the-main-data-models-at-a-glance" title="Permanent link">&para;</a></h2>
+<p>A data model is the shape in which a database expects data and the way you ask questions about it. Relational databases use tables; document databases store JSON-like documents; key-value stores keep simple lookups; wide-column, graph, time-series, search and vector databases each specialise in one shape of data. Picking the right model makes the common questions easy and fast.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-05-the-main-data-models-at-a-glance.svg" alt="Same customer, eight shapes — each model optimises different questions." loading="lazy">
+<figcaption><strong>Eight data models.</strong> Same customer, eight shapes — each model optimises different questions.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Data models are like storage furniture: a filing cabinet (relational), a box of labelled folders (document), a coat-check with numbered tickets (key-value), a corkboard with strings between pins (graph) — each suits different things.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional streaming start-up Lumen stores subscribers and payments in PostgreSQL (relational), session data in Redis (key-value), its catalogue in MongoDB (document), 'people who watched this also watched' in Neo4j (graph), playback metrics in a time-series store, and film-description embeddings in a vector index for 'find something like this'.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>List the main things you store and the questions you ask most often.</li>
+<li>Notice the data's shape: tabular, nested, simple lookups, connections, time-stamped or similarity-based.</li>
+<li>Match the shape to a model: relational is the safe default; specialists fit specific patterns.</li>
+<li>Check consistency, transaction and scale needs before choosing a product.</li>
+<li>Accept that one system may use several models (polyglot persistence) or one multi-model engine.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Architects and senior engineers choose data models; every developer needs to recognise them when reading system designs or job descriptions.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>When unsure, start relational: PostgreSQL can also store JSON documents, key-value pairs, time series and vectors, so you only add a specialist database when a measured need appears.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Relational databases still dominate the October 2026 DB-Engines ranking: Oracle, MySQL, SQL Server and PostgreSQL occupy the top four places, with MongoDB, the leading document store, fifth.</li>
+<li>Data models trade generality for speed: a key-value store can answer GET user:42 in well under a millisecond but cannot answer 'all users in Leeds' without a separate index you build and maintain.</li>
+<li>Multi-model is now normal: PostgreSQL offers JSONB and vector extensions, Oracle and SQL Server 2025 add JSON and vector types, and MongoDB added multi-document ACID transactions in version 4.0 (2018).</li>
+<li>Graph data has two main flavours — property graphs (Neo4j; queried with Cypher or ISO GQL) and RDF triples (queried with SPARQL) — and SQL:2023 added property-graph queries over ordinary tables.</li>
+<li>The detailed products and trade-offs for each NoSQL model are covered in the NoSQL chapter; modelling techniques such as embedding versus referencing are covered in the data-modelling chapter.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Choosing a database because it is fashionable rather than because its model fits your main queries.</li>
+<li>Assuming 'schemaless' means no schema: the schema moves into application code, where it is harder to see and enforce.</li>
+<li>Adding a new database per data model too early: every extra system needs backups, monitoring, security and skills.</li>
+</ul>
+</div>
+<h4 id="key-databases-concepts-languages-tools-standards_4">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data model</strong><br><em>General term · Concept · Current · Beginner · General</em></td>
+<td>The structures, operations and rules a database uses to represent data, such as tables, documents or graphs.</td>
+<td>Choosing the graph model makes 'friends of friends' a short query instead of many self-joins.</td>
+</tr>
+<tr>
+<td><strong>Relational model</strong><br><em>Edgar F. Codd, 1970 · Data model · Current · Beginner · Relational</em></td>
+<td>Data held in tables (relations) of rows and columns, linked by keys and queried declaratively with SQL.</td>
+<td>An airline stores flights, passengers and bookings as three related tables.</td>
+</tr>
+<tr>
+<td><strong>Document model</strong><br><em>Popularised by CouchDB (2005) and MongoDB (2009) · Data model · Current · Beginner · Document</em></td>
+<td>Self-describing JSON-like documents that can nest objects and arrays, with flexible fields per document.</td>
+<td>A product document embeds its sizes, colours and images in one record.</td>
+</tr>
+<tr>
+<td><strong>Key-value model</strong><br><em>e.g. Redis, Amazon DynamoDB, etcd · Data model · Current · Beginner · Key-value</em></td>
+<td>The simplest model: each value is stored and fetched by a unique key, like a giant dictionary.</td>
+<td>SET session:9f3a '{"user":42}' stores a web session that expires after 30 minutes.</td>
+</tr>
+<tr>
+<td><strong>Wide-column model</strong><br><em>Inspired by Google Bigtable (2006) · Data model · Current · Intermediate · Wide-column</em></td>
+<td>Rows identified by a key, each holding many columns grouped into families; scales across many servers.</td>
+<td>A messaging app stores each conversation's messages as one wide partition in Cassandra.</td>
+</tr>
+<tr>
+<td><strong>Graph model</strong><br><em>Property graphs (Neo4j) and RDF (W3C) · Data model · Current · Beginner · Graph</em></td>
+<td>Data stored as nodes and relationships with properties, making connected-data questions natural.</td>
+<td>A bank finds fraud rings by tracing accounts sharing phones and addresses within three hops.</td>
+</tr>
+<tr>
+<td><strong>Time-series model</strong><br><em>e.g. InfluxDB, TimescaleDB, Prometheus · Data model · Current · Beginner · Time-series</em></td>
+<td>Data organised around timestamps, optimised for appending measurements and summarising by time windows.</td>
+<td>A wind farm records turbine speed every second and charts hourly averages.</td>
+</tr>
+<tr>
+<td><strong>Search engine model</strong><br><em>e.g. Elasticsearch, OpenSearch, Apache Solr · Data model · Current · Beginner · Search</em></td>
+<td>Documents indexed with inverted indexes for fast, relevance-ranked full-text search and filtering.</td>
+<td>An online shop returns 'waterproof hiking boots' results ranked by relevance in 30 ms.</td>
+</tr>
+<tr>
+<td><strong>Vector model</strong><br><em>e.g. pgvector, Pinecone, Milvus, Qdrant · Data model · Emerging · Beginner · Vector</em></td>
+<td>Items stored as high-dimensional embeddings and queried by nearest-neighbour similarity rather than exact match.</td>
+<td>A photo app finds pictures 'similar to this beach shot' using image embeddings.</td>
+</tr>
+<tr>
+<td><strong>Hierarchical model</strong><br><em>IBM IMS, 1960s · Data model · Legacy · Intermediate · General</em></td>
+<td>Records arranged in a strict parent-child tree, each child having exactly one parent.</td>
+<td>Windows' registry and XML files are modern examples of hierarchical data.</td>
+</tr>
+<tr>
+<td><strong>Object-relational model</strong><br><em>Postgres (1986) and SQL:1999 · Data model · Current · Intermediate · Relational</em></td>
+<td>A relational model extended with user-defined types, inheritance and functions on complex objects.</td>
+<td>PostgreSQL's custom types and PostGIS geometry columns show object-relational features.</td>
+</tr>
+<tr>
+<td><strong>Multi-model database</strong><br><em>e.g. Azure Cosmos DB, ArangoDB, PostgreSQL with extensions · Concept · Current · Intermediate · Multi-model</em></td>
+<td>A single database engine supporting several data models, such as documents, graphs and key-value.</td>
+<td>A team stores orders relationally and product specs as JSONB in one PostgreSQL database.</td>
+</tr>
+<tr>
+<td><strong>Polyglot persistence</strong><br><em>Term popularised by Martin Fowler, 2011 · Pattern · Current · Intermediate · General</em></td>
+<td>Using different database types for different parts of one system, each chosen for its workload.</td>
+<td>An e-commerce site uses PostgreSQL for orders, Redis for carts and Elasticsearch for search.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="16-tables-rows-columns-keys-and-schemas">1.6 Tables, Rows, Columns, Keys and Schemas<a class="headerlink" href="#16-tables-rows-columns-keys-and-schemas" title="Permanent link">&para;</a></h2>
+<p>In a relational database data lives in tables. Each row is one thing (a customer, an order) and each column is one fact about it (name, email). A primary key uniquely identifies every row, a foreign key links a row to a row in another table, and the schema is the blueprint describing all tables, columns, types and rules.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-06-tables-rows-columns-keys-and-schemas.svg" alt="Arrows point from a foreign key to the primary key it references." loading="lazy">
+<figcaption><strong>Keys link the library&#x27;s tables.</strong> Arrows point from a foreign key to the primary key it references.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A table is like a class register: each line is one pupil, each column one detail, the pupil number is the primary key, and the 'form tutor' column pointing to the staff list is a foreign key.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Pine Valley Library has a members table (member_id, name, email) and a loans table (loan_id, member_id, book_id, due_date). Member 1047, Sara Khan, appears once in members; each of her three loans stores only 1047 in its member_id foreign-key column. Changing Sara's email updates one row, and the database refuses a loan for member 9999 because no such member exists.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Decide which things (entities) you store; each becomes a table.</li>
+<li>Give each table columns with names and data types.</li>
+<li>Choose a primary key that uniquely identifies every row.</li>
+<li>Link related tables with foreign keys that reference primary keys.</li>
+<li>Add constraints (NOT NULL, UNIQUE, CHECK) and record it all in the schema.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Every developer, analyst and DBA reads and writes table definitions; designing them well is the job of data modellers and backend engineers.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>A primary key must be unique and never NULL; a foreign key may repeat and (unless declared NOT NULL) may be NULL — a favourite beginner interview question.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Tables are formally unordered: without ORDER BY a database may return rows in any order, and that order can change after an update, a VACUUM or a new query plan.</li>
+<li>Primary keys are almost always backed by a unique index, so looking up one row among 100 million typically costs only three or four page reads in a B-tree.</li>
+<li>Surrogate keys (an auto-generated number or UUID) are usually preferred over natural keys like email addresses, which change and can be reused; the modelling chapter compares bigint identity, UUIDv4 and UUIDv7.</li>
+<li>Cardinality describes relationships: one-to-many (one member, many loans) uses a foreign key on the 'many' side; many-to-many (books and authors) needs a junction table holding two foreign keys.</li>
+<li>The word 'schema' has two meanings: the overall design of a database, and a named namespace inside it (PostgreSQL's 'public' schema, SQL Server's 'dbo').</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Relying on the order rows were inserted: always use ORDER BY when order matters.</li>
+<li>Using a person's name or email as the primary key — names repeat and emails change; use a surrogate key and a UNIQUE constraint instead.</li>
+<li>Forgetting that SQLite enforces foreign keys only after PRAGMA foreign_keys = ON on each connection.</li>
+</ul>
+</div>
+<h3 id="try-it-create-two-linked-tables-and-watch-a-foreign-key-protect-them-postgresql-or-sqlite">Try it: Create two linked tables and watch a foreign key protect them (PostgreSQL or SQLite)<a class="headerlink" href="#try-it-create-two-linked-tables-and-watch-a-foreign-key-protect-them-postgresql-or-sqlite" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">member_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">name</span><span class="w">      </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">email</span><span class="w">     </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">UNIQUE</span>
+<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">loans</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">loan_id</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">member_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">members</span><span class="p">(</span><span class="n">member_id</span><span class="p">),</span>
+<span class="w">  </span><span class="n">due_date</span><span class="w">  </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">members</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1047</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sara Khan'</span><span class="p">,</span><span class="w"> </span><span class="s1">'sara@example.org'</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">loans</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1047</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-10-22'</span><span class="p">);</span><span class="w">   </span><span class="c1">-- works</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">loans</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">9999</span><span class="p">,</span><span class="w"> </span><span class="s1">'2026-10-22'</span><span class="p">);</span><span class="w">   </span><span class="c1">-- fails: no member 9999</span>
+<span class="c1">-- (SQLite: run PRAGMA foreign_keys = ON; first)</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_5">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Table</strong><br><em>ISO SQL; Codd's 'relation' · Concept · Current · Beginner · Relational</em></td>
+<td>A named set of rows sharing the same columns, storing one kind of thing such as customers or orders.</td>
+<td>The orders table holds one row per order placed on the website.</td>
+</tr>
+<tr>
+<td><strong>Row (record)</strong><br><em>ISO SQL; Codd's 'tuple' · Concept · Current · Beginner · Relational</em></td>
+<td>One entry in a table describing a single instance of the thing the table stores.</td>
+<td>Row (1047, 'Sara Khan', 'sara@example.org') describes one library member.</td>
+</tr>
+<tr>
+<td><strong>Column (field)</strong><br><em>ISO SQL; Codd's 'attribute' · Concept · Current · Beginner · Relational</em></td>
+<td>A named property with a declared data type that every row in the table has a value for (or NULL).</td>
+<td>The due_date column of loans has type DATE.</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong><br><em>ISO SQL PRIMARY KEY constraint · Concept · Current · Beginner · Relational</em></td>
+<td>A column or set of columns whose values uniquely identify each row and can never be NULL.</td>
+<td>member_id is the primary key of members; no two members share 1047.</td>
+</tr>
+<tr>
+<td><strong>Foreign key</strong><br><em>ISO SQL REFERENCES constraint · Concept · Current · Beginner · Relational</em></td>
+<td>A column whose values must match a key in another (or the same) table, enforcing valid links.</td>
+<td>loans.member_id must match an existing members.member_id.</td>
+</tr>
+<tr>
+<td><strong>Surrogate key</strong><br><em>Relational design term · Concept · Current · Intermediate · Relational</em></td>
+<td>A meaningless, system-generated identifier used as the primary key instead of real-world data.</td>
+<td>customer_id BIGINT GENERATED ALWAYS AS IDENTITY gives each customer a number.</td>
+</tr>
+<tr>
+<td><strong>Schema (database design)</strong><br><em>General term · Concept · Current · Beginner · Relational</em></td>
+<td>The blueprint of a database: tables, columns, types, keys, constraints and relationships.</td>
+<td>A new developer reads the schema diagram before writing their first query.</td>
+</tr>
+<tr>
+<td><strong>Junction table</strong><br><em>Relational design pattern · Pattern · Current · Beginner · Relational</em></td>
+<td>A table resolving a many-to-many relationship by storing pairs of foreign keys.</td>
+<td>book_authors(book_id, author_id) records that one book has two authors.</td>
+</tr>
+<tr>
+<td><strong>Index</strong><br><em>Every DBMS (usually a B-tree by default) · Data structure · Current · Beginner · General</em></td>
+<td>An extra structure that lets the DBMS find rows by column values without scanning the whole table.</td>
+<td>CREATE INDEX ON loans(member_id); makes 'Sara's loans' instant on 5 million loans.</td>
+</tr>
+<tr>
+<td><strong>Cardinality (relationship)</strong><br><em>Entity-relationship modelling term · Concept · Current · Beginner · Relational</em></td>
+<td>How many rows on one side relate to rows on the other: one-to-one, one-to-many or many-to-many.</td>
+<td>One member has many loans; each loan belongs to exactly one member.</td>
+</tr>
+<tr>
+<td><strong>NULL</strong><br><em>ISO SQL · Concept · Current · Beginner · Relational</em></td>
+<td>A marker meaning a value is missing or unknown — not zero, not an empty string.</td>
+<td>A member with no phone number on file has phone = NULL.</td>
+</tr>
+<tr>
+<td><strong>Entity-relationship diagram (ERD)</strong><br><em>Peter Chen, 1976 · Tool · Current · Beginner · Relational</em></td>
+<td>A drawing of tables or entities and the relationships between them, used to plan and explain schemas.</td>
+<td>A team sketches members, loans and books in an ERD before writing CREATE TABLE.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="17-transactions-and-acid-in-plain-english">1.7 Transactions and ACID in Plain English<a class="headerlink" href="#17-transactions-and-acid-in-plain-english" title="Permanent link">&para;</a></h2>
+<p>A transaction is a group of database changes that must succeed or fail together. ACID names four promises a database makes about transactions: Atomicity (all or nothing), Consistency (rules are never broken), Isolation (simultaneous transactions don't see each other's half-done work) and Durability (once confirmed, it survives crashes).</p>
+<figure class="fig fig-diagram">
+<img src="img/01-07-transactions-and-acid-in-plain-english.svg" alt="Nothing is permanent until the commit record reaches durable storage." loading="lazy">
+<figcaption><strong>Life of a bank-transfer transaction.</strong> Nothing is permanent until the commit record reaches durable storage.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A transaction is like a vending machine purchase: either you get the snack and the machine keeps your coin, or you get your coin back — never a lost coin and no snack.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Jo transfers £200 from her current account to savings at the fictional Northgate Bank. The database must subtract £200 from one row and add £200 to another. If the server crashes after the first change, atomicity rolls it back so no money vanishes; a CHECK rule keeps balances from going negative; isolation stops a statement run halfway from seeing the money in neither account; durability means that after 'Transfer complete' appears, the change survives a power cut.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>BEGIN starts the transaction.</li>
+<li>Each change is applied in memory and described in the write-ahead log.</li>
+<li>The DBMS checks constraints and isolates the changes from other sessions.</li>
+<li>COMMIT forces the log to durable storage, then reports success.</li>
+<li>If anything fails before commit, ROLLBACK undoes every change.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Banking, payments, booking, stock control and any system handling money or scarce items depends on ACID; backend developers must understand it to write correct code.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Know who coined it: Theo Härder and Andreas Reuter named ACID in 1983, building on Jim Gray's transaction work; and know that the 'C' is partly the application's job — the database enforces only the rules you declare.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Atomicity and durability are implemented with a write-ahead log: changes are recorded in the log before data pages, so after a crash the DBMS redoes committed work and undoes uncommitted work (the ARIES recovery method, 1992, is the classic design).</li>
+<li>Isolation is a dial, not a switch: the SQL standard defines READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ and SERIALIZABLE; PostgreSQL and SQL Server default to READ COMMITTED and MySQL InnoDB to REPEATABLE READ.</li>
+<li>Durability costs time because a commit waits for the log to reach stable storage; on a cloud SSD this fsync often takes 0.5-2 ms, which is why databases batch commits together (group commit).</li>
+<li>The CAP-era alternative BASE (Basically Available, Soft state, Eventual consistency) describes many NoSQL systems that relax isolation or consistency for availability and scale.</li>
+<li>Many operations are transactions even without BEGIN: in autocommit mode (the default in most drivers) each statement is its own transaction, committed immediately.</li>
+<li>How isolation is implemented — locking, MVCC, snapshot isolation and the anomalies each level allows — is covered in depth in the internals chapter.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Believing the 'C' in ACID means the database magically knows business rules: it enforces only declared constraints, triggers and the logic your transaction runs.</li>
+<li>Holding a transaction open while waiting for a user or a slow API call — it blocks others and bloats the database; keep transactions short.</li>
+<li>Assuming ACID means SERIALIZABLE: most databases default to weaker isolation that allows some anomalies.</li>
+</ul>
+</div>
+<h3 id="try-it-watch-rollback-undo-a-transfer-psql-or-sqlite3">Try it: Watch ROLLBACK undo a transfer (psql or sqlite3)<a class="headerlink" href="#try-it-watch-rollback-undo-a-transfer-psql-or-sqlite3" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">accounts</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="k">owner</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">balance</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">accounts</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'Jo current'</span><span class="p">,</span><span class="mi">500</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'Jo savings'</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="k">BEGIN</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">accounts</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">accounts</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">accounts</span><span class="p">;</span><span class="w">   </span><span class="c1">-- 300 and 300 inside the transaction</span>
+<span class="k">ROLLBACK</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">accounts</span><span class="p">;</span><span class="w">   </span><span class="c1">-- back to 500 and 100</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_6">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transaction</strong><br><em>Jim Gray; ISO SQL · Concept · Current · Beginner · General</em></td>
+<td>A sequence of reads and writes treated as one indivisible unit that either commits completely or rolls back.</td>
+<td>Booking a seat and charging a card happen in one transaction so neither happens alone.</td>
+</tr>
+<tr>
+<td><strong>ACID</strong><br><em>Härder and Reuter, 1983 · Concept · Current · Beginner · General</em></td>
+<td>Atomicity, Consistency, Isolation, Durability — the four guarantees of reliable database transactions.</td>
+<td>A payments team insists on an ACID database for its ledger.</td>
+</tr>
+<tr>
+<td><strong>Atomicity</strong><br><em>ACID property · Concept · Current · Beginner · General</em></td>
+<td>All changes in a transaction happen, or none do; a failure part-way leaves no trace.</td>
+<td>A crash between debit and credit leaves both accounts unchanged.</td>
+</tr>
+<tr>
+<td><strong>Consistency</strong><br><em>ACID property · Concept · Current · Beginner · General</em></td>
+<td>A transaction moves the database from one valid state to another, never breaking declared rules.</td>
+<td>A CHECK (balance &gt;= 0) rule rejects a transfer that would overdraw an account.</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong><br><em>ACID property; ISO SQL isolation levels · Concept · Current · Beginner · General</em></td>
+<td>Concurrent transactions behave as if they ran one after another, to the degree the isolation level promises.</td>
+<td>A report summing balances never sees money mid-transfer under snapshot isolation.</td>
+</tr>
+<tr>
+<td><strong>Durability</strong><br><em>ACID property · Concept · Current · Beginner · General</em></td>
+<td>Once a transaction commits, its changes survive crashes and power loss.</td>
+<td>After 'Order confirmed' displays, pulling the server's plug cannot lose that order.</td>
+</tr>
+<tr>
+<td><strong>COMMIT</strong><br><em>ISO SQL transaction control · Command · Current · Beginner · Relational</em></td>
+<td>Ends a transaction and makes all its changes permanent and visible to other sessions.</td>
+<td>COMMIT; after inserting an order and its five order lines.</td>
+</tr>
+<tr>
+<td><strong>ROLLBACK</strong><br><em>ISO SQL transaction control · Command · Current · Beginner · Relational</em></td>
+<td>Ends a transaction by undoing every change it made.</td>
+<td>The app issues ROLLBACK when the card payment is declined.</td>
+</tr>
+<tr>
+<td><strong>Autocommit</strong><br><em>Default in most drivers and clients · Feature · Current · Beginner · Relational</em></td>
+<td>A mode where each statement is automatically its own committed transaction.</td>
+<td>In psql, an UPDATE without BEGIN commits as soon as it finishes.</td>
+</tr>
+<tr>
+<td><strong>Write-ahead log (WAL)</strong><br><em>Used by PostgreSQL, SQL Server, Oracle (redo log), MySQL InnoDB (redo log) · Data structure · Current · Intermediate · General</em></td>
+<td>An append-only log where changes are recorded before data pages, enabling crash recovery and replication.</td>
+<td>PostgreSQL replays WAL records from the last checkpoint after an unclean shutdown.</td>
+</tr>
+<tr>
+<td><strong>Isolation level</strong><br><em>ISO SQL-92 · Concept · Current · Intermediate · General</em></td>
+<td>A setting choosing how strictly concurrent transactions are separated: read uncommitted to serializable.</td>
+<td>SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; for a stock-allocation job.</td>
+</tr>
+<tr>
+<td><strong>BASE</strong><br><em>Eric Brewer and colleagues, late 1990s-2000s · Concept · Current · Intermediate · General</em></td>
+<td>Basically Available, Soft state, Eventual consistency — a looser alternative to ACID favouring availability.</td>
+<td>A shopping-cart service accepts writes during a network split and reconciles later.</td>
+</tr>
+<tr>
+<td><strong>Savepoint</strong><br><em>ISO SQL · Command · Current · Intermediate · Relational</em></td>
+<td>A named point inside a transaction you can roll back to without abandoning the whole transaction.</td>
+<td>SAVEPOINT before_discount; ... ROLLBACK TO before_discount; keeps the rest of the order.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="18-oltp-vs-olap-running-the-business-vs-understanding-it">1.8 OLTP vs OLAP: Running the Business vs Understanding It<a class="headerlink" href="#18-oltp-vs-olap-running-the-business-vs-understanding-it" title="Permanent link">&para;</a></h2>
+<p>Databases serve two very different jobs. OLTP (online transaction processing) handles many small, fast reads and writes as the business runs — placing orders, booking seats. OLAP (online analytical processing) runs fewer but huge read-only queries that scan millions of rows to answer questions like 'sales by region by month'. Because the workloads differ, they usually run on differently built systems.</p>
+<p><strong>Two workloads, two designs</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>OLTP</th>
+<th>OLAP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Typical query</strong></td>
+<td>Fetch/update one order</td>
+<td>Sum sales by month</td>
+</tr>
+<tr>
+<td><strong>Rows touched</strong></td>
+<td>1-100</td>
+<td>Millions to billions</td>
+</tr>
+<tr>
+<td><strong>Writes</strong></td>
+<td>Constant small inserts</td>
+<td>Bulk loads, appends</td>
+</tr>
+<tr>
+<td><strong>Storage layout</strong></td>
+<td>Row-oriented</td>
+<td>Column-oriented, compressed</td>
+</tr>
+<tr>
+<td><strong>Key metric</strong></td>
+<td>Latency, transactions/s</td>
+<td>Scan throughput, GB/s</td>
+</tr>
+<tr>
+<td><strong>Schema style</strong></td>
+<td>Normalised</td>
+<td>Star schema, wide tables</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>PostgreSQL, MySQL</td>
+<td>Snowflake, BigQuery, ClickHouse</td>
+</tr>
+</tbody>
+</table>
+<p><em>HTAP systems try to serve both columns at once.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>OLTP is the shop till — quick, constant, one customer at a time; OLAP is the accountant at year-end — few questions, but each one needs every receipt.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional Tidewater Hotels group's booking database handles about 400 small transactions per second: check availability, insert a booking, update a room. Every night its data is copied to a cloud warehouse, where the revenue team runs a query scanning 900 million historical bookings to compare occupancy by city and season. Running that scan on the booking database would slow guests' bookings, so the two workloads are kept apart.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Applications write business events to an OLTP database in small transactions.</li>
+<li>A pipeline copies or streams changes out (ETL/ELT or change data capture).</li>
+<li>Data is reshaped for analysis — often into fact and dimension tables.</li>
+<li>An OLAP engine stores it column by column, compressed, for fast scans.</li>
+<li>Analysts and dashboards run large aggregate queries without touching OLTP.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Backend developers and DBAs own OLTP systems; data engineers, analytics engineers and analysts work on the OLAP side — knowing which side you are on shapes every design choice.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>In interviews contrast them on four axes: query shape (point lookups vs big scans), writes (constant vs batch loads), storage (row vs column) and users (applications vs analysts).</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Row stores keep each row's columns together, ideal for fetching one whole order; column stores keep each column together, so a query summing one column of a 50-column table reads roughly 2% of the data and compresses it far better.</li>
+<li>Benchmarks formalise the split: TPC-C (1992) models an order-entry OLTP workload measured in transactions per minute, while TPC-H and TPC-DS model decision-support queries over large data sets.</li>
+<li>Codd and colleagues coined 'OLAP' in a 1993 white paper; earlier analytical systems used multidimensional 'cubes' that pre-computed totals along dimensions such as time, product and region.</li>
+<li>HTAP (hybrid transactional/analytical processing) engines keep a row store for transactions plus a column replica for analytics — examples include TiDB with TiFlash, SQL Server columnstore indexes and Oracle Database In-Memory.</li>
+<li>Many teams send analytics to a read replica of the OLTP database before adopting a warehouse; this protects the primary but still uses a row store poorly suited to big scans.</li>
+<li>Warehouses, lakehouses, columnar formats and pipelines are covered in depth in the analytics and data-engineering chapter.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running heavy reports on the production OLTP primary at peak hours — they compete for CPU, memory and I/O with customers' transactions.</li>
+<li>Assuming a warehouse can replace the OLTP database: most are not built for thousands of small concurrent updates with strict latency.</li>
+<li>Thinking OLAP data is always out of date: streaming and CDC pipelines can keep analytical copies seconds behind.</li>
+</ul>
+</div>
+<h4 id="key-databases-concepts-languages-tools-standards_7">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OLTP</strong><br><em>Industry term, 1970s-80s · Concept · Current · Beginner · General</em></td>
+<td>Online transaction processing: many short, concurrent reads and writes that run day-to-day business operations.</td>
+<td>A cinema app's seat booking — check seat, insert ticket, take payment — is OLTP.</td>
+</tr>
+<tr>
+<td><strong>OLAP</strong><br><em>E. F. Codd and colleagues, 1993 · Concept · Current · Beginner · Analytical</em></td>
+<td>Online analytical processing: complex read-heavy queries that aggregate large volumes of historical data.</td>
+<td>'Revenue by store by quarter for five years' is an OLAP query.</td>
+</tr>
+<tr>
+<td><strong>HTAP</strong><br><em>Term coined by Gartner, 2014 · Concept · Emerging · Intermediate · General</em></td>
+<td>Hybrid transactional/analytical processing: one system serving both OLTP and real-time analytics.</td>
+<td>A retailer runs live stock dashboards on TiDB's columnar TiFlash replicas without a separate warehouse.</td>
+</tr>
+<tr>
+<td><strong>Data warehouse</strong><br><em>Bill Inmon (1990s); Ralph Kimball · Concept · Current · Beginner · Analytical</em></td>
+<td>A central analytical database integrating historical data from many sources, organised for reporting.</td>
+<td>A supermarket loads till, web and loyalty data nightly into Snowflake.</td>
+</tr>
+<tr>
+<td><strong>Data lake</strong><br><em>Term coined by James Dixon, 2010 · Concept · Current · Beginner · Analytical</em></td>
+<td>Cheap object storage holding raw data files of any format for later processing and analysis.</td>
+<td>Clickstream logs land as Parquet files in an Amazon S3 data lake.</td>
+</tr>
+<tr>
+<td><strong>Lakehouse</strong><br><em>Popularised by Databricks, 2020 · Concept · Current · Intermediate · Analytical</em></td>
+<td>An architecture adding warehouse features — tables, transactions, governance — on top of data-lake files.</td>
+<td>A team queries Apache Iceberg tables on S3 with SQL, with no separate warehouse copy.</td>
+</tr>
+<tr>
+<td><strong>Row-oriented storage</strong><br><em>Storage-layout term · Concept · Current · Intermediate · Relational</em></td>
+<td>Storing all columns of a row together on disk — fast for fetching or updating whole records.</td>
+<td>PostgreSQL's heap pages hold whole order rows, ideal for 'show order 7781'.</td>
+</tr>
+<tr>
+<td><strong>Column-oriented storage</strong><br><em>Storage-layout term (C-Store, 2005; Vertica) · Concept · Current · Intermediate · Analytical</em></td>
+<td>Storing each column's values together, enabling high compression and fast scans of few columns.</td>
+<td>ClickHouse reads only the price column to sum 2 billion sales in about a second.</td>
+</tr>
+<tr>
+<td><strong>ETL / ELT</strong><br><em>Data-integration practice · Pattern · Current · Beginner · Analytical</em></td>
+<td>Extract, transform, load (or load first, transform inside the warehouse) — moving data from OLTP to analytics.</td>
+<td>A nightly dbt job transforms raw order tables loaded into BigQuery (ELT).</td>
+</tr>
+<tr>
+<td><strong>Read replica</strong><br><em>PostgreSQL, MySQL, SQL Server, cloud services · Feature · Current · Intermediate · General</em></td>
+<td>A continuously updated read-only copy of a database used to offload read and reporting traffic.</td>
+<td>Finance's monthly report runs against a replica so checkout stays fast.</td>
+</tr>
+<tr>
+<td><strong>TPC-C</strong><br><em>Transaction Processing Performance Council, 1992 · Standard · Current · Advanced · Relational</em></td>
+<td>A benchmark simulating a wholesale order-entry OLTP workload, reported in transactions per minute (tpmC).</td>
+<td>Vendors publish tpmC results to compare OLTP performance and price.</td>
+</tr>
+<tr>
+<td><strong>TPC-H and TPC-DS</strong><br><em>Transaction Processing Performance Council · Standard · Current · Advanced · Analytical</em></td>
+<td>Decision-support benchmarks of complex analytical queries over generated data at scale factors like 1 TB.</td>
+<td>A student runs TPC-H query 1 on DuckDB to compare laptop and warehouse speeds.</td>
+</tr>
+<tr>
+<td><strong>Transactions per second (TPS)</strong><br><em>Industry metric · Metric · Current · Beginner · General</em></td>
+<td>How many transactions a system completes each second — the headline OLTP throughput number.</td>
+<td>A payment platform sizes its database for 5,000 TPS at Black Friday peak.</td>
+</tr>
+<tr>
+<td><strong>Query latency</strong><br><em>Industry metric (often p50, p95, p99) · Metric · Current · Beginner · General</em></td>
+<td>Time from sending a query to receiving its result; tail percentiles such as p99 matter most to users.</td>
+<td>A team's goal: 99% of checkout queries finish within 20 ms.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="19-database-architectures-embedded-to-cloud-native">1.9 Database Architectures: Embedded to Cloud-Native<a class="headerlink" href="#19-database-architectures-embedded-to-cloud-native" title="Permanent link">&para;</a></h2>
+<p>Databases are deployed in a few basic shapes. Embedded databases run inside your application as a library; client-server databases run as a separate server that many applications connect to over a network; distributed databases spread data across many machines; and cloud services add serverless billing and a split between storage and compute so each can grow on its own.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-09-database-architectures-embedded-to.svg" alt="Compute nodes can be added or paused without copying the data." loading="lazy">
+<figcaption><strong>Cloud-native: compute separated from storage.</strong> Compute nodes can be added or paused without copying the data.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Embedded is a notebook in your pocket, client-server is a shared office filing room, distributed is a chain of branch offices sharing records, and serverless cloud is a self-storage company that charges only for the space and the minutes you use.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>The fictional fitness app PulsePath keeps each user's workouts in SQLite on the phone (embedded) so it works offline. Phones sync to a PostgreSQL server (client-server) behind the company API. As users grow to 20 million, PulsePath moves to a managed cloud database where storage is replicated across three data centres and compute scales down to almost nothing overnight.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Embedded: the app links the engine library and reads a local file directly.</li>
+<li>Client-server: apps send queries over TCP to a database server process.</li>
+<li>Replicated: one primary server streams changes to read replicas.</li>
+<li>Distributed: data is partitioned and replicated across many nodes that cooperate.</li>
+<li>Cloud-native: compute nodes run queries while a shared storage service keeps data; serverless adds scale-to-zero.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Solution architects, cloud engineers and DBAs choose deployment architecture; mobile and desktop developers meet embedded databases; most backend developers work with client-server or managed cloud databases.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Remember the three classic parallel architectures — shared-memory, shared-disk (e.g. Oracle RAC) and shared-nothing (e.g. most distributed SQL and NoSQL) — and that cloud-native designs often share storage but not compute.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Embedded engines avoid network round trips entirely: a SQLite point lookup can complete in microseconds, while even a same-data-centre client-server query usually costs a few hundred microseconds of network latency.</li>
+<li>Client-server databases listen on well-known TCP ports — PostgreSQL 5432, MySQL 3306, SQL Server 1433, Oracle 1521, MongoDB 27017, Redis 6379 — and each connection consumes server memory, which is why connection pools exist.</li>
+<li>Amazon Aurora (announced 2014) pioneered pushing the log to a distributed storage layer that keeps six copies across three Availability Zones, so writer and readers share one volume instead of each holding a full copy.</li>
+<li>Separating storage from compute lets warehouses such as Snowflake and BigQuery run many independent compute clusters over one data set, and lets serverless Postgres services pause compute when idle and resume in under a second or so.</li>
+<li>Shared-nothing systems scale by partitioning data across nodes that own their own disks; the price is distributed coordination — cross-node transactions, rebalancing and consensus — covered in the distributed-data chapter.</li>
+<li>In-process analytics engines such as DuckDB bring the embedded idea to OLAP: a laptop can scan multi-gigabyte Parquet files with SQL without any server.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Putting a SQLite file on a network drive for many writers: SQLite allows one writer at a time and network file locking is unreliable — use a client-server database.</li>
+<li>Assuming serverless means free or limitless: you pay per request or capacity unit, cold starts add latency, and limits still apply.</li>
+<li>Going distributed too early: a single well-tuned server with replicas handles far more load than most applications ever reach.</li>
+</ul>
+</div>
+<h3 id="try-it-compare-embedded-and-client-server-in-python">Try it: Compare embedded and client-server in Python<a class="headerlink" href="#try-it-compare-embedded-and-client-server-in-python" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>                     <span class="c1"># embedded: no server, just a file</span>
+<span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'local.db'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">'select sqlite_version()'</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">())</span>
+
+<span class="c1"># client-server: needs a running PostgreSQL server (pip install psycopg)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psycopg</span>
+<span class="k">with</span> <span class="n">psycopg</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'host=localhost port=5432 dbname=postgres user=postgres'</span><span class="p">)</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">'select version()'</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">())</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_8">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Embedded database</strong><br><em>e.g. SQLite, DuckDB, RocksDB, Berkeley DB · Concept · Current · Beginner · General</em></td>
+<td>A database engine linked into the application as a library, storing data in local files with no separate server.</td>
+<td>A desktop photo app keeps its library index in an embedded SQLite file.</td>
+</tr>
+<tr>
+<td><strong>Client-server architecture</strong><br><em>Classic DBMS deployment · Concept · Current · Beginner · General</em></td>
+<td>A database server process accepts network connections from many client applications and runs their queries.</td>
+<td>Three web servers connect to one PostgreSQL server on port 5432.</td>
+</tr>
+<tr>
+<td><strong>Three-tier architecture</strong><br><em>Classic application design · Pattern · Current · Beginner · General</em></td>
+<td>Presentation (browser or app), application logic (API servers) and data (database) as separate layers.</td>
+<td>A browser calls a Node.js API, which queries MySQL; the browser never talks to MySQL directly.</td>
+</tr>
+<tr>
+<td><strong>Shared-nothing architecture</strong><br><em>Michael Stonebraker, 1986 paper · Concept · Current · Advanced · General</em></td>
+<td>Each node has its own CPU, memory and disk; data is partitioned across nodes, which coordinate over the network.</td>
+<td>A Cassandra cluster spreads customer data across 12 independent nodes.</td>
+</tr>
+<tr>
+<td><strong>Shared-disk architecture</strong><br><em>e.g. Oracle Real Application Clusters (RAC) · Concept · Current · Advanced · Relational</em></td>
+<td>Several database servers share the same storage and coordinate access to it, so any node can read any data.</td>
+<td>A bank's Oracle RAC cluster keeps working when one of its four servers fails.</td>
+</tr>
+<tr>
+<td><strong>Distributed database</strong><br><em>General term · Concept · Current · Intermediate · General</em></td>
+<td>A database whose data is stored and processed across multiple machines but appears to users as one database.</td>
+<td>CockroachDB keeps three replicas of each data range on different servers.</td>
+</tr>
+<tr>
+<td><strong>Separation of storage and compute</strong><br><em>Cloud-native design (Snowflake, Aurora, BigQuery, Neon, AlloyDB) · Concept · Current · Intermediate · General</em></td>
+<td>Keeping data in a shared storage service while independent compute nodes run queries, so each scales separately.</td>
+<td>A warehouse spins up a second compute cluster for month-end reporting over the same data.</td>
+</tr>
+<tr>
+<td><strong>Serverless database</strong><br><em>e.g. Aurora Serverless v2, DynamoDB on-demand, Neon, Cloud Firestore · Concept · Current · Intermediate · General</em></td>
+<td>A managed database that scales capacity automatically, sometimes to zero, and bills by usage instead of fixed servers.</td>
+<td>A hobby project's serverless Postgres pauses overnight and costs pennies a month.</td>
+</tr>
+<tr>
+<td><strong>Database as a service (DBaaS)</strong><br><em>e.g. Amazon RDS (2009), Azure SQL Database, Google Cloud SQL · Concept · Current · Beginner · General</em></td>
+<td>A cloud provider runs the database for you, handling installation, patching, backups and failover.</td>
+<td>A start-up uses Amazon RDS for PostgreSQL instead of hiring a full-time DBA.</td>
+</tr>
+<tr>
+<td><strong>Primary-replica topology</strong><br><em>Replication pattern · Concept · Current · Intermediate · General</em></td>
+<td>One primary accepts writes and streams changes to read-only replicas that share the read load.</td>
+<td>An app sends writes to the primary and product-page reads to two replicas.</td>
+</tr>
+<tr>
+<td><strong>Amazon Aurora</strong><br><em>Amazon Web Services (announced 2014, generally available 2015) · Service · Current · Intermediate · Relational</em></td>
+<td>A MySQL- and PostgreSQL-compatible cloud database whose distributed storage keeps six copies across three Availability Zones.</td>
+<td>An e-commerce site adds Aurora readers in minutes because they share one storage volume.</td>
+</tr>
+<tr>
+<td><strong>In-process OLAP</strong><br><em>e.g. DuckDB, chDB, Polars SQL · Concept · Current · Intermediate · Analytical</em></td>
+<td>Running an analytical column engine inside the application or notebook process, with no server.</td>
+<td>An analyst queries 3 GB of Parquet in a Jupyter notebook with DuckDB.</td>
+</tr>
+<tr>
+<td><strong>Edge database</strong><br><em>e.g. Cloudflare D1, Turso (libSQL) · Concept · Emerging · Intermediate · Relational</em></td>
+<td>Databases replicated to many locations close to users so reads have low latency worldwide.</td>
+<td>A blog's comments are read from a SQLite-based replica in the nearest city.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="110-the-2026-database-landscape">1.10 The 2026 Database Landscape<a class="headerlink" href="#110-the-2026-database-landscape" title="Permanent link">&para;</a></h2>
+<p>Hundreds of database products exist, but a handful dominate. Two public yardsticks are widely quoted: the monthly DB-Engines ranking, which measures popularity from web searches, job ads and discussions, and the Stack Overflow Developer Survey, which asks developers what they actually use. In 2026 both show relational databases on top, with PostgreSQL the developers' favourite.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-10-the-2026-database-landscape.svg" alt="Share of respondents to the database question; people may tick several." loading="lazy">
+<figcaption><strong>Most used databases — Stack Overflow 2026 survey.</strong> Share of respondents to the database question; people may tick several.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Rankings are like football league tables built from different statistics — one counts how often a team is talked about, the other how many people play for it — so the order differs but the big clubs are the same.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Priya, a computing student, wants to pick one database to learn first. She checks the October 2026 DB-Engines ranking (Oracle first, then MySQL, SQL Server and PostgreSQL) and the 2026 Stack Overflow survey (PostgreSQL used by 57.9% of respondents who answered the database question). She chooses PostgreSQL for skills that transfer everywhere, then adds SQLite and MongoDB basics.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Read DB-Engines for overall industry popularity and trends over time.</li>
+<li>Read the Stack Overflow survey for what working developers use and want.</li>
+<li>Check job adverts in your region — enterprises still hire heavily for Oracle and SQL Server.</li>
+<li>Note fast risers: cloud warehouses, lakehouses, and vector-capable databases.</li>
+<li>Pick one relational database to master, then sample one NoSQL and one analytical system.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Students choosing what to learn, architects choosing a platform and recruiters writing job ads all consult these rankings.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Quote rankings with their method: DB-Engines measures popularity (mentions, searches, jobs), not market share or quality; survey percentages count respondents who answered that question.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>October 2026 DB-Engines top ten: Oracle (about 1,120 points), MySQL (838), Microsoft SQL Server (694), PostgreSQL (689), MongoDB (375), Snowflake (221), Databricks (171), Redis (156), IBM Db2 (106) and Apache Cassandra (99).</li>
+<li>DB-Engines scores combine website mentions, Google Trends, Stack Overflow and DBA Stack Exchange questions, job offers, LinkedIn profiles and social media; scores are relative, so twice the points means roughly twice the measured popularity.</li>
+<li>In the Stack Overflow survey PostgreSQL has been the most used database since 2023; in 2025 it reached 55.6% of all respondents (58.2% of professional developers), and the 2026 edition shows 57.9%.</li>
+<li>Analytics platforms have climbed fastest: Snowflake and Databricks both entered the DB-Engines top ten, reflecting the move of reporting workloads to cloud warehouses and lakehouses.</li>
+<li>Versions current in October 2026 include PostgreSQL 18 (19 in beta), MySQL 9.7 LTS and 8.4 LTS, SQL Server 2025, SQLite 3.53 and Oracle AI Database 26ai; check vendors' sites, as releases are frequent.</li>
+<li>Ownership changes reshape the market: Databricks bought serverless-Postgres company Neon and Snowflake bought Crunchy Data in 2025, showing data platforms racing to add operational Postgres.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Treating DB-Engines points as market share: they measure online popularity signals, not revenue or installed base.</li>
+<li>Concluding Oracle is unused because it ranks low among survey developers: it remains first on DB-Engines and dominant in large enterprises.</li>
+<li>Adding survey percentages to 100%: respondents can select several databases.</li>
+</ul>
+</div>
+<h4 id="key-databases-concepts-languages-tools-standards_9">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DB-Engines Ranking</strong><br><em>solid IT gmbh (Austria), monthly since 2012 · Resource · Current · Beginner · General</em></td>
+<td>A monthly popularity ranking of about 400 database systems based on mentions, searches, jobs and discussions.</td>
+<td>October 2026: Oracle 1st, MySQL 2nd, SQL Server 3rd, PostgreSQL 4th, MongoDB 5th.</td>
+</tr>
+<tr>
+<td><strong>Stack Overflow Developer Survey</strong><br><em>Stack Overflow (Stack Exchange Inc.), annual since 2011 · Resource · Current · Beginner · General</em></td>
+<td>An annual survey of developers' tools; its database question shows what professionals actually use.</td>
+<td>The 2026 results put PostgreSQL first at 57.9%, ahead of SQLite at 42.1%.</td>
+</tr>
+<tr>
+<td><strong>Oracle Database</strong><br><em>Oracle Corporation; current release Oracle AI Database 26ai · Database · Current · Beginner · Relational</em></td>
+<td>The long-time leader in enterprise relational databases, strong in banking, telecoms and government.</td>
+<td>A national tax authority runs its core systems on Oracle with Real Application Clusters.</td>
+</tr>
+<tr>
+<td><strong>MySQL</strong><br><em>Oracle Corporation (since 2010); 9.7 LTS released April 2026 · Database · Current · Beginner · Relational</em></td>
+<td>The most widely deployed open-source relational database of the web era, behind many LAMP applications.</td>
+<td>A WordPress blog stores posts and comments in MySQL.</td>
+</tr>
+<tr>
+<td><strong>Microsoft SQL Server</strong><br><em>Microsoft; SQL Server 2025 (17.x) generally available November 2025 · Database · Current · Beginner · Relational</em></td>
+<td>Microsoft's relational database for Windows and Linux, tightly integrated with .NET, Azure and Power BI.</td>
+<td>A hospital trust runs patient administration on SQL Server with Always On replicas.</td>
+</tr>
+<tr>
+<td><strong>MongoDB</strong><br><em>MongoDB, Inc. (first release 2009) · Database · Current · Beginner · Document</em></td>
+<td>The most popular document database, storing JSON-like BSON documents with flexible schemas.</td>
+<td>A content platform stores articles with nested tags and authors as MongoDB documents.</td>
+</tr>
+<tr>
+<td><strong>Redis</strong><br><em>Redis Ltd. (created by Salvatore Sanfilippo, 2009) · Database · Current · Beginner · Key-value</em></td>
+<td>An in-memory key-value store used for caching, sessions, queues and leaderboards.</td>
+<td>A game shows a live top-100 leaderboard from a Redis sorted set.</td>
+</tr>
+<tr>
+<td><strong>MariaDB</strong><br><em>MariaDB Foundation and MariaDB plc (fork of MySQL, 2009) · Database · Current · Beginner · Relational</em></td>
+<td>A community fork of MySQL by its original creator, Monty Widenius, largely compatible with MySQL.</td>
+<td>Many Linux distributions install MariaDB when you ask for 'mysql-server'.</td>
+</tr>
+<tr>
+<td><strong>Snowflake</strong><br><em>Snowflake Inc. · Service · Current · Intermediate · Analytical</em></td>
+<td>A cloud data warehouse with separated storage and compute, sixth in the October 2026 DB-Engines ranking.</td>
+<td>A retailer's analysts query five years of sales in Snowflake without affecting the order system.</td>
+</tr>
+<tr>
+<td><strong>Databricks</strong><br><em>Databricks, Inc. · Service · Current · Intermediate · Analytical</em></td>
+<td>A lakehouse platform built around Apache Spark and Delta Lake, ranked seventh on DB-Engines in October 2026.</td>
+<td>A data team trains models and runs SQL dashboards on the same Databricks lakehouse.</td>
+</tr>
+<tr>
+<td><strong>Amazon DynamoDB</strong><br><em>Amazon Web Services (launched 2012) · Service · Current · Intermediate · Key-value</em></td>
+<td>A fully managed serverless key-value and document database offering single-digit-millisecond performance at any scale.</td>
+<td>A shopping app stores carts in DynamoDB keyed by customer ID.</td>
+</tr>
+<tr>
+<td><strong>Elasticsearch</strong><br><em>Elastic N.V. · Database · Current · Intermediate · Search</em></td>
+<td>A distributed search and analytics engine built on Apache Lucene, used for site search and log analysis.</td>
+<td>A job site ranks 'python remote' results from Elasticsearch in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>Open source vs proprietary</strong><br><em>OSI-approved licences vs commercial licences · Concept · Current · Beginner · General</em></td>
+<td>Open-source databases publish code under licences like PostgreSQL's or GPL; proprietary ones are sold under vendor licences.</td>
+<td>A start-up picks PostgreSQL to avoid per-core licence fees.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="111-how-an-application-talks-to-a-database">1.11 How an Application Talks to a Database<a class="headerlink" href="#111-how-an-application-talks-to-a-database" title="Permanent link">&para;</a></h2>
+<p>Applications never read database files directly when using a database server. They use a driver — a library that speaks the database's network protocol — to open a connection, send SQL, and receive rows back. On top of drivers sit connection pools that reuse connections and, often, ORMs that map rows to objects in your programming language.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-11-how-an-application-talks-to-a-database.svg" alt="The pool hides connection set-up, which can cost several network round trips." loading="lazy">
+<figcaption><strong>One query from app to PostgreSQL.</strong> The pool hides connection set-up, which can cost several network round trips.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>The driver is a phone line and interpreter: your program dials the database (connection), speaks through the interpreter (protocol), and the pool is a switchboard that keeps a few lines open so nobody waits for a dial tone.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Marco builds a booking API for the fictional Harbour Kayaks. His Python code borrows a connection from a pool of 10, sends 'SELECT * FROM slots WHERE day = %s' with the date as a separate parameter, and the psycopg driver turns the reply into Python tuples. Using parameters rather than pasting the date into the string keeps the query safe from SQL injection.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The app reads a connection string: host, port, database, user, TLS settings.</li>
+<li>The driver opens a TCP connection, negotiates TLS and authenticates.</li>
+<li>The app sends SQL text plus separate parameter values (a prepared or parameterised statement).</li>
+<li>The server parses, plans and executes, then streams rows back in the wire protocol.</li>
+<li>The driver converts rows to language types; the connection returns to the pool.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Backend and full-stack developers write this code daily; DBAs and SREs tune pools and connection limits; security teams check credentials and parameterisation.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Never build SQL by gluing user input into strings — always use parameters (placeholders like ?, %s or &#36;1); it is the single most important database security habit and a near-certain interview question.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Each database has its own wire protocol: PostgreSQL's frontend/backend protocol (version 3 since 2003), MySQL's client/server protocol, Microsoft's TDS (Tabular Data Stream) for SQL Server and Oracle's TNS/Net8 — drivers hide these details.</li>
+<li>Standard driver APIs let code stay similar across databases: ODBC (1992) for C and many tools, JDBC (1997) for Java, ADO.NET for .NET, Python's DB-API 2.0 (PEP 249) and Go's database/sql.</li>
+<li>Opening a connection can cost several round trips plus authentication and, in PostgreSQL, forking a new server process, so apps keep pools of open connections; external poolers such as PgBouncer multiplex thousands of clients onto a few dozen server connections.</li>
+<li>Prepared statements send SQL once and parameters separately: the server can reuse the parsed plan, and because values are never interpreted as SQL text, injection attacks fail.</li>
+<li>ORMs (Object-Relational Mappers) such as SQLAlchemy, Hibernate, Entity Framework Core and Prisma generate SQL from code; they speed development but can hide inefficient queries — the operations chapter covers their pitfalls, such as N+1 queries.</li>
+<li>Some services expose databases over HTTP instead of a driver protocol — for example PostgREST and Supabase for PostgreSQL, or Microsoft's Data API builder — useful for serverless and edge functions that cannot hold long-lived connections.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Opening a new connection per web request without a pool: latency rises and the server can run out of connection slots (PostgreSQL's default max_connections is 100).</li>
+<li>Concatenating user input into SQL strings — this causes SQL injection; use parameters every time.</li>
+<li>Hard-coding passwords in source code: load credentials from environment variables or a secrets manager.</li>
+</ul>
+</div>
+<h3 id="try-it-a-safe-parameterised-query-in-python-with-the-built-in-sqlite3-driver">Try it: A safe parameterised query in Python with the built-in sqlite3 driver<a class="headerlink" href="#try-it-a-safe-parameterised-query-in-python-with-the-built-in-sqlite3-driver" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">':memory:'</span><span class="p">)</span>
+<span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">'CREATE TABLE slots(day TEXT, time TEXT, free INT)'</span><span class="p">)</span>
+<span class="n">con</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s1">'INSERT INTO slots VALUES (?,?,?)'</span><span class="p">,</span>
+                <span class="p">[(</span><span class="s1">'2026-10-10'</span><span class="p">,</span><span class="s1">'09:00'</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">'2026-10-10'</span><span class="p">,</span><span class="s1">'11:00'</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="n">day</span> <span class="o">=</span> <span class="s1">'2026-10-10'</span>            <span class="c1"># imagine this came from a web form</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">'SELECT time, free FROM slots WHERE day = ? AND free &gt; 0'</span><span class="p">,</span> <span class="p">(</span><span class="n">day</span><span class="p">,)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_10">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database driver</strong><br><em>Each vendor or community (e.g. psycopg, mysql-connector, Microsoft.Data.SqlClient) · Library · Current · Beginner · General</em></td>
+<td>A library that implements a database's network protocol so a programming language can connect, query and read results.</td>
+<td>A Node.js app uses the 'pg' driver to talk to PostgreSQL.</td>
+</tr>
+<tr>
+<td><strong>Connection string</strong><br><em>Driver-specific formats; URI form common · Concept · Current · Beginner · General</em></td>
+<td>Text giving host, port, database name, user and options such as TLS needed to connect.</td>
+<td>postgresql://app@db.internal:5432/shop?sslmode=verify-full</td>
+</tr>
+<tr>
+<td><strong>ODBC</strong><br><em>Microsoft, 1992; based on SQL Access Group CLI (ISO/IEC 9075-3) · Standard · Current · Intermediate · Relational</em></td>
+<td>Open Database Connectivity: a language-neutral C API letting tools connect to almost any database through a driver.</td>
+<td>Excel pulls data from SQL Server through an ODBC data source.</td>
+</tr>
+<tr>
+<td><strong>JDBC</strong><br><em>Sun Microsystems 1997; now Oracle (Java SE) · Standard · Current · Intermediate · Relational</em></td>
+<td>Java Database Connectivity: Java's standard API for connecting to relational databases through vendor drivers.</td>
+<td>A Spring Boot service connects with jdbc:postgresql://db:5432/orders.</td>
+</tr>
+<tr>
+<td><strong>ADO.NET</strong><br><em>Microsoft .NET · Framework · Current · Intermediate · Relational</em></td>
+<td>The .NET data-access layer of connections, commands and data readers on which Entity Framework is built.</td>
+<td>A C# app runs SqlCommand with a @customerId parameter against SQL Server.</td>
+</tr>
+<tr>
+<td><strong>Python DB-API 2.0 (PEP 249)</strong><br><em>Python community, 1999 · Standard · Current · Beginner · Relational</em></td>
+<td>The common interface Python database drivers follow: connect(), cursor(), execute(), fetchall(), commit().</td>
+<td>Code written for sqlite3 moves to psycopg with mostly the same calls.</td>
+</tr>
+<tr>
+<td><strong>Wire protocol</strong><br><em>Per DBMS: PostgreSQL v3, MySQL protocol, TDS, Oracle Net · Protocol · Current · Advanced · General</em></td>
+<td>The message format a client and database server exchange over the network to run queries and return rows.</td>
+<td>Because CockroachDB speaks the PostgreSQL wire protocol, ordinary Postgres drivers work with it.</td>
+</tr>
+<tr>
+<td><strong>Tabular Data Stream (TDS)</strong><br><em>Sybase, 1984; Microsoft (MS-TDS specification) · Protocol · Current · Advanced · Relational</em></td>
+<td>The wire protocol used by Microsoft SQL Server and Azure SQL; TDS 8.0 adds strict TLS encryption.</td>
+<td>SQL Server 2025 supports TLS 1.3 connections through TDS 8.0.</td>
+</tr>
+<tr>
+<td><strong>Connection pool</strong><br><em>Built into drivers/frameworks; external poolers like PgBouncer · Pattern · Current · Intermediate · General</em></td>
+<td>A set of reusable open database connections that application requests borrow and return.</td>
+<td>HikariCP keeps 10 connections ready for a Java service handling 2,000 requests per second.</td>
+</tr>
+<tr>
+<td><strong>Parameterised query</strong><br><em>Supported by every mainstream driver · Pattern · Current · Beginner · Relational</em></td>
+<td>SQL sent with placeholders whose values travel separately, preventing SQL injection and enabling plan reuse.</td>
+<td>cursor.execute('SELECT * FROM users WHERE email = %s', (email,))</td>
+</tr>
+<tr>
+<td><strong>ORM (object-relational mapper)</strong><br><em>e.g. SQLAlchemy, Hibernate, Entity Framework Core, Prisma, Django ORM · Concept · Current · Beginner · Relational</em></td>
+<td>A library mapping database rows to programming-language objects and generating SQL automatically.</td>
+<td>In Django, Order.objects.filter(status='paid') becomes a SELECT … WHERE status = 'paid'.</td>
+</tr>
+<tr>
+<td><strong>Query builder</strong><br><em>e.g. Knex.js, jOOQ, Kysely, SQLAlchemy Core, Drizzle · Library · Current · Intermediate · Relational</em></td>
+<td>A library for composing SQL with code while staying close to SQL itself, without full object mapping.</td>
+<td>A TypeScript app builds a type-checked SELECT with Kysely.</td>
+</tr>
+<tr>
+<td><strong>Default database ports</strong><br><em>IANA registrations and vendor defaults · Concept · Current · Beginner · General</em></td>
+<td>Well-known TCP ports: PostgreSQL 5432, MySQL 3306, SQL Server 1433, Oracle 1521, MongoDB 27017, Redis 6379.</td>
+<td>A firewall rule allows only the app subnet to reach port 5432.</td>
+</tr>
+<tr>
+<td><strong>PostgREST</strong><br><em>Open-source project (MIT licence) · Tool · Current · Intermediate · Relational</em></td>
+<td>A server that turns a PostgreSQL schema into a REST API automatically, using database roles for security.</td>
+<td>GET /orders?status=eq.paid returns paid orders as JSON; Supabase builds on it.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="112-follow-a-buy-click-through-the-database">1.12 Follow a 'Buy' Click Through the Database<a class="headerlink" href="#112-follow-a-buy-click-through-the-database" title="Permanent link">&para;</a></h2>
+<p>When you press 'Buy', a small chain of database work happens in about a tenth of a second: stock is checked and reserved, an order is written, payment is recorded, and the whole thing is committed atomically. Afterwards the change ripples out to replicas, caches, search indexes and the analytics warehouse.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-12-follow-a-buy-click-through-the-database.svg" alt="Only the commit makes the order real; everything downstream follows from it." loading="lazy">
+<figcaption><strong>A checkout, step by step.</strong> Only the commit makes the order real; everything downstream follows from it.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a restaurant order: the waiter checks the kitchen still has the dish, writes the ticket, takes payment, and only then shouts 'order in!' — and later the day's tickets are added up in the back office.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Ana buys the last pair of size-6 boots from the fictional shop TrailNest. Her click reaches an API server, which starts a transaction, locks the stock row, finds quantity 1, sets it to 0, inserts an order and three order lines, stores the payment reference and commits. A second shopper clicking a millisecond later waits on the lock, then sees quantity 0 and gets 'sold out' instead of a double sale.</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The browser sends POST /checkout with an idempotency key; the API borrows a pooled connection.</li>
+<li>BEGIN; SELECT … FOR UPDATE locks the product's stock row and checks quantity.</li>
+<li>UPDATE decrements stock; INSERT … RETURNING creates the order and its lines.</li>
+<li>The payment is authorised (ideally outside or before the long part of the transaction) and its reference stored.</li>
+<li>COMMIT writes the WAL to disk; replicas, caches and CDC streams pick up the change.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Backend engineers design this flow; DBAs tune it; SREs watch its latency; data engineers consume its change stream for analytics.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Interviewers love 'how do you stop overselling the last item?' — answer with a transaction plus a row lock (SELECT … FOR UPDATE) or a conditional UPDATE … WHERE quantity &gt; 0, and an idempotency key for retries.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>A typical checkout transaction touches five to twenty rows and should finish in a few milliseconds; most of the user-visible 100-300 ms is network, application code and the external payment call, not the database.</li>
+<li>SELECT … FOR UPDATE takes a row lock that blocks other writers until commit; alternatives are optimistic concurrency (a version column checked in the UPDATE) and the single-statement conditional UPDATE shown in the snippet.</li>
+<li>Idempotency keys stop double orders when a nervous user clicks twice or a mobile network retries: the API stores the key with a UNIQUE constraint, and a repeat request returns the original order instead of creating another.</li>
+<li>Calling a payment provider inside an open transaction holds locks for hundreds of milliseconds or more; many designs reserve stock, commit, call the provider, then record the result in a second short transaction.</li>
+<li>After commit, change data capture tools such as Debezium read the write-ahead log and publish an 'order created' event to Kafka, feeding search indexes, email services and the warehouse without slowing checkout.</li>
+<li>Read replicas are typically milliseconds to seconds behind; showing Ana her order from a lagging replica could display 'no orders yet', so 'read-your-own-writes' pages read from the primary.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Checking stock with a plain SELECT and updating later in separate steps — two shoppers can both see quantity 1 and both buy it.</li>
+<li>Holding the transaction open during slow external calls, which blocks other buyers of popular items.</li>
+<li>Retrying a failed request without an idempotency key, creating duplicate orders and double charges.</li>
+</ul>
+</div>
+<h3 id="try-it-oversell-proof-stock-decrement-postgresql">Try it: Oversell-proof stock decrement (PostgreSQL)<a class="headerlink" href="#try-it-oversell-proof-stock-decrement-postgresql" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">BEGIN</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">stock</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">quantity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">quantity</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">sku</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'BOOT-6'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">quantity</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">quantity</span><span class="p">;</span><span class="w">          </span><span class="c1">-- 0 rows returned = sold out</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">sku</span><span class="p">,</span><span class="w"> </span><span class="n">total_pence</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="s1">'BOOT-6'</span><span class="p">,</span><span class="w"> </span><span class="mi">8999</span><span class="p">)</span>
+<span class="n">RETURNING</span><span class="w"> </span><span class="n">order_id</span><span class="p">;</span>
+<span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="key-databases-concepts-languages-tools-standards_11">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Checkout transaction</strong><br><em>Common e-commerce design · Pattern · Current · Beginner · Relational</em></td>
+<td>The single atomic unit that reserves stock, creates the order and records payment so no partial order exists.</td>
+<td>If inserting order lines fails, the stock decrement is rolled back too.</td>
+</tr>
+<tr>
+<td><strong>SELECT … FOR UPDATE</strong><br><em>Supported by PostgreSQL, MySQL, Oracle; SQL Server uses UPDLOCK hints · Command · Current · Intermediate · Relational</em></td>
+<td>A read that locks the returned rows so no other transaction can change them until commit.</td>
+<td>SELECT quantity FROM stock WHERE sku = 'BOOT-6' FOR UPDATE;</td>
+</tr>
+<tr>
+<td><strong>Conditional UPDATE</strong><br><em>Standard SQL technique · Pattern · Current · Intermediate · Relational</em></td>
+<td>An UPDATE whose WHERE clause includes the business rule, so the check and change happen atomically.</td>
+<td>UPDATE stock SET quantity = quantity - 1 WHERE sku = 'BOOT-6' AND quantity &gt; 0;</td>
+</tr>
+<tr>
+<td><strong>INSERT … RETURNING</strong><br><em>PostgreSQL, SQLite 3.35+, MariaDB; SQL Server uses OUTPUT · Command · Current · Intermediate · Relational</em></td>
+<td>Inserts rows and returns generated values, such as the new order ID, in the same statement.</td>
+<td>INSERT INTO orders(...) VALUES (...) RETURNING order_id; returns 88213.</td>
+</tr>
+<tr>
+<td><strong>Idempotency key</strong><br><em>API design practice (popularised by Stripe) · Pattern · Current · Intermediate · General</em></td>
+<td>A unique client-generated ID per request, stored with a UNIQUE constraint so retries never repeat the action.</td>
+<td>A retried POST with key 7f3c… returns the existing order 88213, not a new one.</td>
+</tr>
+<tr>
+<td><strong>Optimistic concurrency control</strong><br><em>General concurrency technique · Pattern · Current · Intermediate · General</em></td>
+<td>Instead of locking, each row carries a version number; an update succeeds only if the version is unchanged.</td>
+<td>UPDATE carts SET items = ?, version = 8 WHERE id = 5 AND version = 7;</td>
+</tr>
+<tr>
+<td><strong>Overselling</strong><br><em>Retail and booking term · Concept · Current · Beginner · General</em></td>
+<td>Selling more units than exist because concurrent purchases were not coordinated in the database.</td>
+<td>Two concert fans both receive seat 14F because stock checks were not locked.</td>
+</tr>
+<tr>
+<td><strong>Commit latency</strong><br><em>Database performance metric · Metric · Current · Intermediate · General</em></td>
+<td>The time a COMMIT takes, dominated by flushing the log to durable storage.</td>
+<td>Moving the WAL to faster NVMe cut commit latency from 4 ms to 0.6 ms.</td>
+</tr>
+<tr>
+<td><strong>Change data capture (CDC)</strong><br><em>e.g. Debezium, AWS DMS, SQL Server CDC · Pattern · Current · Intermediate · General</em></td>
+<td>Reading a database's committed changes, usually from its log, and publishing them for other systems.</td>
+<td>Each new order flows via Debezium to Kafka and on to the search index.</td>
+</tr>
+<tr>
+<td><strong>Cache invalidation</strong><br><em>Caching practice · Concept · Current · Intermediate · Key-value</em></td>
+<td>Removing or refreshing cached copies when the underlying database data changes.</td>
+<td>After the boots sell out, the app deletes the cached product page from Redis.</td>
+</tr>
+<tr>
+<td><strong>Read-your-writes consistency</strong><br><em>Consistency guarantee · Concept · Current · Intermediate · General</em></td>
+<td>A guarantee that after you change data, your own later reads always see that change.</td>
+<td>The 'My orders' page reads from the primary right after checkout.</td>
+</tr>
+<tr>
+<td><strong>Outbox table</strong><br><em>Microservices data pattern · Pattern · Current · Advanced · Relational</em></td>
+<td>Writing an event row in the same transaction as the business change, so events are never lost or invented.</td>
+<td>The checkout inserts into orders and outbox together; a relay later publishes the outbox row.</td>
+</tr>
+<tr>
+<td><strong>Payment reference</strong><br><em>Payments practice (e.g. PSP charge or intent ID) · Concept · Current · Beginner · Relational</em></td>
+<td>The ID a payment provider returns, stored with the order so payments can be reconciled and refunded.</td>
+<td>orders.payment_ref = 'pi_3Q…' links order 88213 to its card authorisation.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="113-who-works-with-the-database">1.13 Who Works With the Database?<a class="headerlink" href="#113-who-works-with-the-database" title="Permanent link">&para;</a></h2>
+<p>Many different people touch a company's databases, each in a different way. Some design them, some keep them running, some write the code that reads and writes them, and others copy data out to analyse it. Knowing who does what helps you understand job adverts and who to ask when something breaks.</p>
+<figure class="fig fig-diagram">
+<img src="img/01-13-who-works-with-the-database.svg" alt="Data flows down; questions and requirements flow back up." loading="lazy">
+<figcaption><strong>Roles along the data&#x27;s journey.</strong> Data flows down; questions and requirements flow back up.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>A database is like a city's water system: engineers design it, operators keep it flowing, plumbers connect each building, inspectors test the water, and planners study usage to decide what to build next.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At the fictional delivery company SwiftCart, backend developer Ravi adds a 'delivery slot' column through a migration; DBA Helen reviews it and schedules it for low-traffic hours; data engineer Kofi updates the pipeline copying orders to the warehouse; analytics engineer Mei models a 'slot usage' table; analyst Dan builds the dashboard; and the data protection officer checks that customer addresses are deleted after the retention period.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Architects and data modellers design schemas and choose platforms.</li>
+<li>Backend developers write application queries and schema migrations.</li>
+<li>DBAs and database reliability engineers keep databases fast, secure, backed up and available.</li>
+<li>Data engineers move data into warehouses and lakehouses; analytics engineers model it.</li>
+<li>Analysts, data scientists and ML engineers query it for insight and models; governance roles police its use.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>This map is for students choosing a direction; detailed career paths, skills and certifications are in the careers chapter.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Whatever role you target, SQL is the shared language — it appears in job adverts for developers, analysts, data scientists and engineers alike.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Database administrators traditionally own installation, upgrades, backups, security and tuning; in cloud-managed environments routine tasks shrink and the role shifts toward performance, cost, architecture and automation.</li>
+<li>Database reliability engineering, described in the 2017 O'Reilly book of that name, applies SRE practices — service-level objectives, automation, infrastructure as code, blameless post-mortems — to databases.</li>
+<li>The analytics engineer role emerged around 2018-2020 with dbt: they write tested, version-controlled SQL transformations so analysts can trust warehouse tables.</li>
+<li>Under GDPR Article 37, public authorities and organisations whose core activities involve large-scale monitoring or special-category data must appoint a data protection officer, who advises on lawful processing of personal data in databases.</li>
+<li>Small companies merge roles: a single 'full-stack' developer may design the schema, write migrations, run the managed database and build the dashboards.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming only DBAs need deep database skills: developers' queries and schema choices cause most performance problems.</li>
+<li>Thinking data scientists mostly do machine learning: much of their time goes on finding, querying and cleaning data with SQL.</li>
+<li>Ignoring governance roles: privacy and retention rules can force schema and pipeline changes late in a project.</li>
+</ul>
+</div>
+<h4 id="key-databases-concepts-languages-tools-standards_12">Key databases, concepts, languages, tools &amp; standards<a class="headerlink" href="#key-databases-concepts-languages-tools-standards_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database administrator (DBA)</strong><br><em>Industry role · Career · Current · Beginner · General</em></td>
+<td>Day to day, installs, patches, backs up, secures and tunes the organisation's database servers and handles incidents.</td>
+<td>Helen restores last night's backup to test it and reviews a migration adding an index.</td>
+</tr>
+<tr>
+<td><strong>Database reliability engineer (DBRE)</strong><br><em>Industry role (SRE practice applied to databases) · Career · Current · Intermediate · General</em></td>
+<td>Automates database operations, defines reliability targets and builds tooling for failover, backups and upgrades.</td>
+<td>A DBRE codes automatic failover tests that run weekly against staging clusters.</td>
+</tr>
+<tr>
+<td><strong>Backend developer</strong><br><em>Industry role · Career · Current · Beginner · General</em></td>
+<td>Writes the application code and SQL that read and write the database, plus schema migrations.</td>
+<td>Ravi adds a delivery_slot column and the API endpoint that fills it.</td>
+</tr>
+<tr>
+<td><strong>Data architect</strong><br><em>Industry role · Career · Current · Advanced · General</em></td>
+<td>Designs how data is stored, integrated and governed across systems, choosing platforms and standards.</td>
+<td>An architect decides orders stay in PostgreSQL while analytics moves to a lakehouse.</td>
+</tr>
+<tr>
+<td><strong>Data modeller</strong><br><em>Industry role · Career · Current · Intermediate · General</em></td>
+<td>Translates business requirements into conceptual, logical and physical database models.</td>
+<td>A modeller draws an ER diagram for a new loyalty-points feature.</td>
+</tr>
+<tr>
+<td><strong>Data engineer</strong><br><em>Industry role · Career · Current · Intermediate · Analytical</em></td>
+<td>Builds and runs pipelines that extract data from operational databases into warehouses, lakes and streams.</td>
+<td>Kofi sets up CDC from the orders database into the lakehouse.</td>
+</tr>
+<tr>
+<td><strong>Analytics engineer</strong><br><em>Industry role (popularised with dbt, c. 2018-2020) · Career · Current · Intermediate · Analytical</em></td>
+<td>Turns raw warehouse data into clean, tested, documented tables using SQL and software-engineering practices.</td>
+<td>Mei writes a dbt model producing a daily 'slot_usage' table.</td>
+</tr>
+<tr>
+<td><strong>Data analyst</strong><br><em>Industry role · Career · Current · Beginner · Analytical</em></td>
+<td>Queries data with SQL and spreadsheets to answer business questions and build reports.</td>
+<td>Dan finds which delivery slots are most often missed.</td>
+</tr>
+<tr>
+<td><strong>BI developer</strong><br><em>Industry role · Career · Current · Intermediate · Analytical</em></td>
+<td>Builds dashboards and semantic models in tools like Power BI, Tableau or Looker on top of databases.</td>
+<td>A BI developer publishes a Power BI sales dashboard refreshed hourly.</td>
+</tr>
+<tr>
+<td><strong>Data scientist</strong><br><em>Industry role · Career · Current · Intermediate · Analytical</em></td>
+<td>Uses statistics and machine learning on data extracted from databases to predict and explain outcomes.</td>
+<td>A data scientist predicts late deliveries from weather and order history.</td>
+</tr>
+<tr>
+<td><strong>Machine learning engineer</strong><br><em>Industry role · Career · Current · Advanced · Vector</em></td>
+<td>Puts models into production, including feature stores and vector databases that serve them.</td>
+<td>An ML engineer loads product embeddings into pgvector for recommendations.</td>
+</tr>
+<tr>
+<td><strong>Data steward</strong><br><em>Data-governance role · Career · Current · Intermediate · General</em></td>
+<td>Owns the definitions, quality and correct use of a data domain such as customer or product data.</td>
+<td>The customer-data steward approves the definition of an 'active customer'.</td>
+</tr>
+<tr>
+<td><strong>Data protection officer (DPO)</strong><br><em>EU GDPR Articles 37-39 · Career · Current · Intermediate · General</em></td>
+<td>Advises on and monitors lawful handling of personal data, including retention and access rights.</td>
+<td>The DPO requires delivery addresses to be deleted 24 months after the last order.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="how-to-read-this-guide.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: How to read this guide">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                How to read this guide
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-relational-model-sql.html" class="md-footer__link md-footer__link--next" aria-label="Next: 2. The Relational Model &amp; SQL">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2. The Relational Model & SQL
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,3023 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch16-post-quantum-cryptography-hardware.html">
+  
+  
+    <link rel="prev" href="ch15-automotive-hardware-security.html">
+  
+  
+    <link rel="next" href="ch17-jtag-and-debug-interface-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>16. Post-Quantum Cryptography Hardware - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec-quantum-threat" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              16. Post-Quantum Cryptography Hardware
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-quantum-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 Quantum Threat to Classical Cryptography
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-nist-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 NIST PQC Standards – FIPS 203/204/205/206
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ml-kem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 ML-KEM (Kyber) – Module Learning With Errors KEM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.3 ML-KEM (Kyber) – Module Learning With Errors KEM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1631-parameter-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.1 Parameter Sets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1632-number-theoretic-transform-ntt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.2 Number Theoretic Transform (NTT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1633-ml-kem-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.3 ML-KEM Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ntt-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.4 NTT Butterfly Unit Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ml-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.5 ML-DSA (Dilithium) Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-slh-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.6 SLH-DSA (SPHINCS+) Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fn-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.7 FN-DSA (Falcon) Hardware Challenges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hybrid-kem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.8 Hybrid KEM: X-Wing and ECDH+ML-KEM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.9 FPGA PQC Implementation Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-asic-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.10 ASIC PQC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-sca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.11 Side-Channel Attacks on PQC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.12 PQC Software and Hardware Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-cnsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.13 CNSA 2.0 Migration Timeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.14 GitHub Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.15 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.16 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16161-fips-203204205206-finalised-august-2024-deployment-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.1 FIPS 203/204/205/206 Finalised August 2024: Deployment Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16162-cnsa-20-implementation-nsa-guidance-updates-20242025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.2 CNSA 2.0 Implementation: NSA Guidance Updates (2024–2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16163-x-wing-hybrid-kem-rfc-draft-2024-hardware-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.3 X-Wing Hybrid KEM RFC Draft (2024): Hardware Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16164-falconfn-dsa-fpga-optimisations-2024-masked-gaussian-sampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.4 Falcon/FN-DSA FPGA Optimisations (2024): Masked Gaussian Sampler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16165-apple-pq3-ml-kem-768-and-signal-pqxdh-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.5 Apple PQ3 (ML-KEM-768) and Signal PQXDH (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16166-bike-and-hqc-as-nist-additional-candidates-20242025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.6 BIKE and HQC as NIST Additional Candidates (2024–2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-ex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.17 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sec-quantum-threat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 Quantum Threat to Classical Cryptography
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-nist-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 NIST PQC Standards – FIPS 203/204/205/206
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ml-kem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 ML-KEM (Kyber) – Module Learning With Errors KEM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.3 ML-KEM (Kyber) – Module Learning With Errors KEM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1631-parameter-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.1 Parameter Sets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1632-number-theoretic-transform-ntt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.2 Number Theoretic Transform (NTT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1633-ml-kem-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3.3 ML-KEM Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ntt-hw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.4 NTT Butterfly Unit Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ml-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.5 ML-DSA (Dilithium) Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-slh-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.6 SLH-DSA (SPHINCS+) Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fn-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.7 FN-DSA (Falcon) Hardware Challenges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-hybrid-kem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.8 Hybrid KEM: X-Wing and ECDH+ML-KEM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-fpga-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.9 FPGA PQC Implementation Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-asic-pqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.10 ASIC PQC Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-sca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.11 Side-Channel Attacks on PQC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.12 PQC Software and Hardware Solutions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-cnsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.13 CNSA 2.0 Migration Timeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-pqc-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.14 GitHub Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.15 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.16 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16161-fips-203204205206-finalised-august-2024-deployment-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.1 FIPS 203/204/205/206 Finalised August 2024: Deployment Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16162-cnsa-20-implementation-nsa-guidance-updates-20242025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.2 CNSA 2.0 Implementation: NSA Guidance Updates (2024–2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16163-x-wing-hybrid-kem-rfc-draft-2024-hardware-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.3 X-Wing Hybrid KEM RFC Draft (2024): Hardware Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16164-falconfn-dsa-fpga-optimisations-2024-masked-gaussian-sampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.4 Falcon/FN-DSA FPGA Optimisations (2024): Masked Gaussian Sampler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16165-apple-pq3-ml-kem-768-and-signal-pqxdh-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.5 Apple PQ3 (ML-KEM-768) and Signal PQXDH (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16166-bike-and-hqc-as-nist-additional-candidates-20242025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.16.6 BIKE and HQC as NIST Additional Candidates (2024–2025)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch16-ex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.17 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-pqc-hardware">Chapter 16: Post-Quantum Cryptography Hardware<a class="headerlink" href="#ch-pqc-hardware" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> NIST finalized four post-quantum standards in August 2024: FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA), FIPS 206 (FN-DSA). NSA CNSA 2.0 mandates migration to PQC for all National Security Systems by 2033.</p>
+</div>
+<h2 id="sec-quantum-threat"><span class="secnum">16.1</span> Quantum Threat to Classical Cryptography<a class="headerlink" href="#sec-quantum-threat" title="Permanent link">&para;</a></h2>
+<p>Shor’s algorithm (1994) solves integer factorization in polynomial time <span class="arithmatex">\(O(n^3)\)</span>, breaking RSA-2048 ( 4096 logical qubits needed) and ECDSA P-256 ( 2330 qubits). Grover’s algorithm (1996) provides quadratic speedup, halving symmetric key strength: AES-128 post-quantum = 64 bits, AES-256 post-quantum = 128 bits.</p>
+<div class="tbl" id="tab-quantum-impact">
+<div class="tbl-caption"><strong>Table 16.1.</strong> Quantum Algorithm Impact on Cryptographic Primitives</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Primitive</strong></th>
+<th style="text-align: left;"><strong>Classical Security</strong></th>
+<th style="text-align: left;"><strong>Post-Quantum</strong></th>
+<th style="text-align: left;"><strong>Action</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RSA-2048</td>
+<td style="text-align: left;">112 bits</td>
+<td style="text-align: left;">Broken (Shor)</td>
+<td style="text-align: left;">Replace immediately</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECDSA P-256</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">Broken (Shor)</td>
+<td style="text-align: left;">Replace immediately</td>
+</tr>
+<tr>
+<td style="text-align: left;">ECDH P-384</td>
+<td style="text-align: left;">192 bits</td>
+<td style="text-align: left;">Broken (Shor)</td>
+<td style="text-align: left;">Replace immediately</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES-128</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">64 bits (Grover)</td>
+<td style="text-align: left;">Upgrade to AES-256</td>
+</tr>
+<tr>
+<td style="text-align: left;">AES-256</td>
+<td style="text-align: left;">256 bits</td>
+<td style="text-align: left;">128 bits (Grover)</td>
+<td style="text-align: left;">Acceptable</td>
+</tr>
+<tr>
+<td style="text-align: left;">SHA-256</td>
+<td style="text-align: left;">256 bits</td>
+<td style="text-align: left;">128 bits (Grover)</td>
+<td style="text-align: left;">Acceptable</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-768</td>
+<td style="text-align: left;">178 bits</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">NIST FIPS 203 approved</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-DSA-44</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">128 bits</td>
+<td style="text-align: left;">NIST FIPS 204 approved</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-nist-pqc"><span class="secnum">16.2</span> NIST PQC Standards – FIPS 203/204/205/206<a class="headerlink" href="#sec-nist-pqc" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-nist-pqc">
+<div class="tbl-caption"><strong>Table 16.2.</strong> NIST PQC Standards (Finalized August 2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIPS</strong></th>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Base Problem</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Key Sizes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FIPS 203</td>
+<td style="text-align: left;">ML-KEM (Kyber)</td>
+<td style="text-align: left;">Module-LWE</td>
+<td style="text-align: left;">KEM</td>
+<td style="text-align: left;">800B/1184B/1568B</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIPS 204</td>
+<td style="text-align: left;">ML-DSA (Dilithium)</td>
+<td style="text-align: left;">Module-LWE+SIS</td>
+<td style="text-align: left;">Signature</td>
+<td style="text-align: left;">1312/1952/2592B</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIPS 205</td>
+<td style="text-align: left;">SLH-DSA (SPHINCS+)</td>
+<td style="text-align: left;">Hash function</td>
+<td style="text-align: left;">Signature</td>
+<td style="text-align: left;">32/48/64B sk</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIPS 206</td>
+<td style="text-align: left;">FN-DSA (Falcon)</td>
+<td style="text-align: left;">NTRU lattice</td>
+<td style="text-align: left;">Signature</td>
+<td style="text-align: left;">897B/1793B</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ml-kem"><span class="secnum">16.3</span> ML-KEM (Kyber) – Module Learning With Errors KEM<a class="headerlink" href="#sec-ml-kem" title="Permanent link">&para;</a></h2>
+<p>ML-KEM is based on the hardness of the Module Learning With Errors (MLWE) problem over the polynomial ring <span class="arithmatex">\(R = \mathbb{Z}_q[x]/(x^{256}+1)\)</span> with <span class="arithmatex">\(q = 3329\)</span>.</p>
+<h3 id="1631-parameter-sets"><span class="secnum">16.3.1</span> Parameter Sets<a class="headerlink" href="#1631-parameter-sets" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>ML-KEM-512:</strong> <span class="arithmatex">\(k=2\)</span>, <span class="arithmatex">\(\eta_1=3\)</span>, <span class="arithmatex">\(\eta_2=2\)</span>. Security level 1 (AES-128 equivalent). Public key 800 bytes, secret key 1632 bytes, ciphertext 768 bytes.</p>
+</li>
+<li>
+<p><strong>ML-KEM-768:</strong> <span class="arithmatex">\(k=3\)</span>, <span class="arithmatex">\(\eta_1=2\)</span>, <span class="arithmatex">\(\eta_2=2\)</span>. Security level 3 (AES-192 equivalent). Public key 1184 bytes, secret key 2400 bytes, ciphertext 1088 bytes. CNSA 2.0 recommended.</p>
+</li>
+<li>
+<p><strong>ML-KEM-1024:</strong> <span class="arithmatex">\(k=4\)</span>, <span class="arithmatex">\(\eta_1=2\)</span>, <span class="arithmatex">\(\eta_2=2\)</span>. Security level 5 (AES-256 equivalent). Public key 1568 bytes, secret key 3168 bytes, ciphertext 1568 bytes.</p>
+</li>
+</ul>
+<h3 id="1632-number-theoretic-transform-ntt"><span class="secnum">16.3.2</span> Number Theoretic Transform (NTT)<a class="headerlink" href="#1632-number-theoretic-transform-ntt" title="Permanent link">&para;</a></h3>
+<p>The NTT is the key performance-critical operation in ML-KEM. It transforms polynomial multiplication from <span class="arithmatex">\(O(n^2)\)</span> to <span class="arithmatex">\(O(n \log n)\)</span> using the prime field <span class="arithmatex">\(\mathbb{Z}_{3329}\)</span>.</p>
+<p>NTT butterfly unit computes: <span class="arithmatex">\((a, b) = (a + \omega \cdot b \bmod q, \; a - \omega \cdot b \bmod q)\)</span></p>
+<p>where <span class="arithmatex">\(\omega\)</span> is a root of unity modulo <span class="arithmatex">\(q = 3329\)</span>, and modular reduction uses Montgomery or Barrett methods.</p>
+<p>Montgomery reduction: given <span class="arithmatex">\(t = a \cdot b\)</span>, compute <span class="arithmatex">\(t \cdot R^{-1} \bmod q\)</span> where <span class="arithmatex">\(R = 2^{16}\)</span> for <span class="arithmatex">\(q = 3329\)</span>. Uses only additions and shifts – no division.</p>
+<h3 id="1633-ml-kem-operations"><span class="secnum">16.3.3</span> ML-KEM Operations<a class="headerlink" href="#1633-ml-kem-operations" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>KeyGen:</strong> Sample matrix <span class="arithmatex">\(A \in R_q^{k \times k}\)</span> from seed <span class="arithmatex">\(\rho\)</span>. Sample secret <span class="arithmatex">\(s\)</span>, error <span class="arithmatex">\(e\)</span> from centered binomial distribution. Public key <span class="arithmatex">\(pk = As+e\)</span>.</p>
+</li>
+<li>
+<p><strong>Encaps:</strong> Sample <span class="arithmatex">\(r\)</span> from seed. Compute <span class="arithmatex">\(c = \text{Enc}(pk, m; r)\)</span>. Return ciphertext <span class="arithmatex">\(c = (u, v)\)</span> and shared key <span class="arithmatex">\(K = H(m)\)</span>.</p>
+</li>
+<li>
+<p><strong>Decaps:</strong> Compute <span class="arithmatex">\(m' = \text{Dec}(sk, c)\)</span>. Re-encapsulate: <span class="arithmatex">\(K = H(m')\)</span> if valid, else <span class="arithmatex">\(K = H(z \| c)\)</span> (implicit rejection).</p>
+</li>
+</ol>
+<figure class="fig fig-diagram" id="fig-ml-kem-flow">
+<img class="tikz" src="img/tikz-46fe60d215cf.svg" alt="ML-KEM (FIPS 203) KeyGen, Encaps, and Decaps flow. The NTT (Number Theoretic Transform) over polynomial ring \mathbb{Z}_q[x]/(x^{256}+1) with q=3329 enables efficient polynomial multiplication.…" loading="lazy">
+<figcaption><strong>Figure 16.1.</strong> ML-KEM (FIPS 203) KeyGen, Encaps, and Decaps flow. The NTT (Number Theoretic Transform) over polynomial ring <span class="math inline">\(\mathbb{Z}_q[x]/(x^{256}+1)\)</span> with <span class="math inline">\(q=3329\)</span> enables efficient polynomial multiplication. Implicit rejection in Decaps prevents chosen-ciphertext attacks.</figcaption>
+</figure>
+
+<h2 id="sec-ntt-hw"><span class="secnum">16.4</span> NTT Butterfly Unit Hardware<a class="headerlink" href="#sec-ntt-hw" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-ntt-butterfly">
+<img class="tikz" src="img/tikz-01d21d56bb91.svg" alt="NTT Butterfly Unit for ML-KEM. Twiddle factor w multiplied with input b using Montgomery reduction (no division, just shifts and adds). Results a’ = a + wb mod q and b’ = a - wb mod q. Hardware…" loading="lazy">
+<figcaption><strong>Figure 16.2.</strong> NTT Butterfly Unit for ML-KEM. Twiddle factor w multiplied with input b using Montgomery reduction (no division, just shifts and adds). Results a’ = a + wb mod q and b’ = a - wb mod q. Hardware implementation on Artix-7: 1 DSP48E1 + 120 LUTs at 200 MHz.</figcaption>
+</figure>
+
+<h2 id="sec-ml-dsa"><span class="secnum">16.5</span> ML-DSA (Dilithium) Hardware<a class="headerlink" href="#sec-ml-dsa" title="Permanent link">&para;</a></h2>
+<p>ML-DSA (FIPS 204, based on Dilithium) uses Module-LWE and Module-SIS problems with rejection sampling for signature generation.</p>
+<div class="tbl" id="tab-ml-dsa-params">
+<div class="tbl-caption"><strong>Table 16.3.</strong> ML-DSA Parameter Sets (FIPS 204)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Level</strong></th>
+<th style="text-align: left;"><strong>Variant</strong></th>
+<th style="text-align: left;"><strong>PK size</strong></th>
+<th style="text-align: left;"><strong>SK size</strong></th>
+<th style="text-align: left;"><strong>Sig size</strong></th>
+<th style="text-align: left;"><strong>Security</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">NIST 2</td>
+<td style="text-align: left;">ML-DSA-44</td>
+<td style="text-align: left;">1,312 B</td>
+<td style="text-align: left;">2,528 B</td>
+<td style="text-align: left;">2,420 B</td>
+<td style="text-align: left;">128 bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST 3</td>
+<td style="text-align: left;">ML-DSA-65</td>
+<td style="text-align: left;">1,952 B</td>
+<td style="text-align: left;">4,032 B</td>
+<td style="text-align: left;">3,293 B</td>
+<td style="text-align: left;">192 bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">NIST 5</td>
+<td style="text-align: left;">ML-DSA-87</td>
+<td style="text-align: left;">2,592 B</td>
+<td style="text-align: left;">4,896 B</td>
+<td style="text-align: left;">4,595 B</td>
+<td style="text-align: left;">256 bits</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-slh-dsa"><span class="secnum">16.6</span> SLH-DSA (SPHINCS+) Hardware<a class="headerlink" href="#sec-slh-dsa" title="Permanent link">&para;</a></h2>
+<p>SLH-DSA (FIPS 205) is stateless hash-based signature scheme using FORS (Forest of Random Subsets) and Hypertree (HT) structure. No lattice mathematics – all operations are hash function calls (SHAKE-256 or SHA-256 variants).</p>
+<div class="tbl" id="tab-slh-dsa">
+<div class="tbl-caption"><strong>Table 16.4.</strong> SLH-DSA (SPHINCS+) Variants and Signature Sizes</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Variant</strong></th>
+<th style="text-align: left;"><strong>Hash</strong></th>
+<th style="text-align: left;"><strong>PK</strong></th>
+<th style="text-align: left;"><strong>Sig size</strong></th>
+<th style="text-align: left;"><strong>Security</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHAKE-128s</td>
+<td style="text-align: left;">SHAKE-256</td>
+<td style="text-align: left;">32 B</td>
+<td style="text-align: left;">7,856 B</td>
+<td style="text-align: left;">128 bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHAKE-128f</td>
+<td style="text-align: left;">SHAKE-256</td>
+<td style="text-align: left;">32 B</td>
+<td style="text-align: left;">17,088 B</td>
+<td style="text-align: left;">128 bits (fast)</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHAKE-192s</td>
+<td style="text-align: left;">SHAKE-256</td>
+<td style="text-align: left;">48 B</td>
+<td style="text-align: left;">16,224 B</td>
+<td style="text-align: left;">192 bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHAKE-256s</td>
+<td style="text-align: left;">SHAKE-256</td>
+<td style="text-align: left;">64 B</td>
+<td style="text-align: left;">29,792 B</td>
+<td style="text-align: left;">256 bits</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-SHA2-128s</td>
+<td style="text-align: left;">SHA-256</td>
+<td style="text-align: left;">32 B</td>
+<td style="text-align: left;">7,856 B</td>
+<td style="text-align: left;">128 bits</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> SLH-DSA signatures are very large (7,856–49,856 bytes) compared to ECDSA (64 bytes) or ML-DSA (2,420–4,595 bytes). For bandwidth-constrained applications (V2X BSM at 5.9 GHz, TLS handshake), SLH-DSA is impractical. ML-DSA is preferred for general-purpose signatures; SLH-DSA is recommended only where stateless signatures are required and bandwidth is not a concern (e.g., firmware signing with offline key).</p>
+</div>
+<h2 id="sec-fn-dsa"><span class="secnum">16.7</span> FN-DSA (Falcon) Hardware Challenges<a class="headerlink" href="#sec-fn-dsa" title="Permanent link">&para;</a></h2>
+<p>FN-DSA (FIPS 206, Falcon) uses NTRU lattice with Fast Fourier Sampling (FFS) for compact signatures (897 bytes for Falcon-512, 1793 bytes for Falcon-1024). However, it is hardware-unfriendly:</p>
+<ul>
+<li>
+<p><strong>Gaussian sampler:</strong> Requires discrete Gaussian sampling over <span class="arithmatex">\(\mathbb{Z}\)</span>. Hardware implementation requires constant-time floating-point or fixed-point arithmetic to prevent timing side-channels.</p>
+</li>
+<li>
+<p><strong>FFT-based NTRU solver:</strong> Uses complex floating-point FFT for key generation. Not suitable for resource-constrained hardware without dedicated FPU.</p>
+</li>
+<li>
+<p><strong>Side-channel vulnerability:</strong> Gaussian sampler timing leaks discovered in early Falcon implementations (Guerreau et al. 2022, USENIX Security). Constant-time implementation adds 20–40% overhead.</p>
+</li>
+</ul>
+<h2 id="sec-hybrid-kem"><span class="secnum">16.8</span> Hybrid KEM: X-Wing and ECDH+ML-KEM<a class="headerlink" href="#sec-hybrid-kem" title="Permanent link">&para;</a></h2>
+<p>Hybrid KEMs combine classical and post-quantum algorithms to maintain security against both classical and quantum adversaries during the transition period:</p>
+<ul>
+<li>
+<p><strong>X-Wing:</strong> X25519 + ML-KEM-768. IETF draft-connolly-cfrg-xwing-kem. Combined shared secret <span class="arithmatex">\(= (\text{X25519\_ss} \| \text{MLKEM768\_ss} \| \text{X25519\_pk} \| \text{MLKEM768\_pk})\)</span>. Security: classical OR quantum adversary must break both components.</p>
+</li>
+<li>
+<p><strong>TLS 1.3 Hybrid:</strong> ECDH P-256 + ML-KEM-768 via NamedGroup extension. Google Chrome + Cloudflare deployed in 2023 (CECPQ2). BoringSSL, AWS-LC support.</p>
+</li>
+<li>
+<p><strong>Dual-PRF combiner:</strong> <span class="arithmatex">\(K = \text{PRF}(K_1, K_2)\)</span> where <span class="arithmatex">\(K_1\)</span> = classical KEM output, <span class="arithmatex">\(K_2\)</span> = PQ KEM output. Provides security if either KEM is secure.</p>
+</li>
+</ul>
+<h2 id="sec-fpga-pqc"><span class="secnum">16.9</span> FPGA PQC Implementation Results<a class="headerlink" href="#sec-fpga-pqc" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-fpga-pqc">
+<div class="tbl-caption"><strong>Table 16.5.</strong> FPGA PQC Implementation Resource Utilization</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>FPGA</strong></th>
+<th style="text-align: left;"><strong>LUTs</strong></th>
+<th style="text-align: left;"><strong>FFs</strong></th>
+<th style="text-align: left;"><strong>BRAMs</strong></th>
+<th style="text-align: left;"><strong>DSPs</strong></th>
+<th style="text-align: left;"><strong>MHz</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ML-KEM-512 KeyGen</td>
+<td style="text-align: left;">Artix-7 XC7A100T</td>
+<td style="text-align: left;">4,500</td>
+<td style="text-align: left;">3,200</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-768 KeyGen</td>
+<td style="text-align: left;">Artix-7 XC7A100T</td>
+<td style="text-align: left;">5,800</td>
+<td style="text-align: left;">4,100</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-1024 KeyGen</td>
+<td style="text-align: left;">Artix-7 XC7A200T</td>
+<td style="text-align: left;">7,200</td>
+<td style="text-align: left;">5,000</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">185</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-768 KeyGen</td>
+<td style="text-align: left;">UltraScale+ XCKU5P</td>
+<td style="text-align: left;">2,800</td>
+<td style="text-align: left;">2,100</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">300</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-768 Encaps</td>
+<td style="text-align: left;">Artix-7 XC7A100T</td>
+<td style="text-align: left;">5,200</td>
+<td style="text-align: left;">3,800</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-DSA-44 Sign</td>
+<td style="text-align: left;">Artix-7 XC7A200T</td>
+<td style="text-align: left;">9,500</td>
+<td style="text-align: left;">7,000</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">150</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-DSA-65 Sign</td>
+<td style="text-align: left;">UltraScale+ XCKU5P</td>
+<td style="text-align: left;">6,800</td>
+<td style="text-align: left;">5,200</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-128s Sign</td>
+<td style="text-align: left;">Artix-7 XC7A200T</td>
+<td style="text-align: left;">3,200</td>
+<td style="text-align: left;">2,400</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">250</td>
+</tr>
+<tr>
+<td style="text-align: left;">NTT butterfly unit</td>
+<td style="text-align: left;">Artix-7 (1x BU)</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">80</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">200</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> ML-KEM on Artix-7 achieves 1 Mbps keygen throughput at 200 MHz. The NTT butterfly unit uses a single DSP48E1 for the Montgomery multiplication, achieving 200 MHz clock rate. For ML-KEM-768 on UltraScale+, 300 MHz operation with 2,800 LUTs enables 3.5 Mbps keygen – 3.5x faster than Artix-7 due to higher DSP efficiency and lower routing delay.</p>
+</div>
+<h2 id="sec-asic-pqc"><span class="secnum">16.10</span> ASIC PQC Implementation<a class="headerlink" href="#sec-asic-pqc" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-asic-pqc">
+<div class="tbl-caption"><strong>Table 16.6.</strong> ASIC PQC Implementation Results</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: left;"><strong>Area</strong></th>
+<th style="text-align: left;"><strong>Power</strong></th>
+<th style="text-align: left;"><strong>Performance</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ML-KEM-768 KeyGen</td>
+<td style="text-align: left;">Samsung 28nm</td>
+<td style="text-align: left;">0.15 mm2</td>
+<td style="text-align: left;">1.5 mW</td>
+<td style="text-align: left;">200 MHz, 2 Mbps</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-KEM-768 KeyGen</td>
+<td style="text-align: left;">TSMC 7nm</td>
+<td style="text-align: left;">0.02 mm2</td>
+<td style="text-align: left;">0.2 mW</td>
+<td style="text-align: left;">500 MHz, 5 Mbps</td>
+</tr>
+<tr>
+<td style="text-align: left;">ML-DSA-44 Sign</td>
+<td style="text-align: left;">Samsung 28nm</td>
+<td style="text-align: left;">0.35 mm2</td>
+<td style="text-align: left;">3.5 mW</td>
+<td style="text-align: left;">200 MHz, 50k sign/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">SLH-DSA-128s Sign</td>
+<td style="text-align: left;">TSMC 7nm</td>
+<td style="text-align: left;">0.08 mm2</td>
+<td style="text-align: left;">0.8 mW</td>
+<td style="text-align: left;">300 MHz, 10k sign/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBM Z16 Dilithium HW</td>
+<td style="text-align: left;">IBM 5nm</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">2x faster vs SW</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP SE051W ML-KEM</td>
+<td style="text-align: left;">NXP 40nm</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">3 mW</td>
+<td style="text-align: left;">I2C 400 kHz IF</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-pqc-sca"><span class="secnum">16.11</span> Side-Channel Attacks on PQC<a class="headerlink" href="#sec-pqc-sca" title="Permanent link">&para;</a></h2>
+<p>PQC algorithms introduce new side-channel attack surfaces:</p>
+<ul>
+<li>
+<p><strong>NTT timing leaks:</strong> Non-constant-time modular reduction in NTT. Barrett reduction requires a branch or multiply-accumulate that leaks via power trace. Montgomery reduction is branch-free but may still leak via operand-dependent power consumption.</p>
+</li>
+<li>
+<p><strong>ML-DSA rejection sampling:</strong> The signing loop repeats if the generated signature fails the norm check (probability  30%). Repeated iterations leak timing information. Mitigation: constant-time norm check + always execute fixed number of iterations.</p>
+</li>
+<li>
+<p><strong>Falcon Gaussian sampler:</strong> Table-based discrete Gaussian sampling produces observable power patterns. Guerreau et al. (USENIX Security 2022) demonstrated full key recovery from 1000 power traces.</p>
+</li>
+<li>
+<p><strong>ML-KEM implicit rejection:</strong> The implicit rejection path in Decaps must execute the same computations as the accept path to prevent timing oracle. Verified in FIPS 203 specification as a constant-time requirement.</p>
+</li>
+</ul>
+<h2 id="sec-pqc-solutions"><span class="secnum">16.12</span> PQC Software and Hardware Solutions<a class="headerlink" href="#sec-pqc-solutions" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-pqc-solutions">
+<div class="tbl-caption"><strong>Table 16.7.</strong> PQC Implementation Solutions Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Algorithms</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">pqclean</td>
+<td style="text-align: left;">Reference C</td>
+<td style="text-align: left;">All NIST PQC</td>
+<td style="text-align: left;">No optimizations</td>
+</tr>
+<tr>
+<td style="text-align: left;">liboqs (OQS)</td>
+<td style="text-align: left;">C library</td>
+<td style="text-align: left;">ML-KEM/DSA/SLH/FN</td>
+<td style="text-align: left;">OpenSSL/TLS integration</td>
+</tr>
+<tr>
+<td style="text-align: left;">wolfSSL PQC</td>
+<td style="text-align: left;">C library</td>
+<td style="text-align: left;">ML-KEM/DSA/Falcon</td>
+<td style="text-align: left;">FIPS 140-3 candidate</td>
+</tr>
+<tr>
+<td style="text-align: left;">BoringSSL CECPQ2</td>
+<td style="text-align: left;">C++</td>
+<td style="text-align: left;">X25519+ML-KEM-768</td>
+<td style="text-align: left;">Chrome TLS 1.3</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenSSL 3.x OQS</td>
+<td style="text-align: left;">Provider</td>
+<td style="text-align: left;">All NIST PQC</td>
+<td style="text-align: left;">Via liboqs provider</td>
+</tr>
+<tr>
+<td style="text-align: left;">mbedTLS PQC</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">ML-KEM, ML-DSA</td>
+<td style="text-align: left;">ARM/IoT focus</td>
+</tr>
+<tr>
+<td style="text-align: left;">AWS-LC</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">ML-KEM-768</td>
+<td style="text-align: left;">FIPS 140-3 pending</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBM Z16 HW</td>
+<td style="text-align: left;">ASIC</td>
+<td style="text-align: left;">Dilithium HW</td>
+<td style="text-align: left;">2x faster than SW</td>
+</tr>
+<tr>
+<td style="text-align: left;">NXP SE051W</td>
+<td style="text-align: left;">Secure element</td>
+<td style="text-align: left;">ML-KEM-768 HW</td>
+<td style="text-align: left;">I2C, EAL5+</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thales Luna HSM PQC</td>
+<td style="text-align: left;">Network HSM</td>
+<td style="text-align: left;">ML-KEM/DSA FW</td>
+<td style="text-align: left;">FIPS 140-3 L3</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-cnsa"><span class="secnum">16.13</span> CNSA 2.0 Migration Timeline<a class="headerlink" href="#sec-cnsa" title="Permanent link">&para;</a></h2>
+<p>NSA CNSA 2.0 (September 2022) mandates:</p>
+<ul>
+<li>
+<p><strong>2025:</strong> Begin PQC algorithm evaluation for all NSS systems.</p>
+</li>
+<li>
+<p><strong>2026:</strong> New classified software must support ML-KEM and ML-DSA.</p>
+</li>
+<li>
+<p><strong>2030:</strong> All new NSS systems must exclusively use CNSA 2.0: ML-KEM-1024, ML-DSA-87, AES-256, SHA-384.</p>
+</li>
+<li>
+<p><strong>2033:</strong> All NSS systems fully migrated. No RSA/ECDSA/ECDH/DH allowed.</p>
+</li>
+<li>
+<p><strong>2035:</strong> Legacy classical algorithms completely retired from NSS.</p>
+</li>
+</ul>
+<h2 id="sec-pqc-github"><span class="secnum">16.14</span> GitHub Resources<a class="headerlink" href="#sec-pqc-github" title="Permanent link">&para;</a></h2>
+<p>Key open-source PQC repositories:</p>
+<ul>
+<li>
+<p><code>pq-crystals/kyber</code>: ML-KEM reference implementation (C). Official NIST submission.</p>
+</li>
+<li>
+<p><code>pq-crystals/dilithium</code>: ML-DSA reference implementation (C, with AVX2 optimizations).</p>
+</li>
+<li>
+<p><code>sphincs/sphincs-plus</code>: SLH-DSA reference (C).</p>
+</li>
+<li>
+<p><code>PQClean/PQClean</code>: Unified clean-room C implementations of all NIST PQC algorithms.</p>
+</li>
+<li>
+<p><code>open-quantum-safe/liboqs</code>: Aggregated library with OpenSSL provider, TLS integration.</p>
+</li>
+<li>
+<p><code>kyber-py</code>: Pure Python ML-KEM implementation for testing and prototyping.</p>
+</li>
+<li>
+<p><code>NIST-PQC</code>: Official NIST post-quantum standardization repository with KAT vectors.</p>
+</li>
+</ul>
+<h2 id="sec-ch16-problems"><span class="secnum">16.15</span> Solved Problems<a class="headerlink" href="#sec-ch16-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: ML-KEM NTT Computation for Small Example</p>
+<p>Perform one NTT butterfly computation for ML-KEM with q=3329: inputs a=1000, b=2000, twiddle factor w=17. Compute a’ = (a + w*b) mod q and b’ = (a - w*b) mod q using Montgomery reduction with R=2^16. <strong>Solution:</strong> <strong>Step 1: Direct Computation (for verification)</strong></p>
+<p>w*b = 17 * 2000 = 34000.</p>
+<p>w*b mod q = 34000 mod 3329 = 34000 - 10*3329 = 34000 - 33290 = 710.</p>
+<p>a’ = (a + w*b mod q) mod q = (1000 + 710) mod 3329 = 1710. (No reduction needed since 1710 &lt; 3329.)</p>
+<p>b’ = (a - w*b mod q) mod q = (1000 - 710) mod 3329 = 290.</p>
+<p><strong>Step 2: Montgomery Reduction for w*b=34000, R=2^16=65536</strong></p>
+<p>Montgomery form: T = w*b = 34000 (not yet in Montgomery domain for this example).</p>
+<p>For proper Montgomery multiplication, inputs must be in Montgomery domain: a’ = a*R mod q.</p>
+<p>Precomputed: q^(-1) mod R: need 3329^(-1) mod 65536. Extended Euclidean: q^(-1) mod R = 3329^(-1) mod 65536 = 14017 (precomputed).</p>
+<p>Montgomery reduction of T=34000: m = T * q^(-1) mod R = 34000 * 14017 mod 65536. 34000 * 14017 = 476,578,000. 476578000 mod 65536 = 476578000 - 7272*65536 = 476578000 - 476672 = ... = 16,352 mod 65536. T’ = (T + m*q) / R = (34000 + 16352*3329) / 65536 = (34000 + 54,448,608) / 65536 = 54,482,608 / 65536 = 831.3... Take floor: 831. Since 831 &lt; q=3329, result is 831 in Montgomery domain.</p>
+<p><strong>Step 3: Correctness Verification</strong></p>
+<p>Direct method gives w*b mod q = 710. Montgomery method gives 831. These differ because Montgomery output is in Montgomery domain (scaled by R). To get 710: 831 = 710 * R mod q needs verification: 710 * 65536 mod 3329 = 46,530,560 mod 3329 = 831. Confirmed correct.</p>
+<p><strong>Step 4: Hardware Implementation</strong></p>
+<p>On FPGA Artix-7 using DSP48E1: the multiplication T = w*b uses 1 DSP (2 clock cycles pipeline). The Montgomery reduction uses adders and right shift (no division). Total butterfly: 3 clock cycles at 200 MHz = 15 ns per butterfly. For 256-point NTT: 256/2 * log2(256) = 128 * 8 = 1024 butterflies = 15.36 microseconds per polynomial NTT.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: CNSA 2.0 Migration Timeline for RSA-2048 System</p>
+<p>A financial institution runs RSA-2048 TLS and ECDH P-256 at 50,000 handshakes/second. Design the complete PQC migration timeline per CNSA 2.0. <strong>Solution:</strong> <strong>Step 1: Algorithm Selection</strong></p>
+<p>TLS KEM: Replace ECDH P-256 with X-Wing (X25519+ML-KEM-768) hybrid during transition; final state ML-KEM-768 only. Code signing: RSA-2048-PSS replaced with ML-DSA-65 (NIST Level 3). CA hierarchy: Root CA uses ML-DSA-87; Intermediate ML-DSA-65; Leaf ML-DSA-44.</p>
+<p><strong>Step 2: Performance Assessment</strong></p>
+<p>ML-KEM-768 KeyGen: 12,000 ops/sec per core (faster than ECDH P-256: 10,000 ops/sec). ML-DSA-44 verify: 8,000 ops/sec (2x slower than ECDSA P-256 at 15,000 ops/sec). Certificate size increase: RSA-2048 chain  1 KB, ML-DSA-65 chain  3–4 KB. Additional bandwidth at 50,000 TLS/s: 50,000 x 3000 bytes = 150 MB/s (manageable).</p>
+<p><strong>Step 3: Migration Phases</strong></p>
+<p>2025: Cryptographic agility – add ML-KEM+ML-DSA support alongside classical algorithms. 2026: Enable hybrid TLS (X-Wing). Dual-sign certificates (RSA-2048 + ML-DSA-65). 2028: 80% internal systems migrated to PQC-only. 2030–2033: Remove all classical algorithms. PQC-only per CNSA 2.0 mandate.</p>
+<p><strong>Step 4: Hardware Procurement</strong></p>
+<p>HSM upgrade: Thales Luna Network HSM 7 with PQC firmware 7.8+ (ML-KEM/ML-DSA). Load balancers: Intel Sapphire Rapids AVX-IFMA for ML-DSA acceleration. PKI: EJBCA 8.x or HashiCorp Vault 1.15+ for ML-DSA certificate issuance.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: FPGA Resource Estimation for ML-DSA-44 Signer</p>
+<p>Estimate Xilinx Artix-7 XC7A200T resources for ML-DSA-44 signature generation at 1000 sign/sec target. Show component breakdown. <strong>Solution:</strong> <strong>Step 1: Component Resource Estimates</strong></p>
+<p>NTT butterfly (128 parallel units): 128 DSP48E1 + 15,360 LUTs. SHAKE-256 core: 4,500 LUTs, 3,200 FFs, 0 DSPs. Matrix A generation (SHAKE-128): 3,200 LUTs, 2,100 FFs. Rejection sampling control: 500 LUTs, 400 FFs. Polynomial memory (4 polys, 256*12-bit each): 3 BRAMs.</p>
+<p><strong>Step 2: Total Resources</strong></p>
+<p>LUTs: 15,360 + 4,500 + 3,200 + 500 + 1,000 = 24,560 (20.5% of 134,600 on XC7A200T). FFs:  18,000 (14.9%). BRAMs: 8 (2.2%). DSPs: 128 (17.3%). Clock: 150 MHz.</p>
+<p><strong>Step 3: Throughput</strong></p>
+<p>Sign latency:  8 NTT invocations x 256 cycles/NTT = 2048 cycles + rejection =  5000 cycles = 33 microseconds at 150 MHz. Throughput: 30,000 sign/sec peak (exceeds 1000/sec target by 30x). Can reduce resources by 5x to just meet target.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Hybrid KEM Security Level Analysis: X-Wing</p>
+<p>Analyze X-Wing (X25519 + ML-KEM-768) security against (a) classical adversary with <span class="arithmatex">\(2^{128}\)</span> ops budget, (b) quantum adversary with Shor quantum computer. <strong>Solution:</strong> <strong>Step 1: X-Wing Construction</strong></p>
+<p>X-Wing shared key: <span class="arithmatex">\(K = H(\mathit{ss}_{X25519} \| \mathit{ss}_{MLKEM768} \| \mathit{ek}_{X25519} \| \mathit{ek}_{MLKEM768})\)</span>.</p>
+<p><strong>Step 2: Classical Adversary</strong></p>
+<p>Must break BOTH X25519 (128-bit classical) AND ML-KEM-768 (178-bit classical). Classical security: min(128, 178) = 128 bits. With <span class="arithmatex">\(2^{128}\)</span> budget: exactly at X25519 security limit. In practice, X25519 has &gt;128 bits with concrete security constant. X-Wing provides 128-bit classical security.</p>
+<p><strong>Step 3: Quantum Adversary (Shor)</strong></p>
+<p>Shor breaks X25519 in polynomial time. But X-Wing uses dual-PRF combiner: K is secure if EITHER input is secure. ML-KEM-768 post-quantum security = 128 bits (MLWE hardness, Grover provides no speedup). So K remains 128-bit PQ secure even with X25519 broken.</p>
+<p><strong>Step 4: Conclusion</strong></p>
+<p>X-Wing achieves 128-bit security against both classical and quantum adversaries (NIST Level 1 in both settings). For CNSA 2.0 compliance (Level 3 PQ required), use ML-KEM-1024 or ML-KEM-1024 + X25519 hybrid.</p>
+</div>
+<h2 id="sec-ch16-recent"><span class="secnum">16.16</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch16-recent" title="Permanent link">&para;</a></h2>
+<p>The post-quantum cryptography landscape was transformed in August 2024 with the NIST finalisation of FIPS 203/204/205/206. Deployment accelerated immediately: Apple PQ3, Signal PQXDH, WhatsApp, and Google Chrome all shipped ML-KEM-based hybrid protocols within months. NSA CNSA 2.0 updated its implementation guidance, a new hybrid KEM (X-Wing) was standardised as an IETF draft, Falcon hardware optimisations advanced, and NIST announced additional PQC candidates (BIKE, HQC) for a supplementary standard track.</p>
+<h3 id="16161-fips-203204205206-finalised-august-2024-deployment-status"><span class="secnum">16.16.1</span> FIPS 203/204/205/206 Finalised August 2024: Deployment Status<a class="headerlink" href="#16161-fips-203204205206-finalised-august-2024-deployment-status" title="Permanent link">&para;</a></h3>
+<p>NIST finalised the four post-quantum standards simultaneously on 13 August 2024:</p>
+<div class="tbl" id="tab-fips-deployment">
+<div class="tbl-caption"><strong>Table 16.8.</strong> NIST PQC standards finalised August 2024 – deployment status (2025)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIPS</strong></th>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Status</strong></th>
+<th style="text-align: left;"><strong>Early deployments</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">203</td>
+<td style="text-align: left;">ML-KEM (Kyber)</td>
+<td style="text-align: left;"><strong>Final; widely deployed</strong></td>
+<td style="text-align: left;">Chrome, iMessage PQ3, Signal, AWS-LC, BoringSSL</td>
+</tr>
+<tr>
+<td style="text-align: left;">204</td>
+<td style="text-align: left;">ML-DSA (Dilithium)</td>
+<td style="text-align: left;"><strong>Final; deployment accelerating</strong></td>
+<td style="text-align: left;">Thales Luna HSM FW, IBM Z16 HW, HashiCorp Vault</td>
+</tr>
+<tr>
+<td style="text-align: left;">205</td>
+<td style="text-align: left;">SLH-DSA (SPHINCS+)</td>
+<td style="text-align: left;">Final; niche adoption</td>
+<td style="text-align: left;">Code signing HSMs, air-gapped root CA ceremonies</td>
+</tr>
+<tr>
+<td style="text-align: left;">206</td>
+<td style="text-align: left;">FN-DSA (Falcon)</td>
+<td style="text-align: left;">Final; implementation caution</td>
+<td style="text-align: left;">TPM vendors (side-channel concerns delaying)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> FIPS 203 (ML-KEM) dominates early adoption because KEM replacement is operationally simpler than signature replacement – the KEM is used in TLS <code>key_share</code> extensions and does not require changes to certificate infrastructure. Signature replacement (FIPS 204) requires issuing new CA hierarchies and updating all relying-party certificate validation logic.</p>
+</div>
+<h3 id="16162-cnsa-20-implementation-nsa-guidance-updates-20242025"><span class="secnum">16.16.2</span> CNSA 2.0 Implementation: NSA Guidance Updates (2024–2025)<a class="headerlink" href="#16162-cnsa-20-implementation-nsa-guidance-updates-20242025" title="Permanent link">&para;</a></h3>
+<p>NSA updated CNSA 2.0 implementation guidance (CNSSP 15, revised 2024) to address practical deployment questions:</p>
+<ul>
+<li>
+<p><strong>Hybrid mode policy:</strong> For systems with <span class="arithmatex">\(&gt; 10\)</span>-year security lifetime, hybrid algorithms (classical + PQ) are now <em>required</em> during the transition period, not merely recommended. A TLS 1.3 server using only ML-KEM-768 (dropping X25519) is non-compliant until “Cryptographic Harvest Now, Decrypt Later” (HNDL) risk is formally accepted.</p>
+</li>
+<li>
+<p><strong>Key size mandates:</strong> ML-KEM-1024 and ML-DSA-87 are the mandatory algorithm variants for all classified data with SECRET-level or higher classification from January 2026. ML-KEM-768 and ML-DSA-65 remain acceptable for SENSITIVE compartmented until 2030.</p>
+</li>
+<li>
+<p><strong>HSM upgrade requirement:</strong> All NSS-connected HSMs must support FIPS 203/204 by 2026. Thales Luna 7 (FW 7.8+), Entrust nShield 5 (FW 12.80+), and IBM CEX8S (CE8.x) have qualified firmware updates.</p>
+</li>
+<li>
+<p><strong>Quantum-resistant VPN:</strong> IPsec IKEv2 for NSS VPNs must add ML-KEM-1024 in the KE transform by 2026; IKEv2 RFC 9370 (“Multiple Key Exchanges in IKEv2”) provides the protocol mechanism.</p>
+</li>
+</ul>
+<h3 id="16163-x-wing-hybrid-kem-rfc-draft-2024-hardware-implementation"><span class="secnum">16.16.3</span> X-Wing Hybrid KEM RFC Draft (2024): Hardware Implementation<a class="headerlink" href="#16163-x-wing-hybrid-kem-rfc-draft-2024-hardware-implementation" title="Permanent link">&para;</a></h3>
+<p>The IETF CFRG draft <code>draft-connolly-cfrg-xwing-kem</code> (X-Wing, 2024) specifies a single-pass hybrid KEM combining X25519 and ML-KEM-768 with a clean security proof:</p>
+<div class="arithmatex">\[K = \mathrm{SHA3\text{-}256}\!\left(
+  \mathit{ss}_{X25519} \,\|\, \mathit{ss}_{\mathrm{MLKEM768}} \,\|\,
+  \mathit{ek}_{X25519} \,\|\, \mathit{ek}_{\mathrm{MLKEM768}}
+\right)\]</div>
+<p><strong>Hardware implementation considerations:</strong></p>
+<ul>
+<li>
+<p><strong>Area:</strong> An Artix-7 XC7A100T implementation of X-Wing (X25519 ECC scalar multiplier + ML-KEM-768 NTT + SHA3-256 core) requires approximately 18,400 LUTs, 12,000 FFs, 12 BRAMs, 18 DSPs at 150 MHz, yielding 320 encapsulations/s.</p>
+</li>
+<li>
+<p><strong>FPGA vs. SE trade-off:</strong> On a discrete secure element (NXP SE051W, 40 nm), X-Wing encapsulation takes <span class="arithmatex">\(\approx\)</span>120 ms (X25519: 40 ms + ML-KEM-768: 80 ms), limited by I2C bandwidth. A custom ASIC at 28 nm achieves <span class="arithmatex">\(&lt;\)</span>1 ms per X-Wing operation.</p>
+</li>
+<li>
+<p><strong>Chrome deployment:</strong> Google Chrome 124 (April 2024) enabled ML-KEM-768 in TLS 1.3 by default for all users, using the X-Wing combiner via BoringSSL. This is the largest single PQC deployment in history (<span class="arithmatex">\(&gt;\)</span>3 billion active Chrome users).</p>
+</li>
+</ul>
+<h3 id="16164-falconfn-dsa-fpga-optimisations-2024-masked-gaussian-sampler"><span class="secnum">16.16.4</span> Falcon/FN-DSA FPGA Optimisations (2024): Masked Gaussian Sampler<a class="headerlink" href="#16164-falconfn-dsa-fpga-optimisations-2024-masked-gaussian-sampler" title="Permanent link">&para;</a></h3>
+<p>FN-DSA (FIPS 206, Falcon) hardware research produced significant advances in 2024 addressing the primary implementation obstacle – constant-time discrete Gaussian sampling:</p>
+<ul>
+<li>
+<p><strong>Masked Gaussian sampler (Azouaoui <em>et al.</em>, CHES 2024):</strong> A 2-share Boolean masked Gaussian sampler for Falcon-512 on FPGA achieves constant-time execution with <span class="arithmatex">\(&lt; 4\)</span>% leakage at <span class="arithmatex">\(10^6\)</span> power traces, compared to <span class="arithmatex">\(&gt;99\)</span>% leakage in the reference implementation. Resource cost: <span class="arithmatex">\(2.3\times\)</span> LUT overhead vs. unmasked (<span class="arithmatex">\(\approx\)</span>8,000 additional LUTs on Artix-7).</p>
+</li>
+<li>
+<p><strong>NTT-free Falcon variant:</strong> A “NTT-free” Falcon implementation (Plantard <em>et al.</em>, 2024) replaces floating-point FFT with a fixed-point 4 096-point NTT over a “Falcon-friendly” modulus, enabling full FPGA implementation without a floating-point unit (saves 40% area on Artix-7).</p>
+</li>
+<li>
+<p><strong>Side-channel hardening:</strong> The official Falcon reference code v1.1 (2024) adds platform-specific constant-time branches (<code>fpr_rint()</code> using <code>volatile</code> barriers on GCC/Clang) mitigating the Guerreau 2022 USENIX timing attack on x86 and ARM.</p>
+</li>
+</ul>
+<h3 id="16165-apple-pq3-ml-kem-768-and-signal-pqxdh-2024"><span class="secnum">16.16.5</span> Apple PQ3 (ML-KEM-768) and Signal PQXDH (2024)<a class="headerlink" href="#16165-apple-pq3-ml-kem-768-and-signal-pqxdh-2024" title="Permanent link">&para;</a></h3>
+<p>Two landmark consumer PQC deployments shipped in 2024:</p>
+<p><strong>Apple iMessage PQ3 (March 2024):</strong> Apple introduced “PQ3” protocol for iMessage, using ML-KEM-768 for post-quantum forward secrecy:</p>
+<ul>
+<li>
+<p><strong>Architecture:</strong> PQ3 adds a periodic ML-KEM-768 ratchet to the existing Signal-like Double Ratchet. A new PQ public key is uploaded to Apple’s IDS servers every 50 messages.</p>
+</li>
+<li>
+<p><strong>Hardware:</strong> On Apple A17 Pro and M-series chips, the Secure Enclave Processor (SEP) performs ML-KEM-768 key generation. The A17 Pro NTT throughput is <span class="arithmatex">\(\approx 450{,}000\)</span> KeyGens/s using ARM Neoverse-class SIMD.</p>
+</li>
+<li>
+<p><strong>Security level:</strong> Apple claims “Level 3” PQ security, defined as protection against attackers with both a quantum computer and compromised server-side key material.</p>
+</li>
+</ul>
+<p><strong>Signal PQXDH and WhatsApp PQ Rollout (2024):</strong> Signal Protocol PQXDH (Post-Quantum Extended Diffie-Hellman, published September 2023, deployed to all Signal users by mid-2024) uses ML-KEM-1024 for the initial key agreement, combined with X25519 in a hybrid construction. WhatsApp followed with its own ML-KEM-768 deployment to 2 billion+ users in Q3 2024, the largest single-day PQC rollout in history.</p>
+<h3 id="16166-bike-and-hqc-as-nist-additional-candidates-20242025"><span class="secnum">16.16.6</span> BIKE and HQC as NIST Additional Candidates (2024–2025)<a class="headerlink" href="#16166-bike-and-hqc-as-nist-additional-candidates-20242025" title="Permanent link">&para;</a></h3>
+<p>Following the August 2024 final standards, NIST announced a second PQC standardisation track targeting code-based KEM diversity (to complement lattice-based ML-KEM):</p>
+<div class="tbl" id="tab-nist-additional">
+<div class="tbl-caption"><strong>Table 16.9.</strong> NIST additional PQC KEM candidates (2024–2025 round)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Algorithm</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Hard problem</strong></th>
+<th style="text-align: left;"><strong>Key size (L3)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BIKE</td>
+<td style="text-align: left;">Code-based KEM</td>
+<td style="text-align: left;">Quasi-cyclic QC-MDPC</td>
+<td style="text-align: left;">PK: 1,541 B; CT: 1,573 B</td>
+</tr>
+<tr>
+<td style="text-align: left;">HQC</td>
+<td style="text-align: left;">Code-based KEM</td>
+<td style="text-align: left;">Hamming quasi-cyclic</td>
+<td style="text-align: left;">PK: 3,083 B; CT: 4,481 B</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> BIKE and HQC provide algorithmic diversity in case lattice assumptions are weakened by future mathematical advances. Both require substantially larger key and ciphertext sizes than ML-KEM, making them unsuitable for constrained IoT devices. Their primary deployment target is high-assurance systems where diversity of underlying mathematical assumptions outweighs size constraints, such as government certificate authorities and long-lived HSM key hierarchies.</p>
+</div>
+<h2 id="sec-ch16-ex"><span class="secnum">16.17</span> Exercises<a class="headerlink" href="#sec-ch16-ex" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Shor algorithm requires approximately 4096 logical qubits to break RSA-2048. Given that current quantum computers (IBM Osprey, Google Sycamore) have 433 and 70 physical qubits respectively with high error rates, estimate when RSA-2048 becomes practically vulnerable assuming: (a) exponential qubit scaling at 2x per 18 months, (b) 1000:1 physical-to-logical qubit ratio for error correction.</p>
+</li>
+<li>
+<p>ML-KEM-768 uses polynomial ring <span class="arithmatex">\(R_q = \mathbb{Z}_q[x]/(x^{256}+1)\)</span> with <span class="arithmatex">\(q=3329\)</span>. Explain why <span class="arithmatex">\(q=3329\)</span> was chosen (prime, specific NTT-friendly properties), and describe the impact of choosing a larger <span class="arithmatex">\(q\)</span> on: security level, ciphertext size, and NTT butterfly count.</p>
+</li>
+<li>
+<p>Implement a Python function that performs one full 256-point NTT over <span class="arithmatex">\(\mathbb{Z}_{3329}\)</span> on a polynomial (list of 256 integers). Use the Cooley-Tukey iterative NTT algorithm with bit-reversal permutation. Verify your implementation using the pqclean Kyber reference test vectors.</p>
+</li>
+<li>
+<p>Compare ML-DSA-65 and SLH-DSA-SHAKE-128f for TLS 1.3 server certificate signing in a scenario where: the server signs 10,000 certificates/day, certificate chain must fit in one TLS record (16 KB), and the offline signing key must be quantum-secure even if the HSM is physically stolen. Which algorithm is preferred and why?</p>
+</li>
+<li>
+<p>The FN-DSA (Falcon) Gaussian sampler has been shown vulnerable to timing side-channels (Guerreau et al. 2022). Describe the specific information leaked (polynomial component distribution), the attack methodology (power analysis + statistical distinguisher), and the constant-time countermeasure implemented in the official Falcon reference code.</p>
+</li>
+<li>
+<p>Design a hybrid TLS 1.3 extension for X-Wing (X25519 + ML-KEM-768). Specify the IANA TLS NamedGroup value, the ClientHello key_share extension format (total byte count), the ServerHello response format, and the shared secret derivation procedure using HKDF. Calculate the total handshake overhead increase vs. ECDH P-256 only.</p>
+</li>
+<li>
+<p>An IoT device uses an Artix-7 XC7A25T (smallest Artix-7, 14,600 LUTs, 65 BRAMs, 45 DSPs) to implement firmware signature verification. Can ML-DSA-44 signature verification fit within these resources? Show resource breakdown and identify the bottleneck. If not, what is the minimum ML-DSA variant that fits?</p>
+</li>
+<li>
+<p>Google deployed CECPQ2 (X25519 + HRSS-SXY, a NTRU-based KEM) in Chrome 79+ for TLS 1.3 in 2019. With FIPS 203 now standardized, evaluate the transition from CECPQ2 to X-Wing (X25519+ML-KEM-768). What are the protocol, performance, and security differences?</p>
+</li>
+<li>
+<p>SLH-DSA-SHAKE-128s signs a firmware image at 7,856-byte signature size vs. ECDSA P-256 at 64 bytes. For an IoT OTA firmware update over LoRaWAN (250 bytes/packet, DR0 = 250 bps), calculate the additional transmission time for the signature. Is SLH-DSA practical for LoRaWAN firmware updates?</p>
+</li>
+<li>
+<p>The IBM Z16 (announced 2022) includes hardware acceleration for ML-DSA (Dilithium). Describe the likely hardware acceleration mechanism (NTT co-processor, dedicated datapath) and estimate the throughput improvement over pure software (IBM z15) given that Z16 is reported to handle 300 billion inference operations/day on its on-chip neural inference engine.</p>
+</li>
+<li>
+<p>Design a PQC key ceremony procedure for generating an ML-DSA-87 root CA signing key. Specify: number of custodians (M-of-N), HSM hardware selection (air-gapped Thales Luna), ceremony room requirements, video recording protocol, audit log format, and destruction procedure for the ceremony materials.</p>
+</li>
+<li>
+<p>Analyze the CNSA 2.0 timeline for a medical device manufacturer whose implantable cardiac monitors have a 10-year service life. Devices are shipped in 2026. Security updates require FDA 510(k) clearance (18-month process). Identify conflicts between CNSA 2.0 requirements and FDA regulatory timelines, and propose a compliant migration strategy.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch15-automotive-hardware-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 15. Automotive Hardware Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                15. Automotive Hardware Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch17-jtag-and-debug-interface-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 17. JTAG and Debug Interface Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                17. JTAG and Debug Interface Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

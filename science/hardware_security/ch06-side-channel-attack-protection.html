@@ -1,0 +1,2983 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch06-side-channel-attack-protection.html">
+  
+  
+    <link rel="prev" href="ch05-hardware-root-of-trust.html">
+  
+  
+    <link rel="next" href="ch07-hardware-trojan-detection.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>6. Side-Channel Attack Protection - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#61-side-channel-attack-taxonomy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6. Side-Channel Attack Protection
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-side-channel-attack-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Side-Channel Attack Taxonomy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 Side-Channel Attack Taxonomy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-power-analysis-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 Power Analysis Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-leakage-assessment-t-tvla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 Leakage Assessment: t-TVLA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-timing-and-cache-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3 Timing and Cache Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-em-and-acoustic-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4 EM and Acoustic Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-measurement-setup-and-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Measurement Setup and Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-countermeasures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Countermeasures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Countermeasures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631-boolean-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 Boolean Masking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632-threshold-implementation-ti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 Threshold Implementation (TI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#633-domain-oriented-masking-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.3 Domain Oriented Masking (DOM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#634-wddl-wave-dynamic-differential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.4 WDDL: Wave Dynamic Differential Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#635-physical-and-algorithm-countermeasures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.5 Physical and Algorithm Countermeasures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-scalib-python-cpa-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 SCALib Python CPA Attack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-evaluation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Evaluation Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-open-source-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Open-Source Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sca-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 FPGA Implementation of SCA-Resistant AES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sca-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 ASIC Implementation Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch06-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6101-inception-attack-amd-zen-34-speculative-execution-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.1 INCEPTION Attack: AMD Zen 3/4 Speculative Execution (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6102-ileakage-apple-m1m2a-series-safari-side-channel-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.2 iLeakage: Apple M1/M2/A-Series Safari Side-Channel (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6103-rowhammer-on-ddr5-2024-target-row-refresh-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.3 RowHammer on DDR5 (2024): Target Row Refresh Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6104-aepic-leak-20222023-intel-cpu-architectural-bug-leaking-sgx-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.4 AEPIC Leak (2022–2023): Intel CPU Architectural Bug Leaking SGX Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6105-composable-masking-schemes-2024-hardware-friendly-d1-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.5 Composable Masking Schemes (2024): Hardware-Friendly d+1 Sharing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6106-chipwhisperer-pro-updates-and-scalib-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.6 ChipWhisperer Pro Updates and SCALib 2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6107-isoiec-178252023-update-for-side-channel-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.7 ISO/IEC 17825:2023 Update for Side-Channel Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#611-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch14-hardware-attestation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-side-channel-attack-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Side-Channel Attack Taxonomy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 Side-Channel Attack Taxonomy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-power-analysis-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 Power Analysis Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-leakage-assessment-t-tvla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 Leakage Assessment: t-TVLA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-timing-and-cache-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3 Timing and Cache Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-em-and-acoustic-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4 EM and Acoustic Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-measurement-setup-and-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Measurement Setup and Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-countermeasures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Countermeasures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Countermeasures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631-boolean-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 Boolean Masking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632-threshold-implementation-ti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 Threshold Implementation (TI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#633-domain-oriented-masking-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.3 Domain Oriented Masking (DOM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#634-wddl-wave-dynamic-differential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.4 WDDL: Wave Dynamic Differential Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#635-physical-and-algorithm-countermeasures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.5 Physical and Algorithm Countermeasures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-scalib-python-cpa-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 SCALib Python CPA Attack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-evaluation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Evaluation Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-open-source-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Open-Source Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#67-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sca-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 FPGA Implementation of SCA-Resistant AES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-sca-asic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 ASIC Implementation Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch06-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.10 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6101-inception-attack-amd-zen-34-speculative-execution-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.1 INCEPTION Attack: AMD Zen 3/4 Speculative Execution (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6102-ileakage-apple-m1m2a-series-safari-side-channel-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.2 iLeakage: Apple M1/M2/A-Series Safari Side-Channel (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6103-rowhammer-on-ddr5-2024-target-row-refresh-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.3 RowHammer on DDR5 (2024): Target Row Refresh Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6104-aepic-leak-20222023-intel-cpu-architectural-bug-leaking-sgx-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.4 AEPIC Leak (2022–2023): Intel CPU Architectural Bug Leaking SGX Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6105-composable-masking-schemes-2024-hardware-friendly-d1-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.5 Composable Masking Schemes (2024): Hardware-Friendly d+1 Sharing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6106-chipwhisperer-pro-updates-and-scalib-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.6 ChipWhisperer Pro Updates and SCALib 2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6107-isoiec-178252023-update-for-side-channel-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10.7 ISO/IEC 17825:2023 Update for Side-Channel Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#611-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-side_channel">Chapter 6: Side-Channel Attack Protection<a class="headerlink" href="#ch-side_channel" title="Permanent link">&para;</a></h1>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> Side-channel attacks exploit physical emanations from cryptographic hardware. Even theoretically perfect ciphers leak through power, EM, timing, and acoustics.</p>
+</div>
+<h2 id="61-side-channel-attack-taxonomy"><span class="secnum">6.1</span> Side-Channel Attack Taxonomy<a class="headerlink" href="#61-side-channel-attack-taxonomy" title="Permanent link">&para;</a></h2>
+<p>Side-channel attacks (SCA) exploit information leaked through physical implementation. The taxonomy spans: power analysis (SPA, DPA, CPA, HO-DPA), timing, EM, acoustic, photonic, and cache-timing channels.</p>
+<h3 id="611-power-analysis-attacks"><span class="secnum">6.1.1</span> Power Analysis Attacks<a class="headerlink" href="#611-power-analysis-attacks" title="Permanent link">&para;</a></h3>
+<p>CMOS logic dissipates power proportional to switching activity. The <strong>Hamming Weight (HW)</strong> model:</p>
+<div class="arithmatex">\[P(v)=\alpha\cdot\mathrm{HW}(v)+\beta+N,\quad N\sim\mathcal{N}(0,\sigma^2)\]</div>
+<p>The <strong>Hamming Distance (HD)</strong> model for register transitions:</p>
+<div class="arithmatex">\[\mathrm{HD}(x,y)=\mathrm{HW}(x\oplus y)=\mathrm{HW}(x)+\mathrm{HW}(y)-2\mathrm{HW}(x\wedge y)\]</div>
+<p><strong>SPA:</strong> Visual inspection of one trace. RSA square-and-multiply produces distinct per-operation patterns, directly revealing key bits.</p>
+<p><strong>DPA (Kocher 1999):</strong> Statistical attack over <span class="arithmatex">\(N\)</span> traces. Partition by predicted intermediate bit <span class="arithmatex">\(b\)</span>: <span class="arithmatex">\(\Delta D=E[T\mid b=1]-E[T\mid b=0]\)</span>. Correct key produces a peak.</p>
+<p><strong>CPA (Brier 2004):</strong> Pearson correlation between hypothetical power <span class="arithmatex">\(v\)</span> and traces <span class="arithmatex">\(T\)</span>:</p>
+<div class="arithmatex">\[\rho(H,T)=\frac{\mathrm{Cov}(H,T)}{\sigma_H\sigma_T}=\frac{\sum_{i=1}^N(h_i-\bar{h})(t_{i,j}-\bar{t}_j)}{\sqrt{\sum_i(h_i-\bar{h})^2}\sqrt{\sum_i(t_{i,j}-\bar{t}_j)^2}}\]</div>
+<p>Key ranking: <span class="arithmatex">\(\rho_k^*=\max_j|\rho_{k,j}|\)</span>; correct key <span class="arithmatex">\(\rho^*\to1\)</span>, wrong keys <span class="arithmatex">\(\approx0\)</span>.</p>
+<p><strong>HO-DPA:</strong> Combines <span class="arithmatex">\(d+1\)</span> time points (product or absolute difference) to attack <span class="arithmatex">\(d\)</span>th order masking.</p>
+<h3 id="612-leakage-assessment-t-tvla"><span class="secnum">6.1.2</span> Leakage Assessment: t-TVLA<a class="headerlink" href="#612-leakage-assessment-t-tvla" title="Permanent link">&para;</a></h3>
+<p>ISO/IEC 17825 TVLA uses Welch t-test on fixed (<span class="arithmatex">\(x_f\)</span>) vs. random (<span class="arithmatex">\(x_r\)</span>) trace sets:</p>
+<div class="arithmatex">\[t_j=\frac{\bar{T}_{F,j}-\bar{T}_{R,j}}{\sqrt{s_{F,j}^2/N_F+s_{R,j}^2/N_R}}\]</div>
+<p><span class="arithmatex">\(|t_j|&gt;4.5\)</span> declares leakage at significance <span class="arithmatex">\(\approx2^{-20}\)</span> (false positive <span class="arithmatex">\(2.8\times10^{-6}\)</span> per sample).</p>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> <span class="arithmatex">\(|t|&gt;4.5\)</span> indicates information-theoretic leakage. All certified products must pass TVLA under ISO/IEC 17825 and CC AVA_VAN.5.</p>
+</div>
+<h3 id="613-timing-and-cache-attacks"><span class="secnum">6.1.3</span> Timing and Cache Attacks<a class="headerlink" href="#613-timing-and-cache-attacks" title="Permanent link">&para;</a></h3>
+<p>Kocher (1996): RSA decryption time varies with key bits through conditional Montgomery reduction. AES cache-timing attacks reveal T-table indices via hit (<span class="arithmatex">\(\approx 100\)</span> cyc) vs. miss (<span class="arithmatex">\(\approx 200\)</span> cyc) latency.</p>
+<p><strong>Spectre (CVE-2017-5753):</strong> Branch predictor training causes speculative out-of-bounds access; secret encoded in cache state, exfiltrated via Flush+Reload. Mitigated by retpoline and IBRS.</p>
+<p><strong>Meltdown (CVE-2017-5754):</strong> Out-of-order execution reads kernel memory; cache encodes value before exception. Mitigated by KPTI (Kernel Page-Table Isolation).</p>
+<p><strong>Flush+Reload (Yarom 2014):</strong> Flush shared line (<code>clflush</code>), wait for victim, time reload: hit (<span class="arithmatex">\(&lt;200\)</span> cyc) confirms access.</p>
+<p><strong>Prime+Probe:</strong> Fill cache set, wait for victim evictions, probe own lines. Works across VMs; no shared memory required.</p>
+<h3 id="614-em-and-acoustic-attacks"><span class="secnum">6.1.4</span> EM and Acoustic Attacks<a class="headerlink" href="#614-em-and-acoustic-attacks" title="Permanent link">&para;</a></h3>
+<p>Near-field EM probes (Langer RF-U 5-2, 100 kHz–3 GHz) 1–2 mm above IC capture SEMA/DEMA traces. XY scanning (Thorlabs PT3/M, 0.5 mm steps) produces spatial leakage maps.</p>
+<p>Acoustic attacks (Genkin 2014): switching regulator coil whine encodes RSA-4096 key computation. Consumer microphone at 44.1 kHz extracts key in <span class="arithmatex">\(\approx 1\)</span> hour.</p>
+<h2 id="62-measurement-setup-and-hardware"><span class="secnum">6.2</span> Measurement Setup and Hardware<a class="headerlink" href="#62-measurement-setup-and-hardware" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-dpa_setup">
+<img class="tikz" src="img/tikz-f2f61cedc381.svg" alt="DPA/CPA Measurement Setup. DUT powered through 1 \Omega shunt. LeCroy WaveRunner 8254M-A (2.5 GS/s, 12-bit) captures synchronized traces via ChipWhisperer-Lite CW1173 hardware trigger." loading="lazy">
+<figcaption><strong>Figure 6.1.</strong> DPA/CPA Measurement Setup. DUT powered through 1 <span class="math inline">\(\Omega\)</span> shunt. LeCroy WaveRunner 8254M-A (2.5 GS/s, 12-bit) captures synchronized traces via ChipWhisperer-Lite CW1173 hardware trigger.</figcaption>
+</figure>
+
+<div class="tbl" id="tab-sca_hw">
+<div class="tbl-caption"><strong>Table 6.1.</strong> Side-Channel Attack Hardware Platforms</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Platform</strong></th>
+<th style="text-align: left;"><strong>Vendor</strong></th>
+<th style="text-align: left;"><strong>Capability</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ChipWhisperer-Lite CW1173</td>
+<td style="text-align: left;">NewAE Technology</td>
+<td style="text-align: left;">105 MS/s, 10-bit ADC</td>
+<td style="text-align: left;">Open source, UFO target</td>
+</tr>
+<tr>
+<td style="text-align: left;">ChipWhisperer-Pro CW1200</td>
+<td style="text-align: left;">NewAE Technology</td>
+<td style="text-align: left;">200 MS/s, 12-bit</td>
+<td style="text-align: left;">Stream mode, 128 MB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inspector SCA Platform</td>
+<td style="text-align: left;">Riscure</td>
+<td style="text-align: left;">1 GS/s, 12-bit</td>
+<td style="text-align: left;">Commercial, automated</td>
+</tr>
+<tr>
+<td style="text-align: left;">Langer RF-U 5-2 EM Probe</td>
+<td style="text-align: left;">Langer EMV-Technik</td>
+<td style="text-align: left;">100 kHz–3 GHz</td>
+<td style="text-align: left;">Near-field EM</td>
+</tr>
+<tr>
+<td style="text-align: left;">LeCroy WaveRunner 8254M-A</td>
+<td style="text-align: left;">Teledyne LeCroy</td>
+<td style="text-align: left;">2.5 GS/s, 12-bit</td>
+<td style="text-align: left;">4-ch lab scope</td>
+</tr>
+<tr>
+<td style="text-align: left;">SAKURA-G Eval Board</td>
+<td style="text-align: left;">AIST/RCIS Japan</td>
+<td style="text-align: left;">48 MS/s, 12-bit</td>
+<td style="text-align: left;">Open HW, Spartan-6</td>
+</tr>
+<tr>
+<td style="text-align: left;">SAKURA-X Eval Board</td>
+<td style="text-align: left;">AIST/RCIS Japan</td>
+<td style="text-align: left;">Kintex-7 FPGA</td>
+<td style="text-align: left;">Configurable crypto</td>
+</tr>
+<tr>
+<td style="text-align: left;">DPA Workstation v5</td>
+<td style="text-align: left;">Riscure</td>
+<td style="text-align: left;">Full lab automation</td>
+<td style="text-align: left;">CC EAL5+ standard</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> Position Langer RF-U 5-2 probe 1–2 mm above DUT. Scan with Thorlabs PT3/M XY stage at 0.5 mm steps. Spatial SNR map identifies high-leakage regions (AES SubBytes datapath).</p>
+</div>
+<h2 id="63-countermeasures"><span class="secnum">6.3</span> Countermeasures<a class="headerlink" href="#63-countermeasures" title="Permanent link">&para;</a></h2>
+<h3 id="631-boolean-masking"><span class="secnum">6.3.1</span> Boolean Masking<a class="headerlink" href="#631-boolean-masking" title="Permanent link">&para;</a></h3>
+<p><span class="arithmatex">\(d\)</span>th order Boolean masking splits secret <span class="arithmatex">\(s\)</span> into <span class="arithmatex">\(d+1\)</span> shares revealing nothing from any <span class="arithmatex">\(d\)</span> shares:</p>
+<div class="arithmatex">\[s=s_0\oplus s_1\oplus\cdots\oplus s_d,\quad s_0,…,s_{d-1}\xleftarrow{\$}\{0,1\}^n,\quad s_d=s\oplus s_0\oplus\cdots\oplus s_{d-1}\]</div>
+<figure class="fig fig-diagram" id="fig-masking">
+<img class="tikz" src="img/tikz-4fec41861c59.svg" alt="First-Order Boolean Masking (d=1). Secret s split into m (TRNG mask) and s\oplus m. Both shares processed independently through f; output XOR recombines. Any single share is uniform over \{0,1\}^n,…" loading="lazy">
+<figcaption><strong>Figure 6.2.</strong> First-Order Boolean Masking (<span class="math inline">\(d=1\)</span>). Secret <span class="math inline">\(s\)</span> split into <span class="math inline">\(m\)</span> (TRNG mask) and <span class="math inline">\(s\oplus m\)</span>. Both shares processed independently through <span class="math inline">\(f\)</span>; output XOR recombines. Any single share is uniform over <span class="math inline">\(\{0,1\}^n\)</span>, revealing nothing about <span class="math inline">\(s\)</span>.</figcaption>
+</figure>
+
+<h3 id="632-threshold-implementation-ti"><span class="secnum">6.3.2</span> Threshold Implementation (TI)<a class="headerlink" href="#632-threshold-implementation-ti" title="Permanent link">&para;</a></h3>
+<p>TI (Nikova et al., 2006) provides provably secure masking for nonlinear functions. Three properties:</p>
+<ol>
+<li>
+<p><strong>Correctness:</strong> XOR of all output shares equals the correct function output.</p>
+</li>
+<li>
+<p><strong>Non-completeness:</strong> Each output share depends on at most <span class="arithmatex">\(d\)</span> of the <span class="arithmatex">\(d+1\)</span> input shares.</p>
+</li>
+<li>
+<p><strong>Uniformity:</strong> Uniform input shares produce uniform output shares.</p>
+</li>
+</ol>
+<p>For AES SubBytes (degree 4 over GF(<span class="arithmatex">\(2^8\)</span>)), minimum 3 shares required for first-order TI. GF(<span class="arithmatex">\(2^4\)</span>) tower field decomposition enables 3-share TI with 18 AND-gate evaluations per S-box.</p>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> FPGA synthesis must not merge share domains. In Vivado, apply <code>(<em> DONT_TOUCH = yes </em>)</code> on share-boundary nets to prevent OPT_DESIGN from collapsing masking into unprotected logic.</p>
+</div>
+<h3 id="633-domain-oriented-masking-dom"><span class="secnum">6.3.3</span> Domain Oriented Masking (DOM)<a class="headerlink" href="#633-domain-oriented-masking-dom" title="Permanent link">&para;</a></h3>
+<p>DOM (Gross et al., 2016) isolates computation domains via register stages. DOM-indep provides <span class="arithmatex">\(d\)</span>th order security with <span class="arithmatex">\(d\)</span> shares requiring <span class="arithmatex">\(\binom{d+1}{2}\)</span> fresh random bits per AND gate.</p>
+<h3 id="634-wddl-wave-dynamic-differential-logic"><span class="secnum">6.3.4</span> WDDL: Wave Dynamic Differential Logic<a class="headerlink" href="#634-wddl-wave-dynamic-differential-logic" title="Permanent link">&para;</a></h3>
+<p>WDDL dual-rail encoding makes switching activity constant regardless of data. All gates produce both <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(\bar{x}\)</span> toggling every clock. Requires differential standard-cell library and balanced routing. On FPGAs, routing asymmetry degrades protection.</p>
+<h3 id="635-physical-and-algorithm-countermeasures"><span class="secnum">6.3.5</span> Physical and Algorithm Countermeasures<a class="headerlink" href="#635-physical-and-algorithm-countermeasures" title="Permanent link">&para;</a></h3>
+<p><strong>Clock randomization:</strong> Spread-spectrum oscillators (Cypress CY22393FZXC, SiTime SIT1533) modulate frequency <span class="arithmatex">\(\pm1\%\)</span> at 20–100 kHz.</p>
+<p><strong>Power filtering:</strong> 100 nF C0G + 10 <span class="arithmatex">\(\mu\)</span>F tantalum per VCC pin; Microchip MIC5504 LDO (PSRR <span class="arithmatex">\(&gt;60\)</span> dB).</p>
+<p><strong>Constant-time code:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>/* Constant-time compare: no early exit */
+int ct_memcmp(const uint8_t *a, const uint8_t *b, size_t len) {
+    uint8_t diff = 0;
+    for (size_t i=0; i&lt;len; i++) diff |= a[i]^b[i];
+    return diff;
+}
+/* Constant-time select: compiles to CMOV on x86 */
+uint32_t ct_select(uint32_t cond, uint32_t a, uint32_t b) {
+    uint32_t mask = (uint32_t)(-(int32_t)(cond != 0));
+    return (a &amp; mask) | (b &amp; ~mask);
+}
+/* Shuffled SubBytes: randomize order to desynchronize */
+void aes_subbytes_shuffled(uint8_t s[16], uint8_t perm[16]) {
+    trng_fisher_yates(perm, 16);
+    for (int i=0; i&lt;16; i++) s[perm[i]]=SBOX[s[perm[i]]];
+}
+</code></pre></div>
+<div class="tbl" id="tab-sca_counter">
+<div class="tbl-caption"><strong>Table 6.2.</strong> Side-Channel Countermeasures Comparison</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Countermeasure</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Security</strong></th>
+<th style="text-align: left;"><strong>Area OH</strong></th>
+<th style="text-align: left;"><strong>Rand. Bits</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Boolean Masking (d=1)</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">1st order</td>
+<td style="text-align: left;">2x</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI (3 shares, d=1)</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">1st order</td>
+<td style="text-align: left;">3x–4x</td>
+<td style="text-align: left;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;">DOM-indep (d-th)</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">d-th order</td>
+<td style="text-align: left;"><span class="math inline">\(d^2\)</span></td>
+<td style="text-align: left;">High</td>
+</tr>
+<tr>
+<td style="text-align: left;">WDDL (dual-rail)</td>
+<td style="text-align: left;">Logic style</td>
+<td style="text-align: left;">1st (ASIC)</td>
+<td style="text-align: left;">2x+routing</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">Spread-Spectrum Osc.</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">Partial</td>
+<td style="text-align: left;">5% area</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">LDO + Decoupling</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">Partial</td>
+<td style="text-align: left;">PCB area</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr>
+<td style="text-align: left;">Noise Generator</td>
+<td style="text-align: left;">Physical</td>
+<td style="text-align: left;">Partial</td>
+<td style="text-align: left;">10% area</td>
+<td style="text-align: left;">Low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shuffling</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">Partial</td>
+<td style="text-align: left;">1.1x</td>
+<td style="text-align: left;">Low</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="64-scalib-python-cpa-attack"><span class="secnum">6.4</span> SCALib Python CPA Attack<a class="headerlink" href="#64-scalib-python-cpa-attack" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>import numpy as np
+from scalib.metrics import SNR, Ttest
+traces = np.load("traces.npy").astype(np.float32)   # (N=5000, L)
+pts    = np.load("plaintexts.npy").astype(np.uint8) # (N, 16)
+SBOX = [0x63, 0x7c, ...]  # 256 AES S-box values
+def hw(x): return bin(int(x)).count("1")
+# Step 1: SNR leakage identification
+labels = np.array([hw(SBOX[int(pt[0])^0xAB]) for pt in pts], dtype=np.uint16)
+snr = SNR(nc=9, ns=traces.shape[1], np=1)
+snr.fit_u(traces, labels.reshape(-1,1))
+snr_v = snr.get_snr()
+print("Peak SNR", snr_v[0].max(), "at", snr_v[0].argmax())
+# Step 2: t-TVLA
+ttest = Ttest(ns=traces.shape[1])
+ttest.fit_u(traces[:2500], 0); ttest.fit_u(traces[2500:], 1)
+t = ttest.get_ttest()
+print("Max|t|=", abs(t).max())
+# Step 3: CPA key byte 0
+hyp = np.array([[hw(SBOX[int(pt[0])^k]) for k in range(256)]
+               for pt in pts], dtype=np.float32)
+T_c = traces-traces.mean(0); H_c = hyp-hyp.mean(0)
+corr = (H_c.T@T_c)/(len(pts)*np.outer(hyp.std(0)+1e-12,traces.std(0)+1e-12))
+print("Recovered key[0]=", hex(np.argmax(np.max(np.abs(corr),axis=1))))
+</code></pre></div>
+<h2 id="65-evaluation-standards"><span class="secnum">6.5</span> Evaluation Standards<a class="headerlink" href="#65-evaluation-standards" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-sca_standards">
+<div class="tbl-caption"><strong>Table 6.3.</strong> SCA Evaluation Standards</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Standard</strong></th>
+<th style="text-align: left;"><strong>Body</strong></th>
+<th style="text-align: left;"><strong>Key Requirement</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ISO/IEC 17825:2016</td>
+<td style="text-align: left;">ISO/IEC JTC1</td>
+<td style="text-align: left;">TVLA fixed-vs-random, <span class="math inline">\(|t|&lt;4.5\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Common Criteria AVA_VAN.5</td>
+<td style="text-align: left;">CCRA</td>
+<td style="text-align: left;">Enhanced vulnerability analysis</td>
+</tr>
+<tr>
+<td style="text-align: left;">EMVCo SCA Evaluation v3.1</td>
+<td style="text-align: left;">EMVCo</td>
+<td style="text-align: left;">Payment terminal SCA resistance</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIPS 140-3 / ISO 19790</td>
+<td style="text-align: left;">NIST</td>
+<td style="text-align: left;">Physical security levels 2–4</td>
+</tr>
+<tr>
+<td style="text-align: left;">AIS-31 v3</td>
+<td style="text-align: left;">BSI Germany</td>
+<td style="text-align: left;">TRNG statistical qualification</td>
+</tr>
+<tr>
+<td style="text-align: left;">SESIP Level 3</td>
+<td style="text-align: left;">GlobalPlatform</td>
+<td style="text-align: left;">IoT security evaluation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="66-open-source-repositories"><span class="secnum">6.6</span> Open-Source Repositories<a class="headerlink" href="#66-open-source-repositories" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>github.com/newaetech/chipwhisperer</strong> – ChipWhisperer: open-source SCA platform, Jupyter tutorials, CW1173/CW1200 hardware schematics</p>
+</li>
+<li>
+<p><strong>github.com/simple-crypto/SCALib</strong> – SCALib: SNR, t-TVLA, CPA, template attacks with Rust-accelerated backend</p>
+</li>
+<li>
+<p><strong>github.com/ANSSI-FR/ASCAD</strong> – ASCAD: ATMega8515 AES-128 dataset (60k traces), neural-network SCA benchmark</p>
+</li>
+<li>
+<p><strong>github.com/cryptolu/scared</strong> – scared: CPA, LRA, MIA SCA framework</p>
+</li>
+<li>
+<p><strong>github.com/SideChannelMarvels/lascar</strong> – lascar: modular SCA container/processor pipeline</p>
+</li>
+<li>
+<p><strong>github.com/comsec-group/aes-128-tvla</strong> – AES-128 TVLA reference test vectors</p>
+</li>
+</ul>
+<h2 id="67-solved-problems"><span class="secnum">6.7</span> Solved Problems<a class="headerlink" href="#67-solved-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: DPA Trace Count from SNR</p>
+<p>AES-128 on ATmega328P (ChipWhisperer-Lite CW1173, 16 MHz): SNR <span class="arithmatex">\(=0.04\)</span> at S-box leakage. (a) CPA traces for 99% success. (b) Trace count vs. first-order attacker on 3-share TI. (c) Second-order attacker vs. TI. <strong>Solution:</strong> <strong>Part (a):</strong> <span class="arithmatex">\(\rho^2\approx0.0385\)</span>, <span class="arithmatex">\(\rho=0.196\)</span>:</p>
+<div class="arithmatex">\[N\approx\frac{\pi^2(1-\rho^2)}{4\rho^2}(\Phi^{-1}(0.99))^2\approx\mathbf{333}~\text{traces}\]</div>
+<p>With alignment overhead: 500–1000 traces in practice.</p>
+<p><strong>Part (b): TI vs. first-order.</strong> TI uniformity: <span class="arithmatex">\(\rho=0\)</span> exactly. <strong>First-order CPA fails; infinite traces required.</strong></p>
+<p><strong>Part (c): Second-order attacker:</strong></p>
+<div class="arithmatex">\[\mathrm{SNR}_2\approx\frac{(0.04)^2}{8}=2\times10^{-4},\quad N_2\approx66{,}800~\text{traces}\]</div>
+<p><strong>Summary:</strong> Unprotected <span class="arithmatex">\(\sim\)</span>333 traces; TI vs. 1st-order: fails; TI vs. 2nd-order: <span class="arithmatex">\(\sim\)</span>67k traces.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: CPA Key Recovery Step-by-Step</p>
+<p>With 1000 power traces (5000 samples) from AES-128 on STM32F303 (ChipWhisperer UFO), recover key byte <span class="arithmatex">\(k_0\)</span> via CPA. <strong>Solution:</strong> <strong>Step 1:</strong> <span class="arithmatex">\(v=\mathrm{SubBytes}(p_0\oplus k_0)\)</span> – involves only <span class="arithmatex">\(k_0\)</span>.</p>
+<p><strong>Step 2: Hypothesis matrix H</strong> (1000 x 256):</p>
+<div class="arithmatex">\[H[i][k]=\mathrm{HW}(\mathrm{SBOX}[p_0^{(i)}\oplus k])\in\{0,…,8\}\]</div>
+<p><strong>Step 3: Pearson correlation</strong> (256 x 5000):</p>
+<div class="arithmatex">\[\rho_{k,j}=\frac{\sum_i(H[i][k]-\bar{H}_k)(T[i][j]-\bar{T}_j)}{\sqrt{\sum_i(H[i][k]-\bar{H}_k)^2}\sqrt{\sum_i(T[i][j]-\bar{T}_j)^2}}\]</div>
+<p><strong>Step 4: Key ranking:</strong> <span class="arithmatex">\(\rho_k^*=\max_j|\rho_{k,j}|\)</span>. Sort 256 keys descending.</p>
+<p><strong>Example:</strong> Correct key 0x2B: <span class="arithmatex">\(\rho^*=0.89\)</span> at sample 347, rank 1. Wrong key 0x17: <span class="arithmatex">\(\rho^*=0.22\)</span>, rank 2.</p>
+<p><strong>Step 5: Full key.</strong> Repeat for <span class="arithmatex">\(k_1\)</span>–<span class="arithmatex">\(k_{15}\)</span>. Total <span class="arithmatex">\(\approx2\times10^{10}\)</span> MACs, <span class="arithmatex">\(\approx\)</span>30 s on CPU.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: t-TVLA Threshold Analysis</p>
+<p>NXP LPC55S69: <span class="arithmatex">\(N_F=N_R=10{,}000\)</span> traces, 5000 samples, maximum <span class="arithmatex">\(|t|=3.8\)</span>. (a) Pass? (b) False positive rate at <span class="arithmatex">\(|t|&gt;4.5\)</span>? (c) Expected FP across 5000 samples? <strong>Solution:</strong> <strong>(a)</strong> <span class="arithmatex">\(3.8&lt;4.5\)</span>: device <strong>passes</strong>. Recommend re-evaluation at 100k traces.</p>
+<p><strong>(b)</strong> <span class="arithmatex">\(P(|t_j|&gt;4.5)=2(1-\Phi(4.5))\approx6.80\times10^{-6}\)</span>.</p>
+<p><strong>(c)</strong> <span class="arithmatex">\(E[\text{FP}]=5000\times6.80\times10^{-6}=0.034\ll1\)</span>. Threshold 4.5 chosen so <span class="arithmatex">\(E[\text{FP}]&lt;0.05\)</span> for 5000 samples.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Design First-Order Masked AES S-box</p>
+<p>Design first-order masked AES S-box for Artix-7 XC7A35T. Input: masked byte <span class="arithmatex">\(x\prime=x\oplus m\)</span> and mask <span class="arithmatex">\(m\)</span>. Output: <span class="arithmatex">\(y\prime=S(x)\oplus m\prime\)</span>. Estimate FPGA resources and security requirements. <strong>Solution:</strong> <strong>Architecture: Canright Tower Field (2008).</strong> Decompose GF(<span class="arithmatex">\(2^8\)</span>) as <span class="arithmatex">\(\mathrm{GF}(2^8)\cong\mathrm{GF}(2^4)^2\)</span>.</p>
+<p><strong>Step 1:</strong> Basis change <span class="arithmatex">\(B\)</span> to <span class="arithmatex">\((x\prime,m)\)</span> separately (linear). <strong>Step 2:</strong> Masked GF(<span class="arithmatex">\(2^4\)</span>) multiplication with fresh random bit <span class="arithmatex">\(r\)</span>:</p>
+<div class="arithmatex">\[(c\oplus m_c)=(a\oplus m_a)(b\oplus m_b)+(a\oplus m_a)m_b+m_a(b\oplus m_b)+r\]</div>
+<p><strong>Step 3:</strong> GF(<span class="arithmatex">\(2^4\)</span>) inversion (4 masked multiplications + 2 squarings). <strong>Step 4:</strong> Inverse basis + AES affine transform.</p>
+<p><strong>FPGA resources (Artix-7 XC7A35T):</strong></p>
+<ul>
+<li>
+<p>4 masked GF(<span class="arithmatex">\(2^4\)</span>) multipliers (28 LUTs each) + squarings (16 each) + inversion: 200 LUTs</p>
+</li>
+<li>
+<p>Basis change, AES affine: 64 LUTs; pipeline registers (3 stages): 128 FFs</p>
+</li>
+<li>
+<p>TRNG (5 ring oscillators): 32 LUTs, 16 FFs</p>
+</li>
+<li>
+<p><strong>Total: 264 LUTs, 144 FFs, 0 BRAMs per masked S-box</strong></p>
+</li>
+</ul>
+<p><strong>Security requirements:</strong> Fresh TRNG bit per AND gate; <code>DONT_TOUCH</code> on share nets; formal verification with SILVER; post-layout TVLA at 1M traces.</p>
+</div>
+<h2 id="sec-sca-fpga"><span class="secnum">6.8</span> FPGA Implementation of SCA-Resistant AES<a class="headerlink" href="#sec-sca-fpga" title="Permanent link">&para;</a></h2>
+<p>Implementing masked AES on FPGAs is challenging due to glitches in LUT-based logic. The following table shows resource utilisation for various SCA countermeasure styles:</p>
+<div class="tbl" id="tab-sca-fpga">
+<div class="tbl-caption"><strong>Table 6.4.</strong> FPGA Resource Utilisation — SCA-Protected AES-128 Implementations</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Artix-7 35T (unmasked AES)</td>
+<td style="text-align: right;">1 820</td>
+<td style="text-align: right;">1 240</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr>
+<td style="text-align: left;">Artix-7 35T (1st-order TI)</td>
+<td style="text-align: right;">5 640</td>
+<td style="text-align: right;">4 800</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">Artix-7 35T (DOM-Ind.)</td>
+<td style="text-align: right;">6 200</td>
+<td style="text-align: right;">5 500</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kintex-7 160T (TI AES-256)</td>
+<td style="text-align: right;">7 800</td>
+<td style="text-align: right;">6 900</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">350</td>
+</tr>
+<tr>
+<td style="text-align: left;">Artix-7 100T (WDDL AES)</td>
+<td style="text-align: right;">11 400</td>
+<td style="text-align: right;">9 200</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">420</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kintex-UltraScale+ (DOM)</td>
+<td style="text-align: right;">5 900</td>
+<td style="text-align: right;">5 100</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">168</td>
+<td style="text-align: right;">310</td>
+</tr>
+<tr>
+<td style="text-align: left;">iCE40UP5K (1st-order mask)</td>
+<td style="text-align: right;">8 800</td>
+<td style="text-align: right;">6 400</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">52</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>(TI = Threshold Implementation; DOM = Domain-Oriented Masking; WDDL = Wave Dynamic Differential Logic. WDDL requires routing constraints for balanced wire lengths, causing large LUT overhead and low Fmax on FPGAs.)</p>
+<h2 id="sec-sca-asic"><span class="secnum">6.9</span> ASIC Implementation Metrics<a class="headerlink" href="#sec-sca-asic" title="Permanent link">&para;</a></h2>
+<div class="tbl" id="tab-sca-asic">
+<div class="tbl-caption"><strong>Table 6.5.</strong> ASIC Implementation Metrics — SCA-Protected Cryptographic Cores</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Process</strong></th>
+<th style="text-align: right;"><strong>Area (mm<sup>2</sup>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>ECC</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">180 nm CMOS</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">12.0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">Unmasked AES-128, ref.</td>
+</tr>
+<tr>
+<td style="text-align: left;">130 nm CMOS</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">1st-order boolean mask</td>
+</tr>
+<tr>
+<td style="text-align: left;">90 nm CMOS</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">5.2</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: left;">TI 3-share AES-128</td>
+</tr>
+<tr>
+<td style="text-align: left;">65 nm CMOS</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">280</td>
+<td style="text-align: right;">P-256</td>
+<td style="text-align: left;">DOM-Ind. AES + ECC</td>
+</tr>
+<tr>
+<td style="text-align: left;">40 nm CMOS</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">P-256</td>
+<td style="text-align: left;">CC EAL5+ masked AES</td>
+</tr>
+<tr>
+<td style="text-align: left;">28 nm FD-SOI</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">P-256+Ed25519</td>
+<td style="text-align: left;">SE-class SCA resist.</td>
+</tr>
+<tr>
+<td style="text-align: left;">22 nm FinFET</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.7</td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">Multi-curve</td>
+<td style="text-align: left;">Next-gen secure element</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="sec-ch06-recent"><span class="secnum">6.10</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch06-recent" title="Permanent link">&para;</a></h2>
+<h3 id="6101-inception-attack-amd-zen-34-speculative-execution-2023"><span class="secnum">6.10.1</span> INCEPTION Attack: AMD Zen 3/4 Speculative Execution (2023)<a class="headerlink" href="#6101-inception-attack-amd-zen-34-speculative-execution-2023" title="Permanent link">&para;</a></h3>
+<p><strong>INCEPTION</strong> (CVE-2023-20569) is a transient-execution attack discovered by ETH Zürich researchers affecting all AMD Zen 3 and Zen 4 processors:</p>
+<ul>
+<li>
+<p><strong>Mechanism</strong>: Combines “Training in Transient Execution” (TITE) with “Rete” – a speculative execution technique that poisons the return-address predictor stack (RSB) using a specially crafted RET instruction sequence executed in a transient window</p>
+</li>
+<li>
+<p><strong>Effect</strong>: Arbitrary speculative code execution of attacker-chosen gadgets; can leak kernel memory across privilege boundaries; bypasses existing Spectre-BTI mitigations (IBRS/retpoline)</p>
+</li>
+<li>
+<p><strong>Affected</strong>: All AMD Zen 3 (Ryzen 5000, EPYC Milan) and Zen 4 (Ryzen 7000, EPYC Genoa); <em>Intel processors not affected</em></p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: AMD microcode update + kernel <code>IBPB-on-VMEXIT</code> enforcement; performance overhead 3–54% on database workloads; Linux 6.5+ includes mitigation</p>
+</li>
+</ul>
+<div class="admonition warning box-warnbox kind-safety">
+<p><strong>Warning:</strong> INCEPTION is the first transient-execution attack that bypasses all existing Spectre-v2 software mitigations on AMD hardware. Enterprises running AMD EPYC in multi-tenant cloud or database environments must apply AMD microcode update (AGESA 1.0.0.8+) immediately.</p>
+</div>
+<h3 id="6102-ileakage-apple-m1m2a-series-safari-side-channel-2023"><span class="secnum">6.10.2</span> iLeakage: Apple M1/M2/A-Series Safari Side-Channel (2023)<a class="headerlink" href="#6102-ileakage-apple-m1m2a-series-safari-side-channel-2023" title="Permanent link">&para;</a></h3>
+<p><strong>iLeakage</strong> (published October 2023 by researchers at MIT, Georgia Tech, UT Austin) exploits a speculative-execution side channel specific to Apple Silicon:</p>
+<ul>
+<li>
+<p><strong>Root cause</strong>: Apple M-series CPUs support speculative execution across process boundaries via shared L1-I and L2 caches without sufficient partition</p>
+</li>
+<li>
+<p><strong>Attack surface</strong>: JavaScript in a malicious Safari tab can speculatively read cross-origin iframe content; exploits the speculative fetch width of Apple’s A-Series (A14–A17) and M-Series (M1–M3) OoO engines</p>
+</li>
+<li>
+<p><strong>Demo</strong>: Leaked Gmail inbox content and auto-filled Instagram passwords from a separate tab in a controlled Safari browser session</p>
+</li>
+<li>
+<p><strong>Mitigation</strong>: Apple Safari 17.2 (released December 2023) adds <code>process-isolation</code> for cross-origin browsing contexts; hardware fix requires microarchitecture change</p>
+</li>
+<li>
+<p><strong>iOS 17 impact</strong>: iPhones affected but attack requires JavaScript to be enabled; no iOS exploit chain demonstrated publicly</p>
+</li>
+</ul>
+<h3 id="6103-rowhammer-on-ddr5-2024-target-row-refresh-failures"><span class="secnum">6.10.3</span> RowHammer on DDR5 (2024): Target Row Refresh Failures<a class="headerlink" href="#6103-rowhammer-on-ddr5-2024-target-row-refresh-failures" title="Permanent link">&para;</a></h3>
+<p>RowHammer attacks on <strong>DDR5</strong> memory demonstrated in 2024 that the new <strong>on-die ECC</strong> (ODECC) and <strong>Refresh Management (RFM)</strong> mitigations are insufficient:</p>
+<div class="tbl" id="tab-rowhammer-ddr5">
+<div class="tbl-caption"><strong>Table 6.6.</strong> RowHammer Mitigations on DDR4 vs. DDR5 (2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Mitigation</strong></th>
+<th style="text-align: left;"><strong>DDR4</strong></th>
+<th style="text-align: left;"><strong>DDR5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Target Row Refresh (TRR)</td>
+<td style="text-align: left;">Per-vendor, variable</td>
+<td style="text-align: left;">Standardised JEDEC TRRv2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Refresh Management (RFM)</td>
+<td style="text-align: left;">Absent</td>
+<td style="text-align: left;">JEDEC JESD79-5 mandatory</td>
+</tr>
+<tr>
+<td style="text-align: left;">On-die ECC</td>
+<td style="text-align: left;">Optional (some SKUs)</td>
+<td style="text-align: left;">Mandatory for DDR5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Attack threshold</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>70,000 activations</td>
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span>4,800 activations (2024 paper)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Proof-of-concept flip</td>
+<td style="text-align: left;">Demonstrated</td>
+<td style="text-align: left;">Demonstrated (SMASH, 2024)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>The 2024 <strong>SMASH</strong> paper (TU Delft) achieved bit-flips on DDR5 DRAM from JavaScript with only <span class="arithmatex">\(4{,}800\)</span> row activations, well below the JEDEC Alert Threshold (ART) of <span class="arithmatex">\(32{,}000\)</span>. DDR5 on-die ECC corrects single-bit errors but <em>masks</em> flips from TRR monitoring, paradoxically enabling more reliable exploitation.</p>
+<h3 id="6104-aepic-leak-20222023-intel-cpu-architectural-bug-leaking-sgx-secrets"><span class="secnum">6.10.4</span> AEPIC Leak (2022–2023): Intel CPU Architectural Bug Leaking SGX Secrets<a class="headerlink" href="#6104-aepic-leak-20222023-intel-cpu-architectural-bug-leaking-sgx-secrets" title="Permanent link">&para;</a></h3>
+<p><strong>AEPIC Leak</strong> (CVE-2022-21233) is an <em>architectural</em> (non-side-channel) bug in Intel Sunny Cove and Ice Lake microarchitectures:</p>
+<ul>
+<li>
+<p><strong>Root cause</strong>: The Advanced Programmable Interrupt Controller (APIC) MMIO register space at physical address range <code>0xFEE00000</code>–<code>0xFEE00FFF</code> contains uninitialized reads that return stale data from CPU internal register files</p>
+</li>
+<li>
+<p><strong>Affected</strong>: Intel 10th–12th Gen Core (Ice Lake, Tiger Lake, Alder Lake) with SGX; Intel Xeon Ice Lake-SP (server)</p>
+</li>
+<li>
+<p><strong>Leak rate</strong>: <span class="arithmatex">\(\approx 16\)</span> bytes of enclave register file per MMIO read; requires ring-0 (kernel) privilege to access APIC MMIO</p>
+</li>
+<li>
+<p><strong>SGX impact</strong>: A malicious OS/VMM with root privilege can extract SGX enclave AES keys, RSA private keys, and ECDSA nonces in <span class="arithmatex">\(&lt; 1\)</span> second</p>
+</li>
+<li>
+<p><strong>Fix</strong>: Disable xAPIC MMIO; mandate x2APIC mode in BIOS; Intel microcode update for APIC register initialization</p>
+</li>
+</ul>
+<h3 id="6105-composable-masking-schemes-2024-hardware-friendly-d1-sharing"><span class="secnum">6.10.5</span> Composable Masking Schemes (2024): Hardware-Friendly d+1 Sharing<a class="headerlink" href="#6105-composable-masking-schemes-2024-hardware-friendly-d1-sharing" title="Permanent link">&para;</a></h3>
+<p>A 2024 paper from KU Leuven introduced <strong>“Parametric Masking Gadgets”</strong> – a framework for constructing <em>composable</em> <span class="arithmatex">\(d\)</span>th-order secure Boolean masking schemes directly implementable in ASIC standard cells without glitch amplification:</p>
+<ul>
+<li>
+<p><strong>Key result</strong>: Proved that a <span class="arithmatex">\(d+1\)</span>-share AND gadget consuming <span class="arithmatex">\(\binom{d+1}{2}\)</span> fresh random bits is composable and provably <span class="arithmatex">\(d\)</span>th-order secure under the <em>robust probing model</em> (which accounts for CMOS glitches)</p>
+</li>
+<li>
+<p><strong>Implementation</strong>: AES S-box in GF<span class="arithmatex">\((2^4)\)</span> tower field using 3-share TI achieves first-order security with only 4 fresh random bits per AND gate vs. 8 in DOM-indep</p>
+</li>
+<li>
+<p><strong>TVLA results</strong>: Post-layout TVLA at <span class="arithmatex">\(10^6\)</span> traces with <span class="arithmatex">\(|t|_{\max} &lt; 2.1\)</span> on TSMC 28nm; first formal proof and empirical validation combined</p>
+</li>
+<li>
+<p><strong>Open-source</strong>: Reference Verilog released at <code>github.com/KULeuven-COSIC/Masking2024</code></p>
+</li>
+</ul>
+<h3 id="6106-chipwhisperer-pro-updates-and-scalib-20"><span class="secnum">6.10.6</span> ChipWhisperer Pro Updates and SCALib 2.0<a class="headerlink" href="#6106-chipwhisperer-pro-updates-and-scalib-20" title="Permanent link">&para;</a></h3>
+<div class="tbl" id="tab-sca-tools-2024">
+<div class="tbl-caption"><strong>Table 6.7.</strong> SCA Platform and Software Updates (2023–2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Tool</strong></th>
+<th style="text-align: left;"><strong>Version</strong></th>
+<th style="text-align: left;"><strong>Key Update</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ChipWhisperer Pro</td>
+<td style="text-align: left;">CW1200 v6 (2024)</td>
+<td style="text-align: left;">200 MS/s 12-bit; streaming mode 128 MB capture; USB 3.0 host interface; new Jupyter notebook tutorials</td>
+</tr>
+<tr>
+<td style="text-align: left;">SCALib</td>
+<td style="text-align: left;">2.0 (2024)</td>
+<td style="text-align: left;">Rust-accelerated SNR and t-TVLA; LDA, multivariate leakage assessment; profiling attacks (template, LDA+NN); GPU backend</td>
+</tr>
+<tr>
+<td style="text-align: left;">scared</td>
+<td style="text-align: left;">0.9 (2023)</td>
+<td style="text-align: left;">LRA (Linear Regression Attack) for higher-order leakage; NICV</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inspector</td>
+<td style="text-align: left;">v4 (Riscure)</td>
+<td style="text-align: left;">Automated test manager; DEMA on EM traces; CC AVA_VAN.5 report</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="admonition note box-notebox kind-note">
+<p><strong>Tip:</strong> SCALib 2.0’s LDA (Linear Discriminant Analysis) profiling attack is the current state-of-the-art for attacking masked AES implementations. It reduces the required trace count by <span class="arithmatex">\(2\times\)</span>–<span class="arithmatex">\(5\times\)</span> compared to standard template attacks on the ASCAD dataset.</p>
+</div>
+<h3 id="6107-isoiec-178252023-update-for-side-channel-testing"><span class="secnum">6.10.7</span> ISO/IEC 17825:2023 Update for Side-Channel Testing<a class="headerlink" href="#6107-isoiec-178252023-update-for-side-channel-testing" title="Permanent link">&para;</a></h3>
+<p>The 2023 update to <strong>ISO/IEC 17825</strong> (Testing methods for hardware security evaluation of cryptographic modules) introduces several changes affecting certification:</p>
+<ul>
+<li>
+<p><strong>Mandatory EM testing</strong>: Near-field EM evaluation is now mandatory alongside power analysis; separate EM-TVLA trace requirement added (<span class="arithmatex">\(N \geq 100{,}000\)</span> fixed/random)</p>
+</li>
+<li>
+<p><strong>Fault injection</strong>: Electromagnetic Fault Injection (EMFI) formally included in scope; minimum 10,000 fault attempts per parameter combination</p>
+</li>
+<li>
+<p><strong>SCA on PQC</strong>: New annex covering leakage assessment for ML-DSA and ML-KEM operations; specific concern for polynomial arithmetic in NTT (Number Theoretic Transform)</p>
+</li>
+<li>
+<p><strong>Updated <span class="arithmatex">\(|t|\)</span> threshold</strong>: The 4.5 threshold now applies per-sample with Bonferroni correction for large trace lengths; labs must report uncorrected and corrected maxima</p>
+</li>
+</ul>
+<h2 id="611-exercises"><span class="secnum">6.11</span> Exercises<a class="headerlink" href="#611-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>An AES-128 on ATtiny85 (1 MHz, on-chip LDO) shows SNR <span class="arithmatex">\(=0.001\)</span>. Minimum CPA traces for 95% success? How does 3-share TI affect trace counts for (a) first-order and (b) second-order attackers? FPGA LUT overhead on Artix-7?</p>
+</li>
+<li>
+<p>Derive <span class="arithmatex">\(\mathrm{HD}(x,y)=\mathrm{HW}(x\oplus y)\)</span> algebraically. When is HD more accurate than HW (bus precharge, pipeline register model)? For STM32F407 Cortex-M4 executing AES MixColumns, which model is better?</p>
+</li>
+<li>
+<p>WDDL on Spartan-6 XC6SLX16 for AES-128: identify three degradation factors vs. ASICs, propose mitigations, estimate residual TVLA <span class="arithmatex">\(|t|_{\max}\)</span>.</p>
+</li>
+<li>
+<p>Implement t-TVLA in NumPy: 5000 fixed traces (Gaussian SNR=0.1 at sample 100) and 5000 random traces. Compute Welch t-statistic for 500 samples. Report <span class="arithmatex">\(t_{\max}\)</span> and peak sample. Pass ISO/IEC 17825?</p>
+</li>
+<li>
+<p>Explain Spectre variant 1 (CVE-2017-5753): branch predictor training, speculative out-of-bounds, cache encoding, Flush+Reload extraction. How does compiler array-index masking mitigate?</p>
+</li>
+<li>
+<p>CPA on ECDSA-256 scalar multiplication (STM32F407). Identify vulnerable intermediate per 32-bit word of scalar <span class="arithmatex">\(k\)</span>. Estimate signatures needed. How does Montgomery ladder prevent this?</p>
+</li>
+<li>
+<p>Design power decoupling for STM32L562 (3.3 V, 50 mA, 10 ns edges). Capacitor spec and placement. Calculate <span class="arithmatex">\(\Delta V\)</span> at 100 MHz without decoupling. Factor reduction with 100 nF C0G at 1 mm. Effect on CPA <span class="arithmatex">\(\rho\)</span>.</p>
+</li>
+<li>
+<p>Acoustic attacks (Genkin 2014): switching regulator coil whine mechanism, key-dependent spectra, 44.1 kHz processing (FFT/bandpass/correlation), RSA blinding defense.</p>
+</li>
+<li>
+<p>ASCAD dataset (github.com/ANSSI-FR/ASCAD): describe target byte (3), attack point, samples/trace (700), mask in SRAM. SCALib SNR code for byte 3. Expected SNR: unmasked (<span class="arithmatex">\(\approx\)</span>0.5) vs. masked (<span class="arithmatex">\(\approx\)</span>0.01).</p>
+</li>
+<li>
+<p>DPAv4 AES-256 with 0–99 random delay cycles: (a) SAD alignment, (b) cross-correlation alignment. Pseudocode, complexity for 50k traces of 100k samples, residual misalignment.</p>
+</li>
+<li>
+<p>CC AVA_VAN.5 for payment terminal AES: max trace count, permitted preprocessing, SPA+DPA scenarios, pass/fail scoring. How does attack potential map to trace count limits?</p>
+</li>
+<li>
+<p>Compare PSA Level 2 IoT AES: (a) STM32F407 software T-tables, (b) STM32L562 HW masked AES (CC EAL5+), (c) bitsliced AES (Schwabe-Stoffelen, Cortex-M4). Estimate SNR, CPA traces, TVLA <span class="arithmatex">\(|t|_{\max}\)</span>, throughput. Justify selection.</p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch05-hardware-root-of-trust.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 5. Hardware Root of Trust">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                5. Hardware Root of Trust
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch07-hardware-trojan-detection.html" class="md-footer__link md-footer__link--next" aria-label="Next: 7. Hardware Trojan Detection">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                7. Hardware Trojan Detection
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

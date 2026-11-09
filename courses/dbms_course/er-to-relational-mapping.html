@@ -1,0 +1,2173 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/er-to-relational-mapping.html">
+  
+  
+    <link rel="prev" href="views-odbc-and-database-administration.html">
+  
+  
+    <link rel="next" href="functional-dependencies-and-closure.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>19. ER-to-Relational Mapping - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#191-where-this-sits" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              19. ER-to-Relational Mapping
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="er-to-relational-mapping.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#191-where-this-sits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 Where This Sits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#192-the-seven-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 The Seven Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19.2 The Seven Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-regular-strong-entity-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Regular (strong) entity types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-weak-entity-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Weak entity types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-binary-11-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Binary 1:1 relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-binary-1n-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Binary 1:N relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-binary-mn-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Binary M:N relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-multivalued-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Multivalued attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-n-ary-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — n-ary relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#193-worked-mapping-1-the-college-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 Worked Mapping 1 — The College Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#194-worked-mapping-2-the-company-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 Worked Mapping 2 — The COMPANY Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#195-mapping-eer-constructs-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 Mapping EER Constructs (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#196-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#197-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#191-where-this-sits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 Where This Sits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#192-the-seven-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 The Seven Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19.2 The Seven Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-regular-strong-entity-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Regular (strong) entity types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-weak-entity-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Weak entity types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-binary-11-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Binary 1:1 relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-binary-1n-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Binary 1:N relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-binary-mn-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Binary M:N relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-multivalued-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Multivalued attributes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-n-ary-relationship-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — n-ary relationship types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#193-worked-mapping-1-the-college-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 Worked Mapping 1 — The College Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#194-worked-mapping-2-the-company-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 Worked Mapping 2 — The COMPANY Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#195-mapping-eer-constructs-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 Mapping EER Constructs (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#196-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#197-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-19-er-to-relational-mapping">Lesson 19: ER-to-Relational Mapping<a class="headerlink" href="#lesson-19-er-to-relational-mapping" title="Permanent link">&para;</a></h1>
+<p><em>The seven-step algorithm, applied end to end</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 5:</strong> Database Design · 10 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 9.1</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>State the <strong>seven-step mapping algorithm</strong> from memory.</li>
+<li>Map strong entities, weak entities, and all three binary relationship types.</li>
+<li>Map <strong>multivalued</strong> attributes and <strong>n-ary</strong> relationships.</li>
+<li>Justify the <strong>choice of side</strong> for a 1:1 foreign key.</li>
+<li>Map a complete ER diagram, producing full SQL DDL.</li>
+</ol>
+</div>
+<h2 id="191-where-this-sits">19.1 Where This Sits<a class="headerlink" href="#191-where-this-sits" title="Permanent link">&para;</a></h2>
+<p>Unit 2 produced an ER diagram — a technology-free description. Unit 3 and 4 described relations and SQL. This lesson is the <strong>bridge</strong>: a mechanical procedure converting the one into the other.</p>
+<div class="language-text highlight"><pre><span></span><code>   ER DIAGRAM  (Unit 2)                RELATIONAL SCHEMA  (Units 3, 4)
+   entity types      ------ step 1 -----&gt;  relations
+   weak entities     ------ step 2 -----&gt;  relations with composite keys
+   1:1 relationships ------ step 3 -----&gt;  a foreign key
+   1:N relationships ------ step 4 -----&gt;  a foreign key on the N side
+   M:N relationships ------ step 5 -----&gt;  a NEW relation (junction table)
+   multivalued attrs ------ step 6 -----&gt;  a NEW relation
+   n-ary relationships----- step 7 -----&gt;  a NEW relation
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Why the algorithm matters</p>
+<p>A schema derived by this algorithm from a correct ER diagram is <strong>already close to normalised</strong> — usually in 3NF or BCNF. Hand-written tables usually are not, and must be repaired by the normalisation of Lessons 2 to 5.</p>
+<p>Good conceptual design is therefore not merely documentation; it is the cheapest route to a good logical design.</p>
+</div>
+<h2 id="192-the-seven-steps">19.2 The Seven Steps<a class="headerlink" href="#192-the-seven-steps" title="Permanent link">&para;</a></h2>
+<h3 id="step-1-regular-strong-entity-types">Step 1 — Regular (strong) entity types<a class="headerlink" href="#step-1-regular-strong-entity-types" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>For each regular entity type <code>E</code>, create a relation <code>R</code> that includes all the <strong>simple</strong> attributes of <code>E</code>.</p>
+<ul>
+<li>A <strong>composite</strong> attribute contributes its <strong>simple component attributes</strong> as separate columns; the composite name itself does not appear.</li>
+<li>Choose one key attribute of <code>E</code> as the <strong>primary key</strong> of <code>R</code>. If the chosen key is composite, the set of its simple attributes together forms the primary key.</li>
+<li>Other candidate keys become <code>UNIQUE</code> constraints.</li>
+<li><strong>Multivalued</strong> and <strong>derived</strong> attributes are <em>not</em> included here (steps 6 and "omit" respectively).</li>
+</ul>
+</div>
+<p><code>EMPLOYEE</code> with <code>Ssn</code> (key), <code>Name(Fname, Minit, Lname)</code> composite, <code>Bdate</code>, <code>Address</code>, <code>Salary</code>, <code>Sex</code>, derived <code>Age</code>, multivalued <code>{Degree}</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">EMPLOYEE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="p">,</span><span class="w"> </span><span class="n">Fname</span><span class="p">,</span><span class="w"> </span><span class="n">Minit</span><span class="p">,</span><span class="w"> </span><span class="n">Lname</span><span class="p">,</span><span class="w"> </span><span class="n">Bdate</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">Salary</span><span class="p">,</span><span class="w"> </span><span class="n">Sex</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--         ^^^ primary key</span>
+<span class="c1">-- Name -&gt; three columns.  Age -&gt; omitted (derived).  {Degree} -&gt; step 6.</span>
+</code></pre></div>
+<h3 id="step-2-weak-entity-types">Step 2 — Weak entity types<a class="headerlink" href="#step-2-weak-entity-types" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>For each weak entity type <code>W</code> with owner <code>E</code>, create a relation <code>R</code> containing all simple attributes of <code>W</code>, <strong>plus the primary key of the owner</strong> as a <strong>foreign key</strong>.</p>
+<p>The <strong>primary key of <code>R</code></strong> is the owner's primary key <strong>together with</strong> the partial key of <code>W</code>.</p>
+<p>Declare <code>ON DELETE CASCADE</code>, because a weak entity is existence-dependent on its owner.</p>
+</div>
+<p><code>DEPENDENT</code> (partial key <code>DependentName</code>) owned by <code>EMPLOYEE</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPENDENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Essn</span><span class="p">,</span><span class="w"> </span><span class="n">DependentName</span><span class="p">,</span><span class="w"> </span><span class="n">Sex</span><span class="p">,</span><span class="w"> </span><span class="n">Bdate</span><span class="p">,</span><span class="w"> </span><span class="n">Relationship</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--          ^^^^^^^^^^^^^^^^^^^ composite primary key</span>
+<span class="c1">--          Essn is also a FOREIGN KEY to EMPLOYEE(Ssn), ON DELETE CASCADE</span>
+</code></pre></div>
+<p>If the owner is itself weak, apply step 2 to the owner first — the keys propagate down the chain.</p>
+<h3 id="step-3-binary-11-relationship-types">Step 3 — Binary 1:1 relationship types<a class="headerlink" href="#step-3-binary-11-relationship-types" title="Permanent link">&para;</a></h3>
+<p>Three approaches; the <strong>foreign key approach</strong> is almost always correct.</p>
+<div class="admonition info">
+<p class="admonition-title">Rule (foreign key approach)</p>
+<p>Choose one of the two relations — say <code>S</code> — and include as a foreign key in <code>S</code> the primary key of the other relation <code>T</code>. Add the relationship's own attributes to <code>S</code> as well.</p>
+<p><strong>Choose for <code>S</code> the entity type with TOTAL participation.</strong> Then the foreign key is never NULL.</p>
+</div>
+<p><code>EMPLOYEE</code> <code>MANAGES</code> <code>DEPARTMENT</code>, 1:1, with <code>DEPARTMENT</code> total <code>(1,1)</code> and <code>EMPLOYEE</code> partial <code>(0,1)</code>, relationship attribute <code>StartDate</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPARTMENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Dname</span><span class="p">,</span><span class="w"> </span><span class="n">MgrSsn</span><span class="p">,</span><span class="w"> </span><span class="n">MgrStartDate</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--                           ^^^^^^ FK to EMPLOYEE(Ssn), NOT NULL</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Why the total side receives the foreign key</p>
+<p>Put <code>MgrSsn</code> in <code>DEPARTMENT</code>: every department has exactly one manager, so the column is <strong>never NULL</strong> and can be declared <code>NOT NULL</code>.</p>
+<p>Put <code>ManagedDept</code> in <code>EMPLOYEE</code> instead: only a handful of employees manage anything, so the column is <strong>NULL for almost every row</strong> — wasted space, and a design smell suggesting a specialisation is missing.</p>
+<p>If <strong>both</strong> sides are total, the two entity types can be <strong>merged</strong> into one relation (approach 2). If both are partial, a <strong>separate relation</strong> (approach 3, as for M:N) avoids the NULLs.</p>
+</div>
+<h3 id="step-4-binary-1n-relationship-types">Step 4 — Binary 1:N relationship types<a class="headerlink" href="#step-4-binary-1n-relationship-types" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>Include in the relation <code>S</code> on the <strong>N side</strong> a foreign key referencing the primary key of the relation <code>T</code> on the <strong>1 side</strong>. Relationship attributes also go to <code>S</code>.</p>
+<p>There is <strong>no choice</strong> here: the foreign key must go on the N side. Each entity on the N side participates in exactly one relationship instance, so it has exactly one value to store.</p>
+</div>
+<p><code>DEPARTMENT</code> 1:N <code>EMPLOYEE</code> (<code>WORKS_FOR</code>), <code>EMPLOYEE</code> total:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">EMPLOYEE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="p">,</span><span class="w"> </span><span class="n">Fname</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">Dno</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--                          ^^^ FK to DEPARTMENT(Dnumber), NOT NULL</span>
+</code></pre></div>
+<p>For a <strong>recursive</strong> 1:N relationship, the foreign key references the same relation:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">EMPLOYEE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="p">,</span><span class="w"> </span><span class="n">Fname</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">Dno</span><span class="p">,</span><span class="w"> </span><span class="n">SuperSsn</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--                               ^^^^^^^^ FK to EMPLOYEE(Ssn), NULLable</span>
+</code></pre></div>
+<p><code>SuperSsn</code> must allow NULL, because the chief executive has no supervisor.</p>
+<h3 id="step-5-binary-mn-relationship-types">Step 5 — Binary M:N relationship types<a class="headerlink" href="#step-5-binary-mn-relationship-types" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>Create a <strong>new relation</strong> <code>S</code> (a <em>junction</em>, <em>linking</em> or <em>associative</em> table) containing:</p>
+<ul>
+<li>the primary keys of <strong>both</strong> participating relations, as foreign keys;</li>
+<li><strong>all attributes of the relationship</strong>.</li>
+</ul>
+<p>The <strong>primary key of <code>S</code></strong> is the <strong>combination</strong> of the two foreign keys.</p>
+<p>A foreign key approach is <strong>impossible</strong> here — it would require storing many values in one column, violating 1NF.</p>
+</div>
+<p><code>EMPLOYEE</code> M:N <code>PROJECT</code> (<code>WORKS_ON</code>) with attribute <code>Hours</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">WORKS_ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Essn</span><span class="p">,</span><span class="w"> </span><span class="n">Pno</span><span class="p">,</span><span class="w"> </span><span class="n">Hours</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--         ^^^^^^^^^ composite primary key; both are foreign keys</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">When the composite key is not enough</p>
+<p>The pair <code>(Essn, Pno)</code> is the key only if an employee works on a project <strong>once</strong>. If the same pair may recur — a member borrowing the same book in different years, a student re-taking a course — a <strong>distinguishing attribute must be added to the key</strong>, typically a date:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">BORROWS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">MemberID</span><span class="p">,</span><span class="w"> </span><span class="n">ISBN</span><span class="p">,</span><span class="w"> </span><span class="n">IssueDate</span><span class="p">,</span><span class="w"> </span><span class="n">DueDate</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--        ^^^^^^^^^^^^^^^^^^^^^^^^^ three-part primary key</span>
+</code></pre></div>
+<p>This is exactly the check that Step 7 of the ER design procedure (<em>read the diagram back in English</em>) is meant to catch.</p>
+</div>
+<h3 id="step-6-multivalued-attributes">Step 6 — Multivalued attributes<a class="headerlink" href="#step-6-multivalued-attributes" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>For each multivalued attribute <code>A</code>, create a <strong>new relation</strong> <code>R</code> containing:</p>
+<ul>
+<li>a column for <code>A</code>;</li>
+<li>the primary key of the owning relation, as a foreign key.</li>
+</ul>
+<p>The <strong>primary key of <code>R</code></strong> is <strong>both together</strong>. If <code>A</code> is composite, include its simple components.</p>
+<p>Declare <code>ON DELETE CASCADE</code>.</p>
+</div>
+<p><code>{Dlocations}</code> of <code>DEPARTMENT</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPT_LOCATIONS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Dlocation</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--               ^^^^^^^^^^^^^^^^^^ composite primary key</span>
+</code></pre></div>
+<p><strong>This is the 1NF requirement in action</strong> (Unit 3, Lesson 1): a set of values cannot occupy a single column.</p>
+<h3 id="step-7-n-ary-relationship-types">Step 7 — n-ary relationship types<a class="headerlink" href="#step-7-n-ary-relationship-types" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Rule</p>
+<p>For each n-ary relationship type (degree &gt; 2), create a <strong>new relation</strong> <code>S</code> containing the primary keys of <strong>all</strong> participating relations as foreign keys, plus the relationship's own attributes.</p>
+<p>The <strong>primary key of <code>S</code></strong> is normally the combination of <strong>all</strong> the foreign keys — unless a participating entity has cardinality 1, in which case its key may be omitted from the primary key.</p>
+</div>
+<p><code>SUPPLIER</code> – <code>PART</code> – <code>PROJECT</code> (<code>SUPPLIES</code>) with attribute <code>Quantity</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">SUPPLIES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Sno</span><span class="p">,</span><span class="w"> </span><span class="n">Pno</span><span class="p">,</span><span class="w"> </span><span class="n">Jno</span><span class="p">,</span><span class="w"> </span><span class="n">Quantity</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--         ^^^^^^^^^^^^^ three-part primary key</span>
+</code></pre></div>
+<h3 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ER construct</th>
+<th>Maps to</th>
+<th>Primary key of the result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strong entity type</td>
+<td>A relation</td>
+<td>Its own key attribute</td>
+</tr>
+<tr>
+<td>Weak entity type</td>
+<td>A relation</td>
+<td>Owner's key <strong>+</strong> partial key</td>
+</tr>
+<tr>
+<td>1:1 relationship</td>
+<td>A <strong>foreign key</strong> in one relation</td>
+<td>(unchanged)</td>
+</tr>
+<tr>
+<td>1:N relationship</td>
+<td>A <strong>foreign key on the N side</strong></td>
+<td>(unchanged)</td>
+</tr>
+<tr>
+<td>M:N relationship</td>
+<td>A <strong>new relation</strong></td>
+<td>Both foreign keys combined</td>
+</tr>
+<tr>
+<td>Multivalued attribute</td>
+<td>A <strong>new relation</strong></td>
+<td>Owner's key + the attribute</td>
+</tr>
+<tr>
+<td>n-ary relationship</td>
+<td>A <strong>new relation</strong></td>
+<td>All foreign keys combined</td>
+</tr>
+<tr>
+<td>Composite attribute</td>
+<td>Its <strong>simple components</strong>, as columns</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Derived attribute</td>
+<td><strong>Omitted</strong> (computed on demand)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="193-worked-mapping-1-the-college-database">19.3 Worked Mapping 1 — The College Database<a class="headerlink" href="#193-worked-mapping-1-the-college-database" title="Permanent link">&para;</a></h2>
+<p><strong>Input</strong> — the ER diagram of Unit 2, Lesson 4:</p>
+<div class="language-text highlight"><pre><span></span><code>STUDENT ( Rollno, Name, Dateofbirth )                       key Rollno
+COURSE  ( SID, Cname, TotalSeats, Duration,
+          Coursetype, TeacherInCharge )                     key SID
+SOCIETY ( SocID, Socname, Mentor, TotalSeats )              key SocID
+
+TAKES_ADMISSION  STUDENT (1,N) -- COURSE  (0,N)   attribute Dateofadmission
+ENROLS_IN        STUDENT (0,N) -- SOCIETY (0,N)   attribute Dateofenrollment
+</code></pre></div>
+<p><strong>Step 1</strong> — three strong entity types give three relations.</p>
+<p><strong>Steps 2, 3, 4</strong> — no weak entities, no 1:1, no 1:N relationships. Nothing to do.</p>
+<p><strong>Step 5</strong> — two M:N relationships give <strong>two new relations</strong>:</p>
+<ul>
+<li><code>ADMISSION(Rollno, SID, Dateofadmission)</code>, primary key <code>(Rollno, SID)</code></li>
+<li><code>ENROLLMENT(Rollno, SocID, Dateofenrollment)</code>, primary key <code>(Rollno, SocID)</code></li>
+</ul>
+<p><strong>Steps 6, 7</strong> — no multivalued attributes, no n-ary relationships.</p>
+<p><strong>Result:</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Name</span><span class="w">        </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofbirth</span><span class="w"> </span><span class="nb">DATE</span>
+<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">SID</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cname</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TotalSeats</span><span class="w">      </span><span class="nb">INT</span><span class="w">         </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">Duration</span><span class="w">        </span><span class="nb">INT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Coursetype</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Coursetype</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Fulltime'</span><span class="p">,</span><span class="s1">'Parttime'</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">TeacherInCharge</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">SOCIETY</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">SocID</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Socname</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Mentor</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span>
+<span class="w">    </span><span class="n">TotalSeats</span><span class="w"> </span><span class="nb">INT</span><span class="w">         </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SID</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofadmission</span><span class="w"> </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SID</span><span class="p">)</span><span class="w">    </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">SID</span><span class="p">)</span><span class="w">     </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ENROLLMENT</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SocID</span><span class="w">            </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofenrollment</span><span class="w"> </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SocID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SocID</span><span class="p">)</span><span class="w">  </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">SOCIETY</span><span class="p">(</span><span class="n">SocID</span><span class="p">)</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">What the mapping cannot carry across</p>
+<p>The <strong>total participation</strong> of <code>STUDENT</code> in <code>TAKES_ADMISSION</code> — <em>"every student must be admitted to at least one course"</em> — has <strong>not</strong> been captured. No column or foreign key can express it: the constraint says a row in <code>STUDENT</code> must have a <em>matching</em> row in <code>ADMISSION</code>, which is the reverse direction of a foreign key.</p>
+<p>Enforcing it requires a <strong>trigger</strong> or a deferred <strong>assertion</strong>. This is a general limitation: <strong>total participation on the "1" side of a relationship, and on both sides of an M:N, is not expressible in standard DDL</strong>. Always state this explicitly in an examination answer.</p>
+</div>
+<h2 id="194-worked-mapping-2-the-company-database">19.4 Worked Mapping 2 — The COMPANY Database<a class="headerlink" href="#194-worked-mapping-2-the-company-database" title="Permanent link">&para;</a></h2>
+<p>The full textbook example, exercising every step.</p>
+<p><strong>Step 1 — strong entity types.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">EMPLOYEE</span><span class="w">   </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="p">,</span><span class="w"> </span><span class="n">Fname</span><span class="p">,</span><span class="w"> </span><span class="n">Minit</span><span class="p">,</span><span class="w"> </span><span class="n">Lname</span><span class="p">,</span><span class="w"> </span><span class="n">Bdate</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">Sex</span><span class="p">,</span><span class="w"> </span><span class="n">Salary</span><span class="w"> </span><span class="p">)</span>
+<span class="n">DEPARTMENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Dname</span><span class="w"> </span><span class="p">)</span><span class="w">            </span><span class="c1">-- Dname also UNIQUE (second candidate key)</span>
+<span class="n">PROJECT</span><span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="n">Pnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Pname</span><span class="p">,</span><span class="w"> </span><span class="n">Plocation</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="c1">-- Pname also UNIQUE</span>
+</code></pre></div>
+<p><code>Name</code> was composite → three columns. <code>NumberOfEmployees</code> was derived → omitted. <code>{Dlocations}</code> was multivalued → deferred to step 6.</p>
+<p><strong>Step 2 — the weak entity type <code>DEPENDENT</code></strong>, owner <code>EMPLOYEE</code>, partial key <code>DependentName</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPENDENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Essn</span><span class="p">,</span><span class="w"> </span><span class="n">DependentName</span><span class="p">,</span><span class="w"> </span><span class="n">Sex</span><span class="p">,</span><span class="w"> </span><span class="n">Bdate</span><span class="p">,</span><span class="w"> </span><span class="n">Relationship</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">-- PK (Essn, DependentName);  Essn FK -&gt; EMPLOYEE(Ssn) ON DELETE CASCADE</span>
+</code></pre></div>
+<p><strong>Step 3 — the 1:1 relationship <code>MANAGES</code>.</strong> <code>DEPARTMENT</code> is total <code>(1,1)</code>, <code>EMPLOYEE</code> partial <code>(0,1)</code>, so the foreign key goes into <code>DEPARTMENT</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPARTMENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Dname</span><span class="p">,</span><span class="w"> </span><span class="n">MgrSsn</span><span class="p">,</span><span class="w"> </span><span class="n">MgrStartDate</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">-- MgrSsn FK -&gt; EMPLOYEE(Ssn), NOT NULL</span>
+</code></pre></div>
+<p><strong>Step 4 — the 1:N relationships.</strong> Foreign key on the N side each time:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">EMPLOYEE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">Dno</span><span class="p">,</span><span class="w"> </span><span class="n">SuperSsn</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--   Dno      FK -&gt; DEPARTMENT(Dnumber), NOT NULL   (WORKS_FOR, employee total)</span>
+<span class="c1">--   SuperSsn FK -&gt; EMPLOYEE(Ssn), NULLable         (SUPERVISION, recursive)</span>
+<span class="n">PROJECT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Pnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Pname</span><span class="p">,</span><span class="w"> </span><span class="n">Plocation</span><span class="p">,</span><span class="w"> </span><span class="n">Dnum</span><span class="w"> </span><span class="p">)</span>
+<span class="c1">--   Dnum FK -&gt; DEPARTMENT(Dnumber), NOT NULL       (CONTROLS)</span>
+</code></pre></div>
+<p><strong>Step 5 — the M:N relationship <code>WORKS_ON</code></strong> with attribute <code>Hours</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">WORKS_ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Essn</span><span class="p">,</span><span class="w"> </span><span class="n">Pno</span><span class="p">,</span><span class="w"> </span><span class="n">Hours</span><span class="w"> </span><span class="p">)</span><span class="w">    </span><span class="c1">-- PK (Essn, Pno); both are foreign keys</span>
+</code></pre></div>
+<p><strong>Step 6 — the multivalued attribute <code>{Dlocations}</code>:</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">DEPT_LOCATIONS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="p">,</span><span class="w"> </span><span class="n">Dlocation</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="c1">-- PK both; Dnumber FK, ON DELETE CASCADE</span>
+</code></pre></div>
+<p><strong>Step 7</strong> — no n-ary relationships.</p>
+<p><strong>Final schema — eight relations:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>   EMPLOYEE(Ssn, Fname, Minit, Lname, Bdate, Address, Sex, Salary, Dno, SuperSsn)
+   DEPARTMENT(Dnumber, Dname, MgrSsn, MgrStartDate)
+   DEPT_LOCATIONS(Dnumber, Dlocation)
+   PROJECT(Pnumber, Pname, Plocation, Dnum)
+   WORKS_ON(Essn, Pno, Hours)
+   DEPENDENT(Essn, DependentName, Sex, Bdate, Relationship)
+
+   Foreign keys:
+     EMPLOYEE.Dno        -&gt; DEPARTMENT.Dnumber
+     EMPLOYEE.SuperSsn   -&gt; EMPLOYEE.Ssn            (recursive, NULLable)
+     DEPARTMENT.MgrSsn   -&gt; EMPLOYEE.Ssn
+     DEPT_LOCATIONS.Dnumber -&gt; DEPARTMENT.Dnumber
+     PROJECT.Dnum        -&gt; DEPARTMENT.Dnumber
+     WORKS_ON.Essn       -&gt; EMPLOYEE.Ssn
+     WORKS_ON.Pno        -&gt; PROJECT.Pnumber
+     DEPENDENT.Essn      -&gt; EMPLOYEE.Ssn
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">The circular-reference problem</p>
+<p><code>EMPLOYEE.Dno</code> references <code>DEPARTMENT</code>, and <code>DEPARTMENT.MgrSsn</code> references <code>EMPLOYEE</code>. Neither table can be created with both constraints in place, and neither row can be inserted first.</p>
+<p><strong>Solutions:</strong> create both tables without the foreign keys and add them afterwards with <code>ALTER TABLE</code>; make one of the columns temporarily nullable and update it after both rows exist; or use <code>DEFERRABLE INITIALLY DEFERRED</code> constraints in systems that support them.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">Dno</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="p">);</span><span class="w">        </span><span class="c1">-- no FK yet</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">MgrSsn</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w">   </span><span class="k">ADD</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Dno</span><span class="p">)</span><span class="w">    </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="p">(</span><span class="n">Dnumber</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">MgrSsn</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="p">(</span><span class="n">Ssn</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<h2 id="195-mapping-eer-constructs-brief">19.5 Mapping EER Constructs (brief)<a class="headerlink" href="#195-mapping-eer-constructs-brief" title="Permanent link">&para;</a></h2>
+<p>For a specialisation of superclass <code>C</code> into subclasses <code>S1 ... Sm</code>, four options:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Relations created</th>
+<th>Best when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A — multiple relations, superclass and subclasses</strong></td>
+<td>One for <code>C</code>, one per <code>Si</code> holding the key of <code>C</code> plus the subclass's own attributes</td>
+<td>Any case; works always. Needs a join to see a subclass entity whole.</td>
+</tr>
+<tr>
+<td><strong>B — multiple relations, subclasses only</strong></td>
+<td>One per <code>Si</code> holding <strong>all</strong> attributes (inherited and own)</td>
+<td>Specialisation is <strong>total and disjoint</strong>. No join needed; but common attributes are duplicated across relations.</td>
+</tr>
+<tr>
+<td><strong>C — single relation with one type attribute</strong></td>
+<td>One relation with all attributes plus a discriminator</td>
+<td>Specialisation is <strong>disjoint</strong>; few subclass-specific attributes. Produces NULLs.</td>
+</tr>
+<tr>
+<td><strong>D — single relation with several Boolean type attributes</strong></td>
+<td>One relation with one flag per subclass</td>
+<td>Specialisation is <strong>overlapping</strong>. Produces the most NULLs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="196-solved-questions">19.6 Solved Questions<a class="headerlink" href="#196-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> State the seven steps of the ER-to-relational mapping algorithm.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Construct</th>
+<th>Action</th>
+<th>Primary key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Regular entity type</td>
+<td>Create a relation with all <strong>simple</strong> attributes (composite → components; derived omitted; multivalued deferred)</td>
+<td>The chosen key attribute</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Weak entity type</td>
+<td>Create a relation with its simple attributes <strong>plus the owner's primary key</strong> as a foreign key, <code>ON DELETE CASCADE</code></td>
+<td>Owner's key <strong>+</strong> partial key</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Binary 1:1</td>
+<td>Put the other relation's key as a <strong>foreign key</strong> in one of them, together with any relationship attributes</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Binary 1:N</td>
+<td>Put the 1-side key as a <strong>foreign key in the N-side relation</strong></td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Binary M:N</td>
+<td>Create a <strong>new relation</strong> holding both keys as foreign keys plus the relationship attributes</td>
+<td>Both foreign keys combined</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Multivalued attribute</td>
+<td>Create a <strong>new relation</strong> holding the attribute and the owner's key</td>
+<td>Both together</td>
+</tr>
+<tr>
+<td>7</td>
+<td>n-ary relationship</td>
+<td>Create a <strong>new relation</strong> holding all participants' keys plus relationship attributes</td>
+<td>All the foreign keys</td>
+</tr>
+</tbody>
+</table>
+<p>The order matters: steps 1 and 2 create the relations that steps 3 to 7 refer to.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Why does an M:N relationship require a new relation while a 1:N does not?</p>
+<p><strong>A.</strong> Because of <strong>how many values must be stored per entity</strong>.</p>
+<p>In a <strong>1:N</strong> relationship each entity on the N side participates in <strong>exactly one</strong> relationship instance, so it needs to record exactly <strong>one</strong> related key value. A single foreign-key column holds it perfectly. (The 1 side would need many values, which is why the foreign key must go on the N side, not the 1 side.)</p>
+<p>In an <strong>M:N</strong> relationship <strong>both</strong> sides may participate many times. A foreign key in <code>EMPLOYEE</code> could hold only one project; a foreign key in <code>PROJECT</code> only one employee. Storing several would mean putting a <em>set</em> of values in one column, which violates <strong>atomicity</strong> and hence <strong>1NF</strong> (Unit 3, Lesson 1).</p>
+<p>The only structure that can represent a set of pairs is a <strong>relation of pairs</strong> — a junction table with one row per relationship instance:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">WORKS_ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Essn</span><span class="p">,</span><span class="w"> </span><span class="n">Pno</span><span class="p">,</span><span class="w"> </span><span class="n">Hours</span><span class="w"> </span><span class="p">)</span><span class="w">    </span><span class="c1">-- one row per (employee, project) pair</span>
+</code></pre></div>
+<p>The composite key <code>(Essn, Pno)</code> enforces that each pair occurs once, which is exactly the meaning of the M:N relationship set as a <em>subset of the Cartesian product</em>.</p>
+<p>A second, equally decisive reason: an M:N relationship's <strong>own attributes</strong> (here <code>Hours</code>) belong to the <em>pair</em>, not to either entity (Unit 2, Lesson 3), so they have nowhere else to live.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> For a 1:1 relationship, which side should receive the foreign key? Justify with the <code>MANAGES</code> example, and state the two alternative approaches.</p>
+<p><strong>A.</strong> <strong>The side with total participation.</strong></p>
+<p>In <code>EMPLOYEE (0,1) MANAGES (1,1) DEPARTMENT</code>: every department has exactly one manager, but only a few employees manage anything.</p>
+<p><strong>Foreign key in <code>DEPARTMENT</code></strong> — <code>MgrSsn</code> has a value in <strong>every</strong> row, so it can be declared <code>NOT NULL</code>. No space is wasted and the constraint is enforceable.</p>
+<p><strong>Foreign key in <code>EMPLOYEE</code></strong> — <code>ManagedDept</code> would be <strong>NULL for almost every employee</strong>. This wastes space, makes the column useless as a constraint, and is the classic "too many NULLs" design smell that usually indicates a missing specialisation.</p>
+<p><strong>Two alternative approaches:</strong></p>
+<ol>
+<li>
+<p><strong>Merged relation.</strong> If <strong>both</strong> sides have total participation, the two entity types are in one-to-one correspondence and may be combined into a <strong>single relation</strong> containing all attributes of both. Use with care: it obscures the conceptual distinction, and it becomes wrong if the participation later relaxes.</p>
+</li>
+<li>
+<p><strong>Cross-reference (relationship) relation.</strong> Create a separate relation holding both keys, exactly as for M:N — but with a <code>UNIQUE</code> constraint on <em>each</em> key column to enforce the 1:1 ratio. This is the right choice when <strong>both</strong> sides are partial, since it stores a row only for pairs that actually exist and avoids NULLs entirely. Its cost is an extra join.</p>
+</li>
+</ol>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Map this ER diagram to relations, giving full DDL:</p>
+<blockquote>
+<p><code>HOTEL(HotelID, Name, {Phone})</code>; <code>ROOM</code> numbered 1 upward <strong>within a hotel</strong>, with <code>Type</code> and <code>Rate</code>; <code>GUEST(GuestID, Name)</code>; a <code>BOOKS</code> relationship between <code>GUEST</code> and <code>ROOM</code> with <code>CheckIn</code> and <code>CheckOut</code>, where a guest may book many rooms over time and a room is booked by many guests over time.</p>
+</blockquote>
+<p><strong>A.</strong></p>
+<p><strong>Step 1</strong> — <code>HOTEL</code> and <code>GUEST</code> are strong.
+<strong>Step 2</strong> — <code>ROOM</code> is <strong>weak</strong>: room 1 exists in every hotel, so <code>RoomNo</code> alone identifies nothing. Owner <code>HOTEL</code>, partial key <code>RoomNo</code>, full key <code>(HotelID, RoomNo)</code>.
+<strong>Step 5</strong> — <code>BOOKS</code> is <strong>M:N</strong>, so it becomes a new relation. Because a guest may book the <em>same</em> room again later, the pair is not unique and <code>CheckIn</code> must join the key.
+<strong>Step 6</strong> — <code>{Phone}</code> is multivalued, so it becomes a new relation.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">HOTEL</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">HotelID</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Name</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">HOTEL_PHONE</span><span class="w"> </span><span class="p">(</span><span class="w">                       </span><span class="c1">-- step 6</span>
+<span class="w">    </span><span class="n">HotelID</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Phone</span><span class="w">   </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">HotelID</span><span class="p">,</span><span class="w"> </span><span class="n">Phone</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">HotelID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">HOTEL</span><span class="p">(</span><span class="n">HotelID</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ROOM</span><span class="w"> </span><span class="p">(</span><span class="w">                              </span><span class="c1">-- step 2, weak entity</span>
+<span class="w">    </span><span class="n">HotelID</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">RoomNo</span><span class="w">  </span><span class="nb">INT</span><span class="w">          </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">Type</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">Rate</span><span class="w">    </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Rate</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">HotelID</span><span class="p">,</span><span class="w"> </span><span class="n">RoomNo</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">HotelID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">HOTEL</span><span class="p">(</span><span class="n">HotelID</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">GUEST</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">GuestID</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Name</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">BOOKS</span><span class="w"> </span><span class="p">(</span><span class="w">                             </span><span class="c1">-- step 5, M:N</span>
+<span class="w">    </span><span class="n">GuestID</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">HotelID</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">RoomNo</span><span class="w">   </span><span class="nb">INT</span><span class="w">        </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CheckIn</span><span class="w">  </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CheckOut</span><span class="w"> </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">GuestID</span><span class="p">,</span><span class="w"> </span><span class="n">HotelID</span><span class="p">,</span><span class="w"> </span><span class="n">RoomNo</span><span class="p">,</span><span class="w"> </span><span class="n">CheckIn</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">GuestID</span><span class="p">)</span><span class="w">          </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">GUEST</span><span class="p">(</span><span class="n">GuestID</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">HotelID</span><span class="p">,</span><span class="w"> </span><span class="n">RoomNo</span><span class="p">)</span><span class="w">  </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ROOM</span><span class="p">(</span><span class="n">HotelID</span><span class="p">,</span><span class="w"> </span><span class="n">RoomNo</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">CheckOut</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">CheckIn</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p><strong>Three points worth noting.</strong> The foreign key in <code>BOOKS</code> is <strong>composite</strong> — <code>(HotelID, RoomNo)</code> — because the weak entity's key is composite. <code>CheckIn</code> is part of the primary key because the same guest may return to the same room. And <code>ON DELETE RESTRICT</code> protects the booking history, whereas <code>ROOM</code> and <code>HOTEL_PHONE</code> cascade because they are genuinely existence-dependent on the hotel.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Which ER constraints cannot be carried into the relational schema by the mapping? How are they enforced?</p>
+<p><strong>A.</strong> Three kinds.</p>
+<p><strong>1. Total participation on the "1" side of a 1:N, and on either side of an M:N.</strong>
+<em>"Every student must be admitted to at least one course"</em> asserts that a <code>STUDENT</code> row must have a <strong>matching</strong> <code>ADMISSION</code> row. A foreign key enforces the opposite direction — that every <code>ADMISSION</code> has a matching <code>STUDENT</code>. There is no declarative construct for the required direction.
+<em>Enforcement:</em> a <strong>trigger</strong> on <code>STUDENT</code> (and on <code>DELETE</code> from <code>ADMISSION</code>), or a deferred <strong>assertion</strong> in systems that implement them. Some designs instead enforce it in the application layer at the point of admission.</p>
+<p><strong>2. Cardinality upper bounds other than 1 and N.</strong>
+<em>"A student may take at most three societies"</em> cannot be expressed by a key or foreign key.
+<em>Enforcement:</em> a trigger counting the related rows before an insert.</p>
+<p><strong>3. Arbitrary business rules and inter-relation constraints.</strong>
+<em>"A department's manager must be an employee of that department"</em>, <em>"an employee's salary may not exceed their supervisor's"</em>. These span two tables or two rows and are beyond <code>CHECK</code>, which may reference only its own row.
+<em>Enforcement:</em> triggers, or assertions.</p>
+<p>A fourth, subtler loss: <strong>role names</strong> and much of the diagram's documentary meaning disappear, surviving only as column names. This is one reason the ER diagram should be kept as part of the system's documentation rather than discarded once the tables exist.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> Explain the circular-reference problem in the COMPANY schema and give two solutions.</p>
+<p><strong>A.</strong> <code>EMPLOYEE.Dno</code> is a foreign key to <code>DEPARTMENT</code>, and <code>DEPARTMENT.MgrSsn</code> is a foreign key to <code>EMPLOYEE</code>. The dependency is a <strong>cycle</strong>, which breaks the ordinary rule "create parents before children" — each table is a parent of the other.</p>
+<p>The problem appears twice:</p>
+<ul>
+<li><strong>At creation time.</strong> Whichever table is created first refers to one that does not yet exist, so the <code>CREATE TABLE</code> fails.</li>
+<li><strong>At insertion time.</strong> The first employee cannot be inserted without an existing department, and the first department cannot be inserted without an existing manager.</li>
+</ul>
+<p><strong>Solution 1 — create the tables without the foreign keys, then add them.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w">   </span><span class="p">(</span><span class="w"> </span><span class="n">Ssn</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">Dno</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Dnumber</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">MgrSsn</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w">   </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_e_d</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Dno</span><span class="p">)</span><span class="w">    </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="p">(</span><span class="n">Dnumber</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_d_e</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">MgrSsn</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="p">(</span><span class="n">Ssn</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Solution 2 — make one column nullable and fill it in afterwards.</strong> Insert the department with <code>MgrSsn = NULL</code>, insert its employees, then <code>UPDATE DEPARTMENT SET MgrSsn = ...</code>. This works because referential integrity permits a NULL foreign key.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'Research'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">EMPLOYEE</span><span class="w">   </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'123456789'</span><span class="p">,</span><span class="w"> </span><span class="s1">'John'</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">DEPARTMENT</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">MgrSsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'123456789'</span><span class="p">,</span><span class="w"> </span><span class="n">MgrStartDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'2020-05-22'</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Dnumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<p>A third solution, where supported, is to declare the constraints <code>DEFERRABLE INITIALLY DEFERRED</code>, so that both inserts occur inside one transaction and the constraints are checked only at <code>COMMIT</code>. Note that solution 2 conflicts with declaring <code>MgrSsn NOT NULL</code>, so the designer must choose between the stricter constraint and the simpler loading procedure.</p>
+</div>
+<h2 id="197-exercises">19.7 Exercises<a class="headerlink" href="#197-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>State the seven steps of the mapping algorithm.</li>
+<li>What happens to a composite attribute? A derived attribute?</li>
+<li>What is the primary key of the relation produced from a weak entity type?</li>
+<li>On which side of a 1:N relationship does the foreign key go, and why?</li>
+<li>Why can an M:N relationship not be mapped with a foreign key?</li>
+<li>What is the primary key of the relation produced from a multivalued attribute?</li>
+<li>Name one ER constraint that cannot be mapped to DDL.</li>
+</ol>
+<p><strong>B. Mapping problems — give full DDL for each</strong></p>
+<ol>
+<li><code>DEPARTMENT(Dno, Dname)</code> 1:N <code>EMPLOYEE(Eno, Ename)</code>, employee total.</li>
+<li><code>STUDENT</code> M:N <code>SOCIETY</code> with <code>Dateofenrollment</code>.</li>
+<li><code>PERSON(PID, Name)</code> 1:1 <code>PASSPORT(PassportNo, Expiry)</code>, passport total.</li>
+<li><code>COURSE(SID, Cname)</code> with weak entity <code>SECTION</code> numbered within the course, having <code>Room</code> and <code>Timing</code>.</li>
+<li><code>EMPLOYEE</code> with multivalued <code>{Skill}</code> and composite <code>Name(First, Last)</code>.</li>
+<li><code>EMPLOYEE</code> recursive 1:N <code>SUPERVISES</code> with roles supervisor / supervisee.</li>
+<li>Ternary <code>DOCTOR</code> – <code>PATIENT</code> – <code>DRUG</code> (<code>PRESCRIBES</code>) with <code>Dosage</code> and <code>Date</code>.</li>
+<li>The full hospital diagram of Unit 2, Lesson 4 (wards, beds, patients, doctors).</li>
+<li>The full airline diagram from Unit 2 exercise 11.</li>
+</ol>
+<p><strong>C. Analytical</strong></p>
+<ol>
+<li>For the college schema, write the trigger (in pseudocode or SQL) that would enforce the total participation of <code>STUDENT</code> in <code>TAKES_ADMISSION</code>. What events must it fire on?</li>
+<li>A designer maps a 1:1 relationship by putting the foreign key on the partial side. 95 per cent of rows are NULL. Explain the cost and give the correct design.</li>
+<li>Explain when the merged-relation approach to a 1:1 relationship is correct, and give a case where it would be wrong.</li>
+<li>Show that mapping a ternary relationship as three binary relationships loses information, using concrete tuples.</li>
+<li>Take the <code>BORROWS</code> example. Explain precisely why <code>(MemberID, ISBN)</code> is an insufficient primary key, and construct the two rows that would collide.</li>
+<li>Compare the four EER specialisation mapping options for <code>STUDENT</code> specialised into <code>UG</code> and <code>PG</code>, and recommend one with justification.</li>
+<li>Explain why a schema derived by this algorithm is usually already in 3NF. Give an ER diagram whose mapping is <strong>not</strong> in 3NF, and say what went wrong at the conceptual stage.</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li>A derived attribute becomes a column in the relation.</li>
+<li>Every relationship type becomes a relation.</li>
+<li>A weak entity's relation has a composite primary key.</li>
+<li>The foreign key for a 1:N relationship may be placed on either side.</li>
+<li>A multivalued attribute becomes several columns.</li>
+<li>Total participation is always enforceable with a <code>NOT NULL</code> foreign key.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>False.</strong> It is <strong>omitted</strong> and computed on demand; storing it creates redundancy that goes stale.</li>
+<li><strong>False.</strong> Only <strong>M:N</strong> and <strong>n-ary</strong> relationships become relations. 1:1 and 1:N become foreign keys.</li>
+<li><strong>True.</strong> The owner's primary key together with the partial key.</li>
+<li><strong>False.</strong> It must go on the <strong>N</strong> side, where each entity participates exactly once and so has exactly one value to store.</li>
+<li><strong>False.</strong> It becomes a <strong>separate relation</strong> — several columns would violate 1NF and fix the number of values in advance.</li>
+<li><strong>False.</strong> <code>NOT NULL</code> on a foreign key enforces total participation of the <strong>child</strong> (the N side). Total participation of the <strong>parent</strong> — "every student must have an admission" — needs a trigger or assertion.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li><strong>Seven steps:</strong> strong entities → relations; weak entities → relations with <code>owner key + partial key</code>; 1:1 → foreign key on the <strong>total</strong> side; 1:N → foreign key on the <strong>N</strong> side; M:N → <strong>new relation</strong>; multivalued attributes → <strong>new relation</strong>; n-ary → <strong>new relation</strong>.</li>
+<li>Composite attributes become <strong>columns</strong>; derived attributes are <strong>omitted</strong>.</li>
+<li>An M:N junction table's key is both foreign keys — <strong>plus a distinguishing attribute</strong> if the pair may recur.</li>
+<li><strong>Total participation on the parent side, cardinality bounds, and cross-table business rules cannot be mapped</strong> — they need triggers or assertions.</li>
+<li>Watch for <strong>circular foreign-key references</strong>; break them with <code>ALTER TABLE</code> or a nullable column.</li>
+<li>A schema produced by this algorithm from a good ER diagram is usually already close to 3NF.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="views-odbc-and-database-administration.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 18. Views, ODBC and Database Administration">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                18. Views, ODBC and Database Administration
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="functional-dependencies-and-closure.html" class="md-footer__link md-footer__link--next" aria-label="Next: 20. Functional Dependencies and Closure">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                20. Functional Dependencies and Closure
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

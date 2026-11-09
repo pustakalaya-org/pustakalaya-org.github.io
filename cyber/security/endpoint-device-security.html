@@ -1,0 +1,3278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/cyber/security/endpoint-device-security.html">
+  
+  
+    <link rel="prev" href="network-perimeter-security.html">
+  
+  
+    <link rel="next" href="security-operations-detect-respond-recover.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>3. Endpoint & Device Security - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#31-endpoint-detection-response-xdr" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3. Endpoint & Device Security
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Security Tools & Cryptography</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="how-to-read-this-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to read this guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="start-here-security-basics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Start Here — Security Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-perimeter-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Network & Perimeter Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Endpoint & Device Security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="endpoint-device-security.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Endpoint & Device Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-endpoint-detection-response-xdr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Endpoint Detection &amp; Response / XDR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-antivirus-endpoint-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Antivirus &amp; Endpoint Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Antivirus &amp; Endpoint Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-microsoft-defender-status-and-run-a-quick-scan-windows-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check Microsoft Defender status and run a quick scan (Windows PowerShell)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-mobile-device-unified-endpoint-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Mobile Device &amp; Unified Endpoint Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Mobile Device &amp; Unified Endpoint Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-whether-a-windows-pc-is-joined-to-entra-id-and-enrolled-in-mdm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See whether a Windows PC is joined to Entra ID and enrolled in MDM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-mobile-threat-defense-app-vetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Mobile Threat Defense &amp; App Vetting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Mobile Threat Defense &amp; App Vetting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-run-the-mobsf-app-scanner-locally-with-docker-then-open-httplocalhost8000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Run the MobSF app scanner locally with Docker, then open http://localhost:8000
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-patch-software-update-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Patch &amp; Software Update Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Patch &amp; Software Update Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-update-all-installed-apps-on-windows-winget-or-ubuntudebian-apt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Update all installed apps on Windows (winget) or Ubuntu/Debian (apt)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-remote-monitoring-management-rmm-remote-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Remote Monitoring &amp; Management (RMM) &amp; Remote Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6 Remote Monitoring &amp; Management (RMM) &amp; Remote Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-remote-access-tools-installed-as-services-on-a-windows-pc-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List remote-access tools installed as services on a Windows PC (PowerShell)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-application-control-allowlisting-least-privilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Application Control, Allowlisting &amp; Least Privilege
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7 Application Control, Allowlisting &amp; Least Privilege">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-gatekeeper-on-a-mac-or-view-effective-applocker-rules-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check Gatekeeper on a Mac, or view effective AppLocker rules on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-browser-web-isolation-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Browser &amp; Web Isolation Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.8 Browser &amp; Web Isolation Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-type-into-the-address-bar-to-see-which-security-policies-your-organisation-applies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Type into the address bar to see which security policies your organisation applies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-virtual-desktops-secure-workspaces-vdi-daas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 Virtual Desktops &amp; Secure Workspaces (VDI / DaaS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-host-telemetry-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Host Telemetry &amp; Visibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.10 Host Telemetry &amp; Visibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-osquery-which-processes-are-running-using-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask osquery which processes are running, using SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#311-server-linux-host-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Server &amp; Linux Host Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.11 Server &amp; Linux Host Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-whether-selinux-red-hat-family-or-apparmor-ubuntudebian-is-enforcing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check whether SELinux (Red Hat family) or AppArmor (Ubuntu/Debian) is enforcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#312-device-firmware-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12 Device &amp; Firmware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.12 Device &amp; Firmware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-tpm-and-secure-boot-status-windows-as-admin-and-firmware-updates-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check TPM and Secure Boot status (Windows, as admin) and firmware updates (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#313-removable-media-device-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.13 Removable Media &amp; Device Control
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.13 Removable Media &amp; Device Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-usb-devices-and-their-allowblock-status-on-linux-with-usbguard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List USB devices and their allow/block status on Linux with USBGuard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-operations-detect-respond-recover.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Security Operations — Detect, Respond & Recover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="application-devsecops-cloud-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Application, DevSecOps & Cloud Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="identity-access-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Identity & Access Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-email-governance-specialized-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Data, Email, Governance & Specialized Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cryptography-the-building-blocks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Cryptography — The Building Blocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cryptography-in-the-real-world.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Cryptography in the Real World
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="your-learning-path-labs-practice-resources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Your Learning Path: Labs, Practice & Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ten-things-every-organisation-should-do.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ten Things Every Organisation Should Do
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glossary-of-terms.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary of Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-endpoint-detection-response-xdr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Endpoint Detection &amp; Response / XDR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-antivirus-endpoint-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Antivirus &amp; Endpoint Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Antivirus &amp; Endpoint Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-microsoft-defender-status-and-run-a-quick-scan-windows-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check Microsoft Defender status and run a quick scan (Windows PowerShell)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-mobile-device-unified-endpoint-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Mobile Device &amp; Unified Endpoint Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Mobile Device &amp; Unified Endpoint Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-see-whether-a-windows-pc-is-joined-to-entra-id-and-enrolled-in-mdm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: See whether a Windows PC is joined to Entra ID and enrolled in MDM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-mobile-threat-defense-app-vetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Mobile Threat Defense &amp; App Vetting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Mobile Threat Defense &amp; App Vetting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-run-the-mobsf-app-scanner-locally-with-docker-then-open-httplocalhost8000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Run the MobSF app scanner locally with Docker, then open http://localhost:8000
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-patch-software-update-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Patch &amp; Software Update Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Patch &amp; Software Update Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-update-all-installed-apps-on-windows-winget-or-ubuntudebian-apt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Update all installed apps on Windows (winget) or Ubuntu/Debian (apt)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36-remote-monitoring-management-rmm-remote-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Remote Monitoring &amp; Management (RMM) &amp; Remote Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6 Remote Monitoring &amp; Management (RMM) &amp; Remote Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-remote-access-tools-installed-as-services-on-a-windows-pc-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List remote-access tools installed as services on a Windows PC (PowerShell)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37-application-control-allowlisting-least-privilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Application Control, Allowlisting &amp; Least Privilege
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7 Application Control, Allowlisting &amp; Least Privilege">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-gatekeeper-on-a-mac-or-view-effective-applocker-rules-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check Gatekeeper on a Mac, or view effective AppLocker rules on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38-browser-web-isolation-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Browser &amp; Web Isolation Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.8 Browser &amp; Web Isolation Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-type-into-the-address-bar-to-see-which-security-policies-your-organisation-applies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Type into the address bar to see which security policies your organisation applies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39-virtual-desktops-secure-workspaces-vdi-daas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 Virtual Desktops &amp; Secure Workspaces (VDI / DaaS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-host-telemetry-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Host Telemetry &amp; Visibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.10 Host Telemetry &amp; Visibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-ask-osquery-which-processes-are-running-using-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Ask osquery which processes are running, using SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#311-server-linux-host-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Server &amp; Linux Host Protection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.11 Server &amp; Linux Host Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-whether-selinux-red-hat-family-or-apparmor-ubuntudebian-is-enforcing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check whether SELinux (Red Hat family) or AppArmor (Ubuntu/Debian) is enforcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#312-device-firmware-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12 Device &amp; Firmware Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.12 Device &amp; Firmware Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-check-tpm-and-secure-boot-status-windows-as-admin-and-firmware-updates-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Check TPM and Secure Boot status (Windows, as admin) and firmware updates (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#313-removable-media-device-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.13 Removable Media &amp; Device Control
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.13 Removable Media &amp; Device Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-list-usb-devices-and-their-allowblock-status-on-linux-with-usbguard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: List USB devices and their allow/block status on Linux with USBGuard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="chapter-3-endpoint-device-security">Chapter 3: Endpoint &amp; Device Security<a class="headerlink" href="#chapter-3-endpoint-device-security" title="Permanent link">&para;</a></h1>
+<p>An 'endpoint' is any device people actually use: laptops, desktops, phones, tablets and servers. Because attackers usually break in through one of these devices, protecting them is one of the most important jobs in security. This group covers the tools that stop malware, keep devices updated and configured, control what can run, manage devices remotely, protect servers and virtual desktops, and record what happens so problems can be spotted and fixed fast.</p>
+<h2 id="31-endpoint-detection-response-xdr">3.1 Endpoint Detection &amp; Response / XDR<a class="headerlink" href="#31-endpoint-detection-response-xdr" title="Permanent link">&para;</a></h2>
+<p>Endpoint Detection and Response (EDR) software watches everything happening on a computer, such as programs starting, files changing and network connections, and raises an alarm when behaviour looks like an attack. It also lets security staff respond remotely, for example by cutting an infected laptop off the network. XDR (Extended Detection and Response) goes further by joining signals from computers, email, cloud accounts and the network into one picture.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-01-endpoint-detection-response-xdr.svg" alt="Good EDR closes the loop: one detection becomes a block on every device." loading="lazy">
+<figcaption><strong>From sensor event to contained laptop.</strong> Good EDR closes the loop: one detection becomes a block on every device.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Classic antivirus is a bouncer checking IDs at the door; EDR is a security team with CCTV in every room that notices when a 'guest' starts picking locks and can lock that room instantly.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At Northfield Logistics, an accountant opens a fake invoice that quietly launches PowerShell and tries to dump stored passwords. The company's EDR spots this unusual chain of events within seconds and automatically isolates the laptop from the network. The security analyst sees a timeline showing exactly which file started it, removes the malware remotely, and blocks the same file on all 2,000 other devices. The attacker never reaches the payroll servers.</p>
+</div>
+<h4 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h4>
+<ol>
+<li>A small software 'sensor' is installed on every laptop, desktop and server.</li>
+<li>The sensor records activity (processes, files, logins, network connections) and sends it to a central console, usually in the cloud.</li>
+<li>Detection rules, behaviour analysis and machine learning flag suspicious patterns such as ransomware-like file encryption.</li>
+<li>Analysts or automated playbooks respond: isolate the device, kill the process, delete the file, or roll back changes.</li>
+<li>XDR adds email, identity, cloud and network data so one attack can be followed across all systems.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security operations centre (SOC) analysts, IT security teams and managed security providers in almost every mid-size and large organisation.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>An EDR is only as good as the people or service watching its alerts, so pair it with a 24/7 team or a managed detection and response (MDR) service.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Sensors collect process starts with full command lines, parent-child chains, file writes, registry changes, network connections and logons; on Windows they use kernel callbacks, ETW and file-system minifilter drivers.</li>
+<li>XDR correlates endpoint data with email, identity, cloud and network telemetry. 'Native' XDR relies on one vendor's stack; 'open' XDR ingests third-party tools through connectors.</li>
+<li>Standard response actions include network isolation (keeping only the console connection), killing processes, quarantining files, collecting a forensic package, remote shell scripts and fleet-wide hash blocking.</li>
+<li>MITRE ATT&amp;CK Evaluations and labs such as AV-Comparatives and SE Labs measure detection visibility and protection; results show capability, not how well a product fits your team.</li>
+<li>The July 2024 CrowdStrike content-update failure crashed about 8.5 million Windows machines, prompting staged content rollouts and Microsoft's push to run security tools outside the kernel.</li>
+<li>Key SOC measures are mean time to detect (MTTD), mean time to respond (MTTR) and sensor coverage, because every device without a healthy sensor is a blind spot.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Leaving EDR in detect-only mode for months; once tuned, enable prevention and automatic isolation or alerts arrive after the damage.</li>
+<li>Assuming full coverage while Linux servers, contractor laptops and new cloud VMs lack sensors; reconcile EDR inventory against asset lists every month.</li>
+<li>Adding broad folder exclusions for performance gives attackers a safe hiding place; keep exclusions narrow, documented and regularly reviewed.</li>
+<li>Leaving tamper protection off lets intruders uninstall or blind the agent; enable it and alert whenever a sensor goes silent.</li>
+</ul>
+</div>
+<h4 id="popular-tools-products">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CrowdStrike Falcon Insight XDR</strong><br><em>CrowdStrike · Cloud service</em></td>
+<td>Lightweight cloud-managed sensor known for strong threat detection, threat hunting and its optional Falcon Complete managed service.</td>
+<td>A bank uses Falcon to spot and stop credential-theft attempts on traders' workstations, with CrowdStrike's managed team responding overnight.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender for Endpoint</strong><br><em>Microsoft · Cloud service</em></td>
+<td>EDR built into Windows and available for macOS, Linux, iOS and Android; part of the Microsoft Defender XDR suite.</td>
+<td>A university with Microsoft 365 E5 licences turns it on for 15,000 devices and investigates alerts alongside email and identity signals.</td>
+</tr>
+<tr>
+<td><strong>SentinelOne Singularity</strong><br><em>SentinelOne · Cloud service</em></td>
+<td>AI-driven endpoint protection and EDR that can automatically stop attacks and roll Windows files back after ransomware.</td>
+<td>A manufacturer hit by ransomware on one PC uses the one-click rollback to restore encrypted files in minutes.</td>
+</tr>
+<tr>
+<td><strong>Cortex XDR</strong><br><em>Palo Alto Networks · Cloud service</em></td>
+<td>Combines endpoint, network and cloud data to detect attacks and stitch related alerts into one incident.</td>
+<td>A retailer already using Palo Alto firewalls links firewall logs with endpoint data to trace a breach from laptop to server.</td>
+</tr>
+<tr>
+<td><strong>Sophos Intercept X (with XDR)</strong><br><em>Sophos · Commercial</em></td>
+<td>Endpoint protection with strong anti-ransomware and exploit prevention, plus optional XDR and a managed detection service.</td>
+<td>A 200-person law firm uses Intercept X with Sophos MDR so experts watch its devices around the clock.</td>
+</tr>
+<tr>
+<td><strong>TrendAI Vision One</strong><br><em>TrendAI (Trend Micro) · Cloud service</em></td>
+<td>XDR platform (formerly Trend Vision One) joining endpoint, email, server and cloud protection with risk scoring; Trend Micro's business arm became TrendAI in 2026.</td>
+<td>A hospital group correlates a phishing email with the laptop that clicked it and the server it later touched.</td>
+</tr>
+<tr>
+<td><strong>Symantec CBX / Carbon Black Cloud</strong><br><em>Broadcom · Cloud service</em></td>
+<td>Broadcom's 2026 XDR platform combining Symantec prevention with Carbon Black's detailed EDR recording; Carbon Black Cloud is still sold separately.</td>
+<td>An incident responder replays the full process tree on a compromised server to see every command the attacker ran.</td>
+</tr>
+<tr>
+<td><strong>Trellix Endpoint Security (ENS &amp; HX)</strong><br><em>Trellix · Commercial</em></td>
+<td>Enterprise antimalware (ENS) and EDR (HX) descended from McAfee Enterprise and FireEye technology.</td>
+<td>A government agency uses Trellix HX to sweep thousands of hosts for indicators from a new threat report.</td>
+</tr>
+<tr>
+<td><strong>Cybereason XDR</strong><br><em>LevelBlue (Cybereason) · Commercial</em></td>
+<td>EDR/XDR that groups related suspicious events into a single 'MalOp' story; Cybereason became part of LevelBlue in 2025.</td>
+<td>An analyst sees one MalOp linking a phishing attachment, a backdoor and lateral movement instead of fifty separate alerts.</td>
+</tr>
+<tr>
+<td><strong>Elastic Defend</strong><br><em>Elastic · Freemium</em></td>
+<td>Elastic's endpoint protection and EDR integration, installed through Elastic Agent, with malware, ransomware and memory-threat prevention; a free basic tier exists.</td>
+<td>A start-up's Elastic Defend blocks ransomware on a build server and sends the full process tree to Kibana for the on-call engineer to review.</td>
+</tr>
+<tr>
+<td><strong>Bitdefender GravityZone</strong><br><em>Bitdefender · Commercial</em></td>
+<td>Business endpoint security with antimalware, EDR/XDR and risk analytics, popular with small businesses and service providers.</td>
+<td>An IT service provider manages protection for 40 small clients from one GravityZone console.</td>
+</tr>
+<tr>
+<td><strong>ESET PROTECT (with ESET Inspect)</strong><br><em>ESET · Commercial</em></td>
+<td>Business endpoint protection with EDR/XDR added through ESET Inspect, known for low system impact, with an optional MDR service.</td>
+<td>A European engineering firm uses ESET Inspect to find which PCs ran a suspicious script first spotted on one laptop.</td>
+</tr>
+<tr>
+<td><strong>Cisco Secure Endpoint</strong><br><em>Cisco · Cloud service</em></td>
+<td>Endpoint protection and EDR (formerly AMP for Endpoints) backed by Cisco Talos threat intelligence.</td>
+<td>A school district retroactively flags a file that was later found malicious and sees every PC that ran it.</td>
+</tr>
+<tr>
+<td><strong>Huntress Managed EDR</strong><br><em>Huntress · Commercial</em></td>
+<td>EDR for small businesses and IT providers bundled with a 24/7 human-led SOC that investigates threats and writes plain-English remediation steps.</td>
+<td>A dental practice's IT provider gets a clear 'here's what to do' report when Huntress catches a hidden remote-access tool.</td>
+</tr>
+<tr>
+<td><strong>Fortinet FortiEDR</strong><br><em>Fortinet · Commercial</em></td>
+<td>EDR that blocks malicious actions in real time, such as outbound connections or file encryption, and integrates with FortiGate firewalls and FortiSIEM.</td>
+<td>A retailer's FortiEDR stops ransomware mid-encryption on a store server and the FortiGate quarantines the device automatically.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="32-antivirus-endpoint-protection">3.2 Antivirus &amp; Endpoint Protection<a class="headerlink" href="#32-antivirus-endpoint-protection" title="Permanent link">&para;</a></h2>
+<p>Antivirus software scans files, downloads and running programs to find and block malicious software (malware) such as viruses, ransomware and spyware. Modern products do more than match known 'fingerprints': they also watch behaviour, check web links and use cloud lookups to catch brand-new threats. Endpoint Protection Platforms (EPP) are the business versions, managed centrally for many devices.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-02-antivirus-endpoint-protection.svg" alt="Each layer catches what the one above misses; signatures alone stop only known files." loading="lazy">
+<figcaption><strong>How modern antivirus catches malware.</strong> Each layer catches what the one above misses; signatures alone stop only known files.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a flu vaccine plus a thermometer: it recognises known illnesses immediately and also notices when you start running a fever from something new.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Priya, a freelance designer, downloads a 'free font pack' that actually contains a password-stealing program. Microsoft Defender Antivirus on her laptop recognises the file's behaviour from cloud data, quarantines it before it runs, and shows a notification. She deletes the download and changes nothing else, because nothing was stolen.</p>
+</div>
+<h4 id="how-it-works_1">How it works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The product installs on the device and keeps a constantly updated list of threat signatures and behaviour rules.</li>
+<li>Real-time protection scans files as they are downloaded, opened or run.</li>
+<li>Suspicious files are checked against cloud reputation services and behaviour monitoring.</li>
+<li>Threats are blocked, quarantined (locked away) or removed, and the user or admin is alerted.</li>
+<li>Scheduled scans sweep the whole device for anything that slipped through.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Everyone: home users, small businesses and large organisations, usually as the baseline layer under EDR.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Run exactly one real-time antivirus at a time, keep it updated automatically, and never switch it off to make something 'work'.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Detection combines signatures for known files, heuristics and machine-learning models for unknown files, cloud reputation lookups, and behaviour monitoring of what a program actually does after starting.</li>
+<li>Windows' Antimalware Scan Interface (AMSI) lets antivirus inspect PowerShell, VBScript, JavaScript and Office macros after de-obfuscation, catching fileless script attacks that never touch disk as normal files.</li>
+<li>AV-TEST, AV-Comparatives and SE Labs test protection, false positives and performance several times a year; prefer products that score consistently across many rounds rather than one headline result.</li>
+<li>Microsoft Defender Antivirus switches to passive mode when another antivirus is registered, and 'EDR in block mode' lets Defender for Endpoint remediate threats the third-party product misses.</li>
+<li>The EICAR test file is a harmless, industry-standard text string every antivirus detects, used to confirm real-time protection and alerting work without handling real malware.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running two real-time antivirus engines together causes slowdowns and conflicts; use one, plus an on-demand second-opinion scanner if needed.</li>
+<li>Believing antivirus alone stops modern attacks; intruders use legitimate tools such as PowerShell, so pair it with EDR, patching and MFA.</li>
+<li>Excluding whole folders to fix a slow application; exclude specific files or processes only after testing, and review exclusions regularly.</li>
+</ul>
+</div>
+<h3 id="try-it-check-microsoft-defender-status-and-run-a-quick-scan-windows-powershell">Try it: Check Microsoft Defender status and run a quick scan (Windows PowerShell)<a class="headerlink" href="#try-it-check-microsoft-defender-status-and-run-a-quick-scan-windows-powershell" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="nb">Get-MpComputerStatus</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">AntivirusEnabled</span><span class="p">,</span> <span class="n">RealTimeProtectionEnabled</span><span class="p">,</span> <span class="n">AntivirusSignatureLastUpdated</span>
+<span class="nb">Start-MpScan</span> <span class="n">-ScanType</span> <span class="n">QuickScan</span>
+</code></pre></div>
+<h4 id="popular-tools-products_1">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microsoft Defender Antivirus</strong><br><em>Microsoft · Free</em></td>
+<td>Antivirus built into Windows 10 and 11, turned on by default and updated through Windows Update.</td>
+<td>A family PC is protected out of the box without buying anything, with cloud protection catching new threats.</td>
+</tr>
+<tr>
+<td><strong>Apple XProtect</strong><br><em>Apple · Free</em></td>
+<td>Antimalware built into macOS that silently checks apps against known malware and removes threats, updated automatically by Apple.</td>
+<td>A Mac user downloads a fake video player; macOS blocks it and moves it to the bin.</td>
+</tr>
+<tr>
+<td><strong>Bitdefender Total Security</strong><br><em>Bitdefender · Commercial</em></td>
+<td>Consumer security suite with consistently top test scores, plus anti-ransomware, web protection and a VPN.</td>
+<td>A household protects three Windows laptops, a Mac and two Android phones with one subscription.</td>
+</tr>
+<tr>
+<td><strong>Kaspersky Premium</strong><br><em>Kaspersky · Commercial</em></td>
+<td>Well-tested antivirus suite; US sales were banned from July 2024 and updates from September 2024, so check local rules.</td>
+<td>A home user outside the US uses Kaspersky's safe-money feature to open banking sites in a protected browser.</td>
+</tr>
+<tr>
+<td><strong>ESET Home Security / NOD32</strong><br><em>ESET · Commercial</em></td>
+<td>Light, fast antivirus known for low system impact; business versions are managed through ESET PROTECT.</td>
+<td>A small accounting office runs ESET on older PCs because it barely slows them down.</td>
+</tr>
+<tr>
+<td><strong>Norton 360</strong><br><em>Gen Digital · Commercial</em></td>
+<td>Popular consumer suite combining antivirus, password manager, cloud backup, VPN and identity monitoring.</td>
+<td>A retiree gets alerts if their email address appears in a data breach and backs up photos to Norton's cloud.</td>
+</tr>
+<tr>
+<td><strong>Avast One / Avast Free Antivirus</strong><br><em>Gen Digital · Freemium</em></td>
+<td>Widely used free antivirus with paid upgrades for extra privacy and performance features.</td>
+<td>A student installs the free version on a personal laptop for real-time scanning and web shield protection.</td>
+</tr>
+<tr>
+<td><strong>AVG AntiVirus Free</strong><br><em>Gen Digital · Freemium</em></td>
+<td>Free antivirus sharing Avast's detection engine, with a paid Internet Security upgrade.</td>
+<td>A home user scans a USB stick from a print shop before opening any files on it.</td>
+</tr>
+<tr>
+<td><strong>McAfee+</strong><br><em>McAfee · Commercial</em></td>
+<td>Consumer security subscription with antivirus, web protection, VPN and identity monitoring, often preinstalled on new PCs.</td>
+<td>A new laptop owner activates the bundled McAfee trial and keeps it for scam-site blocking.</td>
+</tr>
+<tr>
+<td><strong>Avira Free Security</strong><br><em>Gen Digital · Freemium</em></td>
+<td>Popular free antivirus from Germany with web protection and a basic VPN; the paid Prime plan adds more features and devices.</td>
+<td>A student protects an older Windows laptop for free and uses its browser extension to block scam shopping sites.</td>
+</tr>
+<tr>
+<td><strong>Malwarebytes</strong><br><em>Malwarebytes · Freemium</em></td>
+<td>Anti-malware famous as a 'second opinion' cleaner; the free scanner removes infections, Premium adds real-time protection.</td>
+<td>A technician runs Malwarebytes to remove adware that keeps hijacking a customer's browser homepage.</td>
+</tr>
+<tr>
+<td><strong>Trend Micro Maximum Security</strong><br><em>Trend Micro · Commercial</em></td>
+<td>Consumer suite with antivirus, ransomware folder protection, scam-site blocking and parental controls.</td>
+<td>Parents use it to protect children's laptops and filter unsuitable websites.</td>
+</tr>
+<tr>
+<td><strong>Sophos Home</strong><br><em>Sophos · Freemium</em></td>
+<td>Home version of Sophos business protection, managed from a web dashboard: three devices free, up to ten with Premium.</td>
+<td>A tech-savvy son manages antivirus on his parents' computers remotely from the Sophos Home dashboard.</td>
+</tr>
+<tr>
+<td><strong>ClamAV</strong><br><em>Cisco Talos · Open source</em></td>
+<td>Free open-source antivirus engine, mainly used on Linux mail and file servers to scan attachments and uploads.</td>
+<td>A web hosting company scans every customer file upload and incoming email attachment with ClamAV.</td>
+</tr>
+<tr>
+<td><strong>Webroot / OpenText Core Endpoint Protection</strong><br><em>OpenText · Commercial</em></td>
+<td>Very lightweight, cloud-based antivirus; the home product is still Webroot, the business edition is now OpenText Core Endpoint Protection.</td>
+<td>An IT provider protects hundreds of small-office PCs with Webroot's tiny agent and central console.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="33-mobile-device-unified-endpoint-management">3.3 Mobile Device &amp; Unified Endpoint Management<a class="headerlink" href="#33-mobile-device-unified-endpoint-management" title="Permanent link">&para;</a></h2>
+<p>Mobile Device Management (MDM) lets an organisation set up, secure and control phones, tablets and laptops from one central place. Unified Endpoint Management (UEM) is the same idea covering every kind of device: Windows, Mac, iPhone, Android and more. Admins can push apps and settings, require passcodes and encryption, and wipe a lost device remotely.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-03-mobile-device-unified-endpoint.svg" alt="Access to email is granted only after the device proves it is compliant." loading="lazy">
+<figcaption><strong>Zero-touch enrolment of a company iPad.</strong> Access to email is granted only after the device proves it is compliant.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a school handing out lockers with a master key: every locker follows the same rules, and the office can open or clear any locker if needed.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Coastline Health gives 800 nurses iPads. Using Microsoft Intune, IT ships the boxes straight to the wards; when a nurse signs in, the iPad automatically installs the patient-records app, enforces a six-digit passcode and turns on encryption. When one iPad is left on a bus, IT wipes the work data remotely within minutes, and the hospital avoids a data breach report.</p>
+</div>
+<h4 id="how-it-works_2">How it works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Devices are enrolled, ideally automatically through Apple Business Manager, Android Zero-Touch or Windows Autopilot.</li>
+<li>Admins define policies: passcode rules, encryption, Wi-Fi, VPN, allowed apps and update schedules.</li>
+<li>The MDM pushes settings and apps to devices over the internet.</li>
+<li>Compliance checks report devices that are out of date or rule-breaking, and access to email or apps can be blocked until fixed.</li>
+<li>Lost, stolen or departing-employee devices can be locked, located or wiped remotely.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT administrators in companies, schools, hospitals and governments that hand out or allow work devices, including personal phones (BYOD).</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Enrol devices automatically from the start, and for personal phones manage only the work apps and data so employees' privacy is respected.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Apple MDM wakes devices through the Apple Push Notification service (APNs); the device then checks in with the MDM server, so the push certificate must be renewed every year with the same Apple ID.</li>
+<li>Supervised iPhones and iPads, enrolled through Automated Device Enrollment, allow stronger controls such as non-removable management profiles, app restrictions and single-app kiosk mode.</li>
+<li>Android Enterprise offers fully managed mode for company phones and a work profile for personal phones, keeping work apps and data in a separate container IT can wipe.</li>
+<li>Compliance policies covering OS version, encryption, passcode, jailbreak or root, and threat risk feed identity providers such as Entra ID Conditional Access, so non-compliant devices lose access automatically.</li>
+<li>Apple's Declarative Device Management, introduced in 2022, lets devices apply and report settings autonomously, and Apple is moving software-update enforcement from older MDM commands to it.</li>
+<li>For BYOD, Intune app protection policies (MAM) can encrypt and restrict corporate data inside Outlook or Teams without enrolling the personal phone at all.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Managing personal phones as fully managed devices invades privacy and drives refusals; use work profiles or app protection policies for BYOD.</li>
+<li>Letting the yearly Apple push certificate expire, or renewing it with a different Apple ID, breaks management of every Apple device.</li>
+<li>Sending a full wipe when a selective wipe of work data was intended; document and test which wipe type each scenario uses.</li>
+</ul>
+</div>
+<h3 id="try-it-see-whether-a-windows-pc-is-joined-to-entra-id-and-enrolled-in-mdm">Try it: See whether a Windows PC is joined to Entra ID and enrolled in MDM<a class="headerlink" href="#try-it-see-whether-a-windows-pc-is-joined-to-entra-id-and-enrolled-in-mdm" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>dsregcmd<span class="w"> </span>/status
+</code></pre></div>
+<h4 id="popular-tools-products_2">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microsoft Intune</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Cloud UEM for Windows, macOS, iOS, Android and Linux, tightly linked to Microsoft Entra ID and Conditional Access.</td>
+<td>A company only lets staff open Outlook on phones that Intune reports as encrypted and up to date.</td>
+</tr>
+<tr>
+<td><strong>Jamf Pro</strong><br><em>Jamf · Commercial</em></td>
+<td>The leading management platform for Apple devices: Macs, iPhones, iPads and Apple TVs.</td>
+<td>A design agency sets up 300 new MacBooks automatically, with fonts, apps and FileVault encryption ready on first login.</td>
+</tr>
+<tr>
+<td><strong>Omnissa Workspace ONE UEM</strong><br><em>Omnissa (formerly VMware) · Commercial</em></td>
+<td>Enterprise UEM for all major platforms, including rugged Android devices, with a single app catalogue for users.</td>
+<td>A delivery firm manages thousands of handheld scanners and drivers' phones from one console.</td>
+</tr>
+<tr>
+<td><strong>Google Endpoint Management</strong><br><em>Google · Cloud service</em></td>
+<td>Device management built into Google Workspace for Android, iOS, ChromeOS, Windows and Mac.</td>
+<td>A school using Google Workspace requires screen locks on staff phones before they can sync Gmail.</td>
+</tr>
+<tr>
+<td><strong>Iru (formerly Kandji)</strong><br><em>Iru · Commercial</em></td>
+<td>Apple-focused device management and security platform with ready-made security baselines and heavy automation; renamed from Kandji in 2025.</td>
+<td>A fintech start-up applies a CIS-style security baseline to every Mac with a few clicks.</td>
+</tr>
+<tr>
+<td><strong>IBM MaaS360</strong><br><em>IBM · Cloud service</em></td>
+<td>Cloud UEM with AI-assisted insights, covering phones, tablets and laptops.</td>
+<td>An insurance company uses MaaS360 to separate work email from personal apps on agents' own phones.</td>
+</tr>
+<tr>
+<td><strong>ManageEngine Endpoint Central</strong><br><em>ManageEngine (Zoho) · Commercial</em></td>
+<td>UEM and desktop management (formerly Desktop Central) with patching, software deployment and remote control.</td>
+<td>A mid-size council manages 3,000 PCs and phones, pushing software and fixing users' issues remotely.</td>
+</tr>
+<tr>
+<td><strong>Ivanti Neurons for MDM</strong><br><em>Ivanti · Cloud service</em></td>
+<td>Mobile and endpoint management built on the former MobileIron platform.</td>
+<td>A government department manages secure email on staff iPhones with strict data-sharing controls.</td>
+</tr>
+<tr>
+<td><strong>Hexnode UEM</strong><br><em>Hexnode · Commercial</em></td>
+<td>UEM popular for kiosk mode, locking tablets to a single app for shops, restaurants and check-in desks.</td>
+<td>A restaurant chain locks its ordering tablets so they can only run the menu app.</td>
+</tr>
+<tr>
+<td><strong>Mosyle</strong><br><em>Mosyle · Commercial</em></td>
+<td>Apple device management widely used by schools and businesses, with built-in security features.</td>
+<td>A school district manages 20,000 student iPads and restricts apps during exams.</td>
+</tr>
+<tr>
+<td><strong>SOTI MobiControl</strong><br><em>SOTI · Commercial</em></td>
+<td>Device management widely used for rugged handhelds, scanners and kiosks in warehouses, retail and transport.</td>
+<td>A parcel company locks 12,000 drivers' handheld scanners to its delivery app and updates them overnight.</td>
+</tr>
+<tr>
+<td><strong>Apple Business Manager</strong><br><em>Apple · Free</em></td>
+<td>Free Apple portal that links purchased devices to your organisation so they auto-enrol in your chosen MDM.</td>
+<td>New iPhones bought from a reseller enrol into Jamf the moment employees switch them on.</td>
+</tr>
+<tr>
+<td><strong>Android Enterprise</strong><br><em>Google · Platform</em></td>
+<td>Android's built-in framework for separating work and personal data and supporting zero-touch enrolment.</td>
+<td>Staff get a separate 'Work' profile on their own Android phones that IT can wipe without touching personal photos.</td>
+</tr>
+<tr>
+<td><strong>Windows Autopilot</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Zero-touch provisioning for Windows: new PCs register to the organisation, then join Entra ID and enrol in Intune on first sign-in.</td>
+<td>A consultancy ships laptops from the reseller straight to new hires, who sign in and receive apps, BitLocker and policies within an hour.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="34-mobile-threat-defense-app-vetting">3.4 Mobile Threat Defense &amp; App Vetting<a class="headerlink" href="#34-mobile-threat-defense-app-vetting" title="Permanent link">&para;</a></h2>
+<p>Mobile Threat Defense (MTD) apps protect phones and tablets from risky apps, phishing links, dangerous Wi-Fi networks and outdated or tampered operating systems. App vetting means checking an app for malware, privacy leaks or weak security before people install it, either by app store reviewers or by security testing tools. Together they help keep the small computer in everyone's pocket safe.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-04-mobile-threat-defense-app-vetting.svg" alt="MTD detects; the MDM and identity provider enforce." loading="lazy">
+<figcaption><strong>How MTD risk blocks company data.</strong> MTD detects; the MDM and identity provider enforce.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>MTD is like a smoke detector for your phone, while app vetting is the food inspector who checks a restaurant before it is allowed to open.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>A sales rep at Brightwave Media gets a text claiming a parcel is waiting, with a link to a fake delivery site. Lookout on her company phone blocks the page as phishing before she can enter anything. Meanwhile, the company's developers scan their own new app with MobSF before release and discover that it stored login tokens in plain text, which they fix before launch.</p>
+</div>
+<h4 id="how-it-works_3">How it works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h4>
+<ol>
+<li>An MTD app is installed on the phone, often pushed automatically by the MDM.</li>
+<li>It checks installed apps, the OS version, device settings and network connections for risks.</li>
+<li>It blocks phishing links in texts, emails and messaging apps.</li>
+<li>Risk scores are shared with the MDM so a risky phone can lose access to company data until fixed.</li>
+<li>App vetting tools analyse app files (APK/IPA) for malware, insecure storage, hidden trackers and weak encryption.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Mobile security teams, MDM administrators, app developers and penetration testers, especially in finance, healthcare and government.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Most phone attacks start with a link, so pair MTD phishing protection with keeping the phone's OS updated.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>MTD watches four risk areas: the device (OS version, jailbreak or root), apps (malicious or leaky), networks (rogue Wi-Fi, TLS interception) and content (phishing links in SMS, email and chat).</li>
+<li>On iOS, apps cannot inspect other apps, so MTD phishing protection usually works through a local VPN or DNS filter; Android allows deeper scanning of installed apps.</li>
+<li>Mercenary spyware such as NSO Group's Pegasus has used zero-click exploits; Apple sends threat notifications to targeted users, and Lockdown Mode shrinks the attack surface for high-risk people.</li>
+<li>App vetting combines static analysis (decompiling APK or IPA files for hard-coded secrets, permissions and insecure storage) with dynamic analysis of live traffic, guided by OWASP MASVS and MASTG.</li>
+<li>SMS phishing ('smishing') and QR-code phishing ('quishing') bypass email gateways entirely, which is why link protection on the phone itself matters.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming iPhones need no protection; phishing, malicious configuration profiles and outdated iOS versions are real risks without traditional malware.</li>
+<li>Blocking every medium-risk device on day one floods the help desk; start in report mode, then enforce high-risk blocking.</li>
+<li>Treating app-store review as a guarantee; risky and data-hungry apps still slip through, so vet business-critical apps yourself.</li>
+</ul>
+</div>
+<h3 id="try-it-run-the-mobsf-app-scanner-locally-with-docker-then-open-httplocalhost8000">Try it: Run the MobSF app scanner locally with Docker, then open http://localhost:8000<a class="headerlink" href="#try-it-run-the-mobsf-app-scanner-locally-with-docker-then-open-httplocalhost8000" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>opensecurity/mobile-security-framework-mobsf:latest
+</code></pre></div>
+<h4 id="popular-tools-products_3">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lookout Mobile Endpoint Security</strong><br><em>Lookout · Cloud service</em></td>
+<td>Mobile threat defense focused on phishing protection, risky apps and device vulnerabilities for iOS and Android.</td>
+<td>A bank blocks staff phones with a malicious sideloaded app from accessing internal email.</td>
+</tr>
+<tr>
+<td><strong>Zimperium Mobile Threat Defense</strong><br><em>Zimperium · Commercial</em></td>
+<td>Detects malware, phishing and network attacks using machine learning on the device itself, so protection keeps working offline.</td>
+<td>Field engineers' tablets warn them when they connect to a rogue Wi-Fi hotspot at an airport.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender for Endpoint on iOS/Android</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Mobile version of Defender that blocks phishing sites, scans Android apps and reports risk to Intune.</td>
+<td>Intune automatically blocks Teams on a phone that Defender marks as high risk.</td>
+</tr>
+<tr>
+<td><strong>Check Point Harmony Mobile</strong><br><em>Check Point · Commercial</em></td>
+<td>Mobile threat defense protecting against malicious apps, network attacks and phishing.</td>
+<td>A logistics firm uses it to flag drivers' phones that are rooted or jailbroken.</td>
+</tr>
+<tr>
+<td><strong>Google Play Protect</strong><br><em>Google · Free</em></td>
+<td>Built-in Android protection that scans apps from Play and other sources and can disable harmful ones.</td>
+<td>Play Protect warns a user that a sideloaded 'free game' is spyware and switches it off.</td>
+</tr>
+<tr>
+<td><strong>Apple App Store Review</strong><br><em>Apple · Free</em></td>
+<td>Apple's mix of automated and human checks that every iPhone and iPad app must pass before publication.</td>
+<td>An app that secretly collects contacts without permission is rejected before it reaches users.</td>
+</tr>
+<tr>
+<td><strong>Samsung Knox</strong><br><em>Samsung · Platform</em></td>
+<td>Hardware-backed security platform in Samsung devices, providing secure work containers and tamper detection.</td>
+<td>A police force uses Knox-protected Galaxy phones with locked-down work profiles for case data.</td>
+</tr>
+<tr>
+<td><strong>MobSF (Mobile Security Framework)</strong><br><em>MobSF community · Open source</em></td>
+<td>Free tool that automatically analyses Android and iOS app files, used here to vet third-party or in-house apps before company devices may install them.</td>
+<td>A bank's mobile team scans a supplier's APK in MobSF and refuses approval because it sends staff data over unencrypted HTTP.</td>
+</tr>
+<tr>
+<td><strong>NowSecure</strong><br><em>NowSecure · Commercial</em></td>
+<td>Mobile app security testing and app-vetting service that rates third-party and in-house apps for security and privacy risks before enterprise approval.</td>
+<td>A hospital checks NowSecure's risk report on a popular messaging app before allowing it on clinicians' managed phones.</td>
+</tr>
+<tr>
+<td><strong>Jamf Protect / Jamf Executive Threat Protection</strong><br><em>Jamf · Commercial</em></td>
+<td>Threat detection for Apple devices, including tools that look for signs of advanced spyware on iPhones.</td>
+<td>A journalist's organisation checks staff iPhones for traces of mercenary spyware.</td>
+</tr>
+<tr>
+<td><strong>iVerify</strong><br><em>iVerify · Freemium</em></td>
+<td>Mobile security app and enterprise service that checks iPhones and Android phones for signs of spyware and risky settings.</td>
+<td>A charity's staff run an iVerify check before travelling, and one flagged phone is sent for a forensic review.</td>
+</tr>
+<tr>
+<td><strong>Apple Lockdown Mode</strong><br><em>Apple · Free</em></td>
+<td>Optional extreme-protection setting on Apple devices that switches off risky features targeted by spyware.</td>
+<td>A human-rights lawyer enables Lockdown Mode to reduce the chance of targeted phone hacking.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="35-patch-software-update-management">3.5 Patch &amp; Software Update Management<a class="headerlink" href="#35-patch-software-update-management" title="Permanent link">&para;</a></h2>
+<p>A 'patch' is an update that fixes a bug or security hole in software. Patch management tools find which devices are missing updates and install them on a schedule, so known weaknesses are closed before attackers use them. Many major breaches came from flaws that already had a fix available but were never installed.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-05-patch-software-update-management.svg" alt="Rings let a small pilot catch bad updates before everyone gets them." loading="lazy">
+<figcaption><strong>The monthly patch cycle.</strong> Rings let a small pilot catch bad updates before everyone gets them.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a car recall service that tracks every car in a fleet and books each one in for the free repair before the faulty part fails.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Maple Street Credit Union's IT team of three looks after 450 Windows PCs and 30 servers. Using Windows Autopatch for PCs and an Automox policy for servers and third-party apps such as Chrome and Zoom, updates roll out first to a small test group, then to everyone a few days later. When an emergency browser fix is released, they push it to all devices within 24 hours and confirm 98% compliance on the dashboard.</p>
+</div>
+<h4 id="how-it-works_4">How it works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Scan all devices to build an inventory of operating systems, apps and missing updates.</li>
+<li>Rank missing patches by risk, putting actively exploited flaws first.</li>
+<li>Test updates on a small pilot group of devices.</li>
+<li>Roll out in waves on a schedule, with restarts planned outside working hours.</li>
+<li>Report compliance and chase devices that failed or were offline.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT operations and desktop support teams, server administrators and managed service providers in every sector.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Patch internet-facing systems and actively exploited vulnerabilities (such as those on CISA's KEV list) first, within days rather than weeks.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Microsoft releases security updates on Patch Tuesday, the second Tuesday of each month, and ships out-of-band fixes when a flaw is already being exploited.</li>
+<li>Under CISA Binding Operational Directive 22-01, US federal agencies must fix KEV-listed vulnerabilities by set due dates, typically two weeks for newly added recent CVEs.</li>
+<li>The Australian Essential Eight expects patches for internet-facing services within 48 hours when a working exploit exists, and within two weeks otherwise.</li>
+<li>Third-party apps such as browsers, PDF readers, Java and meeting clients are often more exposed than the OS; catalogues like Patch My PC or ManageEngine package them automatically.</li>
+<li>Linux distributions publish advisories (Ubuntu USN, Red Hat RHSA, Debian DSA); live patching fixes the running kernel, but updated user-space services still need restarting.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Reporting 'patches deployed' instead of 'devices updated and rebooted'; measure installed state, including laptops that were offline.</li>
+<li>Forgetting firmware, VPN gateways and network appliances; many mass-exploited flaws sit in edge devices outside the normal patch tool.</li>
+<li>Testing forever or not at all; a pilot ring of a few days catches most bad monthly updates.</li>
+</ul>
+</div>
+<h3 id="try-it-update-all-installed-apps-on-windows-winget-or-ubuntudebian-apt">Try it: Update all installed apps on Windows (winget) or Ubuntu/Debian (apt)<a class="headerlink" href="#try-it-update-all-installed-apps-on-windows-winget-or-ubuntudebian-apt" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>winget<span class="w"> </span>upgrade<span class="w"> </span>--all
+
+<span class="c1"># Ubuntu / Debian</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
+</code></pre></div>
+<h4 id="popular-tools-products_4">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Windows Autopatch</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Cloud service that automatically manages Windows, Microsoft 365 Apps, Edge and Teams updates in staged rings.</td>
+<td>A company lets Autopatch release updates to 5% of PCs first, then everyone after no problems appear.</td>
+</tr>
+<tr>
+<td><strong>Windows Update client policies (formerly Windows Update for Business)</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Free Windows policies, set via Intune or Group Policy, that control when devices get updates, with deadlines and deferrals.</td>
+<td>IT sets a seven-day deadline after which laptops must restart to install security updates.</td>
+</tr>
+<tr>
+<td><strong>WSUS (Windows Server Update Services)</strong><br><em>Microsoft · Free</em></td>
+<td>Long-standing on-premises Windows update server; deprecated by Microsoft, still supported but receiving no new features.</td>
+<td>A factory with no direct internet on its PCs approves updates centrally through WSUS.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Configuration Manager (MECM/SCCM)</strong><br><em>Microsoft · Commercial</em></td>
+<td>On-premises system for deploying software, operating systems and updates to large Windows estates.</td>
+<td>A bank deploys monthly patches to 40,000 PCs through MECM with tight change control.</td>
+</tr>
+<tr>
+<td><strong>Ivanti Neurons for Patch Management</strong><br><em>Ivanti · Commercial</em></td>
+<td>Patching for Windows, macOS, Linux and hundreds of third-party apps, prioritised by real-world exploit risk.</td>
+<td>A hospital patches Adobe Reader and Java across all wards based on which flaws are actively exploited.</td>
+</tr>
+<tr>
+<td><strong>ManageEngine Patch Manager Plus</strong><br><em>ManageEngine (Zoho) · Commercial</em></td>
+<td>Automated patching for Windows, Mac, Linux and hundreds of third-party applications.</td>
+<td>A school automatically updates Zoom, Chrome and Firefox on all classroom PCs every week.</td>
+</tr>
+<tr>
+<td><strong>Automox</strong><br><em>Automox · Cloud service</em></td>
+<td>Cloud-native patching and scripting for Windows, macOS and Linux devices anywhere on the internet.</td>
+<td>A remote-first company patches laptops in 20 countries without any VPN.</td>
+</tr>
+<tr>
+<td><strong>Tanium Patch</strong><br><em>Tanium · Commercial</em></td>
+<td>Real-time visibility and patching at very large scale, as part of the Tanium endpoint platform.</td>
+<td>A global retailer checks in seconds which of 200,000 devices are missing an emergency fix.</td>
+</tr>
+<tr>
+<td><strong>Action1</strong><br><em>Action1 · Freemium</em></td>
+<td>Cloud patch management for Windows, macOS and third-party apps, free for up to 200 devices.</td>
+<td>A small charity patches all 80 of its laptops and desktops for free, including Zoom and Adobe Reader.</td>
+</tr>
+<tr>
+<td><strong>PDQ Deploy &amp; Inventory</strong><br><em>PDQ · Commercial</em></td>
+<td>Simple tools for Windows admins to deploy software and patches and track what is installed.</td>
+<td>A sysadmin pushes the latest Chrome update to every office PC in a few clicks.</td>
+</tr>
+<tr>
+<td><strong>unattended-upgrades</strong><br><em>Debian / Ubuntu · Open source</em></td>
+<td>Linux package that automatically installs security updates on Debian and Ubuntu systems.</td>
+<td>A developer's cloud server installs security fixes overnight without anyone logging in.</td>
+</tr>
+<tr>
+<td><strong>Red Hat Satellite</strong><br><em>Red Hat · Commercial</em></td>
+<td>Manages content, patching and configuration for fleets of Red Hat Enterprise Linux servers.</td>
+<td>A telecom company patches 3,000 RHEL servers in planned maintenance windows.</td>
+</tr>
+<tr>
+<td><strong>Patch My PC</strong><br><em>Patch My PC · Commercial</em></td>
+<td>Ready-made catalogue that packages and publishes updates for hundreds of third-party apps into Intune and Configuration Manager.</td>
+<td>An IT team stops hand-packaging Chrome, Zoom and 7-Zip updates and lets Patch My PC publish them to Intune automatically.</td>
+</tr>
+<tr>
+<td><strong>Canonical Landscape</strong><br><em>Canonical · Commercial</em></td>
+<td>Management tool for Ubuntu fleets, part of Ubuntu Pro, that reports and applies security updates across many servers and desktops.</td>
+<td>A university schedules security updates for 600 Ubuntu lab machines and servers from one Landscape dashboard.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="36-remote-monitoring-management-rmm-remote-support">3.6 Remote Monitoring &amp; Management (RMM) &amp; Remote Support<a class="headerlink" href="#36-remote-monitoring-management-rmm-remote-support" title="Permanent link">&para;</a></h2>
+<p>Remote monitoring and management (RMM) tools let IT teams and IT service providers look after many computers from one web console: checking health, installing updates, running scripts and taking over the screen to help a user. Because one RMM login can reach every device, these tools are powerful for defenders and a prize for attackers, who also trick people into installing remote-support apps. Securing RMM means locking down who can use it and blocking any remote tool you did not approve.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-06-remote-monitoring-management-rmm-remote.svg" alt="Because the hub controls every device, it needs the strongest protection of all." loading="lazy">
+<figcaption><strong>One RMM console reaches everything.</strong> Because the hub controls every device, it needs the strongest protection of all.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>An RMM is like a master key ring for every office in a building: hugely convenient for the caretaker, but if it is copied or stolen every door opens, so it needs a strong safe and a sign-out log.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Bluewater IT Services looks after 45 small businesses using NinjaOne. After reading about criminals abusing remote-access tools, it requires phishing-resistant MFA for every technician, limits who can run scripts on all clients at once, and records every remote session. It also uses application control to block remote apps it does not use. When a scammer phones a client's receptionist pretending to be IT support and asks her to install AnyDesk, the app refuses to run and Bluewater gets an alert.</p>
+</div>
+<h4 id="how-it-works_5">How it works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Choose one approved RMM and remote-support tool and install its agent on every managed device.</li>
+<li>Protect the console with phishing-resistant MFA, role-based permissions and alerts for unusual logins.</li>
+<li>Use it to monitor device health, push patches and scripts, and give remote help with the user's consent and a session log.</li>
+<li>Patch the RMM product itself quickly, especially self-hosted servers, because attackers target known flaws in these tools.</li>
+<li>Block or alert on any unapproved remote-access software using application control and EDR.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Internal IT and help desks, managed service providers (MSPs) who run IT for small businesses, and security teams who audit remote access.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Treat your RMM console like a top-level administrator account: phishing-resistant MFA, least privilege, audit logs, and an alert whenever an unknown remote-access tool appears.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>RMM agents run as SYSTEM or root on every managed machine, so the console is effectively administrator access to all customers; protect it like a privileged access management tool.</li>
+<li>The 2021 Kaseya VSA attack reached about 60 managed service providers and up to 1,500 downstream businesses; CVE-2024-1709 in ScreenConnect allowed authentication bypass and was mass-exploited.</li>
+<li>CISA advisory AA23-025A (2023) warned that criminals abuse legitimate remote tools because they are signed and trusted, often after phone or email 'help desk' scams.</li>
+<li>Good practice: SSO with phishing-resistant MFA, per-client role separation, approval for mass script runs, session recording, and forwarding RMM audit logs to the SIEM.</li>
+<li>Self-hosted RMM keeps data in-house but makes you responsible for patching an internet-facing server quickly; cloud RMM shifts that duty to the vendor.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Allowing many remote tools because someone once used them; standardise on one or two and block the rest with application control.</li>
+<li>Shared technician logins hide who did what; give each technician a named account with MFA and least privilege.</li>
+<li>Leaving unattended access permanently enabled on every device; restrict it to devices and hours that truly need it.</li>
+</ul>
+</div>
+<h3 id="try-it-list-remote-access-tools-installed-as-services-on-a-windows-pc-powershell">Try it: List remote-access tools installed as services on a Windows PC (PowerShell)<a class="headerlink" href="#try-it-list-remote-access-tools-installed-as-services-on-a-windows-pc-powershell" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="nb">Get-Service</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">DisplayName</span> <span class="o">-match</span> <span class="s1">'TeamViewer|AnyDesk|ScreenConnect|Splashtop|RustDesk'</span> <span class="p">}</span> <span class="p">|</span>
+  <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">DisplayName</span><span class="p">,</span> <span class="n">Status</span>
+</code></pre></div>
+<h4 id="popular-tools-products_5">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_5" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NinjaOne</strong><br><em>NinjaOne · Cloud service</em></td>
+<td>Cloud RMM with automated OS and third-party patching, scripting and remote control, popular with IT teams and service providers.</td>
+<td>An IT provider patches and monitors devices for 60 small clients from one dashboard.</td>
+</tr>
+<tr>
+<td><strong>ConnectWise RMM / Automate</strong><br><em>ConnectWise · Commercial</em></td>
+<td>RMM platforms for service providers: ConnectWise RMM runs in the cloud, while Automate (formerly LabTech) is often self-hosted.</td>
+<td>An MSP automates disk-space checks and patching for 4,000 client PCs, with problems raised as tickets automatically.</td>
+</tr>
+<tr>
+<td><strong>ConnectWise ScreenConnect</strong><br><em>ConnectWise · Commercial</em></td>
+<td>Widely used remote support and access tool; a critical 2024 flaw in self-hosted servers was mass-exploited, so patch promptly.</td>
+<td>A help desk takes control of a user's screen, with the session recorded, to fix a printer driver.</td>
+</tr>
+<tr>
+<td><strong>Kaseya VSA</strong><br><em>Kaseya · Commercial</em></td>
+<td>Long-standing RMM for IT teams and MSPs; the 2021 REvil ransomware attack through self-hosted VSA servers made RMM security a board-level topic.</td>
+<td>A regional IT team schedules patches and monitoring scripts for 2,500 computers across several offices.</td>
+</tr>
+<tr>
+<td><strong>Datto RMM</strong><br><em>Kaseya (Datto) · Cloud service</em></td>
+<td>Cloud RMM popular with service providers, with built-in patching, monitoring and ransomware detection that can isolate an infected device.</td>
+<td>An MSP is alerted when files on a client PC start being encrypted, and the device is cut off from the network automatically.</td>
+</tr>
+<tr>
+<td><strong>N-able N-central / N-sight RMM</strong><br><em>N-able · Commercial</em></td>
+<td>RMM platforms from N-able, spun out of SolarWinds in 2021, for monitoring, patching and scripting across many client networks.</td>
+<td>An MSP managing 300 small offices uses N-central to roll out an urgent Windows security fix overnight.</td>
+</tr>
+<tr>
+<td><strong>Atera</strong><br><em>Atera · Cloud service</em></td>
+<td>Cloud RMM combined with a help desk, priced per technician rather than per device, popular with small IT teams.</td>
+<td>A two-person IT team at a school trust manages 900 devices and support tickets from one place.</td>
+</tr>
+<tr>
+<td><strong>Syncro</strong><br><em>Syncro · Cloud service</em></td>
+<td>Combined RMM, ticketing and billing platform aimed at small managed service providers.</td>
+<td>A one-person IT business monitors clients' PCs, runs patch policies and invoices for the work in one tool.</td>
+</tr>
+<tr>
+<td><strong>TeamViewer</strong><br><em>TeamViewer · Freemium</em></td>
+<td>One of the most widely used remote-access tools; business plans add MFA enforcement, access controls, logging and device management (TeamViewer Tensor for large firms).</td>
+<td>A company allows connections only from its own TeamViewer accounts, so outsiders cannot connect to staff PCs.</td>
+</tr>
+<tr>
+<td><strong>AnyDesk</strong><br><em>AnyDesk Software · Freemium</em></td>
+<td>Fast, lightweight remote desktop tool; often abused by scammers, so organisations should allow it only if formally approved.</td>
+<td>An IT team uses licensed AnyDesk restricted to its own support accounts, and blocks unapproved copies everywhere else.</td>
+</tr>
+<tr>
+<td><strong>Splashtop</strong><br><em>Splashtop · Commercial</em></td>
+<td>Remote access and support software used by IT teams, schools and MSPs, with single sign-on and session recording options.</td>
+<td>A university lets students reach specialist lab software remotely from home through Splashtop.</td>
+</tr>
+<tr>
+<td><strong>BeyondTrust Remote Support</strong><br><em>BeyondTrust · Commercial</em></td>
+<td>Enterprise remote support (formerly Bomgar) with strong auditing and session recording; flaws exploited in late 2024 show it must be patched fast.</td>
+<td>A bank's help desk can only reach staff PCs through BeyondTrust, with every session recorded for auditors.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Intune Remote Help / Quick Assist</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Remote Help is Intune's paid, logged help-desk tool; the free built-in Quick Assist is abused in phone scams, so many firms remove it.</td>
+<td>A company switches to Remote Help, which verifies both helper and user identities, and removes Quick Assist from all PCs.</td>
+</tr>
+<tr>
+<td><strong>RustDesk</strong><br><em>RustDesk · Open source</em></td>
+<td>Open-source remote desktop that can run on your own server, so support connections never pass through a vendor's cloud.</td>
+<td>A small manufacturer self-hosts RustDesk so its IT contractor connects only through the company's own relay server.</td>
+</tr>
+<tr>
+<td><strong>MeshCentral</strong><br><em>MeshCentral project · Open source</em></td>
+<td>Free, self-hosted web-based remote management and remote desktop tool for organisations wanting full control of their data.</td>
+<td>A school's IT technician manages 400 classroom PCs through a MeshCentral server on the school network.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="37-application-control-allowlisting-least-privilege">3.7 Application Control, Allowlisting &amp; Least Privilege<a class="headerlink" href="#37-application-control-allowlisting-least-privilege" title="Permanent link">&para;</a></h2>
+<p>Application control decides which programs are allowed to run on a device. With 'allowlisting', only approved software can run and everything else is blocked by default, which stops most malware and ransomware even if it has never been seen before. Endpoint privilege management adds 'least privilege': people work without full administrator rights, and only approved tasks are given extra rights.</p>
+<p><strong>Blocklisting vs allowlisting</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Blocklist (antivirus)</th>
+<th>Allowlist (app control)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default</strong></td>
+<td>Run unless known bad</td>
+<td>Block unless approved</td>
+</tr>
+<tr>
+<td><strong>New malware</strong></td>
+<td>May run until detected</td>
+<td>Blocked automatically</td>
+</tr>
+<tr>
+<td><strong>Setup effort</strong></td>
+<td>Low</td>
+<td>Higher: audit, rules, requests</td>
+</tr>
+<tr>
+<td><strong>Best fit</strong></td>
+<td>General-purpose PCs</td>
+<td>Servers, kiosks, OT, admin PCs</td>
+</tr>
+<tr>
+<td><strong>Example tools</strong></td>
+<td>Defender AV, ESET</td>
+<td>App Control, ThreatLocker, Santa</td>
+</tr>
+</tbody>
+</table>
+<p><em>Allowlisting flips the default, so brand-new malware is blocked without a signature.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Instead of keeping a list of known troublemakers to turn away, it is a guest list at a private party: if your name is not on it, you do not get in.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Riverbend Water Authority runs the computers that control its treatment plant. Using ThreatLocker allowlisting, only the plant software, Windows and a few approved tools can run. When an engineer plugs in a USB stick carrying ransomware, the malicious program simply refuses to start because it is not on the approved list, and the security team receives an alert showing the blocked file.</p>
+</div>
+<h4 id="how-it-works_6">How it works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Run the tool in 'audit' (learning) mode to record which software is genuinely used.</li>
+<li>Build rules that approve software by publisher signature, file hash or trusted folder.</li>
+<li>Switch to 'enforce' mode so unapproved programs and scripts are blocked.</li>
+<li>Give users a simple way to request new software, with approvals by IT.</li>
+<li>Review blocked events regularly and update rules as software changes.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security teams in critical infrastructure, healthcare, finance and government, and organisations following frameworks such as the Australian Essential Eight.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Start in audit mode and allow by trusted publisher signature where possible, so updates do not break things.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Rules approve software by publisher (code-signing certificate), file hash or path. Publisher rules survive updates, hash rules are strictest, and path rules are weakest wherever users can write files.</li>
+<li>Windows App Control policies can also block known-vulnerable drivers; Microsoft's vulnerable driver blocklist is on by default in Windows 11 2022 Update and later, stopping 'bring your own vulnerable driver' attacks.</li>
+<li>Application control is the first of the Australian Signals Directorate's Essential Eight strategies and maps to CIS Control 2, which asks organisations to inventory and allowlist authorised software.</li>
+<li>When App Control or AppLocker is enforced, PowerShell runs untrusted scripts in Constrained Language Mode, which limits the advanced features attackers rely on.</li>
+<li>Removing local administrator rights is high impact: most malware needs elevation, and standard users cannot disable security tools or install unapproved software.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Allowing folders users can write to, such as Downloads or AppData, lets malware simply run from there; allow by signer instead.</li>
+<li>Jumping straight to enforce mode breaks business apps; run audit mode for several weeks and review the logs first.</li>
+<li>Trusting everything Microsoft-signed; attackers abuse built-in tools like mshta.exe, so add deny rules for unneeded 'living-off-the-land' binaries.</li>
+</ul>
+</div>
+<h3 id="try-it-check-gatekeeper-on-a-mac-or-view-effective-applocker-rules-on-windows">Try it: Check Gatekeeper on a Mac, or view effective AppLocker rules on Windows<a class="headerlink" href="#try-it-check-gatekeeper-on-a-mac-or-view-effective-applocker-rules-on-windows" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="c"># macOS</span>
+<span class="n">spctl</span> <span class="p">-</span><span class="n">-status</span>
+
+<span class="c"># Windows PowerShell</span>
+<span class="nb">Get-AppLockerPolicy</span> <span class="n">-Effective</span> <span class="n">-Xml</span>
+</code></pre></div>
+<h4 id="popular-tools-products_6">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>App Control for Business (formerly WDAC)</strong><br><em>Microsoft · Free</em></td>
+<td>Windows' built-in, strongest allowlisting feature, controlling which apps, drivers and scripts may run.</td>
+<td>A ministry blocks all unsigned programs on its Windows 11 laptops using policies deployed by Intune.</td>
+</tr>
+<tr>
+<td><strong>AppLocker</strong><br><em>Microsoft · Free</em></td>
+<td>Older built-in Windows feature that allows or blocks apps by publisher, path or file hash per user or group.</td>
+<td>A school stops students running games from their Downloads folder on lab PCs.</td>
+</tr>
+<tr>
+<td><strong>Smart App Control</strong><br><em>Microsoft · Free</em></td>
+<td>Windows 11 consumer feature that blocks untrusted or unsigned apps using Microsoft's cloud reputation.</td>
+<td>A home user is prevented from running an unknown cracked app downloaded from a forum.</td>
+</tr>
+<tr>
+<td><strong>ThreatLocker</strong><br><em>ThreatLocker · Commercial</em></td>
+<td>Zero-trust allowlisting plus 'ringfencing' that limits what approved apps can touch, popular with IT providers.</td>
+<td>PowerShell is allowed for IT but ringfenced so it cannot reach the internet or user files.</td>
+</tr>
+<tr>
+<td><strong>Airlock Digital</strong><br><em>Airlock Digital · Commercial</em></td>
+<td>Application allowlisting for Windows, macOS and Linux, widely used to meet the Essential Eight.</td>
+<td>An Australian government agency enforces allowlisting on 10,000 desktops with one-time user exceptions.</td>
+</tr>
+<tr>
+<td><strong>Carbon Black App Control</strong><br><em>Broadcom (Carbon Black) · Commercial</em></td>
+<td>Long-established allowlisting (formerly Bit9) for locking down servers, ATMs, point-of-sale and industrial systems.</td>
+<td>A retailer locks its tills so only the payment software can ever run.</td>
+</tr>
+<tr>
+<td><strong>macOS Gatekeeper</strong><br><em>Apple · Free</em></td>
+<td>Built-in macOS check that only allows apps from the App Store or notarised, identified developers by default.</td>
+<td>A Mac blocks an unsigned app downloaded from a dodgy site until the user explicitly overrides it.</td>
+</tr>
+<tr>
+<td><strong>Santa</strong><br><em>North Pole Security (originally Google) · Open source</em></td>
+<td>Open-source binary allowlisting and blocklisting for macOS, used by large tech companies.</td>
+<td>A tech firm blocks known-bad Mac apps company-wide and logs every new program run.</td>
+</tr>
+<tr>
+<td><strong>fapolicyd</strong><br><em>Red Hat · Open source</em></td>
+<td>Linux daemon that decides which files may be executed based on trust rules, included in RHEL.</td>
+<td>A defence contractor ensures only packaged, trusted programs can run on its Linux servers.</td>
+</tr>
+<tr>
+<td><strong>Ivanti Application Control</strong><br><em>Ivanti · Commercial</em></td>
+<td>Controls which applications run and manages admin rights so users do not need full administrator access.</td>
+<td>Staff can install approved printers without admin rights while unknown apps stay blocked.</td>
+</tr>
+<tr>
+<td><strong>Trellix Application Control</strong><br><em>Trellix · Commercial</em></td>
+<td>Allowlisting that locks down fixed-function systems such as servers, kiosks and industrial PCs.</td>
+<td>A power utility locks its control-room workstations to a fixed set of approved programs.</td>
+</tr>
+<tr>
+<td><strong>CyberArk Endpoint Privilege Manager</strong><br><em>CyberArk · Commercial</em></td>
+<td>Removes local administrator rights while letting approved apps and tasks run with raised rights, plus application control and credential-theft protection.</td>
+<td>Engineers can install approved design software themselves, but malware they open cannot gain admin rights.</td>
+</tr>
+<tr>
+<td><strong>BeyondTrust Endpoint Privilege Management</strong><br><em>BeyondTrust · Commercial</em></td>
+<td>Least-privilege tool for Windows, Mac and Linux that elevates only approved applications and logs every elevation.</td>
+<td>A hospital removes admin rights from 6,000 PCs while clinical apps that need them still work.</td>
+</tr>
+<tr>
+<td><strong>Intune Endpoint Privilege Management</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Intune add-on letting standard users run approved tasks as administrator, with requests and approvals tracked centrally.</td>
+<td>A user requests admin rights to install a printer driver, and IT approves it from the Intune console in minutes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="38-browser-web-isolation-security">3.8 Browser &amp; Web Isolation Security<a class="headerlink" href="#38-browser-web-isolation-security" title="Permanent link">&para;</a></h2>
+<p>The web browser is where people spend most of their working day, so it is a favourite target for phishing, malicious downloads and data theft. Browser security tools manage browser settings and extensions centrally, block dangerous sites and stop sensitive data being copied out. 'Remote browser isolation' opens websites on a remote server and streams only a safe picture to your screen, so harmful code never reaches your computer.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-08-browser-web-isolation-security.svg" alt="Risky code runs in the cloud; only a safe rendering reaches the laptop." loading="lazy">
+<figcaption><strong>Remote browser isolation in action.</strong> Risky code runs in the cloud; only a safe rendering reaches the laptop.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>Browser isolation is like handling a suspicious package with robot arms behind glass: you can see and use it, but it can never touch you.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Harbor Insurance lets claims staff use Chrome Enterprise with policies that block unknown extensions and warn on risky downloads. Links in emails from outside the company open through Menlo Security's isolation service. When an employee clicks a link to a booby-trapped website, the malicious code runs harmlessly in the cloud and the laptop stays clean.</p>
+</div>
+<h4 id="how-it-works_7">How it works<a class="headerlink" href="#how-it-works_7" title="Permanent link">&para;</a></h4>
+<ol>
+<li>IT manages browsers centrally, pushing security settings, approved extensions and update rules.</li>
+<li>Safe-browsing and web-filtering services warn about or block known phishing and malware sites.</li>
+<li>Risky or unknown sites can be opened in an isolated remote browser instead of locally.</li>
+<li>Enterprise browsers add data controls such as blocking copy-paste, printing or uploads of sensitive data.</li>
+<li>Browser activity and threats are reported to the security team.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT and security teams, especially in organisations with remote staff, contractors on unmanaged devices, or strict data-protection needs.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Keep browsers auto-updating and control which extensions are allowed, because a malicious extension can see everything you do online.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Browsers are managed through policies: Group Policy or Intune for Edge and Chrome, Chrome Enterprise Core in the cloud, and policies.json or ADMX templates for Firefox.</li>
+<li>Malicious extensions are a major risk: in December 2024 attackers phished developer accounts and pushed poisoned updates to dozens of Chrome extensions, including Cyberhaven's.</li>
+<li>Chrome's Manifest V3 extension platform limits content-blocking rules, which is why Chrome users moved to uBlock Origin Lite while Firefox still runs full uBlock Origin.</li>
+<li>Isolation comes in two styles: pixel streaming, where only images reach the device, and DOM reconstruction, where a cleaned page is rebuilt locally; they trade security against speed and compatibility.</li>
+<li>Infostealer malware steals session cookies to bypass MFA; Chrome's App-Bound Encryption (2024) and device-bound session credentials aim to make stolen cookies much harder to reuse.</li>
+<li>Enterprise browsers enforce copy, print and upload controls on unmanaged contractor devices without VDI, a fast-growing alternative for third-party access.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Letting users install any extension; allowlist approved ones and scrutinise permissions like 'read and change all your data on all websites'.</li>
+<li>Isolating every website slows users and breeds workarounds; isolate risky categories such as uncategorised, newly registered and emailed links.</li>
+<li>Leaving browser password saving on unmanaged profiles hands credentials to infostealers; use a managed password manager instead.</li>
+</ul>
+</div>
+<h3 id="try-it-type-into-the-address-bar-to-see-which-security-policies-your-organisation-applies">Try it: Type into the address bar to see which security policies your organisation applies<a class="headerlink" href="#try-it-type-into-the-address-bar-to-see-which-security-policies-your-organisation-applies" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>chrome://policy
+edge://policy
+</code></pre></div>
+<h4 id="popular-tools-products_7">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_7" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chrome Enterprise (Core / Premium)</strong><br><em>Google · Freemium</em></td>
+<td>Central management of Chrome policies and extensions; Premium adds data-loss prevention and advanced threat protection.</td>
+<td>IT blocks all extensions except an approved password manager on 5,000 Chrome browsers.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Edge for Business</strong><br><em>Microsoft · Free</em></td>
+<td>Edge with enterprise management, separate work profile and built-in Defender SmartScreen protection.</td>
+<td>Intune policies stop users downloading files flagged as unsafe in Edge.</td>
+</tr>
+<tr>
+<td><strong>Island Enterprise Browser</strong><br><em>Island · Commercial</em></td>
+<td>Chromium-based browser built for businesses, with controls over copying, printing, screenshots and uploads.</td>
+<td>Contractors on personal laptops reach company apps through Island but cannot download customer data.</td>
+</tr>
+<tr>
+<td><strong>Prisma Access Browser</strong><br><em>Palo Alto Networks · Commercial</em></td>
+<td>Secure enterprise browser (from the Talon acquisition) integrated with Palo Alto's SASE platform.</td>
+<td>A call centre's agents use it to access CRM safely from home computers.</td>
+</tr>
+<tr>
+<td><strong>Menlo Security</strong><br><em>Menlo Security · Cloud service</em></td>
+<td>Cloud browser isolation that renders websites remotely so malicious code never reaches the device.</td>
+<td>All links from external emails open in isolation, neutralising drive-by download attacks.</td>
+</tr>
+<tr>
+<td><strong>Cloudflare Browser Isolation</strong><br><em>Cloudflare · Cloud service</em></td>
+<td>Remote browser isolation within Cloudflare's Zero Trust platform, with controls on copy, paste and printing.</td>
+<td>Staff can read uncategorised websites safely in isolation instead of being blocked outright.</td>
+</tr>
+<tr>
+<td><strong>Zscaler Cloud Browser Isolation</strong><br><em>Zscaler · Cloud service</em></td>
+<td>Browser isolation integrated with Zscaler's secure web gateway.</td>
+<td>A bank isolates newly registered domains so phishing pages cannot capture typed passwords.</td>
+</tr>
+<tr>
+<td><strong>Google Safe Browsing</strong><br><em>Google · Free</em></td>
+<td>Service that warns users before visiting known phishing or malware sites, used by Chrome, Firefox and Safari.</td>
+<td>A user clicking a fake bank link sees a red 'Deceptive site ahead' warning.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender SmartScreen</strong><br><em>Microsoft · Free</em></td>
+<td>Built-in Windows and Edge protection that checks websites and downloads against reputation data.</td>
+<td>Windows warns before running a rarely-seen installer downloaded from an unknown site.</td>
+</tr>
+<tr>
+<td><strong>uBlock Origin</strong><br><em>Raymond Hill (gorhill) · Open source</em></td>
+<td>Free, efficient content blocker that stops ads, trackers and malicious ad-delivered content; Chrome users now get 'uBlock Origin Lite'.</td>
+<td>A user avoids fake 'download' buttons and malvertising on free software sites.</td>
+</tr>
+<tr>
+<td><strong>Firefox (Enterprise / ESR)</strong><br><em>Mozilla · Open source</em></td>
+<td>Privacy-focused browser with enterprise policies and an Extended Support Release for stable managed deployments.</td>
+<td>A university deploys Firefox ESR with strict tracking protection to lab computers.</td>
+</tr>
+<tr>
+<td><strong>LayerX</strong><br><em>LayerX Security · Commercial</em></td>
+<td>Browser security extension that adds enterprise controls, extension risk scoring and data-leak protection to the browsers staff already use.</td>
+<td>A bank discovers a widely installed extension requesting access to all websites and removes it from 1,200 browsers.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="39-virtual-desktops-secure-workspaces-vdi-daas">3.9 Virtual Desktops &amp; Secure Workspaces (VDI / DaaS)<a class="headerlink" href="#39-virtual-desktops-secure-workspaces-vdi-daas" title="Permanent link">&para;</a></h2>
+<p>With a virtual desktop, the user's Windows desktop and apps actually run on a server in a data centre or the cloud, and only a picture of the screen travels to their device. VDI (virtual desktop infrastructure) is the self-hosted version; DaaS (desktop as a service) is rented from a cloud provider. Because company data never sits on the laptop, a lost, shared or personal device exposes far less.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-09-virtual-desktops-secure-workspaces-vdi.svg" alt="Only screen pixels and input cross the gateway; data stays in the back end." loading="lazy">
+<figcaption><strong>Where a virtual desktop really runs.</strong> Only screen pixels and input cross the gateway; data stays in the back end.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like studying a museum's treasures through a live video link: you can see every detail, but the treasures never leave the vault.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Lakeside Bank hires 150 contractors who work from their own laptops. Instead of shipping them company PCs, it gives them Azure Virtual Desktop sessions with copy-paste, file downloads and local printing switched off, plus MFA at sign-in. When one contractor's laptop is infected with password-stealing malware, the attacker finds no bank data on it, and the security team simply resets the account and reviews the session logs.</p>
+</div>
+<h4 id="how-it-works_8">How it works<a class="headerlink" href="#how-it-works_8" title="Permanent link">&para;</a></h4>
+<ol>
+<li>IT builds a hardened 'golden image' of Windows with approved apps, security agents and settings.</li>
+<li>Users connect through a gateway with single sign-on and MFA, from a laptop, thin client or web browser.</li>
+<li>Policies control clipboard, drive mapping, printing, USB and screenshots, and can add on-screen watermarks.</li>
+<li>Non-persistent desktops reset to the clean image at log-off, wiping anything picked up during the session.</li>
+<li>Gateways, hosts and images are patched and monitored like any other critical server.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT teams in banking, healthcare, government and call centres, and any organisation with contractors, offshore teams or staff using personal devices.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Require MFA and patch internet-facing gateways urgently, because one stolen password or unpatched gateway (as in the 'Citrix Bleed' NetScaler attacks) exposes every desktop behind it.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Display protocols include Citrix HDX (ICA), Microsoft RDP, Omnissa Blast Extreme and HP Anyware's PCoIP; each encrypts the session and sends only screen updates and input.</li>
+<li>Non-persistent pooled desktops reset at log-off while persistent desktops keep changes; profile containers such as FSLogix carry user settings across non-persistent sessions.</li>
+<li>Windows 11 Enterprise multi-session, available through Azure Virtual Desktop, lets several users share one virtual machine, cutting cost compared with one VM per person.</li>
+<li>Gateways are prime targets: 'Citrix Bleed' (CVE-2023-4966) leaked NetScaler session tokens so attackers hijacked sessions despite MFA, and 'CitrixBleed 2' (CVE-2025-5777) followed in 2025.</li>
+<li>VDI does not make the endpoint irrelevant: keyloggers and screen-capture malware on the user's own device can still see what is typed and displayed.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Assuming VDI keeps data inside while clipboard, drive mapping and printing redirection stay open; restrict them by policy.</li>
+<li>Neglecting golden-image patching re-deploys old vulnerabilities to every desktop at each refresh; patch and rebuild images monthly.</li>
+<li>Publishing RDP directly to the internet instead of through a gateway with MFA invites brute-force and exploit attacks.</li>
+</ul>
+</div>
+<h4 id="popular-tools-products_8">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_8" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Citrix Virtual Apps and Desktops / Citrix DaaS</strong><br><em>Citrix (Cloud Software Group) · Commercial</em></td>
+<td>Long-established platform delivering virtual apps and desktops, self-hosted or as cloud-managed Citrix DaaS, with fine controls over clipboard, printing and drives.</td>
+<td>A hospital publishes its patient-records app to any ward PC or tablet, with printing allowed only to ward printers.</td>
+</tr>
+<tr>
+<td><strong>Omnissa Horizon</strong><br><em>Omnissa (formerly VMware) · Commercial</em></td>
+<td>Major VDI platform (formerly VMware Horizon) for on-premises and cloud virtual desktops, often paired with Workspace ONE.</td>
+<td>A university gives engineering students access to licensed design software from their own laptops via Horizon.</td>
+</tr>
+<tr>
+<td><strong>Azure Virtual Desktop</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Microsoft's cloud VDI running Windows desktops and apps in Azure, including multi-user Windows 11, managed with Entra ID and Intune.</td>
+<td>An insurer's offshore claims team works in Azure Virtual Desktop so customer files never reach their local PCs.</td>
+</tr>
+<tr>
+<td><strong>Windows 365</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Personal 'Cloud PCs' at a fixed monthly price; the Windows 365 Link device is a locked-down box that only connects to them.</td>
+<td>A law firm gives each new hire a Cloud PC, reachable from any device, that IT can reset in minutes.</td>
+</tr>
+<tr>
+<td><strong>Amazon WorkSpaces</strong><br><em>Amazon Web Services · Cloud service</em></td>
+<td>AWS virtual desktops for Windows and Linux; WorkSpaces Secure Browser offers a browser-only option for reaching internal web apps.</td>
+<td>A call centre gives seasonal agents WorkSpaces desktops that are deleted when their contracts end.</td>
+</tr>
+<tr>
+<td><strong>Parallels RAS</strong><br><em>Parallels · Commercial</em></td>
+<td>Simpler, lower-cost platform for publishing Windows apps and desktops, popular with mid-size organisations.</td>
+<td>An accounting firm publishes its tax software to staff working from home without exposing its file server.</td>
+</tr>
+<tr>
+<td><strong>IGEL OS</strong><br><em>IGEL · Commercial</em></td>
+<td>Read-only, locked-down operating system for thin clients and repurposed PCs that connect to virtual desktops, leaving almost nothing to infect.</td>
+<td>A council turns 2,000 ageing PCs into IGEL thin clients that only open Citrix and Azure Virtual Desktop sessions.</td>
+</tr>
+<tr>
+<td><strong>HP Anyware</strong><br><em>HP (formerly Teradici) · Commercial</em></td>
+<td>High-performance remote desktop software (PCoIP) for graphics-heavy work; only encrypted pixels leave the data centre.</td>
+<td>A film studio's editors work on unreleased footage remotely without the files ever reaching their home computers.</td>
+</tr>
+<tr>
+<td><strong>Apache Guacamole</strong><br><em>Apache Software Foundation · Open source</em></td>
+<td>Free gateway giving web-browser access to remote desktops over RDP, VNC or SSH, without installing client software.</td>
+<td>A university IT team reaches lab servers from any browser through Guacamole, protected by single sign-on and MFA.</td>
+</tr>
+<tr>
+<td><strong>Kasm Workspaces</strong><br><em>Kasm Technologies · Freemium</em></td>
+<td>Streams disposable desktops and browsers running in containers to any web browser; a free community edition is available.</td>
+<td>A threat-intelligence analyst opens suspicious websites in a throwaway Kasm browser that is destroyed afterwards.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Remote Desktop Services (RDS)</strong><br><em>Microsoft · Commercial</em></td>
+<td>Windows Server role that publishes full desktops or single apps (RemoteApp), reached securely through RD Gateway; licensed with RDS CALs.</td>
+<td>A small manufacturer publishes its ERP app via RDS and RD Gateway with MFA instead of exposing RDP to the internet.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="310-host-telemetry-visibility">3.10 Host Telemetry &amp; Visibility<a class="headerlink" href="#310-host-telemetry-visibility" title="Permanent link">&para;</a></h2>
+<p>Host telemetry tools record detailed information about what is happening on computers and servers: which programs started, who logged in, which files changed, which network connections were made. This 'flight recorder' data is sent to a central place so security teams can detect attacks and investigate incidents. Many of these tools are free and open source.</p>
+<p><strong>Key telemetry sources by operating system</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Windows</th>
+<th>Linux</th>
+<th>macOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Built-in source</strong></td>
+<td>Event Log + ETW</td>
+<td>auditd, journald</td>
+<td>Unified Log + ESF</td>
+</tr>
+<tr>
+<td><strong>Rich process data</strong></td>
+<td>Sysmon</td>
+<td>Sysmon for Linux, eBPF</td>
+<td>ESF-based agents</td>
+</tr>
+<tr>
+<td><strong>Logons</strong></td>
+<td>Events 4624 / 4625</td>
+<td>auth.log / secure</td>
+<td>Unified Log</td>
+</tr>
+<tr>
+<td><strong>Query state</strong></td>
+<td>osquery</td>
+<td>osquery</td>
+<td>osquery</td>
+</tr>
+<tr>
+<td><strong>Forwarding</strong></td>
+<td>WEF or agent</td>
+<td>rsyslog or agent</td>
+<td>Agent via MDM</td>
+</tr>
+</tbody>
+</table>
+<p><em>Built-in logs give the basics; add a rich sensor and a query tool on every platform.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a building's visitor log and CCTV combined: most days nobody looks, but after an incident it shows exactly who went where and when.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>After a suspicious alert, the security team at Pinecrest University wants to know whether an attacker's tool exists anywhere else. Using live osquery queries through Fleet, they search all 3,000 university machines for the file in under ten minutes and find it on two more servers. Sysmon logs on those servers show the exact command that downloaded it, helping them clean up and close the hole.</p>
+</div>
+<h4 id="how-it-works_9">How it works<a class="headerlink" href="#how-it-works_9" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Install a lightweight agent or enable built-in logging (such as Sysmon or auditd) on each device.</li>
+<li>Configure what to record, for example process launches, logins, file changes and network connections.</li>
+<li>Forward the data to a central SIEM, log store or console.</li>
+<li>Write detections and dashboards, and run queries to hunt for threats across all devices.</li>
+<li>During incidents, collect deeper evidence (memory, files, artefacts) from affected machines.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security analysts, threat hunters, incident responders, and IT/compliance teams who need device inventory and audit trails.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Use a tested starting configuration (for example a community Sysmon config) to capture useful events without drowning in noise.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Windows Security event IDs worth memorising: 4624 successful logon, 4625 failed logon, 4688 process creation, 4720 user created, 4732 member added to a local group, 1102 audit log cleared.</li>
+<li>Sysmon event IDs: 1 process creation with hashes and command line, 3 network connection, 11 file created, 13 registry value set, and 22 DNS query.</li>
+<li>Command-line capture for event 4688 must be switched on by Group Policy, and PowerShell Script Block Logging (event 4104) records de-obfuscated script content, one of the most valuable Windows logs.</li>
+<li>On Linux, eBPF lets tools such as Falco, Tetragon and modern EDR sensors observe system calls safely inside the kernel without loading risky kernel modules.</li>
+<li>osquery exposes hundreds of tables, such as processes, listening_ports and chrome_extensions, so the same SQL question works across Windows, macOS and Linux.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Collecting every event verbatim floods the SIEM and budget; start from a tuned config such as SwiftOnSecurity's or sysmon-modular.</li>
+<li>Keeping logs only on the device; attackers clear them (event 1102), so forward logs off-host within seconds.</li>
+<li>Ignoring clock synchronisation; unsynchronised hosts make incident timelines unreliable, so enforce NTP everywhere.</li>
+</ul>
+</div>
+<h3 id="try-it-ask-osquery-which-processes-are-running-using-sql">Try it: Ask osquery which processes are running, using SQL<a class="headerlink" href="#try-it-ask-osquery-which-processes-are-running-using-sql" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">osqueryi</span><span class="w"> </span><span class="ss">"SELECT pid, name, path FROM processes LIMIT 5;"</span>
+</code></pre></div>
+<h4 id="popular-tools-products_9">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_9" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sysmon (System Monitor)</strong><br><em>Microsoft Sysinternals · Free</em></td>
+<td>Free tool logging process launches, network connections and file changes; an optional built-in Windows 11 feature since 2026, with a Linux version.</td>
+<td>A SOC detects Word launching PowerShell, a classic sign of a malicious macro, from Sysmon logs.</td>
+</tr>
+<tr>
+<td><strong>Sysinternals Process Explorer &amp; Autoruns</strong><br><em>Microsoft Sysinternals · Free</em></td>
+<td>Free Windows tools showing every running process and every program set to start automatically, with online reputation checks.</td>
+<td>A technician uses Autoruns to find and disable a suspicious program that launches each time a PC starts.</td>
+</tr>
+<tr>
+<td><strong>osquery</strong><br><em>osquery project (Linux Foundation; created at Facebook) · Open source</em></td>
+<td>Lets you query a computer like a database using SQL to see processes, users, software and settings.</td>
+<td>IT finds every Mac still running an outdated, vulnerable version of a VPN client.</td>
+</tr>
+<tr>
+<td><strong>Fleet</strong><br><em>Fleet Device Management · Open source</em></td>
+<td>Manages osquery across thousands of devices, with live queries, policies and vulnerability reporting.</td>
+<td>A company checks in real time which laptops lack disk encryption.</td>
+</tr>
+<tr>
+<td><strong>auditd (Linux Audit)</strong><br><em>Linux Audit project / Red Hat · Open source</em></td>
+<td>Built-in Linux system that records security events like file access, logins and privileged commands.</td>
+<td>A payment processor logs every change to its password files to satisfy PCI DSS auditors.</td>
+</tr>
+<tr>
+<td><strong>Tanium</strong><br><em>Tanium · Commercial</em></td>
+<td>Real-time endpoint visibility and control platform that can query and act on huge fleets in seconds.</td>
+<td>An enterprise answers 'which machines have this vulnerable software?' across 150,000 endpoints instantly.</td>
+</tr>
+<tr>
+<td><strong>Windows Event Forwarding (WEF)</strong><br><em>Microsoft · Free</em></td>
+<td>Built-in Windows feature that sends chosen event logs from many PCs to a central collector server.</td>
+<td>A council collects login events from every PC to spot password-guessing attacks.</td>
+</tr>
+<tr>
+<td><strong>Elastic Agent / Auditbeat</strong><br><em>Elastic · Open source</em></td>
+<td>Agents that ship host logs, audit events and file-integrity data into Elasticsearch.</td>
+<td>A DevOps team tracks unexpected changes to configuration files on web servers.</td>
+</tr>
+<tr>
+<td><strong>Falco</strong><br><em>CNCF (created by Sysdig) · Open source</em></td>
+<td>CNCF runtime monitor that turns Linux system calls into security events, a useful host telemetry source for servers and containers.</td>
+<td>A hosting team forwards Falco events about unexpected outbound connections from its Linux servers into the SIEM for correlation.</td>
+</tr>
+<tr>
+<td><strong>Apple Endpoint Security Framework</strong><br><em>Apple · Platform</em></td>
+<td>macOS system interface that security tools use to monitor process, file and login events safely.</td>
+<td>A Mac EDR product uses it to see every app launch without risky kernel extensions.</td>
+</tr>
+<tr>
+<td><strong>Event Tracing for Windows (ETW)</strong><br><em>Microsoft · Platform</em></td>
+<td>High-speed logging framework inside Windows that EDR tools and Sysmon use to observe processes, network activity, PowerShell and more.</td>
+<td>An EDR uses the Threat Intelligence ETW provider to notice a process writing code into another program's memory.</td>
+</tr>
+<tr>
+<td><strong>Windows Advanced Audit Policy &amp; Security Event Log</strong><br><em>Microsoft · Free</em></td>
+<td>Built-in Windows auditing that records logons, process creation with command lines, account changes and privilege use in the Security log.</td>
+<td>IT enables command-line logging, so event 4688 shows exactly which PowerShell command an attacker ran on a file server.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="311-server-linux-host-protection">3.11 Server &amp; Linux Host Protection<a class="headerlink" href="#311-server-linux-host-protection" title="Permanent link">&para;</a></h2>
+<p>Servers run websites, databases and business systems, often on Linux, and need protection suited to them: nobody sits at the keyboard and they must stay running. Server protection combines limiting what each program is allowed to do, spotting unexpected changes to important files, and applying security fixes, sometimes without even restarting. Hardening checklists (CIS, STIG) are covered in the Governance chapter and network blockers such as Fail2ban in the Network chapter.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-11-server-linux-host-protection.svg" alt="If an attacker beats one layer, the next one limits or reveals them." loading="lazy">
+<figcaption><strong>Defence in depth on a Linux server.</strong> If an attacker beats one layer, the next one limits or reveals them.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like securing a bank vault rather than a shop: few people go in, everything has a fixed place, and anything that moves unexpectedly is investigated.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Greenleaf Online runs its web shop on 40 Ubuntu servers. AppArmor profiles stop the web server touching anything outside its own folders, AIDE checks system files every night, and Canonical Livepatch applies kernel fixes without reboots. When attackers exploit a plugin flaw, AppArmor blocks their attempt to read sensitive files, and the next AIDE check flags the file they dropped, which the team removes the same morning.</p>
+</div>
+<h4 id="how-it-works_10">How it works<a class="headerlink" href="#how-it-works_10" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Start from a minimal, hardened server build and remove services and software that are not needed.</li>
+<li>Turn on mandatory access control (SELinux or AppArmor) so each program can only touch what it needs.</li>
+<li>Install a server protection or EDR agent plus file-integrity monitoring to catch malware and unexpected changes.</li>
+<li>Apply security updates automatically, using live patching for the kernel where reboots are difficult.</li>
+<li>Send logs and alerts to the security team and investigate them like any other incident.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>System administrators, DevOps and site reliability engineers, hosting providers and security teams running on-premises or cloud servers.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Never switch SELinux or AppArmor off to 'make an app work'; fix the policy instead, because they often stop attacks that get past everything else.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>SELinux labels every file and process with a security context and enforces type-enforcement rules; modes are enforcing, permissive (log only) and disabled.</li>
+<li>AppArmor confines programs with path-based profiles in enforce or complain mode; Ubuntu ships profiles for many common services and confines Snap packages by default.</li>
+<li>PCI DSS v4.0 requirement 11.5.2 requires a change-detection mechanism such as file integrity monitoring to alert on unauthorised changes to critical files.</li>
+<li>eBPF-based enforcement in Tetragon can kill a process the instant it breaks policy, rather than only alerting afterwards as traditional log-based tools do.</li>
+<li>Live patching replaces vulnerable kernel functions in memory; it covers critical security fixes, but servers still need periodic reboots into fully updated kernels.</li>
+<li>SSH hardening basics: key-based authentication, no direct root login, password authentication disabled, and AllowUsers or AllowGroups restricting who may connect.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Running 'setenforce 0' to make an application work; fix labels, booleans or policy with audit2allow instead of disabling protection.</li>
+<li>Running file integrity monitoring without a baseline-update process, so every patch triggers alerts; tie baseline updates to change management.</li>
+<li>Assuming cloud servers are secured by the provider; under shared responsibility the operating system and applications remain yours.</li>
+</ul>
+</div>
+<h3 id="try-it-check-whether-selinux-red-hat-family-or-apparmor-ubuntudebian-is-enforcing">Try it: Check whether SELinux (Red Hat family) or AppArmor (Ubuntu/Debian) is enforcing<a class="headerlink" href="#try-it-check-whether-selinux-red-hat-family-or-apparmor-ubuntudebian-is-enforcing" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span class="c1"># RHEL, Fedora, Rocky, AlmaLinux</span>
+getenforce
+
+<span class="c1"># Ubuntu / Debian</span>
+sudo<span class="w"> </span>aa-status
+</code></pre></div>
+<h4 id="popular-tools-products_10">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_10" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SELinux (Security-Enhanced Linux)</strong><br><em>Linux kernel community (originally NSA, with Red Hat) · Open source</em></td>
+<td>Mandatory access control built into Linux, enforcing by default in RHEL, Fedora and Android, that strictly limits what each program may access.</td>
+<td>A hacked web server process cannot read users' home folders because SELinux policy forbids it.</td>
+</tr>
+<tr>
+<td><strong>AppArmor</strong><br><em>AppArmor project (Canonical) · Open source</em></td>
+<td>Simpler access control enabled by default on Ubuntu and Debian, confining programs with easy-to-read per-application profiles.</td>
+<td>A hosting company confines its database server so it can only read and write its own data folders.</td>
+</tr>
+<tr>
+<td><strong>TrendAI Vision One Server &amp; Workload Protection</strong><br><em>TrendAI (Trend Micro) · Commercial</em></td>
+<td>Server security (formerly Deep Security) with anti-malware, intrusion prevention, 'virtual patching' and file-integrity monitoring.</td>
+<td>A hospital shields an old server that cannot be patched yet, using virtual patching rules that block known exploits.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Defender for Servers</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Part of Defender for Cloud, bringing Defender for Endpoint EDR, vulnerability scanning and file-integrity monitoring to Windows and Linux servers.</td>
+<td>A company protects its Azure, AWS and on-premises servers and sees all alerts in one Defender portal.</td>
+</tr>
+<tr>
+<td><strong>Tripwire Enterprise</strong><br><em>Fortra · Commercial</em></td>
+<td>Veteran file-integrity and configuration monitoring that detects and records unauthorised changes, widely used for PCI DSS compliance.</td>
+<td>A card processor proves to auditors that every change to its payment servers was approved.</td>
+</tr>
+<tr>
+<td><strong>AIDE (Advanced Intrusion Detection Environment)</strong><br><em>AIDE project · Open source</em></td>
+<td>Free file-integrity checker that records fingerprints (hashes) of system files and reports any that change.</td>
+<td>A nightly AIDE check on a mail server reports that a system program was replaced, revealing a hidden backdoor.</td>
+</tr>
+<tr>
+<td><strong>Tetragon</strong><br><em>Cilium project (CNCF; created by Isovalent, now Cisco) · Open source</em></td>
+<td>eBPF-based tool that watches, and can block, risky process, file and network activity on Linux hosts and Kubernetes in real time.</td>
+<td>Tetragon stops any unexpected process on production servers that tries to read the SSH private-key files.</td>
+</tr>
+<tr>
+<td><strong>Canonical Livepatch (Ubuntu Pro)</strong><br><em>Canonical · Freemium</em></td>
+<td>Applies critical Linux kernel security fixes without a reboot; Ubuntu Pro is free for personal use on up to five machines.</td>
+<td>A payments API stays online while its Ubuntu servers receive an urgent kernel fix.</td>
+</tr>
+<tr>
+<td><strong>RHEL Kernel Live Patching (kpatch)</strong><br><em>Red Hat · Commercial</em></td>
+<td>Red Hat's service for applying important kernel security fixes to running RHEL systems without restarting them.</td>
+<td>A telecom operator patches a kernel flaw on its billing servers without waiting for a maintenance window.</td>
+</tr>
+<tr>
+<td><strong>TuxCare KernelCare</strong><br><em>TuxCare (CloudLinux) · Commercial</em></td>
+<td>Rebootless kernel and library patching for many Linux distributions, popular with hosting providers.</td>
+<td>A web host patches 5,000 shared-hosting servers overnight without rebooting customers' websites.</td>
+</tr>
+<tr>
+<td><strong>rkhunter (Rootkit Hunter)</strong><br><em>Rootkit Hunter project · Open source</em></td>
+<td>Classic scanner that checks Linux and Unix systems for known rootkits, hidden files and suspicious changes.</td>
+<td>A sysadmin runs rkhunter weekly on older servers and investigates a warning about a changed login program.</td>
+</tr>
+<tr>
+<td><strong>IMA / EVM (Integrity Measurement Architecture)</strong><br><em>Linux kernel community · Open source</em></td>
+<td>Kernel subsystem that measures files before use and can refuse ones whose signatures do not match, with TPM-backed attestation.</td>
+<td>A telecom's appliances refuse to run any binary not signed by the vendor, even if an attacker gains root.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="312-device-firmware-security">3.12 Device &amp; Firmware Security<a class="headerlink" href="#312-device-firmware-security" title="Permanent link">&para;</a></h2>
+<p>Firmware is the low-level software that starts a device before the operating system loads. Device and firmware security makes sure only trusted code runs at start-up and protects secrets like encryption keys inside special tamper-resistant chips. If attackers infect firmware, they can survive even a full reinstall of Windows, so these protections matter.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-12-device-firmware-security.svg" alt="Each stage checks the next; the TPM records every step so tampering is detectable." loading="lazy">
+<figcaption><strong>Secure and measured boot chain.</strong> Each stage checks the next; the TPM records every step so tampering is detectable.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a building whose foundations are inspected and sealed: if someone tampers with the foundations, every floor above becomes untrustworthy, so you check them first.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>Summit Engineering buys new laptops with TPM 2.0 chips and Secure Boot turned on. At every start-up, each piece of boot software checks the signature of the next before running it, and the TPM releases the BitLocker disk key only if nothing has been tampered with. When a laptop is stolen from a car, the thief cannot read the drive, and a fwupd scan of the company's Linux workstations also confirms all firmware is current.</p>
+</div>
+<h4 id="how-it-works_11">How it works<a class="headerlink" href="#how-it-works_11" title="Permanent link">&para;</a></h4>
+<ol>
+<li>A hardware 'root of trust' chip (TPM, Pluton, Secure Enclave or Titan) stores keys and measurements securely.</li>
+<li>Secure Boot checks digital signatures so only trusted boot loaders and operating systems start.</li>
+<li>Measurements of the boot process are recorded so tampering can be detected and reported (attestation).</li>
+<li>Disk-encryption keys are released only when the device's start-up is verified as unchanged.</li>
+<li>Firmware updates are installed regularly to fix vulnerabilities in BIOS/UEFI and device components.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>IT and security teams buying and managing hardware, device manufacturers, and high-security sectors such as defence, finance and government.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Buy devices with TPM 2.0 and Secure Boot enabled, include firmware in your patching routine, and make sure Windows devices have received Microsoft's 2023 Secure Boot certificates, because the original 2011 certificates expire during 2026.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Secure Boot keys live in UEFI variables: PK (platform key), KEK (key exchange keys), db (allowed signatures) and dbx (revoked signatures, updated to block vulnerable boot loaders).</li>
+<li>Measured Boot extends a hash of each boot component into TPM Platform Configuration Registers (PCRs); BitLocker seals its key to those values, so tampering prevents automatic unlocking.</li>
+<li>BlackLotus (2023) was the first public UEFI bootkit able to bypass Secure Boot on fully patched Windows 11, abusing CVE-2022-21894; fixing it required dbx revocations and new boot managers.</li>
+<li>Microsoft's 2011 Secure Boot certificates begin expiring in June 2026, so devices need the 2023 certificate set to keep receiving boot-manager security updates.</li>
+<li>NIST SP 800-193 defines platform firmware resiliency: protect firmware from change, detect corruption and recover to a known-good image, as self-healing BIOS features do.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Disabling Secure Boot to install a driver or Linux distribution and never re-enabling it; major distributions boot fine with the signed shim loader.</li>
+<li>Leaving firmware out of patch management; BIOS and device-firmware flaws can persist for years across an unmanaged fleet.</li>
+<li>Assuming TPM-only BitLocker stops every attack; for high-risk laptops add a pre-boot PIN to defeat TPM bus-sniffing attacks.</li>
+</ul>
+</div>
+<h3 id="try-it-check-tpm-and-secure-boot-status-windows-as-admin-and-firmware-updates-linux">Try it: Check TPM and Secure Boot status (Windows, as admin) and firmware updates (Linux)<a class="headerlink" href="#try-it-check-tpm-and-secure-boot-status-windows-as-admin-and-firmware-updates-linux" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span class="nb">Get-Tpm</span>
+<span class="nb">Confirm-SecureBootUEFI</span>
+
+<span class="c"># Linux</span>
+<span class="n">fwupdmgr</span> <span class="nb">get-updates</span>
+</code></pre></div>
+<h4 id="popular-tools-products_11">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_11" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TPM 2.0 (Trusted Platform Module)</strong><br><em>Trusted Computing Group (standard) · Hardware</em></td>
+<td>Security chip or firmware module that stores keys and records boot measurements; required by Windows 11.</td>
+<td>BitLocker stores its encryption key in the TPM so the drive unlocks only on that untouched laptop.</td>
+</tr>
+<tr>
+<td><strong>UEFI Secure Boot</strong><br><em>UEFI Forum (standard) · Framework</em></td>
+<td>Firmware feature that only lets digitally signed, trusted boot software start the computer.</td>
+<td>A bootkit replacing the Windows boot loader is blocked; IT also checks every PC has Microsoft's 2023 Secure Boot certificates before the 2011 ones expire.</td>
+</tr>
+<tr>
+<td><strong>Windows Defender System Guard</strong><br><em>Microsoft · Free</em></td>
+<td>Windows features that protect and verify the start-up process, including measured launch and attestation.</td>
+<td>Intune checks a device's boot health report before allowing access to company data.</td>
+</tr>
+<tr>
+<td><strong>Microsoft Pluton</strong><br><em>Microsoft (with AMD, Intel, Qualcomm) · Hardware</em></td>
+<td>Security processor built into the main CPU, acting as a TPM that cannot be attacked on the motherboard wiring.</td>
+<td>A new business laptop keeps its TPM keys inside Pluton, defeating attacks that sniff TPM signals on the circuit board.</td>
+</tr>
+<tr>
+<td><strong>Apple Secure Enclave</strong><br><em>Apple · Hardware</em></td>
+<td>Isolated security processor in iPhones, iPads and Macs that protects Face ID, Touch ID and encryption keys.</td>
+<td>Even if an iPhone's main system is compromised, fingerprint data stays locked inside the Secure Enclave.</td>
+</tr>
+<tr>
+<td><strong>Google Titan (Titan M2 / Titan security chips)</strong><br><em>Google · Hardware</em></td>
+<td>Google's security chips protecting Pixel phone boot and lock screens, and verifying Google's server firmware.</td>
+<td>A Pixel's Titan M2 chip limits passcode guessing so a stolen phone resists brute force.</td>
+</tr>
+<tr>
+<td><strong>Intel Boot Guard</strong><br><em>Intel · Hardware</em></td>
+<td>CPU feature that verifies the BIOS/UEFI firmware is signed by the manufacturer before running it.</td>
+<td>Tampered BIOS firmware is refused at power-on on a business laptop.</td>
+</tr>
+<tr>
+<td><strong>AMD Secure Processor (PSP)</strong><br><em>AMD · Hardware</em></td>
+<td>Dedicated security processor in AMD chips handling secure boot, firmware TPM and memory encryption features.</td>
+<td>A cloud provider uses AMD memory encryption so customer VMs are protected from the host.</td>
+</tr>
+<tr>
+<td><strong>fwupd / LVFS</strong><br><em>fwupd project / Linux Foundation · Open source</em></td>
+<td>Linux tool and free firmware service that delivers BIOS and device firmware updates from manufacturers.</td>
+<td>A Linux user updates their laptop BIOS and docking station firmware with one command.</td>
+</tr>
+<tr>
+<td><strong>Eclypsium</strong><br><em>Eclypsium · Commercial</em></td>
+<td>Scans devices and network gear for outdated, vulnerable or tampered firmware and supply-chain risks.</td>
+<td>A bank discovers servers running a BIOS with a known exploitable flaw and schedules updates.</td>
+</tr>
+<tr>
+<td><strong>HP Sure Start</strong><br><em>HP · Hardware</em></td>
+<td>Self-healing BIOS protection in HP business PCs that detects corruption and restores a clean copy.</td>
+<td>After a BIOS attack, an HP laptop automatically restores its trusted firmware at next boot.</td>
+</tr>
+<tr>
+<td><strong>Absolute Secure Endpoint</strong><br><em>Absolute Security · Commercial</em></td>
+<td>Firmware-anchored agent in many Dell, HP and Lenovo laptops that tracks devices, repairs broken security apps and can freeze or wipe stolen ones.</td>
+<td>When a sales laptop is stolen, IT freezes it remotely and confirms its encrypted drive was never accessed.</td>
+</tr>
+<tr>
+<td><strong>CHIPSEC</strong><br><em>Intel (open-source project) · Open source</em></td>
+<td>Framework for checking platform and firmware security settings, used by researchers and auditors.</td>
+<td>An auditor confirms that BIOS write-protection is correctly enabled on test laptops.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="313-removable-media-device-control">3.13 Removable Media &amp; Device Control<a class="headerlink" href="#313-removable-media-device-control" title="Permanent link">&para;</a></h2>
+<p>Device control tools decide which USB drives, phones, printers, Bluetooth gadgets and other peripherals can connect to a computer. They can block unknown USB sticks, allow only company-approved encrypted drives, or make drives read-only. This stops both malware arriving on a USB stick and sensitive files leaving on one.</p>
+<figure class="fig fig-diagram">
+<img src="img/03-13-removable-media-device-control.svg" alt="Rules can be as precise as one serial number on one approved drive." loading="lazy">
+<figcaption><strong>What happens when a USB device is plugged in.</strong> Rules can be as precise as one serial number on one approved drive.</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Think of it like…</p>
+<p>It is like a reception desk that only lets in visitors with an approved badge, and checks bags on the way out.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Real-world example</p>
+<p>At Oakridge Pharma, staff were copying research files to personal USB sticks to work from home. The security team uses Microsoft Defender Device Control to block all USB storage except company-issued encrypted drives, which are allowed but logged. A month later, an employee finds a USB stick in the car park and plugs it in out of curiosity; it is blocked, and the security team is alerted.</p>
+</div>
+<h4 id="how-it-works_12">How it works<a class="headerlink" href="#how-it-works_12" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Inventory the kinds of devices people actually need (keyboards, headsets, approved USB drives).</li>
+<li>Create policies by device type, vendor, serial number or user group.</li>
+<li>Block, allow, or allow read-only access; optionally require encryption for anything written.</li>
+<li>Log every file copied to removable media for audit and investigation.</li>
+<li>Provide a request process for temporary exceptions.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Who uses it</p>
+<p>Security and data-protection teams in regulated industries, research organisations, government, and any company worried about data leaks or USB-borne malware.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Key takeaway</p>
+<p>Block unknown USB storage by default and issue approved, encrypted drives to the few people who really need them.</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Going deeper</p>
+<ul>
+<li>Devices are identified by class (mass storage, keyboard, printer), vendor ID (VID), product ID (PID) and serial number, so rules can approve one specific encrypted drive.</li>
+<li>BadUSB-style gadgets pretend to be keyboards and type commands within seconds; USBGuard rules and controls on new input devices stop these unexpected 'keyboards'.</li>
+<li>Device control and DLP complement each other: device control decides whether a drive may connect; DLP decides which content may be written to it.</li>
+<li>Shadowing keeps a copy of every file written to removable media; it helps investigations but stores sensitive data, so protect and expire those copies carefully.</li>
+<li>Removable storage is only one path: Bluetooth transfers, phones over MTP, SD cards, Thunderbolt docks and printers can all move data and need policies too.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common mistakes &amp; misconceptions</p>
+<ul>
+<li>Blocking every USB device, including keyboards and headsets; target storage classes specifically and test with real peripherals before rollout.</li>
+<li>Approving a drive model rather than serial numbers means anyone can buy an identical one; approve serials or centrally managed encrypted drives.</li>
+<li>Writing a Windows-only policy and forgetting Macs and Linux machines leaves an easy bypass for data theft.</li>
+</ul>
+</div>
+<h3 id="try-it-list-usb-devices-and-their-allowblock-status-on-linux-with-usbguard">Try it: List USB devices and their allow/block status on Linux with USBGuard<a class="headerlink" href="#try-it-list-usb-devices-and-their-allowblock-status-on-linux-with-usbguard" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>sudo<span class="w"> </span>usbguard<span class="w"> </span>list-devices
+</code></pre></div>
+<h4 id="popular-tools-products_12">Popular tools &amp; products<a class="headerlink" href="#popular-tools-products_12" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microsoft Defender for Endpoint Device Control</strong><br><em>Microsoft · Cloud service</em></td>
+<td>Controls USB storage, printers and Bluetooth on Windows and Mac, configured via Intune or Group Policy.</td>
+<td>A council allows only its BitLocker To Go-encrypted USB sticks and blocks all others.</td>
+</tr>
+<tr>
+<td><strong>Endpoint Protector</strong><br><em>Netwrix (formerly CoSoSys) · Commercial</em></td>
+<td>Device control and data-loss prevention for Windows, macOS and Linux, with enforced USB encryption.</td>
+<td>A design studio blocks USB copies of client files on Macs while allowing mice and keyboards.</td>
+</tr>
+<tr>
+<td><strong>Ivanti Device Control</strong><br><em>Ivanti · Commercial</em></td>
+<td>Manages access to removable devices and ports, with encryption enforcement and file-copy auditing.</td>
+<td>A defence supplier logs exactly which files each engineer copies to approved drives.</td>
+</tr>
+<tr>
+<td><strong>ManageEngine Device Control Plus</strong><br><em>ManageEngine (Zoho) · Commercial</em></td>
+<td>Controls USB and peripheral access with trusted-device lists, temporary access and file shadowing.</td>
+<td>IT gives an auditor two hours of USB access, which then expires automatically.</td>
+</tr>
+<tr>
+<td><strong>CrowdStrike Falcon Device Control</strong><br><em>CrowdStrike · Cloud service</em></td>
+<td>USB device policy enforcement and visibility delivered through the existing Falcon sensor.</td>
+<td>A retailer sees every USB device plugged into store PCs and blocks unapproved storage.</td>
+</tr>
+<tr>
+<td><strong>Sophos Peripheral Control</strong><br><em>Sophos · Commercial</em></td>
+<td>Part of Sophos endpoint protection, allowing, blocking or making read-only various device types.</td>
+<td>A school makes USB drives read-only on student PCs so work can be opened but data cannot be exported.</td>
+</tr>
+<tr>
+<td><strong>ESET Device Control</strong><br><em>ESET · Commercial</em></td>
+<td>Device control built into ESET business endpoint products, managed from ESET PROTECT.</td>
+<td>An office blocks Bluetooth file transfers on all workstations from one console.</td>
+</tr>
+<tr>
+<td><strong>Trellix Device Control</strong><br><em>Trellix · Commercial</em></td>
+<td>Monitors and controls data copied to removable media, often used alongside Trellix DLP.</td>
+<td>A bank prevents files tagged 'Confidential' from being copied to any USB drive.</td>
+</tr>
+<tr>
+<td><strong>Group Policy / Intune Removable Storage Restrictions</strong><br><em>Microsoft · Free</em></td>
+<td>Built-in Windows settings that deny read or write access to removable drives.</td>
+<td>A small business disables USB storage on all PCs with a single Intune policy.</td>
+</tr>
+<tr>
+<td><strong>USBGuard</strong><br><em>USBGuard project (Red Hat-sponsored) · Open source</em></td>
+<td>Linux tool that allows or blocks USB devices based on rules, defending against rogue USB gadgets.</td>
+<td>A Linux server blocks any new USB device, including a 'keyboard' that is really an attack tool.</td>
+</tr>
+<tr>
+<td><strong>Kingston IronKey</strong><br><em>Kingston · Hardware</em></td>
+<td>Hardware-encrypted USB drives with tamper resistance, often the 'approved' drive in device-control policies.</td>
+<td>A lawyer carries case files on an IronKey that wipes itself after too many wrong passwords.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="network-perimeter-security.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2. Network &amp; Perimeter Security">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2. Network & Perimeter Security
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="security-operations-detect-respond-recover.html" class="md-footer__link md-footer__link--next" aria-label="Next: 4. Security Operations — Detect, Respond &amp; Recover">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                4. Security Operations — Detect, Respond & Recover
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

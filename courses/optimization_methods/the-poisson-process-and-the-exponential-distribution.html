@@ -1,0 +1,2673 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/optimization_methods/the-poisson-process-and-the-exponential-distribution.html">
+  
+  
+    <link rel="prev" href="characteristics-of-queuing-systems.html">
+  
+  
+    <link rel="next" href="birth-death-processes-and-steady-state-balance-equations.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>22. The Poisson Process and the Exponential Distribution - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#221-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              22. The Poisson Process and the Exponential Distribution
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Optimization Methods</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-research-and-the-modelling-approach.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operations Research and the Modelling Approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-linear-programming-and-formulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Introduction to Linear Programming and Formulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-graphical-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The Graphical Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-i-theory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The Simplex Method I: Theory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-ii-the-tableau-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="big-m-two-phase-methods-and-special-cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Big-M, Two-Phase Methods and Special Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duality-and-sensitivity-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Duality and Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-transportation-problem-formulation-and-initial-solutions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. The Transportation Problem: Formulation and Initial Solutions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transportation-optimality-the-modi-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Transportation Optimality: The MODI Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-assignment-problem-and-the-travelling-salesman-problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mixed-strategies-and-the-odds-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Mixed Strategies and the Odds Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="graphical-and-lp-solution-of-games.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Graphical and LP Solution of Games
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-2-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Sequencing: n Jobs Through 2 Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-3-machines-2-jobs-through-m.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Sequencing: n Jobs Through 3 Machines, 2 Jobs Through m Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integer-programming-and-gomory-s-cutting-plane-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Integer Programming and Gomory's Cutting-Plane Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Gomory's Method for Mixed Integer Programmes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-branch-and-bound-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Network Scheduling: The Critical Path Method (CPM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pert-and-probabilistic-project-scheduling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. PERT and Probabilistic Project Scheduling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-of-queuing-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Characteristics of Queuing Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-poisson-process-and-the-exponential-distribution.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-why-these-two-distributions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 Why These Two Distributions?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-the-poisson-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 The Poisson Process
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.3 The Poisson Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-axioms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three axioms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deriving-the-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deriving the distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superposition-and-thinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Superposition and thinning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-exponential-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The Exponential Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The Exponential Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deriving-it-from-the-poisson-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deriving it from the Poisson process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-the-memoryless-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 The Memoryless Property
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.5 The Memoryless Property">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it means
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-is-both-essential-and-questionable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it is both essential and questionable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-practical-consequence-of-getting-it-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The practical consequence of getting it wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#228-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Birth–Death Processes and Steady-State Balance Equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-m-m-1-fcfs-derived-in-full.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Model I: (M/M/1):(∞/FCFS) Derived in Full
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-applications-costing-and-design-decisions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Model I: Applications, Costing and Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-ii-m-m-1-n-fcfs-the-finite-capacity-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Model II: (M/M/1):(N/FCFS), the Finite-Capacity Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-iii-m-m-c-fcfs-the-multi-server-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Model III: (M/M/c):(∞/FCFS), the Multi-Server Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models-iv-and-v-m-m-c-n-fcfs-and-finite-source-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Models IV and V: (M/M/c):(N/FCFS) and Finite-Source Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications-and-the-economic-analysis-of-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Applications and the Economic Analysis of Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inventory-control-concepts-and-cost-structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Inventory Control: Concepts and Cost Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-eoq-model-with-no-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. The EOQ Model with No Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eoq-with-shortages-permitted-the-backorder-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. The Production (Finite Replenishment) Model without Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-model-with-shortages-permitted.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Production Model with Shortages Permitted
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantity-discounts-and-consolidation-of-unit-iii.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantity Discounts and Consolidation of Unit III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-non-linear-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Introduction to Non-Linear Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conditions-for-unconstrained-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Conditions for Unconstrained Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="one-dimensional-minimisation-bracketing-and-elimination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. One-Dimensional Minimisation: Bracketing and Elimination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-fibonacci-search-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. The Fibonacci Search Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="golden-section-search.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. Golden Section Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpolation-and-gradient-based-one-dimensional-methods.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Interpolation and Gradient-Based One-Dimensional Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unconstrained-multivariable-optimisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Unconstrained Multivariable Optimisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constrained-optimisation-graphical-solution-and-lagrange.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. Constrained Optimisation: Graphical Solution and Lagrange Multipliers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-kuhn-tucker-kkt-conditions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. The Kuhn–Tucker (KKT) Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quadratic-programming-and-course-capstone.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Quadratic Programming and Course Capstone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#221-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-why-these-two-distributions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 Why These Two Distributions?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223-the-poisson-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 The Poisson Process
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.3 The Poisson Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-axioms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three axioms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deriving-the-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deriving the distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superposition-and-thinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Superposition and thinning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224-the-exponential-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 The Exponential Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 The Exponential Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deriving-it-from-the-poisson-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deriving it from the Poisson process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225-the-memoryless-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 The Memoryless Property
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.5 The Memoryless Property">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it means
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-is-both-essential-and-questionable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it is both essential and questionable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-practical-consequence-of-getting-it-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The practical consequence of getting it wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#226-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#227-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#228-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-22-the-poisson-process-and-the-exponential-distribution">Lesson 22: The Poisson Process and the Exponential Distribution<a class="headerlink" href="#lesson-22-the-poisson-process-and-the-exponential-distribution" title="Permanent link">&para;</a></h1>
+<h2 id="221-learning-outcomes">22.1 Learning Outcomes<a class="headerlink" href="#221-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>State the <strong>axioms</strong> of a Poisson process and derive its probability mass function.</li>
+<li>Compute Poisson probabilities and state the distribution's mean and variance.</li>
+<li>Derive the <strong>exponential</strong> inter-arrival distribution from the Poisson process.</li>
+<li>State and prove the <strong>memoryless property</strong> and explain its consequences.</li>
+<li>Test whether real data are consistent with a Poisson process.</li>
+</ol>
+<h2 id="222-why-these-two-distributions">22.2 Why These Two Distributions?<a class="headerlink" href="#222-why-these-two-distributions" title="Permanent link">&para;</a></h2>
+<p>The whole of classical queuing theory rests on them.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Poisson counts} \iff \textbf{Exponential times}\ } \]</div>
+<p>These are <strong>two descriptions of the same process</strong>. If arrivals occur as a Poisson process with rate
+<span class="arithmatex">\(\lambda\)</span>, then the <em>number</em> in any interval is Poisson and the <em>gaps between</em> arrivals are
+exponential.</p>
+<p><strong>The "M" in <span class="arithmatex">\(M/M/1\)</span> stands for Markovian</strong> — precisely this pair.</p>
+<h2 id="223-the-poisson-process">22.3 The Poisson Process<a class="headerlink" href="#223-the-poisson-process" title="Permanent link">&para;</a></h2>
+<h3 id="the-three-axioms">The three axioms<a class="headerlink" href="#the-three-axioms" title="Permanent link">&para;</a></h3>
+<p>A counting process <span class="arithmatex">\(\{N(t),\ t\ge0\}\)</span> is a <strong>Poisson process with rate <span class="arithmatex">\(\lambda\)</span></strong> if:</p>
+<p><strong>(A1) Independence.</strong> The numbers of events in disjoint intervals are <strong>independent</strong>.</p>
+<p><strong>(A2) Stationarity.</strong> The distribution of the number of events depends only on the <strong>length</strong> of the
+interval, not its position.</p>
+<p><strong>(A3) Orderliness.</strong> For a small interval <span class="arithmatex">\(\Delta t\)</span>:</p>
+<div class="arithmatex">\[ \Pr[\text{1 event in } \Delta t] = \lambda\,\Delta t + o(\Delta t) \]</div>
+<div class="arithmatex">\[ \Pr[\ge2 \text{ events in } \Delta t] = o(\Delta t) \]</div>
+<div class="arithmatex">\[ \Pr[\text{0 events in } \Delta t] = 1 - \lambda\,\Delta t + o(\Delta t) \]</div>
+<p><strong>In words:</strong> events occur <strong>independently</strong>, at a <strong>constant average rate</strong>, and <strong>one at a time</strong>.</p>
+<h3 id="deriving-the-distribution">Deriving the distribution<a class="headerlink" href="#deriving-the-distribution" title="Permanent link">&para;</a></h3>
+<p>Let <span class="arithmatex">\(P_n(t) = \Pr[N(t) = n]\)</span>.</p>
+<p><strong>For <span class="arithmatex">\(n = 0\)</span>.</strong> The system is empty at <span class="arithmatex">\(t+\Delta t\)</span> only if it was empty at <span class="arithmatex">\(t\)</span> and no arrival came:</p>
+<div class="arithmatex">\[ P_0(t+\Delta t) = P_0(t)\,(1 - \lambda\Delta t) \]</div>
+<div class="arithmatex">\[ \frac{P_0(t+\Delta t) - P_0(t)}{\Delta t} = -\lambda P_0(t) \]</div>
+<p>Letting <span class="arithmatex">\(\Delta t\to0\)</span>:</p>
+<div class="arithmatex">\[ \frac{dP_0}{dt} = -\lambda P_0(t), \qquad P_0(0) = 1 \]</div>
+<div class="arithmatex">\[ \boxed{\ P_0(t) = e^{-\lambda t}\ } \]</div>
+<p><strong>For <span class="arithmatex">\(n \ge 1\)</span>.</strong> Either there were <span class="arithmatex">\(n\)</span> at time <span class="arithmatex">\(t\)</span> and none arrived, or <span class="arithmatex">\(n-1\)</span> and one arrived:</p>
+<div class="arithmatex">\[ P_n(t+\Delta t) = P_n(t)(1-\lambda\Delta t) + P_{n-1}(t)\,\lambda\Delta t \]</div>
+<div class="arithmatex">\[ \frac{dP_n}{dt} = -\lambda P_n(t) + \lambda P_{n-1}(t) \]</div>
+<p>Solving recursively (by induction, using an integrating factor <span class="arithmatex">\(e^{\lambda t}\)</span>):</p>
+<div class="arithmatex">\[ \boxed{\ P_n(t) \ =\ \frac{(\lambda t)^{n}e^{-\lambda t}}{n!}, \qquad n = 0,1,2,\ldots\ } \]</div>
+<p><strong>This is the Poisson distribution with parameter <span class="arithmatex">\(\lambda t\)</span>.</strong></p>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ E[N(t)] = \lambda t, \qquad \mathrm{Var}[N(t)] = \lambda t\ } \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{MEAN} = \textbf{VARIANCE} \ \textbf{— the signature of a Poisson process.}\ } \]</div>
+<p><strong>This is the standard diagnostic.</strong> If sample data have variance far from the mean, the process is
+<strong>not</strong> Poisson.</p>
+<table>
+<thead>
+<tr>
+<th>Variance vs mean</th>
+<th>Diagnosis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\sigma^2 \approx \mu\)</span></td>
+<td>consistent with Poisson</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma^2 &gt; \mu\)</span> (<strong>overdispersed</strong>)</td>
+<td>clustered/batch arrivals; a time-varying rate</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma^2 &lt; \mu\)</span> (<strong>underdispersed</strong>)</td>
+<td>more regular than random; appointments, scheduling</td>
+</tr>
+</tbody>
+</table>
+<h3 id="superposition-and-thinning">Superposition and thinning<a class="headerlink" href="#superposition-and-thinning" title="Permanent link">&para;</a></h3>
+<p>Two further properties, both practically important:</p>
+<p><strong>Superposition.</strong> The <strong>sum</strong> of independent Poisson processes with rates <span class="arithmatex">\(\lambda_1,\lambda_2\)</span> is
+Poisson with rate <span class="arithmatex">\(\lambda_1+\lambda_2\)</span>.</p>
+<p><strong>Thinning.</strong> If each event of a Poisson process with rate <span class="arithmatex">\(\lambda\)</span> is independently retained with
+probability <span class="arithmatex">\(p\)</span>, the retained events form a Poisson process with rate <span class="arithmatex">\(\lambda p\)</span>.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{This is why merged customer streams stay Poisson, and why a fraction of traffic is still Poisson.}\ } \]</div>
+<h2 id="224-the-exponential-distribution">22.4 The Exponential Distribution<a class="headerlink" href="#224-the-exponential-distribution" title="Permanent link">&para;</a></h2>
+<h3 id="deriving-it-from-the-poisson-process">Deriving it from the Poisson process<a class="headerlink" href="#deriving-it-from-the-poisson-process" title="Permanent link">&para;</a></h3>
+<p>Let <span class="arithmatex">\(T\)</span> be the time until the <strong>next</strong> arrival. Then</p>
+<div class="arithmatex">\[ \Pr[T &gt; t] = \Pr[\text{no arrivals in } (0,t]] = P_0(t) = e^{-\lambda t} \]</div>
+<p>So the cumulative distribution function is</p>
+<div class="arithmatex">\[ \boxed{\ F(t) = \Pr[T\le t] = 1 - e^{-\lambda t}, \qquad t \ge 0\ } \]</div>
+<p>and differentiating gives the density</p>
+<div class="arithmatex">\[ \boxed{\ f(t) = \lambda e^{-\lambda t}, \qquad t\ge0\ } \]</div>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ E[T] = \frac{1}{\lambda}, \qquad \mathrm{Var}[T] = \frac{1}{\lambda^{2}},
+\qquad \sigma_T = \frac{1}{\lambda} \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{MEAN} = \textbf{STANDARD DEVIATION} \ \text{— so the coefficient of variation is exactly 1.}\ } \]</div>
+<p><strong>This is a high-variability distribution.</strong> A "10-minute average" service time that is exponential
+has a standard deviation of 10 minutes: some customers take 30 seconds, others 40 minutes.</p>
+<p><strong>The median is <span class="arithmatex">\(\frac{\ln 2}{\lambda} = 0.693/\lambda\)</span> — well below the mean</strong>, so the distribution
+is strongly right-skewed. <strong>Most service times are shorter than average; a few are far longer.</strong></p>
+<h2 id="225-the-memoryless-property">22.5 The Memoryless Property<a class="headerlink" href="#225-the-memoryless-property" title="Permanent link">&para;</a></h2>
+<p><strong>Theorem.</strong> The exponential is the <strong>only</strong> continuous distribution with</p>
+<div class="arithmatex">\[ \boxed{\ \Pr[T &gt; s+t \mid T &gt; s] \ =\ \Pr[T &gt; t] \qquad \text{for all } s,t \ge 0\ } \]</div>
+<p><strong>Proof.</strong></p>
+<div class="arithmatex">\[ \Pr[T&gt;s+t \mid T&gt;s] = \frac{\Pr[T&gt;s+t \ \cap\ T&gt;s]}{\Pr[T&gt;s]}
+= \frac{\Pr[T&gt;s+t]}{\Pr[T&gt;s]} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = \Pr[T&gt;t] \]</div>
+<p><span class="arithmatex">\(\blacksquare\)</span></p>
+<h3 id="what-it-means">What it means<a class="headerlink" href="#what-it-means" title="Permanent link">&para;</a></h3>
+<p><strong>The process has no memory of elapsed time.</strong> If a customer has already been in service for 10
+minutes, the distribution of the <em>remaining</em> service time is exactly the same as at the start.</p>
+<p><strong>Concretely:</strong></p>
+<ul>
+<li>"This bulb has burned 1000 hours" tells you nothing about its remaining life.</li>
+<li>"The last bus left 20 minutes ago" tells you nothing about when the next will come.</li>
+<li>"The machine has run 5 hours since the last breakdown" gives no information about the next one.</li>
+</ul>
+<h3 id="why-it-is-both-essential-and-questionable">Why it is both essential and questionable<a class="headerlink" href="#why-it-is-both-essential-and-questionable" title="Permanent link">&para;</a></h3>
+<p><strong>Why it is essential.</strong> Memorylessness is what makes queuing models <strong>Markovian</strong> — the future
+depends only on the <em>current number in the system</em>, not on how long anyone has been waiting. Without
+it, we would need to track every customer's elapsed time, and the state space would be infinite and
+continuous.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Memorylessness is what makes the mathematics tractable.}\ } \]</div>
+<p><strong>Why it is questionable.</strong> Real service times often are <strong>not</strong> memoryless:</p>
+<ul>
+<li>A haircut takes 20 ± 3 minutes — nearly deterministic.</li>
+<li>A machine that has run 5 hours is <em>more</em> likely to fail soon (wear-out).</li>
+<li>A customer already served 10 minutes is often <em>nearly finished</em>.</li>
+</ul>
+<p><strong>When the exponential assumption is reasonable.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Reasonable</th>
+<th>Questionable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arrivals</strong> from a large independent population</td>
+<td>Scheduled arrivals (appointments)</td>
+</tr>
+<tr>
+<td>Telephone call arrivals</td>
+<td>Batch arrivals (a tour bus)</td>
+</tr>
+<tr>
+<td>Radioactive decay, equipment failures in the useful-life phase</td>
+<td>Wear-out failures</td>
+</tr>
+<tr>
+<td>Highly variable service (hospital A&amp;E, IT helpdesk)</td>
+<td>Standardised service (car wash, assembly)</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{The exponential assumption is usually far better for ARRIVALS than for SERVICE times.}\ } \]</div>
+<h3 id="the-practical-consequence-of-getting-it-wrong">The practical consequence of getting it wrong<a class="headerlink" href="#the-practical-consequence-of-getting-it-wrong" title="Permanent link">&para;</a></h3>
+<p>For <span class="arithmatex">\(M/G/1\)</span> (general service), the <strong>Pollaczek–Khinchine formula</strong> gives</p>
+<div class="arithmatex">\[ L_q = \frac{\lambda^{2}\sigma_s^{2} + \rho^{2}}{2(1-\rho)} \]</div>
+<p>where <span class="arithmatex">\(\sigma_s^2\)</span> is the <strong>variance</strong> of service time. Compare:</p>
+<table>
+<thead>
+<tr>
+<th>Service distribution</th>
+<th><span class="arithmatex">\(\sigma_s^2\)</span></th>
+<th><span class="arithmatex">\(L_q\)</span> at <span class="arithmatex">\(\rho = 0.8\)</span>, <span class="arithmatex">\(\mu = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deterministic (D)</strong></td>
+<td>0</td>
+<td><span class="arithmatex">\(\dfrac{0+0.64}{0.4} = \mathbf{1.60}\)</span></td>
+</tr>
+<tr>
+<td><strong>Exponential (M)</strong></td>
+<td><span class="arithmatex">\(1/\mu^2 = 1\)</span></td>
+<td><span class="arithmatex">\(\dfrac{0.64+0.64}{0.4} = \mathbf{3.20}\)</span></td>
+</tr>
+<tr>
+<td>High variability</td>
+<td><span class="arithmatex">\(4/\mu^2\)</span></td>
+<td><span class="arithmatex">\(\dfrac{2.56+0.64}{0.4} = \mathbf{8.00}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{Exponential service gives EXACTLY TWICE the queue of deterministic service.}\ } \]</div>
+<p><strong>So <span class="arithmatex">\(M/M/1\)</span> results are a conservative (pessimistic) estimate</strong> when real service is more regular —
+which is usually the case. This is a useful thing to tell a client.</p>
+<h2 id="226-solved-problems">22.6 Solved Problems<a class="headerlink" href="#226-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-poisson-probability-calculations">Problem 1 — Poisson probability calculations<a class="headerlink" href="#problem-1-poisson-probability-calculations" title="Permanent link">&para;</a></h4>
+<p><em>Customers arrive at a bank at a Poisson rate of 12 per hour. Find the probability that in a
+15-minute period there are (a) exactly 2 arrivals, (b) no arrivals, (c) at least 3 arrivals,
+(d) at most 1 arrival.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Set up.</strong> <span class="arithmatex">\(\lambda = 12\)</span>/hour and <span class="arithmatex">\(t = 15\)</span> minutes <span class="arithmatex">\(= 0.25\)</span> hours, so</p>
+<div class="arithmatex">\[ \lambda t = 12\times0.25 = \mathbf{3} \]</div>
+<p><strong>(a) Exactly 2.</strong></p>
+<div class="arithmatex">\[ P_2 = \frac{3^{2}e^{-3}}{2!} = \frac{9(0.049787)}{2} = \frac{0.448084}{2} = \mathbf{0.2240} \]</div>
+<p><strong>(b) No arrivals.</strong></p>
+<div class="arithmatex">\[ P_0 = \frac{3^{0}e^{-3}}{0!} = e^{-3} = \mathbf{0.0498} \]</div>
+<p><strong>(c) At least 3.</strong></p>
+<div class="arithmatex">\[ \Pr[N\ge3] = 1 - P_0 - P_1 - P_2 \]</div>
+<div class="arithmatex">\[ P_1 = \frac{3^{1}e^{-3}}{1!} = 3(0.049787) = 0.1494 \]</div>
+<div class="arithmatex">\[ \Pr[N\ge3] = 1 - 0.0498 - 0.1494 - 0.2240 = \mathbf{0.5768} \]</div>
+<p><strong>(d) At most 1.</strong></p>
+<div class="arithmatex">\[ \Pr[N\le1] = P_0 + P_1 = 0.0498 + 0.1494 = \mathbf{0.1992} \]</div>
+<p><strong>Summary table.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th><span class="arithmatex">\(P_n\)</span></th>
+<th>Cumulative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0498</td>
+<td>0.0498</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.1494</td>
+<td>0.1992</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.2240</td>
+<td>0.4232</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.2240</td>
+<td>0.6472</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.1680</td>
+<td>0.8153</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.1008</td>
+<td>0.9161</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Two observations.</strong></p>
+<ol>
+<li>
+<p><strong><span class="arithmatex">\(P_2 = P_3 = 0.2240\)</span>.</strong> For a Poisson with integer mean <span class="arithmatex">\(\lambda t = 3\)</span>, the distribution has
+    <strong>two modes</strong>, at <span class="arithmatex">\(n = \lambda t - 1\)</span> and <span class="arithmatex">\(n = \lambda t\)</span>. <em>(In general the mode is
+    <span class="arithmatex">\(\lfloor \lambda t\rfloor\)</span>.)</em></p>
+</li>
+<li>
+<p><strong>Check the mean and variance.</strong></p>
+<div class="arithmatex">\[ E[N] = \lambda t = 3, \qquad \mathrm{Var}[N] = 3, \qquad \sigma = \sqrt3 = 1.732 \]</div>
+<p>So arrivals in a 15-minute window are <span class="arithmatex">\(3 \pm 1.73\)</span> — <strong>substantial relative variability.</strong> With
+probability 0.58 there are 3 or more; with probability 0.05 there are none at all.</p>
+</li>
+</ol>
+<div class="arithmatex">\[ \boxed{\ \textbf{A "12 per hour" bank is empty for 5 \% of its quarter-hours. Averages conceal a great deal.}\ } \]</div>
+<h4 id="problem-2-exponential-calculations-and-the-memoryless-property">Problem 2 — Exponential calculations and the memoryless property<a class="headerlink" href="#problem-2-exponential-calculations-and-the-memoryless-property" title="Permanent link">&para;</a></h4>
+<p><em>Service times at a counter are exponential with mean 6 minutes. Find (a) <span class="arithmatex">\(\Pr[T \le 4]\)</span>;
+(b) <span class="arithmatex">\(\Pr[T &gt; 10]\)</span>; (c) <span class="arithmatex">\(\Pr[T &gt; 16 \mid T &gt; 6]\)</span>; (d) the median service time.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Set up.</strong> Mean <span class="arithmatex">\(= 1/\mu = 6\)</span> minutes, so <span class="arithmatex">\(\mu = \tfrac16\)</span> per minute.</p>
+<p><strong>(a) <span class="arithmatex">\(\Pr[T\le4]\)</span>.</strong></p>
+<div class="arithmatex">\[ F(4) = 1 - e^{-4/6} = 1 - e^{-0.6667} = 1 - 0.5134 = \mathbf{0.4866} \]</div>
+<p><strong>(b) <span class="arithmatex">\(\Pr[T&gt;10]\)</span>.</strong></p>
+<div class="arithmatex">\[ 1 - F(10) = e^{-10/6} = e^{-1.6667} = \mathbf{0.1889} \]</div>
+<p><strong>(c) <span class="arithmatex">\(\Pr[T&gt;16\mid T&gt;6]\)</span> — the memoryless test.</strong></p>
+<div class="arithmatex">\[ \Pr[T&gt;16\mid T&gt;6] = \frac{\Pr[T&gt;16]}{\Pr[T&gt;6]} = \frac{e^{-16/6}}{e^{-6/6}}
+= \frac{e^{-2.6667}}{e^{-1}} = e^{-1.6667} = \mathbf{0.1889} \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{IDENTICAL to (b).}\ } \]</div>
+<p><strong>The interpretation.</strong> A customer who has <em>already</em> been served for 6 minutes has exactly the same
+probability of needing 10 <strong>more</strong> minutes as a customer just beginning.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{The 6 minutes already spent count for NOTHING. That is memorylessness.}\ } \]</div>
+<p><strong>(d) The median.</strong></p>
+<div class="arithmatex">\[ 1 - e^{-m/6} = 0.5 \ \Longrightarrow\ e^{-m/6} = 0.5 \ \Longrightarrow\ \frac{m}{6} = \ln2 \]</div>
+<div class="arithmatex">\[ m = 6\ln2 = 6(0.6931) = \mathbf{4.16\ \text{minutes}} \]</div>
+<p><strong>The mean is 6 minutes but the median is only 4.16.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \textbf{More than HALF of all customers are served in under 4.2 minutes, yet the average is 6.}\ } \]</div>
+<p><strong>Why.</strong> The distribution is strongly right-skewed: a small number of very long services pull the
+mean up. Specifically,</p>
+<div class="arithmatex">\[ \Pr[T &gt; 3\times\text{mean}] = \Pr[T&gt;18] = e^{-3} = 0.0498 \]</div>
+<p><strong>One customer in twenty takes more than three times the average.</strong> Reporting only the mean badly
+misrepresents customer experience — a lesson that applies to any right-skewed service metric.</p>
+<h4 id="problem-3-testing-whether-data-are-poisson">Problem 3 — Testing whether data are Poisson<a class="headerlink" href="#problem-3-testing-whether-data-are-poisson" title="Permanent link">&para;</a></h4>
+<p><em>A shop records the number of customers arriving in each of 100 five-minute intervals:</em></p>
+<table>
+<thead>
+<tr>
+<th>Arrivals <span class="arithmatex">\(n\)</span></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>≥6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frequency</td>
+<td>12</td>
+<td>27</td>
+<td>28</td>
+<td>19</td>
+<td>9</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><em>Test whether the arrivals are consistent with a Poisson process.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Step 1 — estimate the mean.</strong></p>
+<div class="arithmatex">\[ \bar n = \frac{0(12)+1(27)+2(28)+3(19)+4(9)+5(4)+6(1)}{100} \]</div>
+<div class="arithmatex">\[ = \frac{0+27+56+57+36+20+6}{100} = \frac{202}{100} = \mathbf{2.02} \]</div>
+<p><strong>Step 2 — compute the sample variance.</strong></p>
+<div class="arithmatex">\[ \overline{n^2} = \frac{0+27+112+171+144+100+36}{100} = \frac{590}{100} = 5.90 \]</div>
+<div class="arithmatex">\[ s^2 = \overline{n^2} - \bar n^2 = 5.90 - (2.02)^2 = 5.90 - 4.0804 = \mathbf{1.82} \]</div>
+<p><strong>Step 3 — the mean/variance test.</strong></p>
+<div class="arithmatex">\[ \frac{s^2}{\bar n} = \frac{1.82}{2.02} = \mathbf{0.90} \]</div>
+<p><strong>For a Poisson process this ratio should be close to 1</strong> ✓ — 0.90 is well within sampling
+variation for <span class="arithmatex">\(n = 100\)</span>.</p>
+<p><strong>Step 4 — a chi-square goodness-of-fit test.</strong> Expected frequencies with <span class="arithmatex">\(\lambda t = 2.02\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th>Observed <span class="arithmatex">\(O_i\)</span></th>
+<th><span class="arithmatex">\(P_n\)</span></th>
+<th>Expected <span class="arithmatex">\(E_i = 100P_n\)</span></th>
+<th><span class="arithmatex">\(\dfrac{(O_i-E_i)^2}{E_i}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>12</td>
+<td>0.1327</td>
+<td>13.27</td>
+<td>0.122</td>
+</tr>
+<tr>
+<td>1</td>
+<td>27</td>
+<td>0.2680</td>
+<td>26.80</td>
+<td>0.001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>28</td>
+<td>0.2707</td>
+<td>27.07</td>
+<td>0.032</td>
+</tr>
+<tr>
+<td>3</td>
+<td>19</td>
+<td>0.1823</td>
+<td>18.23</td>
+<td>0.033</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9</td>
+<td>0.0920</td>
+<td>9.20</td>
+<td>0.004</td>
+</tr>
+<tr>
+<td>≥5</td>
+<td>5</td>
+<td>0.0543</td>
+<td>5.43</td>
+<td>0.034</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>100</strong></td>
+<td></td>
+<td><strong>100.00</strong></td>
+<td><strong><span class="arithmatex">\(\chi^2 = 0.229\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>(Categories 5 and ≥6 are pooled so that every expected frequency exceeds 5, as the test requires.)</em></p>
+<p><strong>Step 5 — the decision.</strong></p>
+<p>Degrees of freedom <span class="arithmatex">\(= (\text{6 categories}) - 1 - (\text{1 estimated parameter}) = \mathbf{4}\)</span>.</p>
+<p>Critical value at 5 %: <span class="arithmatex">\(\chi^2_{0.05,4} = 9.488\)</span>.</p>
+<div class="arithmatex">\[ 0.229 \ \ll\ 9.488 \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{Do NOT reject. The data are entirely consistent with a Poisson process with } \lambda t = 2.02.\ } \]</div>
+<p><strong>Practical conclusion.</strong> With 5-minute intervals and <span class="arithmatex">\(\lambda t = 2.02\)</span>:</p>
+<div class="arithmatex">\[ \lambda = \frac{2.02}{5\ \text{min}} = 0.404\ \text{per minute} = \mathbf{24.2\ \text{per hour}} \]</div>
+<p><strong>The queuing models of L24–L28 may be applied with <span class="arithmatex">\(\lambda = 24.2\)</span>/hour.</strong></p>
+<p><strong>What a failure would have looked like.</strong></p>
+<ul>
+<li>If <span class="arithmatex">\(s^2/\bar n \approx 2\)</span>, the arrivals are <strong>overdispersed</strong> — likely clustered (groups arriving
+    together) or a <strong>time-varying rate</strong> (busier at some times). <em>Remedy:</em> split the data by time
+    period and fit separately, or use a compound Poisson model.</li>
+<li>If <span class="arithmatex">\(s^2/\bar n \approx 0.3\)</span>, arrivals are <strong>too regular</strong> for Poisson — suggesting appointments or
+    scheduling. <em>Remedy:</em> use a <span class="arithmatex">\(D/M/1\)</span> or <span class="arithmatex">\(E_k/M/1\)</span> model.</li>
+</ul>
+<div class="arithmatex">\[ \boxed{\ \textbf{Always test the Poisson assumption before applying the formulas. It takes ten minutes and can save a wrong recommendation.}\ } \]</div>
+<h4 id="problem-4-superposition-and-thinning-in-practice">Problem 4 — Superposition and thinning in practice<a class="headerlink" href="#problem-4-superposition-and-thinning-in-practice" title="Permanent link">&para;</a></h4>
+<p><em>A call centre receives calls from three regions at Poisson rates 8, 12 and 5 per hour.
+(a) What is the combined process? (b) 30 % of calls require a specialist — what is the specialist
+arrival process? (c) If the specialist can handle 6 calls/hour, is one specialist enough?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a) Superposition.</strong> The sum of independent Poisson processes is Poisson with the summed rate:</p>
+<div class="arithmatex">\[ \lambda_{\text{total}} = 8 + 12 + 5 = \mathbf{25\ \text{calls/hour}}, \qquad \text{still Poisson} \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{Merging Poisson streams gives a Poisson stream — the rates simply add.}\ } \]</div>
+<p><strong>(b) Thinning.</strong> Each call independently requires a specialist with probability <span class="arithmatex">\(p = 0.3\)</span>:</p>
+<div class="arithmatex">\[ \lambda_{\text{specialist}} = 25\times0.3 = \mathbf{7.5\ \text{calls/hour}}, \qquad \text{still Poisson} \]</div>
+<p><strong>And the complementary stream</strong> (general calls) is Poisson at <span class="arithmatex">\(25\times0.7 = 17.5\)</span>/hour — and,
+remarkably, <strong>the two thinned streams are independent of each other.</strong></p>
+<p><strong>(c) Is one specialist enough?</strong></p>
+<div class="arithmatex">\[ \rho = \frac{\lambda}{\mu} = \frac{7.5}{6} = \mathbf{1.25} \ &gt;\ 1 \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{NO — the system is UNSTABLE. The specialist queue would grow without bound.}\ } \]</div>
+<p><strong>How many specialists are needed?</strong></p>
+<div class="arithmatex">\[ \rho = \frac{7.5}{6c} &lt; 1 \ \Longrightarrow\ c &gt; 1.25 \ \Longrightarrow\ \boxed{c \ge 2} \]</div>
+<p><strong>With 2 specialists</strong> (<span class="arithmatex">\(M/M/2\)</span>, <span class="arithmatex">\(r = \lambda/\mu = 1.25\)</span>, <span class="arithmatex">\(\rho = 0.625\)</span>):</p>
+<div class="arithmatex">\[ P_0 = \left[1 + 1.25 + \frac{1.25^2}{2(1-0.625)}\right]^{-1}
+= \left[1+1.25+2.0833\right]^{-1} = \frac{1}{4.3333} = 0.2308 \]</div>
+<div class="arithmatex">\[ L_q = \frac{P_0\,r^{c}\rho}{c!\,(1-\rho)^2} = \frac{0.2308(1.5625)(0.625)}{2(0.140625)} = \frac{0.2254}{0.28125} = \mathbf{0.801} \]</div>
+<div class="arithmatex">\[ W_q = \frac{L_q}{\lambda} = \frac{0.801}{7.5} = 0.1068\ \text{hours} = \mathbf{6.4\ \text{minutes}} \]</div>
+<p><strong>Recommendation.</strong> <em>"Employ 2 specialists. With 1, the queue is mathematically unbounded — callers
+would wait indefinitely and the system would collapse. With 2, utilisation is 62.5 % and the average
+specialist wait is 6.4 minutes."</em></p>
+<p><strong>The value of superposition and thinning.</strong> They let us decompose a complex system into tractable
+pieces: we analysed the specialist sub-system in isolation, <strong>and were entitled to</strong>, because thinning
+preserves the Poisson property and independence. <strong>Without these theorems the decomposition would be
+invalid.</strong></p>
+<h4 id="problem-5-testing-the-exponential-assumption-and-what-it-costs-to-be-wrong">Problem 5 — Testing the exponential assumption, and what it costs to be wrong<a class="headerlink" href="#problem-5-testing-the-exponential-assumption-and-what-it-costs-to-be-wrong" title="Permanent link">&para;</a></h4>
+<p><em>A workshop records 20 service times (minutes): 2, 15, 4, 9, 1, 22, 6, 3, 11, 5, 8, 30, 2, 7, 14, 3,
+19, 5, 10, 4. (a) Test whether these are consistent with an exponential distribution.
+(b) If arrivals are Poisson at 5/hour, compute <span class="arithmatex">\(L_q\)</span> under both the exponential assumption and the
+actual variability, and compare.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a) Testing exponentiality.</strong></p>
+<p><strong>Step 1 — the sample mean.</strong></p>
+<div class="arithmatex">\[ \sum x_i = 2+15+4+9+1+22+6+3+11+5+8+30+2+7+14+3+19+5+10+4 = 180 \]</div>
+<div class="arithmatex">\[ \bar x = \frac{180}{20} = \mathbf{9.0\ \text{minutes}} \]</div>
+<p><strong>Step 2 — the sample standard deviation.</strong></p>
+<div class="arithmatex">\[ \sum x_i^{2} = 4+225+16+81+1+484+36+9+121+25+64+900+4+49+196+9+361+25+100+16 = 2726 \]</div>
+<div class="arithmatex">\[ s^{2} = \frac{2726}{20} - 9^{2} = 136.3 - 81 = 55.3 \qquad\Longrightarrow\qquad s = \mathbf{7.44} \]</div>
+<p><strong>Step 3 — the coefficient of variation.</strong></p>
+<div class="arithmatex">\[ \boxed{\ CV = \frac{s}{\bar x} = \frac{7.44}{9.0} = \mathbf{0.827}\ } \]</div>
+<p><strong>For an exponential distribution, <span class="arithmatex">\(CV = 1\)</span> exactly.</strong> Our sample gives 0.827.</p>
+<p><strong>Is 0.827 close enough?</strong> For <span class="arithmatex">\(n = 20\)</span> the sampling standard error of <span class="arithmatex">\(CV\)</span> is roughly
+<span class="arithmatex">\(1/\sqrt{2n} = 1/\sqrt{40} = 0.158\)</span>. So</p>
+<div class="arithmatex">\[ z = \frac{0.827 - 1}{0.158} = -1.09 \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{Not significant at 5 \% — the data are CONSISTENT with exponential service.}\ } \]</div>
+<p><strong>A supporting check — the median.</strong> Sorting the data, the 10th and 11th values are 6 and 7, so the
+sample median is 6.5. For an exponential with mean 9, the median should be <span class="arithmatex">\(9\ln2 = 6.24\)</span>. Observed
+6.5 versus expected 6.24 ✓ — an excellent match, and the right kind of right-skew (median well below
+the mean of 9).</p>
+<p><strong>(b) The cost of the assumption.</strong></p>
+<div class="arithmatex">\[ \lambda = 5/\text{hour}, \qquad \bar x = 9 \ \text{min} \Rightarrow \mu = \frac{60}{9} = 6.667/\text{hour} \]</div>
+<div class="arithmatex">\[ \rho = \frac{5}{6.667} = \mathbf{0.75} \]</div>
+<p><strong>Under the exponential assumption (<span class="arithmatex">\(M/M/1\)</span>):</strong></p>
+<div class="arithmatex">\[ L_q = \frac{\rho^2}{1-\rho} = \frac{0.5625}{0.25} = \mathbf{2.25\ \text{jobs}} \]</div>
+<div class="arithmatex">\[ W_q = \frac{2.25}{5} = 0.45\ \text{hours} = \mathbf{27\ \text{minutes}} \]</div>
+<p><strong>Using the ACTUAL variability (<span class="arithmatex">\(M/G/1\)</span>, Pollaczek–Khinchine).</strong> In hours,
+<span class="arithmatex">\(\sigma_s = 7.44/60 = 0.124\)</span> h, so <span class="arithmatex">\(\sigma_s^2 = 0.01538\)</span>:</p>
+<div class="arithmatex">\[ L_q = \frac{\lambda^{2}\sigma_s^{2}+\rho^{2}}{2(1-\rho)}
+= \frac{25(0.01538) + 0.5625}{2(0.25)} = \frac{0.3845+0.5625}{0.5} = \frac{0.947}{0.5} = \mathbf{1.894} \]</div>
+<div class="arithmatex">\[ W_q = \frac{1.894}{5} = 0.379\ \text{h} = \mathbf{22.7\ \text{minutes}} \]</div>
+<p><strong>Comparison.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th><span class="arithmatex">\(L_q\)</span></th>
+<th><span class="arithmatex">\(W_q\)</span></th>
+<th>Error vs actual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(M/M/1\)</span> (assumed exponential)</td>
+<td>2.25</td>
+<td>27.0 min</td>
+<td><strong>+19 %</strong></td>
+</tr>
+<tr>
+<td><strong><span class="arithmatex">\(M/G/1\)</span> (actual <span class="arithmatex">\(\sigma\)</span>)</strong></td>
+<td><strong>1.89</strong></td>
+<td><strong>22.7 min</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(M/D/1\)</span> (if service were constant)</td>
+<td>1.125</td>
+<td>13.5 min</td>
+<td>−41 %</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{The exponential assumption OVERSTATES the queue by 19 \% here — it is CONSERVATIVE.}\ } \]</div>
+<p><strong>Why this direction matters.</strong> Because <span class="arithmatex">\(CV &lt; 1\)</span> (service is slightly more regular than exponential),
+<span class="arithmatex">\(M/M/1\)</span> predicts a <strong>worse</strong> queue than reality. <strong>Being conservative is the safe direction for a
+capacity recommendation</strong> — you will not under-provision.</p>
+<p><strong>The general rule.</strong></p>
+<div class="arithmatex">\[ \boxed{\ CV &lt; 1 \Rightarrow M/M/1 \text{ is pessimistic (safe)}; \qquad
+CV &gt; 1 \Rightarrow M/M/1 \text{ is OPTIMISTIC (dangerous)}.\ } \]</div>
+<p><strong>When <span class="arithmatex">\(CV &gt; 1\)</span> — the real danger.</strong> Service times with occasional very long jobs (IT support,
+medical diagnosis, machine repair) often have <span class="arithmatex">\(CV\)</span> of 1.5–3. At <span class="arithmatex">\(CV = 2\)</span> and <span class="arithmatex">\(\rho = 0.75\)</span>:</p>
+<div class="arithmatex">\[ L_q = \frac{25(4\times0.01538)+0.5625}{0.5} = \frac{1.538+0.5625}{0.5} = \mathbf{4.20} \]</div>
+<p>— <strong>87 % worse than the <span class="arithmatex">\(M/M/1\)</span> prediction.</strong> A capacity plan built on <span class="arithmatex">\(M/M/1\)</span> would badly
+under-provision.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Always compute the sample } CV \textbf{ before trusting an } M/M/1 \textbf{ recommendation.}\ } \]</div>
+<h2 id="227-practice-problems">22.7 Practice Problems<a class="headerlink" href="#227-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li><span class="arithmatex">\(\lambda = 6\)</span>/hour. Find <span class="arithmatex">\(\Pr[\text{exactly 3 in 30 minutes}]\)</span>. <strong>[Ans: <span class="arithmatex">\(\lambda t=3\)</span>, <span class="arithmatex">\(P_3 = 0.2240\)</span>]</strong></li>
+<li>Exponential with mean 5 minutes. Find <span class="arithmatex">\(\Pr[T&gt;8]\)</span>. <strong>[Ans: <span class="arithmatex">\(e^{-1.6}=0.2019\)</span>]</strong></li>
+<li>Verify the memoryless property numerically for <span class="arithmatex">\(\mu = 0.2\)</span>, <span class="arithmatex">\(s=3\)</span>, <span class="arithmatex">\(t=5\)</span>.</li>
+<li>A sample has mean 10 and variance 25. Is it consistent with Poisson? <strong>[Ans: no — overdispersed, ratio 2.5]</strong></li>
+<li>Three Poisson streams at 4, 7, 9/hour merge. What is the combined process? <strong>[Ans: Poisson, 20/hour]</strong></li>
+<li>20 % of a Poisson stream at 50/hour is diverted. What is the diverted process? <strong>[Ans: Poisson, 10/hour]</strong></li>
+<li>Service data have <span class="arithmatex">\(CV = 1.8\)</span>. Is <span class="arithmatex">\(M/M/1\)</span> optimistic or pessimistic? <strong>[Ans: optimistic — dangerous]</strong></li>
+</ol>
+<h2 id="228-summary">22.8 Summary<a class="headerlink" href="#228-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Poisson counts and exponential times are two views of the same process.</strong> The three axioms are <strong>independence, stationarity and orderliness</strong>.</li>
+<li><span class="arithmatex">\(P_n(t) = \dfrac{(\lambda t)^n e^{-\lambda t}}{n!}\)</span>, with <span class="arithmatex">\(E[N] = \mathrm{Var}[N] = \lambda t\)</span>. <strong>Mean = variance is the Poisson signature</strong>, and the ratio <span class="arithmatex">\(s^2/\bar n\)</span> is the standard diagnostic.</li>
+<li><strong>Superposition</strong> (rates add) and <strong>thinning</strong> (rate <span class="arithmatex">\(\times p\)</span>) both preserve the Poisson property — these theorems justify decomposing complex systems.</li>
+<li>Inter-arrival times are <strong>exponential</strong>: <span class="arithmatex">\(f(t) = \lambda e^{-\lambda t}\)</span>, with <span class="arithmatex">\(E[T] = \sigma_T = 1/\lambda\)</span>, so <span class="arithmatex">\(CV = 1\)</span> exactly. The <strong>median <span class="arithmatex">\(= 0.693/\lambda\)</span> is well below the mean</strong> — strongly right-skewed.</li>
+<li><strong>Memorylessness</strong> <span class="arithmatex">\(\Pr[T&gt;s+t\mid T&gt;s] = \Pr[T&gt;t]\)</span> characterises the exponential uniquely. It is what makes queuing models Markovian and tractable — and it is often unrealistic for <strong>service</strong> times, though usually fine for <strong>arrivals</strong>.</li>
+<li>The <strong>Pollaczek–Khinchine</strong> formula shows exponential service gives <strong>exactly twice</strong> the queue of deterministic service. So <span class="arithmatex">\(M/M/1\)</span> is <strong>conservative when <span class="arithmatex">\(CV&lt;1\)</span></strong> and <strong>dangerously optimistic when <span class="arithmatex">\(CV&gt;1\)</span></strong>.</li>
+<li><strong>Test both assumptions before using the formulas:</strong> <span class="arithmatex">\(s^2/\bar n \approx 1\)</span> for Poisson arrivals, <span class="arithmatex">\(CV\approx1\)</span> for exponential service.</li>
+</ul>
+<p><strong>Next lesson:</strong> L23 — Birth–death processes and steady-state balance equations.</p>
+<p><strong>Practise now:</strong> <code>unit3-queue-inventory-lab.html</code> → <em>Distribution Explorer</em>: generate Poisson and
+exponential samples, see the histograms, and test your own data against both.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="characteristics-of-queuing-systems.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 21. Characteristics of Queuing Systems">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                21. Characteristics of Queuing Systems
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-footer__link md-footer__link--next" aria-label="Next: 23. Birth–Death Processes and Steady-State Balance Equations">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                23. Birth–Death Processes and Steady-State Balance Equations
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

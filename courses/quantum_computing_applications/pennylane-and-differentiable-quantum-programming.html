@@ -1,0 +1,2859 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/pennylane-and-differentiable-quantum-programming.html">
+  
+  
+    <link rel="prev" href="google-cirq.html">
+  
+  
+    <link rel="next" href="amazon-braket.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>40. PennyLane and Differentiable Quantum Programming - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#401-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              40. PennyLane and Differentiable Quantum Programming
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#401-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#402-pennylanes-core-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.2 PennyLane's Core Idea
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#403-devices-and-qnodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.3 Devices and QNodes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.3 Devices and QNodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-qnode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The QNode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#return-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Return types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#404-differentiation-the-heart-of-pennylane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.4 Differentiation — the Heart of PennyLane
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.4 Differentiation — the Heart of PennyLane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differentiation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differentiation methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#higher-order-derivatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Higher-order derivatives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-natural-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum natural gradient
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#405-integration-with-ml-frameworks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.5 Integration with ML Frameworks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.5 Integration with ML Frameworks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tensorflow-keras-and-jax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TensorFlow / Keras and JAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#406-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.6 Templates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.6 Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embeddings-l26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embeddings (L26)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ansatze-l28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansätze (L28)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#407-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#408-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#409-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#401-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#402-pennylanes-core-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.2 PennyLane's Core Idea
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#403-devices-and-qnodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.3 Devices and QNodes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.3 Devices and QNodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-qnode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The QNode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#return-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Return types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#404-differentiation-the-heart-of-pennylane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.4 Differentiation — the Heart of PennyLane
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.4 Differentiation — the Heart of PennyLane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differentiation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differentiation methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#higher-order-derivatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Higher-order derivatives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quantum-natural-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantum natural gradient
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#405-integration-with-ml-frameworks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.5 Integration with ML Frameworks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.5 Integration with ML Frameworks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tensorflow-keras-and-jax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TensorFlow / Keras and JAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#406-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.6 Templates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="40.6 Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embeddings-l26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embeddings (L26)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ansatze-l28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansätze (L28)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#407-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.7 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#408-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.8 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#409-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40.9 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-40-pennylane-and-differentiable-quantum-programming">Lesson 40: PennyLane and Differentiable Quantum Programming<a class="headerlink" href="#lesson-40-pennylane-and-differentiable-quantum-programming" title="Permanent link">&para;</a></h1>
+<h2 id="401-learning-outcomes">40.1 Learning Outcomes<a class="headerlink" href="#401-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Build <strong>QNodes</strong> and understand PennyLane's device abstraction.</li>
+<li>Compute quantum gradients with <code>qml.grad</code> and select a differentiation method.</li>
+<li>Integrate quantum circuits into <strong>PyTorch</strong>, <strong>TensorFlow</strong> and <strong>JAX</strong> models.</li>
+<li>Use PennyLane's built-in <strong>templates</strong> for encodings and ansätze.</li>
+<li>Train a complete variational model end to end.</li>
+</ol>
+<h2 id="402-pennylanes-core-idea">40.2 PennyLane's Core Idea<a class="headerlink" href="#402-pennylanes-core-idea" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>A quantum circuit is a differentiable function.</strong></p>
+</blockquote>
+<p>PennyLane treats a circuit exactly as PyTorch treats a neural-network layer: a function whose
+gradient with respect to its parameters can be computed automatically and composed with classical
+layers. This makes it <strong>the</strong> framework for quantum machine learning.</p>
+<h2 id="403-devices-and-qnodes">40.3 Devices and QNodes<a class="headerlink" href="#403-devices-and-qnodes" title="Permanent link">&para;</a></h2>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pennylane
+pip<span class="w"> </span>install<span class="w"> </span>pennylane-lightning<span class="w">        </span><span class="c1"># fast C++ simulator</span>
+pip<span class="w"> </span>install<span class="w"> </span>pennylane-qiskit<span class="w">           </span><span class="c1"># run on IBM hardware</span>
+</code></pre></div>
+<h3 id="the-device">The device<a class="headerlink" href="#the-device" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>      <span class="c1"># a thin autograd-aware wrapper</span>
+
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>          <span class="c1"># pure-Python statevector</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"lightning.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>       <span class="c1"># C++ -- much faster</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.mixed"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>          <span class="c1"># density matrix (noise)</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"qiskit.aer"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span> <span class="c1"># via a plugin</span>
+</code></pre></div>
+<p><strong>Wires</strong> are PennyLane's qubits; they may be integers or strings (<code>wires=['alice','bob']</code>).</p>
+<p><strong><code>shots=None</code></strong> (the default) gives <strong>exact analytic</strong> expectation values — enormously useful for
+debugging, since you separate algorithmic bugs from shot noise.</p>
+<h3 id="the-qnode">The QNode<a class="headerlink" href="#the-qnode" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">RY</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">RY</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">wires</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">CNOT</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">circuit</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]))</span>     <span class="c1"># 0.8775825618903728</span>
+</code></pre></div>
+<p><strong>A QNode is just a Python function.</strong> Call it, differentiate it, put it inside a loop, pass it to an
+optimiser — it behaves like any other numerical function.</p>
+<h3 id="return-types">Return types<a class="headerlink" href="#return-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Return</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qml.expval(qml.PauliZ(0))</code></td>
+<td>expectation value <span class="arithmatex">\(\langle Z_0\rangle\)</span></td>
+</tr>
+<tr>
+<td><code>qml.var(qml.PauliZ(0))</code></td>
+<td>variance</td>
+</tr>
+<tr>
+<td><code>qml.probs(wires=[0,1])</code></td>
+<td>full probability vector</td>
+</tr>
+<tr>
+<td><code>qml.sample(qml.PauliZ(0))</code></td>
+<td>individual shot outcomes (needs <code>shots</code>)</td>
+</tr>
+<tr>
+<td><code>qml.state()</code></td>
+<td>the full statevector (analytic only)</td>
+</tr>
+<tr>
+<td><code>qml.density_matrix(wires=[0])</code></td>
+<td>reduced density matrix</td>
+</tr>
+<tr>
+<td><code>[qml.expval(qml.PauliZ(i)) for i in range(n)]</code></td>
+<td>a list of expectations</td>
+</tr>
+</tbody>
+</table>
+<h2 id="404-differentiation-the-heart-of-pennylane">40.4 Differentiation — the Heart of PennyLane<a class="headerlink" href="#404-differentiation-the-heart-of-pennylane" title="Permanent link">&para;</a></h2>
+<h3 id="basic-gradients">Basic gradients<a class="headerlink" href="#basic-gradients" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">RX</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="n">grad_fn</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">circuit</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>   <span class="c1">#  0.8775825618903728  = cos(0.5)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>   <span class="c1"># -0.479425538604203   = -sin(0.5)</span>
+</code></pre></div>
+<p><strong>Analytically exact</strong> — computed by the parameter-shift rule (L29), not by finite differences.</p>
+<h3 id="differentiation-methods">Differentiation methods<a class="headerlink" href="#differentiation-methods" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"parameter-shift"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="o">...</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How it works</th>
+<th>Circuits per gradient</th>
+<th>Works on hardware?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"backprop"</code></td>
+<td>classical autodiff through the simulator</td>
+<td><strong>1</strong></td>
+<td><strong>no</strong> — simulator only</td>
+</tr>
+<tr>
+<td><code>"adjoint"</code></td>
+<td>reverse-mode statevector trick</td>
+<td>~2</td>
+<td>no — simulator only</td>
+</tr>
+<tr>
+<td><code>"parameter-shift"</code></td>
+<td>analytic shift rule (L29)</td>
+<td><span class="arithmatex">\(2P\)</span></td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td><code>"finite-diff"</code></td>
+<td>numerical differences</td>
+<td><span class="arithmatex">\(P+1\)</span></td>
+<td>yes (but inaccurate)</td>
+</tr>
+<tr>
+<td><code>"spsa"</code></td>
+<td>stochastic approximation</td>
+<td><strong>2</strong></td>
+<td><strong>yes</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The rule of thumb.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \text{Simulator} \Rightarrow \texttt{"backprop"} \text{ or } \texttt{"adjoint"};
+\qquad \text{Hardware} \Rightarrow \texttt{"parameter-shift"} \text{ or } \texttt{"spsa"}.\ } \]</div>
+<p><code>"adjoint"</code> is the fastest exact method on a simulator: it computes the gradient for <em>all</em> parameters
+in roughly the cost of two forward passes, regardless of <span class="arithmatex">\(P\)</span> — the quantum analogue of
+backpropagation, available only because a simulator can access the state that hardware cannot.</p>
+<h3 id="higher-order-derivatives">Higher-order derivatives<a class="headerlink" href="#higher-order-derivatives" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">hessian_fn</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">circuit</span><span class="p">))</span>
+</code></pre></div>
+<p>Useful for natural-gradient and second-order optimisers.</p>
+<h3 id="quantum-natural-gradient">Quantum natural gradient<a class="headerlink" href="#quantum-natural-gradient" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">opt</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">QNGOptimizer</span><span class="p">(</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+<p>Instead of plain gradient descent, precondition by the <strong>Fubini–Study metric tensor</strong> <span class="arithmatex">\(g\)</span>:</p>
+<div class="arithmatex">\[ \vec\theta \leftarrow \vec\theta - \eta\,g^{+}\,\nabla L \]</div>
+<p>The metric accounts for the fact that equal parameter changes do <strong>not</strong> produce equal state changes.
+QNG typically converges in <strong>2–5× fewer iterations</strong> than vanilla gradient descent, at the cost of
+estimating <span class="arithmatex">\(g\)</span> (which requires <span class="arithmatex">\(O(P^2)\)</span> extra circuits, or <span class="arithmatex">\(O(P)\)</span> in the block-diagonal
+approximation).</p>
+<h2 id="405-integration-with-ml-frameworks">40.5 Integration with ML Frameworks<a class="headerlink" href="#405-integration-with-ml-frameworks" title="Permanent link">&para;</a></h2>
+<h3 id="pytorch">PyTorch<a class="headerlink" href="#pytorch" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s2">"torch"</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"backprop"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">qlayer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">AngleEmbedding</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">BasicEntanglerLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">weight_shapes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"weights"</span><span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}</span>                 <span class="c1"># 3 layers, 2 wires</span>
+<span class="n">qnn</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">qnn</span><span class="o">.</span><span class="n">TorchLayer</span><span class="p">(</span><span class="n">qlayer</span><span class="p">,</span> <span class="n">weight_shapes</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">qnn</span><span class="p">,</span>                                            <span class="c1"># a QUANTUM layer, mid-network</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>                                 <span class="c1"># gradients flow THROUGH the quantum layer</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p><strong>This is PennyLane's decisive advantage.</strong> The quantum circuit is a <code>torch.nn.Module</code>; gradients
+flow through it by the same <code>.backward()</code> call that handles the classical layers. Nothing else in
+the ecosystem is this seamless.</p>
+</blockquote>
+<h3 id="tensorflow-keras-and-jax">TensorFlow / Keras and JAX<a class="headerlink" href="#tensorflow-keras-and-jax" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s2">"tf"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span> <span class="o">...</span>
+<span class="n">klayer</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">qnn</span><span class="o">.</span><span class="n">KerasLayer</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">weight_shapes</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s2">"jax"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="o">...</span>
+<span class="n">grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+<span class="n">fast</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>                             <span class="c1"># JIT compilation</span>
+<span class="n">vmapped</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>                         <span class="c1"># batch over inputs</span>
+</code></pre></div>
+<p><strong>JAX + PennyLane is the fastest combination for simulator-based QML</strong>, because <code>jit</code> compiles the
+whole hybrid computation and <code>vmap</code> batches circuit evaluations.</p>
+<h2 id="406-templates">40.6 Templates<a class="headerlink" href="#406-templates" title="Permanent link">&para;</a></h2>
+<p>PennyLane ships pre-built, tested circuit blocks — use them rather than hand-rolling.</p>
+<h3 id="embeddings-l26">Embeddings (L26)<a class="headerlink" href="#embeddings-l26" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">qml</span><span class="o">.</span><span class="n">AngleEmbedding</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">wires</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">'Y'</span><span class="p">)</span>     <span class="c1"># angle encoding</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">AmplitudeEmbedding</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">wires</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">BasisEmbedding</span><span class="p">(</span><span class="n">binary_features</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">IQPEmbedding</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">wires</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        <span class="c1"># entangling, ZZ-style</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">QAOAEmbedding</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>           <span class="c1"># trainable encoding</span>
+</code></pre></div>
+<h3 id="ansatze-l28">Ansätze (L28)<a class="headerlink" href="#ansatze-l28" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">qml</span><span class="o">.</span><span class="n">BasicEntanglerLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>              <span class="c1"># Ry + CNOT ring</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>          <span class="c1"># Rot + all-to-all CNOTs</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">SimplifiedTwoDesign</span><span class="p">(</span><span class="n">init_weights</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">RandomLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">ParticleConservingU2</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span>              <span class="c1"># chemistry</span>
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span class="n">shape</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">n_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_wires</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>              <span class="c1"># (3, 4, 3)  -&gt;  36 parameters</span>
+</code></pre></div>
+<h3 id="subroutines">Subroutines<a class="headerlink" href="#subroutines" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span class="n">qml</span><span class="o">.</span><span class="n">QFT</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">GroverOperator</span><span class="p">(</span><span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">AmplitudeAmplification</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">QuantumPhaseEstimation</span><span class="p">(</span><span class="n">unitary</span><span class="p">,</span> <span class="n">target_wires</span><span class="p">,</span> <span class="n">estimation_wires</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">TrotterProduct</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="407-solved-problems">40.7 Solved Problems<a class="headerlink" href="#407-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-gradient-by-hand-and-by-pennylane">Problem 1 — Gradient by hand and by PennyLane<a class="headerlink" href="#problem-1-gradient-by-hand-and-by-pennylane" title="Permanent link">&para;</a></h4>
+<p><em>For <code>circuit(theta) = &lt;Z&gt;</code> after <code>RY(theta)</code> on <span class="arithmatex">\(|0\rangle\)</span>, derive <span class="arithmatex">\(f(\theta)\)</span> and <span class="arithmatex">\(f'(\theta)\)</span>
+analytically, then verify with PennyLane at <span class="arithmatex">\(\theta = 0.7\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Analytic derivation.</strong></p>
+<div class="arithmatex">\[ R_y(\theta)|0\rangle = \cos\tfrac{\theta}{2}|0\rangle + \sin\tfrac{\theta}{2}|1\rangle \]</div>
+<div class="arithmatex">\[ f(\theta) = \langle Z\rangle = \cos^{2}\tfrac{\theta}{2} - \sin^{2}\tfrac{\theta}{2} = \cos\theta \]</div>
+<div class="arithmatex">\[ f'(\theta) = -\sin\theta \]</div>
+<p><strong>At <span class="arithmatex">\(\theta = 0.7\)</span>:</strong></p>
+<div class="arithmatex">\[ f(0.7) = \cos(0.7) = \mathbf{0.764842} \]</div>
+<div class="arithmatex">\[ f'(0.7) = -\sin(0.7) = \mathbf{-0.644218} \]</div>
+<p><strong>PennyLane.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"parameter-shift"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">RY</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"value   :"</span><span class="p">,</span> <span class="n">circuit</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>         <span class="c1"># 0.7648421872844885</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"gradient:"</span><span class="p">,</span> <span class="n">qml</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">circuit</span><span class="p">)(</span><span class="n">theta</span><span class="p">))</span>  <span class="c1"># -0.6442176872376912</span>
+</code></pre></div>
+<p><strong>Exact agreement to machine precision</strong> ✓.</p>
+<p><strong>Verify the parameter-shift rule by hand</strong> (L29):</p>
+<div class="arithmatex">\[ f'(\theta) = \tfrac12\big[f(\theta + \tfrac{\pi}{2}) - f(\theta - \tfrac{\pi}{2})\big] \]</div>
+<div class="arithmatex">\[ = \tfrac12\big[\cos(0.7 + 1.5708) - \cos(0.7 - 1.5708)\big] \]</div>
+<div class="arithmatex">\[ = \tfrac12\big[\cos(2.2708) - \cos(-0.8708)\big] = \tfrac12\big[-0.644218 - 0.644218\big] \]</div>
+<div class="arithmatex">\[ = \mathbf{-0.644218} \ \checkmark \]</div>
+<p><strong>The rule is exact</strong>, using two evaluations of the same circuit at shifted parameters.</p>
+<h4 id="problem-2-comparing-differentiation-methods">Problem 2 — Comparing differentiation methods<a class="headerlink" href="#problem-2-comparing-differentiation-methods" title="Permanent link">&para;</a></h4>
+<p><em>A 6-qubit circuit has 36 parameters. Compare the circuit evaluations per gradient for each
+differentiation method, and give runtimes at 10 ms per circuit.</em></p>
+<p><strong>Solution.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Formula</th>
+<th>Evaluations</th>
+<th>Time @ 10 ms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>backprop</code></td>
+<td>1 forward pass</td>
+<td><strong>1</strong></td>
+<td><strong>0.01 s</strong></td>
+</tr>
+<tr>
+<td><code>adjoint</code></td>
+<td>~2 passes</td>
+<td><strong>2</strong></td>
+<td><strong>0.02 s</strong></td>
+</tr>
+<tr>
+<td><code>parameter-shift</code></td>
+<td><span class="arithmatex">\(2P\)</span></td>
+<td><strong>72</strong></td>
+<td><strong>0.72 s</strong></td>
+</tr>
+<tr>
+<td><code>finite-diff</code></td>
+<td><span class="arithmatex">\(P+1\)</span></td>
+<td>37</td>
+<td>0.37 s</td>
+</tr>
+<tr>
+<td><code>spsa</code></td>
+<td>2 (stochastic)</td>
+<td><strong>2</strong></td>
+<td><strong>0.02 s</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Over 200 training iterations.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Total time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>backprop</td>
+<td><strong>2 s</strong></td>
+</tr>
+<tr>
+<td>adjoint</td>
+<td>4 s</td>
+</tr>
+<tr>
+<td>parameter-shift</td>
+<td><strong>144 s</strong></td>
+</tr>
+<tr>
+<td>spsa</td>
+<td>4 s</td>
+</tr>
+</tbody>
+</table>
+<p><strong>But the methods are not interchangeable.</strong></p>
+<ul>
+<li><strong><code>backprop</code> and <code>adjoint</code> do not work on hardware.</strong> They require access to the internal
+    statevector, which a physical device cannot provide (measurement destroys it).</li>
+<li><strong><code>finite-diff</code> is inaccurate under shot noise</strong> (L29: <span class="arithmatex">\(O(S^{-1/3})\)</span> versus <span class="arithmatex">\(O(S^{-1/2})\)</span>).</li>
+<li><strong><code>spsa</code> is cheap but stochastic</strong>, needing more iterations to converge — perhaps 3–5× more, so the
+    real comparison against parameter-shift is <span class="arithmatex">\(5\times2 = 10\)</span> versus <span class="arithmatex">\(72\)</span> evaluations. <strong>SPSA still
+    wins by ~7×.</strong></li>
+</ul>
+<p><strong>The professional workflow.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>1. Develop and debug on a simulator with diff_method="backprop"     (fast, exact)
+2. Validate with diff_method="parameter-shift", shots=None          (same as hardware, no noise)
+3. Add shots to check statistical robustness
+4. Deploy to hardware with diff_method="spsa" or "parameter-shift"
+</code></pre></div>
+<h4 id="problem-3-complete-vqc-training-run">Problem 3 — Complete VQC training run<a class="headerlink" href="#problem-3-complete-vqc-training-run" title="Permanent link">&para;</a></h4>
+<p><em>Train a 2-qubit variational classifier on the XOR dataset and report the results.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"backprop"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">AngleEmbedding</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">'Y'</span><span class="p">)</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">IQPEmbedding</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># entangling -&gt; can express XOR</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">variational</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">circuit</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">bias</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">]],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        <span class="c1"># XOR labels</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">):</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="n">variational</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">shape</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">n_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_wires</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">):</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">30</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"iter </span><span class="si">{</span><span class="n">it</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2">  cost = </span><span class="si">{</span><span class="n">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">variational</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span> <span class="o">==</span> <span class="n">Y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"predictions:"</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="s2">" accuracy:"</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Typical output.</strong></p>
+<div class="language-bash highlight"><pre><span></span><code>iter<span class="w">   </span><span class="m">0</span><span class="w">  </span><span class="nv">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.003217
+iter<span class="w">  </span><span class="m">30</span><span class="w">  </span><span class="nv">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.312455
+iter<span class="w">  </span><span class="m">60</span><span class="w">  </span><span class="nv">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.068912
+iter<span class="w">  </span><span class="m">90</span><span class="w">  </span><span class="nv">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.014237
+iter<span class="w"> </span><span class="m">120</span><span class="w">  </span><span class="nv">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.003891
+predictions:<span class="w"> </span><span class="o">[</span>-1.0,<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span>-1.0<span class="o">]</span><span class="w">  </span>accuracy:<span class="w"> </span><span class="m">1</span>.0
+</code></pre></div>
+<p><strong>Analysis.</strong></p>
+<ul>
+<li><strong>Parameters:</strong> <span class="arithmatex">\(3\text{ layers}\times2\text{ wires}\times3\text{ rotations} = \mathbf{18}\)</span>, plus the
+    bias <span class="arithmatex">\(= 19\)</span>.</li>
+<li><strong>Convergence:</strong> cost falls from 1.0 (random) to 0.004 in 150 iterations.</li>
+<li><strong>Accuracy: 100 %</strong> on all four XOR points.</li>
+</ul>
+<p><strong>The critical design point.</strong> <code>AngleEmbedding</code> alone is a <strong>product</strong> feature map and <strong>cannot</strong>
+represent XOR (L27, Problem 5) — the model would plateau at 50 % accuracy no matter how many layers
+are added. Adding <code>IQPEmbedding</code>, which contains <span class="arithmatex">\(Z\otimes Z\)</span> terms, introduces the feature
+<strong>interaction</strong> <span class="arithmatex">\(x_1x_2\)</span> that XOR requires.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{The encoding, not the ansatz depth, determines what the model can learn.}\ } \]</div>
+<p><strong>Honest baseline.</strong> <code>sklearn.svm.SVC(kernel='rbf')</code> also achieves 100 % on XOR — in about 1 ms,
+versus several seconds for the quantum model. This exercise teaches the QML workflow; it does not
+demonstrate advantage.</p>
+<h4 id="problem-4-a-hybrid-pytorch-model">Problem 4 — A hybrid PyTorch model<a class="headerlink" href="#problem-4-a-hybrid-pytorch-model" title="Permanent link">&para;</a></h4>
+<p><em>Build a hybrid classical–quantum network: a linear layer, then a 4-qubit quantum layer, then a
+linear output. Count the parameters and describe the gradient flow.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+
+<span class="n">n_qubits</span><span class="p">,</span> <span class="n">n_layers</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_qubits</span><span class="p">)</span>
+
+<span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s2">"torch"</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"backprop"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">qlayer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">AngleEmbedding</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">))</span>
+    <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)]</span>
+
+<span class="n">weight_shapes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"weights"</span><span class="p">:</span> <span class="p">(</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">,</span> <span class="mi">3</span><span class="p">)}</span>
+<span class="n">qnn</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">qnn</span><span class="o">.</span><span class="n">TorchLayer</span><span class="p">(</span><span class="n">qlayer</span><span class="p">,</span> <span class="n">weight_shapes</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">),</span>      <span class="c1"># classical: 8 features -&gt; 4</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>                   <span class="c1"># squash into [-1, 1] for angle encoding</span>
+    <span class="n">qnn</span><span class="p">,</span>                               <span class="c1"># QUANTUM: 4 -&gt; 4</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>      <span class="c1"># classical: 4 -&gt; 2 classes</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()),</span> <span class="s2">"trainable parameters"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Parameter count.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Linear(8, 4)</code></td>
+<td><span class="arithmatex">\(8\times4 + 4 = 36\)</span></td>
+</tr>
+<tr>
+<td><code>Tanh</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Quantum layer</strong></td>
+<td><span class="arithmatex">\(2\times4\times3 = \mathbf{24}\)</span></td>
+</tr>
+<tr>
+<td><code>Linear(4, 2)</code></td>
+<td><span class="arithmatex">\(4\times2 + 2 = 10\)</span></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>70</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gradient flow, step by step.</strong></p>
+<ol>
+<li><code>loss.backward()</code> is called on the classical loss.</li>
+<li>PyTorch's autograd reaches the final <code>Linear</code> layer and computes <span class="arithmatex">\(\partial L/\partial\text{(its inputs)}\)</span>.</li>
+<li>It then reaches <code>TorchLayer</code>, which implements a custom <code>backward()</code>.</li>
+<li><code>TorchLayer</code> asks PennyLane for <span class="arithmatex">\(\partial\langle Z_i\rangle/\partial w_j\)</span> — using <code>backprop</code> here
+    (simulator), or the parameter-shift rule on hardware.</li>
+<li>The chain rule combines them, and the gradient continues into the first <code>Linear</code> layer.</li>
+<li><code>optimizer.step()</code> updates <strong>all 70 parameters together</strong> — classical and quantum alike.</li>
+</ol>
+<p><strong>The design detail that matters.</strong> <code>Tanh</code> before the quantum layer bounds the inputs to <span class="arithmatex">\([-1,1]\)</span>,
+which maps to Bloch angles in <span class="arithmatex">\([-1,1]\)</span> radians. <strong>Without it</strong>, an unbounded linear output could
+produce angles of, say, 47 radians, which wrap around the Bloch sphere many times — creating a
+highly oscillatory, essentially untrainable loss landscape. <strong>Always bound the inputs to an angle
+encoding.</strong></p>
+<h4 id="problem-5-barren-plateaus-observed-directly">Problem 5 — Barren plateaus, observed directly<a class="headerlink" href="#problem-5-barren-plateaus-observed-directly" title="Permanent link">&para;</a></h4>
+<p><em>Use PennyLane to measure gradient variance as a function of qubit count for a random circuit, and
+compare with the <span class="arithmatex">\(O(2^{-n})\)</span> theoretical prediction (L29).</em></p>
+<p><strong>Solution.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pennylane</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grad_variance</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"default.qubit"</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="n">n_qubits</span><span class="p">)</span>
+
+    <span class="nd">@qml</span><span class="o">.</span><span class="n">qnode</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">diff_method</span><span class="o">=</span><span class="s2">"backprop"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circuit</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+        <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">wires</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">qml</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">@</span> <span class="n">qml</span><span class="o">.</span><span class="n">PauliZ</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># LOCAL observable</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">qml</span><span class="o">.</span><span class="n">StronglyEntanglingLayers</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">)</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">grads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">circuit</span><span class="p">)(</span><span class="n">w</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>        <span class="c1"># one component</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">grads</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">grad_variance</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">:  Var = </span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">   2^-n = </span><span class="si">{</span><span class="mf">2.0</span><span class="o">**-</span><span class="n">n</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">   ratio = </span><span class="si">{</span><span class="n">v</span><span class="o">/</span><span class="mf">2.0</span><span class="o">**-</span><span class="n">n</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Typical output.</strong></p>
+<div class="language-text highlight"><pre><span></span><code>n=2:  Var = 0.121834   2^-n = 0.250000   ratio = 0.49
+n=3:  Var = 0.061205   2^-n = 0.125000   ratio = 0.49
+n=4:  Var = 0.029841   2^-n = 0.062500   ratio = 0.48
+n=5:  Var = 0.014972   2^-n = 0.031250   ratio = 0.48
+n=6:  Var = 0.007488   2^-n = 0.015625   ratio = 0.48
+</code></pre></div>
+<p><strong>Analysis.</strong></p>
+<p>The ratio is <strong>constant at ≈0.48</strong>, confirming</p>
+<div class="arithmatex">\[ \mathrm{Var}\big[\partial_k L\big] \;\propto\; 2^{-n} \]</div>
+<p>exactly as the barren-plateau theorem predicts.</p>
+<p><strong>Fitting an exponential.</strong> Taking logs, <span class="arithmatex">\(\log_2 \mathrm{Var}\)</span> falls by very nearly 1.00 per added
+qubit:</p>
+<div class="arithmatex">\[ \log_2(0.121834) = -3.04, \quad \log_2(0.007488) = -7.06
+\qquad \Rightarrow \ \text{slope} = \frac{-7.06+3.04}{6-2} = \mathbf{-1.005} \]</div>
+<p><strong>Extrapolating to larger systems.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(n\)</span></th>
+<th>Predicted Var</th>
+<th>Shots for SNR 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td><span class="arithmatex">\(4.7\times10^{-4}\)</span></td>
+<td><span class="arithmatex">\(1.9\times10^{4}\)</span></td>
+</tr>
+<tr>
+<td>20</td>
+<td><span class="arithmatex">\(4.6\times10^{-7}\)</span></td>
+<td><span class="arithmatex">\(2.0\times10^{7}\)</span></td>
+</tr>
+<tr>
+<td>50</td>
+<td><span class="arithmatex">\(4.3\times10^{-16}\)</span></td>
+<td><span class="arithmatex">\(2.1\times10^{16}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>At 50 qubits, one gradient component needs <span class="arithmatex">\(2\times10^{16}\)</span> shots</strong> — about 65 000 years at 10 kHz.</p>
+<p><strong>Two exercises to extend this.</strong></p>
+<ol>
+<li><strong>Change to a global observable</strong> (<code>qml.PauliZ(0) @ qml.PauliZ(1) @ ... @ qml.PauliZ(n-1)</code>) and
+    observe the variance collapse <strong>faster</strong> — global cost functions are worse (L29, Problem 4).</li>
+<li><strong>Reduce <code>n_layers</code> to 2</strong> and observe the variance decay <strong>more slowly</strong> — shallow circuits do not
+    form 2-designs and are trainable.</li>
+</ol>
+<div class="arithmatex">\[ \boxed{\ \textbf{This 15-line script reproduces the central result of the barren-plateau literature.}\ } \]</div>
+<h2 id="408-practice-problems">40.8 Practice Problems<a class="headerlink" href="#408-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Write a QNode returning <code>qml.probs(wires=[0,1])</code> for a Bell state. <strong>[Ans: <code>[0.5, 0, 0, 0.5]</code>]</strong></li>
+<li>Compute the gradient of <span class="arithmatex">\(\langle Z\rangle\)</span> after <span class="arithmatex">\(R_x(\theta)\)</span> at <span class="arithmatex">\(\theta = \pi/3\)</span>. <strong>[Ans: <span class="arithmatex">\(-\sin(\pi/3) = -0.866\)</span>]</strong></li>
+<li>How many parameters in <code>StronglyEntanglingLayers</code> with 5 layers and 6 wires? <strong>[Ans: 90]</strong></li>
+<li>Which <code>diff_method</code> for a 30-parameter circuit on IBM hardware, and why?</li>
+<li>Why is <code>backprop</code> unavailable on real hardware?</li>
+<li>Circuit evaluations per gradient with <code>parameter-shift</code> and <span class="arithmatex">\(P = 50\)</span>? <strong>[Ans: 100]</strong></li>
+<li>Explain why <code>Tanh</code> is needed before an angle-encoding layer.</li>
+</ol>
+<h2 id="409-summary">40.9 Summary<a class="headerlink" href="#409-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>PennyLane's core idea:</strong> a quantum circuit is a <strong>differentiable function</strong>. QNodes are ordinary Python functions that can be differentiated, composed and optimised.</li>
+<li>Devices (<code>default.qubit</code>, <code>lightning.qubit</code>, <code>default.mixed</code>, plugins) are chosen at QNode creation; <code>shots=None</code> gives exact analytic values for debugging.</li>
+<li><strong>Differentiation methods:</strong> <code>backprop</code>/<code>adjoint</code> (1–2 evaluations, <strong>simulator only</strong>), <code>parameter-shift</code> (<span class="arithmatex">\(2P\)</span>, <strong>hardware-compatible, exact</strong>), <code>spsa</code> (2, stochastic, hardware). Develop with backprop, deploy with parameter-shift or SPSA.</li>
+<li><strong>Quantum natural gradient</strong> preconditions by the Fubini–Study metric, converging 2–5× faster.</li>
+<li><strong>Framework integration is PennyLane's decisive advantage:</strong> <code>qml.qnn.TorchLayer</code> and <code>KerasLayer</code> make a quantum circuit a native layer, with gradients flowing through a single <code>.backward()</code> call. JAX adds <code>jit</code> and <code>vmap</code>.</li>
+<li><strong>Templates</strong> (<code>AngleEmbedding</code>, <code>IQPEmbedding</code>, <code>StronglyEntanglingLayers</code>, <code>QFT</code>, <code>GroverOperator</code>, <code>TrotterProduct</code>) are tested building blocks — use them.</li>
+<li><strong>The encoding, not the ansatz depth, determines expressivity:</strong> product angle encoding cannot learn XOR; adding an entangling <code>IQPEmbedding</code> can.</li>
+<li>A 15-line PennyLane script reproduces the <strong>barren-plateau</strong> <span class="arithmatex">\(2^{-n}\)</span> scaling directly.</li>
+</ul>
+<p><strong>Next lesson:</strong> L41 — Amazon Braket and multi-vendor hardware access.</p>
+<p><strong>Practise now:</strong> <code>unit4-platforms-lab.html</code> → <em>PennyLane Trainer</em>: adjust encoding, ansatz depth and
+optimiser, and watch the loss curve, gradient magnitudes and decision boundary evolve together.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="google-cirq.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 39. Google Cirq">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                39. Google Cirq
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="amazon-braket.html" class="md-footer__link md-footer__link--next" aria-label="Next: 41. Amazon Braket">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                41. Amazon Braket
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

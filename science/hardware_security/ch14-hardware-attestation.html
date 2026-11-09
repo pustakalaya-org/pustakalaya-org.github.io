@@ -1,0 +1,3134 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/science/hardware_security/ch14-hardware-attestation.html">
+  
+  
+    <link rel="prev" href="ch13-anti-tamper-technologies.html">
+  
+  
+    <link rel="next" href="ch15-automotive-hardware-security.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>14. Hardware Attestation - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#141-introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              14. Hardware Attestation
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Hardware Security</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch01-trusted-platform-module-tpm-2-0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Trusted Platform Module (TPM 2.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch02-hardware-security-module-hsm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Hardware Security Module (HSM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch03-physically-unclonable-functions-puf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Physically Unclonable Functions (PUF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch04-trusted-execution-environment-tee.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Trusted Execution Environment (TEE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch05-hardware-root-of-trust.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Hardware Root of Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch06-side-channel-attack-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Side-Channel Attack Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch07-hardware-trojan-detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Hardware Trojan Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch08-secure-boot.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Secure Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch09-true-random-number-generator-trng.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. True Random Number Generator (TRNG)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch10-fpga-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. FPGA Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch11-iommu-and-dma-protection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. IOMMU and DMA Protection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch12-memory-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Memory Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch13-anti-tamper-technologies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Anti-Tamper Technologies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ch14-hardware-attestation.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Hardware Attestation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#141-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#142-ietf-rats-remote-attestation-procedures-rfc-9334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 IETF RATS: Remote ATtestation procedureS (RFC 9334)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#143-tpm-20-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 TPM 2.0 Attestation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.3 TPM 2.0 Attestation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1431-pcr-layout-and-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3.1 PCR Layout and Measurement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1432-tpm-20-remote-attestation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3.2 TPM 2.0 Remote Attestation Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#144-dice-device-identifier-composition-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4 DICE (Device Identifier Composition Engine)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#145-spdm-security-protocol-and-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5 SPDM: Security Protocol and Data Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#146-intel-tdx-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.6 Intel TDX Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#147-amd-sev-snp-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.7 AMD SEV-SNP Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#148-ieee-8021ar-device-identity-idevid-ldevid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.8 IEEE 802.1AR: Device Identity (IDevID / LDevID)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#149-tikz-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.9 TikZ Diagrams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1410-fpga-implementation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.10 FPGA Implementation Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1411-asic-implementation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.11 ASIC Implementation Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1412-all-solutions-hardware-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.12 All Solutions: Hardware Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1413-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.13 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch14-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.14 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14141-ietf-rats-architecture-rfc-9334-2022-deployed-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.1 IETF RATS Architecture RFC 9334 (2022, Deployed 2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14142-tcg-dice-endorsement-architecture-for-devices-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.2 TCG DICE Endorsement Architecture for Devices (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14143-nvidia-hopper-confidential-computing-attestation-h100-cc-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.3 NVIDIA Hopper Confidential Computing Attestation (H100 CC, 2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14144-spdm-13-2023-pcie-and-cxl-device-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.4 SPDM 1.3 (2023): PCIe and CXL Device Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14145-microsoft-azure-attestation-service-v2-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.5 Microsoft Azure Attestation Service v2 (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14146-keylime-remote-attestation-v7x-linux-foundation-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.6 Keylime Remote Attestation v7.x (Linux Foundation, 2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1415-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.15 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1416-famous-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.16 Famous Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1417-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch15-automotive-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Automotive Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch16-post-quantum-cryptography-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Post-Quantum Cryptography Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch17-jtag-and-debug-interface-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. JTAG and Debug Interface Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch18-hardware-cryptographic-accelerators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Hardware Cryptographic Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch19-secure-key-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Secure Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch20-iot-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. IoT Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch21-secure-elements-and-smart-cards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Secure Elements and Smart Cards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch22-fido2-and-webauthn-hardware-security-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. FIDO2 and WebAuthn Hardware Security Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch23-hardware-cryptocurrency-wallets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hardware Cryptocurrency Wallets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch24-network-security-processors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Network Security Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch25-cheri-capability-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. CHERI Capability Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch26-risc-v-security-extensions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. RISC-V Security Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch27-formal-verification-of-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Formal Verification of Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch28-hardware-supply-chain-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Hardware Supply Chain Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch29-5g-and-telecom-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. 5G and Telecom Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch30-medical-device-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Medical Device Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch31-ics-and-scada-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. ICS and SCADA Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch32-biometric-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Biometric Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch33-satellite-and-aerospace-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Satellite and Aerospace Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch34-ai-and-ml-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. AI and ML Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch35-usb-and-thunderbolt-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. USB and Thunderbolt Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch36-wireless-hardware-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Wireless Hardware Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch37-confidential-computing-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Confidential Computing Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch38-hardware-security-design-flow-and-eda-tools.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. Hardware Security Design Flow and EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ch39-chiplet-and-heterogeneous-integration-security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Chiplet and Heterogeneous Integration Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="key-standards-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Standards Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-tools-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Tools Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="further-reading.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Further Reading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#141-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#142-ietf-rats-remote-attestation-procedures-rfc-9334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 IETF RATS: Remote ATtestation procedureS (RFC 9334)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#143-tpm-20-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 TPM 2.0 Attestation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.3 TPM 2.0 Attestation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1431-pcr-layout-and-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3.1 PCR Layout and Measurement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1432-tpm-20-remote-attestation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3.2 TPM 2.0 Remote Attestation Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#144-dice-device-identifier-composition-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4 DICE (Device Identifier Composition Engine)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#145-spdm-security-protocol-and-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5 SPDM: Security Protocol and Data Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#146-intel-tdx-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.6 Intel TDX Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#147-amd-sev-snp-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.7 AMD SEV-SNP Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#148-ieee-8021ar-device-identity-idevid-ldevid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.8 IEEE 802.1AR: Device Identity (IDevID / LDevID)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#149-tikz-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.9 TikZ Diagrams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1410-fpga-implementation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.10 FPGA Implementation Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1411-asic-implementation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.11 ASIC Implementation Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1412-all-solutions-hardware-attestation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.12 All Solutions: Hardware Attestation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1413-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.13 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec-ch14-recent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14 Recent Developments (2024–2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.14 Recent Developments (2024–2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14141-ietf-rats-architecture-rfc-9334-2022-deployed-20232024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.1 IETF RATS Architecture RFC 9334 (2022, Deployed 2023–2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14142-tcg-dice-endorsement-architecture-for-devices-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.2 TCG DICE Endorsement Architecture for Devices (2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14143-nvidia-hopper-confidential-computing-attestation-h100-cc-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.3 NVIDIA Hopper Confidential Computing Attestation (H100 CC, 2023)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14144-spdm-13-2023-pcie-and-cxl-device-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.4 SPDM 1.3 (2023): PCIe and CXL Device Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14145-microsoft-azure-attestation-service-v2-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.5 Microsoft Azure Attestation Service v2 (2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14146-keylime-remote-attestation-v7x-linux-foundation-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.14.6 Keylime Remote Attestation v7.x (Linux Foundation, 2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1415-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.15 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1416-famous-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.16 Famous Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1417-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.17 Standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ch-attestation">Chapter 14: Hardware Attestation<a class="headerlink" href="#ch-attestation" title="Permanent link">&para;</a></h1>
+<h2 id="141-introduction"><span class="secnum">14.1</span> Introduction<a class="headerlink" href="#141-introduction" title="Permanent link">&para;</a></h2>
+<p>Hardware attestation is the process by which a device cryptographically proves to a remote verifier that its hardware is genuine and its software stack is in a known, trusted state. Unlike software-only authentication (which can be spoofed by a compromised OS), hardware attestation is rooted in cryptographic keys bound to tamper-resistant hardware – an attacker who compromises the OS still cannot forge valid attestation evidence without physical access to the hardware security module.</p>
+<p>Attestation is foundational to: cloud confidential computing (verifying TEE integrity before workload placement), IoT device onboarding (proving device identity before network admission), supply chain verification (detecting counterfeit hardware), and zero-trust network access (verifying endpoint security posture before granting access).</p>
+<h2 id="142-ietf-rats-remote-attestation-procedures-rfc-9334"><span class="secnum">14.2</span> IETF RATS: Remote ATtestation procedureS (RFC 9334)<a class="headerlink" href="#142-ietf-rats-remote-attestation-procedures-rfc-9334" title="Permanent link">&para;</a></h2>
+<p>IETF RATS defines a universal vocabulary and architecture for attestation:</p>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 14.1.</strong> IETF RATS RFC 9334 roles</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Role</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Attester</td>
+<td style="text-align: left;">Device generating attestation evidence (the hardware being attested)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verifier</td>
+<td style="text-align: left;">Entity evaluating evidence against reference values; produces Attestation Result (AR)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Relying Party</td>
+<td style="text-align: left;">Service consuming Attestation Result to make access decisions</td>
+</tr>
+<tr>
+<td style="text-align: left;">Endorser</td>
+<td style="text-align: left;">Manufacturer providing endorsements (e.g., Intel, AMD signing TEE certificates)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reference Value Provider</td>
+<td style="text-align: left;">Entity providing expected golden measurements</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="language-text highlight"><pre><span></span><code>RATS Models:
+
+1. Passport Model:
+   Attester -&gt; [Evidence] -&gt; Verifier -&gt; [Attestation Result] -&gt; Relying Party
+   Verifier issues signed AR; Attester presents AR to RP
+   Use case: FIDO2, TLS certificate-based attestation
+
+2. Background-Check Model:
+   Attester -&gt; [Evidence] -&gt; Relying Party -&gt; [Evidence] -&gt; Verifier -&gt; [AR] -&gt; RP
+   RP forwards evidence to Verifier; RP makes decision based on AR
+   Use case: Cloud confidential computing (Intel PCCS, AMD KDS)
+
+Evidence format: EAT (Entity Attestation Token, RFC 9542)
+  - CBOR + COSE (constrained devices) or JSON + JWT (cloud)
+  - Claims: ueid (device ID), nonce (freshness), swname, swversion,
+             dbgstat (debug status), eat_profile
+</code></pre></div>
+<h2 id="143-tpm-20-attestation"><span class="secnum">14.3</span> TPM 2.0 Attestation<a class="headerlink" href="#143-tpm-20-attestation" title="Permanent link">&para;</a></h2>
+<h3 id="1431-pcr-layout-and-measurement"><span class="secnum">14.3.1</span> PCR Layout and Measurement<a class="headerlink" href="#1431-pcr-layout-and-measurement" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>TPM 2.0 PCR Layout (PC Client Platform FW Profile):
+  PCR[0]:  SRTM, BIOS, Host Platform Extensions, Embedded ROM code
+  PCR[1]:  Host Platform Configuration (CMOS, BIOS setup)
+  PCR[2]:  UEFI driver and application code
+  PCR[3]:  UEFI driver and application config
+  PCR[4]:  UEFI Boot Manager code (MBR / UEFI boot loader)
+  PCR[5]:  UEFI Boot Manager config + GPT/MBR partition tables
+  PCR[6]:  Host Platform Manufacturer specific
+  PCR[7]:  Secure Boot state (policy, keys: PK, KEK, db, dbx)
+  PCR[8-9]: GRUB2 (grub-measured-boot)
+  PCR[10]: OS kernel (IMA: Integrity Measurement Architecture)
+  PCR[11-15]: OS/application use
+  PCR[16]: Debug (resettable)
+
+PCR Extension: PCR_new = SHA256(PCR_old || measurement)
+  Each boot stage hashes its code/config and extends PCR before executing
+  next stage. PCR state is deterministic given the same software stack.
+</code></pre></div>
+<h3 id="1432-tpm-20-remote-attestation-workflow"><span class="secnum">14.3.2</span> TPM 2.0 Remote Attestation Workflow<a class="headerlink" href="#1432-tpm-20-remote-attestation-workflow" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code># Complete tpm2-tools attestation sequence:
+
+# Step 1: Create Endorsement Key (EK) -- factory provisioned
+tpm2_createek --ek-context ek.ctx --key-algorithm rsa2048 \
+  --public ek.pub
+
+# Step 2: Create Attestation Key (AK) -- bound to EK
+tpm2_createak --ek-context ek.ctx --ak-context ak.ctx \
+  --key-algorithm rsa2048 --hash-algorithm sha256 \
+  --signing-algorithm rsassa --public ak.pub --private ak.priv
+
+# Step 3: Activate credential (Privacy CA verifies EK, issues AK cert)
+tpm2_makecredential --tcti none --encryption-key ek.pub \
+  --secret credential.secret --service-data challenge.bin \
+  --credential-blob credential.blob
+
+tpm2_activatecredential --credentialedkey-context ak.ctx \
+  --credentialkey-context ek.ctx --credential-blob credential.blob \
+  --certinfo-data challenge_decrypted.bin
+
+# Step 4: Generate quote (PCR attestation)
+# Verifier sends nonce:
+openssl rand -hex 20 &gt; nonce.hex
+NONCE=$(cat nonce.hex)
+
+tpm2_quote --key-context ak.ctx \
+  --pcr-list sha256:0,1,4,7,10 \
+  --message quote.msg \
+  --signature quote.sig \
+  --qualification $NONCE \
+  --hash-algorithm sha256
+
+# Step 5: Verify quote (by verifier)
+tpm2_checkquote --public ak.pub \
+  --message quote.msg \
+  --signature quote.sig \
+  --qualification $NONCE \
+  --pcr-list sha256:0,1,4,7,10 \
+  --pcr pcr_values.bin
+</code></pre></div>
+<h2 id="144-dice-device-identifier-composition-engine"><span class="secnum">14.4</span> DICE (Device Identifier Composition Engine)<a class="headerlink" href="#144-dice-device-identifier-composition-engine" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>TCG DICE Architecture v1.0:
+
+UDS (Unique Device Secret): 256-bit secret in OTP fuse (factory-injected)
+CDI_0 = HMAC-SHA256(UDS, SHA256(Layer_0_firmware_image))
+CDI_N = HMAC-SHA256(CDI_{N-1}, SHA256(Layer_N_firmware_image))
+
+DeviceID Key = ECDSA-P256 key derived from CDI_0
+Alias Key    = ECDSA-P256 key derived from CDI_1 (changes with FW update)
+
+Certificate Chain:
+  DeviceID Certificate: self-signed; SubjectPublicKey = DeviceID pubkey
+    SubjectAltName: hardware serial number, firmware hash
+  Alias Certificate: signed by DeviceID key
+    SubjectPublicKey: Alias pubkey
+    Extension: FW digest of Layer 1 (oids 2.23.133.5.4.x)
+
+RIOT Core implementation (C):
+  DICECore_Init(uds, sizeof(uds), &amp;dice_ctx);
+  DICECore_DeriveCDI(&amp;dice_ctx, fw_hash, fw_hash_len, cdi, sizeof(cdi));
+  RiotCrypt_SeedDRBG(cdi, CDI_LENGTH);
+  RiotCrypt_DeriveEccKey(&amp;alias_key, RIOT_ECC_256);
+  RiotCrypt_GetDeviceID(&amp;device_id_pub);
+</code></pre></div>
+<h2 id="145-spdm-security-protocol-and-data-model"><span class="secnum">14.5</span> SPDM: Security Protocol and Data Model<a class="headerlink" href="#145-spdm-security-protocol-and-data-model" title="Permanent link">&para;</a></h2>
+<p>DMTF DSP0274 SPDM enables hardware attestation of PCIe components (GPUs, NICs, SSDs):</p>
+<div class="language-text highlight"><pre><span></span><code>SPDM v1.3 Message Flow:
+  Requester (CPU/Management Controller) &lt;-&gt; Responder (PCIe device)
+
+  1. GET_VERSION  -&gt; VERSION (supported: 1.0, 1.1, 1.2, 1.3)
+  2. GET_CAPABILITIES -&gt; CAPABILITIES
+     (CERT, CHAL, MEAS, ENCRYPT, MAC, MUT_AUTH, KEY_EX, ENCAP)
+  3. NEGOTIATE_ALGORITHMS -&gt; ALGORITHMS
+     (SHA-384, ECDSA P-384, AES-256-GCM, HKDF-SHA-384)
+  4. GET_DIGESTS -&gt; DIGESTS (SHA-384 of each certificate slot)
+  5. GET_CERTIFICATE -&gt; CERTIFICATE (DER-encoded certificate chain)
+  6. CHALLENGE -&gt; CHALLENGE_AUTH
+     (ECDSA-P384 signature over nonce + measurement summary)
+  7. GET_MEASUREMENTS -&gt; MEASUREMENTS
+     (individual firmware/config measurements with ECDSA signature)
+
+libspdm usage (C, DMTF reference):
+  #include "library/spdm_requester_lib.h"
+  spdm_context = malloc(libspdm_get_context_size());
+  libspdm_init_context(spdm_context);
+  libspdm_register_transport_layer_func(spdm_context,
+    LIBSPDM_MAX_MESSAGE_BUFFER_SIZE,
+    LIBSPDM_MAX_MESSAGE_HEADER_SIZE,
+    LIBSPDM_MAX_MESSAGE_TAIL_SIZE,
+    spdm_transport_pci_doe_encode_message,
+    spdm_transport_pci_doe_decode_message);
+  libspdm_get_certificate(spdm_context, 0, cert_chain_size, cert_chain);
+  libspdm_challenge(spdm_context, 0, SPDM_CHALLENGE_REQUEST_ALL_MEASUREMENTS_HASH,
+    &amp;measurement_hash_type, measurement_hash);
+</code></pre></div>
+<h2 id="146-intel-tdx-attestation"><span class="secnum">14.6</span> Intel TDX Attestation<a class="headerlink" href="#146-intel-tdx-attestation" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>Intel TDX (Trust Domain Extensions) Attestation:
+
+Trust Domain Measurement Registers:
+  MRTD  [384-bit]: Initial TD image measurement (built at launch)
+  RTMR[0-3]: Runtime measurement registers (extended by software)
+    RTMR[0]: UEFI firmware
+    RTMR[1]: UEFI configuration
+    RTMR[2]: OS kernel
+    RTMR[3]: Application
+
+Local Attestation:
+  1. TD calls TDCALL[TDREPORT]: generates TDREPORT_STRUCT
+     Contains: MRTD, RTMR[0-3], nonce (reportdata), CPUSVN, XFAM
+     Signed by: TD-scope private key (ephemeral; not exportable)
+  2. TDREPORT is local -- only verifiable on same platform
+
+Remote Attestation:
+  1. TD requests TDREPORT with 64-byte nonce (verifier-supplied)
+  2. TD passes TDREPORT to Quoting Enclave (QE3) via VMCALL
+  3. QE3 signs TDREPORT using ECDSA P-256 AK (from Intel PCK cert)
+  4. QE3 produces TD Quote (TDREPORT + signature + certificate chain)
+  5. Verifier validates:
+     a. Intel PCK certificate -&gt; Intel PCK CA -&gt; Intel Root CA
+     b. ECDSA signature on TDREPORT
+     c. MRTD matches expected TD image hash
+     d. RTMR values match expected software measurements
+     e. Nonce matches to prevent replay
+
+Intel PCCS (Provisioning Certificate Caching Service):
+  REST API: GET /sgx/certification/v4/pckcert?encrypted_ppid=...&amp;cpusvn=...
+  Provides: PCK certificate chain for offline verification
+  Self-hosted: docker run -p 8081:8081 intelcorp/pccs:latest
+</code></pre></div>
+<h2 id="147-amd-sev-snp-attestation"><span class="secnum">14.7</span> AMD SEV-SNP Attestation<a class="headerlink" href="#147-amd-sev-snp-attestation" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>AMD SEV-SNP Attestation Report (AMD ABI Spec Table 21):
+
+Fields:
+  REPORT_DATA [512 bits]: guest-supplied nonce (freshness)
+  MEASUREMENT [384 bits]: SHA-384 of initial guest memory at launch
+  HOST_DATA   [256 bits]: hypervisor-supplied metadata
+  CHIP_ID     [512 bits]: unique per-chip identifier
+  POLICY      [64 bits]:  SEQ, ABI_MINOR, ABI_MAJOR, SMT, migrate, debug
+  SIGNATURE   [912 bits]: ECDSA P-384 signature (R || S, little-endian)
+
+VCEK (Versioned Chip Endorsement Key):
+  Derived from per-chip secret + CPUSVN + BIOS SVN
+  Certificate: ECDSA P-384 public key; signed by AMD ARK -&gt; AMD ASK
+
+Attestation Flow:
+  1. Guest: /dev/sev-guest ioctl(SNP_GET_REPORT, report_req)
+     -&gt; snp_attestation_report (1184 bytes)
+  2. Fetch VCEK certificate from AMD KDS:
+     GET https://kdsintf.amd.com/vcek/v1/{product}/{tcbversion}
+  3. Verify certificate chain: VCEK -&gt; AMD ASK -&gt; AMD ARK (AMD root CA)
+  4. Verify SNP report ECDSA signature using VCEK public key
+  5. Check MEASUREMENT == SHA384(expected_guest_firmware)
+  6. Check POLICY allows expected configuration
+
+snpguest tool:
+  snpguest report report.bin --random  # Generate with random nonce
+  snpguest verify certs /etc/snp-certs/  # Verify VCEK chain
+  snpguest display report report.bin  # Parse and display report
+</code></pre></div>
+<h2 id="148-ieee-8021ar-device-identity-idevid-ldevid"><span class="secnum">14.8</span> IEEE 802.1AR: Device Identity (IDevID / LDevID)<a class="headerlink" href="#148-ieee-8021ar-device-identity-idevid-ldevid" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>IDevID (Initial Device Identity):
+  - Factory-provisioned; ECDSA P-256 or RSA-2048 key in secure element
+  - X.509 certificate signed by manufacturer CA
+  - SubjectAltName: hwType (OID), hwSerialNum
+  - Cannot be modified after factory; used for network admission
+
+LDevID (Locally Significant Device Identity):
+  - Derived on-device during first deployment (enrollment)
+  - Key can be in TPM, secure element, or SE-backed TEE
+  - Certificate signed by enterprise CA using 802.1AR CSR
+  - Used for ongoing authentication; can be renewed/revoked
+
+Enrollment flow:
+  Device boot -&gt; IDevID certificate presented to enrollment server
+  -&gt; Server verifies IDevID chain to manufacturer root CA
+  -&gt; Server issues LDevID certificate (SCEP or EST protocol)
+  -&gt; Device stores LDevID in TPM (TPM2_CreatePrimary + NV store)
+  -&gt; LDevID used for 802.1X network authentication (EAP-TLS)
+</code></pre></div>
+<h2 id="149-tikz-diagrams"><span class="secnum">14.9</span> TikZ Diagrams<a class="headerlink" href="#149-tikz-diagrams" title="Permanent link">&para;</a></h2>
+<figure class="fig fig-diagram" id="fig-rats">
+<img class="tikz" src="img/tikz-0b80cdf9633b.svg" alt="IETF RATS attestation architecture" loading="lazy">
+<figcaption><strong>Figure 14.1.</strong> IETF RATS attestation architecture</figcaption>
+</figure>
+
+<figure class="fig fig-diagram" id="fig-pcr-chain">
+<img class="tikz" src="img/tikz-c77646a3a106.svg" alt="TPM 2.0 PCR extension: each boot stage extends a measurement chain" loading="lazy">
+<figcaption><strong>Figure 14.2.</strong> TPM 2.0 PCR extension: each boot stage extends a measurement chain</figcaption>
+</figure>
+
+<h2 id="1410-fpga-implementation-table"><span class="secnum">14.10</span> FPGA Implementation Table<a class="headerlink" href="#1410-fpga-implementation-table" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 14.2.</strong> FPGA attestation subsystem implementation resources</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Device</strong></th>
+<th style="text-align: right;"><strong>LUTs</strong></th>
+<th style="text-align: right;"><strong>FFs</strong></th>
+<th style="text-align: right;"><strong>BRAMs</strong></th>
+<th style="text-align: right;"><strong>DSPs</strong></th>
+<th style="text-align: right;"><strong>Fmax (MHz)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">XC7A35T (SHA-256 PCR extend)</td>
+<td style="text-align: right;">1,240</td>
+<td style="text-align: right;">820</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">88</td>
+</tr>
+<tr>
+<td style="text-align: left;">XC7K70T (ECC P-384 attest)</td>
+<td style="text-align: right;">4,800</td>
+<td style="text-align: right;">3,200</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">195</td>
+<td style="text-align: right;">310</td>
+</tr>
+<tr>
+<td style="text-align: left;">ZCU102 (DICE CDI + cert)</td>
+<td style="text-align: right;">9,200</td>
+<td style="text-align: right;">6,000</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">820</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Cyclone V (SPDM req.)</td>
+<td style="text-align: right;">3,600</td>
+<td style="text-align: right;">2,400</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Stratix 10 (full attest.)</td>
+<td style="text-align: right;">14,000</td>
+<td style="text-align: right;">9,500</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">1,800</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lattice ECP5 (DICE layer 0)</td>
+<td style="text-align: right;">2,100</td>
+<td style="text-align: right;">1,400</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microchip PolarFire (SPDM)</td>
+<td style="text-align: right;">6,800</td>
+<td style="text-align: right;">4,500</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">550</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="1411-asic-implementation-table"><span class="secnum">14.11</span> ASIC Implementation Table<a class="headerlink" href="#1411-asic-implementation-table" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 14.3.</strong> ASIC hardware attestation implementations</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Chip / Process</strong></th>
+<th style="text-align: right;"><strong>Area (mm<sup>2</sup>)</strong></th>
+<th style="text-align: right;"><strong>Power (mW)</strong></th>
+<th style="text-align: right;"><strong>Freq (MHz)</strong></th>
+<th style="text-align: right;"><strong>Attests/s</strong></th>
+<th style="text-align: left;"><strong>Protocol</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TPM 2.0 SLB9670 (28nm)</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">15 RSA</td>
+<td style="text-align: left;">TPM2 + DICE</td>
+</tr>
+<tr>
+<td style="text-align: left;">NPCT750 (40nm)</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">10 RSA</td>
+<td style="text-align: left;">TPM2</td>
+</tr>
+<tr>
+<td style="text-align: left;">STMicro ST33KTPM2SPI (28nm)</td>
+<td style="text-align: right;">4.5</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">12 RSA</td>
+<td style="text-align: left;">TPM2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel Pluton (7nm, in CPU)</td>
+<td style="text-align: right;">0.9</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">200 ECC</td>
+<td style="text-align: left;">TPM2 + DICE</td>
+</tr>
+<tr>
+<td style="text-align: left;">Google Titan M2 (Samsung 10nm)</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">50 ECC</td>
+<td style="text-align: left;">DICE + FIDO2</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD PSP (TSMC 7nm, in CPU)</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">150 ECC</td>
+<td style="text-align: left;">SEV-SNP attest</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel TDX QE3 (SGX enclave)</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">3000</td>
+<td style="text-align: right;">10K ECC</td>
+<td style="text-align: left;">TDX quote</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="1412-all-solutions-hardware-attestation"><span class="secnum">14.12</span> All Solutions: Hardware Attestation<a class="headerlink" href="#1412-all-solutions-hardware-attestation" title="Permanent link">&para;</a></h2>
+<div class="tbl">
+<div class="tbl-caption"><strong>Table 14.4.</strong> Hardware attestation solutions</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Solution</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>License</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">tpm2-tools (tpm2-software)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">BSD-2</td>
+<td style="text-align: left;">TPM 2.0 command-line tools</td>
+</tr>
+<tr>
+<td style="text-align: left;">ms-tpm-20-ref (Microsoft)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">BSD</td>
+<td style="text-align: left;">TPM 2.0 reference implementation</td>
+</tr>
+<tr>
+<td style="text-align: left;">IBM Software TPM</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">BSD</td>
+<td style="text-align: left;">ibmtpm1682 full TPM 2.0 simulator</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenTitan (with attest.)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">Open HRoT with DICE attestation</td>
+</tr>
+<tr>
+<td style="text-align: left;">DICE-RIoT (Microsoft)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">MIT</td>
+<td style="text-align: left;">DICE CDI + alias certificate</td>
+</tr>
+<tr>
+<td style="text-align: left;">libspdm (DMTF)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">SPDM requester/responder library</td>
+</tr>
+<tr>
+<td style="text-align: left;">snpguest (AMD)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">AMD SEV-SNP attestation tool</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel SGX DCAP</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">BSD | Intel</td>
+<td style="text-align: left;">Intel TDX/SGX quote generation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel PCCS</td>
+<td style="text-align: left;">Open-source | Commercial</td>
+<td style="text-align: left;">Intel | BSD</td>
+<td style="text-align: left;">PCK certificate caching service</td>
+</tr>
+<tr>
+<td style="text-align: left;">veraison (CCC)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">RATS verifier service framework</td>
+</tr>
+<tr>
+<td style="text-align: left;">parsec (Arm)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">Platform AbstRaction for SECurity</td>
+</tr>
+<tr>
+<td style="text-align: left;">Keylime (RedHat)</td>
+<td style="text-align: left;">Open-source</td>
+<td style="text-align: left;">Apache 2</td>
+<td style="text-align: left;">TPM-based remote attestation (IMA)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trusted Identity (IBM Cloud)</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">Cloud TPM remote attestation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Azure Attestation Service</td>
+<td style="text-align: left;">Commercial | Cloud</td>
+<td style="text-align: left;">Closed | RATS | Microsoft | Azure</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">AWS Nitro Attestation</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">AWS Nitro enclave attestation doc.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infineon OPTIGA TPM SLB9670</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed | HW | CC EAL4+</td>
+<td style="text-align: left;">Discrete TPM 2.0 chip</td>
+</tr>
+<tr>
+<td style="text-align: left;">NUVOTON NPCT750</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed | HW</td>
+<td style="text-align: left;">SPI TPM 2.0 chip</td>
+</tr>
+<tr>
+<td style="text-align: left;">STMicro ST33K TPM</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed | HW | CC EAL4+</td>
+<td style="text-align: left;">ARM SC300 TPM 2.0 chip</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trustonic Kinibi (TEE attest.)</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">Closed</td>
+<td style="text-align: left;">ARM TrustZone attestation</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIDO2 Attestation (WebAuthn)</td>
+<td style="text-align: left;">Standard</td>
+<td style="text-align: left;">Open | W3C</td>
+<td style="text-align: left;">YubiKey/Titan attestation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h2 id="1413-solved-problems"><span class="secnum">14.13</span> Solved Problems<a class="headerlink" href="#1413-solved-problems" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: TPM 2.0 PCR Extension Chain Calculation</p>
+<p>A system boots with PCR[4] = 0x00...00 (32 zero bytes). Three measurements are extended in order: MBR (M1 = SHA256 of MBR image = <code>a1b2...</code>), GRUB stage 2 (M2), Linux kernel (M3). Compute the final PCR[4] value using the recursive formula. What property does this provide?</p>
+<p><strong>Solution:</strong> PCR extension formula: <span class="arithmatex">\(\text{PCR}_{new} = \text{SHA256}(\text{PCR}_{old} \| M_i)\)</span></p>
+<div class="arithmatex">\[\begin{align*}
+\text{PCR}^{(0)} &amp;= \texttt{0x00...00} \quad \text{(32 bytes)} \\
+\text{PCR}^{(1)} &amp;= \text{SHA256}(\text{PCR}^{(0)} \| M_1) = \text{SHA256}(\texttt{00..00} \| M_1) \\
+\text{PCR}^{(2)} &amp;= \text{SHA256}(\text{PCR}^{(1)} \| M_2) \\
+\text{PCR}^{(3)} &amp;= \text{SHA256}(\text{PCR}^{(2)} \| M_3)
+\end{align*}\]</div>
+<p>Security properties:</p>
+<ol>
+<li>
+<p><strong>Order dependency</strong>: Swapping <span class="arithmatex">\(M_1\)</span> and <span class="arithmatex">\(M_2\)</span> produces a different final PCR value. A verifier knows not just <em>which</em> components were measured but <em>in what order</em>.</p>
+</li>
+<li>
+<p><strong>Collision resistance</strong>: An attacker cannot find <span class="arithmatex">\(M_1' \neq M_1\)</span> such that the final PCR matches the golden value (SHA-256 preimage resistance).</p>
+</li>
+<li>
+<p><strong>Binding</strong>: The TPM’s signature on the PCR value cryptographically binds the entire boot sequence. Any modification to any stage changes all subsequent PCR values.</p>
+</li>
+</ol>
+<p>Practical computation with tpm2-tools:</p>
+<div class="language-text highlight"><pre><span></span><code># Simulate PCR extension:
+tpm2_pcrextend 4:sha256=&lt;hex_M1&gt;
+tpm2_pcrextend 4:sha256=&lt;hex_M2&gt;
+tpm2_pcrextend 4:sha256=&lt;hex_M3&gt;
+tpm2_pcrread sha256:4  # Verify final PCR[4]
+</code></pre></div>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: AMD SEV-SNP: Decode Policy Bits</p>
+<p>An AMD SEV-SNP guest reports POLICY = 0x00000000000B0000 (hex). Decode the policy fields and determine: (a) Is debug mode allowed? (b) Is SMT permitted? (c) Minimum ABI version?</p>
+<p><strong>Solution:</strong> AMD SEV-SNP POLICY field (AMD ABI Spec Section 4.3):</p>
+<div class="language-text highlight"><pre><span></span><code>POLICY = 0x00000000000B0000
+Binary: 0000 0000 0000 0000 0000 0000 0000 0000
+        0000 0000 0000 1011 0000 0000 0000 0000
+
+Bit mapping:
+  [15:8]   ABI_MINOR = 0x00 = 0
+  [23:16]  ABI_MAJOR = 0x0B = 11  &lt;- minimum platform firmware SVN
+  [24]     SMT  = 0 -- SMT NOT required (can run on single-thread CPU)
+  [25]     MIG  = 0 -- migration NOT allowed
+  [26]     DBG  = 0 -- DEBUG NOT allowed (no debug decryption)
+  [27]     SINGLE_SOCKET = 0 -- multi-socket allowed
+</code></pre></div>
+<p><strong>(a) Debug mode:</strong> Bit[26] = 0 – debug mode is <strong>NOT allowed</strong>. A platform in debug mode cannot run this guest (POLICY check fails at VMRUN).</p>
+<p><strong>(b) SMT:</strong> Bit[24] = 0 – SMT is not required. The guest can run on a CPU with SMT disabled.</p>
+<p><strong>(c) Minimum ABI:</strong> ABI_MAJOR = 11 (0x0B). The platform’s ABI major version must be <span class="arithmatex">\(\geq 11\)</span> (SNP firmware v1.11+).</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: SPDM Challenge-Auth: Verify Signature</p>
+<p>A SPDM CHALLENGE_AUTH response contains: Cert chain SHA384 digest, nonce echo (32 bytes), 0 measurement summary bytes, opaque data (0 bytes), and ECDSA P-384 signature (96 bytes). Describe the complete verification procedure the requester must execute.</p>
+<p><strong>Solution:</strong> SPDM CHALLENGE_AUTH signature covers (DSP0274 v1.3 Section 11.4):</p>
+<div class="arithmatex">\[\text{Signature} = \text{ECDSA-P384}\left(\text{Signing\_key},\ \text{SHA384}(\text{A} \| \text{B} \| \text{C})\right)\]</div>
+<p>Where:</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(A\)</span> = “responder-challenge_auth signing” (context string, 38 bytes)</p>
+</li>
+<li>
+<p><span class="arithmatex">\(B\)</span> = concatenation of all prior SPDM message transcripts (VCA: VERSION + CAPABILITIES + ALGORITHMS + DIGESTS + CERTIFICATE + CHALLENGE)</p>
+</li>
+<li>
+<p><span class="arithmatex">\(C\)</span> = CHALLENGE_AUTH response body (without signature field)</p>
+</li>
+</ul>
+<p>Verification steps:</p>
+<ol>
+<li>
+<p><strong>Certificate chain validation</strong>: Parse CERTIFICATE response; verify chain from leaf cert to trusted root CA (manufacturer’s anchor). Check key usage: leaf must have “digital signature” extension.</p>
+</li>
+<li>
+<p><strong>Nonce echo check</strong>: CHALLENGE contained 32-byte requester nonce; verify CHALLENGE_AUTH echoes the same nonce (anti-replay).</p>
+</li>
+<li>
+<p><strong>Cert digest check</strong>: Verify SHA384 of received cert chain matches DIGESTS response.</p>
+</li>
+<li>
+<p><strong>Transcript hash</strong>: Compute SHA384 over concatenated VCA transcript (Steps 1-7 of SPDM session negotiation).</p>
+</li>
+<li>
+<p><strong>Signature verification</strong>: Using leaf certificate ECDSA P-384 public key, verify ECDSA-P384 signature over the transcript hash.</p>
+</li>
+<li>
+<p><strong>Policy check</strong>: Verify leaf certificate attributes: subject name matches device identity, not expired, not revoked (OCSP or CRL check against DMTF certificate authority).</p>
+</li>
+</ol>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: DICE CDI Forgery Resistance</p>
+<p>An attacker compromises a DICE Layer 1 device (bootloader) and attempts to forge a CDI_1 that matches the golden value. (a) What is the computational difficulty? (b) If the attacker knows UDS, can they forge CDI_0? (c) What protocol check prevents the Alias Certificate from being accepted after firmware replacement?</p>
+<p><strong>Solution:</strong> <strong>(a) Forging CDI_1:</strong> <span class="arithmatex">\(\text{CDI}_1 = \text{HMAC-SHA256}(\text{CDI}_0, H_1)\)</span> where <span class="arithmatex">\(H_1 = \text{SHA256}(\text{Layer1\_FW})\)</span>.</p>
+<p>To forge CDI_1 with a different Layer 1 firmware <span class="arithmatex">\(H_1'\)</span>, the attacker needs:</p>
+<div class="arithmatex">\[\text{HMAC-SHA256}(\text{CDI}_0, H_1') = \text{CDI}_1\]</div>
+<p>This requires finding <span class="arithmatex">\(H_1'\)</span> such that HMAC produces the same output – a second preimage of HMAC-SHA256. Assuming HMAC-SHA256 is a PRF, this requires <span class="arithmatex">\(2^{256}\)</span> operations (brute-force of 256-bit output). <strong>Computationally infeasible</strong>.</p>
+<p><strong>(b) Forging CDI_0 with known UDS:</strong> <span class="arithmatex">\(\text{CDI}_0 = \text{HMAC-SHA256}(\text{UDS}, H_0)\)</span>.</p>
+<p>If the attacker has compromised the Layer 1 and knows UDS, they <em>can</em> compute CDI_0 with any firmware hash (they control <span class="arithmatex">\(H_0'\)</span>). They could compute a valid <span class="arithmatex">\(\text{CDI}_0' = \text{HMAC-SHA256}(\text{UDS}, H_0')\)</span>.</p>
+<p>However: <strong>UDS is stored in OTP fuses, physically inaccessible from software</strong>. A Layer 1 compromise does NOT give software access to the UDS – the hardware enforces this isolation.</p>
+<p><strong>(c) Protocol check – Alias Certificate rejection:</strong> The verifier checks that the firmware measurement in the Alias Certificate extension matches the Reference Value (known-good firmware hash). A new firmware hash <span class="arithmatex">\(H_1' \neq H_1\)</span> is in the certificate and is detected by the verifier. Even if the attacker tries to use an old Alias Certificate (replay), the verifier includes a freshness nonce in the attestation request that must be signed by the current Alias key.</p>
+</div>
+<div class="admonition example box-solvedproblem kind-example">
+<p class="admonition-title">Solved Problem: Intel TDX: Attestation Report Fields</p>
+<p>An Intel TDX attestation verifier receives a TD Quote. List and explain 5 specific fields it must validate, and describe what each field proves about the Trust Domain.</p>
+<p><strong>Solution:</strong> <strong>Required TD Quote validation (Intel TDX Attestation Architecture v1.0):</strong></p>
+<ol>
+<li>
+<p><strong>MRTD (TD Measurement Register, 384 bits)</strong>: SHA-384 of initial TD memory contents at launch. Verifier compares against a reference build hash (from CI/CD build pipeline). Proves: the TD runs the expected, unmodified code image.</p>
+</li>
+<li>
+<p><strong>RTMR[0-3] (Runtime Measurement Registers, 384 bits each)</strong>: Software-extended registers capturing UEFI, bootloader, kernel, application measurements. Verifier checks each RTMR against known-good values from the software supply chain. Proves: the complete software stack is unmodified.</p>
+</li>
+<li>
+<p><strong>REPORTDATA (512 bits)</strong>: Guest-supplied nonce (64 bytes, typically challenge from verifier + session ID). Verifier checks this matches the nonce it sent. Proves: freshness – the quote was generated on demand for this session, not replayed.</p>
+</li>
+<li>
+<p><strong>TD Attributes (debug bit)</strong>: Must be 0 for production deployments. If debug bit is 1, memory is not encrypted with production key. Proves: the TD is not in debug mode (which would allow memory inspection).</p>
+</li>
+<li>
+<p><strong>Intel PCK Certificate chain</strong>: Leaf PCK cert -&gt; Intel PCK CA -&gt; Intel Root CA (offline root). Verifier validates the chain using Intel’s public root certificate. Proves: the attestation key is genuinely bound to Intel SGX/TDX hardware on the specific platform (CPU model, security version identified by CPUSVN in cert).</p>
+</li>
+</ol>
+</div>
+<h2 id="sec-ch14-recent"><span class="secnum">14.14</span> Recent Developments (2024–2026)<a class="headerlink" href="#sec-ch14-recent" title="Permanent link">&para;</a></h2>
+<p>Hardware attestation has moved from experimental to production-scale deployment between 2022 and 2026. IETF RATS RFC 9334 is now widely implemented, TCG DICE Endorsement Architecture has been standardised, NVIDIA Hopper introduced the first GPU-level confidential computing attestation, SPDM 1.3 governs PCIe device identity, Microsoft Azure Attestation Service v2 targets cloud-scale verification, and Keylime v7 brings IMA-based attestation to large Linux fleets.</p>
+<h3 id="14141-ietf-rats-architecture-rfc-9334-2022-deployed-20232024"><span class="secnum">14.14.1</span> IETF RATS Architecture RFC 9334 (2022, Deployed 2023–2024)<a class="headerlink" href="#14141-ietf-rats-architecture-rfc-9334-2022-deployed-20232024" title="Permanent link">&para;</a></h3>
+<p>IETF RFC 9334 (Remote ATtestation procedureS, March 2022) was ratified over a background of confidential computing deployments; broad ecosystem adoption materialised in 2023–2024:</p>
+<ul>
+<li>
+<p><strong>Passport model deployments:</strong> FIDO Alliance FIDO2/WebAuthn attestation (900M+ monthly authentications in 2024) implements the RATS Passport model. The authenticator (attester) presents an attestation statement to a FIDO server (relying party) whose verification logic acts as a verifier consuming FIDO Metadata Service endorsements.</p>
+</li>
+<li>
+<p><strong>Background-check model in cloud:</strong> All three major cloud providers (AWS Nitro, Azure Confidential VMs, Google Confidential GKE) implement the Background-Check model where a tenant submits evidence (SGX quote, TDX quote, SEV-SNP report) to a verifier service that returns an Attestation Result consumed by the relying-party workload before secret injection.</p>
+</li>
+<li>
+<p><strong>EAT (Entity Attestation Token, RFC 9542):</strong> Deployed in Arm SystemReady IR 2.1 certified devices (2024) as the standard claim format for boot-time measurements, replacing vendor-specific TPM quote formats in new platform designs.</p>
+</li>
+</ul>
+<div class="tbl" id="tab-rats-deployment">
+<div class="tbl-caption"><strong>Table 14.5.</strong> RATS RFC 9334 deployment status by ecosystem (2024)</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Ecosystem</strong></th>
+<th style="text-align: left;"><strong>Model</strong></th>
+<th style="text-align: left;"><strong>Evidence format</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FIDO2 / WebAuthn</td>
+<td style="text-align: left;">Passport</td>
+<td style="text-align: left;">CBOR attestation statement</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel TDX cloud</td>
+<td style="text-align: left;">Background-check</td>
+<td style="text-align: left;">ECDSA-P256 TD Quote</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD SEV-SNP cloud</td>
+<td style="text-align: left;">Background-check</td>
+<td style="text-align: left;">ECDSA-P384 SNP report</td>
+</tr>
+<tr>
+<td style="text-align: left;">AWS Nitro Enclave</td>
+<td style="text-align: left;">Passport</td>
+<td style="text-align: left;">CBOR-COSE signed document</td>
+</tr>
+<tr>
+<td style="text-align: left;">ARM CCA (Realm)</td>
+<td style="text-align: left;">Background-check</td>
+<td style="text-align: left;">CCA realm token (EAT)</td>
+</tr>
+<tr>
+<td style="text-align: left;">IoT (Arm Corstone)</td>
+<td style="text-align: left;">Background-check</td>
+<td style="text-align: left;">EAT CBOR/COSE</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<h3 id="14142-tcg-dice-endorsement-architecture-for-devices-2023"><span class="secnum">14.14.2</span> TCG DICE Endorsement Architecture for Devices (2023)<a class="headerlink" href="#14142-tcg-dice-endorsement-architecture-for-devices-2023" title="Permanent link">&para;</a></h3>
+<p>TCG published the <em>DICE Endorsement Architecture for Devices</em> (TCG DICE ENDA, version 1.00, October 2023), extending the DICE CDI derivation chain with a formal endorsement hierarchy:</p>
+<ul>
+<li>
+<p><strong>Endorsement Certificate Authority (ECA):</strong> The device manufacturer operates an ECA that signs <em>DeviceID endorsement certificates</em> at the factory. Each endorsement certificate binds the DeviceID public key to the hardware serial number and a set of certified hardware capabilities (e.g., FIPS 140-3 TRNG, tamper detection active).</p>
+</li>
+<li>
+<p><strong>Endorsed DICE Chain:</strong> The verifier can now distinguish a factory-provisioned DeviceID (endorsed by manufacturer ECA) from a self-signed DeviceID, enabling trust-level differentiation in RATS-compliant verification policies.</p>
+</li>
+<li>
+<p><strong>Alias Certificate Endorsement:</strong> For renewable firmware, the Alias Certificate (per-firmware) is also endorsable: the manufacturer signs an <em>expected alias certificate hash</em> into the endorsement, allowing offline pre-validation of known-good firmware releases.</p>
+</li>
+<li>
+<p><strong>Hardware deployments:</strong> Google Titan M2 (Pixel 8, 2023), Microsoft Pluton (AMD Ryzen 7040, 2023), and OpenTitan 0.9 all implement TCG DICE ENDA-compatible certificate chains.</p>
+</li>
+</ul>
+<h3 id="14143-nvidia-hopper-confidential-computing-attestation-h100-cc-2023"><span class="secnum">14.14.3</span> NVIDIA Hopper Confidential Computing Attestation (H100 CC, 2023)<a class="headerlink" href="#14143-nvidia-hopper-confidential-computing-attestation-h100-cc-2023" title="Permanent link">&para;</a></h3>
+<p>NVIDIA H100 (Hopper architecture, TSMC 4 nm) introduced Confidential Computing (CC) mode in 2023, the first GPU-class attestation deployment:</p>
+<ul>
+<li>
+<p><strong>Attestation root:</strong> Each H100 is factory-provisioned with a GPC (GPU Platform Certificate) signed by NVIDIA’s root CA (ECDSA-P384). The certificate binds the GPU serial number to the RIM (Reference Integrity Manifest) for the on-GPU CC firmware (FWID = SHA-384 of GSP-RM firmware).</p>
+</li>
+<li>
+<p><strong>Local attestation report:</strong> The CC firmware generates a <span class="smallcaps">RIM Report</span> containing FWID, nonce, driver version, and a hardware-signed digest (HMAC-SHA384 keyed by the GPU’s internal HSM key), accessible via the NVIDIA CC SDK <code>nvml</code> API.</p>
+</li>
+<li>
+<p><strong>Remote attestation:</strong> The local RIM Report is sent to NVIDIA’s Hopper Attestation Service (OCSP-style REST API) which verifies the GPC chain and returns a signed Attestation Result (AR) in JWT format, consumable by RATS-based relying parties.</p>
+</li>
+<li>
+<p><strong>Security model:</strong> In CC mode, all GDDR6 traffic is encrypted with a session key negotiated with the attestation-verified driver. The CPU host cannot read GPU memory in plaintext, and the GPU firmware hash must match the RIM before the CC session activates.</p>
+</li>
+</ul>
+<div class="admonition note box-notebox kind-note">
+<p><strong>Note:</strong> NVIDIA Hopper CC attestation integrates with Intel TDX (for the host-side Trust Domain) to create end-to-end confidential AI inference: the TDX-attested VM receives an NVIDIA CC attestation report and verifies both the CPU memory encryption (TDX) and the GPU memory encryption (H100 CC) before injecting model weights.</p>
+</div>
+<h3 id="14144-spdm-13-2023-pcie-and-cxl-device-authentication"><span class="secnum">14.14.4</span> SPDM 1.3 (2023): PCIe and CXL Device Authentication<a class="headerlink" href="#14144-spdm-13-2023-pcie-and-cxl-device-authentication" title="Permanent link">&para;</a></h3>
+<p>DMTF DSP0274 SPDM 1.3 (October 2023) adds several features relevant to hardware attestation deployments in data-centre and edge environments:</p>
+<ul>
+<li>
+<p><strong>Mutual authentication (MutAuth):</strong> Both requester and responder exchange certificates and challenge each other, enabling the device to verify the authenticity of the host management controller before revealing sensitive measurements.</p>
+</li>
+<li>
+<p><strong>Multi-key certificate slots:</strong> Up to 8 simultaneous certificate chains per device, supporting separate keys for identity, attestation, and IDE session establishment.</p>
+</li>
+<li>
+<p><strong>Extended measurements:</strong> Measurement blocks now support structured data (OID-tagged firmware component hashes, configuration digests, and runtime event logs), aligning SPDM measurements with TCG DICE Alias Certificate extensions.</p>
+</li>
+<li>
+<p><strong>CXL support:</strong> CXL 3.0 specifies SPDM 1.3 as the mandatory attestation protocol for TEESP-capable memory expanders.</p>
+</li>
+</ul>
+<h3 id="14145-microsoft-azure-attestation-service-v2-2024"><span class="secnum">14.14.5</span> Microsoft Azure Attestation Service v2 (2024)<a class="headerlink" href="#14145-microsoft-azure-attestation-service-v2-2024" title="Permanent link">&para;</a></h3>
+<p>Microsoft Azure Attestation (MAA) Service v2 (GA March 2024) is a RATS-compliant Background-Check model verifier operating at cloud scale:</p>
+<div class="tbl" id="tab-maa-v2">
+<div class="tbl-caption"><strong>Table 14.6.</strong> Azure Attestation Service v2 supported evidence types</div>
+<div class="tbl-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Evidence type</strong></th>
+<th style="text-align: left;"><strong>Format</strong></th>
+<th style="text-align: left;"><strong>Verifier anchor</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Intel SGX DCAP</td>
+<td style="text-align: left;">ECDSA-P256 quote</td>
+<td style="text-align: left;">Intel PCK cert chain (PCCS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intel TDX</td>
+<td style="text-align: left;">ECDSA-P256 TD quote</td>
+<td style="text-align: left;">Intel PCK cert chain</td>
+</tr>
+<tr>
+<td style="text-align: left;">AMD SEV-SNP</td>
+<td style="text-align: left;">ECDSA-P384 report</td>
+<td style="text-align: left;">AMD ARK/ASK chain (KDS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">ARM CCA Realm</td>
+<td style="text-align: left;">EAT CBOR/COSE</td>
+<td style="text-align: left;">ARM Veraison reference values</td>
+</tr>
+<tr>
+<td style="text-align: left;">TPM 2.0</td>
+<td style="text-align: left;">PCR quote (RSA/ECC)</td>
+<td style="text-align: left;">Microsoft CA (Pluton / UEFI EK)</td>
+</tr>
+<tr>
+<td style="text-align: left;">NVIDIA H100 CC</td>
+<td style="text-align: left;">JWT RIM report</td>
+<td style="text-align: left;">NVIDIA root CA (OCSP)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<p>MAA v2 returns JSON Web Tokens (JWT) containing the Attestation Result (AR) with claims: <code>x-ms-isolation-tee</code> (TEE type), <code>x-ms-runtime</code> (runtime claims from the attested environment), and <code>cnf</code> (confirmation key binding). The JWT is signed by an MAA service certificate verifiable against Microsoft’s public PKI.</p>
+<h3 id="14146-keylime-remote-attestation-v7x-linux-foundation-2024"><span class="secnum">14.14.6</span> Keylime Remote Attestation v7.x (Linux Foundation, 2024)<a class="headerlink" href="#14146-keylime-remote-attestation-v7x-linux-foundation-2024" title="Permanent link">&para;</a></h3>
+<p>Keylime (Linux Foundation, v7.x released 2024) is the leading open-source TPM-based remote attestation framework for Linux fleets:</p>
+<ul>
+<li>
+<p><strong>Architecture:</strong> Keylime Registrar maintains a database of enrolled devices (EK + AK certificates). Keylime Verifier continuously polls agents (running on each attested host) for fresh TPM quotes covering PCR[10] (IMA log) and compares against allowlists.</p>
+</li>
+<li>
+<p><strong>IMA integration:</strong> Linux IMA (Integrity Measurement Architecture) extends PCR[10] with SHA-256 hashes of every executed file, loaded kernel module, and accessed configuration file. Keylime v7 adds <em>policy-as-code</em> allowlists in JSON-LD format, enabling per-workload IMA policies.</p>
+</li>
+<li>
+<p><strong>RATS compliance:</strong> Keylime v7 implements IETF RATS Background-Check model: the Keylime Verifier acts as a RATS Verifier; the agent generates EAT evidence; the Verifier produces a signed AR in JWT format consumed by deployment orchestrators (Kubernetes, Ansible).</p>
+</li>
+<li>
+<p><strong>Post-quantum readiness:</strong> Keylime 7.2 (2024) adds support for TPM 2.0 ECC-based AKs (ECDSA-P384) as default, replacing the legacy RSA-2048 AK, reducing quote size from 256 B to 96 B signature.</p>
+</li>
+</ul>
+<h2 id="1415-exercises"><span class="secnum">14.15</span> Exercises<a class="headerlink" href="#1415-exercises" title="Permanent link">&para;</a></h2>
+<div class="admonition example box-exercises kind-example">
+<p class="admonition-title">Exercises</p>
+<ol>
+<li>
+<p>Explain the difference between local attestation and remote attestation in Intel TDX. When is each used? What prevents a verifier from being deceived by a replayed quote from a previous session?</p>
+</li>
+<li>
+<p>Compare AMD SEV-SNP and Intel TDX attestation from the following perspectives: (a) Root signing key ownership, (b) Certificate retrieval endpoint, (c) Measurement register semantics, (d) VM live migration attestation support.</p>
+</li>
+<li>
+<p>An ICS (industrial control) device running a PLC firmware needs hardware attestation for OT network admission. Design the attestation system: (a) HRoT hardware selection, (b) measurement strategy (what to measure), (c) attestation protocol for non-IP industrial protocols.</p>
+</li>
+<li>
+<p>SPDM v1.3 adds secure session establishment (after attestation, encrypted channel). Describe the key exchange mechanism, ciphersuite negotiation, and how attestation evidence is bound to the session key.</p>
+</li>
+<li>
+<p>The Keylime open-source attestation system uses TPM 2.0 + IMA. Explain how IMA extends PCR[10] for each file executed. If an attacker injects a malicious shared library that is never directly executed, can Keylime detect it?</p>
+</li>
+<li>
+<p>A manufacturer uses DICE to provision 10 million IoT devices. The DeviceID private key never leaves the chip, but the DeviceID certificate must be stored in the manufacturer’s database. What database design prevents a rogue insider from creating fraudulent DeviceID certificates for non-existent devices?</p>
+</li>
+<li>
+<p>An SPDM responder (NVMe SSD) returns measurements that include hash of its firmware, configuration, and logical block address mapping table. Explain why the LBA mapping table measurement is security-critical. What attack does it prevent?</p>
+</li>
+<li>
+<p>Compare EAT (Entity Attestation Token, RFC 9542) in CBOR/COSE format vs JWT format for: (a) implementation complexity on constrained devices, (b) interoperability, (c) transport overhead. Which would you recommend for a BLE-connected IoT sensor?</p>
+</li>
+<li>
+<p>Veraison is a CCC project providing RATS verifier services. Describe how a new hardware platform (e.g., a custom RISC-V HRoT) integrates with Veraison to enable remote attestation. What pluggable components must be implemented?</p>
+</li>
+<li>
+<p>An AMD SEV-SNP MEASUREMENT field contains the SHA-384 hash of the initial guest memory. If the hypervisor loads a guest VM from a pre-built image file, how does the pre-launch measurement process work? What guarantee does it provide about the initial guest state?</p>
+</li>
+<li>
+<p>Design a zero-trust network access (ZTNA) architecture that uses TPM-based attestation for endpoint verification. Specify: (a) enrollment flow (first boot), (b) continuous verification (per-connection), (c) policy decision point integration, (d) response to failed attestation.</p>
+</li>
+<li>
+<p>IEEE 802.1AR distinguishes IDevID (factory) and LDevID (locally significant). Why can LDevID have a shorter validity period and simpler certificate chain than IDevID? How does the 802.1AR enrollment protocol prevent an attacker from enrolling a stolen IDevID certificate on a different device?</p>
+</li>
+</ol>
+</div>
+<h2 id="1416-famous-repositories"><span class="secnum">14.16</span> Famous Repositories<a class="headerlink" href="#1416-famous-repositories" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><code>github.com/tpm2-software/tpm2-tools</code> – TPM 2.0 command-line attestation tools</p>
+</li>
+<li>
+<p><code>github.com/microsoft/ms-tpm-20-ref</code> – Microsoft TPM 2.0 reference implementation</p>
+</li>
+<li>
+<p><code>github.com/DMTF/libspdm</code> – SPDM requester/responder reference library</p>
+</li>
+<li>
+<p><code>github.com/virtee/snpguest</code> – AMD SEV-SNP attestation command-line tool</p>
+</li>
+<li>
+<p><code>github.com/keylime/keylime</code> – TPM-based remote attestation for Linux (IMA)</p>
+</li>
+<li>
+<p><code>github.com/veraison/services</code> – CCC Veraison RATS verifier service</p>
+</li>
+<li>
+<p><code>github.com/microsoft/DICE-RIoT</code> – DICE CDI and alias certificate implementation</p>
+</li>
+</ul>
+<h2 id="1417-standards"><span class="secnum">14.17</span> Standards<a class="headerlink" href="#1417-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>IETF RATS RFC 9334</strong> – Remote ATtestation procedureS architecture</p>
+</li>
+<li>
+<p><strong>IETF EAT RFC 9542</strong> – Entity Attestation Token (CBOR/COSE or JWT)</p>
+</li>
+<li>
+<p><strong>TCG TPM 2.0 Part 1–4</strong> – TPM 2.0 architecture and commands</p>
+</li>
+<li>
+<p><strong>TCG DICE Architecture v1.0</strong> – DICE CDI and alias certificate</p>
+</li>
+<li>
+<p><strong>DMTF DSP0274 SPDM v1.3</strong> – Security Protocol and Data Model</p>
+</li>
+<li>
+<p><strong>IEEE 802.1AR-2018</strong> – Device Identity (IDevID / LDevID)</p>
+</li>
+<li>
+<p><strong>AMD SEV-SNP ABI Spec v1.55</strong> – SEV-SNP attestation report format</p>
+</li>
+<li>
+<p><strong>Intel TDX Architecture v1.0</strong> – Trust Domain attestation</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="ch13-anti-tamper-technologies.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 13. Anti-Tamper Technologies">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                13. Anti-Tamper Technologies
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="ch15-automotive-hardware-security.html" class="md-footer__link md-footer__link--next" aria-label="Next: 15. Automotive Hardware Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                15. Automotive Hardware Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

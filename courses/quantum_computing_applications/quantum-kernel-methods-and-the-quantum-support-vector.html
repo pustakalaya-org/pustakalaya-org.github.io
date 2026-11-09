@@ -1,0 +1,2415 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/quantum_computing_applications/quantum-kernel-methods-and-the-quantum-support-vector.html">
+  
+  
+    <link rel="prev" href="introduction-to-quantum-machine-learning-and-data-encoding.html">
+  
+  
+    <link rel="next" href="the-variational-quantum-classifier-vqc.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>27. Quantum Kernel Methods and the Quantum Support Vector Machine - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#271-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              27. Quantum Kernel Methods and the Quantum Support Vector Machine
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Quantum Computing and its Applications</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-computing-and-motivation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction to Quantum Computing and Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-i-complex-vector-spaces-and-dirac-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Linear Algebra I: Complex Vector Spaces and Dirac Notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-ii-inner-products-norms-and-hilbert-spaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Linear Algebra II: Inner Products, Norms and Hilbert Spaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="linear-algebra-iii-operators-eigenvalues-unitarity-and.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Linear Algebra III: Operators, Eigenvalues, Unitarity and Tensor Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qubits-the-superposition-principle-and-the-bloch-sphere.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Qubits, the Superposition Principle and the Bloch Sphere
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-measurement-and-the-postulates-of-quantum-mechanics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Quantum Measurement and the Postulates of Quantum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="single-qubit-gates-and-the-quantum-circuit-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Single-Qubit Gates and the Quantum Circuit Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-qubit-gates-entanglement-and-the-bell-states.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Multi-Qubit Gates, Entanglement and the Bell States
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-parallelism-interference-and-the-no-cloning-theorem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Quantum Parallelism, Interference and the No-Cloning Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-teleportation-superdense-coding-and-quantum-error.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Quantum Teleportation, Superdense Coding and Quantum Error Correction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-oracles-and-the-phase-kick-back-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Quantum Oracles and the Phase Kick-Back Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. The Deutsch Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-deutsch-jozsa-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. The Deutsch–Jozsa Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-bernstein-vazirani-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. The Bernstein–Vazirani Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simon-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Simon's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number-theory-recap-and-the-rsa-cryptosystem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Number Theory Recap and the RSA Cryptosystem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-factorization-attack-on-rsa-and-order-finding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. The Factorization Attack on RSA and Order Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-fourier-transform.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Quantum Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-phase-estimation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Quantum Phase Estimation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="shor-s-algorithm-for-integer-factorization.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Shor's Algorithm for Integer Factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-oracle-and-diffusion-operator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Grover's Algorithm: Oracle and Diffusion Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grover-s-algorithm-geometric-analysis-and-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. Grover's Algorithm: Geometric Analysis and Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hash-preimage-attacks-with-grover-s-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Hash Preimage Attacks with Grover's Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-harrow-hassidim-lloyd-hhl-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. The Harrow–Hassidim–Lloyd (HHL) Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="post-quantum-cryptography-kyber-and-quantum-resistant.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Post-Quantum Cryptography: Kyber and Quantum-Resistant Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Introduction to Quantum Machine Learning and Data Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quantum-kernel-methods-and-the-quantum-support-vector.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Quantum Kernel Methods and the Quantum Support Vector Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#271-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#272-classical-svm-recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.2 Classical SVM Recap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.2 Classical SVM Recap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-maximum-margin-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The maximum-margin classifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-kernel-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kernel trick
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#273-the-quantum-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.3 The Quantum Kernel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.3 The Quantum Kernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-1-the-computeuncompute-fidelity-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit 1 — the compute–uncompute (fidelity) method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-2-the-swap-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit 2 — the swap test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#274-the-qsvm-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.4 The QSVM Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.4 The QSVM Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shot-noise-and-kernel-matrix-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shot noise and kernel-matrix integrity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#275-does-it-actually-help-an-honest-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.5 Does It Actually Help? An Honest Assessment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#276-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#277-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#278-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-variational-quantum-classifier-vqc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. The Variational Quantum Classifier (VQC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-neural-networks-the-parameter-shift-rule-and-barren.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Quantum Neural Networks, the Parameter-Shift Rule and Barren Plateaus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-convolutional-neural-networks-qcnn.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Quantum Convolutional Neural Networks (QCNN)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-linear-regression.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. Quantum Linear Regression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-k-means-clustering-and-the-swap-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. Quantum k-Means Clustering and the Swap Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-boltzmann-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. Quantum Boltzmann Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-approximate-optimization-algorithm-qaoa.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Quantum Approximate Optimization Algorithm (QAOA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantum-annealing-and-the-adiabatic-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantum Annealing and the Adiabatic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-quantum-software-landscape.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. The Quantum Software Landscape
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-i-circuits-simulation-and-primitives.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. IBM Qiskit I: Circuits, Simulation and Primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibm-qiskit-ii-transpilation-noise-and-real-hardware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. IBM Qiskit II: Transpilation, Noise and Real Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="google-cirq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. Google Cirq
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pennylane-and-differentiable-quantum-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. PennyLane and Differentiable Quantum Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="amazon-braket.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Amazon Braket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="microsoft-q-and-the-quantum-development-kit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Microsoft Q# and the Quantum Development Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tensorflow-quantum.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. TensorFlow Quantum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tket-pytket-xacc-and-projectq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. TKET / pytket, XACC and ProjectQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comparative-study-benchmarking-and-capstone-project.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Comparative Study, Benchmarking and Capstone Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#271-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#272-classical-svm-recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.2 Classical SVM Recap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.2 Classical SVM Recap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-maximum-margin-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The maximum-margin classifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-kernel-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kernel trick
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#273-the-quantum-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.3 The Quantum Kernel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.3 The Quantum Kernel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-1-the-computeuncompute-fidelity-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit 1 — the compute–uncompute (fidelity) method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-2-the-swap-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit 2 — the swap test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#274-the-qsvm-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.4 The QSVM Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="27.4 The QSVM Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shot-noise-and-kernel-matrix-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shot noise and kernel-matrix integrity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#275-does-it-actually-help-an-honest-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.5 Does It Actually Help? An Honest Assessment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#276-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.6 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#277-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.7 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#278-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27.8 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-27-quantum-kernel-methods-and-the-quantum-support-vector-machine">Lesson 27: Quantum Kernel Methods and the Quantum Support Vector Machine<a class="headerlink" href="#lesson-27-quantum-kernel-methods-and-the-quantum-support-vector-machine" title="Permanent link">&para;</a></h1>
+<h2 id="271-learning-outcomes">27.1 Learning Outcomes<a class="headerlink" href="#271-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Recall the <strong>SVM primal and dual</strong> problems and the <strong>kernel trick</strong>.</li>
+<li>Define the <strong>quantum kernel</strong> and describe the two circuits that estimate it.</li>
+<li>Assemble the complete <strong>QSVM</strong> pipeline and count its circuit executions.</li>
+<li>Analyse the <span class="arithmatex">\(O(M^2)\)</span> kernel-matrix cost and the shot-noise requirement.</li>
+<li>State honestly where quantum kernels can and cannot give an advantage.</li>
+</ol>
+<h2 id="272-classical-svm-recap">27.2 Classical SVM Recap<a class="headerlink" href="#272-classical-svm-recap" title="Permanent link">&para;</a></h2>
+<h3 id="the-maximum-margin-classifier">The maximum-margin classifier<a class="headerlink" href="#the-maximum-margin-classifier" title="Permanent link">&para;</a></h3>
+<p>Given labelled data <span class="arithmatex">\(\{(\vec x_i, y_i)\}_{i=1}^{M}\)</span> with <span class="arithmatex">\(y_i\in\{-1,+1\}\)</span>, find the hyperplane
+<span class="arithmatex">\(\vec w\cdot\vec x + b = 0\)</span> maximising the margin.</p>
+<p><strong>Primal (soft margin).</strong></p>
+<div class="arithmatex">\[ \min_{\vec w, b, \xi} \ \frac12\|\vec w\|^2 + C\sum_{i=1}^{M}\xi_i \]</div>
+<div class="arithmatex">\[ \text{s.t. } y_i(\vec w\cdot\vec x_i + b) \ge 1 - \xi_i, \quad \xi_i \ge 0 \]</div>
+<p><strong>Dual.</strong></p>
+<div class="arithmatex">\[ \max_{\vec\alpha}\ \sum_{i=1}^{M}\alpha_i - \frac12\sum_{i,j=1}^{M}\alpha_i\alpha_j y_iy_j\,
+\underbrace{\vec x_i\cdot\vec x_j}_{\text{only via inner products}} \]</div>
+<div class="arithmatex">\[ \text{s.t. } 0\le\alpha_i\le C, \quad \sum_i\alpha_iy_i = 0 \]</div>
+<p><strong>Crucially, the data enters only through inner products <span class="arithmatex">\(\vec x_i \cdot \vec x_j\)</span>.</strong></p>
+<h3 id="the-kernel-trick">The kernel trick<a class="headerlink" href="#the-kernel-trick" title="Permanent link">&para;</a></h3>
+<p>Replace <span class="arithmatex">\(\vec x_i\cdot\vec x_j\)</span> by <span class="arithmatex">\(k(\vec x_i,\vec x_j) = \langle\phi(\vec x_i),\phi(\vec x_j)\rangle\)</span>
+for some feature map <span class="arithmatex">\(\phi\)</span> into a (possibly infinite-dimensional) space. <strong>You never need to compute
+<span class="arithmatex">\(\phi\)</span> explicitly</strong> — only the kernel values.</p>
+<p><strong>Prediction.</strong></p>
+<div class="arithmatex">\[ f(\vec x) = \mathrm{sign}\left(\sum_{i=1}^{M}\alpha_iy_i\,k(\vec x_i,\vec x) + b\right) \]</div>
+<p><strong>Mercer's condition.</strong> <span class="arithmatex">\(k\)</span> is a valid kernel iff the Gram matrix <span class="arithmatex">\(K_{ij} = k(\vec x_i,\vec x_j)\)</span> is
+<strong>symmetric positive semi-definite</strong> for every finite dataset.</p>
+<p><strong>Classical kernels.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Kernel</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linear</td>
+<td><span class="arithmatex">\(\vec x\cdot\vec x'\)</span></td>
+</tr>
+<tr>
+<td>Polynomial</td>
+<td><span class="arithmatex">\((\vec x\cdot\vec x' + c)^{d}\)</span></td>
+</tr>
+<tr>
+<td>RBF (Gaussian)</td>
+<td><span class="arithmatex">\(\exp\big(-\gamma\Vert \vec x-\vec x'\Vert ^2\big)\)</span></td>
+</tr>
+<tr>
+<td>Sigmoid</td>
+<td><span class="arithmatex">\(\tanh(\kappa\,\vec x\cdot\vec x' + c)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="273-the-quantum-kernel">27.3 The Quantum Kernel<a class="headerlink" href="#273-the-quantum-kernel" title="Permanent link">&para;</a></h2>
+<p><strong>Definition.</strong> With a quantum feature map <span class="arithmatex">\(|\phi(\vec x)\rangle = U_{\phi}(\vec x)|0\rangle^{\otimes n}\)</span>,</p>
+<div class="arithmatex">\[ \boxed{\ k_Q(\vec x,\vec x') = \big|\langle\phi(\vec x)|\phi(\vec x')\rangle\big|^{2}
+= \big|\langle0|U_{\phi}^{\dagger}(\vec x)\,U_{\phi}(\vec x')|0\rangle\big|^{2}\ } \]</div>
+<p><strong>Valid kernel?</strong> Yes: <span class="arithmatex">\(K_{ij} = |\langle\phi_i|\phi_j\rangle|^2 = \mathrm{Tr}(\rho_i\rho_j)\)</span> with
+<span class="arithmatex">\(\rho_i = |\phi_i\rangle\langle\phi_i|\)</span>, which is a Gram matrix of density matrices under the
+Hilbert–Schmidt inner product and is therefore PSD ✓.</p>
+<p><strong>Properties.</strong> <span class="arithmatex">\(k_Q(\vec x,\vec x) = 1\)</span>; <span class="arithmatex">\(0\le k_Q\le 1\)</span>; symmetric.</p>
+<p><strong>The strategic idea.</strong> The feature space is <span class="arithmatex">\(\mathbb{C}^{2^n}\)</span> — <strong>exponentially large in the qubit
+count</strong>. If <span class="arithmatex">\(U_\phi\)</span> is chosen so that the induced kernel is hard to evaluate classically, the
+quantum computer provides a kernel no classical machine can compute. That is the QSVM advantage
+argument.</p>
+<h3 id="circuit-1-the-computeuncompute-fidelity-method">Circuit 1 — the compute–uncompute (fidelity) method<a class="headerlink" href="#circuit-1-the-computeuncompute-fidelity-method" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>|0&gt;^n --[ U_phi(x') ]--[ U_phi(x)^dagger ]--[M]^n--&gt;  count outcome 0^n
+</code></pre></div>
+<div class="arithmatex">\[ \Pr[0^n] = \big|\langle0|U_\phi^\dagger(\vec x)U_\phi(\vec x')|0\rangle\big|^{2} = k_Q(\vec x,\vec x') \]</div>
+<p><strong>Estimate:</strong> run <span class="arithmatex">\(S\)</span> shots, count how often all-zeros appears, divide by <span class="arithmatex">\(S\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n\)</span></td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><span class="arithmatex">\(2\times\)</span> depth of <span class="arithmatex">\(U_\phi\)</span></td>
+</tr>
+<tr>
+<td>Statistical error</td>
+<td><span class="arithmatex">\(\sqrt{k(1-k)/S}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The standard method</strong> — implemented as <code>FidelityQuantumKernel</code> in Qiskit.</p>
+<h3 id="circuit-2-the-swap-test">Circuit 2 — the swap test<a class="headerlink" href="#circuit-2-the-swap-test" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>ancilla   |0&gt; --[H]--------*--------[H]--[M]
+                           |
+register  |phi(x)&gt;  -------x--------
+                           |
+register  |phi(x')&gt; -------x--------      (controlled SWAP = Fredkin)
+</code></pre></div>
+<div class="arithmatex">\[ \Pr[\text{ancilla}=0] = \frac{1 + |\langle\phi(\vec x)|\phi(\vec x')\rangle|^{2}}{2}
+= \frac{1 + k_Q}{2} \]</div>
+<div class="arithmatex">\[ \Longrightarrow\quad k_Q = 2\Pr[0] - 1 \]</div>
+<p><em>Derivation.</em> After the first <span class="arithmatex">\(H\)</span> and the controlled SWAP:</p>
+<div class="arithmatex">\[ \tfrac12\Big[|0\rangle\big(|\phi\rangle|\phi'\rangle + |\phi'\rangle|\phi\rangle\big)
++ |1\rangle\big(|\phi\rangle|\phi'\rangle - |\phi'\rangle|\phi\rangle\big)\Big] \]</div>
+<p>The <span class="arithmatex">\(|0\rangle\)</span> branch has squared norm <span class="arithmatex">\(\frac{1}{4}\cdot 2(1 + |\langle\phi|\phi'\rangle|^2)\)</span>,
+giving the stated probability. <span class="arithmatex">\(\blacksquare\)</span></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Compute–uncompute</th>
+<th>Swap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qubits</td>
+<td><span class="arithmatex">\(n\)</span></td>
+<td><span class="arithmatex">\(2n+1\)</span></td>
+</tr>
+<tr>
+<td>Depth</td>
+<td><span class="arithmatex">\(2\times\)</span></td>
+<td><span class="arithmatex">\(1\times\)</span> + <span class="arithmatex">\(n\)</span> Fredkins</td>
+</tr>
+<tr>
+<td>Readout</td>
+<td><span class="arithmatex">\(n\)</span>-bit all-zeros</td>
+<td>1 ancilla bit</td>
+</tr>
+<tr>
+<td>Preferred on NISQ</td>
+<td><strong>yes</strong> (fewer qubits)</td>
+<td>when depth is the constraint</td>
+</tr>
+</tbody>
+</table>
+<h2 id="274-the-qsvm-pipeline">27.4 The QSVM Pipeline<a class="headerlink" href="#274-the-qsvm-pipeline" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>1. Choose feature map U_phi (e.g. ZZFeatureMap, reps=2)
+2. Build the training kernel matrix:
+       K_ij = k_Q(x_i, x_j)   for all i &lt;= j   -&gt;  M(M+1)/2 circuits
+3. Feed K into a CLASSICAL SVM solver (e.g. libsvm) -&gt; alpha, b
+4. Build the test kernel:  K'_ij = k_Q(x_test_i, x_train_j)  -&gt;  M_test * M circuits
+5. Predict: f(x) = sign( sum_i alpha_i y_i K'(x, x_i) + b )
+</code></pre></div>
+<p><strong>Only step 2 and step 4 are quantum.</strong> The optimisation itself is entirely classical and convex —
+<strong>QSVM has no barren-plateau problem and no local minima</strong>, which is a genuine advantage over
+variational methods (L28, L29).</p>
+<h3 id="cost">Cost<a class="headerlink" href="#cost" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Circuit evaluations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training kernel</td>
+<td><span class="arithmatex">\(\frac{M(M+1)}{2}\times S\)</span> shots</td>
+</tr>
+<tr>
+<td>Test kernel</td>
+<td><span class="arithmatex">\(M_{\text{test}}\times M\times S\)</span> shots</td>
+</tr>
+</tbody>
+</table>
+<p>For <span class="arithmatex">\(M = 100\)</span>, <span class="arithmatex">\(S = 8192\)</span>: <span class="arithmatex">\(5050 \times 8192 \approx 4.1\times10^{7}\)</span> shots. At <span class="arithmatex">\(10^{4}\)</span> shots/second
+on cloud hardware, that is <strong>over an hour</strong> — and this is only 100 training points.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{The } O(M^2) \textbf{ kernel-matrix cost is the practical ceiling on QSVM.}\ } \]</div>
+<p>Classical SVMs also form <span class="arithmatex">\(O(M^2)\)</span> kernel entries, but each costs nanoseconds rather than seconds.</p>
+<h3 id="shot-noise-and-kernel-matrix-integrity">Shot noise and kernel-matrix integrity<a class="headerlink" href="#shot-noise-and-kernel-matrix-integrity" title="Permanent link">&para;</a></h3>
+<p>Each <span class="arithmatex">\(K_{ij}\)</span> carries statistical error <span class="arithmatex">\(\epsilon \approx \sqrt{k(1-k)/S}\)</span>. With <span class="arithmatex">\(S = 8192\)</span> and
+<span class="arithmatex">\(k\approx0.5\)</span>, <span class="arithmatex">\(\epsilon \approx 0.0055\)</span>.</p>
+<p><strong>Two consequences.</strong></p>
+<ol>
+<li><strong>Noise can destroy positive semi-definiteness.</strong> A noisy <span class="arithmatex">\(K\)</span> may have small negative eigenvalues,
+    which breaks the convexity the SVM solver relies on. <strong>Fix:</strong> project onto the PSD cone by
+    clipping negative eigenvalues to zero, or add <span class="arithmatex">\(\delta I\)</span> to the diagonal.</li>
+<li><strong>Precision requirement scales with <span class="arithmatex">\(M\)</span>.</strong> To keep the solution stable, <span class="arithmatex">\(\epsilon = O(1/M)\)</span> is
+    needed, so <span class="arithmatex">\(S = O(M^2)\)</span> shots per entry, giving <span class="arithmatex">\(O(M^4)\)</span> total shots. <strong>This is the strongest
+    scaling objection to QSVM.</strong></li>
+</ol>
+<h2 id="275-does-it-actually-help-an-honest-assessment">27.5 Does It Actually Help? An Honest Assessment<a class="headerlink" href="#275-does-it-actually-help-an-honest-assessment" title="Permanent link">&para;</a></h2>
+<p><strong>The positive result (Liu, Arunachalam, Temme, 2021).</strong> There exists a <em>constructed</em> classification
+problem, based on the discrete logarithm, for which a quantum kernel gives a <strong>provable exponential</strong>
+advantage over any classical learner. Existence is settled.</p>
+<p><strong>The negative results.</strong></p>
+<ul>
+<li><strong>Product feature maps are classically simulable.</strong> The kernel factorises into
+    <span class="arithmatex">\(\prod_j\cos^2\!\big(\frac{x_j-x_j'}{2}\big)\)</span> (L26, Problem 2) — computable in <span class="arithmatex">\(O(d)\)</span> classically.
+    <strong>Entanglement in <span class="arithmatex">\(U_\phi\)</span> is necessary.</strong></li>
+<li><strong>Exponential concentration.</strong> For expressive random feature maps, <span class="arithmatex">\(k_Q(\vec x,\vec x')\)</span>
+    concentrates around a constant <span class="arithmatex">\(\sim2^{-n}\)</span> for all <span class="arithmatex">\(\vec x\ne\vec x'\)</span>: the kernel matrix approaches
+    the identity, and the model <strong>memorises the training set and generalises terribly</strong>. Distinguishing
+    entries then requires <span class="arithmatex">\(S = O(2^{n})\)</span> shots. This is the kernel-method analogue of barren plateaus.</li>
+<li><strong>Huang et al. (2021).</strong> Given the same data-access assumptions, classical ML models match quantum
+    kernel methods on most practical datasets.</li>
+</ul>
+<p><strong>The design tension, stated plainly.</strong></p>
+<div class="arithmatex">\[ \text{too simple} \Rightarrow \text{classically simulable}; \qquad
+\text{too expressive} \Rightarrow \text{kernel concentrates, no generalisation} \]</div>
+<p><strong>Useful quantum kernels must sit in a narrow band</strong>, and finding that band for real problems is an
+open research question. Present QSVM to students as <em>scientifically interesting and pedagogically
+essential</em>, not as a deployed technology.</p>
+<h2 id="276-solved-problems">27.6 Solved Problems<a class="headerlink" href="#276-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-computing-a-quantum-kernel-by-hand">Problem 1 — Computing a quantum kernel by hand<a class="headerlink" href="#problem-1-computing-a-quantum-kernel-by-hand" title="Permanent link">&para;</a></h4>
+<p><em>Using single-qubit <span class="arithmatex">\(R_y\)</span> angle encoding, compute <span class="arithmatex">\(k_Q(x,x')\)</span> for <span class="arithmatex">\(x = 0\)</span>, <span class="arithmatex">\(x' = \pi/2\)</span>. Verify with
+the fidelity circuit.</em></p>
+<p><strong>Solution.</strong></p>
+<div class="arithmatex">\[ |\phi(0)\rangle = R_y(0)|0\rangle = |0\rangle \]</div>
+<div class="arithmatex">\[ |\phi(\pi/2)\rangle = R_y(\pi/2)|0\rangle = \cos\tfrac{\pi}{4}|0\rangle + \sin\tfrac{\pi}{4}|1\rangle = |+\rangle \]</div>
+<div class="arithmatex">\[ \langle\phi(0)|\phi(\pi/2)\rangle = \langle0|+\rangle = \tfrac{1}{\sqrt2} \]</div>
+<div class="arithmatex">\[ k_Q = \left|\tfrac{1}{\sqrt2}\right|^{2} = \mathbf{0.5} \]</div>
+<p><strong>Check with the general formula</strong> <span class="arithmatex">\(k_Q = \cos^2\!\big(\frac{x-x'}{2}\big)\)</span>:</p>
+<div class="arithmatex">\[ \cos^2\!\left(\frac{0 - \pi/2}{2}\right) = \cos^2\!\left(-\frac{\pi}{4}\right) = \frac12 \ \checkmark \]</div>
+<p><strong>Fidelity circuit.</strong> Apply <span class="arithmatex">\(R_y(\pi/2)\)</span> then <span class="arithmatex">\(R_y(0)^\dagger = I\)</span>, giving <span class="arithmatex">\(|+\rangle\)</span>; measuring gives
+<span class="arithmatex">\(0\)</span> with probability <span class="arithmatex">\(\frac12\)</span> ✓.</p>
+<h4 id="problem-2-building-and-checking-a-33-kernel-matrix">Problem 2 — Building and checking a 3×3 kernel matrix<a class="headerlink" href="#problem-2-building-and-checking-a-33-kernel-matrix" title="Permanent link">&para;</a></h4>
+<p><em>Three 1-D data points <span class="arithmatex">\(x_1 = 0\)</span>, <span class="arithmatex">\(x_2 = \pi/2\)</span>, <span class="arithmatex">\(x_3 = \pi\)</span> with <span class="arithmatex">\(R_y\)</span> encoding. Build <span class="arithmatex">\(K\)</span>, check
+PSD, and comment on separability.</em></p>
+<p><strong>Solution.</strong></p>
+<p>Using <span class="arithmatex">\(k(x,x') = \cos^2\!\big(\frac{x-x'}{2}\big)\)</span>:</p>
+<div class="arithmatex">\[ k_{11}=k_{22}=k_{33}=1 \]</div>
+<div class="arithmatex">\[ k_{12} = \cos^2(\pi/4) = 0.5, \qquad k_{23} = \cos^2(-\pi/4) = 0.5 \]</div>
+<div class="arithmatex">\[ k_{13} = \cos^2(-\pi/2) = 0 \]</div>
+<div class="arithmatex">\[ K = \begin{pmatrix} 1 &amp; 0.5 &amp; 0 \\ 0.5 &amp; 1 &amp; 0.5 \\ 0 &amp; 0.5 &amp; 1\end{pmatrix} \]</div>
+<p><strong>PSD check.</strong> Eigenvalues of this symmetric tridiagonal matrix: the pattern
+<span class="arithmatex">\(\mathrm{tridiag}(0.5,1,0.5)\)</span> of size 3 has eigenvalues <span class="arithmatex">\(1 + 2(0.5)\cos\frac{k\pi}{4}\)</span> for
+<span class="arithmatex">\(k = 1,2,3\)</span>:</p>
+<div class="arithmatex">\[ \lambda = 1 + \cos\tfrac{\pi}{4},\ 1 + \cos\tfrac{\pi}{2},\ 1+\cos\tfrac{3\pi}{4}
+= 1.7071,\ 1.0,\ 0.2929 \]</div>
+<p>All positive ⟹ <strong>positive definite</strong> ✓, so <span class="arithmatex">\(K\)</span> is a valid kernel matrix.</p>
+<p><strong>Separability comment.</strong> <span class="arithmatex">\(x_1\)</span> and <span class="arithmatex">\(x_3\)</span> are <em>orthogonal</em> (<span class="arithmatex">\(k_{13} = 0\)</span>) — the encoding maps them to
+<span class="arithmatex">\(|0\rangle\)</span> and <span class="arithmatex">\(|1\rangle\)</span>, antipodal on the Bloch sphere. <span class="arithmatex">\(x_2\)</span> sits exactly between them. So the
+encoding maps the interval <span class="arithmatex">\([0,\pi]\)</span> onto a great arc of the Bloch sphere, preserving the geometry
+faithfully. <strong>This kernel is essentially a squared-cosine similarity — smooth, well-behaved, and
+entirely classical.</strong></p>
+<h4 id="problem-3-shot-budget-and-wall-clock-time">Problem 3 — Shot budget and wall-clock time<a class="headerlink" href="#problem-3-shot-budget-and-wall-clock-time" title="Permanent link">&para;</a></h4>
+<p><em>A QSVM has 200 training and 50 test samples, 4096 shots per kernel entry, and the device runs 5000
+shots/second. Compute the total shots and runtime.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Training kernel</strong> (symmetric, diagonal known to be 1):</p>
+<div class="arithmatex">\[ \frac{M(M-1)}{2} = \frac{200\times199}{2} = 19{,}900 \ \text{entries} \]</div>
+<div class="arithmatex">\[ 19{,}900\times4096 = 8.15\times10^{7}\ \text{shots} \]</div>
+<p><strong>Test kernel:</strong></p>
+<div class="arithmatex">\[ 50\times200 = 10{,}000 \ \text{entries} \ \Longrightarrow\ 10{,}000\times4096 = 4.10\times10^{7}\ \text{shots} \]</div>
+<p><strong>Total:</strong></p>
+<div class="arithmatex">\[ 8.15\times10^{7} + 4.10\times10^{7} = \mathbf{1.22\times10^{8}\ \text{shots}} \]</div>
+<p><strong>Runtime:</strong></p>
+<div class="arithmatex">\[ t = \frac{1.22\times10^{8}}{5000} = 24{,}500\ \mathrm{s} = \mathbf{6.8\ \text{hours}} \]</div>
+<p><strong>Plus queueing.</strong> On shared cloud hardware, job latency typically dominates: 30 000 separate circuit
+jobs at even 1 second of overhead each adds another 8 hours.</p>
+<p><strong>Scaling.</strong> Doubling to 400 training samples <strong>quadruples</strong> the training kernel cost to 27 hours.</p>
+<div class="arithmatex">\[ \boxed{\ \text{QSVM is limited to a few hundred samples on current hardware.}\ } \]</div>
+<p><em>Mitigations in use:</em> kernel-matrix sparsification (compute only near-neighbour entries), Nyström
+low-rank approximation, and batched circuit submission.</p>
+<h4 id="problem-4-kernel-concentration-quantified">Problem 4 — Kernel concentration, quantified<a class="headerlink" href="#problem-4-kernel-concentration-quantified" title="Permanent link">&para;</a></h4>
+<p><em>For a random <span class="arithmatex">\(n\)</span>-qubit feature map, <span class="arithmatex">\(\mathbb{E}[k_Q] \approx 2^{-n}\)</span> for distinct points. How many
+shots are needed to distinguish <span class="arithmatex">\(k = 2^{-n}\)</span> from <span class="arithmatex">\(k = 2\times2^{-n}\)</span> at <span class="arithmatex">\(n = 20\)</span>? Interpret.</em></p>
+<p><strong>Solution.</strong></p>
+<p>At <span class="arithmatex">\(n=20\)</span>: <span class="arithmatex">\(k_1 = 2^{-20} = 9.54\times10^{-7}\)</span>, <span class="arithmatex">\(k_2 = 1.91\times10^{-6}\)</span>.</p>
+<p>Difference: <span class="arithmatex">\(\Delta = 9.54\times10^{-7}\)</span>.</p>
+<p>For a Bernoulli estimate with tiny <span class="arithmatex">\(p\)</span>, <span class="arithmatex">\(\mathrm{SE} \approx \sqrt{p/S}\)</span>. To resolve <span class="arithmatex">\(\Delta\)</span> at 2
+standard errors:</p>
+<div class="arithmatex">\[ 2\sqrt{\frac{k_1}{S}} \le \Delta \ \Longrightarrow\ S \ge \frac{4k_1}{\Delta^{2}}
+= \frac{4\times9.54\times10^{-7}}{(9.54\times10^{-7})^{2}} \]</div>
+<div class="arithmatex">\[ S \ge \frac{3.82\times10^{-6}}{9.10\times10^{-13}} = \mathbf{4.2\times10^{6}\ \text{shots per entry}} \]</div>
+<p><strong>Per kernel entry.</strong> For a 100-sample dataset that is <span class="arithmatex">\(4950\times4.2\times10^{6} = 2\times10^{10}\)</span>
+shots — over <strong>60 years</strong> at 10 kHz.</p>
+<p><strong>Interpretation: exponential concentration is fatal.</strong> The kernel matrix becomes
+<span class="arithmatex">\(K \approx I\)</span>, meaning:</p>
+<ul>
+<li>Every point is "orthogonal" to every other in feature space.</li>
+<li>The SVM can fit the training data perfectly (<span class="arithmatex">\(\alpha_i\)</span> nonzero for all <span class="arithmatex">\(i\)</span>) but has <strong>learned
+    nothing generalisable</strong> — the model is pure memorisation.</li>
+<li>Test predictions default to <span class="arithmatex">\(\mathrm{sign}(b)\)</span>, i.e. the majority class.</li>
+</ul>
+<p><strong>Design response.</strong> Restrict the feature map's expressivity: shallow circuits, limited entanglement,
+problem-informed structure. <strong>Concentration is the kernel-method form of the barren plateau (L29),
+and it comes from the same source — the exponential dimension of Hilbert space.</strong></p>
+<h4 id="problem-5-comparing-quantum-and-classical-kernels-on-xor">Problem 5 — Comparing quantum and classical kernels on XOR<a class="headerlink" href="#problem-5-comparing-quantum-and-classical-kernels-on-xor" title="Permanent link">&para;</a></h4>
+<p><em>The XOR dataset: <span class="arithmatex">\((0,0)\to-1\)</span>, <span class="arithmatex">\((1,1)\to-1\)</span>, <span class="arithmatex">\((0,1)\to+1\)</span>, <span class="arithmatex">\((1,0)\to+1\)</span>. Show that (a) a linear
+kernel fails, (b) a product angle-encoding quantum kernel also fails, (c) a ZZ feature map succeeds.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>(a) Linear kernel.</strong> XOR is the textbook non-linearly-separable problem: no hyperplane
+<span class="arithmatex">\(w_1x_1+w_2x_2+b\)</span> separates <span class="arithmatex">\(\{(0,0),(1,1)\}\)</span> from <span class="arithmatex">\(\{(0,1),(1,0)\}\)</span>. Attempting it gives the
+contradictory system</p>
+<div class="arithmatex">\[ b &lt; 0,\quad w_1+w_2+b&lt;0,\quad w_2+b&gt;0,\quad w_1+b&gt;0 . \]</div>
+<p>Adding the last two: <span class="arithmatex">\(w_1+w_2+2b &gt; 0\)</span>; the second gives <span class="arithmatex">\(w_1+w_2+b&lt;0\)</span>, so <span class="arithmatex">\(b &gt; 0\)</span> — contradicting the
+first. <strong>Fails.</strong> ✗</p>
+<p><strong>(b) Product angle encoding.</strong> Scale inputs by <span class="arithmatex">\(\pi\)</span> so <span class="arithmatex">\(0\to0\)</span> and <span class="arithmatex">\(1\to\pi\)</span>. The kernel is</p>
+<div class="arithmatex">\[ k(\vec x,\vec x') = \prod_{j=1}^{2}\cos^{2}\!\left(\frac{\pi(x_j - x'_j)}{2}\right)
+= \prod_j \begin{cases}1 &amp; x_j = x'_j\\ 0 &amp; x_j\ne x'_j\end{cases} \]</div>
+<p>So <span class="arithmatex">\(K = I\)</span> — every distinct pair is orthogonal. The SVM memorises the four points but has <strong>no
+structure to generalise from</strong>; a fifth point would be classified arbitrarily.</p>
+<p>More fundamentally, the feature map is a <strong>product</strong>, so the model is a sum of independent per-feature
+terms. <strong>XOR requires the interaction term <span class="arithmatex">\(x_1x_2\)</span>, which a product map cannot represent.</strong> ✗</p>
+<p><strong>(c) ZZ feature map.</strong> Add the entangling term</p>
+<div class="arithmatex">\[ U_{\phi}(\vec x) = \exp\Big(i\,\phi_{12}(\vec x)\,Z_1Z_2\Big)\,\exp\Big(i\sum_j x_jZ_j\Big)H^{\otimes2},
+\qquad \phi_{12} = (\pi-x_1)(\pi-x_2) . \]</div>
+<p>The <span class="arithmatex">\(Z_1Z_2\)</span> term makes the state's phase depend on the <strong>product</strong> of the features. Concretely, the
+relative phase acquired distinguishes the "same" pairs <span class="arithmatex">\(\{(0,0),(1,1)\}\)</span> from the "different" pairs
+<span class="arithmatex">\(\{(0,1),(1,0)\}\)</span>, exactly the XOR structure.</p>
+<p>The resulting kernel matrix has the block structure</p>
+<div class="arithmatex">\[ K \approx \begin{pmatrix} 1 &amp; \cdot &amp; \cdot &amp; \cdot\\ \cdot &amp; 1 &amp; \cdot &amp; \cdot \\
+\cdot&amp;\cdot&amp;1&amp;\cdot\\ \cdot&amp;\cdot&amp;\cdot&amp;1\end{pmatrix} \ \text{with large within-class entries and small across-class entries,} \]</div>
+<p>which is separable in feature space. <strong>Succeeds.</strong> ✓</p>
+<p><strong>The lesson, in one sentence.</strong> <em>Entanglement in the feature map is what lets a quantum kernel
+represent feature interactions</em> — precisely analogous to how the classical polynomial kernel
+<span class="arithmatex">\((\vec x\cdot\vec x'+1)^2\)</span> solves XOR by introducing the <span class="arithmatex">\(x_1x_2\)</span> monomial.</p>
+<p><em>Honest footnote:</em> the classical RBF or degree-2 polynomial kernel also solves XOR, instantly. The
+quantum kernel is <strong>not better here</strong> — it is a demonstration that entangling maps have the <em>right
+kind</em> of expressivity.</p>
+<h2 id="277-practice-problems">27.7 Practice Problems<a class="headerlink" href="#277-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Compute <span class="arithmatex">\(k_Q(0, \pi)\)</span> for single-qubit <span class="arithmatex">\(R_y\)</span> encoding. <strong>[Ans: 0]</strong></li>
+<li>Show that <span class="arithmatex">\(K_{ij} = \mathrm{Tr}(\rho_i\rho_j)\)</span> is always PSD.</li>
+<li>Total shots for <span class="arithmatex">\(M=50\)</span> training, 4096 shots/entry? <strong>[Ans: <span class="arithmatex">\(\approx5.0\times10^{6}\)</span>]</strong></li>
+<li>Derive <span class="arithmatex">\(\Pr[\text{ancilla}=0] = \frac{1+|\langle\phi|\phi'\rangle|^2}{2}\)</span> for the swap test.</li>
+<li>Why does a product feature map give no quantum advantage? Answer in two sentences.</li>
+<li>Given noisy <span class="arithmatex">\(K\)</span> with eigenvalues <span class="arithmatex">\((2.1, 0.8, -0.03)\)</span>, describe two repairs.</li>
+<li>Compute the qubit and depth cost of the swap test versus compute–uncompute for <span class="arithmatex">\(n=8\)</span>.</li>
+</ol>
+<h2 id="278-summary">27.8 Summary<a class="headerlink" href="#278-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>SVMs depend on data only through <strong>inner products</strong>, so any PSD kernel can be substituted (the kernel trick).</li>
+<li><strong>Quantum kernel:</strong> <span class="arithmatex">\(k_Q(\vec x,\vec x') = |\langle\phi(\vec x)|\phi(\vec x')\rangle|^2\)</span>, always a valid Mercer kernel, with an exponentially large feature space <span class="arithmatex">\(\mathbb{C}^{2^n}\)</span>.</li>
+<li>Two estimation circuits: <strong>compute–uncompute</strong> (measure <span class="arithmatex">\(\Pr[0^n]\)</span>, <span class="arithmatex">\(n\)</span> qubits, double depth) and the <strong>swap test</strong> (<span class="arithmatex">\(2n+1\)</span> qubits, one ancilla bit).</li>
+<li>QSVM = quantum kernel matrix + <strong>classical convex</strong> SVM solver. <strong>No barren plateaus, no local minima</strong> — a real structural advantage over variational models.</li>
+<li>Cost is <span class="arithmatex">\(O(M^2)\)</span> kernel entries and, for stability, <span class="arithmatex">\(O(M^4)\)</span> total shots — limiting QSVM to a few hundred samples on current hardware.</li>
+<li><strong>Honest verdict:</strong> a provable exponential advantage exists for a constructed problem, but product maps are classically simulable and highly expressive maps suffer <strong>exponential kernel concentration</strong> (<span class="arithmatex">\(k\to2^{-n}\)</span>, <span class="arithmatex">\(K\to I\)</span>, no generalisation). Useful kernels live in a narrow band that is still being mapped.</li>
+</ul>
+<p><strong>Next lesson:</strong> L28 — The Variational Quantum Classifier.</p>
+<p><strong>Practise now:</strong> <code>unit3-qml-lab.html</code> → <em>Kernel Lab</em>: choose a feature map and dataset, build the
+kernel matrix, view its heat map and eigenvalues, and watch the decision boundary form.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="introduction-to-quantum-machine-learning-and-data-encoding.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 26. Introduction to Quantum Machine Learning and Data Encoding">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                26. Introduction to Quantum Machine Learning and Data Encoding
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="the-variational-quantum-classifier-vqc.html" class="md-footer__link md-footer__link--next" aria-label="Next: 28. The Variational Quantum Classifier (VQC)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                28. The Variational Quantum Classifier (VQC)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

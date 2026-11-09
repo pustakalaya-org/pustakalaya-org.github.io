@@ -1,0 +1,2769 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/optimization_methods/the-branch-and-bound-method.html">
+  
+  
+    <link rel="prev" href="gomory-s-method-for-mixed-integer-programmes.html">
+  
+  
+    <link rel="next" href="network-scheduling-the-critical-path-method-cpm.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>18. The Branch and Bound Method - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#181-learning-outcomes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              18. The Branch and Bound Method
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Optimization Methods</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="official-syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Official Syllabus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="master-lesson-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Lesson Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations-research-and-the-modelling-approach.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Operations Research and the Modelling Approach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-linear-programming-and-formulation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Introduction to Linear Programming and Formulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-graphical-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The Graphical Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-i-theory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The Simplex Method I: Theory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-simplex-method-ii-the-tableau-algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The Simplex Method II: The Tableau Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="big-m-two-phase-methods-and-special-cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Big-M, Two-Phase Methods and Special Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="duality-and-sensitivity-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Duality and Sensitivity Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-transportation-problem-formulation-and-initial-solutions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. The Transportation Problem: Formulation and Initial Solutions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transportation-optimality-the-modi-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Transportation Optimality: The MODI Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-assignment-problem-and-the-travelling-salesman-problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. The Assignment Problem and the Travelling Salesman Problem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="game-theory-two-person-zero-sum-games-and-pure-strategies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Game Theory: Two-Person Zero-Sum Games and Pure Strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mixed-strategies-and-the-odds-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Mixed Strategies and the Odds Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="graphical-and-lp-solution-of-games.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Graphical and LP Solution of Games
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-2-machines.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Sequencing: n Jobs Through 2 Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sequencing-n-jobs-through-3-machines-2-jobs-through-m.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Sequencing: n Jobs Through 3 Machines, 2 Jobs Through m Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integer-programming-and-gomory-s-cutting-plane-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Integer Programming and Gomory's Cutting-Plane Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Gomory's Method for Mixed Integer Programmes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="the-branch-and-bound-method.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. The Branch and Bound Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#181-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#182-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 The Idea
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2 The Idea">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-three-fathoming-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three fathoming rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-optimality-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The optimality gap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#183-the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 The Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.3 The Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branching-variable-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching-variable strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-selection-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node-selection strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#184-worked-example-complete-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Worked Example — Complete Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.4 Worked Example — Complete Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-0-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 0 (root)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-1-x2-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 1: x₂ ≤ 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-2-x2-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 2: x₂ ≥ 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-3-x21-x13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 3: x₂≤1, x₁≤3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-4-x21-x14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 4: x₂≤1, x₁≥4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#185-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#186-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#187-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. Network Scheduling: The Critical Path Method (CPM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pert-and-probabilistic-project-scheduling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. PERT and Probabilistic Project Scheduling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-of-queuing-systems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Characteristics of Queuing Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-poisson-process-and-the-exponential-distribution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. The Poisson Process and the Exponential Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="birth-death-processes-and-steady-state-balance-equations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Birth–Death Processes and Steady-State Balance Equations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-m-m-1-fcfs-derived-in-full.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Model I: (M/M/1):(∞/FCFS) Derived in Full
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-i-applications-costing-and-design-decisions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Model I: Applications, Costing and Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-ii-m-m-1-n-fcfs-the-finite-capacity-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Model II: (M/M/1):(N/FCFS), the Finite-Capacity Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-iii-m-m-c-fcfs-the-multi-server-queue.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Model III: (M/M/c):(∞/FCFS), the Multi-Server Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models-iv-and-v-m-m-c-n-fcfs-and-finite-source-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    28. Models IV and V: (M/M/c):(N/FCFS) and Finite-Source Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications-and-the-economic-analysis-of-queues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    29. Applications and the Economic Analysis of Queues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inventory-control-concepts-and-cost-structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    30. Inventory Control: Concepts and Cost Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-eoq-model-with-no-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    31. The EOQ Model with No Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="eoq-with-shortages-permitted-the-backorder-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    32. EOQ with Shortages Permitted (the Backorder Model)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-finite-replenishment-model-without-shortages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    33. The Production (Finite Replenishment) Model without Shortages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-production-model-with-shortages-permitted.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    34. The Production Model with Shortages Permitted
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quantity-discounts-and-consolidation-of-unit-iii.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    35. Quantity Discounts and Consolidation of Unit III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-to-non-linear-programming.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    36. Introduction to Non-Linear Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conditions-for-unconstrained-optimality.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    37. Conditions for Unconstrained Optimality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="one-dimensional-minimisation-bracketing-and-elimination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    38. One-Dimensional Minimisation: Bracketing and Elimination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-fibonacci-search-method.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    39. The Fibonacci Search Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="golden-section-search.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    40. Golden Section Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpolation-and-gradient-based-one-dimensional-methods.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    41. Interpolation and Gradient-Based One-Dimensional Methods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unconstrained-multivariable-optimisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    42. Unconstrained Multivariable Optimisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constrained-optimisation-graphical-solution-and-lagrange.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    43. Constrained Optimisation: Graphical Solution and Lagrange Multipliers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="the-kuhn-tucker-kkt-conditions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    44. The Kuhn–Tucker (KKT) Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quadratic-programming-and-course-capstone.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    45. Quadratic Programming and Course Capstone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#181-learning-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Learning Outcomes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#182-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 The Idea
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2 The Idea">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-three-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-three-fathoming-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three fathoming rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-optimality-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The optimality gap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#183-the-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 The Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.3 The Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branching-variable-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching-variable strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-selection-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node-selection strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#184-worked-example-complete-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Worked Example — Complete Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.4 Worked Example — Complete Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-0-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 0 (root)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-1-x2-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 1: x₂ ≤ 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-2-x2-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 2: x₂ ≥ 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-3-x21-x13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 3: x₂≤1, x₁≤3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-4-x21-x14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node 4: x₂≤1, x₁≥4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#185-solved-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 Solved Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#186-practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.6 Practice Problems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#187-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.7 Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-18-the-branch-and-bound-method">Lesson 18: The Branch and Bound Method<a class="headerlink" href="#lesson-18-the-branch-and-bound-method" title="Permanent link">&para;</a></h1>
+<h2 id="181-learning-outcomes">18.1 Learning Outcomes<a class="headerlink" href="#181-learning-outcomes" title="Permanent link">&para;</a></h2>
+<p>By the end of this hour a student will be able to:</p>
+<ol>
+<li>Explain <strong>branching</strong>, <strong>bounding</strong> and <strong>fathoming</strong>.</li>
+<li>Construct a complete branch-and-bound tree for an integer programme.</li>
+<li>Apply the three <strong>fathoming rules</strong>.</li>
+<li>Solve <strong>0–1 knapsack</strong> problems by branch and bound.</li>
+<li>Choose branching and node-selection strategies, and interpret the optimality gap.</li>
+</ol>
+<h2 id="182-the-idea">18.2 The Idea<a class="headerlink" href="#182-the-idea" title="Permanent link">&para;</a></h2>
+<p>Cutting planes (L16–L17) tighten the <em>feasible region</em>. Branch and bound instead <strong>partitions</strong> it.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Divide and conquer: split the problem, bound each piece, discard pieces that cannot contain the optimum.}\ } \]</div>
+<p>Developed by Land and Doig (1960), it is the backbone of every commercial MILP solver.</p>
+<h3 id="the-three-operations">The three operations<a class="headerlink" href="#the-three-operations" title="Permanent link">&para;</a></h3>
+<p><strong>BRANCHING.</strong> If the LP relaxation gives a fractional <span class="arithmatex">\(x_k = \beta\)</span>, create <strong>two</strong> sub-problems:</p>
+<div class="arithmatex">\[ \text{Left: } x_k \le \lfloor\beta\rfloor \qquad\qquad \text{Right: } x_k \ge \lceil\beta\rceil \]</div>
+<p><strong>These are exhaustive and mutually exclusive</strong> for integer <span class="arithmatex">\(x_k\)</span> — no integer solution is lost, and
+the fractional value <span class="arithmatex">\(\beta\)</span> is excluded from both.</p>
+<p><strong>BOUNDING.</strong> The LP relaxation of each sub-problem gives an <strong>upper bound</strong> (for maximisation) on
+the best integer solution in that branch:</p>
+<div class="arithmatex">\[ Z_{IP}(\text{branch}) \ \le\ Z_{LP}(\text{branch}) \]</div>
+<p><strong>FATHOMING.</strong> A node is <strong>fathomed</strong> (closed, needing no further exploration) when any of three
+conditions holds.</p>
+<h3 id="the-three-fathoming-rules">The three fathoming rules<a class="headerlink" href="#the-three-fathoming-rules" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Condition</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Infeasible</strong></td>
+<td>the LP relaxation has no solution</td>
+<td>nothing lies below this node</td>
+</tr>
+<tr>
+<td><strong>2. Integer</strong></td>
+<td>the LP solution is already all-integer</td>
+<td>it is the best in this branch; update the incumbent if better</td>
+</tr>
+<tr>
+<td><strong>3. Bounded</strong></td>
+<td><span class="arithmatex">\(Z_{LP}(\text{node}) \le Z_{\text{incumbent}}\)</span></td>
+<td>no solution here can beat what we have</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{Rule 3 is where the power lies — it prunes entire subtrees without exploring them.}\ } \]</div>
+<p><strong>Definition (Incumbent).</strong> The best <strong>integer feasible</strong> solution found so far. It provides the
+<strong>lower bound</strong> <span class="arithmatex">\(Z_{\text{incumbent}} \le Z_{IP}^{*}\)</span>.</p>
+<p><strong>Termination.</strong> When every node is fathomed, the incumbent <strong>is</strong> the optimum.</p>
+<h3 id="the-optimality-gap">The optimality gap<a class="headerlink" href="#the-optimality-gap" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ \boxed{\ \text{gap} \ =\ \frac{Z_{\text{best bound}} - Z_{\text{incumbent}}}{Z_{\text{incumbent}}}\times100\%\ } \]</div>
+<p>where the best bound is the largest <span class="arithmatex">\(Z_{LP}\)</span> among <em>unfathomed</em> nodes. <strong>The gap is a certificate:</strong>
+a 2 % gap proves the incumbent is within 2 % of optimal, even if the search is stopped early.</p>
+<h2 id="183-the-algorithm">18.3 The Algorithm<a class="headerlink" href="#183-the-algorithm" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code>1. Solve the LP relaxation at the ROOT.
+       If integer -&gt; DONE.
+2. Set incumbent Z* = -infinity (maximisation)
+3. While unfathomed nodes remain:
+       a. SELECT a node (see strategies below)
+       b. SOLVE its LP relaxation
+       c. FATHOM if:  infeasible  OR  integer  OR  Z_LP &lt;= Z*
+              -- if integer and better than Z*, UPDATE the incumbent
+       d. Otherwise BRANCH on a fractional variable -&gt; two child nodes
+4. The incumbent is OPTIMAL
+</code></pre></div>
+<h3 id="branching-variable-strategies">Branching-variable strategies<a class="headerlink" href="#branching-variable-strategies" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Rule</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Most fractional</strong></td>
+<td>pick <span class="arithmatex">\(x_k\)</span> with <span class="arithmatex">\(f_k\)</span> closest to 0.5</td>
+<td>simple, commonly taught</td>
+</tr>
+<tr>
+<td><strong>Lowest index</strong></td>
+<td>pick the first fractional variable</td>
+<td>trivial, poor</td>
+</tr>
+<tr>
+<td><strong>Pseudo-cost</strong></td>
+<td>estimate each variable's historical impact on the bound</td>
+<td><strong>best in practice</strong></td>
+</tr>
+<tr>
+<td><strong>Strong branching</strong></td>
+<td>tentatively solve both children before deciding</td>
+<td>expensive but very effective</td>
+</tr>
+</tbody>
+</table>
+<h3 id="node-selection-strategies">Node-selection strategies<a class="headerlink" href="#node-selection-strategies" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Behaviour</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Depth-first (LIFO)</strong></td>
+<td>dive to the bottom</td>
+<td>finds an incumbent <strong>fast</strong>, low memory</td>
+</tr>
+<tr>
+<td><strong>Best-bound (best-first)</strong></td>
+<td>expand the node with the largest <span class="arithmatex">\(Z_{LP}\)</span></td>
+<td><strong>fewest nodes overall</strong>, high memory</td>
+</tr>
+<tr>
+<td><strong>Hybrid</strong></td>
+<td>dive first for an incumbent, then best-bound</td>
+<td><strong>what solvers actually do</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{Depth-first finds a good incumbent early, which then prunes aggressively by Rule 3.}\ } \]</div>
+<h2 id="184-worked-example-complete-tree">18.4 Worked Example — Complete Tree<a class="headerlink" href="#184-worked-example-complete-tree" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[ \begin{aligned}
+\max\ &amp; Z = 5x_1 + 4x_2\\
+\text{s.t. } &amp; 6x_1 + 4x_2 \le 24\\
+&amp; x_1 + 2x_2 \le 6\\
+&amp; x_1, x_2 \ge 0 \ \text{and INTEGER}
+\end{aligned} \]</div>
+<p><em>(The LP relaxation was solved in L03 and L05: optimum <span class="arithmatex">\((3, 1.5)\)</span> with <span class="arithmatex">\(Z = 21\)</span>.)</em></p>
+<h3 id="node-0-root">Node 0 (root)<a class="headerlink" href="#node-0-root" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ x_1 = 3, \quad x_2 = 1.5, \quad Z_{LP} = 21 \]</div>
+<p><strong><span class="arithmatex">\(x_2\)</span> is fractional ⟹ branch on <span class="arithmatex">\(x_2\)</span>.</strong> Incumbent <span class="arithmatex">\(Z^{*} = -\infty\)</span>.</p>
+<h3 id="node-1-x2-1">Node 1: x₂ ≤ 1<a class="headerlink" href="#node-1-x2-1" title="Permanent link">&para;</a></h3>
+<p>Solving the LP with the extra constraint <span class="arithmatex">\(x_2\le1\)</span>:</p>
+<div class="arithmatex">\[ x_1 = \tfrac{10}{3} = 3.333, \quad x_2 = 1, \quad Z_{LP} = 5(3.333)+4 = \mathbf{20.667} \]</div>
+<p><strong><span class="arithmatex">\(x_1\)</span> fractional ⟹ branch further.</strong> Not fathomed.</p>
+<h3 id="node-2-x2-2">Node 2: x₂ ≥ 2<a class="headerlink" href="#node-2-x2-2" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ x_1 = 2, \quad x_2 = 2, \quad Z_{LP} = 10 + 8 = \mathbf{18} \]</div>
+<p><strong>ALL INTEGER ⟹ FATHOM by Rule 2.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent updated: } Z^{*} = 18 \ \text{at } (2,2)\ } \]</div>
+<h3 id="node-3-x21-x13">Node 3: x₂≤1, x₁≤3<a class="headerlink" href="#node-3-x21-x13" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ x_1 = 3, \quad x_2 = 1, \quad Z_{LP} = 15 + 4 = \mathbf{19} \]</div>
+<p><strong>ALL INTEGER ⟹ FATHOM by Rule 2.</strong> And <span class="arithmatex">\(19 &gt; 18\)</span>:</p>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent updated: } Z^{*} = 19 \ \text{at } (3,1)\ } \]</div>
+<h3 id="node-4-x21-x14">Node 4: x₂≤1, x₁≥4<a class="headerlink" href="#node-4-x21-x14" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[ x_1 = 4, \quad x_2 = 0, \quad Z_{LP} = 20 + 0 = \mathbf{20} \]</div>
+<p><em>(Check feasibility: <span class="arithmatex">\(6(4)+0 = 24 \le 24\)</span> ✓ binding; <span class="arithmatex">\(4+0 = 4\le6\)</span> ✓.)</em></p>
+<p><strong>ALL INTEGER ⟹ FATHOM by Rule 2.</strong> And <span class="arithmatex">\(20 &gt; 19\)</span>:</p>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent updated: } Z^{*} = 20 \ \text{at } (4,0)\ } \]</div>
+<h3 id="the-tree">The tree<a class="headerlink" href="#the-tree" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code>                    Node 0: (3, 1.5)  Z=21
+                            |
+                 branch on x2 (fractional)
+             +--------------+---------------+
+             |                              |
+      Node 1: x2 &lt;= 1                Node 2: x2 &gt;= 2
+      (3.333, 1)  Z = 20.667         (2, 2)  Z = 18
+             |                        INTEGER -&gt; FATHOM
+   branch on x1 (fractional)          incumbent = 18
+      +------+-------+
+      |              |
+Node 3: x1&lt;=3   Node 4: x1&gt;=4
+(3, 1)  Z=19    (4, 0)  Z=20
+INTEGER          INTEGER
+FATHOM           FATHOM
+incumbent=19     incumbent=20  &lt;-- OPTIMAL
+</code></pre></div>
+<p><strong>All nodes fathomed.</strong></p>
+<div class="arithmatex">\[ \boxed{\ x_1^{*} = 4, \quad x_2^{*} = 0, \quad Z^{*}_{IP} = 20\ } \]</div>
+<p><strong>Verification.</strong> <span class="arithmatex">\(6(4)+4(0) = 24\le24\)</span> ✓; <span class="arithmatex">\(4+2(0) = 4\le6\)</span> ✓; <span class="arithmatex">\(Z = 20\)</span> ✓.</p>
+<p><strong>The integrality gap.</strong> <span class="arithmatex">\(Z_{LP} - Z_{IP} = 21 - 20 = 1\)</span> (4.8 %).</p>
+<p><strong>A striking observation.</strong> The LP optimum was <span class="arithmatex">\((3, 1.5)\)</span>, and rounding it down gives <span class="arithmatex">\((3,1)\)</span> with
+<span class="arithmatex">\(Z = 19\)</span> — <strong>but the true optimum is <span class="arithmatex">\((4,0)\)</span> with <span class="arithmatex">\(Z = 20\)</span>.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Rounding gave 19; branch and bound found 20. A different vertex entirely.}\ } \]</div>
+<p><strong>Nodes explored: 5.</strong> Complete enumeration over <span class="arithmatex">\(x_1\in\{0..4\}\)</span>, <span class="arithmatex">\(x_2\in\{0..3\}\)</span> would test 20
+combinations. On larger problems the saving is astronomical.</p>
+<h2 id="185-solved-problems">18.5 Solved Problems<a class="headerlink" href="#185-solved-problems" title="Permanent link">&para;</a></h2>
+<h4 id="problem-1-branch-and-bound-with-fathoming-by-bound">Problem 1 — Branch and bound with fathoming by bound<a class="headerlink" href="#problem-1-branch-and-bound-with-fathoming-by-bound" title="Permanent link">&para;</a></h4>
+<p><em>Solve <span class="arithmatex">\(\max\ Z = 8x_1+11x_2+6x_3+4x_4\)</span> subject to <span class="arithmatex">\(5x_1+7x_2+4x_3+3x_4\le14\)</span> with all <span class="arithmatex">\(x_j\)</span> binary.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Step 1 — the LP relaxation (a knapsack).</strong> Rank by value-to-weight ratio:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Weight</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>11</td>
+<td>7</td>
+<td><span class="arithmatex">\(11/7 = 1.571\)</span></td>
+</tr>
+<tr>
+<td>1</td>
+<td>8</td>
+<td>5</td>
+<td><span class="arithmatex">\(8/5 = 1.600\)</span> ← best</td>
+</tr>
+<tr>
+<td>3</td>
+<td>6</td>
+<td>4</td>
+<td><span class="arithmatex">\(6/4 = 1.500\)</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>3</td>
+<td><span class="arithmatex">\(4/3 = 1.333\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Fill greedily by ratio: item 1 (weight 5, running 5), item 2 (weight 7, running 12), then item 3
+needs 4 but only 2 remain ⟹ take <span class="arithmatex">\(\tfrac24 = 0.5\)</span> of it.</p>
+<div class="arithmatex">\[ \vec x = (1,\ 1,\ 0.5,\ 0), \qquad Z_{LP} = 8 + 11 + 3 = \mathbf{22} \]</div>
+<p><strong><span class="arithmatex">\(x_3\)</span> fractional ⟹ branch on <span class="arithmatex">\(x_3\)</span>.</strong></p>
+<p><strong>Node 1: <span class="arithmatex">\(x_3 = 0\)</span>.</strong> Remaining capacity for items 1, 2, 4: greedy gives items 1 and 2 (weight 12),
+then item 4 needs 3 but 2 remain ⟹ <span class="arithmatex">\(\tfrac23\)</span> of item 4.</p>
+<div class="arithmatex">\[ \vec x = (1,1,0,0.667), \qquad Z_{LP} = 8+11+2.667 = \mathbf{21.667} \]</div>
+<p><strong>Node 2: <span class="arithmatex">\(x_3 = 1\)</span>.</strong> Capacity left <span class="arithmatex">\(= 14-4 = 10\)</span>. Greedy on items 1, 2, 4: item 1 (5, running 5),
+then item 2 needs 7 but 5 remain ⟹ <span class="arithmatex">\(\tfrac57\)</span> of item 2.</p>
+<div class="arithmatex">\[ \vec x = (1,\ 0.714,\ 1,\ 0), \qquad Z_{LP} = 8 + 7.857 + 6 = \mathbf{21.857} \]</div>
+<p><strong>Take node 2 first (larger bound — best-first).</strong> Branch on <span class="arithmatex">\(x_2\)</span>.</p>
+<p><strong>Node 3: <span class="arithmatex">\(x_3=1\)</span>, <span class="arithmatex">\(x_2=0\)</span>.</strong> Capacity 10 for items 1, 4: both fit (<span class="arithmatex">\(5+3 = 8 \le 10\)</span>).</p>
+<div class="arithmatex">\[ \vec x = (1,0,1,1), \qquad Z = 8+6+4 = \mathbf{18} \quad \textbf{ALL INTEGER} \]</div>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent } Z^{*} = 18\ } \]</div>
+<p><strong>Node 4: <span class="arithmatex">\(x_3=1\)</span>, <span class="arithmatex">\(x_2=1\)</span>.</strong> Weight so far <span class="arithmatex">\(4+7 = 11\)</span>, capacity left 3. Item 1 needs 5 ✗; item 4
+needs 3 ✓ — exactly fits.</p>
+<div class="arithmatex">\[ \vec x = (0,1,1,1), \qquad Z = 11+6+4 = \mathbf{21} \quad \textbf{ALL INTEGER} \]</div>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent updated: } Z^{*} = 21 \ \text{at } (0,1,1,1)\ } \]</div>
+<p><strong>Back to Node 1</strong> (<span class="arithmatex">\(x_3 = 0\)</span>, bound 21.667).</p>
+<div class="arithmatex">\[ 21.667 &gt; 21 \ \Longrightarrow\ \textbf{cannot fathom by bound — must explore.} \]</div>
+<p>Branch on <span class="arithmatex">\(x_4\)</span>.</p>
+<p><strong>Node 5: <span class="arithmatex">\(x_3=0\)</span>, <span class="arithmatex">\(x_4=0\)</span>.</strong> Items 1, 2 only: weight <span class="arithmatex">\(5+7=12\le14\)</span> ✓.</p>
+<div class="arithmatex">\[ \vec x = (1,1,0,0), \qquad Z = 19 \quad \textbf{INTEGER} \]</div>
+<p><span class="arithmatex">\(19 &lt; 21\)</span> ⟹ <strong>fathom, incumbent unchanged.</strong></p>
+<p><strong>Node 6: <span class="arithmatex">\(x_3=0\)</span>, <span class="arithmatex">\(x_4=1\)</span>.</strong> Capacity left <span class="arithmatex">\(14-3 = 11\)</span>. Greedy: item 1 (5, left 6), item 2 needs 7 ⟹
+<span class="arithmatex">\(\tfrac67\)</span> of it.</p>
+<div class="arithmatex">\[ Z_{LP} = 4 + 8 + \tfrac67(11) = 4+8+9.429 = \mathbf{21.429} \]</div>
+<p><span class="arithmatex">\(21.429 &gt; 21\)</span> ⟹ explore. Branch on <span class="arithmatex">\(x_2\)</span>.</p>
+<p><strong>Node 7: <span class="arithmatex">\(x_3=0,x_4=1,x_2=0\)</span>.</strong> Item 1 fits.</p>
+<div class="arithmatex">\[ \vec x = (1,0,0,1), \quad Z = 12 \quad \textbf{INTEGER}, \ 12&lt;21 \Rightarrow \textbf{fathom} \]</div>
+<p><strong>Node 8: <span class="arithmatex">\(x_3=0,x_4=1,x_2=1\)</span>.</strong> Weight <span class="arithmatex">\(3+7 = 10\)</span>, capacity left 4. Item 1 needs 5 ✗.</p>
+<div class="arithmatex">\[ \vec x = (0,1,0,1), \quad Z = 15 \quad \textbf{INTEGER}, \ 15&lt;21 \Rightarrow \textbf{fathom} \]</div>
+<p><strong>All nodes fathomed.</strong></p>
+<div class="arithmatex">\[ \boxed{\ \vec x^{*} = (0,\ 1,\ 1,\ 1), \qquad Z^{*} = 21\ } \]</div>
+<p><strong>Verification.</strong> Weight <span class="arithmatex">\(= 7+4+3 = 14 \le 14\)</span> ✓ (exactly full). Value <span class="arithmatex">\(= 11+6+4 = 21\)</span> ✓.</p>
+<p><strong>The key insight.</strong> The greedy ratio rule put item 1 first (ratio 1.60), but the <strong>optimum excludes
+it</strong>. Item 1's weight of 5 crowds out the combination <span class="arithmatex">\(\{2,3,4\}\)</span> that exactly fills the knapsack.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Greedy gives 19 (items 1,2); branch and bound gives 21. Ratios guide, they do not decide.}\ } \]</div>
+<p><strong>Nodes explored: 9.</strong> Complete enumeration would be <span class="arithmatex">\(2^4 = 16\)</span>. The saving is modest here but grows
+exponentially with problem size.</p>
+<h4 id="problem-2-fathoming-by-bound-saves-an-entire-subtree">Problem 2 — Fathoming by bound saves an entire subtree<a class="headerlink" href="#problem-2-fathoming-by-bound-saves-an-entire-subtree" title="Permanent link">&para;</a></h4>
+<p><em>Continue a branch-and-bound tree where the incumbent is <span class="arithmatex">\(Z^{*} = 47\)</span> and three unexplored nodes have
+LP bounds 52, 45 and 47. Which can be fathomed?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Node with bound 52.</strong></p>
+<div class="arithmatex">\[ 52 &gt; 47 \ \Longrightarrow\ \textbf{CANNOT fathom — must explore.} \]</div>
+<p>An integer solution worth up to 52 might exist below it.</p>
+<p><strong>Node with bound 45.</strong></p>
+<div class="arithmatex">\[ 45 &lt; 47 = Z^{*} \ \Longrightarrow\ \textbf{FATHOM by Rule 3.} \]</div>
+<p>Every solution in this subtree has <span class="arithmatex">\(Z \le 45 &lt; 47\)</span>, so none can beat the incumbent. <strong>The entire
+subtree is discarded without a single further LP solve.</strong></p>
+<p><strong>Node with bound 47.</strong></p>
+<div class="arithmatex">\[ 47 = Z^{*} \]</div>
+<p><strong>This depends on convention.</strong></p>
+<ul>
+<li>If we want <strong>any one</strong> optimal solution: <strong>fathom</strong> (nothing strictly better lies below).</li>
+<li>If we want <strong>all</strong> optimal solutions: <strong>explore</strong> (an alternate optimum with <span class="arithmatex">\(Z = 47\)</span> may lie here).</li>
+</ul>
+<p><strong>Standard practice: fathom</strong> when <span class="arithmatex">\(Z_{LP} \le Z^{*}\)</span>, using <span class="arithmatex">\(\le\)</span> rather than <span class="arithmatex">\(&lt;\)</span>. Solvers offer a
+"find all optima" mode that switches to strict inequality.</p>
+<p><strong>Quantifying the saving.</strong> Suppose the node with bound 45 would have generated a subtree of 200
+nodes. Each node requires an LP solve at, say, 5 ms.</p>
+<div class="arithmatex">\[ \text{Saving} = 200 \times 5\ \text{ms} = \mathbf{1\ \text{second}} \]</div>
+<p>On a problem with thousands of such prunings, this is the difference between seconds and hours.</p>
+<p><strong>The current optimality gap.</strong></p>
+<div class="arithmatex">\[ \text{best bound among unfathomed nodes} = 52 \]</div>
+<div class="arithmatex">\[ \text{gap} = \frac{52-47}{47}\times100\% = \mathbf{10.6\%} \]</div>
+<p><strong>Reporting.</strong> <em>"Best solution found: 47. Proven within 10.6 % of optimal."</em> If the deadline arrives
+before the gap closes, that statement is still a rigorous, defensible result.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{The gap turns an incomplete search into a certified approximation.}\ } \]</div>
+<h4 id="problem-3-branching-variable-choice-affects-tree-size">Problem 3 — Branching-variable choice affects tree size<a class="headerlink" href="#problem-3-branching-variable-choice-affects-tree-size" title="Permanent link">&para;</a></h4>
+<p><em>An LP relaxation gives <span class="arithmatex">\(x_1 = 2.9\)</span>, <span class="arithmatex">\(x_2 = 4.5\)</span>, <span class="arithmatex">\(x_3 = 7.1\)</span>. Which variable should be branched on
+under each strategy, and why does it matter?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Fractional parts.</strong></p>
+<div class="arithmatex">\[ f_1 = 0.9, \qquad f_2 = 0.5, \qquad f_3 = 0.1 \]</div>
+<p><strong>Most-fractional rule</strong> (closest to 0.5):</p>
+<div class="arithmatex">\[ |f_1 - 0.5| = 0.4, \qquad |f_2-0.5| = \mathbf{0}, \qquad |f_3-0.5| = 0.4 \]</div>
+<div class="arithmatex">\[ \boxed{\ \textbf{Branch on } x_2\ } \]</div>
+<p><strong>Lowest-index rule:</strong> branch on <span class="arithmatex">\(x_1\)</span> (the first fractional variable).</p>
+<p><strong>Why "most fractional" is preferred.</strong> Consider the two extremes.</p>
+<p><em>Branching on <span class="arithmatex">\(x_3 = 7.1\)</span>:</em></p>
+<ul>
+<li><span class="arithmatex">\(x_3 \le 7\)</span> — the LP optimum is only 0.1 away, so this child's bound barely drops. <strong>Weak.</strong></li>
+<li><span class="arithmatex">\(x_3\ge8\)</span> — a jump of 0.9, cutting off a lot. <strong>Strong.</strong></li>
+</ul>
+<p>The tree is <strong>unbalanced</strong>: one child does almost no work, so progress is slow.</p>
+<p><em>Branching on <span class="arithmatex">\(x_2 = 4.5\)</span>:</em></p>
+<ul>
+<li><span class="arithmatex">\(x_2\le4\)</span> — moves 0.5 away.</li>
+<li><span class="arithmatex">\(x_2\ge5\)</span> — moves 0.5 away.</li>
+</ul>
+<p><strong>Both children tighten equally</strong>, so the tree is <strong>balanced</strong> and the bound drops on both sides.</p>
+<div class="arithmatex">\[ \boxed{\ \textbf{Balanced branching halves the problem; unbalanced branching shaves it.}\ } \]</div>
+<p><strong>A concrete estimate.</strong> If balanced branching reduces the bound by <span class="arithmatex">\(\delta\)</span> on both sides while
+unbalanced reduces it by <span class="arithmatex">\(0.1\delta\)</span> and <span class="arithmatex">\(0.9\delta\)</span>, the number of levels needed to close a gap <span class="arithmatex">\(G\)</span>
+is roughly <span class="arithmatex">\(\log_2\)</span>-like for the former and much larger for the latter.</p>
+<p><strong>Why pseudo-cost branching beats both.</strong> Most-fractional is a <em>heuristic proxy</em> for what we actually
+want: the variable whose branching most raises the lower bound. <strong>Pseudo-cost</strong> branching records,
+for each variable, how much the objective actually degraded in past branchings, and picks the
+variable with the best historical record. Modern solvers combine it with <strong>strong branching</strong> (a
+tentative one-step lookahead) at the top of the tree, where decisions matter most.</p>
+<p><strong>Empirical impact.</strong> On standard MIPLIB benchmarks, switching from most-fractional to pseudo-cost
+branching typically reduces node counts by <strong>an order of magnitude</strong>.</p>
+<h4 id="problem-4-a-01-knapsack-with-a-strong-bound">Problem 4 — A 0–1 knapsack with a strong bound<a class="headerlink" href="#problem-4-a-01-knapsack-with-a-strong-bound" title="Permanent link">&para;</a></h4>
+<p><em>Solve by branch and bound: maximise <span class="arithmatex">\(Z = 40x_1+30x_2+50x_3+10x_4\)</span> subject to
+<span class="arithmatex">\(3x_1+2x_2+5x_3+x_4 \le 7\)</span>, <span class="arithmatex">\(x_j\in\{0,1\}\)</span>.</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Ratios.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Weight</th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>30</td>
+<td>2</td>
+<td><strong>15.0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>40</td>
+<td>3</td>
+<td>13.3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10</td>
+<td>1</td>
+<td>10.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>50</td>
+<td>5</td>
+<td>10.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Root LP.</strong> Fill by ratio: item 2 (w 2, running 2), item 1 (w 3, running 5), then item 4 (w 1,
+running 6), then item 3 needs 5 but 1 remains ⟹ <span class="arithmatex">\(\tfrac15\)</span> of item 3.</p>
+<div class="arithmatex">\[ \vec x = (1,1,0.2,1), \qquad Z_{LP} = 40+30+10+10 = \mathbf{90} \]</div>
+<p><strong>Branch on <span class="arithmatex">\(x_3\)</span>.</strong></p>
+<p><strong>Node 1: <span class="arithmatex">\(x_3 = 0\)</span>.</strong> Items 1, 2, 4 all fit: <span class="arithmatex">\(3+2+1 = 6\le7\)</span> ✓.</p>
+<div class="arithmatex">\[ \vec x = (1,1,0,1), \qquad Z = 40+30+10 = \mathbf{80} \quad \textbf{ALL INTEGER} \]</div>
+<div class="arithmatex">\[ \boxed{\ \text{Incumbent } Z^{*} = 80\ } \]</div>
+<p><strong>Node 2: <span class="arithmatex">\(x_3 = 1\)</span>.</strong> Weight used 5, capacity left 2. Greedy on items 1, 2, 4 by ratio: item 2
+(w 2) exactly fits.</p>
+<div class="arithmatex">\[ \vec x = (0,1,1,0), \qquad Z = 30+50 = \mathbf{80} \quad \textbf{ALL INTEGER} \]</div>
+<p><span class="arithmatex">\(80 = 80\)</span> ⟹ <strong>fathom</strong> (an alternate optimum, not an improvement).</p>
+<p><strong>All nodes fathomed after only 3 LP solves.</strong></p>
+<div class="arithmatex">\[ \boxed{\ Z^{*} = 80, \ \text{achieved at BOTH } (1,1,0,1) \text{ and } (0,1,1,0)\ } \]</div>
+<p><strong>Verification.</strong></p>
+<div class="arithmatex">\[ (1,1,0,1): \ 3+2+1 = 6\le7 \ \checkmark, \quad Z = 80 \]</div>
+<div class="arithmatex">\[ (0,1,1,0): \ 2+5 = 7\le7 \ \checkmark \ \text{(exactly full)}, \quad Z = 80 \]</div>
+<p><strong>Confirm by complete enumeration</strong> (<span class="arithmatex">\(2^4 = 16\)</span> subsets — the feasible ones with the largest value):</p>
+<table>
+<thead>
+<tr>
+<th>Subset</th>
+<th>Weight</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\{1,2,4\}\)</span></td>
+<td>6</td>
+<td><strong>80</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\{2,3\}\)</span></td>
+<td>7</td>
+<td><strong>80</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\{1,2\}\)</span></td>
+<td>5</td>
+<td>70</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\{3,4\}\)</span></td>
+<td>6</td>
+<td>60</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\{1,3\}\)</span></td>
+<td>8</td>
+<td>✗ infeasible</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \textbf{Maximum} = 80 \ \checkmark \]</div>
+<p><strong>Why only 3 nodes sufficed.</strong> The root bound of 90 was close to the true optimum of 80, and <strong>both
+children happened to be integral immediately</strong>. A tight relaxation is the single best predictor of a
+small tree.</p>
+<p><strong>Alternate optima again.</strong> Two different item sets give 80. Report both — the decision-maker may
+prefer one on grounds outside the model (perishability, supplier relationships, storage).</p>
+<h4 id="problem-5-a-complete-production-planning-milp">Problem 5 — A complete production-planning MILP<a class="headerlink" href="#problem-5-a-complete-production-planning-milp" title="Permanent link">&para;</a></h4>
+<p><em>A factory can run up to 3 machine types. Machine A costs ₹20 lakh and produces 100 units/month;
+machine B costs ₹35 lakh, 180 units; machine C costs ₹15 lakh, 70 units. Budget ₹60 lakh. Demand is
+250 units/month, and unmet demand costs ₹0.3 lakh per unit in lost margin. How many of each machine
+should be bought?</em></p>
+<p><strong>Solution.</strong></p>
+<p><strong>Decision variables.</strong></p>
+<div class="arithmatex">\[ n_A, n_B, n_C \ \ge 0 \ \text{and INTEGER} \qquad \text{(number of each machine)} \]</div>
+<div class="arithmatex">\[ u \ \ge 0 \ \text{CONTINUOUS} \qquad \text{(units of unmet demand)} \]</div>
+<p><strong>Objective</strong> (minimise total cost, ₹ lakh):</p>
+<div class="arithmatex">\[ \min\ Z = 20n_A + 35n_B + 15n_C + 0.3u \]</div>
+<p><strong>Constraints.</strong></p>
+<p><em>Budget:</em></p>
+<div class="arithmatex">\[ 20n_A + 35n_B + 15n_C \ \le\ 60 \]</div>
+<p><em>Demand (production plus shortfall must meet demand):</em></p>
+<div class="arithmatex">\[ 100n_A + 180n_B + 70n_C + u \ \ge\ 250 \]</div>
+<p><strong>This is a MILP</strong> — integer machine counts, continuous shortfall.</p>
+<p><strong>Solution by enumerating budget-feasible machine combinations.</strong></p>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\((n_A,n_B,n_C)\)</span></th>
+<th>Capital</th>
+<th>Output</th>
+<th>Shortfall <span class="arithmatex">\(u\)</span></th>
+<th>Shortfall cost</th>
+<th><strong>Total <span class="arithmatex">\(Z\)</span></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\((0,0,0)\)</span></td>
+<td>0</td>
+<td>0</td>
+<td>250</td>
+<td>75.0</td>
+<td><strong>75.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,0,4)\)</span></td>
+<td>60</td>
+<td>280</td>
+<td>0</td>
+<td>0</td>
+<td><strong>60.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,0,2)\)</span></td>
+<td>50</td>
+<td>240</td>
+<td>10</td>
+<td>3.0</td>
+<td><strong>53.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,1,1)\)</span></td>
+<td>50</td>
+<td>250</td>
+<td>0</td>
+<td>0</td>
+<td><strong>50.0</strong> ←</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,1,0)\)</span></td>
+<td>55</td>
+<td>280</td>
+<td>0</td>
+<td>0</td>
+<td><strong>55.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((2,0,1)\)</span></td>
+<td>55</td>
+<td>270</td>
+<td>0</td>
+<td>0</td>
+<td><strong>55.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((3,0,0)\)</span></td>
+<td>60</td>
+<td>300</td>
+<td>0</td>
+<td>0</td>
+<td><strong>60.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,0,3)\)</span></td>
+<td>45</td>
+<td>210</td>
+<td>40</td>
+<td>12.0</td>
+<td><strong>57.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((1,0,1)\)</span></td>
+<td>35</td>
+<td>170</td>
+<td>80</td>
+<td>24.0</td>
+<td><strong>59.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((0,1,0)\)</span></td>
+<td>35</td>
+<td>180</td>
+<td>70</td>
+<td>21.0</td>
+<td><strong>56.0</strong></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((2,0,0)\)</span></td>
+<td>40</td>
+<td>200</td>
+<td>50</td>
+<td>15.0</td>
+<td><strong>55.0</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[ \boxed{\ \textbf{Buy 1 machine B and 1 machine C. Capital ₹50 lakh, demand fully met, } Z^{*} = ₹50\ \text{lakh.}\ } \]</div>
+<p><strong>Verification.</strong></p>
+<div class="arithmatex">\[ \text{Budget: } 35+15 = 50 \le 60 \ \checkmark \ \text{(₹10 lakh unspent)} \]</div>
+<div class="arithmatex">\[ \text{Output: } 180+70 = 250 \ge 250 \ \checkmark \ \text{(exactly meets demand, } u = 0) \]</div>
+<p><strong>The LP relaxation, for comparison.</strong> Allowing fractional machines, the cheapest capacity per unit
+is machine B: <span class="arithmatex">\(35/180 = ₹0.194\)</span> lakh per unit. To produce 250 units:</p>
+<div class="arithmatex">\[ n_B = \frac{250}{180} = 1.389, \qquad Z_{LP} = 35(1.389) = ₹48.6\ \text{lakh} \]</div>
+<div class="arithmatex">\[ \text{Integrality gap} = 50 - 48.6 = \mathbf{₹1.4\ \text{lakh}} \ (2.9\%) \]</div>
+<p><strong>A small gap</strong> — because the demand happens to be met almost exactly by an integer combination.</p>
+<p><strong>Advice to management.</strong></p>
+<ol>
+<li>
+<p><strong>Buy 1 × B and 1 × C for ₹50 lakh.</strong> Demand is exactly met with no shortfall cost.</p>
+</li>
+<li>
+<p><strong>₹10 lakh of budget remains unspent.</strong> The model says this is correct — adding another machine C
+    (₹15 lakh) exceeds the budget, and there is no unmet demand to justify it anyway.</p>
+</li>
+<li>
+<p><strong>The capacity is exactly 250 with zero margin.</strong> This is a <strong>fragile</strong> plan: any breakdown causes
+    immediate shortfall. <strong>Recommend re-running with a reliability constraint</strong> (e.g. capacity
+    <span class="arithmatex">\(\ge 275\)</span> to allow 10 % downtime), which would push toward <span class="arithmatex">\((1,1,0)\)</span> at ₹55 lakh for 280 units —
+    ₹5 lakh more for a 12 % safety margin.</p>
+</li>
+<li>
+<p><strong>Sensitivity on the shortfall cost.</strong> At ₹0.3 lakh per unit, meeting demand fully is worth it. If
+    the shortfall cost fell below</p>
+<div class="arithmatex">\[ \frac{50 - 35}{70} = ₹0.214\ \text{lakh/unit} \]</div>
+<p>then buying only machine B (₹35 lakh, 70 units short) would become cheaper. <strong>Verify the ₹0.3
+figure carefully</strong> — the recommendation flips below ₹0.214.</p>
+</li>
+</ol>
+<div class="arithmatex">\[ \boxed{\ \textbf{Always report the parameter value at which the recommendation changes.}\ } \]</div>
+<h2 id="186-practice-problems">18.6 Practice Problems<a class="headerlink" href="#186-practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li>LP relaxation gives <span class="arithmatex">\(x = 3.7\)</span>. State both branch constraints. <strong>[Ans: <span class="arithmatex">\(x\le3\)</span> and <span class="arithmatex">\(x\ge4\)</span>]</strong></li>
+<li>Incumbent 25; node bound 24. Fathom? <strong>[Ans: yes, Rule 3]</strong></li>
+<li>Incumbent 25; node bound 30 and all-integer LP solution. Fathom? <strong>[Ans: yes, Rule 2; update incumbent to 30]</strong></li>
+<li>Given fractional values 1.2, 5.5, 8.9, which does most-fractional branching choose? <strong>[Ans: 5.5]</strong></li>
+<li>Compute the gap if the incumbent is 120 and the best bound is 132. <strong>[Ans: 10 %]</strong></li>
+<li>Solve by branch and bound: <span class="arithmatex">\(\max 3x_1+5x_2\)</span> s.t. <span class="arithmatex">\(2x_1+4x_2\le11\)</span>, integer.</li>
+<li>Explain why depth-first search is used to find an early incumbent.</li>
+</ol>
+<h2 id="187-summary">18.7 Summary<a class="headerlink" href="#187-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Branch and bound</strong> partitions the feasible region rather than tightening it: branch on a fractional <span class="arithmatex">\(x_k\)</span> into <span class="arithmatex">\(x_k\le\lfloor\beta\rfloor\)</span> and <span class="arithmatex">\(x_k\ge\lceil\beta\rceil\)</span> — exhaustive and mutually exclusive for integers.</li>
+<li>The LP relaxation at each node gives an <strong>upper bound</strong>; the best integer solution found is the <strong>incumbent</strong> (a lower bound).</li>
+<li><strong>Three fathoming rules:</strong> infeasible, all-integer, or bound <span class="arithmatex">\(\le\)</span> incumbent. <strong>Rule 3 prunes whole subtrees</strong> and is where the efficiency comes from.</li>
+<li>The <strong>optimality gap</strong> <span class="arithmatex">\(\frac{\text{best bound}-\text{incumbent}}{\text{incumbent}}\)</span> certifies how close the incumbent is — turning an incomplete search into a rigorous approximation.</li>
+<li><strong>Branching strategy:</strong> most-fractional beats lowest-index (balanced trees); <strong>pseudo-cost</strong> and <strong>strong branching</strong> beat both in practice, often by an order of magnitude in node count.</li>
+<li><strong>Node selection:</strong> depth-first finds an incumbent fast (good pruning, low memory); best-bound minimises node count; solvers use a hybrid.</li>
+<li><strong>The integer optimum can be at a completely different vertex from the LP optimum</strong> — the worked example's rounding gave 19 against a true optimum of 20 at <span class="arithmatex">\((4,0)\)</span>.</li>
+<li>Modern solvers combine this with cuts (L16–L17) as <strong>branch and cut</strong>.</li>
+</ul>
+<p><strong>Next lesson:</strong> L19 — Network scheduling: the Critical Path Method (CPM).</p>
+<p><strong>Practise now:</strong> <code>unit2-games-networks-lab.html</code> → <em>Branch &amp; Bound Lab</em>: watch the tree grow node by
+node, with bounds, incumbents and fathoming reasons annotated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="gomory-s-method-for-mixed-integer-programmes.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 17. Gomory&#39;s Method for Mixed Integer Programmes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                17. Gomory's Method for Mixed Integer Programmes
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="network-scheduling-the-critical-path-method-cpm.html" class="md-footer__link md-footer__link--next" aria-label="Next: 19. Network Scheduling: The Critical Path Method (CPM)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                19. Network Scheduling: The Critical Path Method (CPM)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>

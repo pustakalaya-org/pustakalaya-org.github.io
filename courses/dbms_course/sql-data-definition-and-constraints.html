@@ -1,0 +1,2319 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  
+    <meta name="description" content="Pustakālaya, a library of books on Indian knowledge traditions, science, technology and language, read page by page in the manner of an e-book reader, online or offline.">
+  
+  
+    <meta name="author" content="Nikhil Kumar Rajput, Ramanujan College, University of Delhi">
+  
+  
+    <link rel="canonical" href="https://nikhilkrajput.github.io/pustakalaya/courses/dbms_course/sql-data-definition-and-constraints.html">
+  
+  
+    <link rel="prev" href="relational-algebra-ii-joins-division-and-aggregation.html">
+  
+  
+    <link rel="next" href="alter-drop-update-behaviours-and-dml.html">
+  
+  <link rel="icon" href="../../assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pustakālaya">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    try {
+      if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
+        document.documentElement.className += " bjp-standalone";
+      }
+    } catch (e) { /* not an installed app */ }
+  </script>
+  <script>
+    /* a book opened from its cover on the shelf: the page stays blank, in the cover's colour, until the reader is up */
+    try {
+      var cv = sessionStorage.getItem("bjp.reader.cover");
+      if (cv && sessionStorage.getItem("bjp.reader.open") === "1") {
+        var c = JSON.parse(cv), de = document.documentElement;
+        de.className += " bjp-booting";
+        if (c && /^#[0-9a-f]{3,8}$/i.test(c.bg || "")) de.style.background = c.bg;
+        setTimeout(function () { de.classList.remove("bjp-booting"); de.style.background = ""; }, 3000);
+      }
+    } catch (e) { /* no session storage: the page simply opens as usual */ }
+  </script>
+
+    
+      
+        <title>13. SQL: Data Definition and Constraints - Pustakālaya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Serif";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/reader.css">
+    
+      <link rel="stylesheet" href="../../assets/app.css">
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#131-sql-origins-and-structure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Pustakālaya" class="md-header__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pustakālaya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13. SQL: Data Definition and Constraints
+            
+          </span>
+        </div>
+      </div>
+    </div><a href="../../index.html" class="bjp-libbtn" aria-label="Library: all books" title="Library: all books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg><span>Library</span>
+    </a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary bjp-nav bjp-nav--book" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Pustakālaya" class="md-nav__button md-logo" aria-label="Pustakālaya" data-md-component="logo">
+      
+  <img src="../../assets/icons/logo.svg" alt="logo">
+
+    </a>
+    Pustakālaya
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      <li class="md-nav__item bjp-nav-all">
+        <a href="../../index.html" class="md-nav__link" aria-label="All books: back to the library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span class="md-ellipsis">All books</span>
+        </a>
+      </li>
+      <li class="md-nav__item bjp-nav-book" role="presentation"><span class="bjp-nav-head">Database Management Systems</span></li>
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview and preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="course-handbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Handbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="purpose-of-a-database-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Purpose of a Database System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="characteristics-data-models-schemas-and-instances.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Characteristics, Data Models, Schemas and Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="three-schema-architecture-and-data-independence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Three-Schema Architecture and Data Independence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components-architectures-and-users.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Components, Architectures and Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="conceptual-modelling-entities-and-entity-types.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Conceptual Modelling, Entities and Entity Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attributes-and-keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Attributes and Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relationships-relationship-types-and-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Relationships, Relationship Types and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-notation-weak-entities-and-case-studies.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. ER Notation, Weak Entities and Case Studies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-anomalies-and-the-relational-data-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. Update Anomalies and the Relational Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="keys-and-relational-integrity-constraints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Keys and Relational Integrity Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-i-unary-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Relational Algebra I: Unary and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Relational Algebra II: Joins, Division and Aggregation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="sql-data-definition-and-constraints.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. SQL: Data Definition and Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#131-sql-origins-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 SQL — Origins and Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.1 SQL — Origins and Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-sub-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The sub-languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#132-data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Data Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 Data Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date-and-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date and time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-and-other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean and other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#133-create-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 CREATE DATABASE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#134-create-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 CREATE TABLE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 CREATE TABLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-five-constraint-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five constraint types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-college-schema-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the college schema, step by step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#135-auto_increment-and-surrogate-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 AUTO_INCREMENT and Surrogate Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#136-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#137-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alter-drop-update-behaviours-and-dml.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. ALTER, DROP, Update Behaviours and DML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="querying-with-select.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Querying with SELECT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregation-group-by-and-having.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16. Aggregation, GROUP BY and HAVING
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="joins-subqueries-and-set-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17. Joins, Subqueries and Set Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="views-odbc-and-database-administration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18. Views, ODBC and Database Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="er-to-relational-mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19. ER-to-Relational Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functional-dependencies-and-closure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20. Functional Dependencies and Closure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="normal-forms-1nf-2nf-3nf.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21. Normal Forms: 1NF, 2NF, 3NF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bcnf-and-decomposition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    22. BCNF and Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lossless-join-and-dependency-preservation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    23. Lossless Join and Dependency Preservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data-storage-and-file-organisation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    24. Data Storage and File Organisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="indexing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    25. Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="transactions-and-acid-properties.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    26. Transactions and ACID Properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concurrent-execution-and-serialisability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    27. Concurrent Execution and Serialisability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#131-sql-origins-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 SQL — Origins and Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.1 SQL — Origins and Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-sub-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The sub-languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#132-data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Data Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 Data Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date-and-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date and time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-and-other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean and other
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#133-create-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 CREATE DATABASE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#134-create-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 CREATE TABLE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 CREATE TABLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-five-constraint-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five constraint types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-college-schema-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the college schema, step by step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#135-auto_increment-and-surrogate-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 AUTO_INCREMENT and Surrogate Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#136-solved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.6 Solved Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#137-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.7 Exercises
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lesson-13-sql-data-definition-and-constraints">Lesson 13: SQL: Data Definition and Constraints<a class="headerlink" href="#lesson-13-sql-data-definition-and-constraints" title="Permanent link">&para;</a></h1>
+<p><em>Creating databases and tables, data types, and table constraints</em></p>
+<div class="admonition info">
+<p class="admonition-title">About this lesson</p>
+<p><strong>Course:</strong> Database Management Systems (DSC11 / DSC05 / GE3a)</p>
+<p><strong>Unit 4:</strong> Structured Query Language · 12 Lecture Hours</p>
+<p><strong>Lesson duration:</strong> 2 lectures</p>
+<p><strong>Reading:</strong> Elmasri &amp; Navathe, Ch. 6.1, 6.2 · Murach's MySQL, Ch. 10, 11</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Learning Outcomes</p>
+<ol>
+<li>State the history and sub-languages of <strong>SQL</strong> (DDL, DML, DCL, TCL).</li>
+<li>Choose appropriate <strong>data types</strong> for numeric, string, date and boolean data.</li>
+<li>Write <code>CREATE DATABASE</code> and <code>CREATE TABLE</code> with all constraint clauses.</li>
+<li>Distinguish <strong>column-level</strong> from <strong>table-level</strong> constraints and know when each is required.</li>
+<li>Build the complete <strong>college schema</strong> used throughout the practical component.</li>
+</ol>
+</div>
+<h2 id="131-sql-origins-and-structure">13.1 SQL — Origins and Structure<a class="headerlink" href="#131-sql-origins-and-structure" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">SQL</p>
+<p><strong>Structured Query Language</strong> — the standard language of relational databases. Developed at IBM's San Jose Research Laboratory in the early 1970s as <strong>SEQUEL</strong> (Structured English Query Language) for the System R prototype, based on Codd's relational model. Standardised by ANSI in <strong>1986</strong> and by ISO in <strong>1987</strong>; major revisions followed as SQL-89, <strong>SQL-92</strong>, SQL:1999, SQL:2003, and onward.</p>
+</div>
+<p>SQL is <strong>declarative</strong>: you state <em>what</em> you want, and the optimiser decides <em>how</em> (Unit 1, Lesson 4). It is also <strong>relationally complete</strong> — everything expressible in relational algebra is expressible in SQL.</p>
+<h3 id="the-sub-languages">The sub-languages<a class="headerlink" href="#the-sub-languages" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Sub-language</th>
+<th>Purpose</th>
+<th>Statements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DDL</strong> — Data Definition</td>
+<td>Define and change the schema</td>
+<td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code>, <code>RENAME</code></td>
+</tr>
+<tr>
+<td><strong>DML</strong> — Data Manipulation</td>
+<td>Retrieve and change data</td>
+<td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
+</tr>
+<tr>
+<td><strong>DCL</strong> — Data Control</td>
+<td>Control access</td>
+<td><code>GRANT</code>, <code>REVOKE</code></td>
+</tr>
+<tr>
+<td><strong>TCL</strong> — Transaction Control</td>
+<td>Delimit transactions</td>
+<td><code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>This lesson covers DDL.</strong> DML is Lessons 2 to 5; DCL and TCL are Lesson 6.</p>
+<div class="admonition warning">
+<p class="admonition-title">Terminology: SQL vs the relational model</p>
+<table>
+<thead>
+<tr>
+<th>Relational model</th>
+<th>SQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Relation</td>
+<td><strong>Table</strong></td>
+</tr>
+<tr>
+<td>Tuple</td>
+<td><strong>Row</strong></td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td><strong>Column</strong></td>
+</tr>
+<tr>
+<td>Relation is a <strong>set</strong></td>
+<td>Table is a <strong>multiset (bag)</strong> — duplicates possible</td>
+</tr>
+</tbody>
+</table>
+<p>The bag semantics is the single most important difference, and it is why <code>DISTINCT</code> exists.</p>
+</div>
+<h2 id="132-data-types">13.2 Data Types<a class="headerlink" href="#132-data-types" title="Permanent link">&para;</a></h2>
+<p>Choosing the right type is a design decision, not a formality: it is the <strong>domain constraint</strong> of Unit 3 in practice.</p>
+<h3 id="numeric">Numeric<a class="headerlink" href="#numeric" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Range / meaning</th>
+<th>Use for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TINYINT</code></td>
+<td>−128 to 127 (or 0–255 unsigned)</td>
+<td>Small counters, flags</td>
+</tr>
+<tr>
+<td><code>SMALLINT</code></td>
+<td>±32,767</td>
+<td>Seat counts, ages</td>
+</tr>
+<tr>
+<td><code>INT</code> / <code>INTEGER</code></td>
+<td>±2.1 billion</td>
+<td>Most integer data</td>
+</tr>
+<tr>
+<td><code>BIGINT</code></td>
+<td>±9.2 × 10<sup>18</sup></td>
+<td>Large IDs, counters</td>
+</tr>
+<tr>
+<td><code>DECIMAL(p,s)</code> / <code>NUMERIC(p,s)</code></td>
+<td><strong>Exact</strong> decimal: <code>p</code> total digits, <code>s</code> after the point</td>
+<td><strong>Money</strong>, marks, any exact fraction</td>
+</tr>
+<tr>
+<td><code>FLOAT</code>, <code>DOUBLE</code></td>
+<td>Approximate binary floating point</td>
+<td>Scientific measurements</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Never use FLOAT for money</p>
+<p><code>FLOAT</code> and <code>DOUBLE</code> are <strong>binary</strong> approximations. The decimal value <code>0.1</code> has no exact binary representation, so <code>0.1 + 0.2</code> may not equal <code>0.3</code>, and a sum of a thousand payments can drift by rupees.</p>
+<p>Use <code>DECIMAL(10,2)</code> for currency. It stores the digits exactly and arithmetic is exact.</p>
+</div>
+<h3 id="string">String<a class="headerlink" href="#string" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CHAR(n)</code></td>
+<td><strong>Fixed</strong> length, space-padded to <code>n</code></td>
+<td>Use when every value is the same length: <code>CHAR(10)</code> for a mobile number, <code>CHAR(12)</code> for Aadhaar</td>
+</tr>
+<tr>
+<td><code>VARCHAR(n)</code></td>
+<td><strong>Variable</strong> length, up to <code>n</code></td>
+<td>The default choice for names, addresses</td>
+</tr>
+<tr>
+<td><code>TEXT</code></td>
+<td>Long text, no length limit given</td>
+<td>Descriptions, comments; cannot be fully indexed</td>
+</tr>
+<tr>
+<td><code>ENUM('a','b')</code></td>
+<td>One of a listed set (MySQL)</td>
+<td>Alternative to a <code>CHECK</code> constraint</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">CHAR vs VARCHAR</p>
+<p><code>CHAR(40)</code> storing <code>'Ankit'</code> occupies <strong>40</strong> characters (padded with spaces); <code>VARCHAR(40)</code> occupies about <strong>6</strong> (5 + a length byte).</p>
+<p>Use <code>CHAR</code> only when the length really is fixed — the padding then costs nothing and lookups are marginally faster because rows are fixed-width. Use <code>VARCHAR</code> for everything else.</p>
+</div>
+<h3 id="date-and-time">Date and time<a class="headerlink" href="#date-and-time" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Format</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATE</code></td>
+<td><code>YYYY-MM-DD</code></td>
+<td><code>2019-07-15</code></td>
+</tr>
+<tr>
+<td><code>TIME</code></td>
+<td><code>HH:MM:SS</code></td>
+<td><code>14:30:00</code></td>
+</tr>
+<tr>
+<td><code>DATETIME</code></td>
+<td><code>YYYY-MM-DD HH:MM:SS</code></td>
+<td><code>2019-07-15 14:30:00</code></td>
+</tr>
+<tr>
+<td><code>TIMESTAMP</code></td>
+<td>As <code>DATETIME</code>, but timezone-aware and auto-updating</td>
+<td>Audit columns</td>
+</tr>
+<tr>
+<td><code>YEAR</code></td>
+<td><code>YYYY</code></td>
+<td><code>2019</code></td>
+</tr>
+</tbody>
+</table>
+<p>Always store dates in a <strong>date type</strong>, never as a string. A <code>VARCHAR</code> date cannot be compared or sorted chronologically, cannot use date functions, and permits <code>'31-02-2019'</code>.</p>
+<h3 id="boolean-and-other">Boolean and other<a class="headerlink" href="#boolean-and-other" title="Permanent link">&para;</a></h3>
+<p><code>BOOLEAN</code> (in MySQL a synonym for <code>TINYINT(1)</code>, where 0 is false and non-zero is true); <code>BLOB</code> for binary data; <code>JSON</code> in modern versions.</p>
+<h2 id="133-create-database">13.3 CREATE DATABASE<a class="headerlink" href="#133-create-database" title="Permanent link">&para;</a></h2>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">college</span>
+<span class="w">    </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span>
+<span class="w">    </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+
+<span class="n">USE</span><span class="w"> </span><span class="n">college</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li><code>IF NOT EXISTS</code> prevents an error if it is already there — useful in scripts run repeatedly.</li>
+<li><code>CHARACTER SET utf8mb4</code> supports the full range of Unicode, including Indic scripts and emoji. Prefer it always.</li>
+<li><code>COLLATE</code> fixes the sorting and comparison rules; <code>_ci</code> means case-insensitive.</li>
+</ul>
+<p>Related statements: <code>SHOW DATABASES;</code>, <code>DROP DATABASE college;</code>, <code>SHOW TABLES;</code>, <code>DESCRIBE STUDENT;</code>.</p>
+<h2 id="134-create-table">13.4 CREATE TABLE<a class="headerlink" href="#134-create-table" title="Permanent link">&para;</a></h2>
+<h3 id="general-form">General form<a class="headerlink" href="#general-form" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">column_name</span><span class="w">  </span><span class="n">data_type</span><span class="w">  </span><span class="p">[</span><span class="k">column</span><span class="w"> </span><span class="k">constraints</span><span class="p">],</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="p">[</span><span class="k">table</span><span class="w"> </span><span class="k">constraints</span><span class="p">]</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="the-five-constraint-types">The five constraint types<a class="headerlink" href="#the-five-constraint-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Constraint</th>
+<th>Meaning</th>
+<th>Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NOT NULL</code></td>
+<td>The column may not hold NULL</td>
+<td>Column only</td>
+</tr>
+<tr>
+<td><code>UNIQUE</code></td>
+<td>No two rows may share this value</td>
+<td>Either</td>
+</tr>
+<tr>
+<td><code>PRIMARY KEY</code></td>
+<td><code>UNIQUE</code> <strong>and</strong> <code>NOT NULL</code>; the identifier</td>
+<td>Either</td>
+</tr>
+<tr>
+<td><code>FOREIGN KEY</code></td>
+<td>Must match a primary key elsewhere, or be NULL</td>
+<td>Table (mostly)</td>
+</tr>
+<tr>
+<td><code>CHECK</code></td>
+<td>An arbitrary Boolean condition</td>
+<td>Either</td>
+</tr>
+<tr>
+<td><code>DEFAULT</code></td>
+<td>Value used when none is supplied</td>
+<td>Column only</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Column-level vs table-level</p>
+<p>A <strong>column-level</strong> constraint is written immediately after the column definition and applies to that one column:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">Rollno</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span>
+</code></pre></div>
+<p>A <strong>table-level</strong> constraint is written as a separate item after all columns, and <strong>must</strong> be used when the constraint involves <strong>more than one column</strong>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="p">)</span>
+</code></pre></div>
+<p>Table-level constraints may also be <strong>named</strong>, which makes them far easier to drop or diagnose later:</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_seats</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<h3 id="building-the-college-schema-step-by-step">Building the college schema, step by step<a class="headerlink" href="#building-the-college-schema-step-by-step" title="Permanent link">&para;</a></h3>
+<p><strong>Table 1 — <code>STUDENT</code></strong> (no dependencies, so create it first).</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">STUDENT</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Name</span><span class="w">        </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofbirth</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_student</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p><strong>Table 2 — <code>COURSE</code></strong>.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">COURSE</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">SID</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cname</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TotalSeats</span><span class="w">      </span><span class="nb">INT</span><span class="w">          </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Duration</span><span class="w">        </span><span class="nb">INT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Coursetype</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TeacherInCharge</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_course</span><span class="w">      </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_cname</span><span class="w">       </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">Cname</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_seats</span><span class="w">      </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_duration</span><span class="w">   </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Duration</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_ctype</span><span class="w">      </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Coursetype</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Fulltime'</span><span class="p">,</span><span class="s1">'Parttime'</span><span class="p">))</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Note each constraint encodes a <strong>business rule</strong> stated in the requirements — this is where the rules that the ER diagram could not draw (Unit 2, Lesson 4) finally get enforced.</p>
+<p><strong>Table 3 — <code>ADMISSION</code></strong> (depends on both, so create it last).</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SID</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofadmission</span><span class="w"> </span><span class="nb">DATE</span><span class="w">        </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_admission</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_adm_student</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_adm_course</span><span class="w">  </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SID</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">SID</span><span class="p">)</span><span class="w">     </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Three points:</p>
+<ul>
+<li>The <strong>composite primary key</strong> <code>(Rollno, SID)</code> must be table-level, and it enforces the business rule <em>"a student may be admitted to a given course only once"</em>.</li>
+<li><code>ON DELETE CASCADE</code> on <code>Rollno</code> and <code>ON DELETE RESTRICT</code> on <code>SID</code> — the reasoning is in Unit 3, Lesson 2.</li>
+<li><strong>Order matters:</strong> a foreign key cannot reference a table that does not yet exist.</li>
+</ul>
+<p><strong>Tables 4 and 5 — the society schema.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">SOCIETY</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">SocID</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Socname</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Mentor</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span>
+<span class="w">    </span><span class="n">TotalSeats</span><span class="w"> </span><span class="nb">INT</span><span class="w">          </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_society</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SocID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_socname</span><span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">Socname</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_socseats</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">TotalSeats</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ENROLLMENT</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SocID</span><span class="w">            </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofenrollment</span><span class="w"> </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_enrollment</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SocID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_enr_student</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_enr_society</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SocID</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">SOCIETY</span><span class="p">(</span><span class="n">SocID</span><span class="p">)</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>   THE COLLEGE SCHEMA
+
+   +-------------------+                    +-------------------------+
+   |      STUDENT      |                    |         COURSE          |
+   +-------------------+                    +-------------------------+
+   | PK Rollno         |                    | PK SID                  |
+   |    Name           |                    |    Cname       (UNIQUE) |
+   |    Dateofbirth    |                    |    TotalSeats  (&gt;0)     |
+   +---------+---------+                    |    Duration             |
+             |                              |    Coursetype  (F/P)    |
+             |                              |    TeacherInCharge      |
+             |                              +------------+------------+
+             |                                           |
+             |     +-------------------------+           |
+             +-----+       ADMISSION         +-----------+
+             |     +-------------------------+
+             |     | PK,FK Rollno            |
+             |     | PK,FK SID               |
+             |     |       Dateofadmission   |
+             |     +-------------------------+
+             |
+             |     +-------------------------+           +----------------+
+             +-----+       ENROLLMENT        +-----------+    SOCIETY     |
+                   +-------------------------+           +----------------+
+                   | PK,FK Rollno            |           | PK SocID       |
+                   | PK,FK SocID             |           |    Socname     |
+                   |       Dateofenrollment  |           |    Mentor      |
+                   +-------------------------+           |    TotalSeats  |
+                                                         +----------------+
+</code></pre></div>
+<p><em>Figure 1.1 — The college schema used throughout the practical component.</em></p>
+<h2 id="135-auto_increment-and-surrogate-keys">13.5 AUTO_INCREMENT and Surrogate Keys<a class="headerlink" href="#135-auto_increment-and-surrogate-keys" title="Permanent link">&para;</a></h2>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">FEE_RECEIPT</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ReceiptNo</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Amount</span><span class="w">    </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Amount</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">PaidOn</span><span class="w">    </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="p">(</span><span class="k">CURRENT_DATE</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p><code>AUTO_INCREMENT</code> generates the next integer automatically — a <strong>surrogate key</strong> (Unit 2, Lesson 2). Use it when no good natural key exists, and declare the natural key <code>UNIQUE</code> alongside.</p>
+<h2 id="136-solved-questions">13.6 Solved Questions<a class="headerlink" href="#136-solved-questions" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 1</p>
+<p><strong>Q.</strong> Classify SQL statements into its sub-languages, giving two examples of each and stating who uses them.</p>
+<p><strong>A.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-language</th>
+<th>Purpose</th>
+<th>Examples</th>
+<th>Typical user</th>
+<th>What it changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DDL</strong></td>
+<td>Define/alter the schema</td>
+<td><code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>DROP</code>, <code>TRUNCATE</code></td>
+<td>DBA, designer</td>
+<td>The <strong>schema</strong> (catalog)</td>
+</tr>
+<tr>
+<td><strong>DML</strong></td>
+<td>Retrieve/change data</td>
+<td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
+<td>End users, programmers</td>
+<td>The <strong>instance</strong></td>
+</tr>
+<tr>
+<td><strong>DCL</strong></td>
+<td>Control access</td>
+<td><code>GRANT</code>, <code>REVOKE</code></td>
+<td>DBA</td>
+<td>Privileges in the catalog</td>
+</tr>
+<tr>
+<td><strong>TCL</strong></td>
+<td>Delimit transactions</td>
+<td><code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code></td>
+<td>Programmers</td>
+<td>Transaction boundaries</td>
+</tr>
+</tbody>
+</table>
+<p>Two notes worth adding. <code>TRUNCATE</code> is classified as <strong>DDL</strong> even though it removes rows, because it deallocates the table's storage rather than deleting row by row, and (in most systems) cannot be rolled back. And some textbooks fold DCL into a broad definition of DDL; state the four-way classification and mention the variation.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 2</p>
+<p><strong>Q.</strong> Distinguish <code>CHAR</code> from <code>VARCHAR</code>, and <code>DECIMAL</code> from <code>FLOAT</code>. When would you use each?</p>
+<p><strong>A.</strong></p>
+<p><strong><code>CHAR(n)</code> vs <code>VARCHAR(n)</code></strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>CHAR(n)</code></th>
+<th><code>VARCHAR(n)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage</td>
+<td>Always exactly <code>n</code> characters, space-padded</td>
+<td>Actual length plus 1–2 length bytes</td>
+</tr>
+<tr>
+<td><code>'Ankit'</code> in a size-40 column</td>
+<td>40 characters</td>
+<td>~6 bytes</td>
+</tr>
+<tr>
+<td>Rows</td>
+<td>Fixed width — marginally faster to scan</td>
+<td>Variable width</td>
+</tr>
+<tr>
+<td>Use for</td>
+<td>Genuinely fixed-length codes: <code>CHAR(10)</code> mobile, <code>CHAR(12)</code> Aadhaar, <code>CHAR(1)</code> sex</td>
+<td>Everything variable: names, addresses, titles</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>DECIMAL(p,s)</code> vs <code>FLOAT</code>/<code>DOUBLE</code></strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>DECIMAL(p,s)</code></th>
+<th><code>FLOAT</code> / <code>DOUBLE</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Representation</td>
+<td><strong>Exact</strong> decimal</td>
+<td><strong>Approximate</strong> binary</td>
+</tr>
+<tr>
+<td><code>0.1 + 0.2</code></td>
+<td>Exactly <code>0.3</code></td>
+<td>May be <code>0.30000000000000004</code></td>
+</tr>
+<tr>
+<td>Use for</td>
+<td><strong>Money</strong>, marks, fees, any exact fraction</td>
+<td>Scientific measurements, where a tiny relative error is acceptable and range matters more</td>
+</tr>
+</tbody>
+</table>
+<p>The decisive argument: a currency column summed over a million rows in <code>FLOAT</code> accumulates rounding error, and an account can fail to balance. <code>DECIMAL(10,2)</code> stores the digits themselves, so arithmetic is exact. <strong>Never store money in a floating-point type.</strong></p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 3</p>
+<p><strong>Q.</strong> Write the <code>CREATE TABLE</code> statement for <code>ADMISSION</code>, explaining every clause.</p>
+<p><strong>A.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ADMISSION</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">Rollno</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SID</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dateofadmission</span><span class="w"> </span><span class="nb">DATE</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_admission</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_adm_student</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">STUDENT</span><span class="p">(</span><span class="n">Rollno</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_adm_course</span><span class="w">  </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">SID</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">COURSE</span><span class="p">(</span><span class="n">SID</span><span class="p">)</span><span class="w">     </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Clause</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VARCHAR(8)</code> / <code>VARCHAR(6)</code></td>
+<td>Domains matching the referenced primary keys exactly — a foreign key must have the same domain as the key it references.</td>
+</tr>
+<tr>
+<td><code>NOT NULL</code> on all three</td>
+<td>The first two are part of the primary key, so entity integrity requires it; the third is a business rule.</td>
+</tr>
+<tr>
+<td><code>PRIMARY KEY (Rollno, SID)</code></td>
+<td>A <strong>composite</strong> key, so it must be table-level. Encodes the rule <em>"a student may be admitted to a given course only once"</em>, and enforces entity integrity on both columns.</td>
+</tr>
+<tr>
+<td><code>FOREIGN KEY (Rollno) REFERENCES STUDENT</code></td>
+<td>Referential integrity: no admission for a non-existent student.</td>
+</tr>
+<tr>
+<td><code>ON DELETE CASCADE</code> (student)</td>
+<td>An admission is meaningless without the student, so deleting the student removes their admissions.</td>
+</tr>
+<tr>
+<td><code>ON DELETE RESTRICT</code> (course)</td>
+<td>Deleting a course with admitted students would destroy their history, so it is forbidden until they are transferred or removed.</td>
+</tr>
+<tr>
+<td><code>ON UPDATE CASCADE</code> (both)</td>
+<td>A changed key value is a <em>renaming</em> of the same entity, and children should follow.</td>
+</tr>
+<tr>
+<td><code>CONSTRAINT &lt;name&gt;</code></td>
+<td>Naming makes constraints easy to drop (<code>ALTER TABLE ... DROP CONSTRAINT pk_admission</code>) and produces readable error messages.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Creation order matters:</strong> <code>STUDENT</code> and <code>COURSE</code> must exist first, since a foreign key cannot reference a non-existent table.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 4</p>
+<p><strong>Q.</strong> Distinguish column-level from table-level constraints. Give a constraint that <em>must</em> be table-level and one that <em>cannot</em> be.</p>
+<p><strong>A.</strong> A <strong>column-level</strong> constraint is written inline after a column's data type and applies to that single column. A <strong>table-level</strong> constraint is written as a separate element after all column definitions and may reference several columns.</p>
+<p><strong>Must be table-level:</strong> any constraint spanning more than one column.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">Rollno</span><span class="p">,</span><span class="w"> </span><span class="n">SID</span><span class="p">)</span><span class="w">                     </span><span class="c1">-- composite key</span>
+<span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Dateofadmission</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">Dateofbirth</span><span class="p">)</span><span class="w">        </span><span class="c1">-- relates two columns</span>
+<span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">Cname</span><span class="p">,</span><span class="w"> </span><span class="n">Coursetype</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- composite uniqueness</span>
+</code></pre></div>
+<p>A composite primary key cannot be expressed column-by-column: writing <code>PRIMARY KEY</code> after both <code>Rollno</code> and <code>SID</code> would attempt to declare <strong>two</strong> primary keys, which is an error.</p>
+<p><strong>Cannot be table-level:</strong> <code>NOT NULL</code> and <code>DEFAULT</code>. Both are properties of a single column's storage rather than relations among columns, and SQL provides no table-level syntax for them.</p>
+<div class="language-sql highlight"><pre><span></span><code><span class="n">Name</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="n">Mobile</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'9999999999'</span>
+</code></pre></div>
+<p><strong>Either level:</strong> single-column <code>PRIMARY KEY</code>, <code>UNIQUE</code>, <code>CHECK</code> and <code>FOREIGN KEY</code>. Prefer the <strong>table level with a name</strong> for anything you may later need to drop or diagnose, since an unnamed constraint receives a system-generated name that differs between systems.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 5</p>
+<p><strong>Q.</strong> Write DDL for a <code>LIBRARY</code> database: <code>BOOK(ISBN, Title, Publisher, Price)</code>, <code>MEMBER(MemberID, Name, Email, JoinDate)</code>, <code>ISSUE(ISBN, MemberID, IssueDate, DueDate, Returned)</code>. Include every sensible constraint.</p>
+<p><strong>A.</strong></p>
+<div class="language-sql highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">library</span>
+<span class="w">    </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+<span class="n">USE</span><span class="w"> </span><span class="n">library</span><span class="p">;</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">BOOK</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ISBN</span><span class="w">      </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="w">      </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Title</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Publisher</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span>
+<span class="w">    </span><span class="n">Price</span><span class="w">     </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_book</span><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ISBN</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_price</span><span class="w">  </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">Price</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MEMBER</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MemberID</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Name</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Email</span><span class="w">    </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">JoinDate</span><span class="w"> </span><span class="nb">DATE</span><span class="w">         </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="p">(</span><span class="k">CURRENT_DATE</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_member</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">MemberID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_email</span><span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">Email</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ISSUE</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ISBN</span><span class="w">      </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="w">  </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">MemberID</span><span class="w">  </span><span class="nb">INT</span><span class="w">       </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">IssueDate</span><span class="w"> </span><span class="nb">DATE</span><span class="w">      </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DueDate</span><span class="w">   </span><span class="nb">DATE</span><span class="w">      </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Returned</span><span class="w">  </span><span class="nb">BOOLEAN</span><span class="w">   </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">FALSE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_issue</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ISBN</span><span class="p">,</span><span class="w"> </span><span class="n">MemberID</span><span class="p">,</span><span class="w"> </span><span class="n">IssueDate</span><span class="p">),</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_iss_book</span><span class="w">   </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ISBN</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">BOOK</span><span class="p">(</span><span class="n">ISBN</span><span class="p">)</span><span class="w">     </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">fk_iss_member</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">MemberID</span><span class="p">)</span>
+<span class="w">        </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">MEMBER</span><span class="p">(</span><span class="n">MemberID</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">chk_dates</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">DueDate</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">IssueDate</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p><strong>Design decisions worth stating:</strong></p>
+<ul>
+<li><code>ISBN</code> is <code>CHAR(13)</code> because an ISBN-13 is exactly 13 characters — a genuinely fixed length.</li>
+<li><code>MemberID</code> is a <strong>surrogate</strong> key with <code>AUTO_INCREMENT</code>, because no stable natural key exists; <code>Email</code> is declared <code>UNIQUE</code> as the natural alternate key.</li>
+<li><code>Price</code> uses <code>DECIMAL(8,2)</code>, never <code>FLOAT</code>.</li>
+<li><code>ISSUE</code>'s primary key includes <code>IssueDate</code>, because the <strong>same member may borrow the same book again later</strong> — without the date, the second loan would violate the key.</li>
+<li><code>ON DELETE RESTRICT</code> on both foreign keys: an issue record is an audit trail, and deleting a book or a member must not silently erase the borrowing history.</li>
+<li><code>CHECK (DueDate &gt; IssueDate)</code> is a <strong>table-level</strong> constraint because it relates two columns.</li>
+</ul>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Solved Question 6</p>
+<p><strong>Q.</strong> What is <code>AUTO_INCREMENT</code>? When should a surrogate key be preferred to a natural key, and what should accompany it?</p>
+<p><strong>A.</strong> <code>AUTO_INCREMENT</code> (MySQL; <code>SERIAL</code> in PostgreSQL, <code>IDENTITY</code> in SQL Server) instructs the DBMS to generate the next integer automatically whenever a row is inserted without a value for that column. It is the standard way of creating a <strong>surrogate key</strong> — a system-generated, meaningless identifier.</p>
+<p><strong>Prefer a surrogate key when:</strong></p>
+<ol>
+<li><strong>No natural candidate key is stable.</strong> Email addresses, phone numbers and names all change; a primary key that changes forces cascading updates through every referencing table.</li>
+<li><strong>No natural key is always available at insertion time.</strong> A patient arriving unconscious has no recorded identity document, yet must be admitted immediately.</li>
+<li><strong>The only natural key is long or composite.</strong> A four-column composite key is copied into every child table, bloating indexes and slowing joins.</li>
+<li><strong>The natural key is privacy-sensitive.</strong> Using a national identity number as a primary key propagates it into every referencing table and every index.</li>
+</ol>
+<p><strong>Prefer a natural key when</strong> one exists that is stable, short, always available and non-sensitive — <code>Rollno</code> for <code>STUDENT</code>, <code>ISBN</code> for a book title. A natural key is meaningful to users and often removes the need for a join.</p>
+<p><strong>What must accompany a surrogate key:</strong> a <code>UNIQUE</code> constraint on the natural key. A surrogate guarantees that every <em>row</em> is distinct, but not that every <em>real-world entity</em> appears only once — without <code>UNIQUE (Email)</code>, the same person can be inserted twice with two different <code>MemberID</code>s, and the surrogate happily calls them different members.</p>
+</div>
+<h2 id="137-exercises">13.7 Exercises<a class="headerlink" href="#137-exercises" title="Permanent link">&para;</a></h2>
+<p><strong>A. Short answer</strong></p>
+<ol>
+<li>What does SQL stand for, and what was it originally called?</li>
+<li>Name the four sub-languages of SQL with two statements each.</li>
+<li>Why should money never be stored in <code>FLOAT</code>?</li>
+<li>Distinguish <code>CHAR(10)</code> from <code>VARCHAR(10)</code>.</li>
+<li>Name two constraints that cannot be written at table level.</li>
+<li>Why must <code>STUDENT</code> be created before <code>ADMISSION</code>?</li>
+<li>What is the advantage of naming a constraint?</li>
+</ol>
+<p><strong>B. Write the SQL</strong></p>
+<ol>
+<li>Create a database <code>hospital</code> with UTF-8 support and select it.</li>
+<li>Create <code>WARD(WardNo, Name, Capacity)</code> where capacity is between 1 and 100.</li>
+<li>Create <code>PATIENT(RegNo, Name, Dateofbirth, BloodGroup)</code> where blood group is one of the eight valid values and <code>RegNo</code> is auto-generated.</li>
+<li>Create <code>DOCTOR(EmpCode, Name, Specialisation, Salary)</code> with salary positive and stored exactly.</li>
+<li>Create <code>TREATS(EmpCode, RegNo, FirstConsult, Fee)</code> with the appropriate composite key, both foreign keys, sensible referential actions, and a check that the fee is not negative.</li>
+<li>Create the complete college schema (all five tables) from scratch, in the correct order.</li>
+<li>Create <code>EMPLOYEE(Ssn, Name, Salary, SuperSsn, Dno)</code> where <code>SuperSsn</code> references the same table.</li>
+</ol>
+<p><strong>C. Analytical</strong></p>
+<ol>
+<li>For each column below, choose a data type and justify:
+    a. A student's roll number, always one letter plus four digits.
+    b. A course fee in rupees and paise.
+    c. A student's photograph.
+    d. The date and time an exam starts.
+    e. Whether a fee has been paid.
+    f. A 500-word course description.
+    g. A mobile number.</li>
+<li>Explain what happens, and why, for each:
+    a. <code>CREATE TABLE ADMISSION</code> before <code>STUDENT</code> exists.
+    b. Two <code>PRIMARY KEY</code> clauses on the same table.
+    c. A <code>FOREIGN KEY</code> whose column is <code>VARCHAR(20)</code> referencing a <code>VARCHAR(8)</code> primary key.
+    d. <code>CHECK (TotalSeats &gt; 0)</code> when a row with <code>TotalSeats = 0</code> already exists.</li>
+<li>A designer writes <code>Coursetype VARCHAR(10)</code> with no <code>CHECK</code>. List three specific ways the data can become corrupt, and give two different SQL mechanisms to prevent it.</li>
+<li>Compare <code>ENUM('Fulltime','Parttime')</code> with <code>VARCHAR(10) CHECK (Coursetype IN (...))</code>. Give one advantage of each.</li>
+<li>Write the DDL for a schema of your own design for a <strong>canteen</strong> (items, orders, order lines, payments), with full justification of every key and constraint.</li>
+</ol>
+<p><strong>D. Objective — True or False with reason</strong></p>
+<ol>
+<li><code>TRUNCATE</code> is a DML statement.</li>
+<li>A table may have several <code>UNIQUE</code> constraints.</li>
+<li>A <code>CHECK</code> constraint may reference a column of another table.</li>
+<li><code>PRIMARY KEY</code> implies <code>NOT NULL</code>.</li>
+<li><code>VARCHAR(40)</code> always occupies 40 bytes.</li>
+<li>A foreign key must have the same data type as the key it references.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Answers to Section D</p>
+<ol>
+<li><strong>False.</strong> It is <strong>DDL</strong> — it deallocates the table's storage rather than deleting rows individually, and generally cannot be rolled back.</li>
+<li><strong>True.</strong> Only the <strong>primary</strong> key is limited to one; any number of alternate keys may be declared <code>UNIQUE</code>.</li>
+<li><strong>False.</strong> A <code>CHECK</code> may reference only columns of its own row. Cross-table rules need a trigger or an assertion.</li>
+<li><strong>True.</strong> By the entity integrity constraint, a primary key may never be NULL, so <code>NOT NULL</code> is implied.</li>
+<li><strong>False.</strong> It occupies the actual length plus 1–2 length bytes. <code>CHAR(40)</code> occupies 40.</li>
+<li><strong>True</strong> in effect — it must have the <strong>same domain</strong>; most systems reject a mismatched type or length outright.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Lesson Summary</p>
+<ul>
+<li>SQL comprises <strong>DDL, DML, DCL, TCL</strong>; this lesson covered DDL.</li>
+<li>Choose types deliberately: <code>DECIMAL</code> for money (never <code>FLOAT</code>), <code>VARCHAR</code> unless the length is genuinely fixed, real <code>DATE</code> types for dates.</li>
+<li><code>CREATE TABLE</code> carries the constraints that enforce the business rules the ER diagram could not draw: <code>NOT NULL</code>, <code>UNIQUE</code>, <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>CHECK</code>, <code>DEFAULT</code>.</li>
+<li>Constraints spanning <strong>several columns must be table-level</strong>; <code>NOT NULL</code> and <code>DEFAULT</code> must be column-level. <strong>Name</strong> your constraints.</li>
+<li>Create parent tables <strong>before</strong> child tables.</li>
+<li>Use <code>AUTO_INCREMENT</code> surrogate keys when no stable natural key exists — and always add <code>UNIQUE</code> on the natural key alongside.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="relational-algebra-ii-joins-division-and-aggregation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: 12. Relational Algebra II: Joins, Division and Aggregation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                12. Relational Algebra II: Joins, Division and Aggregation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="alter-drop-update-behaviours-and-dml.html" class="md-footer__link md-footer__link--next" aria-label="Next: 14. ALTER, DROP, Update Behaviours and DML">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                14. ALTER, DROP, Update Behaviours and DML
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Pustakālaya &middot;
+      <a href="../../about.html">About this edition</a> &middot;
+      © The authors of the books
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/mathjax.js"></script>
+      
+        <script src="../../assets/reader.js"></script>
+      
+        <script src="../../assets/app.js"></script>
+      
+    
+  <script>
+    /* offline reading: the service worker at the site root (its scope is the whole site) */
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register(new URL("../../sw.js", location.href).href).catch(function () {});
+      });
+    }
+  </script>
+
+  </body>
+</html>
