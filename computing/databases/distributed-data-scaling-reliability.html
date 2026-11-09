@@ -30,6 +30,29 @@
   <meta name="apple-mobile-web-app-title" content="Pustakālaya">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="application-name" content="Pustakālaya"><script id="bjp-books" type="application/json">[{"id": "vol01_veda", "lang": "en", "path": "vol01_veda"}, {"id": "vol02_upanisad", "lang": "en", "path": "vol02_upanisad"}, {"id": "vol03_darsana", "lang": "en", "path": "vol03_darsana"}, {"id": "vol04_buddha_jina", "lang": "en", "path": "vol04_buddha_jina"}, {"id": "vol05_yoga", "lang": "en", "path": "vol05_yoga"}, {"id": "vol06_tantra", "lang": "en", "path": "vol06_tantra"}, {"id": "vol07_itihasa", "lang": "en", "path": "vol07_itihasa"}, {"id": "vol08_kavya", "lang": "en", "path": "vol08_kavya"}, {"id": "vol09_sangita_natya", "lang": "en", "path": "vol09_sangita_natya"}, {"id": "vol10_sabda", "lang": "en", "path": "vol10_sabda"}, {"id": "vol11_ganita", "lang": "en", "path": "vol11_ganita"}, {"id": "vol12_jyotisa", "lang": "en", "path": "vol12_jyotisa"}, {"id": "vol13_ayurveda", "lang": "en", "path": "vol13_ayurveda"}, {"id": "vol14_rasayana", "lang": "en", "path": "vol14_rasayana"}, {"id": "vol15_krsi_jiva", "lang": "en", "path": "vol15_krsi_jiva"}, {"id": "vol16_vastu", "lang": "en", "path": "vol16_vastu"}, {"id": "vol17_silpa_karu", "lang": "en", "path": "vol17_silpa_karu"}, {"id": "vol18_rajaniti_dharma", "lang": "en", "path": "vol18_rajaniti_dharma"}, {"id": "vol19_vanijya_samudra", "lang": "en", "path": "vol19_vanijya_samudra"}, {"id": "vol20_yuddha", "lang": "en", "path": "vol20_yuddha"}, {"id": "vol21_bhugola", "lang": "en", "path": "vol21_bhugola"}, {"id": "vol22_manas_siksa", "lang": "en", "path": "vol22_manas_siksa"}, {"id": "vol23_jana_jati", "lang": "en", "path": "vol23_jana_jati"}, {"id": "vol24_samanvaya", "lang": "en", "path": "vol24_samanvaya"}, {"id": "hardware_security", "lang": "en", "path": "science/hardware_security"}, {"id": "drones_missiles", "lang": "en", "path": "science/drones_missiles"}, {"id": "code_to_electrons", "lang": "en", "path": "science/code_to_electrons"}, {"id": "dpi_ndr", "lang": "en", "path": "science/dpi_ndr"}, {"id": "quantum", "lang": "en", "path": "quantum/quantum"}, {"id": "qml", "lang": "en", "path": "quantum/qml"}, {"id": "asic", "lang": "en", "path": "computing/asic"}, {"id": "compute", "lang": "en", "path": "computing/compute"}, {"id": "memory", "lang": "en", "path": "computing/memory"}, {"id": "os", "lang": "en", "path": "computing/os"}, {"id": "databases", "lang": "en", "path": "computing/databases"}, {"id": "datacenters", "lang": "en", "path": "computing/datacenters"}, {"id": "networks", "lang": "en", "path": "computing/networks"}, {"id": "cellular", "lang": "en", "path": "computing/cellular"}, {"id": "ml", "lang": "en", "path": "computing/ml"}, {"id": "security", "lang": "en", "path": "cyber/security"}, {"id": "trust", "lang": "en", "path": "cyber/trust"}, {"id": "optimization_methods", "lang": "en", "path": "courses/optimization_methods"}, {"id": "quantum_computing_applications", "lang": "en", "path": "courses/quantum_computing_applications"}, {"id": "dbms_course", "lang": "en", "path": "courses/dbms_course"}, {"id": "english_book", "lang": "en", "path": "language/english_book"}, {"id": "english_book_hinglish", "lang": "en", "path": "language/english_book_hinglish"}, {"id": "english_book_hi", "lang": "hi", "path": "language/english_book_hi"}]</script><script>
+    (function () {
+      var X = window.XMLHttpRequest, open, gate = new Promise(function (r) { open = r; });
+      if (!X) return;
+      var open0 = X.prototype.open, send0 = X.prototype.send;
+      X.prototype.open = function (method, url) {
+        this.__pkIndex = /\/search\/search_index\.json(\?|#|$)/.test(String(url));
+        return open0.apply(this, arguments);
+      };
+      X.prototype.send = function () {
+        if (!this.__pkIndex) return send0.apply(this, arguments);
+        var xhr = this, args = arguments;
+        gate.then(function () { send0.apply(xhr, args); });
+      };
+      function wake() { open(); }
+      document.addEventListener("focusin", function (e) { if (e.target && e.target.closest && e.target.closest(".md-search")) wake(); });
+      document.addEventListener("click", function (e) { if (e.target && e.target.closest && e.target.closest('label[for="__search"], .md-search')) wake(); }, true);
+      document.addEventListener("keydown", function (e) {
+        var k = e.key;
+        if ((k === "/" || k === "s" || k === "f" || k === "S" || k === "F") && !(e.target && e.target.closest && e.target.closest("input, textarea, [contenteditable]"))) wake();
+      }, true);
+      if (/[?&]q=/.test(location.search)) wake();
+    })();
+  </script><script>
     try {
       if ((window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches)) || navigator.standalone === true) {
         document.documentElement.className += " bjp-standalone";
@@ -1793,7 +1816,7 @@ CONSISTENCY;          -- show current level
 <h2 id="73-replication-in-practice-lag-read-your-writes-real-systems">7.3 Replication in Practice: Lag, Read-Your-Writes &amp; Real Systems<a class="headerlink" href="#73-replication-in-practice-lag-read-your-writes-real-systems" title="Permanent link">&para;</a></h2>
 <p>Real databases replicate by shipping their change log — PostgreSQL's write-ahead log or MySQL's binary log — to replicas, which replay it. Because shipping takes time, replicas are often a little behind: this is replication lag. Apps must cope, for example by reading a user's own recent changes from the primary.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-03-replication-in-practice-lag-read-your.svg" alt="The write is committed, but the replica has not replayed it yet when the read arrives." loading="lazy">
+<img src="img/07-03-replication-in-practice-lag-read-your.svg" alt="The write is committed, but the replica has not replayed it yet when the read arrives." loading="lazy" width="1000" height="421">
 <figcaption><strong>How a stale read happens.</strong> The write is committed, but the replica has not replayed it yet when the read arrives.</figcaption>
 </figure>
 
@@ -1925,7 +1948,7 @@ CONSISTENCY;          -- show current level
 <h2 id="74-partitioning-sharding">7.4 Partitioning &amp; Sharding<a class="headerlink" href="#74-partitioning-sharding" title="Permanent link">&para;</a></h2>
 <p>Partitioning splits one big table into smaller pieces. When those pieces live on different servers it is called sharding, and each server (shard) holds only part of the data. A shard key, such as customer ID, decides where each row goes. Sharding is the main way to scale writes beyond one machine.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-04-partitioning-sharding.svg" alt="The router hashes the shard key and sends each query to the one shard that owns it." loading="lazy">
+<img src="img/07-04-partitioning-sharding.svg" alt="The router hashes the shard key and sends each query to the one shard that owns it." loading="lazy" width="1000" height="500">
 <figcaption><strong>A query router in front of shards.</strong> The router hashes the shard key and sends each query to the one shard that owns it.</figcaption>
 </figure>
 
@@ -2222,7 +2245,7 @@ CONSISTENCY;          -- show current level
 <h2 id="76-consistency-models-from-linearizable-to-eventual">7.6 Consistency Models: From Linearizable to Eventual<a class="headerlink" href="#76-consistency-models-from-linearizable-to-eventual" title="Permanent link">&para;</a></h2>
 <p>A consistency model is a promise about what reads can return when data is copied across machines. The strongest promise (linearizability) makes many copies behave like one. Weaker promises, such as causal or eventual consistency, are faster and more available but allow you to see old or out-of-order data for a while.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-06-consistency-models-from-linearizable-to.svg" alt="Moving down trades freshness and ordering for speed and availability." loading="lazy">
+<img src="img/07-06-consistency-models-from-linearizable-to.svg" alt="Moving down trades freshness and ordering for speed and availability." loading="lazy" width="1000" height="450">
 <figcaption><strong>The consistency ladder (strongest at the top).</strong> Moving down trades freshness and ordering for speed and availability.</figcaption>
 </figure>
 
@@ -2354,7 +2377,7 @@ CONSISTENCY;          -- show current level
 <h2 id="77-consensus-paxos-raft-where-databases-use-them">7.7 Consensus: Paxos, Raft &amp; Where Databases Use Them<a class="headerlink" href="#77-consensus-paxos-raft-where-databases-use-them" title="Permanent link">&para;</a></h2>
 <p>Consensus algorithms let a group of machines agree on one value — such as who the leader is or the next entry in a log — even if some machines crash or messages are lost. As long as a majority is alive and connected, they keep working. Paxos was the first practical one; Raft was designed to be easier to understand.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-07-consensus-paxos-raft-where-databases.svg" alt="The entry is committed once a majority (2 of 3) has it — the slow follower does not block the write." loading="lazy">
+<img src="img/07-07-consensus-paxos-raft-where-databases.svg" alt="The entry is committed once a majority (2 of 3) has it — the slow follower does not block the write." loading="lazy" width="1000" height="440">
 <figcaption><strong>Raft commits one log entry.</strong> The entry is committed once a majority (2 of 3) has it — the slow follower does not block the write.</figcaption>
 </figure>
 
@@ -2499,7 +2522,7 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <h2 id="78-distributed-transactions-2pc-percolator-truetime-sagas-the-outbox">7.8 Distributed Transactions: 2PC, Percolator, TrueTime, Sagas &amp; the Outbox<a class="headerlink" href="#78-distributed-transactions-2pc-percolator-truetime-sagas-the-outbox" title="Permanent link">&para;</a></h2>
 <p>A distributed transaction changes data on several machines or services and must succeed or fail as a whole. Inside one distributed database this is done with protocols like two-phase commit plus clever timestamps. Across separate microservices, teams usually use sagas: a sequence of local steps with 'undo' actions if a later step fails.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-08-distributed-transactions-2pc-percolator.svg" alt="Between &#x27;YES&#x27; and the final decision, participants hold locks and cannot decide alone." loading="lazy">
+<img src="img/07-08-distributed-transactions-2pc-percolator.svg" alt="Between &#x27;YES&#x27; and the final decision, participants hold locks and cannot decide alone." loading="lazy" width="1000" height="466">
 <figcaption><strong>Two-phase commit.</strong> Between &#x27;YES&#x27; and the final decision, participants hold locks and cannot decide alone.</figcaption>
 </figure>
 
@@ -2645,7 +2668,7 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <h2 id="79-caching-strategies-cache-aside-write-through-ttls-invalidation">7.9 Caching Strategies: Cache-Aside, Write-Through, TTLs &amp; Invalidation<a class="headerlink" href="#79-caching-strategies-cache-aside-write-through-ttls-invalidation" title="Permanent link">&para;</a></h2>
 <p>A cache keeps copies of frequently read data in fast memory so the database is asked less often. The hard parts are deciding when to fill the cache, how long entries live (TTL), and how to remove or update entries when the real data changes (invalidation).</p>
 <figure class="fig fig-diagram">
-<img src="img/07-09-caching-strategies-cache-aside-write.svg" alt="The application, not the cache, talks to the database and keeps the two in step." loading="lazy">
+<img src="img/07-09-caching-strategies-cache-aside-write.svg" alt="The application, not the cache, talks to the database and keeps the two in step." loading="lazy" width="1000" height="421">
 <figcaption><strong>Cache-aside read and invalidation.</strong> The application, not the cache, talks to the database and keeps the two in step.</figcaption>
 </figure>
 
@@ -2795,7 +2818,7 @@ INFO stats              # keyspace_hits vs keyspace_misses
 <h2 id="710-connection-pooling-pgbouncer-proxysql-rds-proxy">7.10 Connection Pooling: PgBouncer, ProxySQL &amp; RDS Proxy<a class="headerlink" href="#710-connection-pooling-pgbouncer-proxysql-rds-proxy" title="Permanent link">&para;</a></h2>
 <p>Opening a database connection is slow and each open connection uses server memory. A connection pool keeps a small set of connections open and lends them to requests. Poolers can live inside the app (a library) or as a separate proxy that many app servers share.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-10-connection-pooling-pgbouncer-proxysql.svg" alt="Thousands of client connections are multiplexed onto a pool sized for the database&#x27;s CPUs." loading="lazy">
+<img src="img/07-10-connection-pooling-pgbouncer-proxysql.svg" alt="Thousands of client connections are multiplexed onto a pool sized for the database&#x27;s CPUs." loading="lazy" width="1000" height="328">
 <figcaption><strong>Many clients, few server connections.</strong> Thousands of client connections are multiplexed onto a pool sized for the database&#x27;s CPUs.</figcaption>
 </figure>
 
@@ -2943,7 +2966,7 @@ INFO stats              # keyspace_hits vs keyspace_misses
 <h2 id="711-high-availability-failover-patroni-orchestrator-always-on">7.11 High Availability &amp; Failover: Patroni, Orchestrator, Always On<a class="headerlink" href="#711-high-availability-failover-patroni-orchestrator-always-on" title="Permanent link">&para;</a></h2>
 <p>High availability (HA) means the database keeps working when a server fails. A standby copy is kept in sync, and when the primary dies, a tool detects it and promotes the standby — a failover. Good HA needs reliable failure detection, a way to stop the old primary (fencing), and a way for apps to find the new one.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-11-high-availability-failover-patroni.svg" alt="Each extra nine cuts allowed downtime tenfold — and usually multiplies cost." loading="lazy">
+<img src="img/07-11-high-availability-failover-patroni.svg" alt="Each extra nine cuts allowed downtime tenfold — and usually multiplies cost." loading="lazy" width="1000" height="278">
 <figcaption><strong>Allowed downtime per year by availability target.</strong> Each extra nine cuts allowed downtime tenfold — and usually multiplies cost.</figcaption>
 </figure>
 
@@ -3073,7 +3096,7 @@ patronictl<span class="w"> </span>-c<span class="w"> </span>/etc/patroni.yml<spa
 <h2 id="712-backups-point-in-time-recovery-disaster-recovery">7.12 Backups, Point-in-Time Recovery &amp; Disaster Recovery<a class="headerlink" href="#712-backups-point-in-time-recovery-disaster-recovery" title="Permanent link">&para;</a></h2>
 <p>Backups protect against what replication cannot: mistakes, bugs, ransomware and disasters. A full backup plus the stream of changes since (the transaction log) lets you restore the database to any moment — point-in-time recovery. Disaster recovery plans say how much data you may lose (RPO) and how quickly you must be back (RTO).</p>
 <figure class="fig fig-diagram">
-<img src="img/07-12-backups-point-in-time-recovery-disaster.svg" alt="Base backup + archived WAL lets you stop replay one second before the mistake." loading="lazy">
+<img src="img/07-12-backups-point-in-time-recovery-disaster.svg" alt="Base backup + archived WAL lets you stop replay one second before the mistake." loading="lazy" width="1000" height="341">
 <figcaption><strong>Point-in-time recovery.</strong> Base backup + archived WAL lets you stop replay one second before the mistake.</figcaption>
 </figure>
 
@@ -3220,7 +3243,7 @@ pg_restore<span class="w"> </span>-d<span class="w"> </span>shop_restore<span cl
 <h2 id="713-change-data-capture-event-streaming-event-sourcing-cqrs">7.13 Change Data Capture, Event Streaming, Event Sourcing &amp; CQRS<a class="headerlink" href="#713-change-data-capture-event-streaming-event-sourcing-cqrs" title="Permanent link">&para;</a></h2>
 <p>Change data capture (CDC) watches a database's transaction log and turns every insert, update and delete into an event that other systems can consume. Event streaming platforms like Kafka store and deliver those events. Event sourcing goes further: the list of events is the source of truth, and CQRS keeps separate models for writing and reading.</p>
 <figure class="fig fig-diagram">
-<img src="img/07-13-change-data-capture-event-streaming.svg" alt="One change in PostgreSQL fans out to many systems without touching application code." loading="lazy">
+<img src="img/07-13-change-data-capture-event-streaming.svg" alt="One change in PostgreSQL fans out to many systems without touching application code." loading="lazy" width="1000" height="146">
 <figcaption><strong>Log-based CDC pipeline.</strong> One change in PostgreSQL fans out to many systems without touching application code.</figcaption>
 </figure>
 
@@ -3371,7 +3394,7 @@ pg_restore<span class="w"> </span>-d<span class="w"> </span>shop_restore<span cl
 <h2 id="714-multi-region-global-databases">7.14 Multi-Region &amp; Global Databases<a class="headerlink" href="#714-multi-region-global-databases" title="Permanent link">&para;</a></h2>
 <p>A multi-region database keeps data in several geographic regions so it survives a whole region failing and serves users with lower latency. The catch is physics: light takes tens of milliseconds to cross continents, so every design chooses between waiting for other regions (consistency) and answering locally (speed).</p>
 <figure class="fig fig-diagram">
-<img src="img/07-14-multi-region-global-databases.svg" alt="Every synchronous cross-region step adds a round trip; physics sets the floor." loading="lazy">
+<img src="img/07-14-multi-region-global-databases.svg" alt="Every synchronous cross-region step adds a round trip; physics sets the floor." loading="lazy" width="1000" height="328">
 <figcaption><strong>Typical round-trip times (approximate).</strong> Every synchronous cross-region step adds a round trip; physics sets the floor.</figcaption>
 </figure>
 

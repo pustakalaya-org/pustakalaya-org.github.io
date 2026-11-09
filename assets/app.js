@@ -707,6 +707,31 @@
     if (online()) refreshKept();
   }
 
+  /* the search covers the book of the page that was loaded in full (the service worker answers the theme's request
+     for the index with that book's index; on the shelf, the titles of the library). A link to another book, or
+     between a book and the shelf, therefore loads the page in full, so that the search follows the reader */
+  var SEARCH_SCOPE = (function () { var v = volOf(location.pathname); return v ? v[0] : ""; })();
+  function searchPlaceholder() {
+    if (!(navigator.serviceWorker && navigator.serviceWorker.controller)) return;
+    var q = document.querySelector(".md-search__input");
+    if (q) q.setAttribute("placeholder", SEARCH_SCOPE ? "Search this book" : "Search titles");
+  }
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest && e.target.closest("a[href]");
+    if (!a || (a.target && a.target !== "_self")) return;
+    var u;
+    try { u = new URL(a.getAttribute("href"), location.href); } catch (x) { return; }
+    if (u.origin !== location.origin || u.pathname.indexOf(BOOK_ROOT) !== 0 || u.pathname === location.pathname) return;
+    var v = volOf(u.pathname);
+    if ((v ? v[0] : "") === SEARCH_SCOPE) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    location.href = u.href;
+  }, true);
+  searchPlaceholder();
+  if (window.document$ && window.document$.subscribe) window.document$.subscribe(searchPlaceholder);
+
   window.addEventListener("online", onNet);
   window.addEventListener("offline", onNet);
   window.bjpApp = { keep: keep, remove: remove, state: st, root: ROOT };

@@ -3,15 +3,20 @@
  * Written into the site root by tools/site_hooks.py after every `mkdocs build`; the version below is a hash
  * of the built site, so each deploy installs a new worker and replaces the old caches.
  *
- *   pages (.html)                      network first, cached copy when offline or the network is slow
+ *   pages (.html)                      the copy cached since this deploy first (the caches are per deploy, so it
+ *                                      is current); otherwise network first, cached copy when offline or slow
+ *   search index                       cache first (per deploy); fetched only when the reader first searches.
+ *                                      A page of a book gets that book's index (<book>/search.json), the
+ *                                      shelf and the other pages the titles of the whole library
  *   images, styles, scripts, fonts     cache first
  *   Google Fonts, MathJax (CDN)        kept after first use, so fonts and mathematics work offline
  *   volumes kept for offline reading   the "bjp-offline" cache, filled by assets/app.js; kept across deploys
  */
 "use strict";
 
-var VERSION = "aaba510f0cae";
+var VERSION = "8860867dc8ab";
 var SHELL = ["index.html", "about.html", "offline.html", "sitemap.xml", "manifest.webmanifest", "library.json", "assets/app.css", "assets/app.js", "assets/extra.css", "assets/icons/apple-touch-icon.png", "assets/icons/favicon-32.png", "assets/icons/favicon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/logo.svg", "assets/icons/maskable-512.png", "assets/images/favicon.png", "assets/javascripts/bundle.d7400e89.min.js", "assets/javascripts/workers/search.2c215733.min.js", "assets/mathjax.js", "assets/reader.css", "assets/reader.js", "assets/stylesheets/main.ec1eaa64.min.css", "assets/stylesheets/palette.ab4e12ef.min.css"];
+var BOOKS = [];                           // the books' folders, longest first
 
 var SCOPE = self.registration.scope;               // the site root, ending in "/"
 var SCOPE_PATH = new URL(SCOPE).pathname;
@@ -90,6 +95,12 @@ function isPage(rel) {
 /* ------------------------------------------------------------------ strategies */
 function pageResponse(event, req, url) {
   var key = pageKey(url);
+  return caches.open(PAGES_CACHE).then(function (c) { return c.match(key, { ignoreSearch: true }); }).then(function (hit) {
+    return hit || pageFromNetwork(event, req, url, key);
+  }, function () { return pageFromNetwork(event, req, url, key); });
+}
+
+function pageFromNetwork(event, req, url, key) {
   var cached = function () { return matchIn(key, [PAGES_CACHE, KEEP_CACHE, SHELL_CACHE], { ignoreSearch: true }); };
   var net = fetch(req);
   // the copy is stored in the background (the event is kept alive until it is written)
@@ -162,6 +173,21 @@ function staleWhileRevalidate(event, req, store) {
   });
 }
 
+/* the search index for the page that asks for it: its book's, or the titles of the library */
+function searchIndex(event, req) {
+  var page = "";
+  try {
+    var ref = new URL(req.referrer);
+    if (ref.origin === self.location.origin && ref.pathname.indexOf(SCOPE_PATH) === 0) page = ref.pathname.slice(SCOPE_PATH.length);
+  } catch (e) { page = ""; }
+  var book = null;
+  for (var i = 0; i < BOOKS.length; i++) {
+    if (page.indexOf(BOOKS[i] + "/") === 0) { book = BOOKS[i]; break; }
+  }
+  var url = SCOPE + (book ? book + "/search.json" : "search/titles.json");
+  return cacheFirst(event, new Request(url, { credentials: "same-origin" }), STATIC_CACHE, MAX_STATIC);
+}
+
 /* ------------------------------------------------------------------ routing */
 self.addEventListener("fetch", function (event) {
   var req = event.request;
@@ -174,7 +200,9 @@ self.addEventListener("fetch", function (event) {
     var rel = url.pathname.slice(SCOPE_PATH.length);
     if (rel === "sw.js" || rel.indexOf("livereload") === 0) return;
     if (isPage(rel)) { event.respondWith(pageResponse(event, req, url)); return; }
-    if (rel === "library.json" || rel === "sitemap.xml" || rel === "manifest.webmanifest" || rel.indexOf("search/") === 0) {
+    if (rel === "search/search_index.json") { event.respondWith(searchIndex(event, req)); return; }
+    if (rel.indexOf("search/") === 0) { event.respondWith(cacheFirst(event, req, STATIC_CACHE, MAX_STATIC)); return; }
+    if (rel === "library.json" || rel === "sitemap.xml" || rel === "manifest.webmanifest") {
       event.respondWith(networkFirst(event, req, STATIC_CACHE));
       return;
     }

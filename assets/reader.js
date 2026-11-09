@@ -625,11 +625,14 @@
     }
   }
 
+  /* pictures whose size the page states (width and height, written by the build) take their space at once:
+     only those without it are waited for; a late one re-paginates through the flow's load listener */
   function imagesReady(root) {
     var ps = [], imgs = root.querySelectorAll("img");
     for (var i = 0; i < imgs.length; i++) {
       (function (im) {
         if (im.complete && im.naturalWidth > 0) return;
+        if (im.getAttribute("width") && im.getAttribute("height")) return;
         ps.push(new Promise(function (res) { im.addEventListener("load", res, { once: true }); im.addEventListener("error", res, { once: true }); }));
       })(imgs[i]);
     }
@@ -698,8 +701,8 @@
   function waitReady() {
     var chain = Promise.resolve();
     if (needsMath() && window.bjpMath) chain = chain.then(function () { return raceTimeout(window.bjpMath.typeset([$.flow]), 12000); });
-    chain = chain.then(function () { return document.fonts && document.fonts.ready ? raceTimeout(document.fonts.ready, 5000) : null; });
-    chain = chain.then(function () { return raceTimeout(imagesReady($.flow), 12000); });
+    chain = chain.then(function () { return document.fonts && document.fonts.ready ? raceTimeout(document.fonts.ready, 1500) : null; });
+    chain = chain.then(function () { return raceTimeout(imagesReady($.flow), 4000); });
     return chain;
   }
 
