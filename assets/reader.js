@@ -587,6 +587,9 @@
     };
   }
 
+  /* a chapter of a linked book arrives as an empty shell: assets/remote.js fetches its text from the source and fills it */
+  function remoteFill(rec) { return window.pkRemote ? window.pkRemote.fillRec(rec) : Promise.resolve(rec); }
+
   function fetchPage(url) {
     url = pageUrl(url);
     if (cache[url]) return Promise.resolve(cache[url]);
@@ -597,7 +600,9 @@
       var d = new DOMParser().parseFromString(t, "text/html");
       var rec = recFromDocument(d, url, false);
       if (!rec) throw new Error("no article");
-      cache[url] = rec;
+      return remoteFill(rec);
+    }).then(function (rec) {
+      if (!rec.remoteError) cache[url] = rec;
       return rec;
     });
   }
@@ -631,7 +636,7 @@
     setThemeColor(true);
     showCurtain();
     endBoot();
-    mount(rec, where, false).then(function () {
+    remoteFill(rec).then(function (r) { return mount(r, where, false); }).then(function () {
       finishOpen();
     });
   }

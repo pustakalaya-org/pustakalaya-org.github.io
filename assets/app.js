@@ -7,6 +7,8 @@
  *  - "Keep for offline reading" on the home page and on each volume's first page: every page and image of
  *    the volume (listed in library.json, written at build time by tools/site_hooks.py) is stored in the
  *    "bjp-offline" cache, which the service worker (sw.js) reads when there is no connection;
+ *  - the pages that find books (All books, the subjects, the reading lists; tools/browse.py): covers or a list,
+ *    filters and sorting, and the reader's progress through each reading list;
  *  - a notice when a new edition of the site has been installed in the background ("Updated - reload");
  *  - a Back button in the header when the site runs as an installed app (which has no browser toolbar).
  *
@@ -392,6 +394,7 @@
       var started = !!(rec && rec.path) || seenPages(vid) > 0;
       var cv = it.querySelector(".book-cover"), cap = it.querySelector(".vol-cap");
       it.classList.toggle("is-started", started);
+      it.style.setProperty("--pct", (pct || 0) + "%");
       var olds = it.querySelectorAll(".vol-prog, .vol-pct, .vol-done");
       for (var k = 0; k < olds.length; k++) olds[k].parentNode.removeChild(olds[k]);
       if (!started || !cv || !cap) continue;
@@ -539,7 +542,9 @@
         var items = sec.querySelectorAll(".vol-item");
         for (k = 0; k < items.length; k++) {
           var t = items[k].querySelector(".vol-title"), s2 = items[k].querySelector(".vol-sub");
-          var hit = !q || norm((t ? t.textContent : "") + " " + (s2 ? s2.textContent : "")).indexOf(q) >= 0;
+          // the title, the line under it, and the book's subjects and tags (data-find, tools/pages.py)
+          if (items[k].__find == null) items[k].__find = norm((t ? t.textContent : "") + " " + (s2 ? s2.textContent : "") + " " + (items[k].getAttribute("data-find") || ""));
+          var hit = !q || items[k].__find.indexOf(q) >= 0;
           items[k].hidden = !hit;
           if (hit) n++;
         }
@@ -770,6 +775,180 @@
     }
   }
 
+  /* ---------------------------------------------------------------- finding books: All books, a subject, a reading list */
+  /* The pages of tools/browse.py: the books as covers or as a list (the reader's choice, kept in "bjp.view"; the class
+     bjp-view-list on <html> is set before the first paint by overrides/main.html), filtered by subject, level, kind,
+     language or words, and sorted. The choices are kept in the address (?subject=...&level=...), so that Back returns
+     to them and a filtered list can be shared. */
+  var KEY_VIEW = "bjp.view", LEVEL_RANK = { beginner: 1, intermediate: 2, advanced: 3 };
+  function pageView() {
+    var v = sget("localStorage", KEY_VIEW);
+    if (v === "grid" || v === "list") return v;
+    var box = document.querySelector(".pk-books[data-view-default]");
+    return box && box.getAttribute("data-view-default") === "list" ? "list" : "grid";
+  }
+  function applyView(v) {
+    var root = document.documentElement;
+    root.classList.toggle("bjp-view-list", v === "list");
+    var bs = document.querySelectorAll(".pk-view button");
+    for (var i = 0; i < bs.length; i++) bs[i].setAttribute("aria-pressed", String(bs[i].getAttribute("data-view") === v));
+  }
+  function wireBrowse() {
+    var box = document.querySelector(".pk-books[data-view-default]");
+    if (!box) return;
+    applyView(pageView());
+    if (box.__bjp) return;
+    box.__bjp = true;
+    var page = box.closest(".pk-browse-page") || document;
+    var items = Array.prototype.slice.call(box.querySelectorAll(".pk-item"));
+    var controls = page.querySelectorAll(".pk-tools [data-f], .pk-tools [data-sort]");
+    var shown = page.querySelector(".pk-shown"), empty = page.querySelector(".pk-empty");
+    var st0 = { q: "", subject: "", level: "", kind: "", lang: "", sort: "" }, s = {}, k;
+    for (k in st0) s[k] = st0[k];
+    var finds = items.map(function (it) { return norm(it.getAttribute("data-find") || it.textContent); });
+    var titles = items.map(function (it) { var t = it.querySelector(".vol-name"); return norm(t ? t.textContent : ""); });
+    function ctl(name) {
+      for (var i = 0; i < controls.length; i++) {
+        var c = controls[i];
+        if ((c.getAttribute("data-f") || (c.hasAttribute("data-sort") ? "sort" : "")) === name) return c;
+      }
+      return null;
+    }
+    // the choices in the address
+    try {
+      var sp = new URL(location.href).searchParams;
+      for (k in st0) {
+        var val = sp.get(k === "q" ? "find" : k), c0 = ctl(k);
+        if (val && c0 && (c0.tagName !== "SELECT" || c0.querySelector('option[value="' + val.replace(/["\\]/g, "") + '"]'))) { s[k] = val; c0.value = val; }
+      }
+    } catch (e) { /* no URL API: the page starts unfiltered */ }
+    function keepInAddress() {
+      try {
+        var u = new URL(location.href);
+        for (var key in st0) {
+          var name = key === "q" ? "find" : key;
+          if (s[key]) u.searchParams.set(name, s[key]); else u.searchParams.delete(name);
+        }
+        if (u.href !== location.href) history.replaceState(history.state, "", u.href);
+      } catch (e) { /* the address stays as it is */ }
+    }
+    function apply(reorder) {
+      var n = 0, q = norm(s.q), words = q ? q.split(" ") : [];
+      items.forEach(function (it, i) {
+        var hit = (!s.subject || (" " + it.getAttribute("data-subjects") + " ").indexOf(" " + s.subject + " ") >= 0) &&
+          (!s.level || it.getAttribute("data-level") === s.level) &&
+          (!s.kind || it.getAttribute("data-kind") === s.kind) &&
+          (!s.lang || it.getAttribute("data-lang") === s.lang) &&
+          words.every(function (w) { return finds[i].indexOf(w) >= 0; });
+        it.hidden = !hit;
+        if (hit) n++;
+      });
+      if (reorder) {
+        var rec = booksRec(), idx = items.map(function (_, i) { return i; });
+        idx.sort(function (a, b) {
+          var A = items[a], B = items[b], d = 0;
+          if (s.sort === "title") d = titles[a].localeCompare(titles[b]);
+          else if (s.sort === "level") d = (LEVEL_RANK[A.getAttribute("data-level")] || 9) - (LEVEL_RANK[B.getAttribute("data-level")] || 9);
+          else if (s.sort === "recent") {
+            var ra = rec[A.getAttribute("data-vol")], rb = rec[B.getAttribute("data-vol")];
+            d = ((rb && rb.t) || 0) - ((ra && ra.t) || 0);
+          }
+          return d || (+A.getAttribute("data-n") - +B.getAttribute("data-n"));
+        });
+        idx.forEach(function (i) { box.appendChild(items[i]); });
+      }
+      if (shown) shown.textContent = n === items.length ? plural(n, "book", "books") : n + " of " + plural(items.length, "book", "books");
+      if (empty) empty.hidden = n > 0;
+      for (var i = 0; i < controls.length; i++) {
+        var lab = controls[i].closest(".pk-sel");
+        if (lab && !controls[i].hasAttribute("data-sort")) lab.classList.toggle("is-set", !!controls[i].value);
+      }
+    }
+    for (var i = 0; i < controls.length; i++) {
+      controls[i].addEventListener(controls[i].tagName === "INPUT" ? "input" : "change", function () {
+        var name = this.getAttribute("data-f") || "sort";
+        s[name] = this.value;
+        apply(name === "sort");
+        keepInAddress();
+      });
+      if (controls[i].tagName === "INPUT") controls[i].addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && this.value) { this.value = ""; s.q = ""; apply(false); keepInAddress(); }
+      });
+    }
+    var clear = page.querySelector(".pk-clear");
+    if (clear) clear.addEventListener("click", function () {
+      for (var key in st0) { if (key !== "sort") { s[key] = ""; var c = ctl(key); if (c) c.value = ""; } }
+      apply(false);
+      keepInAddress();
+    });
+    var vb = page.querySelectorAll(".pk-view button");
+    for (i = 0; i < vb.length; i++) {
+      vb[i].addEventListener("click", function () {
+        var v = this.getAttribute("data-view");
+        sset("localStorage", KEY_VIEW, v);
+        applyView(v);
+      });
+    }
+    apply(!!s.sort);
+  }
+
+  /* the progress through the books of a reading list: on its page (the next book, "Start the path" or "Continue")
+     and on its card */
+  function pathState(ids) {
+    var all = booksRec(), out = { books: [], begun: 0, done: 0, sum: 0, next: null };
+    ids.forEach(function (vid) {
+      var rec = all[vid], p = shownPct(rec), started = !!(rec && rec.path) || seenPages(vid) > 0;
+      var b = { vid: vid, pct: p, started: started, done: p !== null && p >= 100, t: (rec && rec.t) || 0 };
+      out.books.push(b);
+      if (started) out.begun++;
+      if (b.done) out.done++;
+      out.sum += b.done ? 100 : (p || 0);
+    });
+    // the book to read now: the one read last among those begun and not finished; else the first not finished
+    out.books.forEach(function (b) { if (b.started && !b.done && (!out.next || b.t > out.next.t)) out.next = b; });
+    if (!out.next) out.books.some(function (b) { if (!b.done) { out.next = b; return true; } return false; });
+    out.pct = ids.length ? Math.round(out.sum / ids.length) : 0;
+    return out;
+  }
+  function wirePath() {
+    var list = document.querySelector(".pk-steps-list[data-path]");
+    if (!list) return;
+    var items = list.querySelectorAll(".pk-item"), ids = [], i;
+    for (i = 0; i < items.length; i++) ids.push(items[i].getAttribute("data-vol"));
+    var ps = pathState(ids), act = document.querySelector(".pk-lp-act"), prog = document.querySelector(".pk-lp-prog");
+    for (i = 0; i < items.length; i++) {
+      items[i].classList.toggle("is-done", ps.books[i].done);
+      items[i].classList.toggle("is-next", !!(ps.begun && ps.next && ps.next.vid === ids[i]));
+    }
+    if (prog) {
+      prog.hidden = !ps.begun;
+      prog.querySelector("i").style.width = ps.pct + "%";
+      prog.querySelector(".pk-lp-pt").textContent = ps.done + " of " + plural(ids.length, "book", "books") + " finished \u00b7 " + ps.pct + "%";
+    }
+    if (!act) return;
+    var nb = ps.next || ps.books[0], item = items[ids.indexOf(nb.vid)], a = act.querySelector(".pk-read");
+    var card = item && item.querySelector("a.vol-card"), title = item && item.querySelector(".vol-name");
+    var label = !ps.begun ? "Start the path" : (!ps.next ? "Read again" : (nb.started ? "Continue" : "Next book"));
+    act.setAttribute("data-vol", nb.vid);
+    if (a && card) {
+      a.setAttribute("href", card.getAttribute("href"));
+      a.querySelector("span").innerHTML = esc(label) + (nb.started && nb.pct !== null && nb.pct < 100 ? ' <i class="pk-pct">' + nb.pct + "%</i>" : "");
+    }
+    var next = act.querySelector(".pk-lp-next");
+    if (next && title) next.innerHTML = (ps.begun ? "Book " + (ids.indexOf(nb.vid) + 1) + " of " + ids.length + ": " : "Begins with ") + "<b>" + esc(title.textContent) + "</b>";
+  }
+  function markLists() {
+    var cards = document.querySelectorAll(".pk-lcard[data-books]");
+    for (var i = 0; i < cards.length; i++) {
+      var ids = (cards[i].getAttribute("data-books") || "").split(" ").filter(Boolean), ps = pathState(ids);
+      var box = cards[i].querySelector(".pk-lc-prog");
+      if (!box) continue;
+      box.hidden = !ps.begun;
+      if (ps.begun) box.innerHTML = '<span class="pk-bar" aria-hidden="true"><i style="width:' + ps.pct + '%"></i></span><span>' +
+        (ps.done === ids.length ? "Finished" : ps.pct + "% \u00b7 " + ps.begun + " of " + ids.length + " begun") + "</span>";
+    }
+  }
+
   /* ---------------------------------------------------------------- start */
   function onPage() {
     setupChrome();
@@ -779,12 +958,16 @@
     markStarted();
     renderContinue();
     wireBookPage();
+    wireBrowse();
+    wirePath();
+    markLists();
     wireInstallPage();
     emitAll();
     ready().then(function () {
       markStarted();
       renderContinue();
       wireBookPage();
+      wirePath();
       emitAll();
       libStatus();
       renderOfflinePage();
