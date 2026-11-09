@@ -582,6 +582,30 @@
     } else if (t) btn.setAttribute("href", t.url);
   }
 
+  /* the Get the app page: the card of the visitor's own device comes first and is marked; inside the installed
+     app a line says so. The other cards stay, for installing it on another device. */
+  function devicePlatform() {
+    var ua = navigator.userAgent || "";
+    if (/android/i.test(ua)) return "android";
+    if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return "ios";
+    return "desktop";
+  }
+  function wireInstallPage() {
+    var page = document.querySelector(".pk-apps");
+    if (!page) return;
+    var mine = devicePlatform(), cards = page.querySelectorAll(".pk-app"), i;
+    for (i = 0; i < cards.length; i++) {
+      var yours = cards[i].getAttribute("data-platform") === mine, tag = cards[i].querySelector(".pk-app-you");
+      cards[i].classList.toggle("is-yours", yours);
+      if (tag) tag.hidden = !yours;
+    }
+    var here = page.querySelector(".pk-apps-here");
+    if (here && STANDALONE) {
+      here.textContent = "You are reading in the installed app. The steps below are for putting it on another device.";
+      here.hidden = false;
+    }
+  }
+
   function libStatus() {
     var box = document.querySelector(".bjp-lib-status");
     if (!box || !CAN_KEEP) return;
@@ -755,6 +779,7 @@
     markStarted();
     renderContinue();
     wireBookPage();
+    wireInstallPage();
     emitAll();
     ready().then(function () {
       markStarted();
