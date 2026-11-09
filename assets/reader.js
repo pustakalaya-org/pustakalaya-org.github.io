@@ -12,6 +12,11 @@
  * the text of the chapters before the place, from the lengths in <book>/contents.json. A tap on a cover opens
  * the reader on its own (app.js sets "bjp.reader.open" and the cover's colours, "bjp.reader.cover", for the
  * quiet opening). Everything works without localStorage.
+ *
+ * Also: bookmarks ("bjp.marks") and highlights with notes ("bjp.hl"), per book; a search of the book's text (its
+ * own search index, <book>/search.json, fetched when the search is first opened); a slider over the whole book
+ * with a mark for each chapter; a full-screen view of figures (with zoom), tables and code; pop-ups for footnotes,
+ * cross-references and citations; four page colours and four typefaces; keyboard shortcuts ("?" lists them).
  */
 (function () {
   "use strict";
@@ -22,9 +27,20 @@
   var KEY_SET = "bjp.reader.settings", KEY_POS = "bjp.reader.pos", KEY_AUTO = "bjp.reader.auto",
       KEY_OPEN = "bjp.reader.open", KEY_SUP = "bjp.reader.suppress", KEY_LAST = "bjp.reader.last",
       KEY_GOTO = "bjp.reader.goto", KEY_SEEN = "bjp.lib.seen", KEY_TAB = "bjp.reader.toctab",
-      KEY_BOOKS = "bjp.books", KEY_COVER = "bjp.reader.cover";
-  var THEME_BG = { white: "#ffffff", sepia: "#f4ecd8", dark: "#131313" };
-  var SIZES = [14.5, 16, 17.5, 19, 21, 23.5, 26.5];
+      KEY_BOOKS = "bjp.books", KEY_COVER = "bjp.reader.cover", KEY_MARKS = "bjp.marks", KEY_HL = "bjp.hl";
+  var THEME_BG = { white: "#ffffff", sepia: "#f4ecd8", dark: "#161514", black: "#000000" };
+  var THEMES = ["white", "sepia", "dark", "black"];
+  var SIZES = [14.5, 16, 17.5, 19, 20.5, 22.5, 25, 28];
+  /* the typefaces: the site's serif (with Devanagari), a book face and a sans-serif face from Google Fonts (fetched
+     when chosen, kept by the service worker for offline use), and the device's own interface face */
+  var FONTS = {
+    serif: { name: "Serif", css: "var(--bjp-serif)" },
+    book: { name: "Book", css: '"Literata", var(--bjp-serif)', href: "https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap" },
+    sans: { name: "Sans", css: '"Noto Sans", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+Devanagari:wght@400;600&display=swap" },
+    system: { name: "System", css: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Nirmala UI", sans-serif' }
+  };
+  var HL_COLORS = ["yellow", "green", "blue", "pink"];
+  var HL_SEL = "p,li,dd,dt,td,th,figcaption,blockquote,h1,h2,h3,h4,h5,.admonition-title,.srcline,.translation";
   var LEADS = [1.45, 1.65, 1.9];
   var MARGINS = [0.025, 0.07, 0.13];
   var ANCH_SEL = "p,li,h1,h2,h3,h4,h5,h6,figure,.tbl,.tbl-caption,dt,dd,.admonition-title,pre,blockquote,tr,hr";
@@ -37,7 +53,25 @@
     back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7L4 12l5 5M4 12h11a5 5 0 015 5v1"/></svg>',
     lib: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5h4v15M8 20V9h4v11M14 20L12.6 6l3.8-.8 3 14.2M3 20h18"/></svg>',
     chev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
-    info: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg>'
+    info: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg>',
+    search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>',
+    mark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.8h10v16.4l-5-3.6-5 3.6z"/></svg>',
+    note: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v11l-5 5H5z"/><path d="M14 20v-5h5M8.5 9h7M8.5 12.5h4"/></svg>',
+    copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h3"/></svg>',
+    trash: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V4.8h4V7M7 7l1 13h8l1-13"/></svg>',
+    expand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    minus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>',
+    go: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    kbd: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>',
+    sp0: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 10.5h14M5 14h14M5 17.5h14"/></svg>',
+    sp1: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 10.5h14M5 15h14M5 19.5h14"/></svg>',
+    sp2: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14M5 10h14M5 15.5h14M5 21h14"/></svg>',
+    mg0: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M5.5 8.5h13M5.5 12h13M5.5 15.5h13"/></svg>',
+    mg1: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7.5 8.5h9M7.5 12h9M7.5 15.5h9"/></svg>',
+    mg2: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9.5 8.5h5M9.5 12h5M9.5 15.5h5"/></svg>',
+    jus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>',
+    lft: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h11M4 14h16M4 18h9"/></svg>'
   };
 
   function store(kind) { try { return window[kind]; } catch (e) { return null; } }
@@ -138,7 +172,7 @@
       });
     });
     order.forEach(function (f) { units[f].before = acc; acc += units[f].w; });
-    c.__m = { units: units, total: acc, last: order[order.length - 1] };
+    c.__m = { units: units, total: acc, last: order[order.length - 1], order: order };
     return c.__m;
   }
   function fileOfPath(path) {
@@ -200,8 +234,19 @@
       margin: typeof s.margin === "number" ? clamp(Math.round(s.margin), 0, 2) : 1,
       // Justified text by default, except on narrow phone screens where it leaves wide word gaps.
       justify: typeof s.justify === "boolean" ? s.justify : Math.min(window.innerWidth, window.screen ? window.screen.width : 9999) >= 600,
-      theme: s.theme === "sepia" || s.theme === "dark" ? s.theme : "white"
+      theme: THEMES.indexOf(s.theme) >= 0 ? s.theme : "white",
+      font: FONTS[s.font] ? s.font : "serif"
     };
+  }
+  /* a typeface from Google Fonts is fetched the first time it is chosen */
+  function loadFont(key) {
+    var f = FONTS[key];
+    if (!f || !f.href || document.querySelector('link[data-rd-font="' + key + '"]')) return;
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = f.href;
+    l.setAttribute("data-rd-font", key);
+    document.head.appendChild(l);
   }
   function saveSettings() { jset(KEY_SET, settings); }
   function sizeIndex() {
@@ -280,45 +325,90 @@
     root.setAttribute("lang", "en");
     root.hidden = true;
     root.innerHTML =
-      '<div class="rd-stage"><div class="rd-view"><div class="rd-flow md-typeset" lang="en" tabindex="-1" aria-label="Chapter text"></div></div></div>' +
+      '<div class="rd-stage"><div class="rd-view"><div class="rd-flow md-typeset" lang="en" tabindex="-1" aria-label="Chapter text"></div></div>' +
+        '<span class="rd-ribbon" aria-hidden="true" hidden></span></div>' +
       '<div class="rd-top rd-bar">' +
         '<button type="button" class="rd-btn rd-close" aria-label="Close the reader (Esc)" title="Close (Esc)">' + ICON.close + '</button>' +
+        '<a class="rd-btn rd-libbtn" href="' + libraryUrl() + '" aria-label="Library: leave the reader and show all books" title="Library">' + ICON.lib + '<span>Library</span></a>' +
         '<div class="rd-title"></div>' +
-        '<a class="rd-btn rd-libbtn" href="' + libraryUrl() + '" aria-label="Library: leave the reader and show all books" title="Library: all books">' + ICON.lib + '<span>Library</span></a>' +
-        '<button type="button" class="rd-btn rd-tocbtn" aria-label="Contents: this chapter and the whole book" aria-haspopup="true" aria-expanded="false" title="Contents">' + ICON.toc + '</button>' +
-        '<button type="button" class="rd-btn rd-setbtn" aria-label="Reading settings" aria-haspopup="true" aria-expanded="false" title="Settings"><span class="rd-aa" aria-hidden="true">A<small>a</small></span></button>' +
+        '<button type="button" class="rd-btn rd-findbtn" aria-label="Search this book (/)" aria-haspopup="dialog" aria-expanded="false" title="Search (/)">' + ICON.search + '</button>' +
+        '<button type="button" class="rd-btn rd-markbtn" aria-label="Bookmark this page (B)" aria-pressed="false" title="Bookmark (B)">' + ICON.mark + '</button>' +
+        '<button type="button" class="rd-btn rd-tocbtn" aria-label="Contents, bookmarks and notes (C)" aria-haspopup="dialog" aria-expanded="false" title="Contents (C)">' + ICON.toc + '</button>' +
+        '<button type="button" class="rd-btn rd-setbtn" aria-label="Reading settings (A)" aria-haspopup="dialog" aria-expanded="false" title="Settings (A)"><span class="rd-aa" aria-hidden="true">A<small>a</small></span></button>' +
         '<button type="button" class="rd-btn rd-fsbtn" aria-label="Full screen" title="Full screen" hidden>' + ICON.fs + '</button>' +
+      '</div>' +
+      '<div class="rd-bot rd-bar">' +
+        '<div class="rd-scrub"><div class="rd-ticks" aria-hidden="true"></div>' +
+          '<input type="range" class="rd-range" min="0" max="1000" step="1" value="0" aria-label="Position in the book">' +
+          '<output class="rd-tip" aria-hidden="true" hidden></output></div>' +
+        '<div class="rd-botline"><span class="rd-botch"></span><span class="rd-botpct"></span></div>' +
       '</div>' +
       '<div class="rd-foot rd-bar"><div class="rd-fline"><span class="rd-ftitle"></span>' +
         '<span class="rd-pageno" role="status" aria-live="polite"></span><span class="rd-fpct"></span></div>' +
         '<div class="rd-progress" role="progressbar" aria-label="Progress in the book" aria-valuemin="0" aria-valuemax="100"><i></i></div></div>' +
       '<button type="button" class="rd-back" hidden>' + ICON.back + '<span>Back</span></button>' +
-      '<div class="rd-panel rd-settings" role="group" aria-label="Reading settings" hidden>' +
-        '<h2>Reading settings</h2>' +
-        '<div class="rd-row"><span class="rd-lab" id="rd-l-size">Text size</span><div class="rd-size" role="group" aria-labelledby="rd-l-size">' +
-          '<button type="button" data-act="smaller" aria-label="Smaller text"><span style="font-size:14px">A</span></button>' +
+      '<div class="rd-panel rd-settings" role="dialog" aria-label="Reading settings" hidden>' +
+        '<div class="rd-sheet-grip" aria-hidden="true"></div>' +
+        '<div class="rd-themes" role="radiogroup" aria-label="Page colour">' + THEMES.map(function (t) {
+          return '<button type="button" role="radio" aria-checked="false" data-k="theme" data-v="' + t + '" class="rd-th rd-th-' + t + '"><span class="rd-th-dot">Aa</span><span class="rd-th-lab">' +
+            t.charAt(0).toUpperCase() + t.slice(1) + "</span></button>";
+        }).join("") + '</div>' +
+        '<div class="rd-fonts" role="radiogroup" aria-label="Typeface">' + Object.keys(FONTS).map(function (k) {
+          return '<button type="button" role="radio" aria-checked="false" data-k="font" data-v="' + k + '" class="rd-fo"><span class="rd-fo-aa" style="font-family:' + FONTS[k].css.replace(/"/g, "&quot;") + '">Aa</span><span class="rd-fo-lab">' + FONTS[k].name + "</span></button>";
+        }).join("") + '</div>' +
+        '<div class="rd-row"><span class="rd-lab" id="rd-l-size">Size</span><div class="rd-size" role="group" aria-labelledby="rd-l-size">' +
+          '<button type="button" data-act="smaller" aria-label="Smaller text (-)"><span style="font-size:13px">A</span></button>' +
           '<div class="rd-dots" aria-hidden="true"></div>' +
-          '<button type="button" data-act="larger" aria-label="Larger text"><span style="font-size:21px">A</span></button></div></div>' +
-        seg("spacing", "Spacing", [["0", "Compact"], ["1", "Normal"], ["2", "Relaxed"]]) +
-        seg("margin", "Margins", [["0", "Narrow"], ["1", "Medium"], ["2", "Wide"]]) +
-        seg("justify", "Text", [["1", "Justified"], ["0", "Left"]]) +
-        seg("theme", "Page", [["white", "Aa"], ["sepia", "Aa"], ["dark", "Aa"]], true) +
+          '<button type="button" data-act="larger" aria-label="Larger text (+)"><span style="font-size:20px">A</span></button></div></div>' +
+        seg("spacing", "Lines", [["0", ICON.sp0, "Compact"], ["1", ICON.sp1, "Normal"], ["2", ICON.sp2, "Relaxed"]]) +
+        seg("margin", "Margins", [["0", ICON.mg0, "Narrow"], ["1", ICON.mg1, "Medium"], ["2", ICON.mg2, "Wide"]]) +
+        seg("justify", "Align", [["1", ICON.jus, "Justified"], ["0", ICON.lft, "Left"]]) +
+        '<p class="rd-set-foot"><button type="button" class="rd-keys">' + ICON.kbd + '<span>Keyboard shortcuts</span></button></p>' +
       '</div>' +
-      '<div class="rd-panel rd-toc" role="group" aria-label="Contents" hidden>' +
+      '<div class="rd-panel rd-toc" role="dialog" aria-label="Contents, bookmarks and notes" hidden>' +
+        '<div class="rd-sheet-grip" aria-hidden="true"></div>' +
+        '<div class="rd-tabs" role="tablist" aria-label="Contents, bookmarks and notes">' +
+          '<button type="button" role="tab" id="rd-tab-bk" class="rd-tab" data-tab="bk" aria-controls="rd-tp-bk" aria-selected="true">Contents</button>' +
+          '<button type="button" role="tab" id="rd-tab-mk" class="rd-tab" data-tab="mk" aria-controls="rd-tp-mk" aria-selected="false" tabindex="-1">Bookmarks</button>' +
+          '<button type="button" role="tab" id="rd-tab-hl" class="rd-tab" data-tab="hl" aria-controls="rd-tp-hl" aria-selected="false" tabindex="-1">Notes</button>' +
+        '</div>' +
         '<div class="rd-goto"><label class="rd-sr" for="rd-goto-in">Go to a chapter or section</label>' +
           '<input id="rd-goto-in" class="rd-goto-in" type="search" placeholder="Go to a chapter or section" autocomplete="off" spellcheck="false" enterkeyhint="go" aria-controls="rd-goto-res"></div>' +
-        '<div class="rd-tabs" role="tablist" aria-label="Contents">' +
-          '<button type="button" role="tab" id="rd-tab-ch" class="rd-tab" data-tab="ch" aria-controls="rd-tp-ch" aria-selected="true">This chapter</button>' +
-          '<button type="button" role="tab" id="rd-tab-bk" class="rd-tab" data-tab="bk" aria-controls="rd-tp-bk" aria-selected="false" tabindex="-1">Whole book</button>' +
-        '</div>' +
         '<div class="rd-tabpanels">' +
-          '<div role="tabpanel" id="rd-tp-ch" class="rd-tp" aria-labelledby="rd-tab-ch"><ul class="rd-toc-list"></ul></div>' +
-          '<div role="tabpanel" id="rd-tp-bk" class="rd-tp" aria-labelledby="rd-tab-bk" hidden><div class="rd-book-list" aria-live="polite"></div></div>' +
+          '<div role="tabpanel" id="rd-tp-bk" class="rd-tp" aria-labelledby="rd-tab-bk"><div class="rd-book-list" aria-live="polite"></div><ul class="rd-toc-list" hidden></ul></div>' +
+          '<div role="tabpanel" id="rd-tp-mk" class="rd-tp" aria-labelledby="rd-tab-mk" hidden><div class="rd-mk-list"></div></div>' +
+          '<div role="tabpanel" id="rd-tp-hl" class="rd-tp" aria-labelledby="rd-tab-hl" hidden><div class="rd-hl-list"></div></div>' +
         '</div>' +
         '<div id="rd-goto-res" class="rd-goto-res" role="region" aria-label="Chapters and sections that match" aria-live="polite" hidden></div>' +
         '<div class="rd-panel-foot"><a class="rd-about" href="#" aria-label="About this book: its page with the full contents and offline reading">' + ICON.info + '<span>About this book</span></a></div>' +
       '</div>' +
-      '<div class="rd-pop md-typeset" role="note" hidden></div>' +
+      '<div class="rd-panel rd-find" role="dialog" aria-label="Search this book" hidden>' +
+        '<div class="rd-sheet-grip" aria-hidden="true"></div>' +
+        '<div class="rd-find-head"><label class="rd-sr" for="rd-find-in">Search the text of this book</label>' +
+          '<input id="rd-find-in" class="rd-goto-in rd-find-in" type="search" placeholder="Search this book" autocomplete="off" spellcheck="false" enterkeyhint="search"></div>' +
+        '<div class="rd-find-res" aria-live="polite"></div>' +
+      '</div>' +
+      '<div class="rd-panel rd-help" role="dialog" aria-label="Keyboard shortcuts" hidden>' +
+        '<h2>Keyboard shortcuts</h2><dl class="rd-keylist">' +
+          [["\u2192  Space  PgDn", "Next page"], ["\u2190  Shift+Space  PgUp", "Previous page"], ["Home  End", "Start or end of the chapter"],
+           ["]  [", "Next or previous chapter"], ["C", "Contents, bookmarks and notes"], ["A", "Reading settings"], ["/", "Search this book"],
+           ["B", "Bookmark this page"], ["+  \u2212", "Larger or smaller text"], ["T", "Next page colour"], ["F", "Full screen"], ["Esc", "Close a panel, or the reader"]].map(function (r) {
+            return "<dt>" + r[0].split("  ").map(function (k) { return "<kbd>" + k + "</kbd>"; }).join(" ") + "</dt><dd>" + r[1] + "</dd>";
+          }).join("") + '</dl>' +
+      '</div>' +
+      '<div class="rd-selbar" role="toolbar" aria-label="Highlight the selected text" hidden>' +
+        HL_COLORS.map(function (c) { return '<button type="button" class="rd-hlc rd-hlc-' + c + '" data-hl="' + c + '" aria-label="Highlight in ' + c + '" title="Highlight"></button>'; }).join("") +
+        '<span class="rd-selsep" aria-hidden="true"></span>' +
+        '<button type="button" class="rd-selbtn" data-act="note" aria-label="Add a note" title="Note">' + ICON.note + '</button>' +
+        '<button type="button" class="rd-selbtn" data-act="copy" aria-label="Copy" title="Copy">' + ICON.copy + '</button>' +
+      '</div>' +
+      '<div class="rd-pop md-typeset" role="dialog" aria-label="Note" hidden></div>' +
+      '<div class="rd-zoom" role="dialog" aria-modal="true" aria-label="Full-screen view" hidden>' +
+        '<div class="rd-zoom-stage"></div><div class="rd-zoom-cap"></div>' +
+        '<div class="rd-zoom-bar"><button type="button" class="rd-btn" data-z="out" aria-label="Zoom out">' + ICON.minus + '</button>' +
+          '<button type="button" class="rd-btn" data-z="in" aria-label="Zoom in">' + ICON.plus + '</button>' +
+          '<button type="button" class="rd-btn" data-z="close" aria-label="Close the full-screen view (Esc)">' + ICON.close + '</button></div>' +
+      '</div>' +
       '<div class="rd-loading" role="status"><span>Loading</span></div>' +
       '<div class="rd-curtain" aria-hidden="true" hidden><span></span></div>';
     document.body.appendChild(root);
@@ -347,11 +437,47 @@
     $.loading = root.querySelector(".rd-loading");
     $.fs = root.querySelector(".rd-fsbtn");
     $.dots = root.querySelector(".rd-dots");
+    $.find = root.querySelector(".rd-find");
+    $.findIn = root.querySelector(".rd-find-in");
+    $.findRes = root.querySelector(".rd-find-res");
+    $.help = root.querySelector(".rd-help");
+    $.mark = root.querySelector(".rd-markbtn");
+    $.ribbon = root.querySelector(".rd-ribbon");
+    $.mkList = root.querySelector(".rd-mk-list");
+    $.hlList = root.querySelector(".rd-hl-list");
+    $.selbar = root.querySelector(".rd-selbar");
+    $.range = root.querySelector(".rd-range");
+    $.ticks = root.querySelector(".rd-ticks");
+    $.tip = root.querySelector(".rd-tip");
+    $.botch = root.querySelector(".rd-botch");
+    $.botpct = root.querySelector(".rd-botpct");
+    $.bot = root.querySelector(".rd-bot");
+    $.zoom = root.querySelector(".rd-zoom");
     $.dots.innerHTML = SIZES.map(function () { return "<i></i>"; }).join("");
 
     root.querySelector(".rd-close").addEventListener("click", function () { close(); });
     root.querySelector(".rd-tocbtn").addEventListener("click", function () { togglePanel("toc"); });
     root.querySelector(".rd-setbtn").addEventListener("click", function () { togglePanel("set"); });
+    root.querySelector(".rd-findbtn").addEventListener("click", function () { togglePanel("find"); });
+    root.querySelector(".rd-keys").addEventListener("click", function () { togglePanel("help"); });
+    $.mark.addEventListener("click", toggleBookmark);
+    $.findIn.addEventListener("input", debounce(onFindInput, 220));
+    $.findIn.addEventListener("keydown", onFindKey);
+    $.findRes.addEventListener("click", onFindClick);
+    $.mkList.addEventListener("click", onMarkListClick);
+    $.hlList.addEventListener("click", onHlListClick);
+    $.selbar.addEventListener("pointerdown", function (e) { e.preventDefault(); });
+    $.selbar.addEventListener("click", onSelbarClick);
+    document.addEventListener("selectionchange", debounce(onSelection, 180));
+    $.range.addEventListener("input", onScrubInput);
+    $.range.addEventListener("change", onScrubChange);
+    $.range.addEventListener("pointerdown", function () { showChrome(true); });
+    $.range.addEventListener("blur", function () { $.tip.hidden = true; armHide(); });
+    $.bot.addEventListener("pointerenter", function () { S.overBar = true; });
+    $.bot.addEventListener("pointerleave", function () { S.overBar = false; armHide(); });
+    $.bot.addEventListener("focusin", function () { showChrome(true); });
+    $.bot.addEventListener("focusout", function () { armHide(); });
+    wireZoom();
     $.fs.addEventListener("click", toggleFullscreen);
     $.back.addEventListener("click", goBack);
     $.set.addEventListener("click", onSettingsClick);
@@ -368,7 +494,11 @@
     $.goRes.addEventListener("keydown", onGotoKey);
     $.goRes.addEventListener("click", onGotoClick);
     $.flow.addEventListener("click", onLinkClick);
-    $.pop.addEventListener("click", onLinkClick);
+    $.flow.addEventListener("click", function (e) {
+      var xb = e.target.closest && e.target.closest(".rd-expand");
+      if (xb) { e.preventDefault(); openZoomDoc(xb.parentNode); }
+    });
+    $.pop.addEventListener("click", onPopClick);
     $.top.addEventListener("pointerenter", function () { S.overBar = true; });
     $.top.addEventListener("pointerleave", function () { S.overBar = false; armHide(); });
     $.top.addEventListener("focusin", function () { showChrome(true); });
@@ -395,7 +525,6 @@
     document.addEventListener("fullscreenchange", onFsChange);
     document.addEventListener("webkitfullscreenchange", onFsChange);
     document.addEventListener("keydown", onKey, true);
-    document.addEventListener("selectionchange", function () { /* selection never moves the view */ });
     window.addEventListener("popstate", onPopState, true);
     window.addEventListener("pagehide", function () { if (S.open) savePos(); });
     document.addEventListener("visibilitychange", function () { if (document.hidden && S.open) savePos(); });
@@ -409,11 +538,10 @@
     applySettingsUI();
   }
 
-  function seg(key, label, opts, swatch) {
+  function seg(key, label, opts) {
     var id = "rd-l-" + key;
     var b = opts.map(function (o) {
-      return '<button type="button" role="radio" aria-checked="false" data-k="' + key + '" data-v="' + o[0] + '"' +
-        (swatch ? ' class="rd-sw" aria-label="' + o[0].charAt(0).toUpperCase() + o[0].slice(1) + ' page"' : "") + ">" + o[1] + "</button>";
+      return '<button type="button" role="radio" aria-checked="false" data-k="' + key + '" data-v="' + o[0] + '" aria-label="' + o[2] + '" title="' + o[2] + '">' + o[1] + "</button>";
     }).join("");
     return '<div class="rd-row"><span class="rd-lab" id="' + id + '">' + label + '</span><div class="rd-seg" role="radiogroup" aria-labelledby="' + id + '">' + b + "</div></div>";
   }
@@ -551,6 +679,8 @@
     clearTimeout(S.hideT);
     closePanels();
     closePop();
+    closeZoom();
+    hideSelbar();
     S.root.classList.remove("rd-chrome-on");
     S.root.hidden = true;
     document.documentElement.classList.remove("bjp-reading");
@@ -608,10 +738,26 @@
   function prepareFlow() {
     var flow = $.flow, i, list;
     // a book's first page: the reader has its own contents (the list button), the page's list of chapters is left out
-    list = flow.querySelectorAll("nav.vol-contents, .vc-tools, .bjp-offline, h2#contents");
+    list = flow.querySelectorAll("nav.vol-contents, .vc-tools, .bjp-offline, h2#contents, .pk-book-actions, .pk-book-facts, .md-clipboard, .md-code__nav");
     for (i = 0; i < list.length; i++) list[i].parentNode.removeChild(list[i]);
     list = flow.querySelectorAll(".headerlink, script, style");
     for (i = 0; i < list.length; i++) list[i].parentNode.removeChild(list[i]);
+    // a book's first page opens with its cover, as a title page (not a link)
+    var bo = flow.querySelector(".pk-book-open");
+    if (bo) { bo.removeAttribute("href"); bo.setAttribute("aria-hidden", "true"); }
+    // tables and code can be shown full screen, where they scroll and can be enlarged
+    list = flow.querySelectorAll(".tbl, .highlight, pre");
+    for (i = 0; i < list.length; i++) {
+      var box = list[i];
+      if (box.tagName === "PRE" && box.closest(".highlight, .tbl")) continue;
+      if (box.querySelector(".rd-expand")) continue;
+      var xb = el("button", "rd-expand", ICON.expand);
+      xb.type = "button";
+      xb.setAttribute("aria-label", box.classList.contains("tbl") ? "Show the table full screen" : "Show the code full screen");
+      xb.title = "Full screen";
+      box.classList.add("rd-zoomable");
+      box.appendChild(xb);
+    }
     // images in pages that are not on screen must still load, or the page breaks would move later
     list = flow.querySelectorAll("img");
     for (i = 0; i < list.length; i++) { list[i].setAttribute("loading", "eager"); list[i].removeAttribute("fetchpriority"); }
@@ -673,6 +819,7 @@
     loadModel();
     return waitReady().then(function () {
       applySettingsUI();
+      applyHighlights();
       measureAndPaginate(null);
       applyWhere(where);
       $.flow.classList.remove("rd-hidden");
@@ -694,6 +841,9 @@
     bookContents().then(function (c) {
       if (c.id !== S.modelBook) return;
       S.model = bookModel(c);
+      S.modelBase = c.base;
+      S.modelTitles = {};
+      (c.groups || []).forEach(function (g) { g.items.forEach(function (it) { if (!S.modelTitles[it.f]) S.modelTitles[it.f] = it.t; }); });
       if (S.open && S.n) { updatePageUI(); scheduleSave(); }
     }, function () { /* without the contents the footer shows the chapter only */ });
   }
@@ -769,6 +919,7 @@
     flow.style.columnGap = gap + "px";
     flow.style.setProperty("--rd-h", ph + "px");
     flow.style.fontSize = fontPx + "px";
+    flow.style.fontFamily = (FONTS[settings.font] || FONTS.serif).css;
     // Devanagari carries its marks above and below the line: it needs a little more leading
     flow.style.lineHeight = String(LEADS[settings.spacing] + (/^hi\b/.test(S.lang) ? 0.14 : 0));
     flow.classList.toggle("rd-just", settings.justify);
@@ -823,7 +974,7 @@
       }
     }
     S.n = n;
-    S.lastDims = [vw, vh, pw, ph, S.spread, fontPx, settings.spacing, settings.margin, settings.justify, S.lang].join("/");
+    S.lastDims = [vw, vh, pw, ph, S.spread, fontPx, settings.spacing, settings.margin, settings.justify, settings.font, S.lang].join("/");
   }
 
   function relayout(onlyIfChanged) {
@@ -874,6 +1025,15 @@
 
   function applyWhere(where) {
     if (where === "end") { goto(S.n - 1, false, true); return; }
+    if (where && typeof where === "object" && where.hl) {
+      var hm = $.flow.querySelector('mark[data-hl="' + where.hl + '"]');
+      if (hm) { var hp = pageOfEl(hm); goto(hp === null ? 0 : hp, false, true); return; }
+    }
+    if (where && typeof where === "object" && where.find) {
+      var start = where.hash ? byId($.flow, decodeURIComponent(where.hash.slice(1))) : null;
+      var fm = flashFind(where.find, start);
+      if (fm) { var fp = pageOfEl(fm); goto(fp === null ? 0 : fp, false, true); return; }
+    }
     if (where && typeof where === "object" && where.hash) {
       var t = byId($.flow, decodeURIComponent(where.hash.slice(1)));
       if (t) { var p = pageOfEl(t); goto(p === null ? 0 : p, false, true); return; }
@@ -915,21 +1075,27 @@
   function updatePageUI() {
     if (!S.n) return;
     var p = S.page, shown = p + 1, txt;
-    if (S.spread && p + 2 <= S.n) txt = "Pages " + (p + 1) + "\u2013" + (p + 2) + " of " + S.n;
-    else txt = "Page " + shown + " of " + S.n;
+    if (S.spread && p + 2 <= S.n) txt = (p + 1) + "\u2013" + (p + 2) + " of " + S.n;
+    else txt = shown + " of " + S.n;
     $.pageno.textContent = txt;
     var last = S.spread ? Math.min(p + 2, S.n) : p + 1;
+    var left = S.n - last;
+    var leftTxt = left <= 0 ? "Last page in chapter" : left === 1 ? "1 page left in chapter" : left + " pages left in chapter";
     var pct = bookPct();
     if (pct === null) {
-      $.fpct.textContent = "";
+      $.fpct.textContent = leftTxt;
       $.prog.style.width = (last / S.n * 100).toFixed(2) + "%";
       $.progBar.removeAttribute("aria-valuenow");
+      $.botpct.textContent = "";
     } else {
       var sp = shownPct(pct);
-      $.fpct.textContent = sp + "% of the book";
+      $.fpct.textContent = leftTxt + " \u00b7 " + sp + "%";
       $.prog.style.width = pct.toFixed(2) + "%";
       $.progBar.setAttribute("aria-valuenow", String(sp));
+      $.botpct.textContent = sp + "% of the book";
     }
+    updateScrub(pct);
+    updateMarkUI();
   }
 
   function turn(dir) {
@@ -1010,9 +1176,12 @@
     if (!href) return;
     if (e.button && e.button !== 0) return;
     if (a.classList.contains("footnote-ref")) { e.preventDefault(); showFootnote(a); return; }
+    var fromPop = e.currentTarget === $.pop;
     if (href.charAt(0) === "#") {
       e.preventDefault();
-      if (e.currentTarget === $.pop) closePop();
+      var tgt = byId($.flow, safeDecode(href.slice(1)));
+      if (tgt && !fromPop && refPreview(tgt)) { showRefPop(a, refPreview(tgt), { hash: href }); return; }
+      if (fromPop) closePop();
       var cur = captureAnchor();
       if (jumpHash(href)) { S.backStack.push({ url: S.url, anchor: cur }); updateBackChip(); }
       return;
@@ -1023,6 +1192,10 @@
     e.preventDefault();
     if (e.currentTarget === $.pop) closePop();
     if (isVolPath(u.pathname)) {
+      if (u.hash && u.hash.length > 1 && !fromPop && bookOfPath(u.pathname) && bookOfPath(S.path) && bookOfPath(u.pathname).id === bookOfPath(S.path).id) {
+        showRemoteRef(a, u);
+        return;
+      }
       pushBack();
       if (u.pathname === S.path) {
         if (!(u.hash && jumpHash(u.hash))) goto(0, true);
@@ -1038,25 +1211,17 @@
   }
 
   function showFootnote(a) {
-    var id = decodeURIComponent((a.getAttribute("href") || "").replace(/^#/, ""));
+    var id = safeDecode((a.getAttribute("href") || "").replace(/^#/, ""));
     var li = byId($.flow, id);
     if (!li) { jumpHash(a.getAttribute("href")); return; }
-    closePanels();
-    $.pop.innerHTML = li.innerHTML;
-    var bl = $.pop.querySelectorAll(".footnote-backref");
-    for (var i = 0; i < bl.length; i++) bl[i].parentNode.removeChild(bl[i]);
-    $.pop.hidden = false;
-    var rr = a.getClientRects()[0] || a.getBoundingClientRect();
-    var W = S.root.clientWidth, H = S.root.clientHeight;
-    var pw = $.pop.offsetWidth, ph = $.pop.offsetHeight;
-    var x = clamp(rr.left + rr.width / 2 - pw / 2, 10, W - pw - 10);
-    var y = rr.bottom + 10;
-    if (y + ph > H - 40) y = Math.max(60, rr.top - ph - 10);
-    $.pop.style.left = x + "px";
-    $.pop.style.top = y + "px";
-    $.pop.scrollTop = 0;
+    S.popGo = null;
+    openPop(previewHtml(li), a, "fn");
   }
-  function closePop() { if ($.pop && !$.pop.hidden) { $.pop.hidden = true; $.pop.innerHTML = ""; } }
+  function closePop() {
+    if ($.pop && !$.pop.hidden) { $.pop.hidden = true; $.pop.innerHTML = ""; }
+    S.popGo = null;
+    S.hlPop = null;
+  }
 
   /* ---------------------------------------------------------------- chrome, panels, settings */
   function armHide() {
@@ -1078,21 +1243,28 @@
     else showChrome(false);
   }
 
+  var PANEL_BTN = { toc: ".rd-tocbtn", set: ".rd-setbtn", find: ".rd-findbtn", help: ".rd-keys" };
+  function panelEl(which) { return which === "toc" ? $.toc : which === "set" ? $.set : which === "find" ? $.find : $.help; }
   function togglePanel(which) {
-    var panel = which === "toc" ? $.toc : $.set;
-    var other = which === "toc" ? $.set : $.toc;
+    var panel = panelEl(which);
     var willOpen = panel.hidden;
-    if (!willOpen) resetGoto();
+    if (!willOpen || S.panel === "toc") resetGoto();
     closePop();
-    other.hidden = true;
+    hideSelbar();
+    ["toc", "set", "find", "help"].forEach(function (k) {
+      var el2 = panelEl(k);
+      if (el2 !== panel) el2.hidden = true;
+      var b = S.root.querySelector(PANEL_BTN[k]);
+      if (b && b.hasAttribute("aria-expanded")) b.setAttribute("aria-expanded", String(k === which && willOpen));
+    });
     panel.hidden = !willOpen;
-    S.root.querySelector(".rd-tocbtn").setAttribute("aria-expanded", String(which === "toc" && willOpen));
-    S.root.querySelector(".rd-setbtn").setAttribute("aria-expanded", String(which !== "toc" && willOpen));
     S.panel = willOpen ? which : null;
+    S.root.classList.toggle("rd-panel-on", !!S.panel);
     if (willOpen) {
       showChrome(true);
-      if (which === "toc") showTab(S.tab || (sget("localStorage", KEY_TAB) === "bk" ? "bk" : "ch"), false);
-      var f = panel.querySelector("button[aria-checked='true'], .rd-tab[aria-selected='true'], button");
+      if (which === "toc") showTab(S.tab || (/^(bk|mk|hl)$/.test(sget("localStorage", KEY_TAB) || "") ? sget("localStorage", KEY_TAB) : "bk"), false);
+      var f = which === "find" ? $.findIn : panel.querySelector("button[aria-checked='true'], .rd-tab[aria-selected='true'], button, [tabindex]");
+      if (which === "find") { S.findBook = null; ensureFindIndex(); }
       if (f) { try { f.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
     } else {
       armHide();
@@ -1109,10 +1281,12 @@
   function closePanels() {
     if (!S.root) return;
     resetGoto();
-    $.set.hidden = true; $.toc.hidden = true;
+    $.set.hidden = true; $.toc.hidden = true; $.find.hidden = true; $.help.hidden = true;
     S.panel = null;
+    S.root.classList.remove("rd-panel-on");
     S.root.querySelector(".rd-tocbtn").setAttribute("aria-expanded", "false");
     S.root.querySelector(".rd-setbtn").setAttribute("aria-expanded", "false");
+    S.root.querySelector(".rd-findbtn").setAttribute("aria-expanded", "false");
   }
 
   /* while the reader is open, the browser bar (or the installed app's title bar) takes the page colour */
@@ -1137,6 +1311,7 @@
     for (var i = 0; i < dots.length; i++) dots[i].className = i <= si ? "on" : "";
     S.root.querySelector('[data-act="smaller"]').disabled = si <= 0;
     S.root.querySelector('[data-act="larger"]').disabled = si >= SIZES.length - 1;
+    S.root.setAttribute("data-font", settings.font);
     var bs = $.set.querySelectorAll("[data-k]");
     for (var j = 0; j < bs.length; j++) {
       var k = bs[j].getAttribute("data-k"), v = bs[j].getAttribute("data-v"), cur;
@@ -1157,6 +1332,7 @@
     } else if (b.getAttribute("data-k")) {
       var k = b.getAttribute("data-k"), v = b.getAttribute("data-v");
       if (k === "theme") { settings.theme = v; relayoutNeeded = false; }
+      else if (k === "font") { settings.font = v; loadFont(v); }
       else if (k === "justify") settings.justify = v === "1";
       else settings[k] = parseInt(v, 10);
     } else return;
@@ -1168,7 +1344,7 @@
   /* radio groups: arrow keys move inside the group */
   function groupArrow(e) {
     var b = document.activeElement;
-    if (!b || !b.closest || !b.closest(".rd-seg, .rd-tabs")) return false;
+    if (!b || !b.closest || !b.closest(".rd-seg, .rd-tabs, .rd-themes, .rd-fonts")) return false;
     var dir = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
     if (!dir) return false;
     var sibs = [].slice.call(b.parentNode.querySelectorAll("button"));
@@ -1231,7 +1407,16 @@
     var p = fetch(base + "contents.json", { credentials: "same-origin" }).then(function (r) {
       if (!r.ok) throw new Error("http " + r.status);
       return r.json();
-    }).then(function (c) { c.base = base; c.id = b.id; return c; });
+    }).then(function (c) {
+      // the titles are written as HTML text (&amp; and the like): decoded once here, escaped again where shown
+      var dec = document.createElement("textarea");
+      function un(t) { if (!t || t.indexOf("&") < 0) return t; dec.innerHTML = t; return dec.value; }
+      (c.groups || []).forEach(function (g) {
+        g.name = un(g.name);
+        g.items.forEach(function (it) { it.t = un(it.t); (it.s || []).forEach(function (x) { x.t = un(x.t); }); });
+      });
+      c.base = base; c.id = b.id; return c;
+    });
     bookCache[b.id] = p;
     p.catch(function () { if (bookCache[b.id] === p) delete bookCache[b.id]; });
     return p;
@@ -1326,34 +1511,41 @@
   }
 
   function showTab(which, focus) {
-    var bk = which === "bk";
-    S.tab = bk ? "bk" : "ch";
+    S.tab = which === "mk" || which === "hl" ? which : "bk";
     sset("localStorage", KEY_TAB, S.tab);
     var tabs = $.toc.querySelectorAll(".rd-tab");
     for (var i = 0; i < tabs.length; i++) {
       var on = tabs[i].getAttribute("data-tab") === S.tab;
       tabs[i].setAttribute("aria-selected", String(on));
       tabs[i].tabIndex = on ? 0 : -1;
+      if (on && focus) tabs[i].focus();
     }
-    $.toc.querySelector("#rd-tp-ch").hidden = bk;
-    $.toc.querySelector("#rd-tp-bk").hidden = !bk;
-    if (!bk) { markTocCurrent(); return; }
+    $.toc.querySelector("#rd-tp-bk").hidden = S.tab !== "bk";
+    $.toc.querySelector("#rd-tp-mk").hidden = S.tab !== "mk";
+    $.toc.querySelector("#rd-tp-hl").hidden = S.tab !== "hl";
+    $.toc.classList.toggle("is-bk", S.tab === "bk");
+    if (S.tab === "mk") { renderMarks(); return; }
+    if (S.tab === "hl") { renderHls(); return; }
     var want = bookOfPath(S.path);
     if ($.bookList.getAttribute("data-book") !== (want ? want.id : "")) {
       $.bookList.setAttribute("data-book", want ? want.id : "");
       $.bookList.removeAttribute("data-rendered");
-      $.bookList.innerHTML = '<p class="rd-note">Loading the contents…</p>';
+      $.bookList.innerHTML = '<p class="rd-note">Loading the contents\u2026</p>';
     }
     bookContents().then(function (c) {
       if (S.tab !== "bk") return;
+      $.tocList.hidden = true;
       if ($.bookList.getAttribute("data-rendered") !== c.id) renderBook(c);
       markBookCurrent(true);
     }, function () {
       if (S.tab !== "bk") return;
+      // without the contents of the whole book: the sections of this chapter
       $.bookList.removeAttribute("data-rendered");
       $.bookList.innerHTML = '<p class="rd-note">' + (navigator.onLine === false
-        ? "The contents of the whole book are not available offline. Keep this book for offline reading on the library page, or open this panel once while online."
-        : "The contents of the whole book could not be loaded. Check the connection and try again.") + "</p>";
+        ? "The contents of the whole book are not available offline; the sections of this chapter are listed."
+        : "The contents of the whole book could not be loaded; the sections of this chapter are listed.") + "</p>";
+      $.tocList.hidden = false;
+      markTocCurrent();
     });
   }
 
@@ -1460,6 +1652,642 @@
     location.href = url;
   }
 
+  /* ---------------------------------------------------------------- small helpers */
+  function safeDecode(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
+  function announce(t) {
+    if (!$.toast) {
+      $.toast = el("div", "rd-toast");
+      $.toast.setAttribute("role", "status");
+      $.toast.setAttribute("aria-live", "polite");
+      S.root.appendChild($.toast);
+    }
+    $.toast.textContent = t;
+    $.toast.classList.add("on");
+    clearTimeout(S.toastT);
+    S.toastT = setTimeout(function () { $.toast.classList.remove("on"); }, 1600);
+  }
+  function cycleTheme() {
+    settings.theme = THEMES[(THEMES.indexOf(settings.theme) + 1) % THEMES.length];
+    saveSettings();
+    applySettingsUI();
+    announce(settings.theme.charAt(0).toUpperCase() + settings.theme.slice(1) + " page");
+  }
+  function stepSize(d) {
+    var si = sizeIndex(), n = clamp(si + d, 0, SIZES.length - 1);
+    if (n === si) return;
+    settings.size = n;
+    saveSettings();
+    applySettingsUI();
+    relayout();
+  }
+  function bookId() { var b = bookOfPath(S.path); return b ? b.id : ""; }
+  function dateShort(t) {
+    try { return new Date(t).toLocaleDateString("en-GB", { day: "numeric", month: "short" }); } catch (e) { return ""; }
+  }
+  function clip(t, n) {
+    t = String(t || "").replace(/¶/g, "").replace(/\s+/g, " ").trim();
+    return t.length > n ? t.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : t;
+  }
+
+  /* ---------------------------------------------------------------- pop-ups: footnotes, references, citations */
+  function placePop(a) {
+    var rr = (a && (a.getClientRects()[0] || a.getBoundingClientRect())) || { left: S.root.clientWidth / 2, width: 0, top: 80, bottom: 80 };
+    var W = S.root.clientWidth, H = S.root.clientHeight;
+    var pw = $.pop.offsetWidth, ph = $.pop.offsetHeight;
+    var x = clamp(rr.left + rr.width / 2 - pw / 2, 10, W - pw - 10);
+    var y = rr.bottom + 10;
+    if (y + ph > H - 40) y = Math.max(60, rr.top - ph - 10);
+    if (y + ph > H - 10) y = Math.max(10, H - ph - 10);
+    $.pop.style.left = x + "px";
+    $.pop.style.top = y + "px";
+    $.pop.scrollTop = 0;
+  }
+  function openPop(html, a, kind) {
+    closePanels();
+    hideSelbar();
+    $.pop.className = "rd-pop md-typeset" + (kind ? " rd-pop-" + kind : "");
+    $.pop.innerHTML = html;
+    $.pop.hidden = false;
+    placePop(a);
+  }
+  /* what a link to an element shows: the figure, table, box, equation, entry or note, or a heading with its first lines */
+  function refPreview(t) {
+    if (!t || !t.closest) return null;
+    if (t.closest(".footnote")) return t.closest("li") || null;
+    var box = t.closest("figure, .tbl, .csl-entry, .admonition, details, mjx-container[display='true'], div.arithmatex, table, dt, .epigraphbox");
+    if (box && box !== $.flow) return box;
+    if (/^H[1-6]$/.test(t.tagName)) return t;
+    return t.closest(HL_SEL) || null;
+  }
+  function previewHtml(t) {
+    var parts = [t], n = t.nextElementSibling, len = 0;
+    if (/^H[2-6]$/.test(t.tagName)) {
+      while (n && parts.length < 3 && len < 500 && !/^H[1-6]$/.test(n.tagName)) { parts.push(n); len += n.textContent.length; n = n.nextElementSibling; }
+    }
+    var d = document.createElement("div");
+    parts.forEach(function (x) { d.appendChild(x.cloneNode(true)); });
+    var junk = d.querySelectorAll("[id]");
+    for (var i = 0; i < junk.length; i++) junk[i].removeAttribute("id");
+    junk = d.querySelectorAll(".headerlink, .rd-expand, .footnote-backref, mark.rd-flash");
+    for (i = 0; i < junk.length; i++) junk[i].parentNode.removeChild(junk[i]);
+    return d.innerHTML;
+  }
+  function showRefPop(a, t, go) {
+    S.popGo = go;
+    openPop('<div class="rd-pop-body">' + previewHtml(t) + '</div><div class="rd-pop-foot"><button type="button" class="rd-pop-go">' +
+      "<span>Go to</span>" + ICON.go + "</button></div>", a, "ref");
+  }
+  function showRemoteRef(a, u) {
+    var url = u.origin + u.pathname + u.search, id = safeDecode(u.hash.slice(1));
+    S.popGo = { url: url, hash: u.hash };
+    openPop('<p class="rd-note">Loading…</p>', a, "ref");
+    fetchPage(url).then(function (rec) {
+      if ($.pop.hidden || !S.popGo || S.popGo.url !== url) return;
+      var tmp = document.createElement("div");
+      tmp.innerHTML = rec.html;
+      var t = byId(tmp, id), pv = t && refPreview(t);
+      if (!pv) { closePop(); pushBack(); loadChapter(url, { hash: u.hash }); return; }
+      showRefPop(a, pv, S.popGo);
+      if (window.bjpMath && $.pop.querySelector(".arithmatex, .math")) {
+        Promise.resolve(window.bjpMath.typeset([$.pop])).then(function () { placePop(a); }, function () {});
+      }
+    }, function () {
+      if (!$.pop.hidden) $.pop.innerHTML = '<p class="rd-note">' + (navigator.onLine === false ? "This page is not available offline." : "Could not load the page.") + "</p>";
+    });
+  }
+  function onPopClick(e) {
+    var go = e.target.closest(".rd-pop-go");
+    if (go && S.popGo) {
+      var g = S.popGo;
+      closePop();
+      if (g.url && pagePath(g.url) !== S.path) { pushBack(); loadChapter(g.url, { hash: g.hash }); }
+      else { var cur = captureAnchor(); if (jumpHash(g.hash)) { S.backStack.push({ url: S.url, anchor: cur }); updateBackChip(); } }
+      return;
+    }
+    if (onHlPopClick(e)) return;
+    onLinkClick(e);
+  }
+
+  /* ---------------------------------------------------------------- bookmarks ("bjp.marks": {book: [{path, ch, i, n, f, x, pct, t}]}) */
+  function marksAll() { var m = jget(KEY_MARKS, {}); return m && typeof m === "object" ? m : {}; }
+  function bookMarks() { var a = marksAll()[bookId()]; return Array.isArray(a) ? a : []; }
+  function saveMarks(list) {
+    var all = marksAll(), id = bookId();
+    if (!id) return;
+    if (list.length) all[id] = list; else delete all[id];
+    jset(KEY_MARKS, all);
+  }
+  function markPage(m) {
+    if (m.n === S.anchors.length && S.anchors[m.i]) {
+      var p = pageOfEl(S.anchors[m.i]);
+      if (p !== null) return p;
+    }
+    return Math.round((m.f || 0) * S.n);
+  }
+  function currentMark() {
+    var l = bookMarks();
+    for (var i = 0; i < l.length; i++) if (l[i].path === S.path && (isOnPage(markPage(l[i])) || isOnPage(Math.round((l[i].f || 0) * S.n)))) return i;
+    return -1;
+  }
+  function toggleBookmark() {
+    if (!S.n || !bookId()) return;
+    var list = bookMarks(), at = currentMark();
+    if (at >= 0) { list.splice(at, 1); announce("Bookmark removed"); }
+    else {
+      var a = captureAnchor(), e2 = a.i !== null ? S.anchors[a.i] : null;
+      list.push({ path: S.path, ch: S.title, i: a.i, n: a.n, f: S.n > 1 ? S.page / S.n : 0, x: clip(e2 ? e2.textContent : "", 140), pct: bookPct(), t: Date.now() });
+      announce("Page bookmarked");
+    }
+    saveMarks(list);
+    updateMarkUI();
+    if (S.panel === "toc" && S.tab === "mk") renderMarks();
+  }
+  function updateMarkUI() {
+    if (!$.mark) return;
+    var on = S.n > 0 && currentMark() >= 0;
+    $.mark.setAttribute("aria-pressed", String(on));
+    $.mark.setAttribute("aria-label", on ? "Remove the bookmark on this page (B)" : "Bookmark this page (B)");
+    $.mark.classList.toggle("on", on);
+    $.ribbon.hidden = !on;
+  }
+  function byPlace(a, b) { return (typeof a.pct === "number" ? a.pct : 0) - (typeof b.pct === "number" ? b.pct : 0) || a.t - b.t; }
+  function renderMarks() {
+    var list = bookMarks().slice().sort(byPlace);
+    if (!list.length) {
+      $.mkList.innerHTML = '<p class="rd-note rd-empty">' + ICON.mark + "No bookmarks in this book yet. Use the bookmark button at the top, or press B, to mark the page you are on.</p>";
+      return;
+    }
+    $.mkList.innerHTML = '<ul class="rd-items">' + list.map(function (m) {
+      return '<li class="rd-it"><button type="button" class="rd-it-go" data-t="' + m.t + '"><span class="rd-it-ch">' + escapeHtml(m.ch || "") + "</span>" +
+        (m.x ? '<span class="rd-it-x">' + escapeHtml(m.x) + "</span>" : "") +
+        '<span class="rd-it-meta">' + (typeof m.pct === "number" ? Math.round(m.pct) + "% · " : "") + escapeHtml(dateShort(m.t)) + "</span></button>" +
+        '<button type="button" class="rd-it-del" data-t="' + m.t + '" aria-label="Remove this bookmark" title="Remove">' + ICON.trash + "</button></li>";
+    }).join("") + "</ul>";
+  }
+  function onMarkListClick(e) {
+    var b = e.target.closest("button[data-t]");
+    if (!b) return;
+    var t = +b.getAttribute("data-t"), list = bookMarks(), m = null, k;
+    for (k = 0; k < list.length; k++) if (list[k].t === t) { m = list[k]; break; }
+    if (!m) return;
+    if (b.classList.contains("rd-it-del")) { list.splice(k, 1); saveMarks(list); renderMarks(); updateMarkUI(); return; }
+    togglePanel("toc");
+    var where = { anchor: { i: m.i, n: m.n, f: m.f } };
+    if (m.path === S.path) restoreAnchor(where.anchor);
+    else { pushBack(); loadChapter(location.origin + m.path, where); }
+  }
+
+  /* ---------------------------------------------------------------- highlights and notes ("bjp.hl": {book: [{id, path, ch, b, o, q, c, n, pct, t}]}) */
+  function hlAll() { var m = jget(KEY_HL, {}); return m && typeof m === "object" ? m : {}; }
+  function bookHls() { var a = hlAll()[bookId()]; return Array.isArray(a) ? a : []; }
+  function saveHls(list) {
+    var all = hlAll(), id = bookId();
+    if (!id) return;
+    if (list.length) all[id] = list; else delete all[id];
+    jset(KEY_HL, all);
+  }
+  function blockOf(node) {
+    var e = node && (node.nodeType === 1 ? node : node.parentElement);
+    e = e && e.closest ? e.closest(HL_SEL) : null;
+    return e && $.flow.contains(e) ? e : null;
+  }
+  function textOffset(block, node, off) {
+    try { var r = document.createRange(); r.setStart(block, 0); r.setEnd(node, off); return r.toString().length; } catch (e) { return -1; }
+  }
+  /* wrap the characters start..end of a block's text in <mark> elements (one per text node; formulas are left alone) */
+  function wrapRange(block, start, end, id, color, cls) {
+    var w = document.createTreeWalker(block, NodeFilter.SHOW_TEXT), n, acc = 0, todo = [], first = null;
+    while ((n = w.nextNode())) {
+      var len = n.nodeValue.length, a = Math.max(start, acc), b = Math.min(end, acc + len);
+      if (b > a && !(n.parentElement && n.parentElement.closest("mjx-container, mark"))) todo.push([n, a - acc, b - acc]);
+      acc += len;
+      if (acc >= end) break;
+    }
+    todo.forEach(function (x) {
+      var node = x[0];
+      if (x[2] < node.nodeValue.length) node.splitText(x[2]);
+      if (x[1] > 0) node = node.splitText(x[1]);
+      var m = document.createElement("mark");
+      m.className = cls || "rd-hl rd-hl-" + color;
+      if (id) m.setAttribute("data-hl", id);
+      node.parentNode.insertBefore(m, node);
+      m.appendChild(node);
+      if (!first) first = m;
+    });
+    return first;
+  }
+  function applyHighlights() {
+    var list = bookHls().filter(function (h) { return h.path === S.path; });
+    if (!list.length) return;
+    var blocks = $.flow.querySelectorAll(HL_SEL);
+    list.forEach(function (h) {
+      var b = blocks[h.b], t = b ? b.textContent : "", o = h.o;
+      if (!b || t.substr(o, h.q.length) !== h.q) {
+        o = b ? t.indexOf(h.q) : -1;
+        if (o < 0) {
+          for (var k = 0; k < blocks.length; k++) { o = blocks[k].textContent.indexOf(h.q); if (o >= 0) { b = blocks[k]; break; } }
+        }
+      }
+      if (b && o >= 0) {
+        var m = wrapRange(b, o, o + h.q.length, h.id, h.c);
+        if (m && h.n) m.classList.add("rd-hl-note");
+      }
+    });
+  }
+  function onSelection() {
+    if (!S.open || S.panel || S.zoomOpen) return;
+    var sel = window.getSelection && window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) { hideSelbar(); return; }
+    var r = sel.getRangeAt(0);
+    if (!$.flow.contains(r.commonAncestorContainer) || !blockOf(r.startContainer) || String(sel).trim().length < 2) { hideSelbar(); return; }
+    S.sel = r.cloneRange();
+    var rects = r.getClientRects(), r0 = rects[0] || r.getBoundingClientRect(), r1 = rects[rects.length - 1] || r0;
+    $.selbar.hidden = false;
+    var W = S.root.clientWidth, H = S.root.clientHeight, bw = $.selbar.offsetWidth, bh = $.selbar.offsetHeight;
+    var coarse = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+    var x = clamp(r0.left + (r1.right - r0.left) / 2 - bw / 2, 8, W - bw - 8);
+    // above the selection with a mouse; below it on touch screens, where the system shows its own menu above
+    var y = coarse ? r1.bottom + 14 : r0.top - bh - 10;
+    if (y < 8) y = r1.bottom + 14;
+    if (y + bh > H - 8) y = Math.max(8, r0.top - bh - 10);
+    $.selbar.style.left = x + "px";
+    $.selbar.style.top = y + "px";
+  }
+  function hideSelbar() { if ($.selbar && !$.selbar.hidden) { $.selbar.hidden = true; } S.sel = null; }
+  function createHighlight(color) {
+    var r = S.sel;
+    if (!r) return null;
+    var b1 = blockOf(r.startContainer), b2 = blockOf(r.endContainer);
+    if (!b1) return null;
+    var start = textOffset(b1, r.startContainer, r.startOffset);
+    var end = b2 === b1 ? textOffset(b1, r.endContainer, r.endOffset) : b1.textContent.length;
+    if (start < 0 || end <= start) return null;
+    var q = b1.textContent.slice(start, end);
+    var lead = q.length - q.replace(/^\s+/, "").length;
+    q = q.trim();
+    start += lead;
+    end = start + q.length;
+    if (q.length < 1) return null;
+    var blocks = [].slice.call($.flow.querySelectorAll(HL_SEL));
+    var h = { id: "h" + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), path: S.path, ch: S.title, b: blocks.indexOf(b1), o: start, q: q, c: color, n: "", pct: bookPct(), t: Date.now() };
+    var list = bookHls();
+    list.push(h);
+    saveHls(list);
+    var m = wrapRange(b1, start, end, h.id, color);
+    try { window.getSelection().removeAllRanges(); } catch (e) { /* ignore */ }
+    hideSelbar();
+    return { h: h, m: m };
+  }
+  function onSelbarClick(e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    var c = b.getAttribute("data-hl"), act = b.getAttribute("data-act");
+    if (c) { if (createHighlight(c)) announce("Highlighted"); return; }
+    if (act === "note") { var x = createHighlight("yellow"); if (x && x.m) showHlPop(x.m, true); return; }
+    if (act === "copy") {
+      var t = S.sel ? S.sel.toString() : "";
+      try { if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { announce("Copied"); }, function () {}); } catch (er) { /* ignore */ }
+      hideSelbar();
+      try { window.getSelection().removeAllRanges(); } catch (er2) { /* ignore */ }
+    }
+  }
+  function findHl(id) { var l = bookHls(); for (var i = 0; i < l.length; i++) if (l[i].id === id) return { list: l, i: i, h: l[i] }; return null; }
+  function showHlPop(m, focusNote) {
+    var id = m.getAttribute("data-hl"), f = findHl(id);
+    if (!f) return;
+    S.hlPop = id;
+    openPop('<div class="rd-hlpop"><div class="rd-hlpop-row">' + HL_COLORS.map(function (c) {
+      return '<button type="button" class="rd-hlc rd-hlc-' + c + (c === f.h.c ? " on" : "") + '" data-hlc="' + c + '" aria-label="Colour: ' + c + '" aria-pressed="' + (c === f.h.c) + '"></button>';
+    }).join("") + '<button type="button" class="rd-hl-del" aria-label="Remove the highlight" title="Remove">' + ICON.trash + "</button></div>" +
+      '<label class="rd-sr" for="rd-note-in">Note</label><textarea id="rd-note-in" class="rd-note-in" rows="3" placeholder="Add a note…">' + escapeHtml(f.h.n || "") + "</textarea>" +
+      '<div class="rd-pop-foot"><button type="button" class="rd-pop-save">Save</button></div></div>', m, "hl");
+    if (focusNote) { var ta = $.pop.querySelector("textarea"); try { ta.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+  }
+  function marksOf(id) { return $.flow.querySelectorAll('mark[data-hl="' + id + '"]'); }
+  function onHlPopClick(e) {
+    if (!S.hlPop || !$.pop.classList.contains("rd-pop-hl")) return false;
+    var f = findHl(S.hlPop), i, ms;
+    if (!f) return false;
+    var c = e.target.closest("[data-hlc]");
+    if (c) {
+      f.h.c = c.getAttribute("data-hlc");
+      saveHls(f.list);
+      ms = marksOf(f.h.id);
+      for (i = 0; i < ms.length; i++) ms[i].className = "rd-hl rd-hl-" + f.h.c + (f.h.n ? " rd-hl-note" : "");
+      var cs = $.pop.querySelectorAll("[data-hlc]");
+      for (i = 0; i < cs.length; i++) { cs[i].classList.toggle("on", cs[i] === c); cs[i].setAttribute("aria-pressed", String(cs[i] === c)); }
+      return true;
+    }
+    if (e.target.closest(".rd-hl-del")) {
+      f.list.splice(f.i, 1);
+      saveHls(f.list);
+      ms = marksOf(f.h.id);
+      for (i = 0; i < ms.length; i++) { var p = ms[i].parentNode; while (ms[i].firstChild) p.insertBefore(ms[i].firstChild, ms[i]); p.removeChild(ms[i]); p.normalize(); }
+      closePop();
+      announce("Highlight removed");
+      return true;
+    }
+    if (e.target.closest(".rd-pop-save")) {
+      f.h.n = $.pop.querySelector("textarea").value.trim();
+      saveHls(f.list);
+      ms = marksOf(f.h.id);
+      for (i = 0; i < ms.length; i++) ms[i].classList.toggle("rd-hl-note", !!f.h.n);
+      closePop();
+      announce(f.h.n ? "Note saved" : "Saved");
+      return true;
+    }
+    return e.target.closest(".rd-hlpop") ? true : false;
+  }
+  function renderHls() {
+    var list = bookHls().slice().sort(byPlace);
+    if (!list.length) {
+      $.hlList.innerHTML = '<p class="rd-note rd-empty">' + ICON.note + "No highlights or notes in this book yet. Select a passage to highlight it or to add a note.</p>";
+      return;
+    }
+    $.hlList.innerHTML = '<ul class="rd-items">' + list.map(function (h) {
+      return '<li class="rd-it rd-it-hl rd-it-' + escapeHtml(h.c) + '"><button type="button" class="rd-it-go" data-id="' + escapeHtml(h.id) + '">' +
+        '<span class="rd-it-q">' + escapeHtml(clip(h.q, 220)) + "</span>" + (h.n ? '<span class="rd-it-n">' + escapeHtml(h.n) + "</span>" : "") +
+        '<span class="rd-it-meta">' + escapeHtml(clip(h.ch || "", 60)) + (typeof h.pct === "number" ? " · " + Math.round(h.pct) + "%" : "") + "</span></button>" +
+        '<button type="button" class="rd-it-del" data-id="' + escapeHtml(h.id) + '" aria-label="Remove this highlight" title="Remove">' + ICON.trash + "</button></li>";
+    }).join("") + "</ul>";
+  }
+  function onHlListClick(e) {
+    var b = e.target.closest("button[data-id]");
+    if (!b) return;
+    var f = findHl(b.getAttribute("data-id"));
+    if (!f) return;
+    if (b.classList.contains("rd-it-del")) {
+      f.list.splice(f.i, 1);
+      saveHls(f.list);
+      var ms = marksOf(f.h.id);
+      for (var i = 0; i < ms.length; i++) { var p = ms[i].parentNode; while (ms[i].firstChild) p.insertBefore(ms[i].firstChild, ms[i]); p.removeChild(ms[i]); p.normalize(); }
+      renderHls();
+      return;
+    }
+    togglePanel("toc");
+    if (f.h.path === S.path) { var m = marksOf(f.h.id)[0]; if (m) goToEl(m, false); }
+    else { pushBack(); loadChapter(location.origin + f.h.path, { hl: f.h.id }); }
+  }
+
+  /* ---------------------------------------------------------------- search of the book's text (<book>/search.json) */
+  var findCache = {};
+  function normMap(str) {
+    var out = "", map = [];
+    for (var i = 0; i < str.length; i++) {
+      var d = str.charAt(i).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      if (/\s/.test(d)) d = " ";
+      for (var k = 0; k < d.length; k++) { out += d.charAt(k); map.push(i); }
+    }
+    return { n: out, m: map };
+  }
+  function ensureFindIndex() {
+    var b = bookOfPath(S.path);
+    if (!b) return Promise.reject(new Error("no book"));
+    if (findCache[b.id]) return findCache[b.id];
+    var dec = document.createElement("textarea");
+    var p = fetch(location.origin + BOOK_ROOT + b.path + "/search.json", { credentials: "same-origin" }).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
+    }).then(function (j) {
+      var pages = {};
+      (j.docs || []).forEach(function (d) { if (d.location.indexOf("#") < 0) pages[d.location] = d.title; });
+      return (j.docs || []).filter(function (d) { return d.text; }).map(function (d) {
+        dec.innerHTML = String(d.text).replace(/<[^>]+>/g, " ");
+        var text = dec.value.replace(/\s+/g, " ").trim();
+        var nm = normMap(text);
+        return { loc: d.location, title: d.title, page: pages[d.location.split("#")[0]] || "", text: text, n: nm.n, m: nm.m };
+      });
+    });
+    findCache[b.id] = p;
+    p.catch(function () { if (findCache[b.id] === p) delete findCache[b.id]; });
+    return p;
+  }
+  function onFindInput() {
+    var raw = $.findIn.value.trim(), q = normq(raw);
+    if (q.length < 2) { $.findRes.innerHTML = q ? "" : '<p class="rd-note">Type a word or a phrase to search the text of this book.</p>'; return; }
+    $.findRes.innerHTML = '<p class="rd-note">Searching…</p>';
+    ensureFindIndex().then(function (docs) {
+      if (normq($.findIn.value.trim()) !== q) return;
+      var hits = [], total = 0;
+      for (var i = 0; i < docs.length && hits.length < 120; i++) {
+        var d = docs[i], at = d.n.indexOf(q), k = 0;
+        while (at >= 0 && k < 3) {
+          total++;
+          var s0 = d.m[Math.max(0, at - 60)], e0 = d.m[Math.min(d.m.length - 1, at + q.length + 70)];
+          var a0 = d.m[at], a1 = d.m[at + q.length - 1] + 1;
+          var pre = d.text.slice(s0, a0), mid = d.text.slice(a0, a1), post = d.text.slice(a1, e0 + 1);
+          hits.push({ loc: d.loc, title: d.title, page: d.page, html: (s0 > 0 ? "…" : "") + escapeHtml(pre.replace(/^\S*\s/, s0 > 0 ? "" : "$&")) + "<mark>" + escapeHtml(mid) + "</mark>" + escapeHtml(post.replace(/\s\S*$/, "")) + "…" });
+          k++;
+          at = d.n.indexOf(q, at + q.length);
+        }
+      }
+      S.findHits = hits;
+      S.findQ = raw;
+      if (!hits.length) { $.findRes.innerHTML = '<p class="rd-note">Nothing in this book matches “' + escapeHtml(raw) + "”.</p>"; return; }
+      var out = '<p class="rd-find-n">' + (hits.length >= 120 ? "More than 100 places" : hits.length === 1 ? "1 place" : hits.length + " places") + "</p><ul class=\"rd-items\">", lastPage = null;
+      hits.forEach(function (h, n) {
+        if (h.page !== lastPage) { out += '<li class="rd-find-pg">' + escapeHtml(h.page || h.title) + "</li>"; lastPage = h.page; }
+        out += '<li><button type="button" class="rd-fr" data-i="' + n + '">' + (h.title && h.title !== h.page ? '<span class="rd-fr-t">' + escapeHtml(h.title) + "</span>" : "") +
+          '<span class="rd-fr-x">' + h.html + "</span></button></li>";
+      });
+      $.findRes.innerHTML = out + "</ul>";
+    }, function () {
+      $.findRes.innerHTML = '<p class="rd-note">' + (navigator.onLine === false ? "The search of this book is not available offline. Keep the book for offline reading, or search once while online." : "The search could not be loaded. Check the connection and try again.") + "</p>";
+    });
+  }
+  function onFindKey(e) {
+    if (e.key === "Enter") { var f = $.findRes.querySelector(".rd-fr"); if (f) { e.preventDefault(); f.click(); } }
+    else if (e.key === "ArrowDown") { var g = $.findRes.querySelector(".rd-fr"); if (g) { e.preventDefault(); g.focus(); } }
+  }
+  function onFindClick(e) {
+    var b = e.target.closest(".rd-fr");
+    if (!b) return;
+    var h = S.findHits && S.findHits[+b.getAttribute("data-i")];
+    if (!h) return;
+    togglePanel("find");
+    var u = new URL(location.origin + BOOK_ROOT + h.loc), where = { hash: u.hash || "", find: S.findQ };
+    if (u.pathname === S.path) {
+      clearFlash();
+      var start = u.hash ? byId($.flow, safeDecode(u.hash.slice(1))) : null, m = flashFind(S.findQ, start);
+      var cur = captureAnchor();
+      if (m) goToEl(m, true); else if (!(u.hash && jumpHash(u.hash))) goto(0, true);
+      S.backStack.push({ url: S.url, anchor: cur });
+      updateBackChip();
+    } else { pushBack(); loadChapter(u.origin + u.pathname, where); }
+  }
+  /* the first place at or after `start` where the words occur, marked for a moment */
+  function flashFind(q, start) {
+    var nq = normq(q);
+    if (!nq) return null;
+    var w = document.createTreeWalker($.flow, NodeFilter.SHOW_TEXT), n, began = !start;
+    while ((n = w.nextNode())) {
+      if (!began) { if (start.contains(n) || (start.compareDocumentPosition(n) & 4)) began = true; else continue; }
+      if (n.parentElement && n.parentElement.closest("mjx-container")) continue;
+      var nm = normMap(n.nodeValue), at = nm.n.indexOf(nq);
+      if (at < 0) continue;
+      var a = nm.m[at], b = nm.m[at + nq.length - 1] + 1;
+      if (b < n.nodeValue.length) n.splitText(b);
+      var node = a > 0 ? n.splitText(a) : n;
+      var m = document.createElement("mark");
+      m.className = "rd-flash";
+      node.parentNode.insertBefore(m, node);
+      m.appendChild(node);
+      S.flashT = setTimeout(clearFlash, 4000);
+      return m;
+    }
+    return null;
+  }
+  function clearFlash() {
+    clearTimeout(S.flashT);
+    var ms = $.flow.querySelectorAll("mark.rd-flash");
+    for (var i = 0; i < ms.length; i++) { var p = ms[i].parentNode; while (ms[i].firstChild) p.insertBefore(ms[i].firstChild, ms[i]); p.removeChild(ms[i]); p.normalize(); }
+  }
+
+  /* ---------------------------------------------------------------- the slider over the whole book, a mark per chapter */
+  function updateScrub(pct) {
+    if (!$.range || S.scrubbing) return;
+    var v = pct !== null && pct !== undefined ? pct * 10 : (S.n > 1 ? S.page / (S.n - 1) * 1000 : 0);
+    $.range.value = String(Math.round(v));
+    $.range.setAttribute("aria-valuetext", pct !== null && pct !== undefined ? Math.round(pct) + "% of the book, " + (S.title || "") : "Page " + (S.page + 1) + " of " + S.n);
+    $.botch.textContent = S.title || "";
+    if (S.model && $.ticks.getAttribute("data-book") !== S.modelBook) {
+      var m = S.model, out = "";
+      m.order.forEach(function (f, i) { if (i) out += '<i style="left:' + (m.units[f].before / m.total * 100).toFixed(2) + '%"></i>'; });
+      $.ticks.innerHTML = out;
+      $.ticks.setAttribute("data-book", S.modelBook);
+    } else if (!S.model) { $.ticks.innerHTML = ""; $.ticks.removeAttribute("data-book"); }
+  }
+  function scrubTarget(v) {
+    var m = S.model;
+    if (!m || !m.total) return null;
+    var x = v / 1000 * m.total, f = m.order[m.order.length - 1];
+    for (var i = 0; i < m.order.length; i++) { var u = m.units[m.order[i]]; if (x < u.before + u.w) { f = m.order[i]; break; } }
+    var un = m.units[f];
+    return { f: f, frac: clamp((x - un.before) / un.w, 0, 0.995), title: (S.modelTitles && S.modelTitles[f]) || "" };
+  }
+  function onScrubInput() {
+    S.scrubbing = true;
+    showChrome(true);
+    var v = +$.range.value, t = scrubTarget(v);
+    $.tip.textContent = t ? clip(t.title, 60) + " · " + Math.round(v / 10) + "%" : "Page " + (Math.round(v / 1000 * Math.max(0, S.n - 1)) + 1) + " of " + S.n;
+    $.tip.hidden = false;
+    var w = $.range.clientWidth, tw = $.tip.offsetWidth;
+    $.tip.style.left = clamp(v / 1000 * w - tw / 2, 0, Math.max(0, w - tw)) + "px";
+  }
+  function onScrubChange() {
+    S.scrubbing = false;
+    $.tip.hidden = true;
+    var v = +$.range.value, t = scrubTarget(v);
+    if (!t) { goto(Math.round(v / 1000 * Math.max(0, S.n - 1)), true); return; }
+    if (fileOfPath(S.path) === t.f) { goto(Math.floor(t.frac * S.n), true); armHide(); return; }
+    pushBack();
+    loadChapter(S.modelBase + t.f, { anchor: { i: null, n: 0, f: t.frac } });
+  }
+
+  /* ---------------------------------------------------------------- full-screen view: figures (zoom and pan), tables and code */
+  var Z = { s: 1, x: 0, y: 0, pts: {}, doc: false };
+  function zoomApply() {
+    var t = $.zoom.querySelector(".rd-zoom-img");
+    if (t) t.style.transform = "translate(" + Z.x + "px," + Z.y + "px) scale(" + Z.s + ")";
+    var d = $.zoom.querySelector(".rd-zoom-doc");
+    if (d) d.style.fontSize = (Z.s * 100).toFixed(0) + "%";
+  }
+  function zoomBy(f) {
+    Z.s = clamp(Z.s * f, Z.doc ? 0.6 : 1, Z.doc ? 2.4 : 6);
+    if (Z.s === 1 && !Z.doc) { Z.x = 0; Z.y = 0; }
+    zoomApply();
+  }
+  function openZoom(html, cap, doc) {
+    S.zoomOpen = true;
+    Z = { s: 1, x: 0, y: 0, pts: {}, doc: doc };
+    closePop();
+    hideSelbar();
+    $.zoom.classList.toggle("is-doc", !!doc);
+    $.zoom.querySelector(".rd-zoom-stage").innerHTML = html;
+    var c = $.zoom.querySelector(".rd-zoom-cap");
+    c.innerHTML = cap || "";
+    c.hidden = !cap;
+    $.zoom.hidden = false;
+    zoomApply();
+    try { $.zoom.querySelector('[data-z="close"]').focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+  }
+  function openZoomImg(img) {
+    var fig = img.closest("figure"), cap = fig && fig.querySelector("figcaption");
+    openZoom('<img class="rd-zoom-img" src="' + escapeHtml(img.currentSrc || img.src) + '" alt="' + escapeHtml(img.getAttribute("alt") || "") + '" draggable="false">',
+      cap ? previewHtml(cap) : "", false);
+  }
+  function openZoomDoc(box) {
+    var c = box.cloneNode(true), junk = c.querySelectorAll(".rd-expand, [id]");
+    for (var i = 0; i < junk.length; i++) { if (junk[i].classList.contains("rd-expand")) junk[i].parentNode.removeChild(junk[i]); else junk[i].removeAttribute("id"); }
+    c.classList.remove("rd-tbl-flow", "rd-tbl-tight", "rd-zoomable");
+    var t = c.querySelector("table");
+    if (t) t.style.zoom = "";
+    openZoom('<div class="rd-zoom-doc md-typeset">' + c.outerHTML + "</div>", "", true);
+  }
+  function closeZoom() {
+    if (!S.zoomOpen) return;
+    S.zoomOpen = false;
+    $.zoom.hidden = true;
+    $.zoom.querySelector(".rd-zoom-stage").innerHTML = "";
+    try { $.flow.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+  }
+  function wireZoom() {
+    var z = $.zoom, st = z.querySelector(".rd-zoom-stage"), last = 0, pinch = null, drag = null;
+    z.querySelector(".rd-zoom-bar").addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b) return;
+      var a = b.getAttribute("data-z");
+      if (a === "close") closeZoom(); else zoomBy(a === "in" ? 1.4 : 1 / 1.4);
+    });
+    st.addEventListener("pointerdown", function (e) {
+      if (Z.doc) return;
+      Z.pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      try { st.setPointerCapture(e.pointerId); } catch (x) { /* ignore */ }
+      var ids = Object.keys(Z.pts);
+      if (ids.length === 2) {
+        var a = Z.pts[ids[0]], b = Z.pts[ids[1]];
+        pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, s: Z.s };
+        drag = null;
+      } else if (ids.length === 1) drag = { x: e.clientX, y: e.clientY, ox: Z.x, oy: Z.y, moved: false, onImg: !!e.target.closest(".rd-zoom-img") };
+    });
+    st.addEventListener("pointermove", function (e) {
+      if (Z.doc || !Z.pts[e.pointerId]) return;
+      Z.pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var ids = Object.keys(Z.pts);
+      if (pinch && ids.length >= 2) {
+        var a = Z.pts[ids[0]], b = Z.pts[ids[1]];
+        Z.s = clamp(pinch.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, 1, 6);
+        if (Z.s === 1) { Z.x = 0; Z.y = 0; }
+        zoomApply();
+      } else if (drag) {
+        var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true;
+        if (Z.s > 1) { Z.x = drag.ox + dx; Z.y = drag.oy + dy; zoomApply(); }
+      }
+    });
+    function up(e) {
+      if (Z.doc || !Z.pts[e.pointerId]) return;
+      delete Z.pts[e.pointerId];
+      if (Object.keys(Z.pts).length < 2) pinch = null;
+      if (drag && !drag.moved && !Object.keys(Z.pts).length) {
+        var now = Date.now();
+        if (now - last < 320) { Z.s = Z.s > 1 ? 1 : 2.5; Z.x = 0; Z.y = 0; zoomApply(); last = 0; }
+        else {
+          last = now;
+          if (!drag.onImg && Z.s === 1) setTimeout(function () { if (last === now) closeZoom(); }, 330);
+        }
+      }
+      if (!Object.keys(Z.pts).length) drag = null;
+    }
+    st.addEventListener("pointerup", up);
+    st.addEventListener("pointercancel", up);
+    st.addEventListener("wheel", function (e) {
+      if (Z.doc && !e.ctrlKey) return;
+      e.preventDefault();
+      zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15);
+    }, { passive: false });
+  }
+
   /* ---------------------------------------------------------------- full screen */
   function fsElement() { return document.fullscreenElement || document.webkitFullscreenElement || null; }
   function toggleFullscreen() {
@@ -1477,7 +2305,7 @@
   }
 
   /* ---------------------------------------------------------------- input: pointer, wheel, keyboard */
-  var INTERACTIVE = "a,button,summary,input,select,textarea,.rd-panel,.rd-pop,.rd-top,.rd-back,[role=button]";
+  var INTERACTIVE = "a,button,summary,input,select,textarea,.rd-panel,.rd-pop,.rd-top,.rd-bot,.rd-back,.rd-selbar,[role=button]";
 
   function onPointerDown(e) {
     if (!S.open || S.loading) return;
@@ -1554,6 +2382,13 @@
     if (target && target.closest && target.closest(INTERACTIVE)) return;
     if ($.pop && !$.pop.hidden) { closePop(); return; }
     if (S.panel) { closePanels(); armHide(); return; }
+    if (!$.selbar.hidden) { hideSelbar(); return; }
+    if (target && target.closest) {
+      var hl = target.closest("mark.rd-hl");
+      if (hl) { showHlPop(hl); return; }
+      var img = target.closest("figure img, img.tikz, .rd-flow p > img");
+      if (img && $.flow.contains(img)) { openZoomImg(img); return; }
+    }
     var f = x / S.root.clientWidth;
     if (f < 1 / 3) turn(-1);
     else if (f > 2 / 3) turn(1);
@@ -1576,20 +2411,35 @@
   function onKey(e) {
     if (!S.open) return;
     var k = e.key;
+    if (S.zoomOpen) {
+      if (k === "Escape" || k === "Esc") { e.preventDefault(); closeZoom(); }
+      else if (k === "+" || k === "=") { e.preventDefault(); zoomBy(1.4); }
+      else if (k === "-" || k === "_") { e.preventDefault(); zoomBy(1 / 1.4); }
+      return;
+    }
     if (k === "Escape" || k === "Esc") {
       if (fsElement()) return; // the browser leaves full screen first
       e.preventDefault();
-      if ($.pop && !$.pop.hidden) closePop();
+      if (!$.selbar.hidden) { hideSelbar(); try { window.getSelection().removeAllRanges(); } catch (x) { /* ignore */ } }
+      else if ($.pop && !$.pop.hidden) closePop();
       else if (S.panel === "toc" && $.goIn && $.goIn.value) { resetGoto(); try { $.goIn.focus(); } catch (x) { /* ignore */ } }
       else if (S.panel) { togglePanel(S.panel); }
       else close();
       return;
     }
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var ae = document.activeElement, atag = ae && ae.tagName;
+    if (atag === "TEXTAREA" || (atag === "INPUT" && ae.type !== "radio") || (ae && ae.isContentEditable)) return;
     if (S.panel) {
       if (groupArrow(e)) e.preventDefault();
       return;
     }
+    if ($.pop && !$.pop.hidden && $.pop.contains(ae)) return;
+    var cmd = { c: function () { togglePanel("toc"); }, a: function () { togglePanel("set"); }, "/": function () { togglePanel("find"); },
+      b: toggleBookmark, "?": function () { togglePanel("help"); }, t: cycleTheme, f: toggleFullscreen,
+      "]": function () { if (S.rec && S.rec.next) loadChapter(S.rec.next, "start"); }, "[": function () { if (S.rec && S.rec.prev) loadChapter(S.rec.prev, "start"); },
+      "+": function () { stepSize(1); }, "=": function () { stepSize(1); }, "-": function () { stepSize(-1); }, "_": function () { stepSize(-1); } }[k.length === 1 ? k.toLowerCase() : ""];
+    if (cmd && !(k === "f" && $.fs.hidden)) { e.preventDefault(); showChrome(false); cmd(); return; }
     var tag = document.activeElement && document.activeElement.tagName;
     var onButton = tag === "BUTTON" || tag === "A" || tag === "INPUT" || tag === "SELECT";
     var dir = 0;

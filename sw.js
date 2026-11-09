@@ -11,11 +11,13 @@
  *   images, styles, scripts, fonts     cache first
  *   Google Fonts, MathJax (CDN)        kept after first use, so fonts and mathematics work offline
  *   volumes kept for offline reading   the "bjp-offline" cache, filled by assets/app.js; kept across deploys
+ *   videos (.mp4, .webm, ...)          from the kept volume when there is one (answering range requests, which players make),
+ *                                      otherwise straight from the network
  */
 "use strict";
 
-var VERSION = "8860867dc8ab";
-var SHELL = ["index.html", "about.html", "offline.html", "sitemap.xml", "manifest.webmanifest", "library.json", "assets/app.css", "assets/app.js", "assets/extra.css", "assets/icons/apple-touch-icon.png", "assets/icons/favicon-32.png", "assets/icons/favicon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/logo.svg", "assets/icons/maskable-512.png", "assets/images/favicon.png", "assets/javascripts/bundle.d7400e89.min.js", "assets/javascripts/workers/search.2c215733.min.js", "assets/mathjax.js", "assets/reader.css", "assets/reader.js", "assets/stylesheets/main.ec1eaa64.min.css", "assets/stylesheets/palette.ab4e12ef.min.css"];
+var VERSION = "cf7d80bca0d5";
+var SHELL = ["index.html", "about.html", "offline.html", "sitemap.xml", "manifest.webmanifest", "library.json", "assets/app.css", "assets/app.js", "assets/extra.css", "assets/icons/apple-touch-icon.png", "assets/icons/favicon-32.png", "assets/icons/favicon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/logo.svg", "assets/icons/maskable-512.png", "assets/images/favicon.png", "assets/javascripts/bundle.d7400e89.min.js", "assets/javascripts/workers/search.2c215733.min.js", "assets/mathjax.js", "assets/reader.css", "assets/reader.js", "assets/stylesheets/main.ec1eaa64.min.css", "assets/stylesheets/palette.ab4e12ef.min.css", "assets/theme.css", "assets/viz-kit.js", "assets/viz.css", "assets/viz.js"];
 var BOOKS = [];                           // the books' folders, longest first
 
 var SCOPE = self.registration.scope;               // the site root, ending in "/"
@@ -188,6 +190,28 @@ function searchIndex(event, req) {
   return cacheFirst(event, new Request(url, { credentials: "same-origin" }), STATIC_CACHE, MAX_STATIC);
 }
 
+/* a video of a kept volume: players ask for byte ranges, which a cached whole file must answer with 206 */
+var MEDIA_RE = /\.(mp4|m4v|webm|ogv)$/i;
+function mediaResponse(event, req) {
+  var range = req.headers.get("range");
+  return matchIn(req.url, [KEEP_CACHE, STATIC_CACHE], { ignoreSearch: true }).then(function (hit) {
+    if (!hit) return fetch(req);
+    if (!range) return hit;
+    return hit.arrayBuffer().then(function (buf) {
+      var m = /bytes=(\d*)-(\d*)/.exec(range), size = buf.byteLength;
+      var start = m && m[1] !== "" ? parseInt(m[1], 10) : 0;
+      var end = m && m[2] !== "" ? Math.min(parseInt(m[2], 10), size - 1) : size - 1;
+      if (m && m[1] === "" && m[2] !== "") { start = Math.max(0, size - parseInt(m[2], 10)); end = size - 1; }
+      if (start >= size || start > end) return new Response(null, { status: 416, headers: { "Content-Range": "bytes */" + size } });
+      return new Response(buf.slice(start, end + 1), { status: 206, statusText: "Partial Content", headers: {
+        "Content-Type": hit.headers.get("Content-Type") || "video/mp4",
+        "Content-Range": "bytes " + start + "-" + end + "/" + size,
+        "Content-Length": String(end - start + 1)
+      } });
+    });
+  }, function () { return fetch(req); });
+}
+
 /* ------------------------------------------------------------------ routing */
 self.addEventListener("fetch", function (event) {
   var req = event.request;
@@ -206,6 +230,7 @@ self.addEventListener("fetch", function (event) {
       event.respondWith(networkFirst(event, req, STATIC_CACHE));
       return;
     }
+    if (MEDIA_RE.test(rel)) { event.respondWith(mediaResponse(event, req)); return; }
     if (STATIC_RE.test(rel)) event.respondWith(cacheFirst(event, req, STATIC_CACHE, MAX_STATIC));
     return;
   }

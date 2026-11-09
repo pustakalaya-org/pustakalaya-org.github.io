@@ -35,7 +35,8 @@
     kept: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/><path d="M9 9.5l2.2 2.2L15.5 7.5"/></svg>',
     book: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7c-1.6-1.3-3.9-2-8-2v13c4.1 0 6.4.7 8 2 1.6-1.3 3.9-2 8-2V5c-4.1 0-6.4.7-8 2zM12 7v13"/></svg>',
     back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
-    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
   };
 
   /* ---------------------------------------------------------------- helpers */
@@ -286,86 +287,62 @@
     }
   }
 
-  /* the panel on a volume's first page */
+  /* the control on the page of a book: one button, a line of status under it, a progress bar while keeping */
   function renderBox(box, vid) {
     if (!CAN_KEEP) return;
     if (!box.__bjp) {
       box.__bjp = true;
-      box.innerHTML =
-        '<div class="bo-main"><span class="bo-icon"></span>' +
-        '<div class="bo-text"><span class="bo-title"></span><span class="bo-sub" role="status" aria-live="polite"></span></div>' +
-        '<div class="bo-actions"><button type="button" class="bo-btn"></button></div></div>' +
-        '<div class="bo-bar" hidden><i></i></div>';
-      box.querySelector(".bo-btn").addEventListener("click", function () { act(vid); });
+      box.innerHTML = '<button type="button" class="pk-btn pk-btn-quiet bo-btn"></button>' +
+        '<span class="bo-sub" role="status" aria-live="polite"></span><span class="bo-bar" hidden><i></i></span>';
+      box.querySelector(".bo-btn").addEventListener("click", function () { if (state(vid) !== "kept") act(vid); });
+      box.querySelector(".bo-sub").addEventListener("click", function (e) { if (e.target.closest("button")) remove(vid); });
     }
     var s = state(vid), v = findVol(vid), m = st.meta[vid], job = st.jobs[vid];
-    var title, sub, btn, btnCls = "bo-btn", icon = ICON.keep, disabled = false;
+    var label, icon = ICON.keep, sub = "", disabled = false, removable = false;
     if (s === "busy") {
-      title = "Keeping this book for offline reading…";
-      sub = job.total ? job.done + " of " + job.total + " files (" + pct(job) + "%)" : "Preparing…";
-      btn = "Cancel";
-      btnCls += " bo-quiet";
+      label = "Keeping\u2026 " + pct(job) + "%";
+      sub = job.total ? job.done + " of " + job.total + " files \u00b7 " : "";
+      sub += '<button type="button">Cancel</button>';
+      removable = true;
     } else if (s === "kept") {
-      title = "Available offline";
+      label = "Available offline";
       icon = ICON.kept;
-      sub = "Kept on this device " + ago(m.t).replace(/^on /, "on ") + " · about " + mb(m.bytes) +
-        (job ? " · updating to the new edition…" : "");
-      btn = "Remove from this device";
-      btnCls += " bo-quiet";
+      sub = "Kept " + esc(ago(m.t)) + " \u00b7 about " + mb(m.bytes) + (job ? " \u00b7 updating\u2026" : "") + ' \u00b7 <button type="button">Remove</button>';
+      removable = true;
     } else if (s === "error") {
-      title = "Not everything could be kept";
-      sub = st.errors[vid] + " Check the connection and try again.";
-      btn = "Try again";
+      label = "Try again";
+      sub = esc(st.errors[vid] + " Check the connection.");
     } else {
-      title = "Read this book without a connection";
-      sub = v ? volSummary(v) + "." : "Every chapter, the front and back matter and the figures.";
-      btn = "Keep for offline reading";
+      label = "Keep for offline reading";
+      sub = v ? esc(volSummary(v)) : "";
       if (!online()) { disabled = true; sub = "Connect to the internet to keep this book."; }
     }
     box.className = "bjp-offline is-" + s;
-    box.querySelector(".bo-icon").innerHTML = icon;
-    box.querySelector(".bo-title").textContent = title;
-    box.querySelector(".bo-sub").textContent = sub;
     var b = box.querySelector(".bo-btn");
-    b.textContent = btn;
-    b.className = btnCls;
+    b.innerHTML = icon + "<span>" + esc(label) + "</span>";
     b.disabled = disabled;
+    b.setAttribute("aria-disabled", String(s === "kept"));
+    box.querySelector(".bo-sub").innerHTML = sub;
     var bar = box.querySelector(".bo-bar");
     bar.hidden = s !== "busy";
     bar.firstChild.style.width = pct(job) + "%";
+    void removable;
   }
 
-  /* the footer of a volume card on the home page */
+  /* a cover on the front page: greyed when it cannot be read offline, marked when it is kept on this device */
   function renderCardFooter(item, vid) {
     var unavailable = !online() && !st.meta[vid];
     item.classList.toggle("is-unavailable", unavailable && CAN_KEEP);
     if (!CAN_KEEP) return;
-    var f = item.querySelector(".vol-off");
-    if (!f) {
-      f = el("div", "vol-off",
-        '<span class="vo-state" role="status" aria-live="polite"></span><button type="button" class="vo-btn"></button><span class="vo-bar" hidden><i></i></span>');
-      item.appendChild(f);
-      item.classList.add("has-off");
-      f.querySelector(".vo-btn").addEventListener("click", function () { act(vid); });
-    }
-    var s = state(vid), v = findVol(vid), m = st.meta[vid], job = st.jobs[vid];
-    var name = item.querySelector(".vol-title");
-    var vname = name ? name.textContent : "this book";
-    var text, btn, label;
-    if (s === "busy") { text = "Keeping… " + pct(job) + "%"; btn = "Cancel"; label = "Stop keeping " + vname; }
-    else if (s === "kept") { text = ICON.kept + "<span>Available offline" + (job ? " (updating)" : "") + "</span>"; btn = "Remove"; label = "Remove " + vname + " from this device"; }
-    else if (s === "error") { text = "Not fully kept"; btn = "Try again"; label = "Try again to keep " + vname + " for offline reading"; }
-    else { text = v ? "about " + mb(v.bytes) : ""; btn = "Keep for offline reading"; label = "Keep " + vname + " for offline reading"; }
-    if (s === "kept") f.querySelector(".vo-state").innerHTML = text;
-    else f.querySelector(".vo-state").textContent = text;
-    var b = f.querySelector(".vo-btn");
-    b.textContent = btn;
-    b.setAttribute("aria-label", label);
-    b.disabled = s === "idle" && !online();
-    f.className = "vol-off is-" + s;
-    var bar = f.querySelector(".vo-bar");
-    bar.hidden = s !== "busy";
-    bar.firstChild.style.width = pct(job) + "%";
+    var cv = item.querySelector(".book-cover"), mark = item.querySelector(".vol-kept");
+    var kept = state(vid) === "kept";
+    if (kept && !mark && cv) {
+      mark = el("span", "vol-kept", ICON.check);
+      mark.setAttribute("title", "Available offline");
+      mark.setAttribute("role", "img");
+      mark.setAttribute("aria-label", "Available offline");
+      cv.appendChild(mark);
+    } else if (!kept && mark) mark.parentNode.removeChild(mark);
   }
 
   function act(vid) {
@@ -402,27 +379,35 @@
     return Object.keys(out).length;
   }
 
-  /* each cover: a thin progress bar and the percentage once the book has been read */
+  function shownPct(rec) {
+    var p = rec && typeof rec.pct === "number" ? clamp(rec.pct, 0, 100) : null;
+    return p === null ? null : (p >= 100 ? 100 : Math.max(0, Math.min(99, Math.round(p))));
+  }
+  /* each cover: a bar along its foot and the percentage under it once the book has been read */
   function markStarted() {
     var all = booksRec(), items = document.querySelectorAll(".vol-item[data-vol]");
     for (var i = 0; i < items.length; i++) {
       var it = items[i], vid = it.getAttribute("data-vol"), rec = all[vid];
-      var pct = rec && typeof rec.pct === "number" ? clamp(rec.pct, 0, 100) : null;
+      var pct = shownPct(rec);
       var started = !!(rec && rec.path) || seenPages(vid) > 0;
-      var card = it.querySelector(".vol-card"), row = it.querySelector(".vol-prog");
+      var cv = it.querySelector(".book-cover"), cap = it.querySelector(".vol-cap");
       it.classList.toggle("is-started", started);
-      var old = it.querySelector(".vol-started");
-      if (old) old.parentNode.removeChild(old);
-      if (!started || !card) { if (row) row.parentNode.removeChild(row); continue; }
-      if (!row) {
-        row = el("span", "vol-prog");
-        var cv = card.querySelector(".book-cover");
-        if (cv) cv.insertAdjacentElement("afterend", row); else card.appendChild(row);
+      var olds = it.querySelectorAll(".vol-prog, .vol-pct, .vol-done");
+      for (var k = 0; k < olds.length; k++) olds[k].parentNode.removeChild(olds[k]);
+      if (!started || !cv || !cap) continue;
+      var lab = el("span", "vol-pct");
+      if (pct === null) lab.textContent = "Started";
+      else {
+        lab.innerHTML = pct >= 100 ? "Finished" : pct + "% read";
+        var bar = el("span", "vol-prog", '<i style="width:' + pct + '%"></i>');
+        bar.setAttribute("role", "progressbar");
+        bar.setAttribute("aria-label", "Progress in this book");
+        bar.setAttribute("aria-valuemin", "0");
+        bar.setAttribute("aria-valuemax", "100");
+        bar.setAttribute("aria-valuenow", String(pct));
+        cv.appendChild(bar);
       }
-      if (pct === null) { row.innerHTML = '<span class="vp-text">Started</span>'; continue; }
-      var shown = pct >= 100 ? 100 : Math.max(0, Math.min(99, Math.round(pct)));
-      row.innerHTML = '<span class="vp-bar" role="progressbar" aria-label="Progress in this book" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' +
-        shown + '"><i style="width:' + shown + '%"></i></span><span class="vp-pct">' + shown + '%<span class="bjp-sr"> read</span></span>';
+      cap.appendChild(lab);
     }
   }
 
@@ -436,14 +421,14 @@
     return null;
   }
   function coverLook(item) {
-    var card = item && item.querySelector(".vol-card");
+    var card = item && (item.matches && item.matches(".vol-card") ? item : item.querySelector(".vol-card"));
     if (!card) return null;
     var cs = getComputedStyle(card), t = item.querySelector(".vol-title"), s = item.querySelector(".vol-sub");
     return { bg: cs.getPropertyValue("--cv-bg").trim(), fg: cs.getPropertyValue("--cv-fg").trim(), accent: cs.getPropertyValue("--cv-accent").trim(),
       title: t ? t.textContent : "", sub: s ? s.textContent : "", lang: t && t.getAttribute("lang") || "" };
   }
   function openBook(vid, item) {
-    var look = coverLook(item || document.querySelector('.vol-item[data-vol="' + vid + '"]'));
+    var look = coverLook(item || document.querySelector('.vol-item[data-vol="' + vid + '"], .pk-book[data-vol="' + vid + '"]'));
     return library().then(function () {
       var t = resumeTarget(vid);
       if (!t) return false;
@@ -477,23 +462,21 @@
   });
   function onShelfClick(e) {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var a = e.target.closest ? e.target.closest("a.vol-card, a.bc-item") : null;
+    var a = e.target.closest ? e.target.closest("a.vol-card, a.pk-cont, a.pk-mini, a.pk-read") : null;
     if (!a) return;
     var item = a.closest("[data-vol]");
     var vid = item && item.getAttribute("data-vol");
     if (!vid) return;
     e.preventDefault();
     e.stopPropagation();
-    var shelfItem = document.querySelector('.vol-item[data-vol="' + vid + '"]');
-    if (shelfItem) shelfItem.classList.add("is-opening");
+    var shelfItem = document.querySelector('.vol-item[data-vol="' + vid + '"]') || document.querySelector('.pk-book[data-vol="' + vid + '"]');
+    if (shelfItem && shelfItem.classList.contains("vol-item")) shelfItem.classList.add("is-opening");
     openBook(vid, shelfItem).then(function (ok) { if (!ok) location.assign(a.href); }, function () { location.assign(a.href); });
   }
   document.addEventListener("click", onShelfClick, true);
 
-  /* "Continue reading": the books opened last, most recent first */
-  function renderContinue() {
-    var box = document.querySelector(".bjp-continue");
-    if (!box) return;
+  /* "Continue reading": the book opened last, large, and the others opened recently as small covers */
+  function recentBooks() {
     var all = booksRec(), list = [];
     Object.keys(all).forEach(function (vid) {
       var r = all[vid], item = document.querySelector('.vol-item[data-vol="' + vid + '"]');
@@ -503,34 +486,51 @@
       list.push({ vid: vid, r: r, item: item });
     });
     list.sort(function (a, b) { return b.r.t - a.r.t; });
-    list = list.slice(0, 8);
+    return list;
+  }
+  function coverOf(item) {
+    var cover = item.querySelector(".book-cover");
+    if (!cover) return "";
+    var c = cover.cloneNode(true), junk = c.querySelectorAll(".vol-kept, .vol-prog, .vol-done");
+    for (var i = 0; i < junk.length; i++) junk[i].parentNode.removeChild(junk[i]);
+    return c.outerHTML;
+  }
+  function renderContinue() {
+    var box = document.querySelector(".bjp-continue");
+    if (!box) return;
+    var list = recentBooks().slice(0, 5);
     if (!list.length) { box.hidden = true; box.innerHTML = ""; return; }
-    var html = '<h2 class="bc-head" id="bc-head">Continue reading</h2><ul class="bc-list" aria-labelledby="bc-head">';
-    list.forEach(function (x) {
-      var cover = x.item.querySelector(".book-cover"), card = x.item.querySelector(".vol-card"), title = x.item.querySelector(".vol-title");
-      var lang = title && title.getAttribute("lang");
-      var pct = typeof x.r.pct === "number" ? (x.r.pct >= 100 ? 100 : Math.max(0, Math.min(99, Math.round(x.r.pct)))) : null;
-      var unavailable = !online() && CAN_KEEP && !st.meta[x.vid];
-      html += '<li><a class="bc-item" data-vol="' + esc(x.vid) + '" href="' + esc(location.origin + x.r.path) + '" style="' + esc(card ? card.getAttribute("style") || "" : "") + '">' +
-        '<span class="bc-cover" aria-hidden="true">' + (cover ? cover.outerHTML : "") + '</span>' +
-        '<span class="bc-info"><span class="bc-title"' + (lang ? ' lang="' + esc(lang) + '"' : "") + ">" + esc(title ? title.textContent : "") + "</span>" +
-        '<span class="bc-ch">' + esc(x.r.title || "") + "</span>" +
-        (pct === null ? "" : '<span class="bc-bar" role="progressbar" aria-label="Progress in this book" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></span>') +
-        '<span class="bc-meta">' + (pct === null ? "" : pct + "% · ") + esc(ago(x.r.t)) + (unavailable ? " · not kept for offline reading" : "") + "</span></span>" +
-        '<span class="bc-go">' + ICON.book + '<span>Resume</span></span></a></li>';
-    });
-    box.innerHTML = html + "</ul>";
+    var x = list[0], card = x.item.querySelector(".vol-card"), title = x.item.querySelector(".vol-title");
+    var lang = title && title.getAttribute("lang");
+    var pct = shownPct(x.r);
+    var unavailable = !online() && CAN_KEEP && !st.meta[x.vid];
+    var html = '<span class="pk-kick" id="bc-head">Continue reading</span>' +
+      '<a class="pk-cont" data-vol="' + esc(x.vid) + '" href="' + esc(location.origin + x.r.path) + '" style="' + esc(card ? card.getAttribute("style") || "" : "") + '" aria-describedby="bc-head">' +
+      '<span class="pk-cont-cover" aria-hidden="true">' + coverOf(x.item) + "</span>" +
+      '<span class="pk-cont-body"><span class="pk-cont-title"' + (lang ? ' lang="' + esc(lang) + '"' : "") + ">" + esc(title ? title.textContent : "") + "</span>" +
+      '<span class="pk-cont-ch">' + esc(x.r.title || "") + "</span>" +
+      (pct === null ? "" : '<span class="pk-bar" role="progressbar" aria-label="Progress in this book" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></span>') +
+      '<span class="pk-cont-meta">' + (pct === null ? "" : pct + "% \u00b7 ") + esc(ago(x.r.t)) + (unavailable ? " \u00b7 not kept for offline reading" : "") + "</span>" +
+      '<span class="pk-btn pk-btn-primary">' + ICON.book + "<span>Resume</span></span></span></a>";
+    if (list.length > 1) {
+      html += '<div class="pk-also"><span class="pk-also-lab">Also reading</span>';
+      list.slice(1).forEach(function (y) {
+        var c2 = y.item.querySelector(".vol-card"), t2 = y.item.querySelector(".vol-title");
+        html += '<a class="pk-mini" data-vol="' + esc(y.vid) + '" href="' + esc(location.origin + y.r.path) + '" style="' + esc(c2 ? c2.getAttribute("style") || "" : "") + '"' +
+          ' title="' + esc((t2 ? t2.textContent : "") + (shownPct(y.r) !== null ? " \u00b7 " + shownPct(y.r) + "%" : "")) + '" aria-label="Continue ' + esc(t2 ? t2.textContent : "") + '">' + coverOf(y.item) + "</a>";
+      });
+      html += "</div>";
+    }
+    box.innerHTML = html;
     box.hidden = false;
   }
 
-  /* the filter row (collections) and the title search above the shelves */
+  /* the title search in the hero and the collection chips */
   function wireShelf() {
-    var tools = document.querySelector(".bjp-shelf-tools");
-    if (!tools || tools.__bjp) return;
-    tools.__bjp = true;
-    tools.hidden = false;
-    var input = tools.querySelector("input"), chips = tools.querySelectorAll(".bjp-chip");
-    var none = document.querySelector(".bjp-none");
+    var input = document.getElementById("bjp-find-in"), home = document.querySelector(".pk-home");
+    if (!input || input.__bjp) return;
+    input.__bjp = true;
+    var chips = document.querySelectorAll(".bjp-chip"), none = document.querySelector(".bjp-none");
     var coll = "", q = "";
     function apply() {
       var secs = document.querySelectorAll(".bjp-coll"), total = 0, i, k;
@@ -538,15 +538,15 @@
         var sec = secs[i], show = !coll || sec.getAttribute("data-collection") === coll, n = 0;
         var items = sec.querySelectorAll(".vol-item");
         for (k = 0; k < items.length; k++) {
-          var t = items[k].querySelector(".vol-title"), s = items[k].querySelector(".vol-sub");
-          var hit = !q || norm((t ? t.textContent : "") + " " + (s ? s.textContent : "")).indexOf(q) >= 0;
+          var t = items[k].querySelector(".vol-title"), s2 = items[k].querySelector(".vol-sub");
+          var hit = !q || norm((t ? t.textContent : "") + " " + (s2 ? s2.textContent : "")).indexOf(q) >= 0;
           items[k].hidden = !hit;
           if (hit) n++;
         }
         sec.hidden = !show || n === 0;
-        sec.classList.toggle("is-filtering", !!q);
         if (show) total += n;
       }
+      if (home) home.classList.toggle("is-filtered", !!(q || coll));
       if (none) none.hidden = total > 0;
     }
     for (var c = 0; c < chips.length; c++) {
@@ -559,7 +559,27 @@
     input.addEventListener("input", function () { q = norm(input.value); apply(); });
     input.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && input.value) { input.value = ""; q = ""; apply(); }
+      else if (e.key === "Enter") {
+        // Enter opens the only book left, or moves to the first match
+        var vis = document.querySelectorAll(".bjp-coll:not([hidden]) .vol-item:not([hidden]) a.vol-card");
+        if (vis.length) { e.preventDefault(); vis[0].focus(); }
+      }
     });
+  }
+
+  /* the page of a book: "Start reading" becomes "Continue" with the percentage for a book that has been read */
+  function wireBookPage() {
+    var hero = document.querySelector(".pk-book[data-vol]");
+    if (!hero) return;
+    var vid = hero.getAttribute("data-vol"), rec = booksRec()[vid], btn = hero.querySelector(".pk-read");
+    if (!btn) return;
+    var t = resumeTarget(vid);
+    if (t && t.rec) {
+      var p = shownPct(t.rec);
+      btn.querySelector("span").innerHTML = p !== null && p >= 100 ? "Read again" : "Continue" + (p !== null ? ' <i class="pk-pct">' + p + "%</i>" : "");
+      btn.setAttribute("href", t.url);
+      btn.setAttribute("aria-label", "Continue reading" + (rec && rec.title ? ": " + rec.title : ""));
+    } else if (t) btn.setAttribute("href", t.url);
   }
 
   function libStatus() {
@@ -662,39 +682,84 @@
     }).catch(noop);
   }
 
-  /* ---------------------------------------------------------------- a book's contents: expand / collapse all */
+  /* ---------------------------------------------------------------- a book's contents */
+  /* each group (front matter, the parts or chapters, back matter) folds; the chapters read are marked, and the one
+     being read says so */
   function wireContents() {
     var boxes = document.querySelectorAll("nav.vol-contents");
     for (var i = 0; i < boxes.length; i++) {
       var box = boxes[i];
-      if (box.__bjp || !box.querySelector("details")) continue;
+      if (box.__bjp) { markRead(box); continue; }
       box.__bjp = true;
-      var tools = el("div", "vc-tools",
-        '<button type="button" data-open="1">Expand all sections</button><button type="button" data-open="0">Collapse all</button>');
-      tools.setAttribute("role", "group");
-      tools.setAttribute("aria-label", "Contents");
-      tools.addEventListener("click", function (e) {
-        var b = e.target.closest("button");
-        if (!b) return;
-        var ds = this.parentNode.querySelectorAll("details");
-        for (var k = 0; k < ds.length; k++) ds[k].open = b.getAttribute("data-open") === "1";
-      });
-      box.insertBefore(tools, box.firstChild);
+      var heads = box.querySelectorAll(":scope > p.toc-group");
+      var many = heads.length > 1;
+      for (var h = 0; h < heads.length; h++) {
+        var p = heads[h], ul = p.nextElementSibling;
+        if (!ul || ul.tagName !== "UL") continue;
+        var d = document.createElement("details");
+        d.className = "pk-grp";
+        // the chapters are open; short groups of front and back matter too, when the book has few groups
+        d.open = !many || ul.children.length > 3 || /chapter|part|unit/i.test(p.textContent);
+        d.innerHTML = '<summary><span>' + esc(p.textContent) + '</span><span class="pk-grp-n">' + ul.children.length + "</span></summary>";
+        box.insertBefore(d, p);
+        d.appendChild(ul);
+        box.removeChild(p);
+      }
+      if (box.querySelector("details:not(.pk-grp)")) {
+        var tools = el("div", "vc-tools",
+          '<button type="button" data-open="1">Show all sections</button><button type="button" data-open="0">Hide sections</button>');
+        tools.setAttribute("role", "group");
+        tools.setAttribute("aria-label", "Sections in the contents");
+        tools.addEventListener("click", function (e) {
+          var b = e.target.closest("button");
+          if (!b) return;
+          var on = b.getAttribute("data-open") === "1";
+          var ds = this.parentNode.querySelectorAll("details");
+          for (var k = 0; k < ds.length; k++) if (on || !ds[k].classList.contains("pk-grp")) ds[k].open = on || ds[k].open && ds[k].classList.contains("pk-grp");
+        });
+        box.insertBefore(tools, box.firstChild);
+      }
+      markRead(box);
+    }
+  }
+  function markRead(box) {
+    var vid = box.getAttribute("data-vol");
+    if (!vid) return;
+    var seen = {}, all = jget(KEY_SEEN, {}) || {}, rec = booksRec()[vid], i;
+    if (all[vid] && Array.isArray(all[vid].p)) all[vid].p.forEach(function (x) { seen[x + ".html"] = 1; });
+    var cur = rec && rec.path ? rec.path.slice(rec.path.lastIndexOf("/") + 1) : "";
+    var groups = box.querySelectorAll("details.pk-grp");
+    var lis = box.querySelectorAll(".vol-toc > li");
+    for (i = 0; i < lis.length; i++) {
+      var a = lis[i].querySelector("a"), f = a ? (a.getAttribute("href") || "").split("#")[0] : "";
+      f = f.slice(f.lastIndexOf("/") + 1);
+      lis[i].classList.toggle("is-read", !!seen[f] && f !== cur);
+      var tag = lis[i].querySelector(".pk-here");
+      if (f && f === cur) {
+        if (!tag && a) a.insertAdjacentHTML("afterend", '<span class="pk-here">Reading</span>');
+      } else if (tag) tag.parentNode.removeChild(tag);
+    }
+    for (i = 0; i < groups.length; i++) {
+      var n = groups[i].querySelectorAll(".vol-toc > li").length, r = groups[i].querySelectorAll(".vol-toc > li.is-read").length;
+      var lab = groups[i].querySelector(".pk-grp-n");
+      if (lab) lab.textContent = r ? r + " of " + n + " read" : String(n);
     }
   }
 
   /* ---------------------------------------------------------------- start */
   function onPage() {
     setupChrome();
-    wireContents();
     migrate();
+    wireContents();
     wireShelf();
     markStarted();
     renderContinue();
+    wireBookPage();
     emitAll();
     ready().then(function () {
       markStarted();
       renderContinue();
+      wireBookPage();
       emitAll();
       libStatus();
       renderOfflinePage();

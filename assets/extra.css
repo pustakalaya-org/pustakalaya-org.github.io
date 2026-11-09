@@ -1,5 +1,7 @@
 /* Pustakālaya: web edition. Calm, book-like reading styles. */
 :root {
+  --md-text-font: "Noto Serif", "Source Serif 4", Georgia;
+  --md-code-font: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono";
   --bjp-maroon: #800000;
   --bjp-maroon-soft: #f6ecea;
   --bjp-blue: #003366;
@@ -83,7 +85,6 @@
   max-width: 68ch;
 }
 .md-content__inner { margin-left: auto; margin-right: auto; padding-left: 0.8rem; padding-right: 0.8rem; box-sizing: border-box; }
-.md-content__inner:has(.vol-grid) > p, .md-content__inner:has(.vol-grid) > h2 { max-width: 68ch; margin-left: auto; margin-right: auto; }
 @media screen and (max-width: 44.9375em) {
   .md-typeset { font-size: 17.5px; line-height: 1.65; }
   .md-content__inner { margin-left: 0; margin-right: 0; }
@@ -96,7 +97,7 @@
 .md-typeset:lang(hi) h1, .md-typeset:lang(hi) h2, .md-typeset:lang(hi) h3 { line-height: 1.45; }
 /* Pandoc marks inline maths "math inline"; Material's .inline (floating admonition) must not apply to it */
 [dir] .md-typeset span.math.inline, .md-typeset span.math.inline { float: none; width: auto; margin: 0; display: inline; hyphens: manual; }
-.series-title, .vol-card, .md-typeset .tbl-scroll, .md-typeset .admonition.kind-verse, .md-typeset .translation, .md-typeset .epigraphbox { hyphens: manual; }
+.vol-card, .md-typeset .tbl-scroll, .md-typeset .admonition.kind-verse, .md-typeset .translation, .md-typeset .epigraphbox { hyphens: manual; }
 .md-typeset p, .md-typeset li, .md-typeset dd { overflow-wrap: break-word; }
 .md-typeset h1, .md-typeset h2, .md-typeset h3, .md-typeset h4, .md-typeset h5 {
   font-family: var(--bjp-serif);
@@ -116,15 +117,22 @@
 .md-typeset em { font-style: italic; }
 .md-typeset blockquote { border-left: 3px solid var(--bjp-sand); color: var(--md-default-fg-color); background: transparent; padding: 0.1rem 1rem; }
 .md-typeset hr { border-bottom: 1px solid var(--md-default-fg-color--lightest); }
-.md-header__title { font-family: var(--bjp-serif); }
-[data-md-color-scheme="default"] .md-header { box-shadow: none; border-bottom: 1px solid #e6e6e6; color: #3a1414; }
+.md-header__title { font-family: var(--pk-display, var(--bjp-serif)); }
+.md-header {
+  background-color: color-mix(in srgb, var(--md-default-bg-color) 84%, transparent);
+  -webkit-backdrop-filter: saturate(1.5) blur(14px); backdrop-filter: saturate(1.5) blur(14px);
+  color: var(--md-primary-bg-color);
+}
+.md-header__title { font-weight: 700; }
+[data-md-color-scheme="default"] .md-header { box-shadow: none; border-bottom: 1px solid color-mix(in srgb, var(--md-default-fg-color) 9%, transparent); }
 [data-md-color-scheme="default"] .md-header--shadow { box-shadow: none; }
 [data-md-color-scheme="default"] .md-search__input { background-color: #f1f1f1; color: #1a1a1a; }
 [data-md-color-scheme="default"] .md-search__input::placeholder { color: #666; }
-[data-md-color-scheme="default"] .md-search__input + .md-search__icon { color: #3a1414; }
-[data-md-color-scheme="default"] .md-search__icon { color: #3a1414; }
+[data-md-color-scheme="default"] .md-search__input + .md-search__icon { color: var(--md-primary-bg-color); }
+[data-md-color-scheme="default"] .md-search__icon { color: var(--md-primary-bg-color); }
+.md-search__input { border-radius: 999px; }
 [data-md-color-scheme="default"] .md-tabs { background: #fff; }
-[data-md-color-scheme="slate"] .md-header { box-shadow: none; border-bottom: 1px solid #333; }
+[data-md-color-scheme="slate"] .md-header { box-shadow: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
 
 /* ---------- boxes (admonitions) ---------- */
 .md-typeset .admonition {
@@ -225,11 +233,7 @@
 .md-typeset .csl-entry p { margin: 0; }
 
 /* ---------- book landing pages and home ---------- */
-/* the library shelf (book covers) is styled in app.css */
-.md-content__inner:has(.vol-grid) { max-width: 62rem; }
-.series-title { text-align: center; margin: 1rem 0 0.3rem; }
-.series-sub { text-align: center; color: var(--bjp-blue); font-style: italic; margin-bottom: 1.4rem; }
-.vol-meta { color: var(--bjp-blue); font-style: italic; margin-top: -0.6em; }
+/* the front page and the head of a book's page are styled in app.css */
 .vol-toc { list-style: none; padding-left: 0; margin-left: 0; }
 .vol-toc li { margin: 0.25em 0; }
 .md-typeset .toc-group { margin-top: 1.2em; font-weight: 700; color: var(--bjp-blue); }
@@ -247,20 +251,14 @@
 .md-typeset div.parahead { font-weight: 700; margin: 1.3em 0 0.2em; }
 .md-typeset div.parahead p { margin: 0; }
 
-/* home page: reader-mode preference */
-.md-typeset .rd-auto-setting { text-align: center; margin: 1.2em 0 0; font-size: 0.85em; color: var(--md-default-fg-color--light); }
-.md-typeset .rd-auto-setting label { cursor: pointer; }
-.md-typeset .rd-auto-setting input { margin-right: 0.4em; vertical-align: -0.1em; accent-color: var(--bjp-maroon); }
 
 /* ---------- a book's contents (first page): chapters, each opening to its sections and subsections ---------- */
-.vc-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.2rem 0 0.4rem; }
+.vc-tools { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.3rem; margin: -2.6rem 0 0.4rem; }
 .vc-tools button {
   font: 600 0.74rem/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; cursor: pointer;
-  min-height: 2.5rem; padding: 0 1rem; border-radius: 999px;
-  border: 1px solid var(--bjp-maroon); background: transparent; color: var(--bjp-maroon);
+  min-height: 2.2rem; padding: 0 0.8rem; border-radius: 999px; border: 0; background: transparent; color: var(--md-default-fg-color--light);
 }
-.vc-tools button:hover, .vc-tools button:focus-visible { background: var(--bjp-maroon); color: #fff; }
-[data-md-color-scheme="slate"] .vc-tools button:hover, [data-md-color-scheme="slate"] .vc-tools button:focus-visible { color: #1a1a1a; }
+.vc-tools button:hover, .vc-tools button:focus-visible { background: color-mix(in srgb, var(--md-default-fg-color) 7%, transparent); color: var(--md-default-fg-color); }
 [dir] .md-typeset .vol-toc-full, [dir] .md-typeset .vol-toc-full ul { list-style: none; margin: 0; padding: 0; }
 [dir] .md-typeset .vol-toc-full > li { margin: 0; border-bottom: 1px solid var(--md-default-fg-color--lightest); }
 [dir] .md-typeset .vol-toc-full li { margin-bottom: 0; }
