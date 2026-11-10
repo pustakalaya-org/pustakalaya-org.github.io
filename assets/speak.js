@@ -449,7 +449,7 @@
     if (root === doc || root.nodeType === 1) prefsBar(root);
     playAllBars(root);
     quizHear(root);
-    loadIndex();
+    if (root.querySelector && root.querySelector("[data-say], .pk-quiz, .pk-play-all")) loadIndex();   // only pages with something to hear ask for the recordings' list
     markVoices();
   }
 
