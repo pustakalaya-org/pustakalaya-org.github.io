@@ -12,13 +12,16 @@
  *   window.pkRemote.fill(el)       fill the shells inside an element
  *   event "pk:remote-filled"       on document, after a chapter has been filled (detail: {book, page, root})
  *
+ * A second kind of source is an EPUB in a public GitHub repository (type "standardebooks", the editions of Standard Ebooks,
+ * CC0): the chapter's XHTML file is fetched from raw.githubusercontent.com (which allows it) and converted the same way.
+ *
  * "Keep for offline reading" (assets/app.js) keeps the shells; for a linked book this script then keeps the source's
  * answers for every chapter (and its pictures) in the cache "pk-remote-kept", which assets/sw.js reads when there is
  * no connection, and removes them when the book is removed from the device.
  */
 (function () {
   "use strict";
-  var LINKED = {"bhagavad-gita":{"path":"classics/bhagavad-gita","badge":"From Wikisource · Public domain","name":"Wikisource"},"rigveda-griffith":{"path":"classics/rigveda-griffith","badge":"From Wikisource · Public domain","name":"Wikisource"},"sevasadan":{"path":"classics/sevasadan","badge":"From Wikisource · Public domain","name":"Wikisource"}};                       // {id: {path, badge, name}}: written by tools/remote.py
+  var LINKED = {"bhagavad-gita":{"path":"classics/bhagavad-gita","badge":"From Wikisource · Public domain","name":"Wikisource"},"rigveda-griffith":{"path":"classics/rigveda-griffith","badge":"From Wikisource · Public domain","name":"Wikisource"},"sevasadan":{"path":"classics/sevasadan","badge":"From Wikisource · Public domain","name":"Wikisource"},"gitanjali-tagore":{"path":"classics-in-translation/gitanjali-tagore","badge":"From Standard Ebooks · CC0 1.0","name":"Standard Ebooks"},"vikram-and-the-vampire":{"path":"classics-in-translation/vikram-and-the-vampire","badge":"From Standard Ebooks · CC0 1.0","name":"Standard Ebooks"}};                       // {id: {path, badge, name}}: written by tools/remote.py
   var ROOT = (function () {
     var s = document.currentScript && document.currentScript.src;
     if (!s) { var e = document.querySelector('script[src*="assets/remote.js"]'); s = e && e.src; }
@@ -49,8 +52,9 @@
         if (!r.ok) throw new Error("http " + r.status);
         return r.json();
       }).then(function (m) {
-        m.byPage = {};
+        m.byPage = {}; m.byFile = {};
         m.chapters.forEach(function (c) {
+          m.byFile[c.page] = c.f;
           m.byPage[norm(c.page)] = c.f;
           (c.parts || []).forEach(function (p) { m.byPage[norm(p.page)] = c.f + "#" + p.id; });
         });
@@ -70,7 +74,9 @@
   function qs(pairs) { return pairs.map(function (p) { return encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1]); }).join("&"); }
   var BASE = [["action", "parse"], ["format", "json"], ["formatversion", "2"], ["origin", "*"], ["prop", "text|revid"],
               ["disableeditsection", "1"], ["disabletoc", "1"], ["maxage", "3600"], ["smaxage", "86400"]];
+  function isSE(m) { return m.type === "standardebooks"; }
   function textUrls(m, c) {
+    if (isSE(m)) return [m.base + c.page];
     if (!c.parts) return [m.api + "?" + qs(BASE.concat([["redirects", "1"], ["page", c.page]]))];
     var out = [];
     for (var i = 0; i < c.parts.length; i += CHUNK) {
@@ -83,6 +89,17 @@
   function creditUrl(m, c) {
     return m.api + "?" + qs([["action", "query"], ["format", "json"], ["formatversion", "2"], ["origin", "*"], ["prop", "contributors"],
       ["pclimit", "8"], ["pcexcludegroup", "bot"], ["maxage", "3600"], ["smaxage", "86400"], ["titles", c.page]]);
+  }
+  function getText(url) {
+    var k = "T " + url;
+    if (!memo[k]) {
+      memo[k] = fetch(url, { credentials: "omit", mode: "cors" }).then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        return r.text();
+      });
+      memo[k].catch(function () { delete memo[k]; });
+    }
+    return memo[k];
   }
   function getJSON(url) {
     if (!memo[url]) {
@@ -109,7 +126,7 @@
     ".wst-licence", ".PD-old", ".stub", ".rellink", ".hatnote", ".dablink", ".mw-jump-link", ".mw-references-columns > h2"
   ];
   var CLASS_MAP = { "center": "pk-center", "wst-center": "pk-center", "wst-block-center": "pk-center", "wst-rh": "pk-center",
-    "ws-poem": "pk-poem", "ws-poem-stanza": "pk-stanza", "wst-rule": "pk-rule", "wst-smallcaps": "pk-sc", "wst-sc": "pk-sc",
+    "i1": "pk-i1", "i2": "pk-i2", "i3": "pk-i3", "i4": "pk-i4", "ws-poem": "pk-poem", "ws-poem-stanza": "pk-stanza", "wst-rule": "pk-rule", "wst-smallcaps": "pk-sc", "wst-sc": "pk-sc",
     "wst-larger": "pk-larger", "wst-x-larger": "pk-larger", "wst-smaller": "pk-smaller", "wst-right": "pk-right", "mw-poem-indented": "pk-indent" };
   var KEEP_CLASS = /^(arithmatex|highlight|language-[\w+#-]+|footnote|footnote-ref|footnote-backref|fig|fig-diagram|headerlink|pk-[\w-]+|md-typeset__[\w-]+)$/;
 
@@ -299,6 +316,7 @@
       if (a.classList.contains("footnote-ref") || a.classList.contains("headerlink")) return;
       if (href.charAt(0) === "#") { ctx.anchors.push(a); return; }
       href = absUrl(m, href);
+      if (href.indexOf(ROOT) === 0) return;                // already a page of this library
       var t = titleFromHref(m, href);
       if (t && t.red) { unwrap(a); return; }
       if (t && t.page && m.byPage[norm(t.page)]) {
@@ -397,12 +415,135 @@
         } else if (n === "style" || n === "align" || n === "valign" || n === "bgcolor" || n === "width" && e.nodeName !== "IMG" ||
                    n === "height" && e.nodeName !== "IMG" || n === "border" || n === "cellpadding" || n === "cellspacing" ||
                    n === "about" || n === "typeof" || n === "dir" && e !== root || n.indexOf("data-") === 0 && !(e.classList.contains("pk-part")) ||
-                   n === "title" && e.nodeName !== "ABBR" && e.nodeName !== "IMG" || n === "role" || n === "aria-hidden" && e.nodeName === "SPAN") {
+                   n === "title" && e.nodeName !== "ABBR" && e.nodeName !== "IMG" || n === "role" || n.indexOf(":") > 0 || n === "xmlns" || n === "aria-hidden" && e.nodeName === "SPAN") {
           e.removeAttribute(n);
         } else if (n === "id" && !/^H[1-6]$/.test(e.nodeName) && !/^fn/.test(at.value)) {
           ctx.oldIds[at.value] = e;
         }
       });
+    });
+  }
+
+
+  /* ---------------------------------------------------------------- EPUB chapters (Standard Ebooks) */
+  function et(e) { return (e.getAttribute && e.getAttribute("epub:type")) || ""; }
+  function hasType(e, re) { return re.test(et(e)); }
+  /* the XHTML of one chapter file into `root` (the headings, verse, plays, notes and pictures in this library's HTML) */
+  function loadSE(doc, root, ans, m, c) {
+    var pd = new DOMParser().parseFromString(ans.xhtml, "text/html");
+    var body = pd.body, base = m.base + c.page;
+    // the file's own heading is the chapter's title, which the page already shows
+    var first = body.querySelector("h1, h2, h3, h4, h5, h6");
+    if (first && !first.closest("blockquote, figure, table")) {
+      var hg = first.closest("hgroup");
+      if (hg) hg.remove();
+      else {
+        var nx = first.nextElementSibling;
+        if (nx && /subtitle/.test(et(nx))) nx.remove();
+        first.remove();
+      }
+    }
+    root.innerHTML = body.innerHTML;
+    root.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(function (h) {
+      var w = doc.createTreeWalker(h, NodeFilter.SHOW_TEXT, null), n;
+      while ((n = w.nextNode())) n.nodeValue = n.nodeValue.replace(/\s+/g, " ");
+      if (h.firstChild && h.firstChild.nodeType === 3) h.firstChild.nodeValue = h.firstChild.nodeValue.replace(/^ /, "");
+      if (h.lastChild && h.lastChild.nodeType === 3) h.lastChild.nodeValue = h.lastChild.nodeValue.replace(/ $/, "");
+    });
+    root.querySelectorAll("*").forEach(function (e) {
+      var xl = e.getAttribute("xml:lang");
+      if (xl) { e.setAttribute("lang", xl); }
+    });
+    // notes: the references of the chapter, with the text of its notes from the book's endnotes file
+    var needed = [], notes = {};
+    if (ans.notes) {
+      var nd = new DOMParser().parseFromString(ans.notes, "text/html");
+      nd.querySelectorAll("li[id]").forEach(function (li) { notes[li.id] = li; });
+    }
+    Array.prototype.slice.call(root.querySelectorAll("a")).forEach(function (a) {
+      if (!hasType(a, /\bnoteref\b/)) return;
+      var id = ((a.getAttribute("href") || "").split("#")[1]) || "";
+      if (!id || !notes[id]) { a.remove(); return; }
+      var s = doc.createElement("sup"), l = doc.createElement("a");
+      s.className = "reference";
+      l.setAttribute("href", "#" + id);
+      s.appendChild(l);
+      a.parentNode.replaceChild(s, a);
+      if (needed.indexOf(id) < 0) needed.push(id);
+    });
+    if (needed.length) {
+      var ol = doc.createElement("ol");
+      ol.className = "references";
+      needed.forEach(function (id) {
+        var src = notes[id], li = doc.createElement("li"), tx = doc.createElement("span");
+        li.id = id;
+        tx.className = "reference-text";
+        Array.prototype.slice.call(src.querySelectorAll("a")).forEach(function (b) { if (hasType(b, /\bbacklink\b/)) b.remove(); });
+        var ps = src.querySelectorAll(":scope > p");
+        if (ps.length) {
+          Array.prototype.forEach.call(ps, function (p, i) {
+            if (i) { tx.appendChild(doc.createElement("br")); tx.appendChild(doc.createElement("br")); }
+            tx.insertAdjacentHTML("beforeend", p.innerHTML);
+          });
+        } else tx.innerHTML = src.innerHTML;
+        li.appendChild(tx);
+        ol.appendChild(li);
+      });
+      root.appendChild(ol);
+    }
+    // addresses relative to the file: pictures from the repository, links to the book's other chapters
+    root.querySelectorAll("img").forEach(function (img) {
+      var u = img.getAttribute("src");
+      if (u) try { img.setAttribute("src", new URL(u, base).href); } catch (x) { img.remove(); }
+    });
+    root.querySelectorAll("a[href]").forEach(function (a) {
+      var href = a.getAttribute("href");
+      if (!href || href.charAt(0) === "#" || /^[a-z][a-z0-9+.-]*:/i.test(href) && !/^https?:/i.test(href)) return;
+      var u;
+      try { u = new URL(href, base); } catch (x) { unwrap(a); return; }
+      if (u.href.indexOf(m.base) === 0) {
+        var f = m.byFile[u.href.slice(m.base.length).split("#")[0]];
+        if (f) a.setAttribute("href", ROOT + LINKED[m.id].path + "/" + f);
+        else unwrap(a);
+      } else a.setAttribute("href", u.href);
+    });
+    // the structure: sections give way to the chapter's own flow
+    root.querySelectorAll("section, article, header, hgroup, main, aside").forEach(function (e) { unwrap(e); });
+    root.querySelectorAll("abbr").forEach(function (e) { if (!e.getAttribute("title")) unwrap(e); });
+    root.querySelectorAll("figure").forEach(function (f) { f.className = "fig fig-diagram"; });
+    // verse, stage directions, epigraphs and letters
+    root.querySelectorAll("[epub\\:type]").forEach(function (e) {
+      var t = et(e);
+      if (/z3998:(?:verse|poem|song|hymn)\b/.test(t) && /^(BLOCKQUOTE|DIV|TD|SECTION|P)$/.test(e.nodeName)) e.classList.add("pk-poem");
+      else if (/stage-direction/.test(t) && /^(P|DIV|TD)$/.test(e.nodeName)) e.classList.add("pk-stage");
+      else if (/\bepigraph\b/.test(t)) e.classList.add("pk-epigraph");
+      else if (/z3998:(?:letter|salutation|valediction|signature)/.test(t) && /^(P|DIV|BLOCKQUOTE)$/.test(e.nodeName)) e.classList.add("pk-letter");
+    });
+    // plays: a table of speakers and speeches becomes a list of speeches
+    root.querySelectorAll("table").forEach(function (t) {
+      if (!t.querySelector('td[epub\\:type~="z3998:persona"], th[epub\\:type~="z3998:persona"]')) return;
+      var box = doc.createElement("div");
+      box.className = "pk-drama";
+      t.querySelectorAll("tr").forEach(function (tr) {
+        var cells = tr.querySelectorAll(":scope > td, :scope > th");
+        if (!cells.length) return;
+        var who = hasType(cells[0], /persona/) ? cells[0] : null;
+        var rest = Array.prototype.slice.call(cells, who ? 1 : 0);
+        if (who) {
+          var sp = doc.createElement("div"), nm = doc.createElement("p"), tx = doc.createElement("div");
+          sp.className = "pk-sp"; nm.className = "pk-speaker"; tx.className = "pk-speech";
+          nm.innerHTML = who.innerHTML;
+          rest.forEach(function (td) { while (td.firstChild) tx.appendChild(td.firstChild); });
+          sp.appendChild(nm); sp.appendChild(tx);
+          box.appendChild(sp);
+        } else {
+          var p = doc.createElement("div");
+          p.className = "pk-stage";
+          rest.forEach(function (td) { while (td.firstChild) p.appendChild(td.firstChild); });
+          if (p.textContent.trim() || p.querySelector("img")) box.appendChild(p);
+        }
+      });
+      t.parentNode.replaceChild(box, t);
     });
   }
 
@@ -468,7 +609,27 @@
     });
   }
 
+  function sourceName(u) {
+    if (/gutenberg\.org/.test(u)) return "Project Gutenberg";
+    if (/wikisource\.org/.test(u)) return "Wikisource";
+    if (/archive\.org/.test(u)) return "the Internet Archive";
+    if (/hathitrust|babel\./.test(u)) return "HathiTrust";
+    if (/books\.google/.test(u)) return "Google Books";
+    return "its source";
+  }
+  function creditHtmlSE(m, c) {
+    var ext = ' target="_blank" rel="noopener noreferrer"';
+    var file = "https://github.com/standardebooks/" + m.repo + "/blob/" + (m.branch || "master") + "/src/epub/" + c.page;
+    var src = "", from = "";
+    (m.sources || []).forEach(function (u) { if (!src && sourceName(u) !== "its source") src = u; });
+    if (src) from = "; transcription originally from <a href=\"" + esc(src) + '"' + ext + ">" + esc(sourceName(src)) + "</a>";
+    return '<div class="pk-remote-credit" lang="en"><p>From “' + esc(c.t) + "” in <a href=\"" + esc(m.url) + '"' + ext + ">" + esc(m.title) +
+      "</a> (" + esc(m.attribution) + "). Standard Ebooks edition (<a href=\"" + esc(file) + '"' + ext + ">source file</a>), <a href=\"" +
+      esc(m.licence.url) + '"' + ext + ">" + esc(m.licence.id) + "</a> (public domain dedication)" + from +
+      ". Modified: converted to this format.</p></div>";
+  }
   function creditHtml(m, c) {
+    if (isSE(m)) return creditHtmlSE(m, c);
     var page = m.site + "/wiki/" + encodeURIComponent(c.page.replace(/ /g, "_")).replace(/%2F/g, "/");
     var hist = m.site + "/w/index.php?" + qs([["title", c.page.replace(/ /g, "_")], ["action", "history"]]);
     var ext = ' target="_blank" rel="noopener noreferrer"';
@@ -488,7 +649,8 @@
     var shell = shellHeadings(shellRoot);
     var all = [];
     if (!c.parts) {
-      root.innerHTML = answers[0].parse.text;
+      if (isSE(m)) loadSE(doc, root, answers[0], m, c);
+      else root.innerHTML = answers[0].parse.text;
       cleanPage(doc, root, m, ctx);
       var hs = shiftHeadings(doc, root, 2);
       var tops = hs.filter(function (h) { return h.nodeName === "H2"; });
@@ -600,7 +762,10 @@
     return bookMeta(id).then(function (m) {
       var c = chapterOf(m, page);
       if (!c) throw new Error("unknown chapter");
-      return Promise.all(textUrls(m, c).map(getJSON)).then(function (answers) {
+      var load = isSE(m) ? getText(m.base + c.page).then(function (t) {
+        return (m.notes && /noteref/.test(t) ? getText(m.base + m.notes) : Promise.resolve("")).then(function (n) { return [{ xhtml: t, notes: n }]; });
+      }) : Promise.all(textUrls(m, c).map(getJSON));
+      return load.then(function (answers) {
         var out = convert(m, c, answers, shellRoot);
         out.m = m; out.c = c;
         return out;
@@ -640,6 +805,7 @@
 
   /* the contributors' names in the attribution (when the source gives them) */
   function who(m, c, box) {
+    if (isSE(m)) return;
     getJSON(creditUrl(m, c)).then(function (j) {
       var p = j.query && j.query.pages && j.query.pages[0], names = (p && p.contributors || []).map(function (x) { return x.name; });
       if (!names.length) return;
@@ -804,11 +970,17 @@
     }
     return out;
   }
+  function imagesOfSE(text, fileUrl) {
+    var out = [], re = /<img\b[^>]*?\ssrc="([^"]+)"/g, mm;
+    while ((mm = re.exec(text))) { try { out.push(new URL(mm[1], fileUrl).href); } catch (x) { /* ignore */ } }
+    return out;
+  }
   function keepAll(id, cache, hash) {
     var job = jobs[id] = { done: 0, total: 0 };
     return bookMeta(id).then(function (m) {
       var urls = [];
-      m.chapters.forEach(function (c) { urls = urls.concat(textUrls(m, c)); urls.push(creditUrl(m, c)); });
+      m.chapters.forEach(function (c) { urls = urls.concat(textUrls(m, c)); if (!isSE(m)) urls.push(creditUrl(m, c)); });
+      if (isSE(m) && m.notes) urls.push(m.base + m.notes);
       job.total = urls.length;
       var stored = [], failed = 0, i = 0, imgs = [];
       function line() { keepLine(id, "Keeping the chapters' text from " + m.name + "… " + job.done + " of " + job.total); }
@@ -824,7 +996,8 @@
         if (i >= urls.length) return Promise.resolve();
         var u = urls[i++];
         return put(u).then(function (res) {
-          return res.json().then(function (j) { imagesOf(j).forEach(function (x) { x = cleanImgUrl(m, x); if (imgs.indexOf(x) < 0) imgs.push(x); }); }).catch(noop);
+          var list = isSE(m) ? res.text().then(function (t) { return imagesOfSE(t, u); }) : res.json().then(imagesOf);
+          return list.then(function (l) { l.forEach(function (x) { x = cleanImgUrl(m, x); if (imgs.indexOf(x) < 0) imgs.push(x); }); }).catch(noop);
         }).catch(function () { failed++; }).then(function () { job.done++; line(); return worker(); });
       }
       var ws = [];

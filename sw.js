@@ -19,7 +19,7 @@
  */
 "use strict";
 
-var VERSION = "02d48bbb0e37";
+var VERSION = "cdba7cff7939";
 var SHELL = ["index.html", "books.html", "about.html", "install.html", "publish.html", "offline.html", "sitemap.xml", "manifest.webmanifest", "library.json", "lists/arts-language-literature.html", "lists/philosophy-contemplative.html", "lists/sciences-of-india.html", "lists/society-polity-economy.html", "lists/start-here.html", "subjects/agriculture.html", "subjects/anthropology.html", "subjects/architecture.html", "subjects/arts.html", "subjects/astronomy.html", "subjects/biology.html", "subjects/chemistry.html", "subjects/crafts.html", "subjects/earth-environment.html", "subjects/ecology.html", "subjects/economics.html", "subjects/education.html", "subjects/epics.html", "subjects/geography.html", "subjects/history-of-science.html", "subjects/history.html", "subjects/iks.html", "subjects/index.html", "subjects/languages.html", "subjects/law-polity.html", "subjects/literature.html", "subjects/mathematics.html", "subjects/medicine.html", "subjects/metallurgy.html", "subjects/military-history.html", "subjects/music-performance.html", "subjects/philosophy.html", "subjects/physics.html", "subjects/poetry.html", "subjects/psychology.html", "subjects/religion.html", "subjects/sacred-texts.html", "subjects/sanskrit.html", "subjects/social-sciences.html", "subjects/trade.html", "subjects/traditional-medicine.html", "subjects/yoga.html", "assets/app.css", "assets/app.js", "assets/extra.css", "assets/icons/apple-touch-icon.png", "assets/icons/favicon-32.png", "assets/icons/favicon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png", "assets/icons/logo.svg", "assets/icons/maskable-512.png", "assets/images/favicon.png", "assets/javascripts/bundle.d7400e89.min.js", "assets/javascripts/workers/search.2c215733.min.js", "assets/mathjax.js", "assets/reader.css", "assets/reader.js", "assets/remote.css", "assets/remote.js", "assets/slides-deck.js", "assets/slides.css", "assets/slides.js", "assets/stylesheets/main.ec1eaa64.min.css", "assets/stylesheets/palette.ab4e12ef.min.css", "assets/theme.css", "assets/viz-kit.js", "assets/viz.css", "assets/viz.js"];
 var BOOKS = [];                           // the books' folders, longest first
 
@@ -37,8 +37,8 @@ var STATIC_RE = /\.(css|js|mjs|json|png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|o
 var MATHJAX = "https://cdn.jsdelivr.net/npm/mathjax@";
 var REMOTE_KEPT = "pk-remote-kept";                  // linked books kept for offline reading (written by assets/remote.js)
 var REMOTE_CACHE = "pk-remote-recent", MAX_REMOTE = 80;   // the chapters of linked books read lately
-var REMOTE_API = /^https:\/\/[a-z-]+\.(?:wikibooks|wikisource)\.org\/w\/api\.php\?/;
-var REMOTE_IMG = /^https:\/\/(?:upload|thumb)\.wikimedia\.org\//;
+var REMOTE_API = /^https:\/\/(?:[a-z-]+\.(?:wikibooks|wikisource)\.org\/w\/api\.php\?|raw\.githubusercontent\.com\/standardebooks\/[^?#]+\.xhtml$)/;
+var REMOTE_IMG = /^https:\/\/(?:(?:upload|thumb)\.wikimedia\.org\/|raw\.githubusercontent\.com\/standardebooks\/[^?#]+\.(?:png|jpe?g|gif|svg|webp)$)/;
 
 /* ------------------------------------------------------------------ install and activate */
 self.addEventListener("install", function (event) {

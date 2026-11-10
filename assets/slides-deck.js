@@ -273,6 +273,18 @@
     if (!l) return "";
     try { var u = new URL(l.getAttribute("href"), base); return ENTRY.bookOf && ENTRY.bookOf(u.pathname) ? u.href : ""; } catch (e) { return ""; }
   }
+  /* a chapter of a linked book (assets/remote.js) is an empty shell in its page: its text is fetched and put in
+     before the deck is made */
+  function fillRemote(src) {
+    if (!window.pkRemote || !src.art.querySelector(".pk-remote[data-book]")) return Promise.resolve(src);
+    var box = document.createElement("div");
+    box.appendChild(src.art);
+    return window.pkRemote.fill(box).then(function () { return src; }, function () { return src; }).then(function (s) {
+      s.art = box.firstElementChild || s.art;
+      absolutize(s.art, s.url);
+      return s;
+    });
+  }
   function loadSource(opts) {
     var url = String(opts.url).split("#")[0];
     if (opts.html) {
@@ -280,14 +292,14 @@
       var art = d.createElement("article");
       art.innerHTML = opts.html;
       absolutize(art, url);
-      return Promise.resolve({ url: url, art: art, next: opts.next || "", prev: opts.prev || "" });
+      return fillRemote({ url: url, art: art, next: opts.next || "", prev: opts.prev || "" });
     }
     return fetchDoc(url).then(function (doc) {
       var a = doc.querySelector("article.md-content__inner");
       if (!a) throw new Error("no article");
       a = a.cloneNode(true);
       absolutize(a, url);
-      return { url: url, art: a, next: linkRel(doc, "next", url), prev: linkRel(doc, "prev", url) };
+      return fillRemote({ url: url, art: a, next: linkRel(doc, "next", url), prev: linkRel(doc, "prev", url) });
     }, function (err) {
       // the page on screen, when it cannot be fetched again (its mathematics may be typeset already)
       if (url === location.href.split("#")[0].split("?")[0]) {

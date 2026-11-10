@@ -210,8 +210,9 @@
     }
   }
 
-  /* P presents the chapter (on its page or in the reader) */
-  document.addEventListener("keydown", function (e) {
+  /* P presents the chapter (on its page or in the reader). Caught first, on the window in the capture phase: the
+     theme's own keyboard handling takes P to mean "previous page" */
+  window.addEventListener("keydown", function (e) {
     if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || (e.key !== "p" && e.key !== "P")) return;
     if (window.bjpSlidesDeck && window.bjpSlidesDeck.isOpen()) return;
     var a = document.activeElement, t = a && a.tagName;
@@ -219,9 +220,9 @@
     var R = window.bjpReader;
     if (R && R.state && R.state.open) {
       if (R.state.panel || document.querySelector(".viz-overlay")) return;
-      e.preventDefault(); e.stopPropagation(); present(fromReader());
+      e.preventDefault(); e.stopImmediatePropagation(); present(fromReader());
     } else if (pageKind() === "chapter" && !document.querySelector(".viz-overlay")) {
-      e.preventDefault(); presentHere();
+      e.preventDefault(); e.stopImmediatePropagation(); presentHere();
     }
   }, true);
   // the back button of a phone closes the slides first (registered before the reader's own listener)

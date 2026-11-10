@@ -635,6 +635,8 @@
     if (!hash && go && go.path === pagePath(location.href) && typeof go.f === "number") where = { anchor: { i: null, n: 0, f: go.f } };
     setThemeColor(true);
     showCurtain();
+    // the cover gives way after 1.5 s at most, even while the page is still being prepared (a slow phone or network)
+    setTimeout(liftCurtain, 1500);
     endBoot();
     remoteFill(rec).then(function (r) { return mount(r, where, false); }).then(function () {
       finishOpen();
@@ -661,10 +663,10 @@
   function liftCurtain() {
     if (!S.curtain) return;
     S.curtain = false;
-    var c = $.curtain, wait = Math.max(0, 380 - (Date.now() - (S.curtainAt || 0)));
+    var c = $.curtain, wait = Math.max(0, 150 - (Date.now() - (S.curtainAt || 0)));
     setTimeout(function () {
       c.classList.add("lift");
-      setTimeout(function () { c.hidden = true; c.className = "rd-curtain"; }, 520);
+      setTimeout(function () { c.hidden = true; c.className = "rd-curtain"; }, 300);
     }, wait);
   }
 
