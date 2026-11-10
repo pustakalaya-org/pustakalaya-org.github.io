@@ -7,8 +7,11 @@
  *  - "Keep for offline reading" on the home page and on each volume's first page: every page and image of
  *    the volume (listed in library.json, written at build time by tools/site_hooks.py) is stored in the
  *    "bjp-offline" cache, which the service worker (sw.js) reads when there is no connection;
- *  - the pages that find books (All books, the subjects, the reading lists; tools/browse.py): covers or a list,
- *    filters and sorting, and the reader's progress through each reading list;
+ *  - the pages that find books (All books, the categories, the reading lists; tools/browse.py): covers or a list,
+ *    filters (category, then subcategory, level, kind) and sorting, and the reader's progress through each reading list;
+ *  - the Categories button in the header of every page: a panel of the categories, each with its subcategories
+ *    (a sheet on phones, a menu on wider screens); and on the front page, "Browse categories": a tap on a category
+ *    shows its subcategories below it;
  *  - a notice when a new edition of the site has been installed in the background ("Updated - reload");
  *  - a Back button in the header when the site runs as an installed app (which has no browser toolbar).
  *
@@ -775,11 +778,11 @@
     }
   }
 
-  /* ---------------------------------------------------------------- finding books: All books, a subject, a reading list */
+  /* ---------------------------------------------------------------- finding books: All books, a category, a reading list */
   /* The pages of tools/browse.py: the books as covers or as a list (the reader's choice, kept in "bjp.view"; the class
-     bjp-view-list on <html> is set before the first paint by overrides/main.html), filtered by subject, level, kind,
-     language or words, and sorted. The choices are kept in the address (?subject=...&level=...), so that Back returns
-     to them and a filtered list can be shared. */
+     bjp-view-list on <html> is set before the first paint by overrides/main.html), filtered by category and then
+     subcategory, level, kind, language or words, and sorted. The choices are kept in the address (?cat=...&sub=...
+     &level=...), so that Back returns to them and a filtered list can be shared. */
   var KEY_VIEW = "bjp.view", LEVEL_RANK = { beginner: 1, intermediate: 2, advanced: 3 };
   function pageView() {
     var v = sget("localStorage", KEY_VIEW);
@@ -794,6 +797,12 @@
     for (var i = 0; i < bs.length; i++) bs[i].setAttribute("aria-pressed", String(bs[i].getAttribute("data-view") === v));
   }
   function wireBrowse() {
+    // the chip of this category in the row of chips (which scrolls sideways on phones) is brought into sight
+    var cur = document.querySelector(".pk-subchips [aria-current]");
+    if (cur && cur.parentNode.scrollWidth > cur.parentNode.clientWidth) {
+      var row = cur.parentNode;
+      row.scrollLeft = Math.max(0, cur.offsetLeft - row.offsetLeft - (row.clientWidth - cur.offsetWidth) / 2);
+    }
     var box = document.querySelector(".pk-books[data-view-default]");
     if (!box) return;
     applyView(pageView());
@@ -803,7 +812,7 @@
     var items = Array.prototype.slice.call(box.querySelectorAll(".pk-item"));
     var controls = page.querySelectorAll(".pk-tools [data-f], .pk-tools [data-sort]");
     var shown = page.querySelector(".pk-shown"), empty = page.querySelector(".pk-empty");
-    var st0 = { q: "", subject: "", level: "", kind: "", lang: "", sort: "" }, s = {}, k;
+    var st0 = { q: "", cat: "", sub: "", level: "", kind: "", lang: "", sort: "" }, s = {}, k;
     for (k in st0) s[k] = st0[k];
     var finds = items.map(function (it) { return norm(it.getAttribute("data-find") || it.textContent); });
     var titles = items.map(function (it) { var t = it.querySelector(".vol-name"); return norm(t ? t.textContent : ""); });
@@ -814,14 +823,38 @@
       }
       return null;
     }
-    // the choices in the address
+    // the subcategories offered are those of the category chosen (all of them are kept here)
+    var catSel = ctl("cat"), subSel = ctl("sub"), subAll = [];
+    if (subSel) {
+      subAll = Array.prototype.slice.call(subSel.querySelectorAll("option[data-cat]"));
+      subAll.forEach(function (o) { subSel.removeChild(o); });
+    }
+    function fillSubs() {
+      if (!subSel) return;
+      var first = subSel.options[0], cat = catSel && catSel.selectedIndex > 0 ? catSel.options[catSel.selectedIndex] : null, n = 0;
+      while (subSel.options.length > 1) subSel.removeChild(subSel.options[1]);
+      subAll.forEach(function (o) { if (o.getAttribute("data-cat") === s.cat) { subSel.appendChild(o); n++; } });
+      first.textContent = cat ? "All in " + cat.textContent.replace(/\s*\(\d+\)$/, "") : "Subcategory";
+      subSel.disabled = !n;
+      subSel.value = s.sub;
+      if (subSel.value !== s.sub) { s.sub = ""; subSel.value = ""; }
+    }
+    // the choices in the address (an old address with ?subject= is read as a category or a subcategory)
+    var old = null;
     try {
       var sp = new URL(location.href).searchParams;
+      old = sp.get("subject");
+      if (old && !sp.get("cat")) {
+        var so = subAll.filter(function (o) { return o.value === old; })[0];
+        if (so) { sp.set("cat", so.getAttribute("data-cat")); sp.set("sub", old); } else sp.set("cat", old);
+      }
       for (k in st0) {
         var val = sp.get(k === "q" ? "find" : k), c0 = ctl(k);
+        if (k === "sub") fillSubs();
         if (val && c0 && (c0.tagName !== "SELECT" || c0.querySelector('option[value="' + val.replace(/["\\]/g, "") + '"]'))) { s[k] = val; c0.value = val; }
       }
     } catch (e) { /* no URL API: the page starts unfiltered */ }
+    fillSubs();
     function keepInAddress() {
       try {
         var u = new URL(location.href);
@@ -829,13 +862,15 @@
           var name = key === "q" ? "find" : key;
           if (s[key]) u.searchParams.set(name, s[key]); else u.searchParams.delete(name);
         }
+        u.searchParams.delete("subject");
         if (u.href !== location.href) history.replaceState(history.state, "", u.href);
       } catch (e) { /* the address stays as it is */ }
     }
     function apply(reorder) {
       var n = 0, q = norm(s.q), words = q ? q.split(" ") : [];
       items.forEach(function (it, i) {
-        var hit = (!s.subject || (" " + it.getAttribute("data-subjects") + " ").indexOf(" " + s.subject + " ") >= 0) &&
+        var subs = " " + it.getAttribute("data-subjects") + " ";
+        var hit = (!s.cat || subs.indexOf(" " + s.cat + " ") >= 0) && (!s.sub || subs.indexOf(" " + s.sub + " ") >= 0) &&
           (!s.level || it.getAttribute("data-level") === s.level) &&
           (!s.kind || it.getAttribute("data-kind") === s.kind) &&
           (!s.lang || it.getAttribute("data-lang") === s.lang) &&
@@ -868,6 +903,7 @@
       controls[i].addEventListener(controls[i].tagName === "INPUT" ? "input" : "change", function () {
         var name = this.getAttribute("data-f") || "sort";
         s[name] = this.value;
+        if (name === "cat") { s.sub = ""; fillSubs(); }
         apply(name === "sort");
         keepInAddress();
       });
@@ -878,6 +914,7 @@
     var clear = page.querySelector(".pk-clear");
     if (clear) clear.addEventListener("click", function () {
       for (var key in st0) { if (key !== "sort") { s[key] = ""; var c = ctl(key); if (c) c.value = ""; } }
+      fillSubs();
       apply(false);
       keepInAddress();
     });
@@ -890,6 +927,7 @@
       });
     }
     apply(!!s.sort);
+    if (old) keepInAddress();      // ?subject= becomes ?cat=...&sub=...
   }
 
   /* the progress through the books of a reading list: on its page (the next book, "Start the path" or "Continue")
@@ -949,9 +987,290 @@
     }
   }
 
+  /* ---------------------------------------------------------------- categories: the header panel, the front page */
+  /* The Categories button in the header (tools/pages.py) is a link to the page of the categories; here it opens a
+     panel instead, built when it is first opened from the categories written beside the button (#pk-cats, from
+     tools/browse.py menu_data: [{id, t, n, d, h, i, s: [[id, title, books]]}]). On a phone the panel is a sheet over
+     the whole screen, with each category opening below itself (an accordion); on wider screens it is a menu below the
+     button: the categories on the left, the subcategories of the one pointed at or chosen on the right. A tap on a
+     category's name opens its page, the arrow beside it shows its subcategories. Arrow keys move through the panel,
+     Escape closes it. */
+  var CHEV = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var catMenu = null, catBtn = null, catHover = 0, catJson;
+  function catData() {
+    if (catJson === undefined) {
+      try { catJson = JSON.parse(document.getElementById("pk-cats").textContent); } catch (e) { catJson = null; }
+    }
+    return catJson && catJson.c && catJson.c.length ? catJson : null;
+  }
+  function catWide() { return !!(window.matchMedia && matchMedia("(min-width: 60em)").matches); }
+  function catHere() {
+    var m = /\/subjects\/([a-z0-9-]+)\.html$/.exec(location.pathname);
+    return m ? m[1] : "";
+  }
+  function buildCatMenu(d) {
+    var m = el("div", "pk-cm"), h = [];
+    m.id = "pk-cm";
+    m.hidden = true;
+    m.setAttribute("role", "dialog");
+    m.setAttribute("aria-label", "Categories");
+    h.push('<div class="pk-cm-head"><p class="pk-cm-title">Categories</p><a class="pk-cm-all" href="' + esc(ROOT + "books.html") + '">All ' +
+      plural(d.n, "book", "books") + '</a><button type="button" class="pk-cm-close" aria-label="Close the categories">' + ICON.close + "</button></div>");
+    h.push('<ul class="pk-cm-list">');
+    d.c.forEach(function (c) {
+      var href = esc(ROOT + "subjects/" + c.id + ".html"), sid = "pk-cm-s-" + c.id;
+      h.push('<li class="pk-cm-cat" data-id="' + esc(c.id) + '" style="--h:' + (+c.h || 212) + '"><div class="pk-cm-row">' +
+        '<a class="pk-cm-link" href="' + href + '"><span class="pk-cm-ic"><svg class="pk-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        c.i + '</svg></span><span class="pk-cm-t">' + esc(c.t) + '</span><span class="pk-cm-n" aria-label="' + plural(c.n, "book", "books") + '">' + c.n + "</span></a>" +
+        (c.s.length ? '<button type="button" class="pk-cm-exp" aria-expanded="false" aria-controls="' + sid + '" title="Subcategories">' +
+          '<span class="bjp-sr">Subcategories of ' + esc(c.t) + "</span>" + CHEV + "</button>" : "") + "</div>");
+      if (c.s.length) {
+        h.push('<div class="pk-cm-subs" id="' + sid + '" hidden><p class="pk-cm-sh">' + esc(c.t) + "</p>" +
+          (c.d ? '<p class="pk-cm-sd">' + esc(c.d) + "</p>" : "") + "<ul>" +
+          '<li><a class="pk-cm-sub pk-cm-suball" href="' + href + '">All in ' + esc(c.t) + "<span>" + c.n + "</span></a></li>" +
+          c.s.map(function (x) {
+            return '<li><a class="pk-cm-sub" href="' + esc(ROOT + "subjects/" + x[0] + ".html") + '">' + esc(x[1]) + "<span>" + x[2] + "</span></a></li>";
+          }).join("") + "</ul></div>");
+      }
+      h.push("</li>");
+    });
+    h.push("</ul>");
+    m.innerHTML = h.join("");
+    return m;
+  }
+  function catItem(id) { return catMenu && catMenu.querySelector('.pk-cm-cat[data-id="' + id + '"]'); }
+  function catShow(li, on) {
+    if (!li) return;
+    var b = li.querySelector(".pk-cm-exp"), box = li.querySelector(".pk-cm-subs");
+    if (!b || !box) return;
+    b.setAttribute("aria-expanded", String(on));
+    box.hidden = !on;
+    li.classList.toggle("is-open", on);
+  }
+  function catOpenOnly(li) {
+    var all = catMenu.querySelectorAll(".pk-cm-cat");
+    for (var i = 0; i < all.length; i++) if (all[i] !== li) catShow(all[i], false);
+    catShow(li, true);
+  }
+  function catPlace() {
+    if (!catMenu || catMenu.hidden) return;
+    var wide = catWide();
+    catMenu.classList.toggle("is-wide", wide);
+    if (!wide) { catMenu.style.left = catMenu.style.top = ""; catMenu.querySelector(".pk-cm-list").style.minHeight = ""; return; }
+    // the menu is as tall as the longest list of subcategories, so that none of them has to be scrolled to
+    var list = catMenu.querySelector(".pk-cm-list"), boxes = catMenu.querySelectorAll(".pk-cm-subs"), tall = 0, was = [];
+    for (var i = 0; i < boxes.length; i++) { was.push(boxes[i].hidden); boxes[i].hidden = false; }
+    for (i = 0; i < boxes.length; i++) tall = Math.max(tall, boxes[i].scrollHeight);
+    for (i = 0; i < boxes.length; i++) boxes[i].hidden = was[i];
+    list.style.minHeight = tall ? tall + "px" : "";
+    var hdr = document.querySelector(".md-header"), r = catBtn.getBoundingClientRect();
+    var top = hdr ? hdr.getBoundingClientRect().bottom : r.bottom;
+    var w = catMenu.offsetWidth, left = Math.min(Math.max(12, r.right - w), window.innerWidth - w - 12);
+    catMenu.style.top = Math.round(top + 6) + "px";
+    catMenu.style.left = Math.round(Math.max(12, left)) + "px";
+  }
+  function catFocusables() {
+    return Array.prototype.filter.call(catMenu.querySelectorAll("a, button"), function (x) { return x.offsetParent !== null; });
+  }
+  function openCats() {
+    if (!catBtn) return;
+    if (!catMenu) {
+      var d = catData();
+      if (!d) { location.href = catBtn.href; return; }
+      catMenu = buildCatMenu(d);
+      document.body.appendChild(catMenu);
+      catBtn.setAttribute("aria-controls", catMenu.id);
+      wireCatMenu();
+    }
+    var here = catHere(), li = null;
+    if (here) {
+      li = catItem(here);
+      if (!li) { var sub = catMenu.querySelector('.pk-cm-sub[href$="/subjects/' + here + '.html"]'); li = sub && sub.closest(".pk-cm-cat"); }
+    }
+    var wide = catWide(), all = catMenu.querySelectorAll(".pk-cm-cat");
+    for (var i = 0; i < all.length; i++) catShow(all[i], false);
+    if (li || wide) catShow(li || catMenu.querySelector(".pk-cm-cat"), true);
+    catMenu.hidden = false;
+    document.documentElement.classList.add("pk-cm-on");
+    catBtn.setAttribute("aria-expanded", "true");
+    catPlace();
+    var f = (li && li.querySelector(".pk-cm-link")) || catMenu.querySelector(".pk-cm-link");
+    if (f) f.focus({ preventScroll: true });
+    if (li && !wide) li.scrollIntoView({ block: "nearest" });
+  }
+  function closeCats(back) {
+    if (!catMenu || catMenu.hidden) return;
+    catMenu.hidden = true;
+    document.documentElement.classList.remove("pk-cm-on");
+    if (catBtn) {
+      catBtn.setAttribute("aria-expanded", "false");
+      if (back) catBtn.focus();
+    }
+  }
+  function wireCatMenu() {
+    catMenu.addEventListener("click", function (e) {
+      var t = e.target;
+      if (t.closest(".pk-cm-close")) { closeCats(true); return; }
+      var b = t.closest(".pk-cm-exp");
+      if (b) {
+        var li = b.closest(".pk-cm-cat");
+        if (catWide() || b.getAttribute("aria-expanded") !== "true") {
+          catOpenOnly(li);
+          if (catWide()) { var f = li.querySelector(".pk-cm-sub"); if (f) f.focus(); }
+          else li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        } else catShow(li, false);
+        return;
+      }
+      if (t.closest("a[href]")) setTimeout(function () { closeCats(false); }, 0);
+    });
+    // wider screens: the subcategories of the category pointed at (after a moment, so that a pointer on its way to
+    // the right does not change them) or reached with the keyboard
+    catMenu.addEventListener("mouseover", function (e) {
+      if (!catWide()) return;
+      var li = e.target.closest(".pk-cm-cat");
+      if (!li || li.classList.contains("is-open") || e.target.closest(".pk-cm-subs")) { clearTimeout(catHover); return; }
+      clearTimeout(catHover);
+      catHover = setTimeout(function () { catOpenOnly(li); }, 110);
+    });
+    catMenu.addEventListener("focusin", function (e) {
+      var a = e.target.closest(".pk-cm-link");
+      if (a && catWide()) catOpenOnly(a.closest(".pk-cm-cat"));
+    });
+    catMenu.addEventListener("keydown", function (e) {
+      var k = e.key, t = e.target, li = t.closest(".pk-cm-cat");
+      if (k === "Escape") { e.preventDefault(); closeCats(true); return; }
+      if (k === "Tab") {
+        // the sheet keeps the focus while it is open; the menu closes when the focus leaves it
+        var fs = catFocusables(), first = fs[0], last = fs[fs.length - 1];
+        if (!catWide()) {
+          if (e.shiftKey && t === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && t === last) { e.preventDefault(); first.focus(); }
+        }
+        return;
+      }
+      if (k !== "ArrowDown" && k !== "ArrowUp" && k !== "ArrowRight" && k !== "ArrowLeft" && k !== "Home" && k !== "End") return;
+      var inSubs = !!t.closest(".pk-cm-subs");
+      var list = inSubs ? Array.prototype.slice.call(li.querySelectorAll(".pk-cm-sub"))
+        : Array.prototype.slice.call(catMenu.querySelectorAll(".pk-cm-link"));
+      var i = list.indexOf(t.closest(".pk-cm-link") || t);
+      if (k === "ArrowRight" && li && !inSubs) {
+        if (!li.querySelector(".pk-cm-subs")) return;
+        e.preventDefault();
+        catOpenOnly(li);
+        li.querySelector(".pk-cm-sub").focus();
+        return;
+      }
+      if (k === "ArrowLeft" && inSubs) { e.preventDefault(); li.querySelector(".pk-cm-link").focus(); return; }
+      if (k === "ArrowLeft" || k === "ArrowRight") return;
+      e.preventDefault();
+      if (k === "Home") i = 0;
+      else if (k === "End") i = list.length - 1;
+      else i = (i + (k === "ArrowDown" ? 1 : -1) + list.length) % list.length;
+      if (list[i]) list[i].focus();
+    });
+    catMenu.addEventListener("focusout", function (e) {
+      var to = e.relatedTarget;
+      if (catWide() && to && !catMenu.contains(to) && to !== catBtn) closeCats(false);
+    });
+    document.addEventListener("pointerdown", function (e) {
+      if (catMenu.hidden || catMenu.contains(e.target) || (catBtn && catBtn.contains(e.target))) return;
+      closeCats(false);
+    }, true);
+    window.addEventListener("resize", catPlace);
+  }
+  function setupCats() {
+    var b = document.querySelector(".pk-catbtn");
+    if (!b || b === catBtn) return;
+    catBtn = b;
+    b.setAttribute("role", "button");
+    b.addEventListener("click", function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (catMenu && !catMenu.hidden) closeCats(false); else openCats();
+    });
+    b.addEventListener("keydown", function (e) {
+      if (e.key === " ") { e.preventDefault(); b.click(); }
+      else if (e.key === "ArrowDown" && (!catMenu || catMenu.hidden)) { e.preventDefault(); openCats(); }
+    });
+  }
+
+  /* the front page: "Browse categories" (tools/browse.py): a tap on a category with subcategories shows them in a row
+     below its own row (the row is found from the buttons' positions, so it follows the columns of the screen); a
+     second tap, or a tap on another category, closes it */
+  function wireCatGrid() {
+    var grid = document.querySelector(".pk-catgrid");
+    if (!grid || grid.__bjp) return;
+    grid.__bjp = true;
+    var open = null;
+    function place(b, panel) {
+      var items = grid.querySelectorAll(".pk-cat"), last = b;
+      for (var i = 0; i < items.length; i++) if (items[i].offsetTop === b.offsetTop) last = items[i];
+      if (last.nextElementSibling !== panel) last.insertAdjacentElement("afterend", panel);
+      panel.style.setProperty("--x", Math.round(b.offsetLeft + b.offsetWidth / 2 - grid.offsetLeft) + "px");
+    }
+    function shut() {
+      if (!open) return;
+      open.b.setAttribute("aria-expanded", "false");
+      open.b.classList.remove("is-open");
+      open.panel.hidden = true;
+      open = null;
+    }
+    function panelOf(b) {
+      var id = b.getAttribute("data-cat"), panel = document.getElementById("pk-cs-" + id), d = catData(), c;
+      if (panel || !d) return panel;
+      for (var i = 0; i < d.c.length; i++) if (d.c[i].id === id) c = d.c[i];
+      if (!c || !c.s.length) return null;
+      var href = function (x) { return esc(ROOT + "subjects/" + x + ".html"); };
+      panel = el("div", "pk-catsub", '<nav class="pk-chips" aria-label="Subcategories of ' + esc(c.t) + '">' +
+        '<a class="pk-chip pk-chip-all" href="' + href(c.id) + '">All in ' + esc(c.t) + "<span>" + c.n + "</span></a>" +
+        c.s.map(function (x) { return '<a class="pk-chip" href="' + href(x[0]) + '">' + esc(x[1]) + "<span>" + x[2] + "</span></a>"; }).join("") + "</nav>");
+      panel.id = "pk-cs-" + id;
+      panel.hidden = true;
+      grid.appendChild(panel);
+      b.setAttribute("aria-controls", panel.id);
+      return panel;
+    }
+    function toggle(b) {
+      var panel = panelOf(b);
+      if (!panel) { location.href = b.href; return; }
+      var same = open && open.b === b;
+      shut();
+      if (same) return;
+      place(b, panel);
+      panel.hidden = false;
+      b.setAttribute("aria-expanded", "true");
+      b.classList.add("is-open");
+      open = { b: b, panel: panel };
+      var r = panel.getBoundingClientRect();
+      if (r.bottom > window.innerHeight - 8) {
+        try { panel.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) { panel.scrollIntoView(false); }
+      }
+    }
+    var bs = grid.querySelectorAll(".pk-cat[data-cat]");
+    for (var i = 0; i < bs.length; i++) {
+      bs[i].setAttribute("role", "button");
+      bs[i].setAttribute("aria-expanded", "false");
+      bs[i].addEventListener("click", function (e) {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        toggle(this);
+      });
+      bs[i].addEventListener("keydown", function (e) {
+        if (e.key === " ") { e.preventDefault(); toggle(this); }
+        else if (e.key === "Escape" && open) { shut(); }
+      });
+    }
+    window.addEventListener("resize", function () { if (open) place(open.b, open.panel); });
+  }
+
   /* ---------------------------------------------------------------- start */
   function onPage() {
     setupChrome();
+    setupCats();
+    closeCats(false);
+    wireCatGrid();
     migrate();
     wireContents();
     wireShelf();
@@ -992,7 +1311,7 @@
   document.addEventListener("click", function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target && e.target.closest && e.target.closest("a[href]");
-    if (!a || (a.target && a.target !== "_self")) return;
+    if (!a || (a.target && a.target !== "_self") || a.getAttribute("role") === "button") return;     // the Categories buttons open panels
     var u;
     try { u = new URL(a.getAttribute("href"), location.href); } catch (x) { return; }
     if (u.origin !== location.origin || u.pathname.indexOf(BOOK_ROOT) !== 0 || u.pathname === location.pathname) return;
