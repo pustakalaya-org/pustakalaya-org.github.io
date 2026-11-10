@@ -329,6 +329,8 @@
       if (t) { t = t.cloneNode(true); rm(t, ".bjp-sr"); info.title = txt(t); }
       var by = d.querySelector(".pk-book-by") || d.querySelector(".cv-author");
       if (by) info.author = txt(by);
+      var gb = d.querySelector(".pk-book-gen");
+      if (gb) info.gen = txt(gb);
       var card = d.querySelector(".vol-card[style]");
       if (card) {
         var st = card.getAttribute("style") || "", m;
@@ -1102,7 +1104,7 @@
   function titleSlide(M) {
     var info = M.info, h = M.head;
     var notes = (h.label ? h.label + ": " : "") + esc(h.text) + (info.title ? " — " + esc(info.title) : "") + (h.subtitle ? ". " + h.subtitle : "");
-    M.slides.push({ kind: "title", title: h.html, titleText: h.text, label: h.label, subtitle: h.subtitle || "", book: info.title || "", author: info.author || "", cover: info.cover || null, notes: notes, bi: 0, sec: -1 });
+    M.slides.push({ kind: "title", title: h.html, titleText: h.text, label: h.label, subtitle: h.subtitle || "", book: info.title || "", author: info.author || "", gen: info.gen || "", cover: info.cover || null, notes: notes, bi: 0, sec: -1 });
   }
   function agendaSlide(M, secs) {
     var ol = el("ol", "sl-agenda" + (secs.length > 6 ? " sl-agenda-2" : ""));
@@ -1184,7 +1186,7 @@
           '<h1 class="sl-ttitle">' + s.title + "</h1>" +
           (s.subtitle ? '<p class="sl-tsub">' + s.subtitle + "</p>" : "") +
         "</div>" +
-        (s.author ? '<p class="sl-tauthor">' + esc(s.author) + "</p>" : "");
+        (s.author ? '<p class="sl-tauthor">' + esc(s.author) + (s.gen ? '<span class="sl-tgen">' + esc(s.gen) + "</span>" : "") + "</p>" : "");
     } else if (s.kind === "section") {
       inner.innerHTML = (s.num ? '<p class="sl-snum">' + esc(s.num) + "</p>" : "") + '<h2 class="sl-stitle">' + s.title + "</h2>" +
         (s.subs && s.subs.length ? '<ul class="sl-ssubs">' + s.subs.slice(0, 6).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "");
