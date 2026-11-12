@@ -4097,16 +4097,34 @@ before 1965 (life plus sixty years); a title that is in doubt is left out.</p>
 <ul>
 <li><code>identifier</code> and <code>pd_basis</code> are required. The build asks <code>archive.org/metadata/&lt;identifier&gt;</code> for the title, creator, date,
 language, the names of the files and the number of scanned pages, and the image service for the size of a page; the
-results are cached in <code>.cache/remote/&lt;id&gt;.json</code>. Nothing else of the item is kept: no image, no text.</li>
+results are cached in <code>.cache/remote/&lt;id&gt;.json</code>. Nothing else of the item is kept: no image, and no text but the
+library's own reading of an item that has none (below).</li>
 <li><strong>Chapters</strong> are page ranges ("Pages 1–25", "Pages 26–50", ...), each a shell like those of the other linked books, or the
 chapters the entry lists in <code>chapters</code> (<code>title</code>, <code>from</code>, <code>to</code>: scan numbers, the first scan being 1).</li>
 <li><strong>Display.</strong> In <code>scans</code> mode a chapter is its pages as images; in <code>text</code> mode it is the OCR text of its pages, cleaned
 lightly (running heads and folios removed, hyphenated words joined, lines made paragraphs) and set in the library's
 typography, with a "View page scan" button on every page. <code>text</code> needs the item's <code>*_hocr_searchtext.txt.gz</code> and
 <code>*_hocr_pageindex.json.gz</code>; by default a book is shown as text when its language is in the Latin script (English, Latin, French, German and the
-like), it has them, and either the OCR's confidence (<code>*_page_numbers.json</code>) is at least 90 or a sample of its text reads
-well (at least 90% clean words: letters with a vowel, no stray digits or signs), otherwise as scans (Sanskrit and Hindi
-in Devanagari cannot be read by the OCR; tables of figures read better as scans). <code>display:</code> overrides the choice (for a book whose language is wrongly recorded).</li>
+like), it has them, and a sample of its text reads well: at least 92% clean words (letters with a vowel) and at
+most 1.5% broken ones (stray signs, letters mixed with digits: what the OCR makes of Devanagari, of diacritics it
+cannot read and of formulas); otherwise as scans (Sanskrit and Hindi in Devanagari cannot be read by the OCR; a book
+that mixes English with Devanagari, or tables of figures, read better as scans). <code>display:</code> overrides the choice (for a book whose language is wrongly recorded).</li>
+<li><strong>The library's own reading.</strong> Many English items (most of those of the Digital Library of India) have no OCR text on
+the Internet Archive. <code>python tools/ocr_archive.py --list | --book &lt;id&gt; | --all</code> reads their scans with Tesseract
+(English, the LSTM engine, automatic page layout; each page fetched from the image service at about 2,000 pixels wide,
+at most one request a second, read and not kept; small scans are enlarged first; lines read with little confidence
+are dropped; the lines read poorly are read again with the Sanskrit model as well, and runs of words in Devanagari
+are taken from that reading, when <code>--tessdata</code> names a folder with <code>eng</code> and <code>san</code>; a book whose first forty pages
+read again show none is read in English only from then on) and keeps the text in a private repository of its own,
+named by <code>app.ocr_repo</code> in library.yml (its folder in library.local.yml <code>local:</code>, like the audio repository):
+<code>&lt;repo&gt;/&lt;book id&gt;/pages.json</code>, the text of every scan as read (a list, scan 1 first), and <code>meta.json</code> (the item, the
+engine and its settings, the date, the mean word confidence of each page and of the book, the shares of clean and
+of broken words). A run resumes where the last one stopped. Such a book is shown as text when the reading covers
+its scans and is good (the same 92% clean words, counted on the text in the Latin script, and 1.5% broken words as
+above, and a mean word confidence of 70), whatever language its item records; otherwise as scans. The build copies the text of each
+chapter into <code>assets/ocr/&lt;book id&gt;/&lt;from&gt;-&lt;to&gt;.json</code> (a list of the pages' texts) and <code>assets/scans.js</code> reads it from
+there instead of the Internet Archive's OCR files, cleaning it in the same way; the book's page and every chapter say
+that the text was read by machine for this library. A library without the repository shows these books as scans.</li>
 <li><strong>The viewer</strong> (<code>assets/scans.js</code>, <code>scans.css</code>) is the library's own: page images come from the image service of the
 Internet Archive (IIIF, which answers pages of another site), at a size that fits the screen and a larger one on zoom,
 with pinch, Ctrl+wheel, button and double-tap zoom, pan, fit to width or to the page, a jump to a page number, a strip of
@@ -4118,8 +4136,9 @@ Centre for the Arts / Archaeological Survey of India; hosted by the Internet Arc
 public-domain basis (<code>pd_basis</code>).</li>
 <li><strong>Offline.</strong> "Keep these pages offline" on a chapter (the viewer has "Keep this page offline") stores the chapter's
 page images, their thumbnails and, for a text book, the text of the book in the browser's cache of the reader's device
-only (<code>pk-scans-kept</code>), after saying how much room it takes (about 0.2 MB a page); "Remove" takes them out again.</li>
-<li><strong>Search.</strong> The library holds no text of these books: their titles and authors are in the search of titles
+only (<code>pk-scans-kept</code>), after saying how much room it takes (about 0.2 MB a page); "Remove" takes them out again. The
+text read by this library (<code>assets/ocr/</code>) is also kept with the book by "Keep for offline reading".</li>
+<li><strong>Search.</strong> The library holds no text of these books (except the text it read itself, which is not indexed): their titles and authors are in the search of titles
 (<code>search/titles.json</code>), and the chapters' titles in the book's own index.</li>
 <li><strong>A text read from the scans.</strong> A scanned book of which a Markdown book holds the machine-read text (a book of the
 collection "Rare Texts") is paired with it under <code>editions:</code> in library.yml, by site paths
@@ -4480,7 +4499,7 @@ Material for MkDocs
 <script src="assets/mathjax.js?v=773adb7420"></script>
 <script src="assets/viz.js?v=97faa5745a"></script>
 <script src="assets/remote.js?v=7431b8915d"></script>
-<script src="assets/scans.js?v=dbf1b7d239"></script>
+<script src="assets/scans.js?v=2ced2b00fc"></script>
 <script src="assets/reader.js?v=96514a4aef"></script>
 <script src="assets/app.js?v=29ce824190"></script>
 <script src="assets/slides.js?v=dca590e2bf"></script>

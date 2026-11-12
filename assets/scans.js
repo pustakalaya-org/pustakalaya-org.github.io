@@ -12,7 +12,9 @@
  * and light, dark or sepia surroundings. It never embeds or opens the Internet Archive's own reader: images come from
  * the Internet Archive's image service (IIIF) at a size that fits the screen, and a larger one on zoom.
  *
- * Nothing of a book is stored by the library. "Keep these pages offline" keeps the pages of a chapter (and the text of
+ * The text of a book whose item has no OCR text on the Internet Archive is the library's own reading of the scans
+ * (archive.ocr in remote.json; tools/ocr_archive.py): one file per chapter, assets/ocr/<book>/<from>-<to>.json, a list of
+ * the pages' texts, cleaned here in the same way. No page image is stored by the library. "Keep these pages offline" keeps the pages of a chapter (and the text of
  * the book) in this browser's cache "pk-scans-kept" only, after telling how much room it takes.
  */
 (function () {
@@ -41,6 +43,12 @@
   function altUrl(a, n, w) { return a.ia + "/down" + "load/" + encodeURIComponent(a.id) + "/page/n" + (n - 1) + "_w" + w + ".jpg"; }
   function fileUrl(a, suffix) { return a.ia + "/down" + "load/" + encodeURIComponent(a.id) + "/" + encodeURIComponent(a.base) + suffix; }
   function ratio(a) { return a.size && a.size[0] ? a.size[1] / a.size[0] : 1.45; }
+  /* the library's own reading of a chapter (a book without OCR text on the Internet Archive): a file of this site */
+  var SITE = (function () {
+    var s = document.currentScript || document.querySelector('script[src*="assets/scans.js"]');
+    try { return new URL("../", s.src).href; } catch (e) { return new URL("/", location.href).href; }
+  })();
+  function ocrUrl(m, from, to) { return SITE + "assets/ocr/" + encodeURIComponent(m.id) + "/" + from + "-" + to + ".json"; }
 
   /* ---------------------------------------------------------------- what is kept on the device */
   function cacheOpen() { return CAN_CACHE ? caches.open(KEPT) : Promise.reject(new Error("no cache")); }
@@ -61,8 +69,16 @@
   }
 
   /* ---------------------------------------------------------------- the OCR text of a book: one answer, split into pages */
-  function textOf(m) {
+  function textOf(m, c) {
     var a = m.archive;
+    if (a.ocr) {
+      var u = ocrUrl(m, c.from, c.to);
+      if (!TEXTS[u]) {
+        TEXTS[u] = getBuf(u).then(function (b) { return { pages: JSON.parse(new TextDecoder("utf-8").decode(b)), from: c.from }; });
+        TEXTS[u].catch(function () { delete TEXTS[u]; });
+      }
+      return TEXTS[u];
+    }
     if (!TEXTS[m.id]) {
       TEXTS[m.id] = Promise.all([
         getBuf(fileUrl(a, "_hocr_searchtext.txt.gz")).then(gunzip),
@@ -76,6 +92,7 @@
     return TEXTS[m.id];
   }
   function pageText(t, n) {
+    if (t.pages) return t.pages[n - t.from] || "";
     var e = t.idx[n - 1];
     if (!e) return "";
     return new TextDecoder("utf-8").decode(t.bytes.subarray(e[0], e[1]));
@@ -163,7 +180,7 @@
       return { html: html, math: false, m: m, c: c };
     };
     if (a.mode === "text") {
-      return textOf(m).then(function (t) { return done("text", textHtml(m, c.from, c.to, t)); }, function () {
+      return textOf(m, c).then(function (t) { return done("text", textHtml(m, c.from, c.to, t)); }, function () {
         return done("scans", scansHtml(m, c.from, c.to), "The text of this book could not be read now; the pages are shown as scans.");
       });
     }
@@ -174,7 +191,8 @@
     return '<div class="pk-remote-credit pk-sc-credit" lang="en"><p>' + esc(String(m.attribution).replace(/\.$/, "")) + ". “" + esc(a.title || m.title) + "”" +
       (a.creator ? ", " + esc(a.creator) : "") + (a.date ? ", " + esc(a.date) : "") + ". " + esc(range(m, c)) + " of " + a.pages + " scanned pages. " +
       "<strong>" + esc(String(a.pd).replace(/\.$/, "")) + ".</strong> " +
-      (a.mode === "text" ? "The text is the machine reading (OCR) of the scan, lightly cleaned, and may contain errors; the scan of each page is the authority. " : "") +
+      (a.mode === "text" ? (a.ocr ? "The text was read from the scan by machine (OCR) for this library, lightly cleaned, and may contain errors; the scan of each page is the authority. " :
+        "The text is the machine reading (OCR) of the scan, lightly cleaned, and may contain errors; the scan of each page is the authority. ") : "") +
       'Item on the Internet Archive: <a href="' + esc(a.details) + '"' + ext + ">" + esc(a.id) + "</a>.</p></div>";
   }
 
@@ -183,7 +201,8 @@
   function urlsOf(m, from, to) {
     var a = m.archive, u = [], n;
     for (n = from; n <= to; n++) u.push(imgUrl(a, n, BASE_W));
-    if (a.mode === "text") { u.push(fileUrl(a, "_hocr_searchtext.txt.gz")); u.push(fileUrl(a, "_hocr_pageindex.json.gz")); }
+    if (a.mode === "text" && a.ocr) u.push(ocrUrl(m, from, to));
+    else if (a.mode === "text") { u.push(fileUrl(a, "_hocr_searchtext.txt.gz")); u.push(fileUrl(a, "_hocr_pageindex.json.gz")); }
     return u;
   }
   function mb(x) { return x < 1 ? "under 1 MB" : "about " + Math.round(x) + " MB"; }
